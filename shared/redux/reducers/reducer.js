@@ -1,10 +1,10 @@
 import * as ActionTypes from '../constants/constants';
 
-const initialState = { posts: [], post: null };
+const initialState = { signupwarnings: {}};
 
 const postReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.ADD_POST :
+    /*case ActionTypes.ADD_POST :
       return {
         posts: [{
           name: action.name,
@@ -38,6 +38,11 @@ const postReducer = (state = initialState, action) => {
       return {
         posts: state.posts.filter((post) => post._id !== action.post._id),
       };
+*/
+    case ActionTypes.ADD_WARNINGS:
+          return{
+            signupwarnings:action.signup,
+          };
 
     default:
       return state;

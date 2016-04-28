@@ -73,6 +73,15 @@ export function addPosts(posts) {
   };
 }
 
+export function showSignupResponse(res) {
+  console.log(res);
+  return {
+    type: ActionTypes.ADD_WARNINGS,
+    signup : res,
+
+  };
+}
+
 export function fetchPosts() {
   return (dispatch) => {
     return fetch(`${baseURL}/api/getPosts`).
@@ -128,6 +137,6 @@ export function signupuser(user) {
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then(console.log('sign up went successful'));
+    }).then((res) => res.json()).then((res) => res.signup).then(res => dispatch(showSignupResponse(res)));
   };
 }

@@ -3,9 +3,27 @@ import React from 'react';
 function Footer() {
   return (
    <div className="footer">
-     <p>&copy; 2016 KiboEngage.</p>
-     <p>are on Twitter : <a href="https://twitter.com/@mern_io" target="_Blank">@mern_io</a></p>
-   </div>
+    <div className ="container">
+      <div className="col-md-6 col-sm-6 padding-top-10">
+          2016 © KiboEngage(Beta). ALL Rights Reserved.
+      </div>
+      <div className="col-md-6 col-sm-6">
+         <ul className="social-footer list-unstyled list-inline pull-right">
+           <li>
+              <a href='javascript:;'>
+                <i className="fa fa-facebook"/>
+              </a>
+          </li>
+          <li>
+            <a href='javascript:;'>
+                <i className="fa fa-google-plus"/>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
  );
 }
 

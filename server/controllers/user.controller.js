@@ -43,24 +43,40 @@ export function signupUser(req, res) {
     };
     console.log(options.form);
     function callback(error, response, body) {
+
+      var validationErr =[];
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
         console.log('api calling succeed')
         console.log(info)
+        validationErr.push('Your account is created successfully')
+        return res.json({signup:{ validationErrs :validationErr ,token : info,statusCode : response.statusCode}});
 
+      }
+       else if (response.statusCode == 422) {
+       console.log('validation errors');
+       var errs = JSON.parse(body).errors;
+
+       for(var err in errs)
+       {
+
+       validationErr.push(errs[err].message);
+       }
+       console.log(validationErr);
+       return res.json({signup:{ validationErrs : validationErr ,token : null,statusCode : response.statusCode}});
       }
       else
       {
         console.log(error);
-
-        //  res.render('agents',data);
+        validationErr.push(error)
+        return res.json({signup:{ validationErrs :validationErr ,token : null,statusCode : response.statusCode}});
 
       }
     }
 
     request.post(options, callback);
   }
-  return res.json({ user : "saved"});
+
 
 }
 

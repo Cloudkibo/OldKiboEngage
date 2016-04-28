@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {Header} from '../../components/Header/Header.jsx'
-import {Footer} from '../../components/Footer/Footer.jsx'
+import Header from '../../components/Header/Header.jsx'
+import Footer from '../../components/Footer/Footer.jsx'
 
 class Intro extends Component {
   render() {
