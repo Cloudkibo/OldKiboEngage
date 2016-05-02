@@ -1704,9 +1704,11 @@ Pre-Footer and pre-footer elements
 	color: #fff;
 	font-size: 12px;
 	padding: 15px 0;
-  bottom:0px;
   width:100%;
-  position: absolute;
+  height: 50px;
+  position:absolute;
+  bottom:0;
+
 }
 .footer-light {
 	background: #F9F9F9;
@@ -3345,4 +3347,15 @@ text-align: left;
   font-size: 14px;
   color: #393939;
   font-family:sans-serif
+}
+
+.pageContainer{
+  position: relative;
+  min-height:100%;
+
+}
+.mainBody{
+
+  padding-bottom:50px;
+
 }

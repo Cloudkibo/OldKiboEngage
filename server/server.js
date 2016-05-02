@@ -71,7 +71,7 @@ const renderFullPage = (html, initialState) => {
         <script src="/dist/bundle.js"></script>
         <script type="text/javascript" src="/scripts/keen/jquery.min.js"></script>
         <script src = "/scripts/back-to-top.js"></script>
-      </body>
+         </body>
     </html>
   `;
 };
@@ -98,7 +98,7 @@ app.use((req, res, next) => {
       return next();
     }
 
-    const initialState = { posts: [], post: {} };
+    const initialState = {};
 
     const store = configureStore(initialState);
 
@@ -124,3 +124,6 @@ app.listen(serverConfig.port, (error) => {
 });
 
 export default app;
+
+
+

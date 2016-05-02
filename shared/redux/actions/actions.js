@@ -1,77 +1,132 @@
 import * as ActionTypes from '../constants/constants';
 import Config from '../../../server/config';
 import fetch from 'isomorphic-fetch';
+import { CALL_API } from '../middleware/api'
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
-export function addPost(post) {
+// There are three possible states for our login
+// process and we need actions for each of them
+
+// Feature test
+var hasStorage = (function() {
+  try {
+    localStorage.setItem(mod, mod);
+    localStorage.removeItem(mod);
+    return true;
+  } catch (exception) {
+    console.log(exception);
+    return false;
+  }
+}());
+
+function requestLogin(creds) {
   return {
-    type: ActionTypes.ADD_POST,
-    name: post.name,
-    title: post.title,
-    content: post.content,
-    slug: post.slug,
-    cuid: post.cuid,
-    _id: post._id,
-  };
+    type: ActionTypes.LOGIN_REQUEST,
+    isFetching: true,
+    isAuthenticated: false,
+    creds
+  }
 }
 
-export function changeSelectedPost(slug) {
+function receiveLogin(user) {
   return {
-    type: ActionTypes.CHANGE_SELECTED_POST,
-    slug,
-  };
+    type: ActionTypes.LOGIN_SUCCESS,
+    isFetching: false,
+    isAuthenticated: true,
+    id_token: user.token.token
+  }
 }
 
-export function addPostRequest(post) {
-  return (dispatch) => {
-    fetch(`${baseURL}/api/addPost`, {
-      method: 'post',
-      body: JSON.stringify({
-        post: {
-          name: post.name,
-          title: post.title,
-          content: post.content,
-        },
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then(res => dispatch(addPost(res.post)));
-  };
-}
-
-export function addSelectedPost(post) {
+function loginError(message) {
+  console.log(message);
   return {
-    type: ActionTypes.ADD_SELECTED_POST,
-    post,
-  };
+    type: ActionTypes.LOGIN_FAILURE,
+    isFetching: false,
+    isAuthenticated: false,
+    message
+  }
 }
 
-export function getPostRequest(post) {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/getPost?slug=${post}`, {
-      method: 'get',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    }).then((response) => response.json()).then(res => dispatch(addSelectedPost(res.post)));
-  };
-}
+// Three possible states for our logout process as well.
+// Since we are using JWTs, we just need to remove the token
+// from localStorage. These actions are more useful if we
+// were calling the API to log the user out
 
-export function deletePost(post) {
+
+function requestLogout() {
   return {
-    type: ActionTypes.DELETE_POST,
-    post,
-  };
+    type: ActionTypes.LOGOUT_REQUEST,
+    isFetching: true,
+    isAuthenticated: true
+  }
 }
 
-export function addPosts(posts) {
+function receiveLogout() {
   return {
-    type: ActionTypes.ADD_POSTS,
-    posts,
-  };
+    type: ActionTypes.LOGOUT_SUCCESS,
+    isFetching: false,
+    isAuthenticated: false
+  }
 }
+
+// Calls the API to get a token and
+// dispatches actions along the way
+export function loginUser(creds) {
+  console.log(creds);
+  let config = {
+    method: 'post',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({
+      'email' :    creds.email,
+      'password'  :creds.password,
+      'website' :  creds.website
+
+    })
+}
+
+return dispatch => {
+  // We dispatch requestLogin to kickoff the call to the API
+  dispatch(requestLogin(creds))
+  return fetch(`${baseURL}/api/getlogin`, config)
+      .then(response =>
+    response.json()
+      .then(user => ({ user, response }))
+).then(({ user, response }) =>  {
+    if (!response.ok) {
+    // If there was a problem, we want to
+    // dispatch the error condition
+    dispatch(loginError(user.message))
+    return Promise.reject(user)
+  }
+else {
+    // If login was successful, set the token in local storage
+
+    if(hasStorage) {
+      localStorage.setItem('id_token', user.token);
+      console.log(localStorage.getItem('id_token'));
+    }
+
+
+    // Dispatch the success action
+    dispatch(receiveLogin(user))
+  }
+}).catch(err => console.log("Error: ", err))
+}
+}
+
+// Logs the user out
+export function logoutUser() {
+  return dispatch => {
+    dispatch(requestLogout())
+    if(hasStorage) {
+      localStorage.removeItem('id_token')
+    }
+    dispatch(receiveLogout())
+  }
+}
+
+/*************** signup actions ***********/
 
 export function showSignupResponse(res) {
   console.log(res);
@@ -82,41 +137,7 @@ export function showSignupResponse(res) {
   };
 }
 
-export function fetchPosts() {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/getPosts`).
-      then((response) => response.json()).
-      then((response) => dispatch(addPosts(response.posts)));
-  };
-}
 
-export function deletePostRequest(post) {
-  return (dispatch) => {
-    fetch(`${baseURL}/api/deletePost`, {
-      method: 'post',
-      body: JSON.stringify({
-        postId: post._id,
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    }).then(() => dispatch(deletePost(post)));
-  };
-}
-
-
-// Calls the API to get a token and
-// dispatches actions along the way
-export function loginuser() {
-  return (dispatch) =>
-  {
-    // We dispatch requestLogin to kickoff the call to the API
-    fetch(`${baseURL}/api/getlogin`,
-    {
-      method: 'get',
-    }).then(console.log('successful'));
-  };
-}
 
 
 export function signupuser(user) {

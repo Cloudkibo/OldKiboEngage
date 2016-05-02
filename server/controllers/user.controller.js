@@ -14,8 +14,54 @@ var  headers =  {
 
 export function getlogin (req,res) {
   console.log('Login api is called.');
-  return res.json({msg: 'login succeed.'});
-}
+
+  if (!req.body.email || !req.body.password || !req.body.website ) {
+    return res.status(403).end();
+  }
+  else
+  {
+    var user = req.body;
+    var options = {
+      url: 'https://api.kibosupport.com/auth/local',
+      rejectUnauthorized : false,
+      headers:headers,
+      form: {
+        'email'     :user.email,
+        'password'   : user.password,
+        'website' : user.website
+      }
+    };
+    function callback(error, response, body) {
+      console.log(response.statusCode);
+      if (!error && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log('api calling succeed')
+        console.log(info)
+        return res.status(response.statusCode).send({token:info,statusCode:200});
+
+      }
+      else if(!error && response.statusCode == 404)
+      {
+        res.status(404).send({message:"This domain is not registered with us or your account does not belong to this domain", user: user,statusCode:501});
+      }
+      else if (!error && response.statusCode == 401) {
+            res.status(404).send({message:"The username or password don't match", user: user,statusCode:401});
+      }
+      else if (response.statusCode == 501) {
+        res.status(501).send({message:"Internal server error. Please inform admin.", user: user,statusCode:501});
+      }
+
+      else
+      {
+        console.log(response.error);
+
+        res.status(501).send({message:"Something went wrong, please try again.", user: user,statusCode:501});
+      }
+    }
+
+    request.post(options, callback);
+  }
+};
 
 
 export function signupUser(req, res) {

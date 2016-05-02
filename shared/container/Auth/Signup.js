@@ -54,83 +54,92 @@ export default class Signup extends React.Component {
 
     return (
         <div>
-          <Header/>
-        <div className = "main">
-          <div className ="row margin-bottom-40">
-              <SideBar/>
-              <div className="col-md-9 col-sm-9">
-                <h1>Register your admin account</h1>
-                <div className="content-form-page">
-                    <div className ="row">
-                      <div className ="col-md-7 col-sm-7">
-                          <span> * required to fill these field </span><br/>
-                          <form onSubmit={this.onSubmit} className ="css-form">
-                                  <div className="form-group">
-                                    <label htmlFor="username">First Name *</label>
-                                    <input type="text"  className="form-control input-medium" ref = "fname" required placeholder="First Name"/>
-                                  </div>
-                                  <div className="form-group">
-                                    <label>Last Name *</label>
-                                    <input type="text"  className="form-control input-medium"  ref = "lname" required placeholder="Last Name"/>
-                                  </div>
-                                  <div className="form-group">
-                                    <label>Email *</label>
-                                    <input type="email"  className="form-control input-medium"  ref = "email" required placeholder="Email Address"/>
-                                  </div>
-                                  <div className="form-group">
-                                    <label>Password *</label>
-                                    <input type="password" className="form-control input-medium" ref="pwd" placeholder="Password" required placeholder="Password"/>
-                                  </div>
-                                  <div className="form-group">
-                                  <label>Confirm Password *</label>
-                                  <input type="password" className="form-control input-medium" ref="c_pwd" placeholder="Confirm Password" required/>
-                                  </div>
-                                  <div className="form-group">
-                                  <label>Phone *</label>
-                                  <input type="number" className="form-control input-medium" ref="phone" required placeholder="Phone"/>
-                                  </div>
-                                  <div className="form-group">
-                                  <label>Company Name *</label>
-                                  <input type="text" className="form-control input-medium" ref="cname" required placeholder="Company Name"/>
-                                  </div>
-                                  <div className="form-group">
-                                  <label>Company Domain Name *</label>
-                                  <input type="text" className="form-control" ref="cdname" required placeholder="Domain Name"/>
-                                  <small>e.g. www.company.com or www.company.org or www.company.net</small>
-                                  </div>
-                                  <button type="submit" className="btn btn-primary btn-send">Submit</button>
-                                  {
+                <div  className="pageContainer">
+                     <Header/>
+                    <div className = "mainBody">
+                      <div className ="row margin-bottom-40">
+                          <SideBar/>
+                          <div className="col-md-9 col-sm-9">
+                            <h1>Register your admin account</h1>
+                            <div className="content-form-page">
+                                <div className ="row">
+                                  <div className ="col-md-7 col-sm-7">
+                                      <span> * required to fill these field </span><br/>
+                                      <form onSubmit={this.onSubmit} className ="css-form">
+                                              <div className="form-group">
+                                                <label htmlFor="username">First Name *</label>
+                                                <input type="text"  className="form-control input-medium" ref = "fname" required placeholder="First Name"/>
+                                              </div>
+                                              <div className="form-group">
+                                                <label>Last Name *</label>
+                                                <input type="text"  className="form-control input-medium"  ref = "lname" required placeholder="Last Name"/>
+                                              </div>
+                                              <div className="form-group">
+                                                <label>Email *</label>
+                                                <input type="email"  className="form-control input-medium"  ref = "email" required placeholder="Email Address"/>
+                                              </div>
+                                              <div className="form-group">
+                                                <label>Password *</label>
+                                                <input type="password" className="form-control input-medium" ref="pwd" placeholder="Password" required placeholder="Password"/>
+                                              </div>
+                                              <div className="form-group">
+                                              <label>Confirm Password *</label>
+                                              <input type="password" className="form-control input-medium" ref="c_pwd" placeholder="Confirm Password" required/>
+                                              </div>
+                                              <div className="form-group">
+                                              <label>Phone *</label>
+                                              <input type="number" className="form-control input-medium" ref="phone" required placeholder="Phone"/>
+                                              </div>
+                                              <div className="form-group">
+                                              <label>Company Name *</label>
+                                              <input type="text" className="form-control input-medium" ref="cname" required placeholder="Company Name"/>
+                                              </div>
+                                              <div className="form-group">
+                                              <label>Company Domain Name *</label>
+                                              <input type="text" className="form-control" ref="cdname" required placeholder="Domain Name"/>
+                                              <small>e.g. www.company.com or www.company.org or www.company.net</small>
+                                              </div>
+                                              <button type="submit" className="btn btn-primary btn-send">Submit</button>
+                                              {
 
-                                          this.props.signupwarnings && this.props.signupwarnings.statusCode == 422 &&
-                                          this.props.signupwarnings.validationErrs.map(function (err, i) {
-                                              return
-                                              <div   className = "alert alert-danger" key = {i} > < span > {err} < /span> </div>
+                                                this.props.signupwarnings && this.props.signupwarnings.statusCode == 422 &&
+                                              this.props.signupwarnings.validationErrs.map(function (err, i) {
+                                                  return(
+                                                    <div className = "alert alert-danger"><span>{err}</span></div>
+                                                  )
+                                                }
+                                              )
+
+
                                             }
-                                          )
+
+                                  </form>
 
 
-                                  }
+                                  </div>
+                                  </div>
+                                  </div>
 
 
+                                  </div>
 
-                      </form>
-                      </div>
-                      </div>
-                      </div>
-                      </div>
+                              <div id="topcontrol" title="Scroll Back to Top">
+                              <img src="/img/up.png"/>
+                              </div>
 
-                  <div id="topcontrol" title="Scroll Back to Top">
-                  <img src="/img/up.png"/>
-                  </div>
-        </div>
-        </div>
+                    </div>
+                    </div>
 
 
+        <Footer/>
+      </div>
   </div>
 );
 
 }
 }
+
+
 Signup.propTypes = {
   signupwarnings: PropTypes.shape({
     validationErrs: PropTypes.array,
@@ -141,8 +150,11 @@ Signup.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state.signupwarnings)
-  return {signupwarnings: (state.signupwarnings)};
+  console.log('mapStateToProps function called');
+  console.log(state.signup.signupwarnings);
+  return {signupwarnings: (state.signup.signupwarnings)};
 }
 
 export default connect(mapStateToProps, { signupuser })(Signup);
+
+

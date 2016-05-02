@@ -1,45 +1,13 @@
+import { combineReducers } from 'redux'
 import * as ActionTypes from '../constants/constants';
+
 
 const initialState = { signupwarnings: {}};
 
-const postReducer = (state = initialState, action) => {
+const signup = (state =initialState, action) => {
   switch (action.type) {
-    /*case ActionTypes.ADD_POST :
-      return {
-        posts: [{
-          name: action.name,
-          title: action.title,
-          content: action.content,
-          slug: action.slug,
-          cuid: action.cuid,
-          _id: action._id,
-        }, ...state.posts],
-        post: state.post };
 
-    case ActionTypes.CHANGE_SELECTED_POST :
-      return {
-        posts: state.posts,
-        post: action.slug,
-      };
-
-    case ActionTypes.ADD_POSTS :
-      return {
-        posts: action.posts,
-        post: state.post,
-      };
-
-    case ActionTypes.ADD_SELECTED_POST :
-      return {
-        post: action.post,
-        posts: state.posts,
-      };
-
-    case ActionTypes.DELETE_POST :
-      return {
-        posts: state.posts.filter((post) => post._id !== action.post._id),
-      };
-*/
-    case ActionTypes.ADD_WARNINGS:
+   case ActionTypes.ADD_WARNINGS:
           return{
             signupwarnings:action.signup,
           };
@@ -48,5 +16,72 @@ const postReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+
+
+
+// The auth reducer. The starting state sets authentication
+// based on a token being in local storage. In a real app,
+// we would also want a util to check if the token is expired.
+
+// Feature test
+var hasStorage = (function() {
+  try {
+
+    return localStorage.getItem('id_token') ? true : false
+
+  } catch (exception) {
+    console.log(exception);
+   // return false;
+  }
+}());
+
+
+
+function auth(state = {isAuthenticated: hasStorage}, action) {
+  switch (action.type) {
+    case ActionTypes.LOGIN_REQUEST:
+      return Object.assign({}, state, {
+        isFetching: true,
+        isAuthenticated: false,
+        user: action.creds
+      })
+    case ActionTypes.LOGIN_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        isAuthenticated: true,
+        errorMessage: 'Login went successfully'
+      })
+    case ActionTypes.LOGIN_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false,
+        isAuthenticated: false,
+        errorMessage: action.message
+      })
+
+    case ActionTypes.LOGOUT_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: true,
+        isAuthenticated: false
+      })
+    default:
+      return state
+  }
+}
+
+
+// We combine the reducers here so that they
+// can be left split apart above
+const postReducer = combineReducers({
+  auth,
+  signup
+})
+
+
+
+
+
+
+
 
 export default postReducer;
