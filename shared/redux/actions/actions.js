@@ -2,6 +2,7 @@ import * as ActionTypes from '../constants/constants';
 import Config from '../../../server/config';
 import fetch from 'isomorphic-fetch';
 import { CALL_API } from '../middleware/api'
+import Router from 'react-router';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
@@ -30,6 +31,7 @@ function requestLogin(creds) {
 }
 
 function receiveLogin(user) {
+
   return {
     type: ActionTypes.LOGIN_SUCCESS,
     isFetching: false,
@@ -101,15 +103,13 @@ return dispatch => {
   }
 else {
     // If login was successful, set the token in local storage
+      //localStorage.setItem('token', user.token);
 
-    if(hasStorage) {
-      localStorage.setItem('id_token', user.token);
-      console.log(localStorage.getItem('id_token'));
-    }
+      localStorage.token = user.token;
+      console.log(localStorage.token);
 
-
-    // Dispatch the success action
-    dispatch(receiveLogin(user))
+     // Dispatch the success action
+      dispatch(receiveLogin(user))
   }
 }).catch(err => console.log("Error: ", err))
 }
@@ -120,7 +120,7 @@ export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
     if(hasStorage) {
-      localStorage.removeItem('id_token')
+      localStorage.removeItem('token')
     }
     dispatch(receiveLogout())
   }
