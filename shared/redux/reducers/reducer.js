@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import * as ActionTypes from '../constants/constants';
 import { push } from 'react-router-redux';
+import store from '../store/configureStore'
 const initialState = { signupwarnings: {}};
 
 const signup = (state =initialState, action) => {
@@ -46,13 +47,12 @@ function auth(state = {isAuthenticated: hasStorage}, action) {
         user: action.creds
       })
     case ActionTypes.LOGIN_SUCCESS:
-    /*  return Object.assign({}, state, {
+      return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
         errorMessage: 'Login went successfully'
-      })*/
-      window.location.replace('/dashboard');
-
+      })
+      
     case ActionTypes.LOGIN_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,

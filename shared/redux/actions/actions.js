@@ -3,6 +3,9 @@ import Config from '../../../server/config';
 import fetch from 'isomorphic-fetch';
 import { CALL_API } from '../middleware/api'
 import Router from 'react-router';
+import cookie from 'react-cookie';
+import RouterContainer from '../../services/RouterContainer';
+import { browserHistory } from 'react-router'
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
@@ -10,16 +13,7 @@ const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http:/
 // process and we need actions for each of them
 
 // Feature test
-var hasStorage = (function() {
-  try {
-    localStorage.setItem(mod, mod);
-    localStorage.removeItem(mod);
-    return true;
-  } catch (exception) {
-    console.log(exception);
-    return false;
-  }
-}());
+
 
 function requestLogin(creds) {
   return {
@@ -105,11 +99,14 @@ else {
     // If login was successful, set the token in local storage
       //localStorage.setItem('token', user.token);
 
-      localStorage.token = user.token;
-      console.log(localStorage.token);
+    //  localStorage.token = user.token;
+     cookie.save('token', user.token, { path: '/' });
+      console.log(cookie.load('token'));
+     // history.pushState(null, '/dashboard')
+     browserHistory.push('/dashboard')
 
-     // Dispatch the success action
-      dispatch(receiveLogin(user))
+      // Dispatch the success action
+    //  dispatch(receiveLogin(user))
   }
 }).catch(err => console.log("Error: ", err))
 }
@@ -119,9 +116,7 @@ else {
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
-    if(hasStorage) {
-      localStorage.removeItem('token')
-    }
+    cookie.remove('token', { path: '/' });
     dispatch(receiveLogout())
   }
 }
