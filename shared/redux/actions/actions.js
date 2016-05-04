@@ -97,13 +97,9 @@ return dispatch => {
   }
 else {
     // If login was successful, set the token in local storage
-      //localStorage.setItem('token', user.token);
-
-    //  localStorage.token = user.token;
-     cookie.save('token', user.token, { path: '/' });
+      cookie.save('token', user.token, { path: '/' });
       console.log(cookie.load('token'));
-     // history.pushState(null, '/dashboard')
-     browserHistory.push('/dashboard')
+      browserHistory.push('/dashboard')
 
       // Dispatch the success action
     //  dispatch(receiveLogin(user))
@@ -118,6 +114,7 @@ export function logoutUser() {
     dispatch(requestLogout())
     cookie.remove('token', { path: '/' });
     dispatch(receiveLogout())
+    browserHistory.push('/login')
   }
 }
 
@@ -128,6 +125,15 @@ export function showSignupResponse(res) {
   return {
     type: ActionTypes.ADD_WARNINGS,
     signup : res,
+
+  };
+}
+
+export function showUsername(user) {
+  console.log(user);
+  return {
+    type: ActionTypes.ADD_USER_DETAILS,
+    user,
 
   };
 }
@@ -154,5 +160,19 @@ export function signupuser(user) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res.signup).then(res => dispatch(showSignupResponse(res)));
+  };
+}
+
+
+/****** get user details ***/
+export function getuser(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getuser`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showUsername(res)));
   };
 }

@@ -22,7 +22,7 @@ const routes = (
     <IndexRoute component={Intro} />
     <Route path="/login" component={LoginContainer}/>
     <Route path="/signup" component={SignupContainer}/>
-    <Route path="/dashboard" component={Dashboard} />
+    <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
   </Route>
 );
 RouterContainer.set(routes);

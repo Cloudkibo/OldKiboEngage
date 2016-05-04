@@ -57,12 +57,17 @@ Page Header
   min-height: 46px;
   filter: none;
   background-image: none;
+  background-color: #2b3643;
   /* Fixed header */
   /* Header logo */
   /* Search box */
   /* Menu Toggler */
   /* Top menu */
 }
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username {
+    color: #c6cfda;
+}
+
 .page-header.navbar.navbar-fixed-top {
   z-index: 9995;
 }
@@ -2610,4 +2615,12 @@ Page Loading
 .page-on-load > .clearfix {
   display: none;
   transition: all 2s;
+}
+
+
+
+
+/************ changes made by zarmeen *****/
+.page-header.navbar .page-logo h4{
+  padding: 15px;
 }

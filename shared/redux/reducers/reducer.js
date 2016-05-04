@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import * as ActionTypes from '../constants/constants';
 import { push } from 'react-router-redux';
 import store from '../store/configureStore'
-const initialState = { signupwarnings: {}};
+const initialState = { signupwarnings: {},userdetails : {}};
 
 const signup = (state =initialState, action) => {
   switch (action.type) {
@@ -17,28 +17,26 @@ const signup = (state =initialState, action) => {
   }
 };
 
+const dashboard = (state =initialState, action) => {
+  switch (action.type) {
 
+   case ActionTypes.ADD_USER_DETAILS:
+          console.log(JSON.parse(action.user.user).firstname)
+          return{
+            userdetails:action.user,
+           
+          };
 
+    default:
+      return state;
+  }
+};
 
 // The auth reducer. The starting state sets authentication
 // based on a token being in local storage. In a real app,
 // we would also want a util to check if the token is expired.
 
-// Feature test
-var hasStorage = (function() {
-  try {
-
-    return localStorage.getItem('id_token') ? true : false
-
-  } catch (exception) {
-    console.log(exception);
-   // return false;
-  }
-}());
-
-
-
-function auth(state = {isAuthenticated: hasStorage}, action) {
+function auth(state = {isAuthenticated: false}, action) {
   switch (action.type) {
     case ActionTypes.LOGIN_REQUEST:
       return Object.assign({}, state, {
@@ -73,8 +71,9 @@ function auth(state = {isAuthenticated: hasStorage}, action) {
 
 // We combine the reducers here so that they
 // can be left split apart above
-const postReducer = combineReducers({
+const appReducer = combineReducers({
   auth,
+  dashboard,
   signup
 })
 
@@ -85,4 +84,4 @@ const postReducer = combineReducers({
 
 
 
-export default postReducer;
+export default appReducer;

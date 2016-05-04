@@ -56,6 +56,8 @@ const renderFullPage = (html, initialState) => {
          <link rel="stylesheet" href='/css/style.css' />
          <link rel="stylesheet" href='/css/css/components.css' />
          <link rel="stylesheet" href='/css/layout/css/layout.css' />
+         <link rel="stylesheet" href='/css/layout/css/custom.css' />
+
 
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -72,6 +74,10 @@ const renderFullPage = (html, initialState) => {
         <script src="/dist/bundle.js"></script>
         <script type="text/javascript" src="/scripts/keen/jquery.min.js"></script>
         <script src = "/scripts/back-to-top.js"></script>
+        <script src="/global/scripts/metronic.js" type="text/javascript"></script>
+        <script src="/admin/layout/scripts/layout.js" type="text/javascript"></script> 
+        <script src="/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+        <script src="/admin/layout/scripts/demo.js" type="text/javascript"></script> 
          </body>
     </html>
   `;

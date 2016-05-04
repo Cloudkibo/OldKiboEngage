@@ -127,3 +127,31 @@ export function signupUser(req, res) {
 }
 
 
+
+
+export function getuser(req, res) {
+  console.log('get user is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  var options = {
+      url: 'https://api.kibosupport.com/api/users/me',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      if(response.statusCode == 200) {
+        console.log(body);
+      return res.status(200).json({user:body});
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
