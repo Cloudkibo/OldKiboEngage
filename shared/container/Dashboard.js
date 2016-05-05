@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import {getuser} from '../redux/actions/actions'
 import AuthorizedHeader from '../components/Header/AuthorizedHeader.jsx';
 import Footer from '../components/Footer/Footer.jsx';
+import SideBar from '../components/Header/SideBar';
 import auth from '../services/auth';
 class Dashboard extends Component {
 
@@ -27,14 +28,21 @@ class Dashboard extends Component {
     return (
       <div>
       <AuthorizedHeader loggedin = {username} isAuthenticated={auth.loggedIn()} />
-      <h1>Dashboard</h1>
-      <p>You made it!</p>
-      <p>My token {token}</p>
-      {
-      this.props.userdetails &&
-      <p>Hello {JSON.parse(this.props.userdetails).firstname}</p>
-      }
-      </div>
+       <div className="page-container">
+          <SideBar/> 
+          <div className="page-content-wrapper">
+            <div className="page-content"> 
+                <h1>Dashboard</h1>
+                <p>You made it!</p>
+                <p>My token {token}</p>
+                {
+                this.props.userdetails &&
+                <p>Hello {JSON.parse(this.props.userdetails).firstname}</p>
+                }
+            </div>
+          </div>
+       </div>
+       </div> 
   )
   }
 }

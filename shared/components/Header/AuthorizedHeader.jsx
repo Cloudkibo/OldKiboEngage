@@ -11,10 +11,12 @@ export default class AuthorizedHeader extends Component
     return (
     
       <div  className = "page-header navbar" >
+        <div className="page-header-inner">
           <div className = "page-logo" >
               <a href = '/' >
                 <h4> Kibo Support System </h4>
               </a>
+             
           </div >
           <div className="top-menu">
             <ul  className ="nav navbar-nav pull-right">
@@ -33,6 +35,14 @@ export default class AuthorizedHeader extends Component
                     </a>
                   </li> 
                   <li>
+                    <a href="/mymsg">
+                      <i className="fa fa-envelope-o"/>
+                      My Messages
+                    </a>
+                  </li> 
+                  
+                  <li>
+
                     <a href="/mypickedcalls">
                       <i className="fa fa-phone-square"/>
                        My Picked Calls
@@ -51,15 +61,11 @@ export default class AuthorizedHeader extends Component
               </li>
             </ul>
           </div>
-          <div>
-           {isAuthenticated &&
-                <Logout/>
-              }
-          </div>       
-          <p>You are loggedin {this.props.loggedin}</p>
              
+          <p>You are loggedin {this.props.loggedin}</p>
+          
     </div >
-    
+    </div>
 
   );
   }
