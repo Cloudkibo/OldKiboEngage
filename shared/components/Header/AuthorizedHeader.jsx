@@ -27,22 +27,25 @@ export default class AuthorizedHeader extends Component
                   </a>
               <ul className="dropdown-menu">
                   <li>
-                    <a href="/myscheduledcalls">
+                    <a href="/myprofile">
+                      <i className="fa fa-user"/>
+                      My Profile
+                    </a>
+                  </li> 
+                  <li>
+                    <a href="/mypickedcalls">
                       <i className="fa fa-phone-square"/>
-                      | My Scheduled Calls
+                       My Picked Calls
                     </a>
                   </li> 
                   <li>
                     <a href="/myscheduledcalls">
                       <i className="fa fa-phone-square"/>
-                      | My Scheduled Calls
+                      My Scheduled Calls
                     </a>
-                  </li> 
+                  </li>
                   <li>
-                    <a href="/myscheduledcalls">
-                      <i className="fa fa-phone-square"/>
-                      | My Scheduled Calls
-                    </a>
+                       <Logout/>
                   </li>    
                 </ul>    
               </li>

@@ -15,9 +15,10 @@ constructor(props, context) {
   render() {
     
     return (
-      <button onClick={this.onClick} className="btn btn-primary">
-  Logout
-  </button>
+      <a onClick={this.onClick}>
+      <i className="fa fa-key"/>
+  	    Logout
+	  </a>
 )
 }
 
