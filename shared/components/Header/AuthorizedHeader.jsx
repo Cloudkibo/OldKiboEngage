@@ -19,20 +19,40 @@ export default class AuthorizedHeader extends Component
           <div className="top-menu">
             <ul  className ="nav navbar-nav pull-right">
               <li className="dropdown dropdown-user">
-                <a className="dropdown-toggle" href="#"  data-toggle="dropdown"  data-hover="dropdown"  data-close-others="true">
+                <a  href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                   <span className ="username">
                        {this.props.loggedin}
                   </span>
                   <i className="fa fa-angle-down"/>
                   </a>
-              {isAuthenticated &&
-                <Logout/>
-              }
-              
+              <ul className="dropdown-menu">
+                  <li>
+                    <a href="/myscheduledcalls">
+                      <i className="fa fa-phone-square"/>
+                      | My Scheduled Calls
+                    </a>
+                  </li> 
+                  <li>
+                    <a href="/myscheduledcalls">
+                      <i className="fa fa-phone-square"/>
+                      | My Scheduled Calls
+                    </a>
+                  </li> 
+                  <li>
+                    <a href="/myscheduledcalls">
+                      <i className="fa fa-phone-square"/>
+                      | My Scheduled Calls
+                    </a>
+                  </li>    
+                </ul>    
               </li>
             </ul>
           </div>
-             
+          <div>
+           {isAuthenticated &&
+                <Logout/>
+              }
+          </div>       
           <p>You are loggedin {this.props.loggedin}</p>
              
     </div >

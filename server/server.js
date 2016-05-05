@@ -52,12 +52,25 @@ const renderFullPage = (html, initialState) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Kibo Engage</title>
+           <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css'>
+           <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>
+
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+        <!--<link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>-->
+        <link href="https://www.cloudkibo.com/admin_assets/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+        <link href="https://www.cloudkibo.com/admin_assets/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="https://www.cloudkibo.com/admin_assets/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+        <link href="https://www.cloudkibo.com/admin_assets/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+        <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
+        <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+         <link href="assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
+
          <link rel="stylesheet" href='/css/bootstrap/css/bootstrap.min.css' />
          <link rel="stylesheet" href='/css/style.css' />
          <link rel="stylesheet" href='/css/css/components.css' />
          <link rel="stylesheet" href='/css/layout/css/layout.css' />
          <link rel="stylesheet" href='/css/layout/css/custom.css' />
-
 
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -67,17 +80,55 @@ const renderFullPage = (html, initialState) => {
   </head>
       <body>
         <div id="root">${html}</div>
+             <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+             <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+             <script src="assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>      
+             <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+             <!--[if lt IE 9]>
+             <script src="assets/gloabal/plugins/excanvas.min.js"></script>
+             <script src="assets/global/plugins/respond.min.js"></script>  
+             <![endif]-->   
+             <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>  
+             <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
+            <!-- END CORE PLUGINS -->
+             <!-- BEGIN PAGE LEVEL PLUGINS -->
+             <script src="assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>   
+             <script src="assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>  
+             <script src="assets/global/plugins/flot/jquery.flot.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/flot/jquery.flot.resize.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>     
+             <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jquery-easypiechart/jquery.easypiechart.js" type="text/javascript"></script>
+             <script src="assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>  
+             <!-- END PAGE LEVEL PLUGINS -->
+             <!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-        <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
-        </script>
-        <script src="/dist/bundle.js"></script>
-        <script type="text/javascript" src="/scripts/keen/jquery.min.js"></script>
-        <script src = "/scripts/back-to-top.js"></script>
-        <script src="/global/scripts/metronic.js" type="text/javascript"></script>
-        <script src="/admin/layout/scripts/layout.js" type="text/javascript"></script> 
-        <script src="/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
-        <script src="/admin/layout/scripts/demo.js" type="text/javascript"></script> 
+            <script src = "/scripts/back-to-top.js"></script>
+            <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+            <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script> 
+            <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+            <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+            <script>
+            window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
+            /* Init Metronic's core jquery plugins and layout scripts */
+            $(document).ready(function() {
+              Metronic.init(); // Run metronic theme
+              Metronic.setAssetsPath('/assets/'); // Set the assets folder path
+            });
+          </script>
+             <script src="/dist/bundle.js"></script>
+     
          </body>
     </html>
   `;
