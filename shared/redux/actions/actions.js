@@ -138,6 +138,15 @@ export function showUsername(user) {
   };
 }
 
+export function showGroups(groups) {
+  console.log(groups);
+  return {
+    type: ActionTypes.ADD_GROUPS,
+    groups,
+
+  };
+}
+
 
 
 
@@ -174,5 +183,18 @@ export function getuser(token) {
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showUsername(res)));
+  };
+}
+
+/****** get user details ***/
+export function getusergroups(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getgroups`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroups(res)));
   };
 }

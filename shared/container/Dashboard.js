@@ -15,19 +15,20 @@ class Dashboard extends Component {
   }
   componentWillMount(){
     //call action to get username 
-    const usertoken = auth.getToken();
+  /*  const usertoken = auth.getToken();
     console.log('componentWillMount is called');
     console.log(usertoken);
     this.props.getuser(usertoken)
-
+  */
   }
   render() {
-    console.log(this.props.userdetails)
+    //console.log(this.props.userdetails)
     const token = auth.getToken()
-    const username = JSON.parse(this.props.userdetails).firstname
+    //const username = this.props.userdetails.firstname
+   // console.log(username)
     return (
       <div>
-      <AuthorizedHeader loggedin = {username} isAuthenticated={auth.loggedIn()} />
+      <AuthorizedHeader  isAuthenticated={auth.loggedIn()} />
        <div className="page-container">
           <SideBar/> 
           <div className="page-content-wrapper">
@@ -35,9 +36,7 @@ class Dashboard extends Component {
                 <h1>Dashboard</h1>
                 <p>You made it!</p>
                 <p>My token {token}</p>
-                {
-                this.props.userdetails &&
-                <p>Hello {JSON.parse(this.props.userdetails).firstname}</p>
+                <p>Hello</p>
                 }
             </div>
           </div>
@@ -51,7 +50,7 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   
-  return {userdetails:(state.dashboard.userdetails.user) };
+  return {};
 }
 
-export default connect(mapStateToProps,{ getuser })(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

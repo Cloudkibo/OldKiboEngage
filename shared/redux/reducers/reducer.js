@@ -21,11 +21,17 @@ const dashboard = (state =initialState, action) => {
   switch (action.type) {
 
    case ActionTypes.ADD_USER_DETAILS:
-          console.log(JSON.parse(action.user.user).firstname)
+          console.log(action.user.firstname)
           return{
             userdetails:action.user,
            
           };
+   case ActionTypes.ADD_GROUPS:
+          console.log(action.groups)
+          return{
+            groupdetails:action.groups,
+           
+          };       
 
     default:
       return state;

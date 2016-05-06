@@ -8,4 +8,7 @@ router.route('/getlogin').post(UserController.getlogin);
 router.route('/signupUser').post(UserController.signupUser);
 router.route('/getuser').get(UserController.getuser);
 
+
+router.route('/getgroups').get(UserController.getgroups);
+
 export default router;

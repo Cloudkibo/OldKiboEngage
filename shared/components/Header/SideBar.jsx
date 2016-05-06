@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 function SideBar() {
   return (
@@ -102,7 +103,7 @@ function SideBar() {
               </li>
 
               <li className="">
-                <a href="/completedcalls">
+                <Link to='/groups'>
                   <i className="fa fa-group">
                   </i>      
                   <span className="title">
@@ -110,7 +111,7 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
              

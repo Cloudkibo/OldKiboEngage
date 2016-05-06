@@ -2,12 +2,25 @@ import React, { Component,PropTypes } from 'react';
 import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Logout from '../../container/Auth/Logout';
+import {getuser} from '../../redux/actions/actions'
+import { connect } from 'react-redux';
 export default class AuthorizedHeader extends Component
 {
+  componentWillMount(){
+    //call action to get username 
+    const usertoken = auth.getToken();
+    console.log('componentWillMount is called');
+    console.log(usertoken);
+    this.props.getuser(usertoken)
+
+  }
 
   render()
   {
-   const {isAuthenticated ,loggedin} = this.props
+   const {isAuthenticated} = this.props
+   const username = this.props.userdetails.firstname
+   console.log(username)
+
     return (
     
       <div  className = "page-header navbar" >
@@ -23,7 +36,7 @@ export default class AuthorizedHeader extends Component
               <li className="dropdown dropdown-user">
                 <a  href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                   <span className ="username">
-                       {this.props.loggedin}
+                       {username}
                   </span>
                   <i className="fa fa-angle-down"/>
                   </a>
@@ -62,13 +75,17 @@ export default class AuthorizedHeader extends Component
             </ul>
           </div>
              
-          <p>You are loggedin {this.props.loggedin}</p>
+         
           
     </div >
     </div>
 
   );
   }
+}
+function mapStateToProps(state) {
+  
+  return {userdetails:(state.dashboard.userdetails) };
 }
 
 AuthorizedHeader.propTypes = {
@@ -77,4 +94,4 @@ AuthorizedHeader.propTypes = {
 }
 
 
-export default AuthorizedHeader;
+export default connect(mapStateToProps,{ getuser })(AuthorizedHeader);

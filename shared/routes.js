@@ -5,6 +5,7 @@ import LoginContainer from './container/Auth/Login';
 import SignupContainer from './container/Auth/Signup';
 import Intro from './container/Intro';
 import Dashboard from './container/Dashboard';
+import Groups from './container/Groups/Groups';
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';
 function requireAuth(nextState, replace) {
@@ -23,6 +24,7 @@ const routes = (
     <Route path="/login" component={LoginContainer}/>
     <Route path="/signup" component={SignupContainer}/>
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
+    <Route path="/groups" component={Groups} onEnter={requireAuth} />
   </Route>
 );
 RouterContainer.set(routes);

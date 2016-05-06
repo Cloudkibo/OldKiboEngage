@@ -144,8 +144,39 @@ export function getuser(req, res) {
     };
     function callback(error, response, body) {
       if(response.statusCode == 200) {
-        console.log(body);
-      return res.status(200).json({user:body});
+        var info = JSON.parse(body);
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
+
+
+
+
+export function getgroups(req, res) {
+  console.log('get getgroups is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  var options = {
+      url: 'https://api.kibosupport.com/api/departments',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info);
+      return res.status(200).json(info);
     }
 
     else
