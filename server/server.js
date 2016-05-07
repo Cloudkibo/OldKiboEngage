@@ -80,6 +80,7 @@ const renderFullPage = (html, initialState) => {
   </head>
       <body>
         <div id="root">${html}</div>
+              <script src="/socket.io/socket.io.js"></script>
              <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
              <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
              <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
@@ -175,11 +176,14 @@ app.use((req, res, next) => {
 });
 
 // start app
-app.listen(serverConfig.port, (error) => {
+const server = app.listen(serverConfig.port, (error) => {
   if (!error) {
     console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
   }
 });
+
+var io = require('socket.io').listen(server);
+require('./routes/socket.js')(io);
 
 export default app;
 
