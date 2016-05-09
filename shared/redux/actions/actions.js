@@ -181,6 +181,7 @@ export function getuser(token) {
         method: 'get',
         headers: new Headers({
         'Authorization': token,
+        'Pragma': 'no-cache'
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showUsername(res)));
   };

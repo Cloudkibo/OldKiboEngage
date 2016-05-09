@@ -24,7 +24,4 @@ constructor(props, context) {
 
 }
 
-function mapStateToProps() {
- 
-}
-export default connect(mapStateToProps, { logoutUser})(Logout);
+export default connect({ logoutUser})(Logout);

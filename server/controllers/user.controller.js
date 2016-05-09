@@ -145,6 +145,7 @@ export function getuser(req, res) {
     function callback(error, response, body) {
       if(response.statusCode == 200) {
         var info = JSON.parse(body);
+        console.log(response.statusCode)
       return res.status(200).json(info);
     }
 

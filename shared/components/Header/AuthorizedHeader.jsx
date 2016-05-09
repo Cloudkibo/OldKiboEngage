@@ -8,19 +8,18 @@ export default class AuthorizedHeader extends Component
 {
   componentWillMount(){
     //call action to get username 
-    const usertoken = auth.getToken();
+    
+ /*   const usertoken = auth.getToken();
     console.log('componentWillMount is called');
     console.log(usertoken);
-    this.props.getuser(usertoken)
+    this.props.getuser(usertoken)*/
 
   }
 
   render()
   {
-   const {isAuthenticated} = this.props
-   const username = this.props.userdetails.firstname
-   console.log(username)
-
+   const {isAuthenticated ,loggedin} = this.props
+   
     return (
     
       <div  className = "page-header navbar" >
@@ -36,7 +35,7 @@ export default class AuthorizedHeader extends Component
               <li className="dropdown dropdown-user">
                 <a  href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                   <span className ="username">
-                       {username}
+                        {this.props.loggedin}
                   </span>
                   <i className="fa fa-angle-down"/>
                   </a>
@@ -83,15 +82,13 @@ export default class AuthorizedHeader extends Component
   );
   }
 }
-function mapStateToProps(state) {
-  
-  return {userdetails:(state.dashboard.userdetails) };
-}
+
 
 AuthorizedHeader.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired
+ 
   
 }
 
 
-export default connect(mapStateToProps,{ getuser })(AuthorizedHeader);
+export default AuthorizedHeader;

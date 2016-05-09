@@ -26,23 +26,30 @@ class Groups extends Component {
 
   }
   render() {
+    const { groupdetails } = this.props
+
     console.log(this.props.groupdetails)
+    console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
+    console.log(this.props.groupdetails)
+     var groupComponents = this.props.groupdetails.map(function(group) {
+            return <div className="station">{group.deptCapital}</div>;
+        });
     return (
       <div>
-      <AuthorizedHeader isAuthenticated={auth.loggedIn()} />
        <div className="page-container">
-          <SideBar/> 
+         <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
                 <h1>Groups</h1>
                 <p>You made it!</p>
                 <p>My token {token}</p>
-                {
-                this.props.groupsdetails &&
-                <p>Hello</p>
+                <p>{this.props.userdetails.firstname}</p>
+                { this.props.groupsdetails &&
+                    <div>{groupComponents}</div>
                 }
+                
             </div>
           </div>
        </div>
@@ -54,8 +61,14 @@ class Groups extends Component {
 
 
 function mapStateToProps(state) {
-  
-  return {dashboard:(state.dashboard.groupsdetails) };
+  console.log("mapStateToProps is called");
+  console.log(state.dashboard.userdetails);
+  console.log(state.dashboard.groupdetails);
+
+  return {
+          groupsdetails:(state.dashboard.groupsdetails),
+          userdetails:(state.dashboard.userdetails)
+           };
 }
 
 export default connect(mapStateToProps,{getusergroups })(Groups);

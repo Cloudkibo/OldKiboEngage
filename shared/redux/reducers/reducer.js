@@ -3,6 +3,7 @@ import * as ActionTypes from '../constants/constants';
 import { push } from 'react-router-redux';
 import store from '../store/configureStore'
 const initialState = { signupwarnings: {},userdetails : {}};
+const dashboardState = { userdetails : {},groupdetails:{}};
 
 const signup = (state =initialState, action) => {
   switch (action.type) {
@@ -17,7 +18,7 @@ const signup = (state =initialState, action) => {
   }
 };
 
-const dashboard = (state =initialState, action) => {
+const dashboard = (state =dashboardState, action) => {
   switch (action.type) {
 
    case ActionTypes.ADD_USER_DETAILS:
@@ -30,8 +31,8 @@ const dashboard = (state =initialState, action) => {
           console.log(action.groups)
           return{
             groupdetails:action.groups,
-           
-          };       
+            userdetails: state.userdetails,
+      };       
 
     default:
       return state;
