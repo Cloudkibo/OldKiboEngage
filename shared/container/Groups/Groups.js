@@ -33,9 +33,12 @@ class Groups extends Component {
     const token = auth.getToken()
     console.log(token)
     console.log(this.props.groupdetails)
+    if(this.props.groupdetails)
+    {
      var groupComponents = this.props.groupdetails.map(function(group) {
             return <div className="station">{group.deptCapital}</div>;
         });
+    }
     return (
       <div>
        <div className="page-container">
