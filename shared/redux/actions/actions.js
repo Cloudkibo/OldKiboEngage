@@ -97,7 +97,7 @@ return dispatch => {
   }
 else {
     // If login was successful, set the token in local storage
-      cookie.save('token', user.token, { path: '/' });
+      cookie.save('token', user.token.token, { path: '/' });
       console.log(cookie.load('token'));
       browserHistory.push('/dashboard')
 

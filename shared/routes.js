@@ -8,9 +8,10 @@ import Dashboard from './container/Dashboard';
 import Groups from './container/Groups/Groups';
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';
+
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
-    console.log('you are not logged in.')
+    console.log('you are not logged in.');
     replace({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }
@@ -18,11 +19,21 @@ function requireAuth(nextState, replace) {
   }
 }
 
+function redirectAuthUsers(nextState, replace) {
+  if (auth.loggedIn()) {
+    console.log('you are logged in. You cant go here.');
+    replace({
+      pathname: '/dashboard',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
 const routes = (
   <Route path="/" component={App} >
-    <IndexRoute component={Intro} />
-    <Route path="/login" component={LoginContainer}/>
-    <Route path="/signup" component={SignupContainer}/>
+    <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
+    <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
+    <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
   </Route>
