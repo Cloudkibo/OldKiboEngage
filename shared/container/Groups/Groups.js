@@ -6,28 +6,27 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
+import GroupListItem from './GroupListItem';
+
 class Groups extends Component {
 
  constructor(props, context) {
-    super(props, context);
-    
-    
-  }
-  componentWillMount(){
-    //call action to get user groups 
-    const usertoken = auth.getToken();
+     const usertoken = auth.getToken();
      console.log('componentWillMount is called');
     if(usertoken != null)
     {
        
         console.log(usertoken);
-        this.props.getusergroups(usertoken)
+        getusergroups(usertoken)
       }
-
+    super(props, context);
+   
+    
   }
+  
   render() {
     const { groupdetails } = this.props
-
+    alert(this.props.groupdetails)
     console.log(this.props.groupdetails)
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
@@ -49,8 +48,23 @@ class Groups extends Component {
                 <p>You made it!</p>
                 <p>My token {token}</p>
                 <p>{this.props.userdetails.firstname}</p>
-                { this.props.groupsdetails &&
-                    <div>{groupComponents}</div>
+                { this.props.groupdetails &&
+                   <table className="listView">
+                   <tr>
+                    <th>Name </th>
+                    <th>Description </th>
+                    <th>Created By</th>
+                    <th>Created On</th>
+                    <th>Options </th>
+                    </tr>                    
+                      {
+                        props.groupdetails.map((group, i) => (
+                          <GroupListItem group={group} key={group._id}/>
+                         
+                      
+                        ))
+                      }
+                    </table>
                 }
                 
             </div>
@@ -69,7 +83,7 @@ function mapStateToProps(state) {
   console.log(state.dashboard.groupdetails);
 
   return {
-          groupsdetails:(state.dashboard.groupsdetails),
+          groupdetails:(state.dashboard.groupdetails),
           userdetails:(state.dashboard.userdetails)
            };
 }

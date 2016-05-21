@@ -1,25 +1,12 @@
 import React, { Component,PropTypes } from 'react';
 import { Link } from 'react-router';
 import auth from '../../services/auth';
-import Logout from '../../container/Auth/Logout';
-import {getuser} from '../../redux/actions/actions'
-import { connect } from 'react-redux';
+//import Logout from '../../container/Auth/Logout';
 export default class AuthorizedHeader extends Component
 {
-  componentWillMount(){
-    //call action to get username 
-    
- /*   const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
-    console.log(usertoken);
-    this.props.getuser(usertoken)*/
-
-  }
 
   render()
   {
-   const {isAuthenticated ,loggedin} = this.props
-   
     return (
     
       <div  className = "page-header navbar" >
@@ -35,7 +22,7 @@ export default class AuthorizedHeader extends Component
               <li className="dropdown dropdown-user">
                 <a  href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                   <span className ="username">
-                        {this.props.loggedin}
+                       {this.props.name}
                   </span>
                   <i className="fa fa-angle-down"/>
                   </a>
@@ -66,28 +53,19 @@ export default class AuthorizedHeader extends Component
                       My Scheduled Calls
                     </a>
                   </li>
-                  <li>
-                       <Logout/>
-                  </li>    
+                      
                 </ul>    
               </li>
             </ul>
           </div>
              
-         
+          
           
     </div >
     </div>
 
   );
   }
-}
-
-
-AuthorizedHeader.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
- 
-  
 }
 
 

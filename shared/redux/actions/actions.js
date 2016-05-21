@@ -96,7 +96,7 @@ return dispatch => {
     return Promise.reject(user)
   }
 else {
-    // If login was successful, set the token in local storage
+    // If login was successful, set the token in cookie
       cookie.save('token', user.token.token, { path: '/' });
       console.log(cookie.load('token'));
       browserHistory.push('/dashboard')

@@ -2,7 +2,7 @@ import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getuser} from '../redux/actions/actions'
-import AuthorizedHeader from '../components/Header/AuthorizedHeader.jsx';
+import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
 import SideBar from '../components/Header/SideBar';
 import auth from '../services/auth';
@@ -28,7 +28,7 @@ class Dashboard extends Component {
     console.log(username)
     return (
       <div>
-     
+        <AuthorizedHeader name = {this.props.userdetails.firstname} />
        <div className="page-container">
           <SideBar/> 
           <div className="page-content-wrapper">
@@ -53,4 +53,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps,{getuser})(Dashboard);
-//export default Dashboard;

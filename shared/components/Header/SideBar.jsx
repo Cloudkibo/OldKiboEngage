@@ -7,7 +7,7 @@ function SideBar() {
 
             <ul className="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
               <li className="start">
-                <a href="index.html">
+               <Link to='/dashboard'>
                   <i className="fa fa-dashboard">
                   </i>      
                   <span className="title">
@@ -15,7 +15,7 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
              
               <li className="">

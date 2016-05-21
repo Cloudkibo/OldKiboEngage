@@ -25,3 +25,4 @@ constructor(props, context) {
 }
 
 export default connect({ logoutUser})(Logout);
+

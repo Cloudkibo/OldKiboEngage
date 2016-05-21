@@ -2,7 +2,7 @@ import cookie from 'react-cookie';
 module.exports = {
 getToken() {
   var token = cookie.load('token')
-  return token.token
+  return token
 },
 
 logout(cb) {
