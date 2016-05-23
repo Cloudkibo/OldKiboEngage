@@ -14,7 +14,15 @@ const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http:/
 
 // Feature test
 
-
+export function addGroup(group) {
+  console.log(group);
+  return {
+    type: ActionTypes.ADD_GROUP,
+    deptname: group.deptname,
+    deptdescription: group.deptdescription,
+   
+  };
+}
 function requestLogin(creds) {
   return {
     type: ActionTypes.LOGIN_REQUEST,
@@ -198,5 +206,23 @@ export function getusergroups(token) {
 
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroups(res)));
+  };
+}
+
+
+export function creategroup(group) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/creategroup`, {
+      method: 'post',
+      body: JSON.stringify({
+          deptname: group.name,
+          deptdescription: group.description,
+        
+      }),
+      headers: new Headers({
+         'Authorization': group.usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(addGroup(res)));
   };
 }

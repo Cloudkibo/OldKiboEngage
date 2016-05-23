@@ -10,5 +10,6 @@ router.route('/getuser').get(UserController.getuser);
 
 
 router.route('/getgroups').get(UserController.getgroups);
+router.route('/creategroup').post(UserController.creategroup);
 
 export default router;

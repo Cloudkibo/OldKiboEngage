@@ -3,7 +3,7 @@ import * as ActionTypes from '../constants/constants';
 import { push } from 'react-router-redux';
 import store from '../store/configureStore'
 const initialState = { signupwarnings: {},userdetails : {}};
-const dashboardState = { userdetails : {},groupdetails:{}};
+const dashboardState = { userdetails : {},groupdetails:[]};
 
 const signup = (state =initialState, action) => {
   switch (action.type) {
@@ -34,6 +34,16 @@ const dashboard = (state =dashboardState, action) => {
             userdetails: state.userdetails,
       };       
 
+    case ActionTypes.ADD_GROUP:
+    console.log(action.deptname);
+      return {
+        groupdetails: [{
+          deptname: action.deptname,
+          deptdescription: action.deptdescription,
+         
+        }, ...state.groupdetails],
+         userdetails: state.userdetails,
+        };
     default:
       return state;
   }

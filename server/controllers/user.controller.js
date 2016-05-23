@@ -187,3 +187,41 @@ export function getgroups(req, res) {
     }
     request.get(options, callback);
   }
+
+
+
+export function creategroup(req, res) {
+  console.log('create group is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+ /*  var options = {
+      url: 'https://api.kibosupport.com/api/departments',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      form: {
+           'deptname' : req.body.deptname,
+           'deptdescription': req.body.deptdescription
+
+          }
+      
+     
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info.msg);
+      return res.status(200).json(info.msg);
+    }
+
+    else
+    {
+     return res.status(422).json({message:response.msg}); 
+    }
+    }
+    request.post(options, callback);*/
+    res.status(200).json({deptname :req.body.deptname,deptdescription : req.body.deptdescription});
+ 
+  }
+

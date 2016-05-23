@@ -8,3 +8,4 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const ADD_USER_DETAILS = 'ADD_USER_DETAILS'
 
 export const ADD_GROUPS = 'ADD_GROUPS'
+export const ADD_GROUP = 'ADD_GROUP'
