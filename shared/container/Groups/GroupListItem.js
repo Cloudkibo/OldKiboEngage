@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 function GroupListItem(props) {
   return (
-    <tr>
+    <tr className = "odd">
       <td>{props.group.deptname}</td>
       <td>{props.group.deptdescription}</td>
       <td>{props.group.deptname}</td>

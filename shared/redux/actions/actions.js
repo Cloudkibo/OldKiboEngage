@@ -194,7 +194,8 @@ export function getusergroups(token) {
     fetch(`${baseURL}/api/getgroups`, {
         method: 'get',
         headers: new Headers({
-        'Authorization': token,
+        'Authorization': token
+
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroups(res)));
   };
