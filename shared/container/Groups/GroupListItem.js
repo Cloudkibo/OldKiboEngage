@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 function GroupListItem(props) {
   return (
     <tr>
-      <td>props.group.deptname</td>
-      <td>props.group.deptdescription</td>
-      <td>props.group.deptname</td>
-       <td>props.group.deptname</td>
-        <td>props.group.deptname</td>
+      <td>{props.group.deptname}</td>
+      <td>{props.group.deptdescription}</td>
+      <td>{props.group.deptname}</td>
+       <td>{props.group.deptname}</td>
+        <td>{props.group.deptname}</td>
      
     </tr>
   );

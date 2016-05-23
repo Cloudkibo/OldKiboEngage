@@ -1,3 +1,4 @@
+import GroupListItem from './GroupListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -6,38 +7,30 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import GroupListItem from './GroupListItem';
-
 class Groups extends Component {
 
  constructor(props, context) {
+    //call action to get user groups 
      const usertoken = auth.getToken();
      console.log('componentWillMount is called');
     if(usertoken != null)
     {
        
         console.log(usertoken);
-        getusergroups(usertoken)
+        props.getusergroups(usertoken)
       }
+
     super(props, context);
-   
+    
     
   }
-  
   render() {
     const { groupdetails } = this.props
-    alert(this.props.groupdetails)
-    console.log(this.props.groupdetails)
+
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
     console.log(this.props.groupdetails)
-    if(this.props.groupdetails)
-    {
-     var groupComponents = this.props.groupdetails.map(function(group) {
-            return <div className="station">{group.deptCapital}</div>;
-        });
-    }
     return (
       <div>
        <div className="page-container">
@@ -45,9 +38,6 @@ class Groups extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
                 <h1>Groups</h1>
-                <p>You made it!</p>
-                <p>My token {token}</p>
-                <p>{this.props.userdetails.firstname}</p>
                 { this.props.groupdetails &&
                    <table className="listView">
                    <tr>
@@ -58,7 +48,8 @@ class Groups extends Component {
                     <th>Options </th>
                     </tr>                    
                       {
-                        props.groupdetails.map((group, i) => (
+
+                        this.props.groupdetails.map((group, i) => (
                           <GroupListItem group={group} key={group._id}/>
                          
                       
@@ -83,7 +74,7 @@ function mapStateToProps(state) {
   console.log(state.dashboard.groupdetails);
 
   return {
-          groupdetails:(state.dashboard.groupdetails),
+          groupsdetails:(state.dashboard.groupsdetails),
           userdetails:(state.dashboard.userdetails)
            };
 }

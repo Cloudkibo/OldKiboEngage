@@ -28,15 +28,11 @@ const dashboard = (state =dashboardState, action) => {
            
           };
    case ActionTypes.ADD_GROUPS:
-        
           console.log(action.groups)
-          return Object.assign({}, state, {
-             groupdetails:action.groups,
-            userdetails: state.userdetails
-          });
-          
-           
-           
+          return{
+            groupdetails:action.groups,
+            userdetails: state.userdetails,
+      };       
 
     default:
       return state;
