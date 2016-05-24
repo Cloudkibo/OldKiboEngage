@@ -155,7 +155,13 @@ export function showGroups(groups) {
   };
 }
 
-
+export function creategroupError(message) {
+  console.log(message);
+  return {
+    type: ActionTypes.CREATEGROUP_FAILURE,
+    message,
+  }
+}
 
 
 export function signupuser(user) {
@@ -223,6 +229,35 @@ export function creategroup(group) {
          'Authorization': group.usertoken,
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(addGroup(res)));
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+          if(res.statusCode != 200){
+          dispatch(creategroupError(res.message));
+        }
+        else{
+              dispatch(showGroups(res.message))
+            }
+        }
+    );
+  };
+}
+
+export function addSelectedGroup(group) {
+  return {
+    type: ActionTypes.ADD_SELECTED_GROUP,
+    group,
+  };
+}
+
+export function getGroupRequest(group,usertoken) {
+  console.log('getGroupRequest is called '+ group);
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/getGroup?id=${group}`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((response) => response.json()).then(res => dispatch(addSelectedGroup(res.group)));
   };
 }

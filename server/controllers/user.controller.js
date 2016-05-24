@@ -194,7 +194,8 @@ export function creategroup(req, res) {
   console.log('create group is called');
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
- /*  var options = {
+  
+   var options = {
       url: 'https://api.kibosupport.com/api/departments',
       rejectUnauthorized : false,
       headers :  {
@@ -212,16 +213,52 @@ export function creategroup(req, res) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
         console.log(info.msg);
-      return res.status(200).json(info.msg);
+       console.log(info.status);
+       if(info.status == 'success')
+       {
+            return res.status(200).json({statusCode : 200,message:info.msg});
+       }
+       else
+       {
+            return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+   
+       }
     }
-
     else
     {
-     return res.status(422).json({message:response.msg}); 
+      return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+
     }
-    }
-    request.post(options, callback);*/
-    res.status(200).json({deptname :req.body.deptname,deptdescription : req.body.deptdescription});
- 
+
+   }
+        request.post(options, callback);
+   
   }
 
+export function getGroup(req, res) {
+  console.log('getGroup is called.');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  console.log(req.query.id);
+   var options = {
+      url: 'https://api.kibosupport.com/api/departments/${req.query.id}',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+     
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info);
+        res.status(200).json(info); 
+    
+   }
+   else{
+    console.log(error);
+   }
+ }
+        request.get(options, callback);
+    
+}

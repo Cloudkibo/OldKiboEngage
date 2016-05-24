@@ -11,5 +11,7 @@ router.route('/getuser').get(UserController.getuser);
 
 router.route('/getgroups').get(UserController.getgroups);
 router.route('/creategroup').post(UserController.creategroup);
+// Get one group by id
+router.route('/getGroup').get(UserController.getGroup);
 
 export default router;

@@ -21,6 +21,12 @@ const signup = (state =initialState, action) => {
 const dashboard = (state =dashboardState, action) => {
   switch (action.type) {
 
+  case ActionTypes.ADD_SELECTED_GROUP :
+      return {
+        group: action.group,
+        userdetails: state.userdetails,
+        groupdetails:state.groups,
+      }; 
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
           return{
@@ -43,6 +49,12 @@ const dashboard = (state =dashboardState, action) => {
          
         }, ...state.groupdetails],
          userdetails: state.userdetails,
+        };
+      case ActionTypes.CREATEGROUP_FAILURE:
+      return {
+         groupdetails: state.groupdetails,
+         userdetails: state.userdetails,
+         errorMessage:action.message,
         };
     default:
       return state;

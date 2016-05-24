@@ -23,8 +23,11 @@ class Groups extends Component {
       }
       
         super(props, context);
-  //  this.props.showAddGroup = false;
   
+    this.state = {
+      showAddGroup: false,
+    };
+
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
   
@@ -32,19 +35,25 @@ class Groups extends Component {
   }
 
    handleClick(e) {
-   //this.props.showAddGroup = !this.props.showAddGroup;
-    e.preventDefault();
+
+      this.setState({
+      showAddGroup: !this.state.showAddGroup,
+    });
+  e.preventDefault();
   }
 
   add(name,description) {
      const usertoken = auth.getToken();
     this.props.creategroup({ name,description,usertoken });
-  // this.props.showAddGroup = false;
-  }
+     this.setState({
+      showAddGroup: false,
+    });
+ }
   render() {
-    const { groupdetails } = this.props
+//    const { groupdetails } = this.props
+     const { errorMessage } = this.props
 
-    alert(this.props.groupdetails)
+    //alert(this.props.groupdetails)
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
@@ -79,16 +88,20 @@ class Groups extends Component {
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
-                    <button id="sample_editable_1_new" className="btn green"> Create New Group
+                    <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Group
                     <i className="fa fa-plus"/>
                     </button>
                  </div>
               </div>
-              <GroupCreateView addGroup={this.add}  showAddGroup= 'false'/>      
+               {this.props.errorMessage &&
+
+                  alert(this.props.errorMessage) 
+                      }
+              <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>      
                 { this.props.groupdetails &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
-                    <tr className="row">
+                    <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created By</th>
@@ -99,7 +112,7 @@ class Groups extends Component {
                     <tbody>                    
                       {
                         this.props.groupdetails.map((group, i) => (
-                          <GroupListItem group={group}/>
+                          <GroupListItem group={group} key={group._id}/>
                          
                       
                         ))
@@ -119,8 +132,10 @@ class Groups extends Component {
   }
 }
 
+Groups.propTypes = {
 
-
+  errorMessage: PropTypes.string
+}
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   console.log(state.dashboard.userdetails);

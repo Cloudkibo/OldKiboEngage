@@ -13702,3 +13702,12 @@ Transparent Button
   background: transparent;
   color: #888;
 }
+
+
+.form.hide{
+display:None;
+}
+.form.appear {
+	display: block;
+}
+

@@ -16,8 +16,10 @@ class GroupCreateView extends Component {
   }
 
   render() {
-    const cls = `form ${(this.props.showAddGroup ? 'appear' : '')}`;
+    const cls = `form ${(this.props.showAddGroup ? 'appear' : 'hide')}`;
+
     return (
+      <div className={cls}>
       <div className="portlet box blue" style={{width: 80 + '%'}}>
           <div className="portlet-title">
             <div className="caption">
@@ -55,6 +57,7 @@ class GroupCreateView extends Component {
               <button className="btn blue"  onClick={this.addGroup}> Submit </button> 
          </div>
         </div>
+      </div>
       </div>
       </div>
       </div>
