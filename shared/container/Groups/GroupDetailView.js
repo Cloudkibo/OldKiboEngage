@@ -33,6 +33,8 @@ class GroupDetailView extends Component {
 
   
   render() {
+    alert(this.props.group)
+   
      return (
       <div>
        <div className="page-container">
@@ -60,15 +62,50 @@ class GroupDetailView extends Component {
                 </div> 
               </div>    
         
-           <div className="portlet-body">
-            <div className="single-post post-detail">
-              <h3 className="post-title">{this.props.group.deptname}</h3>
-              <p className="author-name">By {this.props.group.deptdescription}</p>
-            </div>                      
-                
-           </div>
+           <div className="portlet-body form">
+            <form className="form-horizontal form-row-seperated">
+              <div className="form-body">
+                <div className="form-group">
+                  <label className="control-label col-md-3"> Group Name </label>
+                   <div className="col-md-9">
+                         <input className="form-control" type='text' disabled value = {this.props.group.deptname}/>
+                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="control-label col-md-3"> Description </label>
+                   <div className="col-md-9">
+                         <textarea className="form-control" type='text' disabled rows='4' value = {this.props.group.deptdescription}/>
+                   </div>
+                </div>
+
+                 <div className="form-group">
+                  <label className="control-label col-md-3"> Fellow Agents </label>
+                   <div className="col-md-9">
+                         <textarea className="form-control" type='text' disabled rows='4' value = {this.props.group.deptdescription}/>
+                   </div>
+                </div>
+
+              <div className="form-actions fluid">
+                <div className="col-md-3">
+                  <div className="col-md-offset-9 col-md-9">
+                    <Link to="/groups" className="btn green">
+                      <i className="fa fa-times"/>
+                       Back
+                    </Link>
+                    </div>
+               </div>                
+              </div>
+              </div>  
+              
+          </form>
+
+                  
+          
+          </div>
           </div>
         }
+
        </div>
        </div> 
       </div>
@@ -82,18 +119,13 @@ GroupDetailView.contextTypes = {
   router: React.PropTypes.object,
 };
 
-GroupDetailView.propTypes = {
-  group: PropTypes.shape({
-    deptname: PropTypes.string,
-    deptdescription: PropTypes.string,
-   
-  }),
-  dispatch: PropTypes.func.isRequired,
-};
+
 
 function mapStateToProps(state) {
+  console.log('mapStateToProps of GroupDetailView is called');
+  console.log(state.dashboard.group);
   return {
-    group: (state.group),
+    group: (state.dashboard.group),
   };
 }
 

@@ -188,6 +188,35 @@ export function getgroups(req, res) {
     request.get(options, callback);
   }
 
+export function deptagent(req, res) {
+  console.log('get deptagent is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  var options = {
+      url: 'https://api.kibosupport.com/api/users/allagents',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info.agents.length)
+        console.log(info.agents);
+        //console.log(info);
+      return res.status(200).json(info.agents);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
 
 
 export function creategroup(req, res) {
@@ -240,8 +269,9 @@ export function getGroup(req, res) {
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
   console.log(req.query.id);
+  var id = req.query.id;
    var options = {
-      url: 'https://api.kibosupport.com/api/departments/${req.query.id}',
+      url: 'https://api.kibosupport.com/api/departments/'+id,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -249,16 +279,54 @@ export function getGroup(req, res) {
      
     };
     function callback(error, response, body) {
-      if(!error  && response.statusCode == 200) {
-        var info = JSON.parse(body);
+    
+      var info = JSON.parse(body);
         console.log(info);
-        res.status(200).json(info); 
+        
+      if(!error  && response.statusCode == 200) {
+        res.status(200).json({group:info}); 
     
    }
    else{
     console.log(error);
+    res.status(422).json(info); 
    }
  }
         request.get(options, callback);
+    
+}
+
+
+export function destroyGroup(req, res) {
+  console.log('destroyGroup is called.');
+  var token = req.headers.authorization;
+  console.log(req.query.id);
+  var id = req.query.id;
+   var options = {
+      url: 'https://api.kibosupport.com/api/departments/'+id,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+     
+    };
+    function callback(error, response, body) {
+    
+    console.log(response.statusCode);
+    console.log(error);
+      var info = JSON.parse(body);
+
+      //  console.log(info.status);
+        
+      if(!error  && response.statusCode == 200) {
+        res.status(200).json({info}); 
+    
+   }
+   else{
+   // console.log(error);
+    res.status(422).json(info); 
+   }
+ }
+    request.delete(options, callback);
     
 }

@@ -6,8 +6,10 @@ import SignupContainer from './container/Auth/Signup';
 import Intro from './container/Intro';
 import Dashboard from './container/Dashboard';
 import Groups from './container/Groups/Groups';
-import GroupDetailView from './container/Groups/GroupDetailView';
+import Agents from './container/Agents/Agents';
 
+import GroupDetailView from './container/Groups/GroupDetailView';
+import NotFound from './container/NotFound'
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';
 
@@ -38,7 +40,10 @@ const routes = (
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
+    <Route path="/agents" component={Agents} onEnter={requireAuth} />
+    
     <Route path="/group/:id" component={GroupDetailView}  onEnter={requireAuth}/>
+    <Route path="*" component={NotFound} />
   </Route>
 );
 RouterContainer.set(routes);

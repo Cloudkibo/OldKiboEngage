@@ -91,7 +91,7 @@ function SideBar() {
               </li>
 
               <li className="">
-                <a href="/completedcalls">
+                <a href="/agents">
                   <i className="fa fa-user">
                   </i>      
                   <span className="title">

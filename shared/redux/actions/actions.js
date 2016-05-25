@@ -155,6 +155,14 @@ export function showGroups(groups) {
   };
 }
 
+export function showAgents(agents) {
+  console.log(agents);
+  return {
+    type: ActionTypes.ADD_AGENTS,
+    agents,
+
+  };
+}
 export function creategroupError(message) {
   console.log(message);
   return {
@@ -202,6 +210,21 @@ export function getuser(token) {
 }
 
 /****** get user details ***/
+export function getAgents(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/deptagent`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showAgents(res)));
+  };
+}
+
+
+/****** get user details ***/
 export function getusergroups(token) {
   console.log(token);
   return (dispatch) => {
@@ -243,6 +266,7 @@ export function creategroup(group) {
 }
 
 export function addSelectedGroup(group) {
+  console.log(group)
   return {
     type: ActionTypes.ADD_SELECTED_GROUP,
     group,
@@ -258,6 +282,33 @@ export function getGroupRequest(group,usertoken) {
         'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
-    }).then((response) => response.json()).then(res => dispatch(addSelectedGroup(res.group)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedGroup(res.group)));
   };
+}
+
+export function deleteGROUP(group) {
+  return {
+    type: ActionTypes.DELETE_GROUP,
+    group,
+  };
+}
+export function deletegroup(group,usertoken) {
+  console.log('deletegroup Action is called '+ group._id + 'your token : '  + usertoken);
+  if(confirm("Do you want to delete this group?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteGroup?id=${group._id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteGROUP(group)));
+  };
+}
+else{
+  browserHistory.push('/groups');
+
+}
+
 }

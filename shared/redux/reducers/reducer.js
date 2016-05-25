@@ -25,7 +25,7 @@ const dashboard = (state =dashboardState, action) => {
       return {
         group: action.group,
         userdetails: state.userdetails,
-        groupdetails:state.groups,
+        groupdetails:state.groupdetails,
       }; 
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
@@ -33,6 +33,13 @@ const dashboard = (state =dashboardState, action) => {
             userdetails:action.user,
            
           };
+   case ActionTypes.ADD_AGENTS:
+          console.log(action.agents)
+          return{
+            userdetails:state.userdetails,
+            agents:action.agents,
+           
+          };       
    case ActionTypes.ADD_GROUPS:
           console.log(action.groups)
           return{
@@ -49,7 +56,16 @@ const dashboard = (state =dashboardState, action) => {
          
         }, ...state.groupdetails],
          userdetails: state.userdetails,
+         errorMessage:'Group created successfully',
         };
+
+     case ActionTypes.DELETE_GROUP :
+      return {
+        groupdetails: state.groupdetails.filter((group) => group._id !== action.group._id),
+        userdetails: state.userdetails,
+        errorMessage:'Group deleted successfully',
+      };
+
       case ActionTypes.CREATEGROUP_FAILURE:
       return {
          groupdetails: state.groupdetails,

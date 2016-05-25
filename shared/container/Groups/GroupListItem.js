@@ -2,7 +2,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+
 function GroupListItem(props) {
+
+  
   return (
   
     <tr className = "odd">
@@ -12,12 +15,12 @@ function GroupListItem(props) {
       <td>{props.group.creationdate}</td>
      
       <td>
-        <Link to={`/group/${props.group._id}`} onClick={props.onClick} className="btn blue-madison" >
+        <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
          View
         </Link>
-
         <a className="btn blue-madison" href='/managegroup/{props.group.department._id}'> Edit </a>
-        <a className="btn blue-madison" href="#"> Delete </a>
+        <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+
       </td>
 
     
@@ -27,7 +30,7 @@ function GroupListItem(props) {
 }
 
 GroupListItem.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
  
 };
 
