@@ -63,7 +63,10 @@ class Groups extends Component {
     
     return (
       <div>
+       <AuthorizedHeader name = {this.props.userdetails.firstname} />
+    
        <div className="page-container">
+
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 

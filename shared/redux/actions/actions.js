@@ -163,6 +163,15 @@ export function showAgents(agents) {
 
   };
 }
+
+export function showDeptAgents(agents) {
+  console.log(agents);
+  return {
+    type: ActionTypes.ADD_DEPTAGENTS,
+    agents,
+
+  };
+}
 export function creategroupError(message) {
   console.log(message);
   return {
@@ -171,6 +180,13 @@ export function creategroupError(message) {
   }
 }
 
+export function editgroupError(message) {
+  console.log(message);
+  return {
+    type: ActionTypes.EDITGROUP_RESPONSE,
+    message,
+  }
+}
 
 export function signupuser(user) {
   console.log(user);
@@ -213,13 +229,27 @@ export function getuser(token) {
 export function getAgents(token) {
   console.log(token);
   return (dispatch) => {
-    fetch(`${baseURL}/api/deptagent`, {
+    fetch(`${baseURL}/api/getagents`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token,
         'Pragma': 'no-cache'
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showAgents(res)));
+  };
+}
+
+/****** get user details ***/
+export function getDeptAgents(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/deptagents`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showDeptAgents(res)));
   };
 }
 
@@ -260,6 +290,31 @@ export function creategroup(group) {
         else{
               dispatch(showGroups(res.message))
             }
+        }
+    );
+  };
+}
+
+export function editGroup(group) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editgroup`, {
+      method: 'post',
+      body: JSON.stringify({
+        dept :{
+          _id:group.id,
+          deptname: group.name,
+          deptdescription: group.desc,
+        }
+      }),
+      headers: new Headers({
+         'Authorization': group.token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+         dispatch(editgroupError(res.message));
+        
+           
         }
     );
   };

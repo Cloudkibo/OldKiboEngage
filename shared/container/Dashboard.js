@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
+import {getDeptAgents} from '../redux/actions/actions'
 
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
@@ -27,7 +28,8 @@ class Dashboard extends Component {
     const usertoken = auth.getToken();
     console.log('componentDidMount is called');
     console.log(usertoken);
-    this.props.getAgents(usertoken)
+    this.props.getAgents(usertoken);
+     this.props.getDeptAgents(usertoken)
     
   }
   render() {
@@ -59,7 +61,8 @@ class Dashboard extends Component {
 function mapStateToProps(state) {
   
   return {userdetails:(state.dashboard.userdetails),
-  agents:(state.dashboard.agents), }
+  agents:(state.dashboard.agents),
+  deptagents:(state.dashboard.deptagents), }
 }
 
-export default connect(mapStateToProps,{getuser,getAgents})(Dashboard);
+export default connect(mapStateToProps,{getuser,getAgents,getDeptAgents})(Dashboard);

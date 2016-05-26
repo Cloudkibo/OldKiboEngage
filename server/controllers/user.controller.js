@@ -188,7 +188,7 @@ export function getgroups(req, res) {
     request.get(options, callback);
   }
 
-export function deptagent(req, res) {
+export function getagents(req, res) {
   console.log('get deptagent is called');
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
@@ -205,9 +205,39 @@ export function deptagent(req, res) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
         console.log(info.agents.length)
-        console.log(info.agents);
+      //  console.log(info.agents);
         //console.log(info);
       return res.status(200).json(info.agents);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
+
+  export function deptagents(req, res) {
+  console.log('get deptagents is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  var options = {
+      url: 'https://api.kibosupport.com/api/deptagents/',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info)
+       
+        //console.log(info);
+      return res.status(200).json(info);
     }
 
     else
@@ -330,3 +360,51 @@ export function destroyGroup(req, res) {
     request.delete(options, callback);
     
 }
+
+
+export function editgroup(req, res) {
+  console.log('edit group is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  
+   var options = {
+      url: 'https://api.kibosupport.com/api/departments/update',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      form: {
+           dept :{ 
+           '_id' : req.body.dept._id, 
+           'deptname' : req.body.dept.deptname,
+           'deptdescription': req.body.dept.deptdescription
+         }
+          }
+      
+     
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info.msg);
+       console.log(info.status);
+       if(info.status == 'success')
+       {
+            return res.status(200).json({statusCode : 200,message:info.msg});
+       }
+       else
+       {
+            return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+   
+       }
+    }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+
+    }
+
+   }
+        request.post(options, callback);
+   
+  }

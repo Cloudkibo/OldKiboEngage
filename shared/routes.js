@@ -9,6 +9,8 @@ import Groups from './container/Groups/Groups';
 import Agents from './container/Agents/Agents';
 
 import GroupDetailView from './container/Groups/GroupDetailView';
+import GroupEditView from './container/Groups/GroupEditView';
+
 import NotFound from './container/NotFound'
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';
@@ -43,6 +45,7 @@ const routes = (
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
     
     <Route path="/group/:id" component={GroupDetailView}  onEnter={requireAuth}/>
+    <Route path="/editgroup/:id" component={GroupEditView}  onEnter={requireAuth}/>
     <Route path="*" component={NotFound} />
   </Route>
 );

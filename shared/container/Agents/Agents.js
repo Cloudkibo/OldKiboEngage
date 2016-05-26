@@ -12,7 +12,7 @@ class Agents extends Component {
  constructor(props, context) {
       //call action to get user groups 
     const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
+    console.log('constructor is called');
     super(props, context);
   
     this.state = {
@@ -29,9 +29,11 @@ class Agents extends Component {
     const token = auth.getToken()
     console.log(token)
     console.log(this.props.agents);
-    
+    alert(this.props.agents);
     return (
       <div>
+       <AuthorizedHeader name = {this.props.userdetails.firstname} />
+    
        <div className="page-container">
          <SideBar/> 
           <div className="page-content-wrapper">

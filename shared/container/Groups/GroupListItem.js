@@ -18,7 +18,9 @@ function GroupListItem(props) {
         <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
          View
         </Link>
-        <a className="btn blue-madison" href='/managegroup/{props.group.department._id}'> Edit </a>
+        <Link to={`/editgroup/${props.group._id}`} className="btn blue-madison" >
+         Edit
+        </Link>
         <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
 
       </td>

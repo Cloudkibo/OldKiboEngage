@@ -91,7 +91,7 @@ function SideBar() {
               </li>
 
               <li className="">
-                <a href="/agents">
+                <Link to= '/agents'>
                   <i className="fa fa-user">
                   </i>      
                   <span className="title">
@@ -99,7 +99,7 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
               <li className="">

@@ -26,6 +26,8 @@ const dashboard = (state =dashboardState, action) => {
         group: action.group,
         userdetails: state.userdetails,
         groupdetails:state.groupdetails,
+        agents : state.agents,
+        deptagents :state.deptagents,
       }; 
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
@@ -38,13 +40,25 @@ const dashboard = (state =dashboardState, action) => {
           return{
             userdetails:state.userdetails,
             agents:action.agents,
+            deptagents :state.deptagents,
            
-          };       
+          };  
+  case ActionTypes.ADD_DEPTAGENTS:
+          console.log(action.agents)
+          return{
+            userdetails:state.userdetails,
+            agents:state.agents,
+            deptagents :action.agents,
+
+           
+          };              
    case ActionTypes.ADD_GROUPS:
           console.log(action.groups)
           return{
             groupdetails:action.groups,
             userdetails: state.userdetails,
+            agents : state.agents,
+            deptagents :state.deptagents,
       };       
 
     case ActionTypes.ADD_GROUP:
@@ -57,6 +71,8 @@ const dashboard = (state =dashboardState, action) => {
         }, ...state.groupdetails],
          userdetails: state.userdetails,
          errorMessage:'Group created successfully',
+         agents : state.agents,
+         deptagents :state.deptagents,
         };
 
      case ActionTypes.DELETE_GROUP :
@@ -64,6 +80,7 @@ const dashboard = (state =dashboardState, action) => {
         groupdetails: state.groupdetails.filter((group) => group._id !== action.group._id),
         userdetails: state.userdetails,
         errorMessage:'Group deleted successfully',
+        agents : state.agents,
       };
 
       case ActionTypes.CREATEGROUP_FAILURE:
@@ -71,7 +88,17 @@ const dashboard = (state =dashboardState, action) => {
          groupdetails: state.groupdetails,
          userdetails: state.userdetails,
          errorMessage:action.message,
+         agents : state.agents,
         };
+
+      case ActionTypes.EDITGROUP_RESPONSE:
+      return {
+         groupdetails: state.groupdetails,
+         userdetails: state.userdetails,
+         errorMessage:action.message,
+         agents : state.agents,
+         deptagents :state.deptagents,
+        };  
     default:
       return state;
   }

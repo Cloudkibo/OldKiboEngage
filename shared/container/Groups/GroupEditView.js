@@ -3,13 +3,15 @@ import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { getGroupRequest}  from '../../redux/actions/actions'
+import { editGroup}  from '../../redux/actions/actions'
+
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import GroupCreateView from '../../components/GroupCreateView.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 
-class GroupDetailView extends Component {
+class GroupEditView extends Component {
 
   constructor(props, context) {
       //call action to get user groups 
@@ -22,18 +24,29 @@ class GroupDetailView extends Component {
         console.log(props.params.id);
         props.getGroupRequest(props.params.id,usertoken);
       }
+
       
         super(props, context);
-  
-  
-    
+        this.editGroupDetail = this.editGroupDetail.bind(this);
+         this.onChange = this.onChange.bind(this);
   
 
   }
+ onChange(event) {
+    this.setState({typed: event.target.value});
+  }
+  editGroupDetail() {
+        const usertoken = auth.getToken();
+        const nameRef = this.refs.name;
+        const descRef = this.refs.desc;
+        const idRef = this.refs.id;
+    if (nameRef.value && descRef.value) {
+      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken});
+     
+    }
+  }
 
-  
   render() {
-    alert(this.props.group)
    
      return (
       <div>
@@ -68,14 +81,16 @@ class GroupDetailView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Group Name </label>
                    <div className="col-md-9">
-                         <input className="form-control" type='text' disabled value = {this.props.group.deptname}/>
+                         <input className="form-control" type='text' value = {this.props.group.deptname} ref = "name"/>
+                         <input className="form-control" type='hidden'  onChange={this.onChange}  value = {this.props.group._id} ref = "id"/>
+            
                    </div>
                 </div>
 
                 <div className="form-group">
                   <label className="control-label col-md-3"> Description </label>
                    <div className="col-md-9">
-                         <textarea className="form-control" type='text' disabled rows='4' value = {this.props.group.deptdescription}/>
+                         <textarea className="form-control"  onChange={this.onChange}  type='text' rows='4' ref = "desc" value = {this.props.group.deptdescription}/>
                    </div>
                 </div>
 
@@ -84,6 +99,7 @@ class GroupDetailView extends Component {
                    <div className="col-md-9">
                    <ul>
                    {
+                    this.props.deptagents &&
                          this.props.deptagents.filter((agent) => agent.deptid == this.props.group._id).map((agent, i)=> (
                           this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
                           (
@@ -103,10 +119,10 @@ class GroupDetailView extends Component {
               <div className="form-actions fluid">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <Link to="/groups" className="btn green">
-                      <i className="fa fa-times"/>
-                       Back
-                    </Link>
+                    <button className="btn green" onClick={this.editGroupDetail}>
+                      <i className="fa fa-check"/>
+                       Submit
+                    </button>
                     </div>
                </div>                
               </div>
@@ -129,7 +145,7 @@ class GroupDetailView extends Component {
 }
 
 
-GroupDetailView.contextTypes = {
+GroupEditView.contextTypes = {
   router: React.PropTypes.object,
 };
 
@@ -145,4 +161,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getGroupRequest})(GroupDetailView);
+export default connect(mapStateToProps,{ getGroupRequest,editGroup})(GroupEditView);
