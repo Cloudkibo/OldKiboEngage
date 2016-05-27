@@ -296,16 +296,20 @@ export function creategroup(group) {
 }
 
 export function editGroup(group) {
+  console.log('editGroup action called');
+  alert(group)
   return (dispatch) => {
     fetch(`${baseURL}/api/editgroup`, {
       method: 'post',
       body: JSON.stringify({
         dept :{
-          _id:group.id,
+          id:group.id,
           deptname: group.name,
           deptdescription: group.desc,
         }
-      }),
+        
+      })     
+      ,
       headers: new Headers({
          'Authorization': group.token,
         'Content-Type': 'application/json',
@@ -363,6 +367,33 @@ export function deletegroup(group,usertoken) {
 }
 else{
   browserHistory.push('/groups');
+
+}
+
+}
+
+export function deleteAGENT(agent) {
+  return {
+    type: ActionTypes.DELETE_AGENT,
+    agent,
+  };
+}
+export function deleteagent(agent,usertoken) {
+  console.log('deleteagent Action is called '+ agent._id + 'your token : '  + usertoken);
+  if(confirm("Do you want to delete this agent?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteAgent?id=${agent._id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteAGENT(agent)));
+  };
+}
+else{
+  browserHistory.push('/agents');
 
 }
 

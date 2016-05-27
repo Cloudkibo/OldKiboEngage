@@ -28,19 +28,19 @@ class GroupEditView extends Component {
       
         super(props, context);
         this.editGroupDetail = this.editGroupDetail.bind(this);
-         this.onChange = this.onChange.bind(this);
-  
+       
 
   }
- onChange(event) {
-    this.setState({typed: event.target.value});
-  }
+ 
+ 
+
   editGroupDetail() {
         const usertoken = auth.getToken();
         const nameRef = this.refs.name;
         const descRef = this.refs.desc;
         const idRef = this.refs.id;
     if (nameRef.value && descRef.value) {
+      alert(nameRef.value);
       this.props.editGroup({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken});
      
     }
@@ -66,6 +66,11 @@ class GroupEditView extends Component {
                   </li>               
   
             </ul>
+                {this.props.errorMessage &&
+
+                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
+                      }
+         
              {this.props.group &&
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
@@ -81,8 +86,8 @@ class GroupEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Group Name </label>
                    <div className="col-md-9">
-                         <input className="form-control" type='text' value = {this.props.group.deptname} ref = "name"/>
-                         <input className="form-control" type='hidden'  onChange={this.onChange}  value = {this.props.group._id} ref = "id"/>
+                         <input className="form-control" type='text'  defaultValue={this.props.group.deptname} ref = "name"/>
+                         <input className="form-control" type='hidden'   defaultValue = {this.props.group._id} ref = "id"/>
             
                    </div>
                 </div>
@@ -90,7 +95,7 @@ class GroupEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Description </label>
                    <div className="col-md-9">
-                         <textarea className="form-control"  onChange={this.onChange}  type='text' rows='4' ref = "desc" value = {this.props.group.deptdescription}/>
+                         <textarea className="form-control" type='text' rows='4' ref = "desc" defaultValue = {this.props.group.deptdescription}/>
                    </div>
                 </div>
 
@@ -155,9 +160,11 @@ function mapStateToProps(state) {
   console.log('mapStateToProps of GroupDetailView is called');
   console.log(state.dashboard.group);
   return {
+    
     group: (state.dashboard.group),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
+     errorMessage:(state.dashboard.errorMessage),
   };
 }
 

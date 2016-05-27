@@ -82,6 +82,14 @@ const dashboard = (state =dashboardState, action) => {
         errorMessage:'Group deleted successfully',
         agents : state.agents,
       };
+      case ActionTypes.DELETE_AGENT :
+      return {
+        groupdetails: state.groupdetails,
+        userdetails: state.userdetails,
+        errorMessage:'Agent deleted successfully',
+        agents : state.agents.filter((agent) => agent._id !== action.agent._id),
+        deptagents :state.deptagents,
+      };
 
       case ActionTypes.CREATEGROUP_FAILURE:
       return {

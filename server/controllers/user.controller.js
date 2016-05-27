@@ -36,7 +36,7 @@ export function getlogin (req,res) {
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
         console.log('api calling succeed')
-        console.log(info)
+       // console.log(info)
         return res.status(response.statusCode).send({token:info,statusCode:200});
 
       }
@@ -94,7 +94,7 @@ export function signupUser(req, res) {
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
         console.log('api calling succeed')
-        console.log(info)
+       // console.log(info)
         validationErr.push('Your account is created successfully')
         return res.json({signup:{ validationErrs :validationErr ,token : info,statusCode : response.statusCode}});
 
@@ -234,7 +234,7 @@ export function getagents(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(info)
+       // console.log(info)
        
         //console.log(info);
       return res.status(200).json(info);
@@ -311,7 +311,7 @@ export function getGroup(req, res) {
     function callback(error, response, body) {
     
       var info = JSON.parse(body);
-        console.log(info);
+      //  console.log(info);
         
       if(!error  && response.statusCode == 200) {
         res.status(200).json({group:info}); 
@@ -362,32 +362,73 @@ export function destroyGroup(req, res) {
 }
 
 
+
+export function deleteAgent(req, res) {
+  console.log('deleteAgent is called.');
+  var token = req.headers.authorization;
+  console.log(req.query.id);
+  var id = req.query.id;
+   var options = {
+      url: 'https://api.kibosupport.com/api/users/deleteagent/'+id,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+     
+    };
+    function callback(error, response, body) {
+    
+    console.log(response.statusCode);
+    console.log(error);
+      var info = JSON.parse(body);
+
+      //  console.log(info.status);
+        
+      if(!error  && response.statusCode == 200) {
+        res.status(200).json({info}); 
+    
+   }
+   else{
+   // console.log(error);
+    res.status(422).json(info); 
+   }
+ }
+    request.post(options, callback);
+    
+}
+
+
 export function editgroup(req, res) {
   console.log('edit group is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
-  
+  console.log(req.body);
+  var dept = req.body.dept;
+  var deptt = { 
+           '_id' : dept.id, 
+           'deptname' : dept.deptname,
+           'deptdescription': dept.deptdescription
+         }
+  console.log(deptt)       
+
    var options = {
-      url: 'https://api.kibosupport.com/api/departments/update',
+      url: 'https://api.kibosupport.com/api/departments/update/',
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
                  },
       form: {
-           dept :{ 
-           '_id' : req.body.dept._id, 
-           'deptname' : req.body.dept.deptname,
-           'deptdescription': req.body.dept.deptdescription
-         }
+           dept : deptt
           }
       
      
     };
     function callback(error, response, body) {
-      if(!error  && response.statusCode == 200) {
+        console.log(error);
         var info = JSON.parse(body);
         console.log(info.msg);
        console.log(info.status);
+    
+      if(!error  && response.statusCode == 200) {
        if(info.status == 'success')
        {
             return res.status(200).json({statusCode : 200,message:info.msg});
@@ -400,7 +441,7 @@ export function editgroup(req, res) {
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+      return res.status(422).json({statusCode : 422 ,message:error}); 
 
     }
 

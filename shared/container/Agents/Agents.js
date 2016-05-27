@@ -6,6 +6,8 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
+import {deleteagent} from '../../redux/actions/actions'
+import { bindActionCreators } from 'redux';
 
 class Agents extends Component {
 
@@ -85,7 +87,7 @@ class Agents extends Component {
                       {
                         this.props.agents.map((agent, i) => (
                           
-                          <AgentListItem agent={agent} key={agent._id}/>
+                          <AgentListItem agent={agent} key={agent._id}  onDelete={() => this.props.deleteagent(agent,token)}/>
                                                       
                         ))
                       }
@@ -121,7 +123,12 @@ function mapStateToProps(state) {
            };
 }
 
-export default connect(mapStateToProps)(Agents);
+function mapDispatchToProps(dispatch) {
+  // Whenever selectBook is called, the result shoudl be passed
+  // to all of our reducers
+  return bindActionCreators({ deleteagent:deleteagent}, dispatch);
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Agents);
 
 
 

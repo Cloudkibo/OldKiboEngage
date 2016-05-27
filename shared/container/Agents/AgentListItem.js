@@ -21,7 +21,7 @@ function AgentListItem(props) {
         <Link to={`/agent/${props.agent._id}`} className="btn blue-madison" >
          Change Role
         </Link>
-        <button className="btn blue-madison"> Delete </button>
+        <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
 
       </td>
 
@@ -31,6 +31,9 @@ function AgentListItem(props) {
   );
 }
 
-
+AgentListItem.propTypes = {
+  onDelete: PropTypes.func.isRequired,
+ 
+};
 
 export default AgentListItem;
