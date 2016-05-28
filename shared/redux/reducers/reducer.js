@@ -28,12 +28,12 @@ const dashboard = (state =dashboardState, action) => {
         groupdetails:state.groupdetails,
         agents : state.agents,
         deptagents :state.deptagents,
-      }; 
+      };
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
           return{
             userdetails:action.user,
-           
+
           };
    case ActionTypes.ADD_AGENTS:
           console.log(action.agents)
@@ -41,8 +41,8 @@ const dashboard = (state =dashboardState, action) => {
             userdetails:state.userdetails,
             agents:action.agents,
             deptagents :state.deptagents,
-           
-          };  
+
+          };
   case ActionTypes.ADD_DEPTAGENTS:
           console.log(action.agents)
           return{
@@ -50,8 +50,8 @@ const dashboard = (state =dashboardState, action) => {
             agents:state.agents,
             deptagents :action.agents,
 
-           
-          };              
+
+          };
    case ActionTypes.ADD_GROUPS:
           console.log(action.groups)
           return{
@@ -59,7 +59,7 @@ const dashboard = (state =dashboardState, action) => {
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
-      };       
+      };
 
     case ActionTypes.ADD_GROUP:
     console.log(action.deptname);
@@ -67,7 +67,7 @@ const dashboard = (state =dashboardState, action) => {
         groupdetails: [{
           deptname: action.deptname,
           deptdescription: action.deptdescription,
-         
+
         }, ...state.groupdetails],
          userdetails: state.userdetails,
          errorMessage:'Group created successfully',
@@ -106,7 +106,28 @@ const dashboard = (state =dashboardState, action) => {
          errorMessage:action.message,
          agents : state.agents,
          deptagents :state.deptagents,
-        };  
+        };
+
+        case ActionTypes.SHOW_SPECIFIC_CHAT:
+        return {
+           groupdetails: state.groupdetails,
+           userdetails: state.userdetails,
+           chat:action.chat,
+           agents : state.agents,
+           deptagents :state.deptagents,
+
+          };
+
+          case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
+          return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+
+            };
+
     default:
       return state;
   }
@@ -130,7 +151,7 @@ function auth(state = {isAuthenticated: false}, action) {
         isAuthenticated: true,
         errorMessage: 'Login went successfully'
       })
-      
+
     case ActionTypes.LOGIN_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
