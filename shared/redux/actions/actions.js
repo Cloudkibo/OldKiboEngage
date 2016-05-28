@@ -20,7 +20,7 @@ export function addGroup(group) {
     type: ActionTypes.ADD_GROUP,
     deptname: group.deptname,
     deptdescription: group.deptdescription,
-   
+
   };
 }
 function requestLogin(creds) {
@@ -155,6 +155,24 @@ export function showGroups(groups) {
   };
 }
 
+export function showSpecificChat(chat) {
+  console.log(chat);
+  return {
+    type: ActionTypes.SHOW_SPECIFIC_CHAT,
+    chat,
+
+  };
+}
+
+export function showSpecificChat_Error(chat_error) {
+  console.log(chat_error);
+  return {
+    type: ActionTypes.SHOW_SPECIFIC_CHAT_ERROR,
+    chat_error,
+
+  };
+}
+
 export function showAgents(agents) {
   console.log(agents);
   return {
@@ -284,7 +302,7 @@ export function creategroup(group) {
       body: JSON.stringify({
           deptname: group.name,
           deptdescription: group.description,
-        
+
       }),
       headers: new Headers({
          'Authorization': group.usertoken,
@@ -303,6 +321,32 @@ export function creategroup(group) {
   };
 }
 
+export function fetchSpecificChat(data) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/userchats/getSpecificChat`, {
+      method: 'post',
+      body: JSON.stringify({
+          request_id: group.request_id,
+          companyid: group.companyid,
+
+      }),
+      headers: new Headers({
+         'Authorization': data.usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+          console.log(res.statusCode);
+          if(res.statusCode != 200){
+            dispatch(showSpecificChat_Error(res.message));
+          }
+          else{
+            dispatch(showSpecificChat(res.message))
+          }
+        }
+    );
+  };
+}
+
 export function editGroup(group) {
   console.log('editGroup action called');
   alert(group)
@@ -315,8 +359,8 @@ export function editGroup(group) {
           deptname: group.name,
           deptdescription: group.desc,
         }
-        
-      })     
+
+      })
       ,
       headers: new Headers({
          'Authorization': group.token,
@@ -325,8 +369,8 @@ export function editGroup(group) {
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
          dispatch(editgroupError(res.message));
-        
-           
+
+
         }
     );
   };
