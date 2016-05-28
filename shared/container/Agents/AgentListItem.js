@@ -8,20 +8,32 @@ return c.toDateString();
 }
 function AgentListItem(props) {
 
+  var role;
+  if(props.agent.isAgent == "Yes"){
+    role = "agent";
+  }
+  else if(props.agent.isAdmin == "Yes"){
+      role = "admin"
+  }
+  else
+  {
+    role = "supervisor"
+  }
   
   return (
   
+
     <tr className = "odd">
       <td>{props.agent.firstname +' '+ props.agent.lastname} </td>
       <td>{props.agent.email}</td>
       <td>{handleDate(props.agent.date)}</td>
-      <td>{props.agent.role}</td>
+      <td>{role}</td>
      
       <td>
-        <Link to={`/agent/${props.agent._id}`} className="btn blue-madison" >
-         Change Role
-        </Link>
-        <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+      <Link to={`/editagent/${props.agent._id}`} className="btn blue-madison" >
+        Change Role
+      </Link>
+      <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
 
       </td>
 

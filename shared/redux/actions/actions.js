@@ -188,6 +188,14 @@ export function editgroupError(message) {
   }
 }
 
+export function editagentError(message) {
+  console.log(message);
+  return {
+    type: ActionTypes.EDITAGENT_RESPONSE,
+    message,
+  }
+}
+
 export function signupuser(user) {
   console.log(user);
   return (dispatch) => {
@@ -324,11 +332,47 @@ export function editGroup(group) {
   };
 }
 
+
+export function editAgent(id,role,token) {
+  console.log('editAgent action called');
+  alert(role)
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editagent`, {
+      method: 'post',
+      body: JSON.stringify({
+        
+          personid:id,
+          role: role       
+        
+      })     
+      ,
+      headers: new Headers({
+         'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+         dispatch(editagentError(res.message));
+        
+           
+        }
+    );
+  };
+}
 export function addSelectedGroup(group) {
   console.log(group)
   return {
     type: ActionTypes.ADD_SELECTED_GROUP,
     group,
+  };
+}
+
+
+export function getAgentRequest(id,usertoken) {
+  console.log(id)
+  return {
+    type: ActionTypes.ADD_SELECTED_AGENT,
+    id,
   };
 }
 

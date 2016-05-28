@@ -6,6 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
+
 import {deleteagent} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 
@@ -17,9 +18,7 @@ class Agents extends Component {
     console.log('constructor is called');
     super(props, context);
   
-    this.state = {
-      showAddAgent: false,
-    };
+  
 
     
   }
@@ -83,6 +82,7 @@ class Agents extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
                     </tr>
                     </thead>
+
                     <tbody>                    
                       {
                         this.props.agents.map((agent, i) => (

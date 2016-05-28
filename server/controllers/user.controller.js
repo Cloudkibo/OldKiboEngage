@@ -449,3 +449,46 @@ export function editgroup(req, res) {
         request.post(options, callback);
    
   }
+
+
+export function editagent(req, res) {
+  console.log('edit agent is called');
+  var token = req.headers.authorization;
+  console.log(req.body);
+   var options = {
+      url: 'https://api.kibosupport.com/api/users/updaterole/',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      form: {
+           personid : req.body.personid,
+           role : req.body.role
+
+          }
+      
+     
+    };
+    function callback(error, response, body) {
+        console.log(error);
+        var info = JSON.parse(body);
+        console.log(info.msg);
+       console.log(info.status);
+    
+      if(!error  && response.statusCode == 200) {
+       if(info.status == 'success')
+       {
+            return res.status(200).json({statusCode : 200,message:info.status});
+       }
+       else
+       {
+            return res.status(422).json({statusCode : 422 ,message:info.status}); 
+   
+       }
+    }
+   
+
+   }
+        request.post(options, callback);
+   
+  }

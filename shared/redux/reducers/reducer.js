@@ -29,6 +29,15 @@ const dashboard = (state =dashboardState, action) => {
         agents : state.agents,
         deptagents :state.deptagents,
       }; 
+   case ActionTypes.ADD_SELECTED_AGENT :
+      return {
+        userdetails: state.userdetails,
+        groupdetails:state.groupdetails,
+        agents : state.agents,
+        deptagents :state.deptagents,
+        agent: state.agents.filter((agent) => agent._id == action.id),
+      
+      };    
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
           return{
@@ -41,7 +50,7 @@ const dashboard = (state =dashboardState, action) => {
             userdetails:state.userdetails,
             agents:action.agents,
             deptagents :state.deptagents,
-           
+            groupdetails:state.groupdetails,
           };  
   case ActionTypes.ADD_DEPTAGENTS:
           console.log(action.agents)
@@ -49,7 +58,7 @@ const dashboard = (state =dashboardState, action) => {
             userdetails:state.userdetails,
             agents:state.agents,
             deptagents :action.agents,
-
+             groupdetails:state.groupdetails,
            
           };              
    case ActionTypes.ADD_GROUPS:
@@ -106,6 +115,16 @@ const dashboard = (state =dashboardState, action) => {
          errorMessage:action.message,
          agents : state.agents,
          deptagents :state.deptagents,
+        }; 
+
+      case ActionTypes.EDITAGENT_RESPONSE:
+      return {
+         groupdetails: state.groupdetails,
+         userdetails: state.userdetails,
+         errorMessage:action.message,
+         agents : state.agents,
+         deptagents :state.deptagents,
+         agent: state.agent,
         };  
     default:
       return state;

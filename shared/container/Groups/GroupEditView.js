@@ -102,13 +102,17 @@ class GroupEditView extends Component {
                  <div className="form-group">
                   <label className="control-label col-md-3"> Fellow Agents </label>
                    <div className="col-md-9">
-                   <ul>
+                   <div className="select2-container select2-container-multi">
+                   <ul className="select2-choices">
+                 
                    {
                     this.props.deptagents &&
                          this.props.deptagents.filter((agent) => agent.deptid == this.props.group._id).map((agent, i)=> (
                           this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
                           (
-                          <li>{ag.firstname + ' ' + ag.lastname}</li>
+                          <li  className="select2-search-choice">
+                             <div>{ag.firstname + ' ' + ag.lastname} </div>
+                          </li>   
                           ))
 
                           
@@ -119,17 +123,51 @@ class GroupEditView extends Component {
                    }
                    </ul>
                    </div>
+                   </div>
+                </div>
+
+
+                <div className="form-group">
+                  <label className="control-label col-md-3"> All Agents </label>
+                   <div className="col-md-9">
+                   <div className="select2-container select2-container-multi">
+                   <ul className="select2-choices">
+                   {
+                    this.props.agents &&
+                         this.props.agents.map((agent, i) =>
+                        (
+                          <li className="select2-search-choice">
+                            <div>{agent.firstname + ' ' + agent.lastname} </div></li>
+                        ))
+                  }
+
+                        
+                   </ul>
+                   </div>
+                   </div>
                 </div>
 
               <div className="form-actions fluid">
+              <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
                     <button className="btn green" onClick={this.editGroupDetail}>
-                      <i className="fa fa-check"/>
+                      <i className="fa fa-pencil"/>
                        Submit
                     </button>
+
                     </div>
-               </div>                
+               </div> 
+                <div className="col-md-9">
+                  <div className="col-md-9">
+                    <Link to="/groups" className="btn green">
+                      <i className="fa fa-times"/>
+                       Back
+                    </Link>
+                    
+                    </div>
+               </div>
+               </div>                 
               </div>
               </div>  
               
