@@ -22,12 +22,24 @@ const dashboard = (state =dashboardState, action) => {
   switch (action.type) {
 
   case ActionTypes.ADD_SELECTED_GROUP :
+      var agentid =[];
+      if(state.deptagents)
+      {
+      state.deptagents.filter((agent) => agent.deptid == action.group._id).map((agent, i)=> (
+                          state.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
+                          (
+                             agentid.push({"_id" :ag._id})
+                          ))
+                          ));
+       };
+
       return {
         group: action.group,
         userdetails: state.userdetails,
         groupdetails:state.groupdetails,
         agents : state.agents,
         deptagents :state.deptagents,
+        newagents:agentid,
       }; 
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
@@ -53,7 +65,7 @@ const dashboard = (state =dashboardState, action) => {
             groupdetails:state.groupdetails,
           };  
 
-          };
+        
   case ActionTypes.ADD_DEPTAGENTS:
           console.log(action.agents)
           return{

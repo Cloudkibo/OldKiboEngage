@@ -349,16 +349,18 @@ export function fetchSpecificChat(data) {
 
 export function editGroup(group) {
   console.log('editGroup action called');
+  console.log(group.deptagents);
   alert(group)
   return (dispatch) => {
     fetch(`${baseURL}/api/editgroup`, {
       method: 'post',
       body: JSON.stringify({
         dept :{
-          id:group.id,
+          _id:group.id,
           deptname: group.name,
           deptdescription: group.desc,
-        }
+        },
+        deptagents: group.deptagents
 
       })
       ,
@@ -367,7 +369,8 @@ export function editGroup(group) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+         console.log(res.statusCode);
+         alert(res.message);
          dispatch(editgroupError(res.message));
 
 
@@ -485,4 +488,29 @@ else{
 
 }
 
+}
+export function createChannel(channel,usertoken){
+  console.log(channel);
+  console.log(usertoken);
+  console.log('create message channel is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createChannel`, {
+      method: 'post',
+      headers: new Headers({
+         'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+      channel : channel
+      })       
+      
+      ,
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+        // dispatch(editagentError(res.message));
+        
+           
+        }
+    );
+  };
 }

@@ -41,9 +41,48 @@ class GroupEditView extends Component {
         const idRef = this.refs.id;
     if (nameRef.value && descRef.value) {
       alert(nameRef.value);
-      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken});
+      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents});
      
     }
+  }
+
+  appendAgent(id,e){
+    alert(id);
+    var flag = 0;
+    for(var j = 0;j<this.props.newagents.length;j++)
+    {
+      if(this.props.newagents[j]._id == id)
+      {
+          flag = 1;
+          break;
+      }
+    }
+    if(flag == 0)
+    {
+        this.props.newagents.push({"_id" :id});
+    }
+    else{
+      alert('Agent Already added in the group');  
+    }
+     e.preventDefault();
+     this.forceUpdate();
+  }
+  
+   removeAgent(id,e){
+    alert(id);
+    
+    for(var j = 0;j<this.props.newagents.length;j++)
+    {
+      if(this.props.newagents[j]._id == id)
+      {
+          this.props.newagents.splice(j,1);
+          break;
+      }
+    }
+   
+    alert(this.props.newagents.length);
+    e.preventDefault();
+    this.forceUpdate();
   }
 
   render() {
@@ -106,18 +145,15 @@ class GroupEditView extends Component {
                    <ul className="select2-choices">
                  
                    {
-                    this.props.deptagents &&
-                         this.props.deptagents.filter((agent) => agent.deptid == this.props.group._id).map((agent, i)=> (
-                          this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
+                    this.props.newagents &&
+                          this.props.newagents.map((agent, i)=> (
+                          this.props.agents.filter((ag) => ag._id == agent._id).map((ag,j) =>
                           (
-                          <li  className="select2-search-choice">
-                             <div>{ag.firstname + ' ' + ag.lastname} </div>
-                          </li>   
+                          <li key ={i}  onClick = {this.removeAgent.bind(this,ag._id)}>{ag.firstname + ' ' + ag.lastname}</li>
                           ))
 
                           
-                   ))                                                    
-                        
+                   ))                         
 
                     
                    }
@@ -136,8 +172,8 @@ class GroupEditView extends Component {
                     this.props.agents &&
                          this.props.agents.map((agent, i) =>
                         (
-                          <li className="select2-search-choice">
-                            <div>{agent.firstname + ' ' + agent.lastname} </div></li>
+                          <li  key ={i} className="select2-search-choice">
+                            <div  onClick = {this.appendAgent.bind(this,agent._id)}>{agent.firstname + ' ' + agent.lastname} </div></li>
                         ))
                   }
 
@@ -151,7 +187,7 @@ class GroupEditView extends Component {
               <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.editGroupDetail}>
+                    <button className="btn green" onClick={this.editGroupDetail} type="submit">
                       <i className="fa fa-pencil"/>
                        Submit
                     </button>
@@ -202,7 +238,8 @@ function mapStateToProps(state) {
     group: (state.dashboard.group),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
-     errorMessage:(state.dashboard.errorMessage),
+    errorMessage:(state.dashboard.errorMessage),
+    newagents:state.dashboard.newagents,
   };
 }
 

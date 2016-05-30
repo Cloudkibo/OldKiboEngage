@@ -401,41 +401,36 @@ export function deleteAgent(req, res) {
 export function editgroup(req, res) {
   console.log('edit group is called');
   var token = req.headers.authorization;
-  console.log(req.body);
-  var dept = req.body.dept;
-  var deptt = { 
-           '_id' : dept.id, 
-           'deptname' : dept.deptname,
-           'deptdescription': dept.deptdescription
-         }
-  console.log(deptt)       
-
+  console.log(req.body.dept);
+  console.log(req.body.deptagents);
+  
+  console.log(deptagents);
    var options = {
       url: 'https://api.kibosupport.com/api/departments/update/',
       rejectUnauthorized : false,
       headers :  {
-                 'Authorization': `Bearer ${token}`
+                 'Authorization': `Bearer ${token}`,
+                
                  },
-      form: {
-           dept : deptt
+      json: {
+           'dept' : req.body.dept,
+           'deptagents': req.body.deptagents,
           }
       
      
     };
+    console.log(options.json.dept);
     function callback(error, response, body) {
-        console.log(error);
-        var info = JSON.parse(body);
-        console.log(info.msg);
-       console.log(info.status);
+        console.log(body);
     
       if(!error  && response.statusCode == 200) {
-       if(info.status == 'success')
+       if(body.status == 'success')
        {
-            return res.status(200).json({statusCode : 200,message:info.msg});
+            return res.status(200).json({statusCode : 200,message:body.msg});
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+            return res.status(422).json({statusCode : 422 ,message:body.msg}); 
    
        }
     }
@@ -492,3 +487,46 @@ export function editagent(req, res) {
         request.post(options, callback);
    
   }
+
+
+export function createChannel(req, res) {
+  console.log('create Channel is called');
+  var token = req.headers.authorization;
+  console.log(req.body);
+   var options = {
+      url: 'https://api.kibosupport.com/api/messagechannels/',
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      json: req.body.Channel
+      
+     
+    };
+    
+    function callback(error, response, body) {
+        console.log(body);
+        console.log(error)
+      if(!error  && response.statusCode == 200) {
+       if(body.status == 'success')
+       {
+            return res.status(200).json({statusCode : 200,body});
+       }
+       else
+       {
+            return res.status(422).json({statusCode : 422 ,body}); 
+   
+       }
+    }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,body}); 
+
+    }
+
+   }
+        request.post(options, callback);
+   
+  }
+

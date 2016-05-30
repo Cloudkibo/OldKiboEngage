@@ -127,7 +127,7 @@ function SideBar() {
                 </a>
               </li>
               <li className="">
-                <a href="/completedcalls">
+                <Link to="/messagechannel">
                   <i className="fa fa-envelope-square">
                   </i>      
                   <span className="title">
@@ -135,7 +135,7 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
               <li className="">
                 <a href="/completedcalls">

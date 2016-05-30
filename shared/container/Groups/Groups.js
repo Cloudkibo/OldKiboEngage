@@ -56,10 +56,8 @@ class Groups extends Component {
  
 
   render() {
-    console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
-    console.log(this.props.groupdetails)
     
     return (
       <div>

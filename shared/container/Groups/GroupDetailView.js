@@ -84,6 +84,7 @@ class GroupDetailView extends Component {
                    <div className="col-md-9">
                    <ul>
                    {
+                    this.props.deptagents &&
                          this.props.deptagents.filter((agent) => agent.deptid == this.props.group._id).map((agent, i)=> (
                           this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
                           (
@@ -142,6 +143,8 @@ function mapStateToProps(state) {
     group: (state.dashboard.group),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
+    groupdetails:(state.dashboard.groupdetails),
+    userdetails:(state.dashboard.userdetails),
   };
 }
 
