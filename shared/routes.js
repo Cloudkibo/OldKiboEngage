@@ -12,6 +12,8 @@ import GroupDetailView from './container/Groups/GroupDetailView';
 import GroupEditView from './container/Groups/GroupEditView';
 import AgentEditView from './container/Agents/AgentEditView';
 import MessageChannelCreate from './container/MessageChannel/messageChannelCreate'
+import Channel from './container/MessageChannel/Channels'
+
 import NotFound from './container/NotFound'
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';
@@ -41,6 +43,7 @@ const routes = (
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
+   
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
@@ -48,7 +51,9 @@ const routes = (
     <Route path="/group/:id" component={GroupDetailView}  onEnter={requireAuth}/>
     <Route path="/editgroup/:id" component={GroupEditView}  onEnter={requireAuth}/>
     <Route path="/editagent/:id" component={AgentEditView}  onEnter={requireAuth}/>
-     <Route path="/messagechannel" component={MessageChannelCreate}  onEnter={requireAuth}/>
+    <Route path="/createmessagechannel" component={MessageChannelCreate}  onEnter={requireAuth}/>
+    <Route path="/messagechannels" component={Channel}  onEnter={requireAuth}/>
+
     <Route path="*" component={NotFound} />
   </Route>
 );

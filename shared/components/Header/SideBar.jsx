@@ -127,7 +127,7 @@ function SideBar() {
                 </a>
               </li>
               <li className="">
-                <Link to="/messagechannel">
+                <Link to="/messagechannels">
                   <i className="fa fa-envelope-square">
                   </i>      
                   <span className="title">

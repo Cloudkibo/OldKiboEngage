@@ -1,74 +1,52 @@
-import GroupListItem from './GroupListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getusergroups} from '../../redux/actions/actions'
-import {creategroup} from '../../redux/actions/actions'
-import {deletegroup} from '../../redux/actions/actions'
-
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
-import GroupCreateView from '../../components/GroupCreateView.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
+import ChannelListItem from './ChannelListItem';
+import {getchannels} from '../../redux/actions/actions'
+import {deletechannel} from '../../redux/actions/actions'
+
 import { bindActionCreators } from 'redux';
 
-class Groups extends Component {
+class Channels extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
     const usertoken = auth.getToken();
-     console.log('componentWillMount is called');
+    console.log('constructor is called');
     if(usertoken != null)
     {
        
         console.log(usertoken);
-        props.getusergroups(usertoken)
+        props.getchannels(usertoken)
       }
-      
-        super(props, context);
+    super(props, context);
   
-    this.state = {
-      showAddGroup: false,
-    };
+  
 
-    this.handleClick = this.handleClick.bind(this);
-    this.add = this.add.bind(this);
-  
     
   }
 
-   handleClick(e) {
-
-      this.setState({
-      showAddGroup: !this.state.showAddGroup,
-      });
-      e.preventDefault();
-  }
-
-  add(name,description) {
-     const usertoken = auth.getToken();
-    this.props.creategroup({ name,description,usertoken });
-     this.setState({
-      showAddGroup: false,
-    });
- }
  
 
   render() {
+    console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
-    
+    console.log(this.props.channels);
+    alert(this.props.channels);
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
     
        <div className="page-container">
-
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">Groups Management </h3>
+              <h3 className ="page-title">MessageChannels Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -76,47 +54,49 @@ class Groups extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/groups"> Groups Management</Link>
+                               <Link to="/messagechannels">MessageChannels Management</Link>
                   </li>               
   
             </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
-                    <i className="fa fa-group"/>
-                    Groups
+                    <i className="fa fa-user"/>
+                   Message Channels
                 </div> 
               </div>    
         
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
-                    <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Group
+                    <Link id="sample_editable_1_new" className="btn green" to='/createmessagechannel'> Create Message Channel
                     <i className="fa fa-plus"/>
-                    </button>
+                    </Link>
                  </div>
               </div>
                {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-              <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>      
-                { this.props.groupdetails &&
+                { this.props.channels &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description </th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created By</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group </th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Active</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created On</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
+           
                     </tr>
                     </thead>
+
                     <tbody>                    
                       {
-                        this.props.groupdetails.map((group, i) => (
+                        this.props.channels.map((channel, i) => (
                           
-                          <GroupListItem group={group} key={group._id}   onDelete={() => this.props.deletegroup(group,token)}/>
+                          <ChannelListItem channel={channel} key={channel._id} group = {this.props.groupdetails.filter((group) => group._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token)}/>
                                                       
                         ))
                       }
@@ -135,31 +115,24 @@ class Groups extends Component {
   }
 }
 
-Groups.propTypes = {
+Channels.propTypes = {
 
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
-  console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.groupdetails);
-  console.log(state.dashboard.errorMessage);
-
   return {
-          groupdetails:(state.dashboard.groupdetails),
+          channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
+          groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
-          agents:(state.dashboard.agents),
-          deptagents:(state.dashboard.deptagents),
- 
            };
 }
 
-// Anything returned from this function will end up as props
-// on the BookList container
 function mapDispatchToProps(dispatch) {
-  // Whenever selectBook is called, the result shoudl be passed
-  // to all of our reducers
-  return bindActionCreators({ deletegroup:deletegroup,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
+  return bindActionCreators({getchannels:getchannels,deletechannel:deletechannel}, dispatch);
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Groups);
+export default connect(mapStateToProps,mapDispatchToProps)(Channels);
+
+
+

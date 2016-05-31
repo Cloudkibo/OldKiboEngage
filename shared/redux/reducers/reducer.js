@@ -72,7 +72,7 @@ const dashboard = (state =dashboardState, action) => {
             userdetails:state.userdetails,
             agents:state.agents,
             deptagents :action.agents,
-             groupdetails:state.groupdetails,
+            groupdetails:state.groupdetails,
            
           };              
 
@@ -83,6 +83,16 @@ const dashboard = (state =dashboardState, action) => {
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
+      };
+
+   case ActionTypes.ADD_CHANNELS:
+          console.log(action.channels)
+          return{
+            groupdetails:state.groupdetails,
+            userdetails: state.userdetails,
+            agents : state.agents,
+            deptagents :state.deptagents,
+            channels : action.channels,
       };
 
     case ActionTypes.ADD_GROUP:
@@ -104,6 +114,16 @@ const dashboard = (state =dashboardState, action) => {
         groupdetails: state.groupdetails.filter((group) => group._id !== action.group._id),
         userdetails: state.userdetails,
         errorMessage:'Group deleted successfully',
+        agents : state.agents,
+      };
+
+
+      case ActionTypes.DELETE_CHANNEL :
+      return {
+        groupdetails: state.groupdetails,
+        channels : state.channels.filter((channel) => channel._id !== action.channel._id),
+        userdetails: state.userdetails,
+        errorMessage:'Message channel deleted successfully',
         agents : state.agents,
       };
       case ActionTypes.DELETE_AGENT :

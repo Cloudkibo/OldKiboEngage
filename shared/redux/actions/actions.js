@@ -155,6 +155,15 @@ export function showGroups(groups) {
   };
 }
 
+export function showChannels(channels) {
+  console.log(channels);
+  return {
+    type: ActionTypes.ADD_CHANNELS,
+    channels,
+
+  };
+}
+
 export function showSpecificChat(chat) {
   console.log(chat);
   return {
@@ -291,6 +300,21 @@ export function getusergroups(token) {
 
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroups(res)));
+  };
+}
+
+/*** get channels ***/
+/****** get user details ***/
+export function getchannels(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getchannels`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showChannels(res)));
   };
 }
 
@@ -458,6 +482,34 @@ export function deletegroup(group,usertoken) {
 }
 else{
   browserHistory.push('/groups');
+
+}
+
+}
+
+
+export function deleteCHANNEL(channel) {
+  return {
+    type: ActionTypes.DELETE_CHANNEL,
+   channel,
+  };
+}
+export function deletechannel(channel,usertoken) {
+  console.log('deletechannel Action is called '+ channel._id + 'your token : '  + usertoken);
+  if(confirm("Do you want to delete this message channel?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteChannel?id=${channel._id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res).then(res => dispatch(deleteCHANNEL(channel)));
+  };
+}
+else{
+  browserHistory.push('/messagechannels');
 
 }
 

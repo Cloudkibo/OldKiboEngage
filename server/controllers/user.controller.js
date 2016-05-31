@@ -11,7 +11,8 @@ var  headers =  {
   'content-type' : 'application/x-www-form-urlencoded'
  }
 
-
+var baseURL = `https://api.kibosupport.com`
+//var baseURL = `https://192.168.8.100:8443`
 export function getlogin (req,res) {
   console.log('Login api is called.');
 
@@ -22,7 +23,7 @@ export function getlogin (req,res) {
   {
     var user = req.body;
     var options = {
-      url: 'https://api.kibosupport.com/auth/local',
+      url: `${baseURL}/auth/local`,
       rejectUnauthorized : false,
       headers:headers,
       form: {
@@ -73,7 +74,7 @@ export function signupUser(req, res) {
   {
      var user = req.body;
      var options = {
-      url: 'https://api.kibosupport.com/api/users/',
+      url: `${baseURL}/api/users/`,
       rejectUnauthorized : false,
       headers:headers,
       form: {
@@ -134,7 +135,7 @@ export function getuser(req, res) {
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
   var options = {
-      url: 'https://api.kibosupport.com/api/users/me',
+      url: `${baseURL}/api/users/me`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -165,7 +166,7 @@ export function getgroups(req, res) {
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
   var options = {
-      url: 'https://api.kibosupport.com/api/departments',
+      url: `${baseURL}/api/departments`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -193,7 +194,7 @@ export function getagents(req, res) {
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
   var options = {
-      url: 'https://api.kibosupport.com/api/users/allagents',
+      url: `${baseURL}/api/users/allagents`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -223,7 +224,7 @@ export function getagents(req, res) {
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
   var options = {
-      url: 'https://api.kibosupport.com/api/deptagents/',
+      url: `${baseURL}/api/deptagents/`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -255,7 +256,7 @@ export function creategroup(req, res) {
   console.log('token received is  : ' + token);
   
    var options = {
-      url: 'https://api.kibosupport.com/api/departments',
+      url: `${baseURL}/api/departments`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -301,10 +302,10 @@ export function getGroup(req, res) {
   console.log(req.query.id);
   var id = req.query.id;
    var options = {
-      url: 'https://api.kibosupport.com/api/departments/'+id,
+      url: `${baseURL}/api/departments/${id}`,
       rejectUnauthorized : false,
       headers :  {
-                 'Authorization': `Bearer ${token}`
+                 'Authorization': `Bearer ${token}`,
                  }
      
     };
@@ -333,7 +334,7 @@ export function destroyGroup(req, res) {
   console.log(req.query.id);
   var id = req.query.id;
    var options = {
-      url: 'https://api.kibosupport.com/api/departments/'+id,
+      url: `${baseURL}/api/departments/${id}`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -369,7 +370,7 @@ export function deleteAgent(req, res) {
   console.log(req.query.id);
   var id = req.query.id;
    var options = {
-      url: 'https://api.kibosupport.com/api/users/deleteagent/'+id,
+      url: `${baseURL}/api/users/deleteagent/${id}`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -406,7 +407,7 @@ export function editgroup(req, res) {
   
   console.log(deptagents);
    var options = {
-      url: 'https://api.kibosupport.com/api/departments/update/',
+      url: `${baseURL}/api/departments/update/`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
@@ -451,7 +452,7 @@ export function editagent(req, res) {
   var token = req.headers.authorization;
   console.log(req.body);
    var options = {
-      url: 'https://api.kibosupport.com/api/users/updaterole/',
+      url: `${baseURL}/api/users/updaterole/`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -495,7 +496,7 @@ export function createChannel(req, res) {
   console.log(req.body);
   console.log(req.body.channel);
    var options = {
-      url: 'https://api.kibosupport.com/api/messagechannels/',
+      url: `${baseURL}/api/messagechannels/`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
@@ -531,3 +532,64 @@ export function createChannel(req, res) {
    
   }
 
+
+export function getchannels(req, res) {
+  console.log('get getchannels is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  var options = {
+      url: `${baseURL}/api/messagechannels`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      console.log(body);
+       console.log(error);
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info);
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
+
+
+export function destroyChannel(req, res) {
+  console.log('destroyChannel is called.');
+  var token = req.headers.authorization;
+  console.log(req.query.id);
+  var id = req.query.id;
+   var options = {
+      url: `${baseURL}/api/messagechannels/${id}`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+     
+    };
+    function callback(error, response, body) {
+    
+    console.log(response.statusCode);
+    console.log(error);
+      if(!error  && response.statusCode == 204) {
+        res.sendStatus(200); 
+    
+   }
+   else{
+    console.log(error);
+     res.sendStatus(422);  
+   }
+ }
+    request.delete(options, callback);
+    
+}
