@@ -593,3 +593,40 @@ export function destroyChannel(req, res) {
     request.delete(options, callback);
     
 }
+
+export function editChannel(req, res) {
+  console.log('edit Channel is called');
+  var token = req.headers.authorization;
+  console.log(req.body);
+  console.log(req.body.channel);
+  var id = req.body.channel._id;
+  console.log(id);
+   var options = {
+      url: `${baseURL}/api/messagechannels/${id}`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      json: req.body.channel
+      
+     
+    };
+    
+    function callback(error, response, body) {
+        console.log(body);
+        console.log(error)
+      if(!error  && response.statusCode == 200) {
+      
+            return res.status(200).json({statusCode : 200,body});
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,body}); 
+
+    }
+
+   }
+        request.put(options, callback);
+   
+  }

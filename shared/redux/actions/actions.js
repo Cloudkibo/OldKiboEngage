@@ -447,6 +447,14 @@ export function getAgentRequest(id,usertoken) {
   };
 }
 
+export function getChannelRequest(id,usertoken) {
+  console.log(id)
+  return {
+    type: ActionTypes.ADD_SELECTED_CHANNEL,
+    id,
+  };
+}
+
 export function getGroupRequest(group,usertoken) {
   console.log('getGroupRequest is called '+ group);
   return (dispatch) => {
@@ -561,6 +569,32 @@ export function createChannel(channel,usertoken){
         console.log(res.statusCode);
          //dispatch(createeditagentError(res.message));
         
+           
+        }
+    );
+  };
+}
+
+
+export function editChannel(channel,usertoken){
+  console.log(channel);
+  console.log(usertoken);
+  console.log('edit message channel is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editChannel`, {
+      method: 'post',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+      channel : channel
+      })       
+      
+      ,
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+        browserHistory.push('/messagechannels');
            
         }
     );

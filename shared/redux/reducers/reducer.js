@@ -49,7 +49,18 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         agent: state.agents.filter((agent) => agent._id == action.id),
       
-      };    
+      };
+
+    case ActionTypes.ADD_SELECTED_CHANNEL :
+      return {
+        userdetails: state.userdetails,
+        groupdetails:state.groupdetails,
+        agents : state.agents,
+        channels : state.channels,
+        deptagents :state.deptagents,
+        channel: state.channels.filter((channel) => channel._id == action.id),
+      
+      };       
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
           return{

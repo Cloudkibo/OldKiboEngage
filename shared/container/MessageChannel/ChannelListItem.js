@@ -28,7 +28,7 @@ function ChannelListItem(props) {
       <td>{handleDate(props.channel.creationdate)}</td>
        <td>
         <Link to={`/editchannel/${props.channel._id}`} className="btn blue-madison" >
-         Edit
+        Edit
         </Link>
         <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
 

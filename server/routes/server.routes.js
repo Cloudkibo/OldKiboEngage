@@ -21,6 +21,7 @@ router.route('/deptagents').get(UserController.deptagents);
 router.route('/editgroup').post(UserController.editgroup);
 router.route('/editagent').post(UserController.editagent);
 router.route('/createChannel').post(UserController.createChannel);
+router.route('/editChannel').post(UserController.editChannel);
 router.route('/getchannels').get(UserController.getchannels);
 
 export default router;

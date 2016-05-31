@@ -13,6 +13,7 @@ import GroupEditView from './container/Groups/GroupEditView';
 import AgentEditView from './container/Agents/AgentEditView';
 import MessageChannelCreate from './container/MessageChannel/messageChannelCreate'
 import Channel from './container/MessageChannel/Channels'
+import ChannelEditView from './container/MessageChannel/ChannelEditView'
 
 import NotFound from './container/NotFound'
 import auth from './services/auth';
@@ -53,7 +54,7 @@ const routes = (
     <Route path="/editagent/:id" component={AgentEditView}  onEnter={requireAuth}/>
     <Route path="/createmessagechannel" component={MessageChannelCreate}  onEnter={requireAuth}/>
     <Route path="/messagechannels" component={Channel}  onEnter={requireAuth}/>
-
+    <Route path="/editchannel/:id" component={ChannelEditView}  onEnter={requireAuth}/>
     <Route path="*" component={NotFound} />
   </Route>
 );
