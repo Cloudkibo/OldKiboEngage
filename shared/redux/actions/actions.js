@@ -507,7 +507,7 @@ export function createChannel(channel,usertoken){
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-        // dispatch(editagentError(res.message));
+         //dispatch(createeditagentError(res.message));
         
            
         }

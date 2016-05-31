@@ -11,7 +11,7 @@ import Agents from './container/Agents/Agents';
 import GroupDetailView from './container/Groups/GroupDetailView';
 import GroupEditView from './container/Groups/GroupEditView';
 import AgentEditView from './container/Agents/AgentEditView';
-import MessageChannelCreate from './container/MessageChannel/MessageChannelCreate'
+import MessageChannelCreate from './container/MessageChannel/messageChannelCreate'
 import NotFound from './container/NotFound'
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';

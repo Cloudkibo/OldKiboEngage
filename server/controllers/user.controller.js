@@ -493,6 +493,7 @@ export function createChannel(req, res) {
   console.log('create Channel is called');
   var token = req.headers.authorization;
   console.log(req.body);
+  console.log(req.body.channel);
    var options = {
       url: 'https://api.kibosupport.com/api/messagechannels/',
       rejectUnauthorized : false,
@@ -500,7 +501,7 @@ export function createChannel(req, res) {
                  'Authorization': `Bearer ${token}`,
                 
                  },
-      json: req.body.Channel
+      json: req.body.channel
       
      
     };
