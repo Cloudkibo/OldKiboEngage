@@ -6,6 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
+import InviteAgent from './InviteAgent';
 
 import {deleteagent} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
@@ -17,20 +18,45 @@ class Agents extends Component {
     const usertoken = auth.getToken();
     console.log('constructor is called');
     super(props, context);
-  
-  
+    this.state = {
+      showInviteAgent :  false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+    this.cancelInvite = this.cancelInvite.bind(this);
+    this.add = this.add.bind(this);
 
     
   }
 
- 
+  add() {
+     const usertoken = auth.getToken();
+  //  this.props.inviteAgent({ name,description,usertoken });
+     this.setState({
+      showInviteAgent: false,
+    });
+ }
+   handleClick(e) {
+
+      this.setState({
+      showInviteAgent: !this.state.showInviteAgent,
+      });
+      e.preventDefault();
+  }
+  cancelInvite(e){
+
+      this.setState({
+      showInviteAgent: false,
+      });
+      e.preventDefault();
+  }
+  
 
   render() {
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
     console.log(this.props.agents);
-    alert(this.props.agents);
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
@@ -62,7 +88,7 @@ class Agents extends Component {
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
-                    <button id="sample_editable_1_new" className="btn green"> Invite Agent
+                    <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Invite Agent
                     <i className="fa fa-plus"/>
                     </button>
                  </div>
@@ -71,6 +97,8 @@ class Agents extends Component {
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
+               <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid}/>      
+                   
                 { this.props.agents &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
