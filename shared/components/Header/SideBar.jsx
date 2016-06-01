@@ -137,6 +137,17 @@ function SideBar() {
                   </span>
                 </Link>
               </li>
+               <li className="">
+                <Link to="/cannedresponses">
+                  <i className="fa fa-envelope-square">
+                  </i>      
+                  <span className="title">
+                     Canned Response
+                  </span>      
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
               <li className="">
                 <a href="/completedcalls">
                   <i className="fa fa-question-circle">

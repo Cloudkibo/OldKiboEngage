@@ -12,7 +12,7 @@ var  headers =  {
  }
 
 var baseURL = `https://api.kibosupport.com`
-//var baseURL = `https://192.168.8.100:8443`
+//var baseURL = `https://192.168.8.101:8443`
 export function getlogin (req,res) {
   console.log('Login api is called.');
 
@@ -490,6 +490,8 @@ export function editagent(req, res) {
   }
 
 
+
+/************************* Channel APIS ************************************/
 export function createChannel(req, res) {
   console.log('create Channel is called');
   var token = req.headers.authorization;
@@ -511,15 +513,9 @@ export function createChannel(req, res) {
         console.log(body);
         console.log(error)
       if(!error  && response.statusCode == 200) {
-       if(body.status == 'success')
-       {
+      
             return res.status(200).json({statusCode : 200,body});
-       }
-       else
-       {
-            return res.status(422).json({statusCode : 422 ,body}); 
-   
-       }
+      
     }
     else
     {
@@ -609,6 +605,151 @@ export function editChannel(req, res) {
                 
                  },
       json: req.body.channel
+      
+     
+    };
+    
+    function callback(error, response, body) {
+        console.log(body);
+        console.log(error)
+      if(!error  && response.statusCode == 200) {
+      
+            return res.status(200).json({statusCode : 200,body});
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,body}); 
+
+    }
+
+   }
+        request.put(options, callback);
+   
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+/************************* Canned Response APIs *********************************/
+export function createResponse(req, res) {
+  console.log('create Response is called');
+  var token = req.headers.authorization;
+  console.log(req.body);
+  console.log(req.body.response);
+   var options = {
+      url: `${baseURL}/api/shortcuts/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      json: req.body.response
+      
+     
+    };
+    
+    function callback(error, response, body) {
+        console.log(body);
+        console.log(error)
+      if(!error  && response.statusCode == 201) {
+            return res.status(200).json({statusCode : 200,body});
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,body}); 
+
+    }
+
+   }
+        request.post(options, callback);
+   
+  }
+
+
+export function getresponses(req, res) {
+  console.log('get getresponses is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  var options = {
+      url: `${baseURL}/api/shortcuts/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      console.log(body);
+       console.log(error);
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info);
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
+
+
+export function destroyResponse(req, res) {
+  console.log('destroyResponse is called.');
+  var token = req.headers.authorization;
+  console.log(req.query.id);
+  var id = req.query.id;
+   var options = {
+      url: `${baseURL}/api/shortcuts/${id}`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+     
+    };
+    function callback(error, response, body) {
+    
+    console.log(response.statusCode);
+    console.log(error);
+      if(!error  && response.statusCode == 204) {
+        res.sendStatus(200); 
+    
+   }
+   else{
+    console.log(error);
+     res.sendStatus(422);  
+   }
+ }
+    request.delete(options, callback);
+    
+}
+
+export function editResponse(req, res) {
+  console.log('edit Response is called');
+  var token = req.headers.authorization;
+  console.log(req.body);
+  console.log(req.body.response);
+  var id = req.body.response._id;
+  console.log(id);
+   var options = {
+      url: `${baseURL}/api/shortcuts/${id}`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      json: req.body.response
       
      
     };

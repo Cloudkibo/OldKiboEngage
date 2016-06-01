@@ -15,6 +15,10 @@ import MessageChannelCreate from './container/MessageChannel/messageChannelCreat
 import Channel from './container/MessageChannel/Channels'
 import ChannelEditView from './container/MessageChannel/ChannelEditView'
 
+import CannedResponseCreate from './container/CannedResponse/CannedResponseCreate'
+import CannedResponses from './container/CannedResponse/CannedResponses'
+import ResponseEditView from './container/CannedResponse/ResponseEditView'
+
 import NotFound from './container/NotFound'
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';
@@ -55,6 +59,11 @@ const routes = (
     <Route path="/createmessagechannel" component={MessageChannelCreate}  onEnter={requireAuth}/>
     <Route path="/messagechannels" component={Channel}  onEnter={requireAuth}/>
     <Route path="/editchannel/:id" component={ChannelEditView}  onEnter={requireAuth}/>
+
+
+     <Route path="/createcannedresponse" component={CannedResponseCreate}  onEnter={requireAuth}/>
+    <Route path="/cannedresponses" component={CannedResponses}  onEnter={requireAuth}/>
+    <Route path="/editresponse/:id" component={ResponseEditView}  onEnter={requireAuth}/>
     <Route path="*" component={NotFound} />
   </Route>
 );

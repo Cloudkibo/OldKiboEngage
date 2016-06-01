@@ -9,20 +9,7 @@ import { browserHistory } from 'react-router'
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
-// There are three possible states for our login
-// process and we need actions for each of them
 
-// Feature test
-
-export function addGroup(group) {
-  console.log(group);
-  return {
-    type: ActionTypes.ADD_GROUP,
-    deptname: group.deptname,
-    deptdescription: group.deptdescription,
-
-  };
-}
 function requestLogin(creds) {
   return {
     type: ActionTypes.LOGIN_REQUEST,
@@ -146,23 +133,9 @@ export function showUsername(user) {
   };
 }
 
-export function showGroups(groups) {
-  console.log(groups);
-  return {
-    type: ActionTypes.ADD_GROUPS,
-    groups,
 
-  };
-}
 
-export function showChannels(channels) {
-  console.log(channels);
-  return {
-    type: ActionTypes.ADD_CHANNELS,
-    channels,
 
-  };
-}
 
 export function showSpecificChat(chat) {
   console.log(chat);
@@ -170,6 +143,32 @@ export function showSpecificChat(chat) {
     type: ActionTypes.SHOW_SPECIFIC_CHAT,
     chat,
 
+  };
+}
+
+export function fetchSpecificChat(data) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/userchats/getSpecificChat`, {
+      method: 'post',
+      body: JSON.stringify({
+          request_id: group.request_id,
+          companyid: group.companyid,
+
+      }),
+      headers: new Headers({
+         'Authorization': data.usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+          console.log(res.statusCode);
+          if(res.statusCode != 200){
+            dispatch(showSpecificChat_Error(res.message));
+          }
+          else{
+            dispatch(showSpecificChat(res.message))
+          }
+        }
+    );
   };
 }
 
@@ -182,46 +181,7 @@ export function showSpecificChat_Error(chat_error) {
   };
 }
 
-export function showAgents(agents) {
-  console.log(agents);
-  return {
-    type: ActionTypes.ADD_AGENTS,
-    agents,
 
-  };
-}
-
-export function showDeptAgents(agents) {
-  console.log(agents);
-  return {
-    type: ActionTypes.ADD_DEPTAGENTS,
-    agents,
-
-  };
-}
-export function creategroupError(message) {
-  console.log(message);
-  return {
-    type: ActionTypes.CREATEGROUP_FAILURE,
-    message,
-  }
-}
-
-export function editgroupError(message) {
-  console.log(message);
-  return {
-    type: ActionTypes.EDITGROUP_RESPONSE,
-    message,
-  }
-}
-
-export function editagentError(message) {
-  console.log(message);
-  return {
-    type: ActionTypes.EDITAGENT_RESPONSE,
-    message,
-  }
-}
 
 export function signupuser(user) {
   console.log(user);
@@ -260,34 +220,11 @@ export function getuser(token) {
   };
 }
 
-/****** get user details ***/
-export function getAgents(token) {
-  console.log(token);
-  return (dispatch) => {
-    fetch(`${baseURL}/api/getagents`, {
-        method: 'get',
-        headers: new Headers({
-        'Authorization': token,
-        'Pragma': 'no-cache'
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showAgents(res)));
-  };
-}
 
-/****** get user details ***/
-export function getDeptAgents(token) {
-  console.log(token);
-  return (dispatch) => {
-    fetch(`${baseURL}/api/deptagents`, {
-        method: 'get',
-        headers: new Headers({
-        'Authorization': token,
-        'Pragma': 'no-cache'
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showDeptAgents(res)));
-  };
-}
+/********************************************************************************************/
+/*              GROUP RELATED actions                                                       */
 
+/********************************************************************************************/
 
 /****** get user details ***/
 export function getusergroups(token) {
@@ -303,18 +240,37 @@ export function getusergroups(token) {
   };
 }
 
-/*** get channels ***/
-/****** get user details ***/
-export function getchannels(token) {
-  console.log(token);
-  return (dispatch) => {
-    fetch(`${baseURL}/api/getchannels`, {
-        method: 'get',
-        headers: new Headers({
-        'Authorization': token
+export function creategroupError(message) {
+  console.log(message);
+  return {
+    type: ActionTypes.CREATEGROUP_FAILURE,
+    message,
+  }
+}
 
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showChannels(res)));
+export function editgroupError(message) {
+  console.log(message);
+  return {
+    type: ActionTypes.EDITGROUP_RESPONSE,
+    message,
+  }
+}
+
+export function showGroups(groups) {
+  console.log(groups);
+  return {
+    type: ActionTypes.ADD_GROUPS,
+    groups,
+
+  };
+}
+export function addGroup(group) {
+  console.log(group);
+  return {
+    type: ActionTypes.ADD_GROUP,
+    deptname: group.deptname,
+    deptdescription: group.deptdescription,
+
   };
 }
 
@@ -345,31 +301,6 @@ export function creategroup(group) {
   };
 }
 
-export function fetchSpecificChat(data) {
-  return (dispatch) => {
-    fetch(`${baseURL}/api/userchats/getSpecificChat`, {
-      method: 'post',
-      body: JSON.stringify({
-          request_id: group.request_id,
-          companyid: group.companyid,
-
-      }),
-      headers: new Headers({
-         'Authorization': data.usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then((res) => {
-          console.log(res.statusCode);
-          if(res.statusCode != 200){
-            dispatch(showSpecificChat_Error(res.message));
-          }
-          else{
-            dispatch(showSpecificChat(res.message))
-          }
-        }
-    );
-  };
-}
 
 export function editGroup(group) {
   console.log('editGroup action called');
@@ -403,33 +334,6 @@ export function editGroup(group) {
   };
 }
 
-
-export function editAgent(id,role,token) {
-  console.log('editAgent action called');
-  alert(role)
-  return (dispatch) => {
-    fetch(`${baseURL}/api/editagent`, {
-      method: 'post',
-      body: JSON.stringify({
-        
-          personid:id,
-          role: role       
-        
-      })     
-      ,
-      headers: new Headers({
-         'Authorization': token,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
-         dispatch(editagentError(res.message));
-        
-           
-        }
-    );
-  };
-}
 export function addSelectedGroup(group) {
   console.log(group)
   return {
@@ -439,21 +343,7 @@ export function addSelectedGroup(group) {
 }
 
 
-export function getAgentRequest(id,usertoken) {
-  console.log(id)
-  return {
-    type: ActionTypes.ADD_SELECTED_AGENT,
-    id,
-  };
-}
 
-export function getChannelRequest(id,usertoken) {
-  console.log(id)
-  return {
-    type: ActionTypes.ADD_SELECTED_CHANNEL,
-    id,
-  };
-}
 
 export function getGroupRequest(group,usertoken) {
   console.log('getGroupRequest is called '+ group);
@@ -496,32 +386,103 @@ else{
 }
 
 
-export function deleteCHANNEL(channel) {
+
+
+
+
+
+/***************************************************************************************************/
+/*              AGENT RELATED actions                                                              */
+/***************************************************************************************************/
+
+export function getAgentRequest(id,usertoken) {
+  console.log(id)
   return {
-    type: ActionTypes.DELETE_CHANNEL,
-   channel,
+    type: ActionTypes.ADD_SELECTED_AGENT,
+    id,
   };
 }
-export function deletechannel(channel,usertoken) {
-  console.log('deletechannel Action is called '+ channel._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this message channel?"))
-  {
+export function showAgents(agents) {
+  console.log(agents);
+  return {
+    type: ActionTypes.ADD_AGENTS,
+    agents,
+
+  };
+}
+
+export function showDeptAgents(agents) {
+  console.log(agents);
+  return {
+    type: ActionTypes.ADD_DEPTAGENTS,
+    agents,
+
+  };
+}
+
+export function editagentError(message) {
+  console.log(message);
+  return {
+    type: ActionTypes.EDITAGENT_RESPONSE,
+    message,
+  }
+}
+
+/****** get user details ***/
+export function getAgents(token) {
+  console.log(token);
   return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteChannel?id=${channel._id}`, {
-      method: 'delete',
+    fetch(`${baseURL}/api/getagents`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showAgents(res)));
+  };
+}
+
+/****** get user details ***/
+export function getDeptAgents(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/deptagents`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showDeptAgents(res)));
+  };
+}
+
+export function editAgent(id,role,token) {
+  console.log('editAgent action called');
+  alert(role)
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editagent`, {
+      method: 'post',
+      body: JSON.stringify({
+        
+          personid:id,
+          role: role       
+        
+      })     
+      ,
       headers: new Headers({
-        'Authorization': usertoken,
+         'Authorization': token,
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res).then(res => dispatch(deleteCHANNEL(channel)));
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+         dispatch(editagentError(res.message));
+        
+           
+        }
+    );
   };
 }
-else{
-  browserHistory.push('/messagechannels');
 
-}
-
-}
 
 export function deleteAGENT(agent) {
   return {
@@ -549,6 +510,14 @@ else{
 }
 
 }
+
+
+
+/*************************************************************************************************/
+/*                      Channel Related Actions                                                  */ 
+
+/*************************************************************************************************/
+
 export function createChannel(channel,usertoken){
   console.log(channel);
   console.log(usertoken);
@@ -599,4 +568,177 @@ export function editChannel(channel,usertoken){
         }
     );
   };
+}
+
+export function showChannels(channels) {
+  console.log(channels);
+  return {
+    type: ActionTypes.ADD_CHANNELS,
+    channels,
+
+  };
+}
+
+/*** get channels ***/
+export function getchannels(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getchannels`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showChannels(res)));
+  };
+}
+
+export function getChannelRequest(id,usertoken) {
+  console.log(id)
+  return {
+    type: ActionTypes.ADD_SELECTED_CHANNEL,
+    id,
+  };
+}
+
+export function deleteCHANNEL(channel) {
+  return {
+    type: ActionTypes.DELETE_CHANNEL,
+   channel,
+  };
+}
+export function deletechannel(channel,usertoken) {
+  console.log('deletechannel Action is called '+ channel._id + 'your token : '  + usertoken);
+  if(confirm("Do you want to delete this message channel?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteChannel?id=${channel._id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res).then(res => dispatch(deleteCHANNEL(channel)));
+  };
+}
+else{
+  browserHistory.push('/messagechannels');
+
+}
+
+}
+
+
+/**********************************************************************************************/
+/*          CANNED RESPONSE RELATED Actions                                                   */
+/*********************************************************************************************/
+
+
+export function createResponse(response,usertoken){
+  console.log(response);
+  console.log(usertoken);
+  console.log('create response is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createResponse`, {
+      method: 'post',
+      headers: new Headers({
+         'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+      response : response
+      })       
+      
+      ,
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+        browserHistory.push('/cannedresponses');
+           
+        }
+    );
+  };
+}
+
+
+export function editResponse(response,usertoken){
+  console.log(response);
+  console.log(usertoken);
+  console.log('edit response is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editResponse`, {
+      method: 'post',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+      response : response
+      })       
+      
+      ,
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+        browserHistory.push('/cannedresponses');
+           
+        }
+    );
+  };
+}
+
+export function showResponses(responses) {
+  console.log(responses);
+  return {
+    type: ActionTypes.ADD_RESPONSES,
+    responses,
+
+  };
+}
+
+/*** get channels ***/
+export function getresponses(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getresponses`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showResponses(res)));
+  };
+}
+
+export function getResponseRequest(id,usertoken) {
+  console.log(id)
+  return {
+    type: ActionTypes.ADD_SELECTED_RESPONSE,
+    id,
+  };
+}
+
+export function deleteRESPONSE(response) {
+  return {
+    type: ActionTypes.DELETE_RESPONSE,
+   response,
+  };
+}
+export function deleteresponse(response,usertoken) {
+  console.log('deleteresponse Action is called '+ response._id + 'your token : '  + usertoken);
+  if(confirm("Do you want to delete this canned response?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteResponse?id=${response._id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res).then(res => dispatch(deleteRESPONSE(response)));
+  };
+}
+else{
+  browserHistory.push('/cannedresponses');
+
+}
+
 }

@@ -60,7 +60,18 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         channel: state.channels.filter((channel) => channel._id == action.id),
       
-      };       
+      };   
+    case ActionTypes.ADD_SELECTED_RESPONSE :
+      return {
+        userdetails: state.userdetails,
+        groupdetails:state.groupdetails,
+        agents : state.agents,
+        channels : state.channels,
+        responses : state.responses,
+        deptagents :state.deptagents,
+        response: state.responses.filter((response) => response._id == action.id),
+      
+      };         
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
           return{
@@ -106,6 +117,17 @@ const dashboard = (state =dashboardState, action) => {
             channels : action.channels,
       };
 
+    case ActionTypes.ADD_RESPONSES:
+         console.log(action.responses)
+          return{
+            groupdetails:state.groupdetails,
+            userdetails: state.userdetails,
+            agents : state.agents,
+            deptagents :state.deptagents,
+            channels : state.channels,
+            responses : action.responses,
+      };
+  
     case ActionTypes.ADD_GROUP:
     console.log(action.deptname);
       return {
@@ -135,6 +157,16 @@ const dashboard = (state =dashboardState, action) => {
         channels : state.channels.filter((channel) => channel._id !== action.channel._id),
         userdetails: state.userdetails,
         errorMessage:'Message channel deleted successfully',
+        agents : state.agents,
+      };
+
+      case ActionTypes.DELETE_RESPONSE :
+      return {
+        groupdetails: state.groupdetails,
+        channels : state.channels,
+        responses : state.responses.filter((response) => response._id !== action.response._id),
+        userdetails: state.userdetails,
+        errorMessage:'Canned Response deleted successfully',
         agents : state.agents,
       };
       case ActionTypes.DELETE_AGENT :
