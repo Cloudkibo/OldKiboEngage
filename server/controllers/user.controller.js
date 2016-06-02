@@ -491,6 +491,49 @@ export function editagent(req, res) {
 
 
 
+
+export function inviteAgent(req, res) {
+  console.log('invite agent is called');
+  var token = req.headers.authorization;
+  console.log(req.body);
+   var options = {
+      url: `${baseURL}/api/tempaccounts/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      form: {
+          email : req.body.email
+
+          }
+      
+     
+    };
+    function callback(error, response, body) {
+        console.log(error);
+        var info = JSON.parse(body);
+        console.log(info.msg);
+       console.log(info.status);
+    
+      if(!error  && response.statusCode == 200) {
+       if(info.status == 'success')
+       {
+            return res.status(200).json({statusCode : 200,message:info.msg});
+       }
+       else
+       {
+            return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+   
+       }
+    }
+   
+
+   }
+        request.post(options, callback);
+   
+  }
+
+
 /************************* Channel APIS ************************************/
 export function createChannel(req, res) {
   console.log('create Channel is called');

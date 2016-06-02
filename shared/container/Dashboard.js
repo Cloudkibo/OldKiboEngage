@@ -15,25 +15,17 @@ class Dashboard extends Component {
  constructor(props, context) {
     super(props, context);
     
-    
   }
   componentWillMount(){
-    //call action to get username 
     const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
-    console.log(usertoken);
     this.props.getuser(usertoken)
-  
-  }
-  componentDidMount(){
-    const usertoken = auth.getToken();
-    console.log('componentDidMount is called');
-    console.log(usertoken);
+    
     this.props.getAgents(usertoken);
     this.props.getDeptAgents(usertoken);
     this.props.getusergroups(usertoken);
-    
+  
   }
+  
   render() {
     //console.log(this.props.userdetails)
     const token = auth.getToken()

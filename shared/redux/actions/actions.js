@@ -427,6 +427,14 @@ export function editagentError(message) {
     message,
   }
 }
+export function inviteAgentResponse(message) {
+  alert(message);
+  return {
+    type: ActionTypes.INVITE_AGENT_RESPONSE,
+    message,
+  }
+}
+
 
 /****** get user details ***/
 export function getAgents(token) {
@@ -476,6 +484,30 @@ export function editAgent(id,role,token) {
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
          dispatch(editagentError(res.message));
+        
+           
+        }
+    );
+  };
+}
+
+export function inviteagent(email,token) {
+  console.log('invite agent action called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/inviteAgent`, {
+      method: 'post',
+      body: JSON.stringify({
+        email : email
+        
+      })     
+      ,
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+         dispatch(inviteAgentResponse(res.message));
         
            
         }

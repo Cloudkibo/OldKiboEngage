@@ -205,6 +205,15 @@ const dashboard = (state =dashboardState, action) => {
          agent: state.agent,
         };  
         
+      case ActionTypes.INVITE_AGENT_RESPONSE:
+      return {
+         groupdetails: state.groupdetails,
+         userdetails: state.userdetails,
+         errorMessage:action.message,
+         agents : state.agents,
+         deptagents :state.deptagents,
+         agent: state.agent,
+        };  
 
         case ActionTypes.SHOW_SPECIFIC_CHAT:
         return {

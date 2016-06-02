@@ -7,6 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
 import InviteAgent from './InviteAgent';
+import {inviteagent} from '../../redux/actions/actions'
 
 import {deleteagent} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
@@ -29,9 +30,10 @@ class Agents extends Component {
     
   }
 
-  add() {
+
+  add(email) {
      const usertoken = auth.getToken();
-  //  this.props.inviteAgent({ name,description,usertoken });
+    this.props.inviteagent( email,usertoken);
      this.setState({
       showInviteAgent: false,
     });
@@ -97,7 +99,7 @@ class Agents extends Component {
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-               <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid}/>      
+               <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid} website = {this.props.userdetails.website}/>      
                    
                 { this.props.agents &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
@@ -148,13 +150,17 @@ function mapStateToProps(state) {
           agents:(state.dashboard.agents),
           userdetails:(state.dashboard.userdetails),
           errorMessage:(state.dashboard.errorMessage),
+          agent :(state.dashboard.agent),
+          deptagents:(state.dashboard.deptagents),
+    
+
            };
 }
 
 function mapDispatchToProps(dispatch) {
   // Whenever selectBook is called, the result shoudl be passed
   // to all of our reducers
-  return bindActionCreators({ deleteagent:deleteagent}, dispatch);
+  return bindActionCreators({ deleteagent:deleteagent,inviteagent:inviteagent}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Agents);
 

@@ -13,22 +13,24 @@ import { Link } from 'react-router';
 class AgentEditView extends Component {
   constructor(props, context) {
        //call action to get user groups 
-    const usertoken = auth.getToken();
-     console.log('constructor is called');
-    if(usertoken != null)
-     {
-       
-        console.log(usertoken);
-        console.log(props.params.id);
-        props.getAgentRequest(props.params.id,usertoken);
-      }
-
+   
     super(props, context);
     
     this.editAgent = this.editAgent.bind(this);
   }
 
- 
+  componentWillMount(){
+     const usertoken = auth.getToken();
+     console.log('constructor is called');
+    if(usertoken != null)
+     {
+       
+        console.log(usertoken);
+        console.log(this.props.params.id);
+        this.props.getAgentRequest(this.props.params.id,usertoken);
+      }
+
+  }
 
   editAgent() {
     const usertoken = auth.getToken();
@@ -57,7 +59,9 @@ class AgentEditView extends Component {
                         ))
 
       }  
-       var role;
+      var role;
+      if(ag.length >= 1){
+
       if(ag[0].isAgent == "Yes"){
         role = "agent";
       }
@@ -68,6 +72,7 @@ class AgentEditView extends Component {
       {
         role = "supervisor"
       }
+    }
     return (
       <div>
 

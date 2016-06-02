@@ -19,6 +19,7 @@ router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
 router.route('/editgroup').post(UserController.editgroup);
 router.route('/editagent').post(UserController.editagent);
+router.route('/inviteAgent').post(UserController.inviteAgent);
 
 router.route('/createChannel').post(UserController.createChannel);
 router.route('/editChannel').post(UserController.editChannel);

@@ -4,7 +4,7 @@ import { Form, ValidatedInput } from 'react-bootstrap-validation';
 class InviteAgent extends Component {
   constructor(props, context) {
     super(props, context);
-    this.inviteAgent = this.inviteAgent.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.cancelInvite = this.cancelInvite.bind(this);
   }
 
@@ -12,17 +12,23 @@ cancelInvite()
 {
   this.props.cancelInvite();
 }
-  inviteAgent() {
-   /*const nameRef = this.refs.name;
-   const descRef = this.refs.desc;
-    if (nameRef.value && descRef.value) {
-     
-      nameRef.value = descRef.value = '';
-    }*/
-
-    alert('invite agent is called');
-     this.props.inviteAgent();
+  
+  onSubmit() {
+   const email = this.refs.emailinp;
+   alert(email.value)
+  if(email.value.split('@')[1].split('.')[0] !== this.props.website)
+  {
+      alert('Email address must be of company domain');
   }
+
+  else if (email.value) {
+       this.props.inviteAgent(email.value);
+       email.value = '';
+    }
+
+
+   
+    }
 
   
   render() {
@@ -38,7 +44,6 @@ cancelInvite()
             </div>
           </div>     
       <div className="portlet-body ">
-      <Form>
       <div className="form">
         <div className="form-body">
           <div className="form-group">
@@ -55,24 +60,19 @@ cancelInvite()
           <div className="form-group">
                  
                   <div className="input-group">
-                            
-                    <ValidatedInput type='text' label = "Email Address" name='email' validate='required,isEmail'
-                    
-                    errorHelp={{
-                        required: 'Please enter agent\'s email',
-                        isEmail: 'Email is invalid'
-                    }}
+                    <label>Email Address</label>        
+                    <input type='text' name='email'ref ="emailinp"                  
+                   
                    />
                     </div>
           </div>
                 
           <div className="form-actions">
-              <button className="btn blue"  onClick={this.inviteAgent}> Submit </button> 
+              <button className="btn blue"  type ="submit" onClick={this.onSubmit}> Submit </button> 
               <button className="btn default"  onClick={this.cancelInvite}> Cancel </button> 
          </div>
         </div>
       </div>
-      </Form>
       </div>
       </div>
       </div>
