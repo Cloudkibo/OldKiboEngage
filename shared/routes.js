@@ -14,6 +14,7 @@ import AgentEditView from './container/Agents/AgentEditView';
 import MessageChannelCreate from './container/MessageChannel/messageChannelCreate'
 import Channel from './container/MessageChannel/Channels'
 import ChannelEditView from './container/MessageChannel/ChannelEditView'
+import JoinCompany from './container/Agents/JoinCompany'
 
 import CannedResponseCreate from './container/CannedResponse/CannedResponseCreate'
 import CannedResponses from './container/CannedResponse/CannedResponses'
@@ -48,7 +49,8 @@ const routes = (
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
-   
+    <Route path="/joincompany/:id" component={JoinCompany}/>
+
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
     <Route path="/agents" component={Agents} onEnter={requireAuth} />

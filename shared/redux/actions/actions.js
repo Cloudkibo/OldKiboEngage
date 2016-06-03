@@ -515,6 +515,32 @@ export function inviteagent(email,token) {
   };
 }
 
+export function joinCompanyResponse(inviteDetails) {
+  return {
+    type: ActionTypes.JOIN_COMPANY,
+    inviteDetails,
+  };
+}
+
+export function getInviteEmail(token) {
+  console.log('getinvite email action called');
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/inviteagenttoken?id=${token}`, {
+      method: 'get',
+     
+      headers: new Headers({
+          'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+         dispatch(joinCompanyResponse(res));
+        
+           
+        }
+    );
+  };
+}
+
 
 export function deleteAGENT(agent) {
   return {

@@ -10,9 +10,15 @@ const signup = (state =initialState, action) => {
 
    case ActionTypes.ADD_WARNINGS:
           return{
+            inviteDetails : state.inviteDetails,
             signupwarnings:action.signup,
           };
 
+   case ActionTypes.JOIN_COMPANY:
+      return {
+        inviteDetails : action.inviteDetails,
+      
+        };
     default:
       return state;
   }
@@ -204,7 +210,9 @@ const dashboard = (state =dashboardState, action) => {
          deptagents :state.deptagents,
          agent: state.agent,
         };  
+      
         
+          
       case ActionTypes.INVITE_AGENT_RESPONSE:
       return {
          groupdetails: state.groupdetails,

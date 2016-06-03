@@ -814,3 +814,32 @@ export function editResponse(req, res) {
         request.put(options, callback);
    
   }
+
+
+export function inviteagenttoken(req,res){
+
+  console.log('inivteagenttoken is called');
+  console.log(req.query.id);
+  var id = req.query.id;
+   var options = {
+      url: `${baseURL}/api/inviteagenttokens/${id}`,
+      rejectUnauthorized : false,
+          
+    };
+    
+    function callback(error, response, body) {
+        console.log(body);
+        console.log(error)
+      if(!error) {
+      
+            return res.status(200).json(body);
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,error}); 
+
+    }
+
+   }
+        request.get(options, callback);
+}
