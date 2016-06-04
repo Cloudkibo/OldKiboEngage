@@ -14,11 +14,12 @@ export default class JoinCompany extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onSubmit = this.onSubmit.bind(this);
-   // alert(props.params.token);
+    
+  
     
   }
   componentWillMount(){
-    this.props.getInviteEmail(props.params.id);
+    this.props.getInviteEmail(this.props.params.id);
   }
     onSubmit(event)
     {
@@ -31,6 +32,7 @@ export default class JoinCompany extends React.Component {
                 const c_pwdRef = this.refs.c_pwd;
                 const cname = this.refs.cname;
                 const cdnameRef = this.refs.cdname;
+                const tokenref = this.refs.token;
                 if (pwdRef.value != c_pwdRef.value) {
                   alert('Password donot match!.Retype password');
                   pwdRef.value = c_pwdRef.value = ''
@@ -43,7 +45,8 @@ export default class JoinCompany extends React.Component {
                     'phone': phoneRef.value,
                     'password': pwdRef.value,
                     'companyName': cname.value,
-                    'website': cdnameRef.value
+                    'website': cdnameRef.value,
+                    'token' : tokenref.value
                   }
                   console.log(user);
 
@@ -75,6 +78,7 @@ export default class JoinCompany extends React.Component {
                                               <div className="form-group">
                                                 <label htmlFor="username">First Name *</label>
                                                 <input type="text"  className="form-control input-medium" ref = "fname" required placeholder="First Name"/>
+                                            
                                               </div>
                                               <div className="form-group">
                                                 <label>Last Name *</label>
@@ -84,9 +88,13 @@ export default class JoinCompany extends React.Component {
                                               <label>Email *</label>
                                               {
                                                 this.props.inviteDetails && 
-                                                <input type="email"  className="form-control input-medium"  value ={this.props.inviteDetails.email} ref = "email" required placeholder="Email Address"/>
-                                          
+                                                <input type="email"  className="form-control input-medium"  value = {this.props.inviteDetails.email} ref = "email" required placeholder="Email Address"/>
+                                              
                                               }
+                                               {
+                                                this.props.inviteDetails && 
+                                                <input type="hidden"  className="form-control input-medium" ref = "token" value = {this.props.inviteDetails.token}/>
+                                               }
                                             
                                               </div>
                                               <div className="form-group">

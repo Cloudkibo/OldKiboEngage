@@ -195,13 +195,27 @@ export function signupuser(user) {
         'phone'     :user.phone,
         'password'   : user.password,
         'companyName':user.companyName,
-        'website' : user.website
-
+        'website' : user.website,
+        'token'   : user.token,
       }),
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res.signup).then(res => dispatch(showSignupResponse(res)));
+    }).then((res) => res.json()).then((res) => res.signup).then((res) => {
+      if(res.token)
+      {
+             // If login was successful, set the token in local storage
+      console.log(res.token);       
+      cookie.save('token', res.token, { path: '/' });
+      console.log(cookie.load('token'));
+      browserHistory.push('/dashboard')        
+      }
+      else{
+           dispatch(showSignupResponse(res))  
+      }
+     
+    }
+      );
   };
 }
 
@@ -522,23 +536,28 @@ export function joinCompanyResponse(inviteDetails) {
   };
 }
 
+ 
 export function getInviteEmail(token) {
-  console.log('getinvite email action called');
-  console.log(token);
+ console.log('getInviteEmail is called '+ token);
   return (dispatch) => {
-    fetch(`${baseURL}/api/inviteagenttoken?id=${token}`, {
+    return fetch(`${baseURL}/api/invitetoken?id=${token}`, {
       method: 'get',
-     
       headers: new Headers({
-          'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then((res) => {
-         dispatch(joinCompanyResponse(res));
-        
-           
-        }
-    );
-  };
+        'Content-Type': 'application/json',
+      }), 
+    }).then((res) => res.json()).then((res) => res).then((res) =>{
+      console.log(res.statusCode);
+          if(res.statusCode == 200){
+
+            dispatch(joinCompanyResponse(res.body));
+
+          }
+          else{
+            browserHistory.push('/joincompanyfailure')
+          }
+    }) 
+
+      };
 }
 
 

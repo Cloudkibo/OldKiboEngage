@@ -15,11 +15,13 @@ import MessageChannelCreate from './container/MessageChannel/messageChannelCreat
 import Channel from './container/MessageChannel/Channels'
 import ChannelEditView from './container/MessageChannel/ChannelEditView'
 import JoinCompany from './container/Agents/JoinCompany'
+import JoinCompanyFailure from './container/Agents/JoinCompanyFailure'
+
 
 import CannedResponseCreate from './container/CannedResponse/CannedResponseCreate'
 import CannedResponses from './container/CannedResponse/CannedResponses'
 import ResponseEditView from './container/CannedResponse/ResponseEditView'
-
+import JoinPage from './container/Agents/JoinPage'
 import NotFound from './container/NotFound'
 import auth from './services/auth';
 import RouterContainer from './services/RouterContainer';
@@ -49,8 +51,9 @@ const routes = (
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
-    <Route path="/joincompany/:id" component={JoinCompany}/>
-
+    <Route path="joincompany/:id" component={JoinCompany}/>
+     <Route path="/join" component={JoinPage}/>
+     <Route path="/joincompanyfailure" component={JoinCompanyFailure} />
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
     <Route path="/agents" component={Agents} onEnter={requireAuth} />

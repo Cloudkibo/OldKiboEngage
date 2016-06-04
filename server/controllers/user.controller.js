@@ -84,7 +84,8 @@ export function signupUser(req, res) {
             'phone'     :user.phone,
             'password'   : user.password,
             'companyName':user.companyName,
-            'website' : user.website
+            'website' : user.website,
+            'token' : user.token
 
           }
     };
@@ -816,23 +817,36 @@ export function editResponse(req, res) {
   }
 
 
-export function inviteagenttoken(req,res){
+export function invitetoken(req,res){
 
-  console.log('inivteagenttoken is called');
+  console.log('invitetoken is called');
   console.log(req.query.id);
   var id = req.query.id;
    var options = {
-      url: `${baseURL}/api/inviteagenttokens/${id}`,
+      url: `${baseURL}/api/inviteagenttokens?id=${id}`,
       rejectUnauthorized : false,
           
     };
     
     function callback(error, response, body) {
         console.log(body);
-        console.log(error)
-      if(!error) {
-      
-            return res.status(200).json(body);
+        console.log(response.statusCode);
+        console.log(error);
+        console.log(body.length);
+        var parsedJSON = JSON.parse(body);
+        console.log(parsedJSON);
+       for (var i=0;i<parsedJSON.length;i++) {
+            console.log(parsedJSON[i].email);
+         }
+        
+      if(!error && body.length == 0)
+      {
+         return res.status(200).json({statusCode : 422 ,error});
+      }  
+      else if(!error && body.length != 0) {
+            
+
+            return res.status(200).json({statusCode : 200 ,body:parsedJSON[0]});
       }
     else
     {
