@@ -201,20 +201,9 @@ export function signupuser(user) {
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res.signup).then((res) => {
-      if(res.token)
-      {
-             // If login was successful, set the token in local storage
-      console.log(res.token);       
-      cookie.save('token', res.token, { path: '/' });
-      console.log(cookie.load('token'));
-      browserHistory.push('/dashboard')        
-      }
-      else{
-           dispatch(showSignupResponse(res))  
-      }
-     
-    }
+    }).then((res) => res.json()).then((res) => res.signup).then((res) => dispatch(showSignupResponse(res))  
+      
+   
       );
   };
 }
