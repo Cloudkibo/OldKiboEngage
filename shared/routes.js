@@ -3,6 +3,9 @@ import React from 'react';
 import App from './container/App';
 import LoginContainer from './container/Auth/Login';
 import SignupContainer from './container/Auth/Signup';
+import Verification from './container/Auth/Verification';
+import VerificationFailure from './container/Auth/VerificationFailure';
+
 import Intro from './container/Intro';
 import Dashboard from './container/Dashboard';
 import Groups from './container/Groups/Groups';
@@ -24,7 +27,10 @@ import ResponseEditView from './container/CannedResponse/ResponseEditView'
 import JoinPage from './container/Agents/JoinPage'
 import NotFound from './container/NotFound'
 import auth from './services/auth';
-import RouterContainer from './services/RouterContainer';
+
+import Router from 'react-router';
+import { browserHistory } from 'react-router'
+
 
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
@@ -47,7 +53,7 @@ function redirectAuthUsers(nextState, replace) {
 }
 
 const routes = (
-  <Route path="/" component={App} >
+   <Route path="/" component={App} >
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
@@ -69,8 +75,11 @@ const routes = (
      <Route path="/createcannedresponse" component={CannedResponseCreate}  onEnter={requireAuth}/>
     <Route path="/cannedresponses" component={CannedResponses}  onEnter={requireAuth}/>
     <Route path="/editresponse/:id" component={ResponseEditView}  onEnter={requireAuth}/>
+    <Route path="/verification/:id" component={Verification}/>
+    <Route path="/verificationfailure" component={VerificationFailure} />
+ 
     <Route path="*" component={NotFound} />
   </Route>
+ 
 );
-RouterContainer.set(routes);
 export default routes;

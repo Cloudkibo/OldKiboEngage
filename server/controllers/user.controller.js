@@ -74,7 +74,7 @@ export function signupUser(req, res) {
   {
      var user = req.body;
      var options = {
-      url: `${baseURL}/api/users/`,
+      url: `${baseURL}/api/users/kiboengage`,
       rejectUnauthorized : false,
       headers:headers,
       form: {
@@ -498,7 +498,7 @@ export function inviteAgent(req, res) {
   var token = req.headers.authorization;
   console.log(req.body);
    var options = {
-      url: `${baseURL}/api/tempaccounts/`,
+      url: `${baseURL}/api/tempaccounts/kiboengage`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -851,6 +851,37 @@ export function invitetoken(req,res){
     else
     {
       return res.status(422).json({statusCode : 422 ,error}); 
+
+    }
+
+   }
+        request.get(options, callback);
+}
+
+
+
+export function verifytoken(req,res){
+
+  console.log('verifytoken is called');
+  console.log(req.query.id);
+  var id = req.query.id;
+   var options = {
+      url: `${baseURL}/api/verificationtokens/kiboengage/${id}`,
+      rejectUnauthorized : false,
+          
+    };
+    
+    function callback(error, response, body) {
+      console.log(body);
+
+      if(!error && response.status == 'success')
+      {
+         return res.status(200).json({statusCode:200,status : 'success'});
+      }  
+    
+    else
+    {
+      return res.status(422).json({statusCode:422,status : 'failed'}); 
 
     }
 

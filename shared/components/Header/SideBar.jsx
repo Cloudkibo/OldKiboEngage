@@ -19,7 +19,7 @@ function SideBar() {
               </li>
              
               <li className="">
-                <a href="index.html">
+                <Link to='/messages'>
                   <i className="fa fa-envelope">
                   </i>      
                   <span className="title">
@@ -27,10 +27,10 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li> 
               <li className="">
-                <a href="index.html">
+                <Link to='/inprogresscalls'>
                   <i className="fa fa-chain">
                   </i>      
                   <span className="title">
@@ -38,11 +38,11 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
               <li className="">
-                <a href="index.html">
+                <Link to='/abandonedcalls'>
                   <i className="fa fa-chain-broken">
                   </i>      
                   <span className="title">
@@ -50,11 +50,11 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
                <li className="">
-                <a href="/completedcalls">
+                <Link to="/completedcalls">
                   <i className="fa fa-check">
                   </i>      
                   <span className="title">
@@ -62,12 +62,12 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
 
                <li className="">
-                <a href="/completedcalls">
+                <Link to="/completedcalls">
                   <i className="fa fa-reorder">
                   </i>      
                   <span className="title">
@@ -75,11 +75,11 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
               <li className="">
-                <a href="/completedcalls">
+                <Link to="/completedcalls">
                   <i className="fa fa-phone-square">
                   </i>      
                   <span className="title">
@@ -87,7 +87,7 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
               <li className="">
@@ -116,7 +116,7 @@ function SideBar() {
 
              
               <li className="">
-                <a href="/completedcalls">
+                <Link to="/completedcalls">
                   <i className="fa fa-bar-chart-o">
                   </i>      
                   <span className="title">
@@ -124,7 +124,7 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
               <li className="">
                 <Link to="/messagechannels">
@@ -149,7 +149,7 @@ function SideBar() {
                 </Link>
               </li>
               <li className="">
-                <a href="/completedcalls">
+                <Link to="/completedcalls">
                   <i className="fa fa-question-circle">
                   </i>      
                   <span className="title">
@@ -157,12 +157,12 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
 
               <li className="">
-                <a href="/completedcalls">
+                <Link to="/completedcalls">
                   <i className="fa fa-cogs">
                   </i>      
                   <span className="title">
@@ -170,7 +170,7 @@ function SideBar() {
                   </span>      
                   <span className="selected">
                   </span>
-                </a>
+                </Link>
               </li>
 
 

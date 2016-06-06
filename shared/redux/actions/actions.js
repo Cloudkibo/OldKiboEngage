@@ -549,6 +549,25 @@ export function getInviteEmail(token) {
       };
 }
 
+export function verifyEmail(token) {
+ console.log('verifyEmail is called '+ token);
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/verifytoken?id=${token}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }), 
+    }).then((res) => res.json()).then((res) => res).then((res) =>{
+      console.log(res.statusCode);
+          if(res.statusCode != 200){
+
+            browserHistory.push('/verificationfailure')
+          }
+    }) 
+
+      };
+}
+
 
 export function deleteAGENT(agent) {
   return {

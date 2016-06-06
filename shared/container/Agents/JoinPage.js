@@ -22,7 +22,7 @@ class JoinPage extends Component {
         <h1>Join Page</h1>
         <Link to="/login">Login</Link>
         <Link to="joincompany/kn7xv497wrk920166413271"> joincompany </Link>
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/verification/94c822de823e0b4a395682d2">Verify account</Link>
 
       </div>
       <Footer/>
