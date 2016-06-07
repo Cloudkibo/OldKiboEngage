@@ -827,3 +827,38 @@ else{
 }
 
 }
+
+
+
+
+
+/***************** Chat Actions ********************/
+export function showAllChat() {
+ var customerchat = [{'name' : 'John','group' :'IT','lastmsg' :'I need help in software installation' },
+                  {'name' : 'Alice','group' :'Sales','lastmsg' :'I didnt get my order yet' },
+                  {'name' : 'Joe','group' :'Payment','lastmsg' :'Please confirm Payment status' }]
+  
+   var customerid = 1;
+  console.log(customerchat);
+  return {
+    type: ActionTypes.SHOW_ALL_CHAT,
+    customerchat,
+    customerid,
+
+  };
+}
+
+export function getChatRequest(customerid,token){
+  var chatlist =[{'sender':'John','msg':'Hello','time':'7:40pm'},
+                {'sender':'Jawaid','msg':'Hi,how may I help you?','time':'7:41pm'},
+                {'sender':'John','msg':'Please tell me the steps to install this software.','time':'7:42pm'},
+                {'sender':'Jawaid','msg':'Please follow instructions given in Readme.txt file','time':'7:43pm'}];
+  var customerid = 1;
+  console.log(chatlist);
+  return {
+    type: ActionTypes.SHOW_CHAT_HISTORY,
+    chatlist,
+    customerid,
+
+  };
+}

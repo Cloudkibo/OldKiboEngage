@@ -10,6 +10,7 @@ import Intro from './container/Intro';
 import Dashboard from './container/Dashboard';
 import Groups from './container/Groups/Groups';
 import Agents from './container/Agents/Agents';
+import Chat from './container/Chat/Chat';
 
 import GroupDetailView from './container/Groups/GroupDetailView';
 import GroupEditView from './container/Groups/GroupEditView';
@@ -77,6 +78,7 @@ const routes = (
     <Route path="/editresponse/:id" component={ResponseEditView}  onEnter={requireAuth}/>
     <Route path="/verification/:id" component={Verification}/>
     <Route path="/verificationfailure" component={VerificationFailure} />
+    <Route path="/chat" component={Chat} onEnter={requireAuth} />
  
     <Route path="*" component={NotFound} />
   </Route>

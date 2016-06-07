@@ -242,7 +242,30 @@ const dashboard = (state =dashboardState, action) => {
              deptagents :state.deptagents,
 
             };
+          case ActionTypes.SHOW_ALL_CHAT:
+           return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : action.customerchat,
+             customerid : action.customerid,
+             chatlist : state.chatlist,
+            };
 
+          case ActionTypes.SHOW_CHAT_HISTORY:
+           return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             chatlist : action.chatlist,
+             customerid : action.customerid,
+             customerchat : state.customerchat,
+
+            };
     default:
       return state;
   }
