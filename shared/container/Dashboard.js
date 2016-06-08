@@ -5,6 +5,7 @@ import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents} from '../redux/actions/actions'
 import {getusergroups} from '../redux/actions/actions'
+import {getchannels} from '../redux/actions/actions'
 
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
@@ -23,6 +24,7 @@ class Dashboard extends Component {
     this.props.getAgents(usertoken);
     this.props.getDeptAgents(usertoken);
     this.props.getusergroups(usertoken);
+    this.props.getchannels(usertoken)
   
   }
   
@@ -33,7 +35,7 @@ class Dashboard extends Component {
     console.log(username)
     return (
       <div>
-        <AuthorizedHeader name = {this.props.userdetails.firstname} />
+       <AuthorizedHeader name = {this.props.userdetails.firstname} />
        <div className="page-container">
           <SideBar/> 
           <div className="page-content-wrapper">
@@ -59,7 +61,8 @@ function mapStateToProps(state) {
   agents:(state.dashboard.agents),
   deptagents:(state.dashboard.deptagents),
   groupdetails:(state.dashboard.groupdetails),
+  channels :(state.dashboard.channels),
    }
 }
 
-export default connect(mapStateToProps,{getuser,getAgents,getDeptAgents,getusergroups})(Dashboard);
+export default connect(mapStateToProps,{getuser,getAgents,getchannels,getDeptAgents,getusergroups})(Dashboard);

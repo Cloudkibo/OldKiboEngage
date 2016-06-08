@@ -46,6 +46,7 @@ const dashboard = (state =dashboardState, action) => {
         agents : state.agents,
         deptagents :state.deptagents,
         newagents:agentid,
+        channels : state.channels,
       }; 
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
@@ -54,6 +55,7 @@ const dashboard = (state =dashboardState, action) => {
         agents : state.agents,
         deptagents :state.deptagents,
         agent: state.agents.filter((agent) => agent._id == action.id),
+        channels : state.channels,
       
       };
 
@@ -82,6 +84,7 @@ const dashboard = (state =dashboardState, action) => {
           console.log(action.user.firstname)
           return{
             userdetails:action.user,
+            channels : state.channels,
 
           };
    case ActionTypes.ADD_AGENTS:
@@ -91,6 +94,7 @@ const dashboard = (state =dashboardState, action) => {
             agents:action.agents,
             deptagents :state.deptagents,
             groupdetails:state.groupdetails,
+            channels : state.channels,
           };  
 
         
@@ -101,6 +105,7 @@ const dashboard = (state =dashboardState, action) => {
             agents:state.agents,
             deptagents :action.agents,
             groupdetails:state.groupdetails,
+            channels : state.channels,
            
           };              
 
@@ -111,6 +116,7 @@ const dashboard = (state =dashboardState, action) => {
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
+            channels : state.channels,
       };
 
    case ActionTypes.ADD_CHANNELS:
@@ -146,6 +152,7 @@ const dashboard = (state =dashboardState, action) => {
          errorMessage:'Group created successfully',
          agents : state.agents,
          deptagents :state.deptagents,
+         channels : state.channels,
         };
 
      case ActionTypes.DELETE_GROUP :
@@ -154,6 +161,7 @@ const dashboard = (state =dashboardState, action) => {
         userdetails: state.userdetails,
         errorMessage:'Group deleted successfully',
         agents : state.agents,
+        channels : state.channels,
       };
 
 
@@ -174,6 +182,7 @@ const dashboard = (state =dashboardState, action) => {
         userdetails: state.userdetails,
         errorMessage:'Canned Response deleted successfully',
         agents : state.agents,
+
       };
       case ActionTypes.DELETE_AGENT :
       return {
@@ -182,6 +191,7 @@ const dashboard = (state =dashboardState, action) => {
         errorMessage:'Agent deleted successfully',
         agents : state.agents.filter((agent) => agent._id !== action.agent._id),
         deptagents :state.deptagents,
+        channels : state.channels,
       };
 
       case ActionTypes.CREATEGROUP_FAILURE:
@@ -190,6 +200,7 @@ const dashboard = (state =dashboardState, action) => {
          userdetails: state.userdetails,
          errorMessage:action.message,
          agents : state.agents,
+         channels : state.channels,
         };
 
       case ActionTypes.EDITGROUP_RESPONSE:
@@ -199,6 +210,7 @@ const dashboard = (state =dashboardState, action) => {
          errorMessage:action.message,
          agents : state.agents,
          deptagents :state.deptagents,
+         channels : state.channels,
         }; 
 
       case ActionTypes.EDITAGENT_RESPONSE:
@@ -209,6 +221,7 @@ const dashboard = (state =dashboardState, action) => {
          agents : state.agents,
          deptagents :state.deptagents,
          agent: state.agent,
+         channels : state.channels,
         };  
       
         
@@ -221,6 +234,7 @@ const dashboard = (state =dashboardState, action) => {
          agents : state.agents,
          deptagents :state.deptagents,
          agent: state.agent,
+         channels : state.channels,
         };  
 
         case ActionTypes.SHOW_SPECIFIC_CHAT:
@@ -230,6 +244,7 @@ const dashboard = (state =dashboardState, action) => {
            chat:action.chat,
            agents : state.agents,
            deptagents :state.deptagents,
+           channels : state.channels,
 
           };
 
@@ -240,6 +255,7 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.chat_error,
              agents : state.agents,
              deptagents :state.deptagents,
+             channels : state.channels,
 
             };
           case ActionTypes.SHOW_ALL_CHAT:
@@ -252,6 +268,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : action.customerchat,
              customerid : action.customerid,
              chatlist : state.chatlist,
+             channels : state.channels,
             };
 
           case ActionTypes.SHOW_CHAT_HISTORY:
@@ -264,7 +281,7 @@ const dashboard = (state =dashboardState, action) => {
              chatlist : action.chatlist,
              customerid : action.customerid,
              customerchat : state.customerchat,
-
+             channels : state.channels, 
             };
     default:
       return state;

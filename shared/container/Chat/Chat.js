@@ -29,7 +29,10 @@ class Chat extends Component {
   
     
   }
-
+   handleChange(e){
+     alert(e.target.value);
+   
+    }
  
 
   render() {
@@ -70,22 +73,93 @@ class Chat extends Component {
              <table className="table">
              	<tbody>
              	<tr>
+             		<th className="col-md-1">Status</th>
+             		<th className="col-md-1">Medium</th>
+             		<th className="col-md-1">Agents</th>
+             		<th className="col-md-1">Group</th>
+             		<th className="col-md-1">Message Channel</th>
+             	</tr>
+             	<tr>
              		<td className="col-md-1">
-             			<div>
-		                      {this.props.customerchat &&
-		                        this.props.customerchat.map((customer, i) => (
-		                          
-		                          <ChatListItem customer={customer} key={i}  />
-		                                                      
-		                        ))
-		                      }
-                     	</div>
-                    </td>
-                    <td className="col-md-2">
-                    	<CustomerChatView customerid = {this.props.customerid}/>
-                    </td> 	
-                </tr>
-                </tbody>
+             		
+             		  <select  ref = "status" onChange={this.handleChange.bind(this)}   >
+                          <option value="new">New</option>
+                          <option value="assigned">Assigned</option>
+                          <option value="resolved">Resolved</option>
+                          <option value="archived">Archived</option>
+                      </select>
+             		</td>
+             		<td className="col-md-1">
+             		
+             		  <select  ref = "client" onChange={this.handleChange.bind(this)}   >
+                          <option value="mobile">Mobile</option>
+                          <option value="web">Web</option>
+                         
+                      </select>
+             		</td>
+             		<td className="col-md-1">
+             		
+             		  <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
+                         {
+                         	this.props.agents && this.props.agents.map((agent,i) =>
+                         		<option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
+
+                         		)
+                         }
+                          
+                         
+                      </select>
+             		</td>
+             		<td className="col-md-1">
+             		  
+             		  <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
+                          {
+                         	this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                         		<option value={group._id}>{group.deptname}</option>
+
+                         		)
+                         }
+                         
+                      </select>
+             
+             		</td>
+             		<td className="col-md-1">
+             		  <select  ref = "channellist" onChange={this.handleChange.bind(this)}   >
+                           {
+                         	this.props.channels && this.props.channels.map((channel,i) =>
+                         		<option value={channel._id}>{channel.msg_channel_name}</option>
+
+                         		)
+                         }
+                         
+                      </select>
+             
+             		</td>
+             	</tr>
+             	</tbody>
+                </table>
+                </div>
+             	
+             	<div className="table-responsive">
+             		<table className="table">
+             			<tbody>
+			             	<tr>
+			             		<td  className="col-md-3">
+			             			<div>
+					                      {this.props.customerchat &&
+					                        this.props.customerchat.map((customer, i) => (
+					                          
+					                          <ChatListItem customer={customer} key={i}  />
+					                                                      
+					                        ))
+					                      }
+			                     	</div>
+			                    </td>
+			                    <td className="col-md-6">
+			                    	<CustomerChatView customerid = {this.props.customerid}/>
+			                    </td> 	
+			                </tr>
+			            </tbody>
                 </table>
         		</div>
                 
@@ -114,7 +188,7 @@ function mapStateToProps(state) {
           customerchat :(state.dashboard.customerchat),
           customerid :(state.dashboard.customerid),
           chatlist :(state.dashboard.chatlist),
- 
+ 		  channels :(state.dashboard.channels),	
            };
 }
 

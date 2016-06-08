@@ -192,6 +192,7 @@ function mapStateToProps(state) {
     deptagents:(state.dashboard.deptagents),
     agent :(state.dashboard.agent),
     errorMessage:(state.dashboard.errorMessage),
+     channels :(state.dashboard.channels),
   };
 }
 export default connect(mapStateToProps,{ getAgentRequest,editAgent})(AgentEditView);

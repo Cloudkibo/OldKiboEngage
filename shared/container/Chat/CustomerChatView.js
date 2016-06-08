@@ -28,7 +28,10 @@ class CustomerChatView extends Component {
   }
  
  
-
+   handleChange(e){
+     alert(e.target.value);
+   
+    }
   render() {
    
     var leftStyle = {
@@ -50,13 +53,59 @@ class CustomerChatView extends Component {
      return (
 
       <div>
+           <div className="table-responsive">
+             <table className="table table-colored">
+             <tbody>
+             <tr>
+             <td className="col-md-4">
+                
+                  
+                  <label className="control-label text-right">Assigned To</label>
+                  <div className="input-group">
+                  <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                         {
+                          this.props.agents && this.props.agents.map((agent,i) =>
+                            <option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
+
+                            )
+                         }
+
+                      </select>
+                    
+                 </div>     
+                </td>
+              <td className="col-md-4">
+                  <label className="control-label text-right">Move To</label>
+                  <div className="input-group">
+                   <select  ref = "channellist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                          {
+                          this.props.channels && this.props.channels.map((channel,i) =>
+                            <option value={channel._id}>{channel.msg_channel_name}</option>
+
+                            )
+                         }
+                         
+                      </select>
+                   </div>   
+                </td>
+              <td className="col-md-1">
+                <button className="btn btn-primary"> Resolved </button>
+              </td> 
+              <td className="col-md-1">
+                <button className="btn btn-primary"> Archive </button>
+              </td>  
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
           <div className="panel-body">
             <ul className="chat">
                           {this.props.chatlist &&
                             this.props.chatlist.map((chat, i) => (
                              
                                (this.props.userdetails.firstname === chat.sender?
-                                   <li className="right clearfix">
+                                   <li className="right clearfix agentChatBox">
                                       <span className="chat-img pull-right agentChat"> {chat.sender.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
@@ -72,7 +121,7 @@ class CustomerChatView extends Component {
                                      </div>
                                    </li> :
 
-                                    <li className="left clearfix">
+                                    <li className="left clearfix userChatBox">
                                       <span className="chat-img pull-left userChat">
                                       {chat.sender.substr(0,1)}
                                       </span>
@@ -127,6 +176,7 @@ function mapStateToProps(state) {
     customerid :(state.dashboard.customerid),
     customerchat :(state.dashboard.customerchat),
     chatlist :(state.dashboard.chatlist),
+     channels :(state.dashboard.channels),
   };
 }
 
