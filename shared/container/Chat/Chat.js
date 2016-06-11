@@ -48,18 +48,6 @@ class Chat extends Component {
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">Customer Chat Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
-                  <li>
-                               <Link to="/chat">Customer Chat Management</Link>
-                  </li>               
-  
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">

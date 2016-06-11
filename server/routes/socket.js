@@ -16,6 +16,20 @@ function onConnect(io2, socket) {
     //logger.clientLog(data.level, "Client side log: "+ data.data);
   });
 
+
+// broadcast a user's message to other users
+  socket.on('send:message', function (data) {
+    console.log(data);
+    socket.broadcast.emit('send:message', {
+      sender: data.sender,
+      msg: data.msg,
+      time:data.time
+    });
+  });
+
+  
+
+
   socket.on('message', function (message) {
     //log('Got message:', message);
     io2.to(message.to).emit('message', message);
@@ -269,6 +283,7 @@ module.exports = function (socketio) {
             process.env.DOMAIN;
 
     socket.connectedAt = new Date();
+
 
     socket.emit('news', 'you are connected to socket.io server');
 

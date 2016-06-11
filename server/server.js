@@ -81,6 +81,7 @@ const renderFullPage = (html, initialState) => {
   </head>
       <body>
         <div id="root">${html}</div>
+    
               <script src="/socket.io/socket.io.js"></script>
              <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
              <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
