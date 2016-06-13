@@ -37,3 +37,4 @@ export const JOIN_COMPANY = 'JOIN_COMPANY'
 
 export const SHOW_ALL_CHAT = 'SHOW_ALL_CHAT'
 export const SHOW_CHAT_HISTORY = 'SHOW_CHAT_HISTORY' 
+export const ADD_CHAT_MESSAGE = 'ADD_CHAT_MESSAGE'

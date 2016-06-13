@@ -172,7 +172,7 @@ function SideBar() {
                 </Link>
               </li>
               <li className="">
-                <Link to="/completedcalls">
+                <Link to="/clientchat">
                   <i className="fa fa-cogs">
                   </i>      
                   <span className="title">

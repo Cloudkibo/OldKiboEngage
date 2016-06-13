@@ -9,10 +9,14 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
+import io from 'socket.io-client';
+
+const socket = io('');
 
 class ClientChat extends Component {
 
  constructor(props, context) {
+     const { dispatch} =props;
      console.log('componentWillMount is called');
         props.showAllChat();
         super(props, context);
@@ -21,7 +25,6 @@ class ClientChat extends Component {
     
   }
    
-
    handleChange(e){
      alert(e.target.value);
    
@@ -54,7 +57,7 @@ class ClientChat extends Component {
              			<tbody>
 			             	<tr>
 			             		    <td className="col-md-6">
-			                    	<ClientChatView customerid = {this.props.customerid}/>
+			                    	<ClientChatView  socket={socket} {...this.props} />
 			                    </td> 	
 			                </tr>
 			            </tbody>

@@ -3,6 +3,12 @@
     list-style: none;
     margin: 0;
     padding: 0;
+
+    word-wrap: break-word;
+    overflow-y: auto;
+    padding-bottom: 1em;
+    flex-grow: 1;
+    order: 1;
 }
 
 .chat li
@@ -109,3 +115,5 @@
 .table .table-colored{
     background-color: rgba(119, 119, 119, 0.11);
 }
+
+

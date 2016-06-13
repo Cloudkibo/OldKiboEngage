@@ -6,12 +6,14 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { getChatRequest}  from '../../redux/actions/actions'
+import { updateChatList}  from '../../redux/actions/actions'
+import moment from 'moment';
 
 class CustomerChatView extends Component {
 
   constructor(props, context) {
       //call action to get user groups 
-    const usertoken = auth.getToken();
+     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
      {
@@ -21,17 +23,49 @@ class CustomerChatView extends Component {
         props.getChatRequest(props.customerid,usertoken);
       }
 
-      
         super(props, context);
+        this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
        
 
   }
+  componentDidMount() {
+    const { socket,dispatch } = this.props;
+    socket.on('send:message',message => this.props.updateChatList(message));
+    
+  }
+  componentDidUpdate() {
+    const messageList = this.refs.messageList;
+    messageList.scrollTop = messageList.scrollHeight;
+  }
+
+ 
+ 
+   handleMessageSubmit(e) {
+    const { socket,dispatch } = this.props;
+     if (e.which === 13) {
+          
+        e.preventDefault();
+        var message = {
+          sender : this.props.userdetails.firstname,
+          msg : this.refs.msg.value,
+          time : moment.utc().format('lll')
+        }
+
+        this.props.chatlist.push(message);
+        
+        socket.emit('send:message', message);
+        this.refs.msg.value ='';
+        this.forceUpdate();
+      }
+    }
+
  
  
    handleChange(e){
      alert(e.target.value);
    
     }
+
   render() {
    
     var leftStyle = {
@@ -100,7 +134,7 @@ class CustomerChatView extends Component {
 
           </div>
           <div className="panel-body">
-            <ul className="chat">
+            <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}}  ref="messageList">
                           {this.props.chatlist &&
                             this.props.chatlist.map((chat, i) => (
                              
@@ -148,9 +182,9 @@ class CustomerChatView extends Component {
 
              <div className="panel-footer">
                     <div className="input-group">
-                        <input id="btn-input" type="text" className="form-control input-sm" placeholder="Type your message here..." />
+                        <input id="btn-input" ref = "msg" type="text" className="form-control input-sm" placeholder="Type your message here..."  onKeyDown={this.handleMessageSubmit}/>
                         <span className="input-group-btn">
-                            <button className="btn btn-warning btn-sm" id="btn-chat">
+                            <button className="btn btn-warning btn-sm" id="btn-chat" onClick={this.handleMessageSubmit}>
                                 Send</button>
                         </span>
                     </div>
@@ -180,4 +214,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList})(CustomerChatView);

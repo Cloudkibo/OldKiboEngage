@@ -283,6 +283,19 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : state.customerchat,
              channels : state.channels, 
             };
+
+          case ActionTypes.ADD_CHAT_MESSAGE:
+           return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             chatlist: [...state.chatlist,action.message],
+             customerid : state.customerid,
+             customerchat : state.customerchat,
+             channels : state.channels, 
+            };
     default:
       return state;
   }

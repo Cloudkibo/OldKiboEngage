@@ -11,6 +11,9 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 
+import io from 'socket.io-client';
+
+const socket = io('');
 class Chat extends Component {
 
  constructor(props, context) {
@@ -144,7 +147,7 @@ class Chat extends Component {
 			                     	</div>
 			                    </td>
 			                    <td className="col-md-6">
-			                    	<CustomerChatView customerid = {this.props.customerid}/>
+			                    	<CustomerChatView  socket={socket} {...this.props} customerid = {this.props.customerid}/>
 			                    </td> 	
 			                </tr>
 			            </tbody>

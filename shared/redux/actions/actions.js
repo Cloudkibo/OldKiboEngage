@@ -849,16 +849,23 @@ export function showAllChat() {
 }
 
 export function getChatRequest(customerid,token){
-  var chatlist =[{'sender':'John','msg':'Hello','time':'7:40pm'},
-                {'sender':'Jawaid','msg':'Hi,how may I help you?','time':'7:41pm'},
-                {'sender':'John','msg':'Please tell me the steps to install this software.','time':'7:42pm'},
-                {'sender':'Jawaid','msg':'Please follow instructions given in Readme.txt file','time':'7:43pm'}];
+  var chatlist =[];
   var customerid = 1;
   console.log(chatlist);
   return {
     type: ActionTypes.SHOW_CHAT_HISTORY,
     chatlist,
     customerid,
+
+  };
+}
+
+
+export function updateChatList(message)
+{
+   return {
+    type: ActionTypes.ADD_CHAT_MESSAGE,
+    message
 
   };
 }
