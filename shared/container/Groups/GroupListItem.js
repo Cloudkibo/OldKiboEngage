@@ -2,7 +2,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-
+var handleDate = function(d){
+var c = new Date(d);
+return c.toDateString();
+}
 function GroupListItem(props) {
 
   
@@ -12,7 +15,7 @@ function GroupListItem(props) {
       <td>{props.group.deptname}</td>
       <td>{props.group.deptdescription}</td>
       <td>{props.group.createdby.firstname}</td>
-      <td>{props.group.creationdate}</td>
+      <td>{handleDate(props.group.creationdate)}</td>
      
       <td>
         <Link to={`/group/${props.group._id}`} className="btn blue-madison" >

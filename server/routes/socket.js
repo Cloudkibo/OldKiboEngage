@@ -177,14 +177,13 @@ function onConnect(io2, socket) {
 
     console.log('joining the room now '+ JSON.stringify(room));
 
-    var clients = findClientsSocket(room.room); // This change is because of socket version change
+   // var clients = findClientsSocket(room.room); // This change is because of socket version change
 
-    var numClients = clients.length; // This change is because of socket version change
+  //  var numClients = clients.length; // This change is because of socket version change
 
     socket.join(room.room);
-    socket.emit('joined', room);
+   // socket.emit('joined', room);
 
-    //console.log(io2.sockets.manager.rooms)
   });
 
   socket.on('leave meeting for agent', function (room) {

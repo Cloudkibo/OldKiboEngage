@@ -11,8 +11,13 @@ import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
 import SideBar from '../components/Header/SideBar';
 import auth from '../services/auth';
-class Dashboard extends Component {
+import ReactTimeout from 'react-timeout'
 
+import io from 'socket.io-client';
+const socket = io('');
+var dontCall = false;
+
+class Dashboard extends Component {
  constructor(props, context) {
     super(props, context);
     
@@ -20,14 +25,30 @@ class Dashboard extends Component {
   componentWillMount(){
     const usertoken = auth.getToken();
     this.props.getuser(usertoken)
-    
     this.props.getAgents(usertoken);
     this.props.getDeptAgents(usertoken);
     this.props.getusergroups(usertoken);
     this.props.getchannels(usertoken)
   
+   
   }
+
   
+  componentWillUpdate(){
+  
+  //on component mount,join room
+    if(this.props.userdetails.uniqueid && dontCall == false){
+
+      socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
+    //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
+     
+
+      dontCall = true;  
+
+     // this.props.setTimeout(() => { alert('I do not leak!' + this.props.userdetails.uniqueid); }, 1000);
+    } 
+  }
+ 
   render() {
     //console.log(this.props.userdetails)
     const token = auth.getToken()
@@ -35,7 +56,7 @@ class Dashboard extends Component {
     console.log(username)
     return (
       <div>
-       <AuthorizedHeader name = {this.props.userdetails.firstname} />
+       <AuthorizedHeader name = {this.props.userdetails.firstname} roomid = {this.props.userdetails.uniqueid} />
        <div className="page-container">
           <SideBar/> 
           <div className="page-content-wrapper">
@@ -65,4 +86,4 @@ function mapStateToProps(state) {
    }
 }
 
-export default connect(mapStateToProps,{getuser,getAgents,getchannels,getDeptAgents,getusergroups})(Dashboard);
+export default connect(mapStateToProps,{getuser,getAgents,getchannels,getDeptAgents,getusergroups})(ReactTimeout(Dashboard));

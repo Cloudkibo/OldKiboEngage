@@ -1,7 +1,7 @@
 import React, { Component,PropTypes } from 'react';
 import { Link } from 'react-router';
 import auth from '../../services/auth';
-//import Logout from '../../container/Auth/Logout';
+import Logout from '../../container/Auth/Logout';
 export default class AuthorizedHeader extends Component
 {
 
@@ -52,6 +52,9 @@ export default class AuthorizedHeader extends Component
                       <i className="fa fa-phone-square"/>
                       My Scheduled Calls
                     </a>
+                  </li>
+                   <li>
+                   <Logout roomid = {this.props.roomid}/>
                   </li>
                 
                            

@@ -647,7 +647,7 @@ export function editChannel(channel,usertoken){
       
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+      
         browserHistory.push('/messagechannels');
            
         }

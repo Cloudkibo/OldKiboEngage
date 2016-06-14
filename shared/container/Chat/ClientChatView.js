@@ -27,7 +27,6 @@ class ClientChatView extends Component {
  
  componentDidUpdate() {
     const messageList = this.refs.messageList;
-    alert(messageList.scrollTop);
     messageList.scrollTop = messageList.scrollHeight;
   }
 

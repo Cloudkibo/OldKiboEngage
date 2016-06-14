@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import {logoutUser} from '../../redux/actions/actions'
 import { connect } from 'react-redux';
+import io from 'socket.io-client';
+const socket = io('');
+
 export default class Logout extends Component {
 
 constructor(props, context) {
@@ -10,19 +13,24 @@ constructor(props, context) {
    onClick(event)
   {
     event.preventDefault();
-    this.props.logoutUser()
+    console.log(this.props.roomid);
+    socket.emit('leave meeting for agent', {room: this.props.roomid});
+    this.props.logoutUser();
   }
   render() {
     
     return (
-      <a onClick={this.onClick}>
+      <div onClick={this.onClick}>
       <i className="fa fa-key"/>
   	    Logout
-	  </a>
+	    </div>
 )
 }
 
 }
-
-export default connect({ logoutUser})(Logout);
+function mapStateToProps(state) {
+  
+  return {};
+}
+export default connect(mapStateToProps,{logoutUser})(Logout);
 
