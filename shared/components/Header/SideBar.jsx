@@ -19,11 +19,11 @@ function SideBar() {
               </li>
              
               <li className="">
-                <Link to='/messages'>
+                <Link to='/notifications'>
                   <i className="fa fa-envelope">
                   </i>      
                   <span className="title">
-                    Messages
+                   Notifications
                   </span>      
                   <span className="selected">
                   </span>
@@ -121,6 +121,17 @@ function SideBar() {
                   </i>      
                   <span className="title">
                      Reports
+                  </span>      
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+              <li className="">
+                <Link to="/customers">
+                  <i className="fa fa-user">
+                  </i>      
+                  <span className="title">
+                     Customer Directory
                   </span>      
                   <span className="selected">
                   </span>

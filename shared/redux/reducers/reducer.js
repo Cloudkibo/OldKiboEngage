@@ -74,9 +74,9 @@ const dashboard = (state =dashboardState, action) => {
         userdetails: state.userdetails,
         groupdetails:state.groupdetails,
         agents : state.agents,
+        deptagents :state.deptagents,
         channels : state.channels,
         responses : state.responses,
-        deptagents :state.deptagents,
         response: state.responses.filter((response) => response._id == action.id),
       
       };         
@@ -162,6 +162,8 @@ const dashboard = (state =dashboardState, action) => {
         errorMessage:'Group deleted successfully',
         agents : state.agents,
         channels : state.channels,
+        deptagents :state.deptagents,
+       
       };
 
 
@@ -172,6 +174,8 @@ const dashboard = (state =dashboardState, action) => {
         userdetails: state.userdetails,
         errorMessage:'Message channel deleted successfully',
         agents : state.agents,
+        deptagents :state.deptagents,
+       
       };
 
       case ActionTypes.DELETE_RESPONSE :
@@ -182,6 +186,8 @@ const dashboard = (state =dashboardState, action) => {
         userdetails: state.userdetails,
         errorMessage:'Canned Response deleted successfully',
         agents : state.agents,
+        deptagents :state.deptagents,
+       
 
       };
       case ActionTypes.DELETE_AGENT :
@@ -201,6 +207,8 @@ const dashboard = (state =dashboardState, action) => {
          errorMessage:action.message,
          agents : state.agents,
          channels : state.channels,
+         deptagents :state.deptagents,
+       
         };
 
       case ActionTypes.EDITGROUP_RESPONSE:
@@ -295,6 +303,28 @@ const dashboard = (state =dashboardState, action) => {
              customerid : state.customerid,
              customerchat : state.customerchat,
              channels : state.channels, 
+            };
+
+          case ActionTypes.SHOW_NOTIFICATIONS:
+             return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             notifications:action.notifications,
+            };
+            case ActionTypes.SHOW_CUSTOMERS:
+             return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             notifications:state.notifications,
+             customers : action.customers,
             };
     default:
       return state;

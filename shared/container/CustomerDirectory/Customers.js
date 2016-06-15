@@ -5,13 +5,12 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import ResponseListItem from './ResponseListItem';
-import {getresponses} from '../../redux/actions/actions'
-import {deleteresponse} from '../../redux/actions/actions'
+import CustomerListItem from './CustomerListItem';
+import {getcustomers} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
 
-class CannedResponses extends Component {
+class Customers extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
@@ -21,7 +20,7 @@ class CannedResponses extends Component {
     {
        
         console.log(usertoken);
-        props.getresponses(usertoken)
+        props.getcustomers(usertoken)
       }
     super(props, context);
   
@@ -36,8 +35,7 @@ class CannedResponses extends Component {
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
-    console.log(this.props.responses);
-    alert(this.props.responses);
+    console.log(this.props.notifications);
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
@@ -46,7 +44,7 @@ class CannedResponses extends Component {
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">Canned Response Management </h3>
+              <h3 className ="page-title">Customer Directory Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -54,7 +52,7 @@ class CannedResponses extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/cannedresponses">Canned Response Management</Link>
+                               <Link to="/customers">Customer Directory Management</Link>
                   </li>               
   
             </ul>
@@ -62,40 +60,40 @@ class CannedResponses extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
-                   Canned Response
+                   Customers
                 </div> 
               </div>    
         
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
-                    <Link id="sample_editable_1_new" className="btn green" to='/createcannedResponse'> Add Canned Response
-                    <i className="fa fa-plus"/>
-                    </Link>
+                   <label> Search </label>
+                   <input type="text" placeholder = "Search Customer " /> 
                  </div>
               </div>
                {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-                { this.props.responses &&
+                { this.props.customers &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Short Code </th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Response</th>
-                  
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Email Address</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Country</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Contact No.</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
+
            
                     </tr>
                     </thead>
 
                     <tbody>                    
                       {
-                        this.props.responses &&
-                        this.props.responses.map((response, i) => (
+                        this.props.customers.map((customer, i) => (
                           
-                          <ResponseListItem response={response} key={response._id}  onDelete={() => this.props.deleteresponse(response,token)}/>
+                          <CustomerListItem customer={customer} />
                                                       
                         ))
                       }
@@ -114,7 +112,7 @@ class CannedResponses extends Component {
   }
 }
 
-CannedResponses.propTypes = {
+Customers.propTypes = {
 
   errorMessage: PropTypes.string,
 }
@@ -125,17 +123,17 @@ function mapStateToProps(state) {
           userdetails:(state.dashboard.userdetails),
           groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
-          responses :(state.dashboard.responses),
+          notifications:(state.dashboard.notifications),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
+          customers:(state.dashboard.customers),
            };
-
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getresponses:getresponses,deleteresponse:deleteresponse}, dispatch);
+  return bindActionCreators({getcustomers:getcustomers}, dispatch);
 }
-export default connect(mapStateToProps,mapDispatchToProps)(CannedResponses);
+export default connect(mapStateToProps,mapDispatchToProps)(Customers);
 
 
 

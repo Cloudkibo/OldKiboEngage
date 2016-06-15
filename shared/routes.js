@@ -30,6 +30,11 @@ import JoinPage from './container/Agents/JoinPage'
 import NotFound from './container/NotFound'
 import auth from './services/auth';
 
+import AddNotification from './container/Notifications/AddNotification'
+import Notifications from './container/Notifications/Notifications'
+
+import Customers from './container/CustomerDirectory/Customers'
+
 import Router from 'react-router';
 import { browserHistory } from 'react-router'
 
@@ -81,7 +86,12 @@ const routes = (
     <Route path="/verificationfailure" component={VerificationFailure} />
     <Route path="/chat" component={Chat} onEnter={requireAuth} />
     <Route path="/clientchat" component={ClientChat}/>
- 
+    
+    <Route path="/notifications" component={Notifications} onEnter={requireAuth} />
+    <Route path="/addnotification" component={AddNotification} onEnter={requireAuth} />
+    
+     <Route path="/customers" component={Customers} onEnter={requireAuth} />
+   
     <Route path="*" component={NotFound} />
   </Route>
  

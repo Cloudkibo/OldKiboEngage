@@ -134,6 +134,11 @@ function mapStateToProps(state) {
     groupdetails:(state.dashboard.groupdetails),
     userdetails:(state.dashboard.userdetails),
     errorMessage:(state.dashboard.errorMessage),
+    agents:(state.dashboard.agents),
+    deptagents:(state.dashboard.deptagents),
+    channels :(state.dashboard.channels),
+     responses :(state.dashboard.responses),
+         
 
   };
 }

@@ -869,3 +869,37 @@ export function updateChatList(message)
 
   };
 }
+
+
+
+/********************** Notifications Actions ***********************************/
+export function getnotifications() {
+ var notifications = [{'_id' : 1,'title' : 'Promo1','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"},
+                      {'_id' : 2,'title' : 'Promo2','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"},
+                      {'_id' : 3,'title' : 'Promo3','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"},
+                      {'_id' : 4,'title' : 'Promo4','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"}
+                  ]
+  
+ 
+  return {
+    type: ActionTypes.SHOW_NOTIFICATIONS,
+    notifications,
+  };
+}
+
+
+
+/******************* Customer Directory ****************/
+
+export function getcustomers() {
+ var customers = [{'_id' : 1,'name' : 'Joe','email' :'joe@hotmail.com','phone' :'21212','country' : "Pakistan",'isMobile' : true},
+                  {'_id' : 2,'name' : 'Alice','email' :'alice@hotmail.com','phone' :'21212','country' : "Pakistan",'isMobile' : true},
+                   
+                    ]
+  
+ 
+  return {
+    type: ActionTypes.SHOW_CUSTOMERS,
+    customers,
+  };
+}

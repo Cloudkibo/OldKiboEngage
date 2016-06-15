@@ -126,6 +126,8 @@ function mapStateToProps(state) {
           userdetails:(state.dashboard.userdetails),
           groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
+          agents:(state.dashboard.agents),
+          deptagents:(state.dashboard.deptagents),
            };
 }
 
