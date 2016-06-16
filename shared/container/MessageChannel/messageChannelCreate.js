@@ -137,7 +137,7 @@ class MessageChannelCreate extends Component {
                </div> 
                 <div className="col-md-9">
                   <div className="col-md-9">
-                    <Link to="/dashboard" className="btn green">
+                    <Link to="/messagechannels" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>

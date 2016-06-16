@@ -873,21 +873,96 @@ export function updateChatList(message)
 
 
 /********************** Notifications Actions ***********************************/
-export function getnotifications() {
- var notifications = [{'_id' : 1,'title' : 'Promo1','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"},
-                      {'_id' : 2,'title' : 'Promo2','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"},
-                      {'_id' : 3,'title' : 'Promo3','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"},
-                      {'_id' : 4,'title' : 'Promo4','desc' :'description...','dateTime' :Date.now(),'agent_id' : "554896ca78aed92f4e6db296"}
-                  ]
-  
- 
+export function showNotifications(notifications) {
   return {
     type: ActionTypes.SHOW_NOTIFICATIONS,
     notifications,
   };
 }
 
+/*** get channels ***/
+export function getnotifications(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getnotifications`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
 
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showNotifications(res)));
+  };
+}
+
+
+export function confirmNotification(res){
+      console.log(res);
+  return {
+    type: ActionTypes.CONFIRM_NOTIFICATION,
+    res,
+
+  };
+}
+export function createNotification(notification,usertoken){
+  console.log(notification);
+  console.log(usertoken);
+  console.log('create notification is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createNotification`, {
+      method: 'post',
+     
+      body: JSON.stringify({
+      notification : notification
+      })       
+      ,
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+         dispatch(confirmNotification(res));
+        
+           
+        }
+    );
+  };
+}
+
+export function deleteNOTIFICATION(notification) {
+  return {
+    type: ActionTypes.DELETE_NOTIFICATION,
+   notification,
+  };
+}
+export function deletenotification(notification,usertoken) {
+  console.log('deletenotification Action is called '+ notification._id + 'your token : '  + usertoken);
+  if(confirm("Do you want to delete this notification?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteNotification?id=${notification._id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res).then(res => dispatch(deleteNOTIFICATION(notification)));
+  };
+}
+else{
+  browserHistory.push('/notifications');
+
+}
+
+}
+
+export function getNotificationRequest(id,usertoken) {
+  console.log(id)
+  return {
+    type: ActionTypes.ADD_SELECTED_NOTIFICATION,
+    id,
+  };
+}
 
 /******************* Customer Directory ****************/
 

@@ -315,6 +315,41 @@ const dashboard = (state =dashboardState, action) => {
              channels : state.channels, 
              notifications:action.notifications,
             };
+             case ActionTypes.CONFIRM_NOTIFICATION:
+             return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             notifications:state.notifications,
+             addednotification :'true'
+
+            };
+             case ActionTypes.DELETE_NOTIFICATION :
+              return {
+                groupdetails: state.groupdetails,
+                channels : state.channels,
+                responses : state.responses,
+                userdetails: state.userdetails,
+                errorMessage:'Notification deleted successfully',
+                agents : state.agents,
+                deptagents :state.deptagents,
+                notifications : state.notifications.filter((notification) => notification._id !== action.notification._id),
+               
+
+              };
+            case ActionTypes.ADD_SELECTED_NOTIFICATION :
+            return {
+              userdetails: state.userdetails,
+              groupdetails:state.groupdetails,
+              agents : state.agents,
+              channels : state.channels,
+              deptagents :state.deptagents,
+              notifications : state.notifications,
+              notification: state.notifications.filter((notification) => notification._id == action.id),
+            
+            };  
             case ActionTypes.SHOW_CUSTOMERS:
              return {
              groupdetails: state.groupdetails,

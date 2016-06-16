@@ -37,7 +37,6 @@ class CannedResponses extends Component {
     const token = auth.getToken()
     console.log(token)
     console.log(this.props.responses);
-    alert(this.props.responses);
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} />

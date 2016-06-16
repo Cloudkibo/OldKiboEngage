@@ -6,6 +6,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import { Link } from 'react-router';
+import { browserHistory } from 'react-router'
 
 
 
@@ -16,20 +17,20 @@ class AddNotification extends Component {
     console.log('constructor is called');
     super(props, context);
     
-    this.createNotification = this.createNotification.bind(this);
+    this.addNotifications = this.addNotifications.bind(this);
   }
 
  
 
-  createNotification() {
+  addNotifications() {
     const usertoken = auth.getToken();
-    const title = this.refs.shortcode;
+    const title = this.refs.title;
     const desc = this.refs.desc;
     var companyid = this.props.userdetails.uniqueid;
 
     if (title.value && desc.value && companyid)
      {
-      var notification = {'title' : title.value,'description':desc.value,'companyid' : companyid}
+      var notification = {'title' : title.value,'description':desc.value,'companyid' : companyid,'agent_id' : this.props.userdetails._id}
       console.log(notification);
       this.props.createNotification(notification,usertoken);
      
@@ -37,7 +38,12 @@ class AddNotification extends Component {
   }
     
   render() {
+    {this.props.addednotification &&
+
+       browserHistory.push('/notifications');
+     }
     return (
+
       <div>
 
        <div className="page-container">
@@ -65,7 +71,7 @@ class AddNotification extends Component {
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
-                    <i className="fa fa-group"/>
+                    <i className="fa fa-envelope"/>
                    Add Notifications
                 </div> 
               </div>    
@@ -97,7 +103,7 @@ class AddNotification extends Component {
               <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.createNotification}>
+                    <button className="btn green" onClick={this.addNotifications}>
                       <i className="fa fa-pencil"/>
                        Submit
                     </button>
@@ -145,6 +151,7 @@ function mapStateToProps(state) {
     notifications:(state.dashboard.notifications),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
+    addednotification :(state.dashboard.addednotification),
 
   };
 }

@@ -22,14 +22,18 @@ function NotificationListItem(props) {
    
     <tr className = "odd">
       <td>{props.notification.title} </td>
-      <td>{props.notification.desc}</td>
-      <td>{handleDate(props.notification.dateTime)}</td>
+      <td>{props.notification.description}</td>
+      <td>{handleDate(props.notification.datetime)}</td>
       <td>{getAgentName(props.agent)}</td>
        <td>
+         <Link to={`/notification/${props.notification._id}`} className="btn blue-madison" >
+         View
+        </Link>
         <Link to={`/resendNotification/${props.notification._id}`} className="btn blue-madison" >
         Resend
         </Link>
-      
+       
+
       </td>
     
     </tr>

@@ -14,8 +14,8 @@ function CustomerListItem(props) {
       <td>{props.customer.country}</td>
       <td>{props.customer.phone}</td>
        <td>
-        <Link to={`/sendEmailSMS/${props.customer._id}`} className="btn blue-madison" >
-        Send SMS/Email
+        <Link to={`/sendEmail/${props.customer._id}`} className="btn blue-madison" >
+        Send Email
         </Link>
       
       </td>

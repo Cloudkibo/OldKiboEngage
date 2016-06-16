@@ -2,6 +2,8 @@ import { Router } from 'express';
 import * as UserController from '../controllers/user.controller';
 import * as GroupController from '../controllers/group.controller';
 import * as ChannelController from '../controllers/channel.controller';
+import * as NotificationController from '../controllers/notifications.controller';
+
 
 const router = new Router();
 
@@ -36,5 +38,9 @@ router.route('/editResponse').post(UserController.editResponse);
 router.route('/getresponses').get(UserController.getresponses);
 router.route('/deleteResponse').delete(UserController.destroyResponse);
 
+
+router.route('/createNotification').post(NotificationController.createNotification);
+router.route('/getnotifications').get(NotificationController.getnotifications);
+router.route('/deleteNotification').delete(NotificationController.destroyNotification);
 
 export default router;

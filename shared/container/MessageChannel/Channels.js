@@ -37,7 +37,6 @@ class Channels extends Component {
     const token = auth.getToken()
     console.log(token)
     console.log(this.props.channels);
-    alert(this.props.channels);
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} />

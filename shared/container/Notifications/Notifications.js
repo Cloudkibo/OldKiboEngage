@@ -7,6 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import NotificationListItem from './NotificationListItem';
 import {getnotifications} from '../../redux/actions/actions'
+import {deletenotification} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
 
@@ -59,7 +60,7 @@ class Notifications extends Component {
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
-                    <i className="fa fa-user"/>
+                    <i className="fa fa-envelope"/>
                    Notifications
                 </div> 
               </div>    
@@ -94,7 +95,7 @@ class Notifications extends Component {
                       {
                         this.props.notifications.map((notification, i) => (
                           
-                          <NotificationListItem notification={notification}  agent = {this.props.agents.filter((agent) => agent._id == notification.agent_id)}/>
+                          <NotificationListItem notification={notification}  agent = {this.props.agents.filter((agent) => agent._id == notification.agent_id)}  onDelete={() => this.props.deletenotification(notification,token)}/>
                                                       
                         ))
                       }
@@ -131,7 +132,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getnotifications:getnotifications}, dispatch);
+  return bindActionCreators({getnotifications:getnotifications,deletenotification:deletenotification}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Notifications);
 
