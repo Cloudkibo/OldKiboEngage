@@ -151,7 +151,7 @@ function mapStateToProps(state) {
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
-           channels :(state.dashboard.channels),
+          channels :(state.dashboard.channels),
            };
 }
 

@@ -8,40 +8,38 @@ var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
  'kibo-client-id': 'cd89f71715f2014725163952',
-  'content-type' : 'application/x-www-form-urlencoded'
+ 
  }
 
 var baseURL = `https://api.kibosupport.com`
 
 
-/************************* Channel APIS ************************************/
-export function createNotification(req, res) {
-  console.log('create Notification is called');
-  var token = req.headers.authorization;
+/************************* Customer APIS ************************************/
+export function createCustomer(req, res) {
+  console.log('create Customer is called');
+  
   console.log(req.body);
-  console.log(req.body.notification);
+  console.log(req.body.customer);
   var options = {
-      url: `${baseURL}/api/notifications`,
+      url: `${baseURL}/api/customers`,
       rejectUnauthorized : false,
-      headers :  {
-                 'Authorization': `Bearer ${token}`,
-                
-                 },
-
-      json: req.body.notification
+      headers, 
+      json: req.body.customer
       
      
     };
+    console.log(options.json);
     
     function callback(error, response, body) {
         console.log(error);
         console.log(response.statusCode);
 
-        var info = body;
-        console.log(info);
+        var customer = body;
+        
        if(!error && response.statusCode == 201)
        {
-          res.json({ notification: body });
+          console.log(customer);
+          return res.json(201, customer);
           // res.sendStatus(200);
        //     return res.status(200).json({statusCode : 201,message:'success'});
        }
@@ -59,12 +57,12 @@ export function createNotification(req, res) {
   }
 
 
-export function getnotifications(req, res) {
-  console.log('get getnotifications is called');
+export function getcustomers(req, res) {
+  console.log('get getcustomers is called');
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
   var options = {
-      url: `${baseURL}/api/notifications/`,
+      url: `${baseURL}/api/customers/`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -73,8 +71,9 @@ export function getnotifications(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(body);
+       console.log(body);
        console.log(error);
+
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
         console.log(info);
@@ -90,7 +89,7 @@ export function getnotifications(req, res) {
   }
 
 
-export function destroyNotification(req, res) {
+/*export function destroyNotification(req, res) {
   console.log('destroyNotification is called.');
   var token = req.headers.authorization;
   console.log(req.query.id);

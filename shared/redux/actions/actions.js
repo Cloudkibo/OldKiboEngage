@@ -736,8 +736,8 @@ export function createResponse(response,usertoken){
       
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
-        browserHistory.push('/cannedresponses');
+        console.log(res);
+         dispatch(showResponse(response))
            
         }
     );
@@ -775,6 +775,14 @@ export function showResponses(responses) {
   return {
     type: ActionTypes.ADD_RESPONSES,
     responses,
+
+  };
+}
+export function showResponse(response) {
+  console.log(response);
+  return {
+    type: ActionTypes.ADD_NEW_RESPONSE,
+    response,
 
   };
 }
@@ -880,7 +888,7 @@ export function showNotifications(notifications) {
   };
 }
 
-/*** get channels ***/
+/*** get notifications ***/
 export function getnotifications(token) {
   console.log(token);
   return (dispatch) => {
@@ -899,35 +907,29 @@ export function confirmNotification(res){
       console.log(res);
   return {
     type: ActionTypes.CONFIRM_NOTIFICATION,
-    res,
+    msg:'success',
 
   };
 }
-export function createNotification(notification,usertoken){
-  console.log(notification);
-  console.log(usertoken);
-  console.log('create notification is called');
+
+
+export function createNotification(notification,usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/createNotification`, {
       method: 'post',
-     
       body: JSON.stringify({
-      notification : notification
-      })       
-      ,
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
+        notification: notification,
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
-         dispatch(confirmNotification(res));
-        
-           
-        }
-    );
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(confirmNotification(res.notification)));
   };
 }
+
+
+
 
 export function deleteNOTIFICATION(notification) {
   return {
@@ -956,6 +958,33 @@ else{
 
 }
 
+
+export function editNotification(notification,usertoken){
+  console.log(notification);
+  console.log(usertoken);
+  console.log('edit notification is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editNotification`, {
+      method: 'post',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+      notification : notification
+      })       
+      
+      ,
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+        browserHistory.push('/notifications');
+           
+        }
+    );
+  };
+}
+
+
 export function getNotificationRequest(id,usertoken) {
   console.log(id)
   return {
@@ -966,15 +995,49 @@ export function getNotificationRequest(id,usertoken) {
 
 /******************* Customer Directory ****************/
 
-export function getcustomers() {
- var customers = [{'_id' : 1,'name' : 'Joe','email' :'joe@hotmail.com','phone' :'21212','country' : "Pakistan",'isMobile' : true},
-                  {'_id' : 2,'name' : 'Alice','email' :'alice@hotmail.com','phone' :'21212','country' : "Pakistan",'isMobile' : true},
-                   
-                    ]
+export function showcustomers(customers) {
   
- 
   return {
     type: ActionTypes.SHOW_CUSTOMERS,
     customers,
+  };
+}
+
+export function getcustomers(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcustomers`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showcustomers(res)));
+  };
+}
+
+
+export function confirmCustomer(customer) {
+  return {
+    type: ActionTypes.ADD_CUSTOMER,
+    customer :customer,
+    msg : 'success',
+
+  };
+}
+
+
+export function createcustomer(customer) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createCustomer`, {
+      method: 'post',
+      body: JSON.stringify({
+        customer:customer,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+       
+      }),
+    }).then((res) => res.json()).then(res => dispatch(confirmCustomer(res.customer)));
   };
 }

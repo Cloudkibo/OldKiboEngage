@@ -33,7 +33,10 @@ import auth from './services/auth';
 import AddNotification from './container/Notifications/AddNotification'
 import Notifications from './container/Notifications/Notifications'
 import NotificationView from './container/Notifications/NotificationView'
+import EditNotification from './container/Notifications/EditNotification'
+
 import Customers from './container/CustomerDirectory/Customers'
+import AddCustomer from './container/CustomerDirectory/AddCustomer'
 
 import Router from 'react-router';
 import { browserHistory } from 'react-router'
@@ -90,9 +93,10 @@ const routes = (
     <Route path="/notifications" component={Notifications} onEnter={requireAuth} />
     <Route path="/addnotification" component={AddNotification} onEnter={requireAuth} />
     <Route path="/notification/:id" component={NotificationView}  onEnter={requireAuth}/>
-    
+    <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
-   
+     <Route path="/createcustomer/:id" component={AddCustomer} />
+    
     <Route path="*" component={NotFound} />
   </Route>
  

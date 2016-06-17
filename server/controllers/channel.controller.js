@@ -34,9 +34,10 @@ export function createChannel(req, res) {
     
     function callback(error, response, body) {
         console.log(body);
-        console.log(error)
-      if(!error  && response.statusCode == 200) {
+        console.log(error);
+      if(!error  && response.statusCode == 201) {
       
+            console.log('messagechannels');
             return res.status(200).json({statusCode : 200,body});
       
     }

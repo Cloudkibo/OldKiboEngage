@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
-import {createResponse}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -16,52 +15,32 @@ class CannedResponseCreate extends Component {
     console.log('constructor is called');
     super(props, context);
     
-    this.createcannedResponse = this.createcannedResponse.bind(this);
+     //this.createcannedResponse = this.createcannedResponse.bind(this);
+      this.addResponse = this.addResponse.bind(this);
   }
 
  
 
-  createcannedResponse() {
-    const usertoken = auth.getToken();
+  addResponse() {
+   // const usertoken = auth.getToken();
     const shortcode = this.refs.shortcode;
     const msg = this.refs.msg;
-    var companyid = this.props.userdetails.uniqueid;
-
-    if (shortcode.value && msg.value && companyid)
+    
+    if (shortcode.value && msg.value)
      {
-      var response = {'shortcode' : shortcode.value,'message':msg.value,'companyid' : companyid}
-      console.log(response);
-      this.props.createResponse(response,usertoken);
+       this.props.addResponse(shortcode.value,msg.value);
+
+     // this.props.createResponse(response,usertoken);
      
     }
   }
     
   render() {
+    const cls = `form ${(this.props.showCR ? 'appear' : 'hide')}`;
+
     return (
-      <div>
-
-       <div className="page-container">
-         <SideBar/> 
-          <div className="page-content-wrapper">
-            <div className="page-content"> 
-              <h3 className ="page-title">Canned Responses Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
-                  <li>
-                               <Link to="/cannedresponses">Canned Responses Management</Link>
-                  </li>               
-  
-            </ul>
-                {this.props.errorMessage &&
-
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
-                      }
-         
-            
+      <div className={cls}>
+    
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -90,7 +69,7 @@ class CannedResponseCreate extends Component {
               <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.createcannedResponse}>
+                    <button className="btn green"  onClick={this.addResponse}>
                       <i className="fa fa-pencil"/>
                        Submit
                     </button>
@@ -111,37 +90,21 @@ class CannedResponseCreate extends Component {
               </div>  
               
           </form>
+          </div>
+          </div>
+          </div>
 
-                  
-          
-          </div>
-          </div>
         
-
-       </div>
-       </div> 
-      </div>
-      </div> 
       )                   
      }
 }
 
+CannedResponseCreate.propTypes = {
+  addResponse : PropTypes.func.isRequired,
+  showCR      : PropTypes.bool.isRequired,
+};
 
-function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  
-   return {
-    groupdetails:(state.dashboard.groupdetails),
-    userdetails:(state.dashboard.userdetails),
-    errorMessage:(state.dashboard.errorMessage),
-    agents:(state.dashboard.agents),
-    deptagents:(state.dashboard.deptagents),
-    channels :(state.dashboard.channels),
-     responses :(state.dashboard.responses),
-         
 
-  };
-}
-export default connect(mapStateToProps,{createResponse})(CannedResponseCreate);
+export default CannedResponseCreate;
 
 

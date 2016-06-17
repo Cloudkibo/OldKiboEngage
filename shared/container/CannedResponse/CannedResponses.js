@@ -8,7 +8,8 @@ import auth from '../../services/auth';
 import ResponseListItem from './ResponseListItem';
 import {getresponses} from '../../redux/actions/actions'
 import {deleteresponse} from '../../redux/actions/actions'
-
+import {createResponse}  from '../../redux/actions/actions'
+import CannedResponseCreate from './CannedResponseCreate'
 import { bindActionCreators } from 'redux';
 
 class CannedResponses extends Component {
@@ -24,11 +25,36 @@ class CannedResponses extends Component {
         props.getresponses(usertoken)
       }
     super(props, context);
+    this.state = {
+      showCR: false,
+    };
+    this.handleClick = this.handleClick.bind(this);
+     this.add = this.add.bind(this);
   
+
   
 
     
   }
+
+ handleClick(e) {
+
+      this.setState({
+      showCR: !this.state.showCR,
+      });
+      e.preventDefault();
+  }
+
+  add(shortcode,msg) {
+     const usertoken = auth.getToken();
+     var companyid = this.props.userdetails.uniqueid;
+     var response = {'shortcode' : shortcode,'message':msg,'companyid' : companyid}
+     
+     this.props.createResponse(response,usertoken);
+     this.setState({
+      showCR: false,
+    });
+ }
 
  
 
@@ -68,15 +94,16 @@ class CannedResponses extends Component {
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
-                    <Link id="sample_editable_1_new" className="btn green" to='/createcannedResponse'> Add Canned Response
+                    <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Add Canned Response
                     <i className="fa fa-plus"/>
-                    </Link>
+                    </button>
                  </div>
               </div>
                {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
+              <CannedResponseCreate addResponse={this.add}  showCR= {this.state.showCR}/>      
                 { this.props.responses &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
@@ -132,7 +159,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getresponses:getresponses,deleteresponse:deleteresponse}, dispatch);
+  return bindActionCreators({getresponses:getresponses,deleteresponse:deleteresponse,createResponse:createResponse}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(CannedResponses);
 

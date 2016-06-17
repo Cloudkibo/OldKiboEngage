@@ -14,7 +14,9 @@ class Intro extends Component {
         <h1>Intro Page</h1>
         <Link to="/login">Login</Link>
         <Link to="/signup">Signup</Link>
-        <Link to="/dashboardd">Dashboard</Link>
+        <Link to="/createcustomer/cd89f71715f2014725163952"> Add Customer</Link>
+
+
 
       </div>
       <Footer/>

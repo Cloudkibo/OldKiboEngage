@@ -38,10 +38,7 @@ class AddNotification extends Component {
   }
     
   render() {
-    {this.props.addednotification &&
-
-       browserHistory.push('/notifications');
-     }
+   
     return (
 
       <div>

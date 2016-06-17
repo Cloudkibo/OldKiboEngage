@@ -3,6 +3,7 @@ import * as UserController from '../controllers/user.controller';
 import * as GroupController from '../controllers/group.controller';
 import * as ChannelController from '../controllers/channel.controller';
 import * as NotificationController from '../controllers/notifications.controller';
+import * as CustomerController from '../controllers/customer.controller';
 
 
 const router = new Router();
@@ -42,5 +43,8 @@ router.route('/deleteResponse').delete(UserController.destroyResponse);
 router.route('/createNotification').post(NotificationController.createNotification);
 router.route('/getnotifications').get(NotificationController.getnotifications);
 router.route('/deleteNotification').delete(NotificationController.destroyNotification);
+router.route('/createCustomer').post(CustomerController.createCustomer);
+router.route('/getCustomers').get(CustomerController.getcustomers);
+
 
 export default router;

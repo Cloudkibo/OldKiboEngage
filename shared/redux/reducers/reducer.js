@@ -140,6 +140,17 @@ const dashboard = (state =dashboardState, action) => {
             responses : action.responses,
       };
   
+    case ActionTypes.ADD_NEW_RESPONSE:
+         console.log(action.response)
+          return{
+            groupdetails:state.groupdetails,
+            userdetails: state.userdetails,
+            agents : state.agents,
+            deptagents :state.deptagents,
+            channels : state.channels,
+            responses : [action.response,...state.responses],
+      };
+  
     case ActionTypes.ADD_GROUP:
     console.log(action.deptname);
       return {
@@ -323,7 +334,8 @@ const dashboard = (state =dashboardState, action) => {
              deptagents :state.deptagents,
              channels : state.channels, 
              notifications:state.notifications,
-             addednotification :'true'
+             addednotification : action.msg,
+             errorMessage :action.msg,
 
             };
              case ActionTypes.DELETE_NOTIFICATION :
@@ -336,6 +348,13 @@ const dashboard = (state =dashboardState, action) => {
                 agents : state.agents,
                 deptagents :state.deptagents,
                 notifications : state.notifications.filter((notification) => notification._id !== action.notification._id),
+               
+
+              };
+              case ActionTypes.ADD_CUSTOMER :
+              return {
+               
+                errorMessage:'Customer created successfully',
                
 
               };
