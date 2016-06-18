@@ -8,7 +8,7 @@ import auth from '../../services/auth';
 import ResponseListItem from './ResponseListItem';
 import {getresponses} from '../../redux/actions/actions'
 import {deleteresponse} from '../../redux/actions/actions'
-import {createResponse}  from '../../redux/actions/actions'
+import {createresponse}  from '../../redux/actions/actions'
 import CannedResponseCreate from './CannedResponseCreate'
 import { bindActionCreators } from 'redux';
 
@@ -28,7 +28,7 @@ class CannedResponses extends Component {
     this.state = {
       showCR: false,
     };
-    this.handleClick = this.handleClick.bind(this);
+     this.handleClick = this.handleClick.bind(this);
      this.add = this.add.bind(this);
   
 
@@ -45,12 +45,12 @@ class CannedResponses extends Component {
       e.preventDefault();
   }
 
-  add(shortcode,msg) {
+  add(shortcode,message) {
      const usertoken = auth.getToken();
      var companyid = this.props.userdetails.uniqueid;
-     var response = {'shortcode' : shortcode,'message':msg,'companyid' : companyid}
-     
-     this.props.createResponse(response,usertoken);
+
+      
+     this.props.createresponse({shortcode,message,companyid,usertoken});
      this.setState({
       showCR: false,
     });
@@ -159,7 +159,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getresponses:getresponses,deleteresponse:deleteresponse,createResponse:createResponse}, dispatch);
+  return bindActionCreators({getresponses:getresponses,deleteresponse:deleteresponse,createresponse:createresponse}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(CannedResponses);
 

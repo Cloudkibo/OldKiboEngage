@@ -279,6 +279,7 @@ export function addGroup(group) {
 
 
 export function creategroup(group) {
+    
   return (dispatch) => {
     fetch(`${baseURL}/api/creategroup`, {
       method: 'post',
@@ -287,17 +288,20 @@ export function creategroup(group) {
           deptdescription: group.description,
 
       }),
+    
       headers: new Headers({
          'Authorization': group.usertoken,
         'Content-Type': 'application/json',
       }),
+     
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
           if(res.statusCode != 200){
+
           dispatch(creategroupError(res.message));
         }
         else{
-              dispatch(showGroups(res.message))
+           dispatch(showGroups(res.message))
             }
         }
     );
@@ -616,18 +620,16 @@ export function createChannel(channel,usertoken){
       }),
       body: JSON.stringify({
       channel : channel
-      })       
-      
-      ,
-    }).then((res) => res.json()).then((res) => res).then((res) => {
+      }),
+ }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-         //dispatch(createeditagentError(res.message));
+        browserHistory.push('/channels'); 
         
-           
         }
     );
   };
 }
+
 
 
 export function editChannel(channel,usertoken){
@@ -718,31 +720,75 @@ else{
 /*          CANNED RESPONSE RELATED Actions                                                   */
 /*********************************************************************************************/
 
-
-export function createResponse(response,usertoken){
+export function showResponse(response) {
   console.log(response);
-  console.log(usertoken);
-  console.log('create response is called');
+  return {
+    type: ActionTypes.ADD_NEW_RESPONSE,
+    response,
+
+  };
+}
+
+
+/*export function createResponse(cr){
   return (dispatch) => {
     fetch(`${baseURL}/api/createResponse`, {
       method: 'post',
+       body: JSON.stringify({
+          shortcode : cr.shortcode,
+          message:    cr.msg,
+          companyid :  cr.companyid
+      }) ,
       headers: new Headers({
-         'Authorization': usertoken,
+         'Authorization': cr.usertoken,
         'Content-Type': 'application/json',
       }),
-      body: JSON.stringify({
-      response : response
-      })       
-      
-      ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res);
-         dispatch(showResponse(response))
-           
+        console.log(res.statusCode);
+          if(res.statusCode != 200){
+         browserHistory.push('/cannedresponses');
+        }
+        else{
+           browserHistory.push('/cannedresponses');
+            }
+        }
+    );
+  };
+}*/
+
+export function createresponse(crr) {
+   var cr = {'shortcode' : 'groupresp','message' : 'dsdsd','companyid':'cd89f71715f2014725163952','usertoken': crr.usertoken };
+    
+  return (dispatch) => {
+     fetch(`${baseURL}/api/createResponse`, {
+     method: 'post',
+       body: JSON.stringify({
+          shortcode : cr.shortcode,
+          message:    cr.message,
+          companyid :  cr.companyid
+      }) ,
+      headers: new Headers({
+         'Authorization': cr.usertoken,
+        'Content-Type': 'application/json',
+      }),
+
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+          browserHistory.push('/cannedresponses')
+       /*   if(res.statusCode != 200){
+
+          dispatch(creategroupError(res.message));
+        }
+        else{
+           dispatch(showGroups(res.message))
+            }*/
         }
     );
   };
 }
+
+
+
 
 
 export function editResponse(response,usertoken){
@@ -775,14 +821,6 @@ export function showResponses(responses) {
   return {
     type: ActionTypes.ADD_RESPONSES,
     responses,
-
-  };
-}
-export function showResponse(response) {
-  console.log(response);
-  return {
-    type: ActionTypes.ADD_NEW_RESPONSE,
-    response,
 
   };
 }
@@ -913,16 +951,18 @@ export function confirmNotification(res){
 }
 
 
-export function createNotification(notification,usertoken) {
+export function createNotification(notification) {
   return (dispatch) => {
     fetch(`${baseURL}/api/createNotification`, {
       method: 'post',
       body: JSON.stringify({
-        notification: notification,
+        notification: notification.notification,
+        customers : notification.customers
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
-        'Authorization': usertoken,
+        'Authorization': notification.usertoken,
+
       }),
     }).then((res) => res.json()).then(res => dispatch(confirmNotification(res.notification)));
   };

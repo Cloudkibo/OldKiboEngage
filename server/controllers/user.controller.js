@@ -354,7 +354,7 @@ export function createResponse(req, res) {
   console.log('create Response is called');
   var token = req.headers.authorization;
   console.log(req.body);
-  console.log(req.body.response);
+  var cr = req.body;
    var options = {
       url: `${baseURL}/api/shortcuts/`,
       rejectUnauthorized : false,
@@ -362,7 +362,12 @@ export function createResponse(req, res) {
                  'Authorization': `Bearer ${token}`,
                 
                  },
-      json: req.body.response
+      form: {
+           'shortcode' : req.body.shortcode,
+           'message': req.body.message,
+           'companyid' : req.body.companyid
+
+          }
       
      
     };
@@ -371,11 +376,11 @@ export function createResponse(req, res) {
         console.log(body);
         console.log(error)
       if(!error  && response.statusCode == 201) {
-            return res.status(200).json({statusCode : 200,body});
+            return res.status(201).json({statusCode : 201,data : body});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,data:error}); 
 
     }
 

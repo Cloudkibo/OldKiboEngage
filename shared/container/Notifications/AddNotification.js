@@ -31,8 +31,9 @@ class AddNotification extends Component {
     if (title.value && desc.value && companyid)
      {
       var notification = {'title' : title.value,'description':desc.value,'companyid' : companyid,'agent_id' : this.props.userdetails._id}
+      var customers = this.props.customers;
       console.log(notification);
-      this.props.createNotification(notification,usertoken);
+      this.props.createNotification({notification,usertoken,customers});
      
     }
   }
@@ -141,7 +142,7 @@ function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   
    return {
-   channels:(state.dashboard.channels),
+    channels:(state.dashboard.channels),
     userdetails:(state.dashboard.userdetails),
     groupdetails :(state.dashboard.groupdetails),
     errorMessage:(state.dashboard.errorMessage),
@@ -149,6 +150,7 @@ function mapStateToProps(state) {
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
     addednotification :(state.dashboard.addednotification),
+    customers:(state.dashboard.customers),
 
   };
 }

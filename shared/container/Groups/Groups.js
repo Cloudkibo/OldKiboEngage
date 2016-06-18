@@ -7,7 +7,7 @@ import {creategroup} from '../../redux/actions/actions'
 import {deletegroup} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
-import GroupCreateView from './GroupCreateView.jsx';
+import GroupCreateView from './GroupCreateView';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
@@ -69,7 +69,7 @@ class Groups extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Groups Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+                 <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -155,11 +155,9 @@ function mapStateToProps(state) {
            };
 }
 
-// Anything returned from this function will end up as props
-// on the BookList container
+
 function mapDispatchToProps(dispatch) {
-  // Whenever selectBook is called, the result shoudl be passed
-  // to all of our reducers
+  
   return bindActionCreators({ deletegroup:deletegroup,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Groups);

@@ -325,6 +325,7 @@ const dashboard = (state =dashboardState, action) => {
              deptagents :state.deptagents,
              channels : state.channels, 
              notifications:action.notifications,
+             customers:state.customers,
             };
              case ActionTypes.CONFIRM_NOTIFICATION:
              return {
@@ -367,7 +368,7 @@ const dashboard = (state =dashboardState, action) => {
               deptagents :state.deptagents,
               notifications : state.notifications,
               notification: state.notifications.filter((notification) => notification._id == action.id),
-            
+              customers:state.customers,
             };  
             case ActionTypes.SHOW_CUSTOMERS:
              return {
@@ -378,6 +379,7 @@ const dashboard = (state =dashboardState, action) => {
              deptagents :state.deptagents,
              channels : state.channels, 
              notifications:state.notifications,
+             notification: state.notification,
              customers : action.customers,
             };
     default:

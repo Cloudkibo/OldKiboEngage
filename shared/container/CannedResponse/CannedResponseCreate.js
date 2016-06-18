@@ -10,8 +10,6 @@ import { Link } from 'react-router';
 
 class CannedResponseCreate extends Component {
   constructor(props, context) {
-       //call action to get user groups 
-    const usertoken = auth.getToken();
     console.log('constructor is called');
     super(props, context);
     
@@ -29,7 +27,7 @@ class CannedResponseCreate extends Component {
     if (shortcode.value && msg.value)
      {
        this.props.addResponse(shortcode.value,msg.value);
-
+       shortcode.value = msg.value = '';
      // this.props.createResponse(response,usertoken);
      
     }

@@ -8,6 +8,7 @@ import auth from '../../services/auth';
 import NotificationListItem from './NotificationListItem';
 import {getnotifications} from '../../redux/actions/actions'
 import {deletenotification} from '../../redux/actions/actions'
+import {getcustomers} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
 
@@ -21,7 +22,8 @@ class Notifications extends Component {
     {
        
         console.log(usertoken);
-        props.getnotifications(usertoken)
+        props.getnotifications(usertoken);
+        props.getcustomers(usertoken);
       }
     super(props, context);
   
@@ -128,11 +130,12 @@ function mapStateToProps(state) {
           notifications:(state.dashboard.notifications),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
+          customers:(state.dashboard.customers),
            };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getnotifications:getnotifications,deletenotification:deletenotification}, dispatch);
+  return bindActionCreators({getnotifications:getnotifications,deletenotification:deletenotification,getcustomers:getcustomers}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Notifications);
 
