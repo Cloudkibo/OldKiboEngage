@@ -44,14 +44,12 @@ export function createNotification(req, res) {
        if(!error && response.statusCode == 201)
        {
           sendemail(customers,body);
-          res.json({ notification: body });
-          // res.sendStatus(200);
-       //     return res.status(200).json({statusCode : 201,message:'success'});
+          return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
        {
          res.sendStatus(422);
-         //   return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+          return res.status(422).json({statusCode : 422 ,message:'failed'}); 
    
        }        
      

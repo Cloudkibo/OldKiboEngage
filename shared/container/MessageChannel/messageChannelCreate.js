@@ -21,7 +21,8 @@ class MessageChannelCreate extends Component {
 
  
 
-  createmessageChannel() {
+  createmessageChannel(e) {
+     e.preventDefault();
     const usertoken = auth.getToken();
     const nameRef = this.refs.name;
     const descRef = this.refs.desc;

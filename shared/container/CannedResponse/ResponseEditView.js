@@ -30,7 +30,8 @@ class ResponseEditView extends Component {
 
  
 
-  editResponse() {
+  editResponse(e) {
+     e.preventDefault();
     const usertoken = auth.getToken();
     const idRef = this.refs.id;
     const shortcode = this.refs.shortcode;

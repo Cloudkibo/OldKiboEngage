@@ -312,7 +312,7 @@ export function creategroup(group) {
 export function editGroup(group) {
   console.log('editGroup action called');
   console.log(group.deptagents);
-  alert(group)
+  //alert(group)
   return (dispatch) => {
     fetch(`${baseURL}/api/editgroup`, {
       method: 'post',
@@ -333,7 +333,8 @@ export function editGroup(group) {
     }).then((res) => res.json()).then((res) => res).then((res) => {
          console.log(res.statusCode);
          alert(res.message);
-         dispatch(editgroupError(res.message));
+         browserHistory.push('/groups');
+        // dispatch(editgroupError(res.message));
 
 
         }
@@ -623,7 +624,7 @@ export function createChannel(channel,usertoken){
       }),
  }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-        browserHistory.push('/channels'); 
+        browserHistory.push('/messagechannels'); 
         
         }
     );
@@ -730,13 +731,13 @@ export function showResponse(response) {
 }
 
 
-/*export function createResponse(cr){
+export function createResponse(cr){
   return (dispatch) => {
     fetch(`${baseURL}/api/createResponse`, {
       method: 'post',
        body: JSON.stringify({
           shortcode : cr.shortcode,
-          message:    cr.msg,
+          message:    cr.message,
           companyid :  cr.companyid
       }) ,
       headers: new Headers({
@@ -751,37 +752,6 @@ export function showResponse(response) {
         else{
            browserHistory.push('/cannedresponses');
             }
-        }
-    );
-  };
-}*/
-
-export function createresponse(crr) {
-   var cr = {'shortcode' : 'groupresp','message' : 'dsdsd','companyid':'cd89f71715f2014725163952','usertoken': crr.usertoken };
-    
-  return (dispatch) => {
-     fetch(`${baseURL}/api/createResponse`, {
-     method: 'post',
-       body: JSON.stringify({
-          shortcode : cr.shortcode,
-          message:    cr.message,
-          companyid :  cr.companyid
-      }) ,
-      headers: new Headers({
-         'Authorization': cr.usertoken,
-        'Content-Type': 'application/json',
-      }),
-
-    }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
-          browserHistory.push('/cannedresponses')
-       /*   if(res.statusCode != 200){
-
-          dispatch(creategroupError(res.message));
-        }
-        else{
-           dispatch(showGroups(res.message))
-            }*/
         }
     );
   };
@@ -964,7 +934,9 @@ export function createNotification(notification) {
         'Authorization': notification.usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(confirmNotification(res.notification)));
+    }).then((res) => res.json()).then(res => {
+        browserHistory.push('/notifications'); 
+    });
   };
 }
 

@@ -19,7 +19,8 @@ class CannedResponseCreate extends Component {
 
  
 
-  addResponse() {
+  addResponse(e) {
+     e.preventDefault();
    // const usertoken = auth.getToken();
     const shortcode = this.refs.shortcode;
     const msg = this.refs.msg;

@@ -20,7 +20,8 @@ class AddCustomer extends Component {
 
  
 
-  addCustomers() {
+  addCustomers(e) {
+     e.preventDefault();
     const name = this.refs.name;
     const email = this.refs.email;
     const country = this.refs.country;

@@ -7,6 +7,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
+import { bindActionCreators } from 'redux';
 
 
 
@@ -22,7 +23,8 @@ class AddNotification extends Component {
 
  
 
-  addNotifications() {
+  addNotifications(e) {  
+     e.preventDefault();
     const usertoken = auth.getToken();
     const title = this.refs.title;
     const desc = this.refs.desc;
@@ -36,6 +38,7 @@ class AddNotification extends Component {
       this.props.createNotification({notification,usertoken,customers});
      
     }
+
   }
     
   render() {
@@ -154,6 +157,11 @@ function mapStateToProps(state) {
 
   };
 }
-export default connect(mapStateToProps,{createNotification})(AddNotification);
+
+function mapDispatchToProps(dispatch) {
+  
+  return bindActionCreators({createNotification:createNotification}, dispatch);
+}
+export default connect(mapStateToProps,mapDispatchToProps)(AddNotification);
 
 

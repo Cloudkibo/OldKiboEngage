@@ -34,20 +34,21 @@ class GroupEditView extends Component {
  
  
 
-  editGroupDetail() {
+  editGroupDetail(e) {
+     e.preventDefault();
         const usertoken = auth.getToken();
         const nameRef = this.refs.name;
         const descRef = this.refs.desc;
         const idRef = this.refs.id;
     if (nameRef.value && descRef.value) {
-      alert(nameRef.value);
+      //alert(nameRef.value);
       this.props.editGroup({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents});
      
     }
   }
 
   appendAgent(id,e){
-    alert(id);
+   // alert(id);
     var flag = 0;
     for(var j = 0;j<this.props.newagents.length;j++)
     {
@@ -69,7 +70,7 @@ class GroupEditView extends Component {
   }
   
    removeAgent(id,e){
-    alert(id);
+    //alert(id);
     
     for(var j = 0;j<this.props.newagents.length;j++)
     {
@@ -80,7 +81,7 @@ class GroupEditView extends Component {
       }
     }
    
-    alert(this.props.newagents.length);
+  //  alert(this.props.newagents.length);
     e.preventDefault();
     this.forceUpdate();
   }
@@ -240,7 +241,7 @@ function mapStateToProps(state) {
     deptagents:(state.dashboard.deptagents),
     errorMessage:(state.dashboard.errorMessage),
     newagents:state.dashboard.newagents,
-     channels :(state.dashboard.channels),
+    channels :(state.dashboard.channels),
   };
 }
 

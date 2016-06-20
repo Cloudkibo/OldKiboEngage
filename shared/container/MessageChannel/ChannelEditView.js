@@ -30,7 +30,8 @@ class ChannelEditView extends Component {
 
  
 
-  editChannel() {
+  editChannel(e) {
+     e.preventDefault();
     const usertoken = auth.getToken();
     const idRef = this.refs.id;
     const name = this.refs.name;

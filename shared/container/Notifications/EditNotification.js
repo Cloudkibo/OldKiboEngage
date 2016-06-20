@@ -34,7 +34,8 @@ class EditNotification extends Component {
       }
   }
 
-   editNotification() {
+   editNotification(e) {
+     e.preventDefault();
     const usertoken = auth.getToken();
     const idRef = this.refs.id;
     const title = this.refs.title;

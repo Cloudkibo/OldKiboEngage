@@ -32,7 +32,8 @@ class AgentEditView extends Component {
 
   }
 
-  editAgent() {
+  editAgent(e) {
+     e.preventDefault();
     const usertoken = auth.getToken();
     
     const idRef = this.refs.id;
