@@ -935,6 +935,7 @@ export function createNotification(notification) {
 
       }),
     }).then((res) => res.json()).then(res => {
+
         browserHistory.push('/notifications'); 
     });
   };
@@ -1007,6 +1008,13 @@ export function getNotificationRequest(id,usertoken) {
 
 /******************* Customer Directory ****************/
 
+export function getCustomerRequest(id) {
+  console.log(id)
+  return {
+    type: ActionTypes.ADD_SELECTED_CUSTOMER,
+    id,
+  };
+}
 export function showcustomers(customers) {
   
   return {
@@ -1051,5 +1059,37 @@ export function createcustomer(customer) {
        
       }),
     }).then((res) => res.json()).then(res => dispatch(confirmCustomer(res.customer)));
+  };
+}
+
+
+export function  emailCustomer(customer) {
+  console.log(customer);  
+  return (dispatch) => {
+    fetch(`${baseURL}/api/emailCustomer`, {
+      method: 'post',
+      body: JSON.stringify({
+        to : customer.emailMsg.to,
+        emailAdd : customer.emailMsg.emailAdd,
+        subject : customer.emailMsg.subject,
+        body : customer.emailMsg.body,
+        from : customer.emailMsg.from,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': customer.usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => {
+      console.log(res.statusCode);
+        if(res.statusCode == 200){
+        alert('Email sent successfully.');  
+        browserHistory.push('/customers'); 
+      }
+       else{
+        alert('Email not sent to customer.There might be some errors.');  
+        browserHistory.push('/customers'); 
+      }
+    });
   };
 }

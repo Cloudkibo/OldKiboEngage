@@ -382,6 +382,18 @@ const dashboard = (state =dashboardState, action) => {
              notification: state.notification,
              customers : action.customers,
             };
+            case ActionTypes.ADD_SELECTED_CUSTOMER :
+            return {
+              userdetails: state.userdetails,
+              groupdetails:state.groupdetails,
+              agents : state.agents,
+              channels : state.channels,
+              deptagents :state.deptagents,
+              notifications : state.notifications,
+              customers:state.customers,
+              customer: state.customers.filter((customer) => customer._id == action.id),
+            
+            };  
     default:
       return state;
   }

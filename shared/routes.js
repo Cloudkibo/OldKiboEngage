@@ -37,7 +37,7 @@ import EditNotification from './container/Notifications/EditNotification'
 
 import Customers from './container/CustomerDirectory/Customers'
 import AddCustomer from './container/CustomerDirectory/AddCustomer'
-
+import EmailCustomer from './container/CustomerDirectory/EmailCustomer'
 import Router from 'react-router';
 import { browserHistory } from 'react-router'
 
@@ -96,7 +96,8 @@ const routes = (
     <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
      <Route path="/createcustomer/:id" component={AddCustomer} />
-    
+     <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
+   
     <Route path="*" component={NotFound} />
   </Route>
  
