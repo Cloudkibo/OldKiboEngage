@@ -74,19 +74,19 @@ class AddCustomer extends Component {
             */
 
         var session = { 
-                        email : email.value,
-                        departmentid : this.refs.grouplist.value,
-                        messagechannel : this.refs.channellist.value,
-                        requesttime : Date.now(),
-                        phone :  phone.value,
-                        browser : 'Chrome',
-                        ipAddress:'192.168.1.2',
-                        country : country.value,
-                        companyid : companyid,
-                        session_id : unique_id,
-                        platform: 'web',
-                        CustomerName : name.value,
-                        isMobile : "false"
+                        'email' : email.value,
+                        'departmentid': this.refs.grouplist.value,
+                        'messagechannel' : this.refs.channellist.value,
+                        'requesttime' : Date.now(),
+                        'phone' :  phone.value,
+                        'browser' : 'Chrome',
+                        'ipAddress':'192.168.1.2',
+                        'country' : country.value,
+                        'companyid' : companyid,
+                        'session_id' : unique_id,
+                        'platform': 'web',
+                        'customerName' : name.value,
+                        'isMobile' : "false"
 
                          }
         this.props.createsession(session);                 

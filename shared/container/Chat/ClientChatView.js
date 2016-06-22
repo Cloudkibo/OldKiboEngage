@@ -72,7 +72,8 @@ class ClientChatView extends Component {
       <div>
           <div>
             <label>Client Name : </label>
-            <input ref="name" value = {this.props.sessiondetails.request_id} />
+            <input ref="name" value = {this.props.sessiondetails.session_id} />
+             <input ref="name" value = {this.props.sessiondetails.customerName} />
             </div>
 
           <div className="panel-body">

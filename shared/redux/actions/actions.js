@@ -1155,14 +1155,18 @@ export function  createsession(session) {
   return (dispatch) => {
     fetch(`${baseURL}/api/createsession`, {
       method: 'post',
-      body: session,
-      headers: new Headers({
+       headers: new Headers({
         'Content-Type': 'application/json',
       
       }),
+      body: JSON.stringify({
+          session : session
+      }),       
+      
+     
     }).then((res) => res.json()).then(res => {
         console.log(res.statusCode);
-        if(res.statusCode == 200){
+        if(res.statusCode == 201){
         alert('session created successfully.');  
         dispatch(confirmSession(session));
       }
