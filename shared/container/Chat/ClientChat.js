@@ -79,6 +79,7 @@ function mapStateToProps(state) {
           customerchat :(state.dashboard.customerchat),
           customerid :(state.dashboard.customerid),
           chatlist :(state.dashboard.chatlist),
+          sessiondetails :(state.widget.sessiondetails)
  	      };
 }
 

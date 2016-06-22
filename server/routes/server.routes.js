@@ -4,6 +4,7 @@ import * as GroupController from '../controllers/group.controller';
 import * as ChannelController from '../controllers/channel.controller';
 import * as NotificationController from '../controllers/notifications.controller';
 import * as CustomerController from '../controllers/customer.controller';
+import * as ChatController from '../controllers/chat.controller';
 
 
 const router = new Router();
@@ -16,6 +17,7 @@ router.route('/getuser').get(UserController.getuser);
 
 
 router.route('/getgroups').get(GroupController.getgroups);
+router.route('/getcustomergroups').get(GroupController.getcustomergroups);
 router.route('/creategroup').post(GroupController.creategroup);
 
 router.route('/getGroup').get(GroupController.getGroup);
@@ -32,6 +34,8 @@ router.route('/verifytoken').get(UserController.verifytoken);
 router.route('/createChannel').post(ChannelController.createChannel);
 router.route('/editChannel').post(ChannelController.editChannel);
 router.route('/getchannels').get(ChannelController.getchannels);
+router.route('/getcustomerchannels').get(ChannelController.getcustomerchannels);
+
 router.route('/deleteChannel').delete(ChannelController.destroyChannel);
 
 router.route('/createResponse').post(UserController.createResponse);
@@ -46,6 +50,7 @@ router.route('/deleteNotification').delete(NotificationController.destroyNotific
 router.route('/createCustomer').post(CustomerController.createCustomer);
 router.route('/getCustomers').get(CustomerController.getcustomers);
 router.route('/emailCustomer').post(CustomerController.emailCustomer);
+router.route('/createsession').post(ChatController.createsession);
 
 
 export default router;

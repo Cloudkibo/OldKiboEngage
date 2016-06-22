@@ -243,6 +243,16 @@ export function getusergroups(token) {
   };
 }
 
+//this is without-token version of getting grouplist for Chat widget
+export function getcustomergroups(){
+ 
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcustomergroups`, {
+        method: 'get',
+       
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerGroups(res)));
+  };
+}
 export function creategroupError(message) {
   console.log(message);
   return {
@@ -263,6 +273,14 @@ export function showGroups(groups) {
   console.log(groups);
   return {
     type: ActionTypes.ADD_GROUPS,
+    groups,
+
+  };
+}
+
+export function showCustomerGroups(groups){
+  return {
+    type: ActionTypes.ADD_CUSTOMER_GROUPS,
     groups,
 
   };
@@ -658,6 +676,14 @@ export function editChannel(channel,usertoken){
   };
 }
 
+
+export function updatechannellist(id){
+   return {
+    type: ActionTypes.FILTER_CHANNELS,
+    id,
+
+  };
+}
 export function showChannels(channels) {
   console.log(channels);
   return {
@@ -667,7 +693,24 @@ export function showChannels(channels) {
   };
 }
 
+export function showCustomerChannels(channels) {
+  console.log(channels);
+  return {
+    type: ActionTypes.ADD_CUSTOMER_CHANNELS,
+    channels,
+
+  };
+}
+
 /*** get channels ***/
+export function getcustomerchannels(){
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcustomerchannels`, {
+        method: 'get',
+       
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerChannels(res)));
+  };
+}
 export function getchannels(token) {
   console.log(token);
   return (dispatch) => {
@@ -1089,6 +1132,43 @@ export function  emailCustomer(customer) {
        else{
         alert('Email not sent to customer.There might be some errors.');  
         browserHistory.push('/customers'); 
+      }
+    });
+  };
+}
+
+
+export function confirmSession(session) {
+  return {
+    type: ActionTypes.CREATE_SESSION,
+    session,
+    msg : 'success',
+
+  };
+}
+
+
+
+/***** session create ****/
+export function  createsession(session) {
+  console.log(session);  
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createsession`, {
+      method: 'post',
+      body: session,
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      
+      }),
+    }).then((res) => res.json()).then(res => {
+        console.log(res.statusCode);
+        if(res.statusCode == 200){
+        alert('session created successfully.');  
+        dispatch(confirmSession(session));
+      }
+       else{
+        alert('Session not created');  
+        
       }
     });
   };

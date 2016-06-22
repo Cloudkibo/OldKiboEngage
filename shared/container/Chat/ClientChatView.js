@@ -72,7 +72,7 @@ class ClientChatView extends Component {
       <div>
           <div>
             <label>Client Name : </label>
-            <input ref="name" placeholder = "Enter your name ..." />
+            <input ref="name" value = {this.props.sessiondetails.request_id} />
             </div>
 
           <div className="panel-body">
@@ -144,6 +144,7 @@ function mapStateToProps(state) {
     customerid :(state.dashboard.customerid),
     customerchat :(state.dashboard.customerchat),
     chatlist :(state.dashboard.chatlist),
+    sessiondetails :(state.widget.sessiondetails)
      
      };
 }

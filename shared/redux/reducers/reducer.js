@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import store from '../store/configureStore'
 const initialState = { signupwarnings: {},userdetails : {}};
 const dashboardState = { userdetails : {},groupdetails:[]};
-
+const widgetState ={groupdetails:[],channels:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
 
@@ -399,6 +399,38 @@ const dashboard = (state =dashboardState, action) => {
   }
 };
 
+
+function widget(state = widgetState, action){
+  switch(action.type){
+    case ActionTypes.ADD_CUSTOMER_GROUPS:
+          return {
+            groupdetails:action.groups,
+             channels : state.channels,
+         
+            };
+    case ActionTypes.ADD_CUSTOMER_CHANNELS:
+          return{
+            groupdetails:state.groupdetails,
+            channels : action.channels,
+      };
+
+    case ActionTypes.FILTER_CHANNELS:
+          return{
+            groupdetails:state.groupdetails,
+            channels : state.channels,
+            filterlist : state.channels.filter((channel) => channel.groupid == action.id),
+      };
+    case ActionTypes.CREATE_SESSION:
+         return{
+            groupdetails:state.groupdetails,
+            channels : state.channels,
+            sessiondetails :action.session ,
+      };
+        
+  default:
+      return state;
+  }
+};
 // The auth reducer. The starting state sets authentication
 // based on a token being in local storage. In a real app,
 // we would also want a util to check if the token is expired.
@@ -441,7 +473,8 @@ function auth(state = {isAuthenticated: false}, action) {
 const appReducer = combineReducers({
   auth,
   dashboard,
-  signup
+  signup,
+  widget
 })
 
 

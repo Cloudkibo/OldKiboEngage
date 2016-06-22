@@ -8,7 +8,6 @@ var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
  'kibo-client-id': 'cd89f71715f2014725163952',
-  'content-type' : 'application/x-www-form-urlencoded'
  }
 
 var baseURL = `https://api.kibosupport.com`
@@ -83,6 +82,31 @@ export function getchannels(req, res) {
     request.get(options, callback);
   }
 
+
+export function getcustomerchannels(req, res) {
+  console.log('get  customer channels is called');
+   var options = {
+      url: `${baseURL}/api/messagechannels`,
+      rejectUnauthorized : false,
+      headers
+      
+     
+    };
+    function callback(error, response, body) {
+       console.log(error);
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info);
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
 
 export function destroyChannel(req, res) {
   console.log('destroyChannel is called.');
