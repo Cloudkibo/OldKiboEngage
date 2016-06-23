@@ -1177,3 +1177,32 @@ export function  createsession(session) {
     });
   };
 }
+
+
+export function  savechat(chat) {
+  console.log(chat);  
+  return (dispatch) => {
+    fetch(`${baseURL}/api/savechat`, {
+      method: 'post',
+       headers: new Headers({
+        'Content-Type': 'application/json',
+      
+      }),
+      body: JSON.stringify({
+          chat:chat
+      }),       
+      
+     
+    }).then((res) => res.json()).then(res => {
+        console.log(res.statusCode);
+        if(res.statusCode == 201){
+        console.log('chat saved.');  
+       
+      }
+       else{
+         console.log('chat not saved.'); 
+        
+      }
+    });
+  };
+}

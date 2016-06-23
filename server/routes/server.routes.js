@@ -51,6 +51,7 @@ router.route('/createCustomer').post(CustomerController.createCustomer);
 router.route('/getCustomers').get(CustomerController.getcustomers);
 router.route('/emailCustomer').post(CustomerController.emailCustomer);
 router.route('/createsession').post(ChatController.createsession);
+router.route('/savechat').post(ChatController.savechat);
 
 
 export default router;

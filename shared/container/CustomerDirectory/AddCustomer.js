@@ -86,7 +86,8 @@ class AddCustomer extends Component {
                         'session_id' : unique_id,
                         'platform': 'web',
                         'customerName' : name.value,
-                        'isMobile' : "false"
+                        'isMobile' : "false",
+                         'status' : 'new',
 
                          }
         this.props.createsession(session);                 

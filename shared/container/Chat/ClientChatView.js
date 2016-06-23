@@ -5,6 +5,8 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { getChatRequest}  from '../../redux/actions/actions'
+import {savechat}  from '../../redux/actions/actions'
+
 import { updateChatList}  from '../../redux/actions/actions'
 import * as actions from '../../redux/actions/actions';
 import moment from 'moment';
@@ -44,6 +46,45 @@ class ClientChatView extends Component {
         this.props.chatlist.push(message);
         
         socket.emit('send:message', message);
+        var saveChat={}
+        if(this.props.sessiondetails.status == 'new'){
+        saveChat = { 
+                          'to' : 'All Agents',
+                          'from' : this.refs.name.value,
+                          'visitoremail' : this.refs.email.value,
+                          'type': 'message',
+                           'msg' : this.refs.msg.value,
+                           'datetime' : Date.now(),
+                           'request_id' : this.refs.reqId.value,
+                           'messagechannel': this.refs.channelid.value,
+                           'companyid': this.props.sessiondetails.companyid,
+                           'is_seen':'no'
+                      }
+                    }
+            else{
+                       saveChat = { 
+                          'to' : this.props.sessiondetails.agentname,
+                          'from' : this.refs.name.value,
+
+                          'visitoremail' : this.refs.email.value,
+                          'agentemail' : this.props.sessiondetails.agentemail,
+
+                          'agentid': this.props.sessiondetails.agentid,
+
+                          'type': 'message',
+
+                           'msg' : this.refs.msg.value,
+
+                           'datetime' : Date.now(),
+                           'request_id' : this.refs.reqId.value,
+                           'messagechannel': this.refs.channelid.value,
+
+                           'companyid': this.props.sessiondetails.companyid,
+
+                           'is_seen':'no'
+                      }
+                    }
+         this.props.savechat(saveChat);           
         this.refs.msg.value ='';
         this.forceUpdate();
       }
@@ -72,8 +113,11 @@ class ClientChatView extends Component {
       <div>
           <div>
             <label>Client Name : </label>
-            <input ref="name" value = {this.props.sessiondetails.session_id} />
-             <input ref="name" value = {this.props.sessiondetails.customerName} />
+            <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
+            <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
+            <input ref="channelid" value = {this.props.sessiondetails.messagechannel} type="hidden" />
+            <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
+           
             </div>
 
           <div className="panel-body">
@@ -150,4 +194,4 @@ function mapStateToProps(state) {
      };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList})(ClientChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList,savechat})(ClientChatView);
