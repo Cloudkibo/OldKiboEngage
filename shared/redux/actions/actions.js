@@ -892,18 +892,37 @@ else{
 
 
 /***************** Chat Actions ********************/
-export function showAllChat() {
- var customerchat = [{'name' : 'John','group' :'IT','lastmsg' :'I need help in software installation' },
-                  {'name' : 'Alice','group' :'Sales','lastmsg' :'I didnt get my order yet' },
-                  {'name' : 'Joe','group' :'Payment','lastmsg' :'Please confirm Payment status' }]
-  
+export function showAllChat(customerchat) {
+/* var customerchat = [{'username' : 'John','group' :'IT','msg' :'I need help in software installation' },
+                  {'username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
+                  {'username' : 'Joe','group' :'Payment','msg' :'Please confirm Payment status' }]
+ 
+  */
+
    var customerid = 1;
+  
   console.log(customerchat);
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
     customerid,
 
+  };
+}
+
+
+
+/*** get notifications ***/
+export function getsessions(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getsessions`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showAllChat(res)));
   };
 }
 
@@ -925,6 +944,15 @@ export function updateChatList(message)
    return {
     type: ActionTypes.ADD_CHAT_MESSAGE,
     message
+
+  };
+}
+
+export function updateSessionList(customerchat)
+{
+   return {
+    type: ActionTypes.ADD_SESSION,
+    customerchat
 
   };
 }

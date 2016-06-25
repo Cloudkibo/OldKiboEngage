@@ -59,6 +59,56 @@ export function createsession(req, res) {
   }
 
 
+export function getsessions(req, res) {
+  console.log('get session is called');
+  
+   var token = req.headers.authorization;
+   var chat = [];
+  var options = {
+      url: `${baseURL}/api/visitorcalls/`,
+      rejectUnauthorized : false,
+       headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      
+     
+    };
+
+    function callback(error, response, body) {
+        console.log(error);
+        console.log(response.statusCode);
+
+     //   console.log(body);
+        
+       if(!error && response.statusCode == 200)
+       {
+          var info = JSON.parse(body);
+
+          for(var i in info){
+              console.log(info[i].status)
+            if(info[i].platform == "new"){
+
+              console.log(info[i]);
+              chat.push(info[i]);
+            }
+          }
+              console.log(chat);
+              return res.status(200).json(chat);
+       }
+       else
+       {
+           res.sendStatus(422);
+           return res.status(422).json(error); 
+   
+       }        
+   }
+        request.get(options, callback);
+     
+   
+  }
+
+
 
   //save chat
   /************************* Customer APIS ************************************/

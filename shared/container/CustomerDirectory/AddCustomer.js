@@ -56,11 +56,14 @@ class AddCustomer extends Component {
             var today = new Date();
             var uid = Math.random().toString(36).substring(7);
             var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-         /*   socket.emit('join meeting', {
+            var socketsession =  {
                     username : name.value,
                     useremail :email.value,
                     currentPage : 'www.kibosupport.com',
                     departmentid : this.refs.grouplist.value,
+                    group:this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
+                    channelid : this.refs.channellist.value,
+                    channelname: this.refs.channellist.options[this.refs.channellist.selectedIndex].text,
                     fullurl :  'www.kibosupport.com',
                     phone :  phone.value,
                     browser : 'Chrome',
@@ -69,15 +72,18 @@ class AddCustomer extends Component {
                     initiator : 'visitor',
                     room: companyid,
                     request_id : unique_id,
-                    webrtc_browser :'true'
-             });
-            */
+                    webrtc_browser :'true',
+                    msg : 'User joined session'
+             };
+            socket.emit('join meeting',socketsession);
+         
 
         var session = { 
                         'email' : email.value,
                         'departmentid': this.refs.grouplist.value,
                         'messagechannel' : this.refs.channellist.value,
                         'requesttime' : Date.now(),
+
                         'phone' :  phone.value,
                         'browser' : 'Chrome',
                         'ipAddress':'192.168.1.2',
@@ -87,7 +93,7 @@ class AddCustomer extends Component {
                         'platform': 'web',
                         'customerName' : name.value,
                         'isMobile' : "false",
-                         'status' : 'new',
+                        'status' : 'new',
 
                          }
         this.props.createsession(session);                 
@@ -98,6 +104,7 @@ class AddCustomer extends Component {
   }
     
   handleChange(e){
+    alert(this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text);
      this.props.updatechannellist(e.target.value);
       this.forceUpdate();
 
@@ -169,7 +176,7 @@ class AddCustomer extends Component {
                   <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
                           {
                           this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                            <option value={group._id}>{group.deptname}</option>
+                            <option value={group._id} >{group.deptname}</option>
 
                             )
                          }

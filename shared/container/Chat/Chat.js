@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {showAllChat}  from '../../redux/actions/actions'
+import {getsessions}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -24,7 +24,7 @@ class Chat extends Component {
     {
        
         console.log(usertoken);
-        props.showAllChat();
+        props.getsessions(usertoken);
       }
       
         super(props, context);
@@ -183,4 +183,4 @@ function mapStateToProps(state) {
            };
 }
 
-export default connect(mapStateToProps,{showAllChat})(Chat);
+export default connect(mapStateToProps,{getsessions})(Chat);

@@ -290,6 +290,19 @@ const dashboard = (state =dashboardState, action) => {
              channels : state.channels,
             };
 
+          case ActionTypes.ADD_SESSION:
+           return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : [action.customerchat,...state.customerchat],
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             channels : state.channels,
+            };
+
           case ActionTypes.SHOW_CHAT_HISTORY:
            return {
              groupdetails: state.groupdetails,

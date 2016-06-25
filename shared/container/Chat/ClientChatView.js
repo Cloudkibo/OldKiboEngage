@@ -23,8 +23,7 @@ class ClientChatView extends Component {
   componentDidMount() {
     const { socket,dispatch } = this.props;
     socket.on('send:message',message => this.props.updateChatList(message));
-    
-  }
+      }
  
  
  componentDidUpdate() {

@@ -7,6 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { getChatRequest}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
+import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
 
 class CustomerChatView extends Component {
@@ -31,7 +32,8 @@ class CustomerChatView extends Component {
   componentDidMount() {
     const { socket,dispatch } = this.props;
     socket.on('send:message',message => this.props.updateChatList(message));
-    
+    socket.on('customer_joined',data =>this.props.updateSessionList(data));
+   
   }
   componentDidUpdate() {
     const messageList = this.refs.messageList;
@@ -214,4 +216,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList,updateSessionList})(CustomerChatView);

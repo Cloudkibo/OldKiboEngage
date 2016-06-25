@@ -76,8 +76,8 @@ function onConnect(io2, socket) {
   socket.on('join meeting', function (room) {
 
     console.log('joining the room now '+ JSON.stringify(room));
-
-    var clients = findClientsSocket(room.room); // This change is because of socket version change
+    socket.broadcast.emit('customer_joined',room);
+    /*var clients = findClientsSocket(room.room); // This change is because of socket version change
 
     var numClients = clients.length; // This change is because of socket version change
 
@@ -129,25 +129,26 @@ function onConnect(io2, socket) {
         });
       });
 */
-    }
+   /* }
     else if (numClients > 0) {
 
-      socket.join(room.room);
+     */
+    //  socket.join(room.room);
       //socket.set('nickname', room.username);
       room.socketid = socket.id;
-      socket.emit('joined', room);
+   //   socket.emit('joined', room);
 
       //  console.log('Widget is joining this room: ', room.room)
 
       //  console.log("maybe socket id: ", socket.id)
 
-      if(room.username !== 'agent123')
-        socket.broadcast.to(room.room).emit('join', room);
+     // if(room.username !== 'agent123')
+     //   socket.broadcast.to(room.room).emit('join', room);
 
-    }
+    //}
 
     //console.log(io2.sockets.manager.rooms)
-
+  
   });
 
   socket.on('join scheduled meeting', function (room) {
