@@ -418,26 +418,41 @@ function widget(state = widgetState, action){
     case ActionTypes.ADD_CUSTOMER_GROUPS:
           return {
             groupdetails:action.groups,
-             channels : state.channels,
+            channels : state.channels,
+            roomdetails : state.roomdetails,
+
          
             };
     case ActionTypes.ADD_CUSTOMER_CHANNELS:
           return{
             groupdetails:state.groupdetails,
             channels : action.channels,
-      };
+            roomdetails : state.roomdetails,
 
+      };
+    case ActionTypes.ADD_ROOM_DETAILS :
+         return{
+            groupdetails:state.groupdetails,
+            channels : state.channels,
+            sessiondetails :state.session ,
+            roomdetails : action.room,
+
+
+      };
     case ActionTypes.FILTER_CHANNELS:
           return{
             groupdetails:state.groupdetails,
             channels : state.channels,
             filterlist : state.channels.filter((channel) => channel.groupid == action.id),
+            roomdetails : state.room,
       };
     case ActionTypes.CREATE_SESSION:
          return{
             groupdetails:state.groupdetails,
             channels : state.channels,
             sessiondetails :action.session ,
+            roomdetails : state.roomdetails,
+
       };
         
   default:

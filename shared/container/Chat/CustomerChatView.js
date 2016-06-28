@@ -9,6 +9,7 @@ import { getChatRequest}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
+import {savechat}  from '../../redux/actions/actions'
 
 class CustomerChatView extends Component {
 
@@ -50,12 +51,29 @@ class CustomerChatView extends Component {
         var message = {
           sender : this.props.userdetails.firstname,
           msg : this.refs.msg.value,
-          time : moment.utc().format('lll')
+          time : moment.utc().format('lll'),
+          to : this.refs.socketid_customer.value,
         }
 
         this.props.chatlist.push(message);
         
         socket.emit('send:message', message);
+
+        
+         var saveChat = { 
+                          'to' : this.props.sessiondetails.username,
+                          'from' : this.props.userdetails.firstname,
+                          'visitoremail' : this.props.sessiondetails.useremail,
+                          'socketid' : this.refs.socketid_customer.value,
+                          'type': 'message',
+                           'msg' : this.refs.msg.value,
+                           'datetime' : Date.now(),
+                           'request_id' : this.props.sessiondetails.request_id,
+                           'messagechannel': this.props.sessiondetails.channelid,
+                           'companyid': this.props.sessiondetails.companyid,
+                           'is_seen':'no'
+                      }
+        this.props.savechat(saveChat);               
         this.refs.msg.value ='';
         this.forceUpdate();
       }
@@ -136,6 +154,13 @@ class CustomerChatView extends Component {
 
           </div>
           <div className="panel-body">
+          {
+            this.props.sessiondetails &&
+          <div>
+          <input value = {this.props.sessiondetails.username} ref="customername"/>
+          <input value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
+          </div>
+          }
             <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}}  ref="messageList">
                           {this.props.chatlist &&
                             this.props.chatlist.map((chat, i) => (
@@ -212,8 +237,8 @@ function mapStateToProps(state) {
     customerid :(state.dashboard.customerid),
     customerchat :(state.dashboard.customerchat),
     chatlist :(state.dashboard.chatlist),
-     channels :(state.dashboard.channels),
+    channels :(state.dashboard.channels),
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList,updateSessionList})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList,updateSessionList,savechat})(CustomerChatView);

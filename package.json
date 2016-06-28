@@ -59,7 +59,7 @@
     "sanitize-html": "^1.11.3",
     "sendgrid": "1.0.1",
     "slug": "^0.9.1",
-    "socket.io": "^1.4.6",
+    "socket.io": "^1.0.6",
     "validator": "^5.4.0"
   },
   "devDependencies": {

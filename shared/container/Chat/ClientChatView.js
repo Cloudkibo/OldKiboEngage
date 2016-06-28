@@ -37,9 +37,10 @@ class ClientChatView extends Component {
           
         e.preventDefault();
         var message = {
-          sender : this.refs.name.value,
+          from : this.refs.name.value,
           msg : this.refs.msg.value,
-          time : moment.utc().format('lll')
+          time : moment.utc().format('lll'),
+          socketid : this.props.roomdetails.socketid
         }
 
         this.props.chatlist.push(message);
@@ -57,7 +58,8 @@ class ClientChatView extends Component {
                            'request_id' : this.refs.reqId.value,
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.sessiondetails.companyid,
-                           'is_seen':'no'
+                           'is_seen':'no',
+                           'socketid' : this.props.roomdetails.socketid
                       }
                     }
             else{
@@ -80,7 +82,8 @@ class ClientChatView extends Component {
 
                            'companyid': this.props.sessiondetails.companyid,
 
-                           'is_seen':'no'
+                           'is_seen':'no',
+                           'socketid' : this.props.roomdetails.socketid
                       }
                     }
          this.props.savechat(saveChat);           
@@ -188,8 +191,8 @@ function mapStateToProps(state) {
     customerid :(state.dashboard.customerid),
     customerchat :(state.dashboard.customerchat),
     chatlist :(state.dashboard.chatlist),
-    sessiondetails :(state.widget.sessiondetails)
-     
+    sessiondetails :(state.widget.sessiondetails),
+    roomdetails :(state.widget.roomdetails), 
      };
 }
 

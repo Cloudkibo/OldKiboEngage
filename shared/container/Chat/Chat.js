@@ -36,6 +36,14 @@ class Chat extends Component {
      alert(e.target.value);
    
     }
+
+     handleSession(id,e){
+      e.preventDefault();
+      this.refs.sessionid.value = id;
+      alert(this.refs.sessionid.value);
+      this.forceUpdate();
+   
+    }
  
 
   render() {
@@ -132,23 +140,30 @@ class Chat extends Component {
                 </div>
              	
              	<div className="table-responsive">
-             		<table className="table">
+              {
+                this.props.customerchat &&
+                <input type="hidden" ref = "sessionid" value = "0"/>
+             		}
+                <table className="table">
              			<tbody>
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
 					                      {this.props.customerchat &&
 					                        this.props.customerchat.map((customer, i) => (
-					                          
-					                          <ChatListItem customer={customer} key={i}  />
+					                        
+					                          <ChatListItem customer={customer} key={i} onClickSession={this.handleSession.bind(this,i)}/>
 					                                                      
 					                        ))
 					                      }
 			                     	</div>
 			                    </td>
 			                    <td className="col-md-6">
-			                    	<CustomerChatView  socket={socket} {...this.props} customerid = {this.props.customerid}/>
-			                    </td> 	
+                          {
+                            this.refs.sessionid &&
+			                    	<CustomerChatView  socket={socket} {...this.props} customerid = {this.props.customerid} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]}/>
+			                   }
+                          </td> 	
 			                </tr>
 			            </tbody>
                 </table>
@@ -179,7 +194,7 @@ function mapStateToProps(state) {
           customerchat :(state.dashboard.customerchat),
           customerid :(state.dashboard.customerid),
           chatlist :(state.dashboard.chatlist),
- 		  channels :(state.dashboard.channels),	
+ 		      channels :(state.dashboard.channels),	
            };
 }
 

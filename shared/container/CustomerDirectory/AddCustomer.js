@@ -5,7 +5,7 @@ import {getcustomergroups}  from '../../redux/actions/actions'
 import {getcustomerchannels}  from '../../redux/actions/actions'
 import {updatechannellist}  from '../../redux/actions/actions'
 import {createsession}  from '../../redux/actions/actions'
-
+import {addRoom} from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -28,7 +28,10 @@ class AddCustomer extends Component {
   }
 
  
-
+   componentDidMount() {
+//    const { socket,dispatch } = this.props;
+    socket.on('joined',room => this.props.addRoom(room));
+      }
   addCustomers(e) {
     e.preventDefault();
     const name = this.refs.name;
@@ -115,7 +118,7 @@ class AddCustomer extends Component {
     }  
   render() {
    
-   {this.props.sessiondetails &&
+   {this.props.roomdetails &&
     browserHistory.push('/clientchat')}
     return (
 
@@ -240,10 +243,10 @@ function mapStateToProps(state) {
     groupdetails :(state.widget.groupdetails),
     channels :(state.widget.channels),
     filterlist :(state.widget.filterlist),
-    sessiondetails : (state.widget.sessiondetails)
-  
+    sessiondetails : (state.widget.sessiondetails),
+    roomdetails :(state.widget.roomdetails),
   };
 }
-export default connect(mapStateToProps,{getcustomergroups,getcustomerchannels,updatechannellist,createsession})(AddCustomer);
+export default connect(mapStateToProps,{getcustomergroups,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
 
 

@@ -893,11 +893,11 @@ else{
 
 /***************** Chat Actions ********************/
 export function showAllChat(customerchat) {
-/* var customerchat = [{'username' : 'John','group' :'IT','msg' :'I need help in software installation' },
-                  {'username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
-                  {'username' : 'Joe','group' :'Payment','msg' :'Please confirm Payment status' }]
+ var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
+                  {'id': '2','username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
+                  {'id': '3','username' : 'Joe','group' :'Payment','msg' :'Please confirm Payment status' }]
  
-  */
+
 
    var customerid = 1;
   
@@ -1175,6 +1175,14 @@ export function confirmSession(session) {
   };
 }
 
+export function addRoom(room) {
+  return {
+    type: ActionTypes.ADD_ROOM_DETAILS,
+    room,
+   
+
+  };
+}
 
 
 /***** session create ****/

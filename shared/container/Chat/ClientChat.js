@@ -3,6 +3,7 @@ import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {showAllChat}  from '../../redux/actions/actions'
+import {savechat}  from '../../redux/actions/actions'
 
 import ClientChatView from './ClientChatView';
 import Footer from '../../components/Footer/Footer.jsx';

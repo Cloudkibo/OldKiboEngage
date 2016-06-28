@@ -33,10 +33,13 @@ var divMargin = {
      clear: 'both',
 }
 
+var changec ={
+  'cursor': 'pointer',
+}
   return (
   
-   <div className="list-group">
-   	<a href="#" className="list-group-item">
+   <div className="list-group" onClick={props.onClickSession} style={changec}>
+   	<div className="list-group-item">
       <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.username}</h4>
        <span className='badge' style={rightStyle}>14</span>
      
@@ -50,7 +53,7 @@ var divMargin = {
 
       <p className='list-group-item-text' style={clearStyle}>{props.customer.msg}</p>
 
-    </a>  
+    </div>  
    </div>
   );
 }
