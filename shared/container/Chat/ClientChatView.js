@@ -37,7 +37,7 @@ class ClientChatView extends Component {
           
         e.preventDefault();
         var message = {
-          from : this.refs.name.value,
+          sender: this.refs.name.value,
           msg : this.refs.msg.value,
           time : moment.utc().format('lll'),
           socketid : this.props.roomdetails.socketid
@@ -51,8 +51,8 @@ class ClientChatView extends Component {
         saveChat = { 
                           'to' : 'All Agents',
                           'from' : this.refs.name.value,
-                          'visitoremail' : this.refs.email.value,
-                          'type': 'message',
+                           'visitoremail' : this.refs.email.value,
+                           'type': 'message',
                            'msg' : this.refs.msg.value,
                            'datetime' : Date.now(),
                            'request_id' : this.refs.reqId.value,

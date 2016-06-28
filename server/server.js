@@ -65,7 +65,7 @@ const renderFullPage = (html, initialState) => {
         <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
         <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
          <link href="assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
-
+ 
          <link rel="stylesheet" href='/css/bootstrap/css/bootstrap.min.css' />
          <link rel="stylesheet" href='/css/style.css' />
        
@@ -77,9 +77,25 @@ const renderFullPage = (html, initialState) => {
 
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
         <link rel="stylesheet" href='/css/chatui.css' />
+
+        <!-- Page level plugin styles START -->
+        <link href="assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
+        <link href="assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.css" rel="stylesheet">
+        <link href="assets/global/plugins/slider-revolution-slider/rs-plugin/css/settings.css" rel="stylesheet">
+        <!-- Page level plugin styles END -->
+
+        <!-- Theme styles START -->
+        <link href="assets/global/css/components.css" rel="stylesheet">
+        <link href="assets/frontend/layout/css/style.css" rel="stylesheet">
+        <link href="assets/frontend/pages/css/style-revolution-slider.css" rel="stylesheet"><!-- metronic revo slider styles -->
+        <link href="assets/frontend/layout/css/style-responsive.css" rel="stylesheet">
+        <link href="assets/frontend/layout/css/themes/red.css" rel="stylesheet" id="style-color">
+        <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
+  
       
   </head>
       <body>
+
         <div id="root">${html}</div>
     
               <script src="/socket.io/socket.io.js"></script>
@@ -122,12 +138,22 @@ const renderFullPage = (html, initialState) => {
             <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script> 
             <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
             <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+            
+
+        <!-- BEGIN RevolutionSlider -->  
+            <script src="assets/global/plugins/slider-revolution-slider/rs-plugin/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script> 
+            <script src="assets/global/plugins/slider-revolution-slider/rs-plugin/js/jquery.themepunch.tools.min.js" type="text/javascript"></script> 
+            <script src="assets/frontend/pages/scripts/revo-slider-init.js" type="text/javascript"></script>
+            <!-- END RevolutionSlider -->
+
             <script>
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
             /* Init Metronic's core jquery plugins and layout scripts */
             $(document).ready(function() {
               Metronic.init(); // Run metronic theme
               Metronic.setAssetsPath('/assets/'); // Set the assets folder path
+              RevosliderInit.initRevoSlider();
+    
             });
           </script>
              <script src="/dist/bundle.js"></script>

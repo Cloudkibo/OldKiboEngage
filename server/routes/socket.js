@@ -22,7 +22,8 @@ function onConnect(io2, socket) {
     console.log(data);
     if(data.to){
             console.log('sending point to point message');
-            io2.to(data.to).emit('send:message',{
+
+            socket.broadcast.to(data.to).emit('send:message',{
             sender: data.sender,
             msg: data.msg,
             time:data.time

@@ -34,6 +34,7 @@ class CustomerChatView extends Component {
     const { socket,dispatch } = this.props;
     socket.on('send:message',message => this.props.updateChatList(message));
     socket.on('customer_joined',data =>this.props.updateSessionList(data));
+    this.forceUpdate();
    
   }
   componentDidUpdate() {
