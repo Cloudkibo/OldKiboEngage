@@ -297,14 +297,79 @@ class Intro extends Component {
                 <img src="../../assets/frontend/pages/img/revolutionslider/hint2-red.png" id="rev-hint2" alt="Image 1" />
               </div>
             </li>
-                            </ul>
+            </ul>
                 <div className="tp-bannertimer tp-bottom"></div>
             </div>
         </div>
       </div>
-  
-   <Footer/>
+
+
+      <div className ="main">
+      <div className ="container">
+        
+        <div className="row service-box margin-bottom-40">
+          <div className="col-md-4 col-sm-4">
+            <div className="service-box-heading">
+              <em><i className="fa fa-location-arrow blue"></i></em>
+              <span>Support</span>
+            </div>
+            <p>A well-designed customer service system for dealing with incoming call requests from any web page.</p>
+          </div>
+          <div className="col-md-4 col-sm-4">
+            <div className="service-box-heading">
+              <em><i className="fa fa-check red"></i></em>
+              <span>Reports</span>
+            </div>
+            <p>View reports on performance by agents and groups, agent response time, call statistic, group traffic to get the insights.</p>
+          </div>
+          <div className="col-md-4 col-sm-4">
+            <div className="service-box-heading">
+              <em><i className="fa fa-compress green"></i></em>
+              <span>Live Communication</span>
+            </div>
+            <p>Instant chat, make audio call, share screen to communicate the problem and solve them live.</p>
+          </div>
+        </div>
+       
+
+
+        <div className="row margin-bottom-40 front-steps-wrapper front-steps-count-3">
+          <div className="col-md-4 col-sm-4 front-step-col">
+            <div className="front-step front-step1">
+              <h2>Put widget on your website</h2>
+              <p>Customer join widget to make call request to agent</p>
+            </div>
+          </div>
+          <div className="col-md-4 col-sm-4 front-step-col">
+            <div className="front-step front-step2">
+              <h2>Pick a Call</h2>
+              <p>Agent picks call, jot down call summary and helps visitor</p>
+            </div>
+          </div>
+          <div className="col-md-4 col-sm-4 front-step-col">
+            <div className="front-step front-step3">
+              <h2>Reports</h2>
+              <p>View insights of work by agents, groups and call traffic.</p>
+            </div>
+          </div>
+        </div>
+       </div>
+       </div>
+      
+    
+    <div className="footer">
+      <div className="container">
+        <div className="row">
+       
+          <div className="col-md-6 col-sm-6 padding-top-10">
+            2014 © KiboEngage. ALL Rights Reserved.
+          </div>
+        </div>
+       </div>
+       </div> 
+
       </div>
+
     );
   }
 }
