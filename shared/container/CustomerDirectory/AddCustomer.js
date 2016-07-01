@@ -14,7 +14,6 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
 import io from 'socket.io-client';
 
-const socket = io('');
 
 
 
@@ -29,8 +28,7 @@ class AddCustomer extends Component {
 
  
    componentDidMount() {
-//    const { socket,dispatch } = this.props;
-    socket.on('joined',room => this.props.addRoom(room));
+   this.props.route.socket.on('joined',room => this.props.addRoom(room));
       }
   addCustomers(e) {
     e.preventDefault();
@@ -78,7 +76,7 @@ class AddCustomer extends Component {
                     webrtc_browser :'true',
                     msg : 'User joined session'
              };
-            socket.emit('join meeting',socketsession);
+             this.props.route.socket.emit('join meeting',socketsession);
          
 
         var session = { 

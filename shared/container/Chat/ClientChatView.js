@@ -22,7 +22,8 @@ class ClientChatView extends Component {
   }
   componentDidMount() {
     const { socket,dispatch } = this.props;
-    socket.on('send:message',message => this.props.updateChatList(message));
+   
+   socket.on('send:message',message => this.props.updateChatList(message));
       }
  
  
@@ -45,7 +46,7 @@ class ClientChatView extends Component {
 
         this.props.chatlist.push(message);
         
-        socket.emit('send:message', message);
+         socket.emit('send:message', message);
         var saveChat={}
         if(this.props.sessiondetails.status == 'new'){
         saveChat = { 

@@ -11,7 +11,7 @@ function onDisconnect(io2, socket) {
 
 // When the user connects.. perform this
 function onConnect(io2, socket) {
-
+ console.log(socket.id);
   socket.on('logClient', function(data){
     //logger.clientLog(data.level, "Client side log: "+ data.data);
   });
@@ -23,7 +23,7 @@ function onConnect(io2, socket) {
     if(data.to){
             console.log('sending point to point message');
 
-            socket.broadcast.to(data.to).emit('send:message',{
+            io2.to(data.to).emit('send:message',{
             sender: data.sender,
             msg: data.msg,
             time:data.time
@@ -102,7 +102,7 @@ function onConnect(io2, socket) {
      
       socket.join(room.room);
       room.socketid = socket.id;
-      console.log('socket id is : ' + room.socketid);
+//      console.log('socket id is : ' + room.socketid);
       console.log("Your  socket id: ", socket.id)
 
       socket.emit('joined', room);
@@ -153,6 +153,13 @@ function onConnect(io2, socket) {
     var numClients = clients.length; // This change is because of socket version change
     console.log('Clients connected to room : ' + numClients);
    // socket.emit('joined', room);
+
+      room.socketid = socket.id;
+//      console.log('socket id is : ' + room.socketid);
+      console.log("Agent  socket id: ", socket.id)
+
+     // socket.emit('joined', room);
+
 
   });
 

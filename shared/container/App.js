@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 
 
+
 class App extends Component {
 
   constructor(props, context) {
@@ -15,6 +16,7 @@ class App extends Component {
 
       <div>
         { this.props.children }
+      
       </div>
 
     );

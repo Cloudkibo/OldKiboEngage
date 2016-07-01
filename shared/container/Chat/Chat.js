@@ -13,7 +13,6 @@ import { bindActionCreators } from 'redux';
 
 import io from 'socket.io-client';
 
-const socket = io('');
 class Chat extends Component {
 
  constructor(props, context) {
@@ -32,6 +31,11 @@ class Chat extends Component {
   
     
   }
+  componentWillUpdate(){
+      
+       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
+    } 
+  
    handleChange(e){
      alert(e.target.value);
    
@@ -161,7 +165,7 @@ class Chat extends Component {
 			                    <td className="col-md-6">
                           {
                             this.refs.sessionid &&
-			                    	<CustomerChatView  socket={socket} {...this.props} customerid = {this.props.customerid} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]}/>
+			                    	<CustomerChatView  socket={ this.props.route.socket} {...this.props} customerid = {this.props.customerid} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]}/>
 			                   }
                           </td> 	
 			                </tr>

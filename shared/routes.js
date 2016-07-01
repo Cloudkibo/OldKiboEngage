@@ -42,6 +42,10 @@ import Router from 'react-router';
 import { browserHistory } from 'react-router'
 
 
+
+import io from 'socket.io-client'
+let socket = io(`http://localhost:8000`)
+
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
     console.log('you are not logged in.');
@@ -70,7 +74,7 @@ const routes = (
     <Route path="joincompany/:id" component={JoinCompany}/>
      <Route path="/join" component={JoinPage}/>
      <Route path="/joincompanyfailure" component={JoinCompanyFailure} />
-    <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
+    <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} socket = {socket}/>
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
     
@@ -87,15 +91,15 @@ const routes = (
     <Route path="/editresponse/:id" component={ResponseEditView}  onEnter={requireAuth}/>
     <Route path="/verification/:id" component={Verification}/>
     <Route path="/verificationfailure" component={VerificationFailure} />
-    <Route path="/chat" component={Chat} onEnter={requireAuth} />
-    <Route path="/clientchat" component={ClientChat}/>
+    <Route path="/chat" component={Chat} onEnter={requireAuth}  socket = {socket}/>
+    <Route path="/clientchat" component={ClientChat}  socket = {socket}/>
     
     <Route path="/notifications" component={Notifications} onEnter={requireAuth} />
     <Route path="/addnotification" component={AddNotification} onEnter={requireAuth} />
     <Route path="/notification/:id" component={NotificationView}  onEnter={requireAuth}/>
     <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
-     <Route path="/createcustomer/:id" component={AddCustomer} />
+     <Route path="/createcustomer/:id" component={AddCustomer}  socket = {socket}/>
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
    
     <Route path="*" component={NotFound} />

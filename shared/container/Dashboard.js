@@ -14,7 +14,7 @@ import auth from '../services/auth';
 import ReactTimeout from 'react-timeout'
 
 import io from 'socket.io-client';
-const socket = io('');
+//const socket = io('');
 var dontCall = false;
 
 class Dashboard extends Component {
@@ -35,11 +35,12 @@ class Dashboard extends Component {
 
   
   componentWillUpdate(){
-  
+   console.log(this.props.route.socket);
+    
   //on component mount,join room
     if(this.props.userdetails.uniqueid && dontCall == false){
 
-      socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
+      this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
     //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
      
 

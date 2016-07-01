@@ -12,7 +12,6 @@ import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 
-const socket = io('');
 
 class ClientChat extends Component {
 
@@ -58,7 +57,7 @@ class ClientChat extends Component {
              			<tbody>
 			             	<tr>
 			             		    <td className="col-md-6">
-			                    	<ClientChatView  socket={socket} {...this.props} />
+			                    	<ClientChatView socket={this.props.route.socket}/>
 			                    </td> 	
 			                </tr>
 			            </tbody>
