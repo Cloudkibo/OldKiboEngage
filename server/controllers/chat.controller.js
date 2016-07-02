@@ -65,7 +65,7 @@ export function getsessions(req, res) {
    var token = req.headers.authorization;
    var chat = [];
   var options = {
-      url: `${baseURL}/api/visitorcalls/`,
+      url: `${baseURL}/api/visitorcalls/kiboengagesessions`,
       rejectUnauthorized : false,
        headers :  {
                  'Authorization': `Bearer ${token}`,
@@ -79,22 +79,13 @@ export function getsessions(req, res) {
         console.log(error);
         console.log(response.statusCode);
 
-     //   console.log(body);
+       // console.log(body);
         
        if(!error && response.statusCode == 200)
        {
           var info = JSON.parse(body);
 
-          for(var i in info){
-              console.log(info[i].status)
-            if(info[i].platform == "new"){
-
-              console.log(info[i]);
-              chat.push(info[i]);
-            }
-          }
-              console.log(chat);
-              return res.status(200).json(chat);
+          return res.status(200).json(info);
        }
        else
        {

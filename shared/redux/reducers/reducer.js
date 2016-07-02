@@ -285,9 +285,11 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              customerchat : action.customerchat,
-             customerid : action.customerid,
              chatlist : state.chatlist,
              channels : state.channels,
+            customers : state.customers,
+           
+
             };
 
           case ActionTypes.ADD_SESSION:
@@ -298,9 +300,10 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              customerchat : [action.customerchat,...state.customerchat],
-             customerid : state.customerid,
              chatlist : state.chatlist,
              channels : state.channels,
+             customers:state.customers,
+         
             };
 
           case ActionTypes.SHOW_CHAT_HISTORY:
@@ -311,9 +314,9 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              chatlist : action.chatlist,
-             customerid : action.customerid,
              customerchat : state.customerchat,
-             channels : state.channels, 
+             channels : state.channels,
+            customers : state.customers, 
             };
 
           case ActionTypes.ADD_CHAT_MESSAGE:
@@ -326,7 +329,8 @@ const dashboard = (state =dashboardState, action) => {
              chatlist: [...state.chatlist,action.message],
              customerid : state.customerid,
              customerchat : state.customerchat,
-             channels : state.channels, 
+             channels : state.channels,
+             customers : state.customers,  
             };
 
           case ActionTypes.SHOW_NOTIFICATIONS:
@@ -394,6 +398,11 @@ const dashboard = (state =dashboardState, action) => {
              notifications:state.notifications,
              notification: state.notification,
              customers : action.customers,
+             customerchat : state.customerchat,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+            
+          
             };
             case ActionTypes.ADD_SELECTED_CUSTOMER :
             return {

@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessions}  from '../../redux/actions/actions'
+import {getsessions,getcustomers}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -23,7 +23,9 @@ class Chat extends Component {
     {
        
         console.log(usertoken);
+        props.getcustomers(usertoken)
         props.getsessions(usertoken);
+
       }
       
         super(props, context);
@@ -153,10 +155,9 @@ class Chat extends Component {
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.customerchat &&
+					                      {this.props.customerchat && this.props.customers &&
 					                        this.props.customerchat.map((customer, i) => (
-					                        
-					                          <ChatListItem customer={customer} key={i} onClickSession={this.handleSession.bind(this,i)}/>
+					                          <ChatListItem customer={customer} key={i} onClickSession={this.handleSession.bind(this,i)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
 					                                                      
 					                        ))
 					                      }
@@ -165,7 +166,7 @@ class Chat extends Component {
 			                    <td className="col-md-6">
                           {
                             this.refs.sessionid &&
-			                    	<CustomerChatView  socket={ this.props.route.socket} {...this.props} customerid = {this.props.customerid} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]}/>
+			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat[this.refs.sessionid.value].customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]}/>
 			                   }
                           </td> 	
 			                </tr>
@@ -196,10 +197,11 @@ function mapStateToProps(state) {
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           customerchat :(state.dashboard.customerchat),
-          customerid :(state.dashboard.customerid),
           chatlist :(state.dashboard.chatlist),
- 		      channels :(state.dashboard.channels),	
-           };
+ 		      channels :(state.dashboard.channels),
+          customers:(state.dashboard.customers),
+                  
+                    };
 }
 
-export default connect(mapStateToProps,{getsessions})(Chat);
+export default connect(mapStateToProps,{getsessions,getcustomers})(Chat);

@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest}  from '../../redux/actions/actions'
+import { getChatRequest,getcustomers}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -21,8 +21,8 @@ class CustomerChatView extends Component {
      {
        
         console.log(usertoken);
-        console.log(props.customerid);
-        props.getChatRequest(props.customerid,usertoken);
+        console.log(props.sessiondetails.customerid);
+        props.getChatRequest(props.sessiondetails.customerid,usertoken);
       }
 
         super(props, context);
@@ -31,8 +31,12 @@ class CustomerChatView extends Component {
 
   }
   componentDidMount() {
+    const usertoken = auth.getToken();
+  
     this.props.route.socket.on('send:message',message => this.props.updateChatList(message));
-    this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
+  //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
+    this.props.route.socket.on('customer_joined',data =>this.props.getcustomers(usertoken));
+  
     this.forceUpdate();
    
   }
@@ -61,15 +65,15 @@ class CustomerChatView extends Component {
 
         
          var saveChat = { 
-                          'to' : this.props.sessiondetails.username,
+                          'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
-                          'visitoremail' : this.props.sessiondetails.useremail,
+                          'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'message',
                            'msg' : this.refs.msg.value,
                            'datetime' : Date.now(),
                            'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.props.sessiondetails.channelid,
+                           'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.sessiondetails.companyid,
                            'is_seen':'no'
                       }
@@ -104,6 +108,16 @@ class CustomerChatView extends Component {
              clear:'both',
  
       };
+
+var c = []
+      {
+         this.props.cust &&
+                        this.props.cust.map((customerd, i) => (
+                           c.push(customerd)                            
+                        ))
+
+      }  
+ 
      return (
 
       <div>
@@ -157,7 +171,10 @@ class CustomerChatView extends Component {
           {
             this.props.sessiondetails &&
           <div>
-          <input value = {this.props.sessiondetails.username} ref="customername"/>
+          <input value = {c[0].name} ref="customername"/>
+          <input value = {c[0].email} ref="customeremail"/>
+          
+          <input value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length - 1]} ref="channelid"/>
           <input value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
@@ -230,15 +247,16 @@ function mapStateToProps(state) {
   console.log(state.dashboard.group);
   return {
     
-    group: (state.dashboard.group),
-    agents:(state.dashboard.agents),
-    deptagents:(state.dashboard.deptagents),
-    userdetails:(state.dashboard.userdetails),
-    customerid :(state.dashboard.customerid),
-    customerchat :(state.dashboard.customerchat),
-    chatlist :(state.dashboard.chatlist),
-    channels :(state.dashboard.channels),
+          groupdetails:(state.dashboard.groupdetails),
+          userdetails:(state.dashboard.userdetails),
+          errorMessage:(state.dashboard.errorMessage),
+          agents:(state.dashboard.agents),
+          deptagents:(state.dashboard.deptagents),
+          customerchat :(state.dashboard.customerchat),
+          chatlist :(state.dashboard.chatlist),
+          channels :(state.dashboard.channels),
+          customers:(state.dashboard.customers),
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList,updateSessionList,savechat})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList,getcustomers,updateSessionList,savechat})(CustomerChatView);

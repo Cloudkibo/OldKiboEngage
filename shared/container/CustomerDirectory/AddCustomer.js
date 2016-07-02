@@ -24,11 +24,43 @@ class AddCustomer extends Component {
     super(props, context);
    
     this.addCustomers = this.addCustomers.bind(this);
+    this.create_session = this.create_session.bind(this);
   }
+create_session(data){
+    console.log('i am called')
+      const name = this.refs.name;
+      const email = this.refs.email;
+      const country = this.refs.country;
+      const phone = this.refs.phone;
+      var companyid = this.props.params.id;
+     
+      var session = { 
+                        'email' : email.value,
+                        'departmentid': this.refs.grouplist.value,
+                        'channelid' : this.refs.channellist.value,
+                        'requesttime' : Date.now(),
 
+                        'phone' :  phone.value,
+                        'browser' : 'Chrome',
+                        'ipAddress':'192.168.1.2',
+                        'country' : country.value,
+                        'companyid' : companyid,
+                        'session_id' : data.request_id,
+                        'platform': 'web',
+                        'customerName' : name.value,
+                        'isMobile' : "false",
+                        'status' : 'new',
+                        'socketid' : data.socketid,
+
+                         }
+        this.props.createsession(session);
+        this.props.addRoom(data);
+      
+  }  
+  
  
    componentDidMount() {
-   this.props.route.socket.on('joined',room => this.props.addRoom(room));
+   this.props.route.socket.on('joined',this.create_session)
       }
   addCustomers(e) {
     e.preventDefault();
@@ -78,32 +110,17 @@ class AddCustomer extends Component {
              };
              this.props.route.socket.emit('join meeting',socketsession);
          
+         //  this.props.route.socket.on('customer_joined',data => create_session(data));
+  
 
-        var session = { 
-                        'email' : email.value,
-                        'departmentid': this.refs.grouplist.value,
-                        'messagechannel' : this.refs.channellist.value,
-                        'requesttime' : Date.now(),
-
-                        'phone' :  phone.value,
-                        'browser' : 'Chrome',
-                        'ipAddress':'192.168.1.2',
-                        'country' : country.value,
-                        'companyid' : companyid,
-                        'session_id' : unique_id,
-                        'platform': 'web',
-                        'customerName' : name.value,
-                        'isMobile' : "false",
-                        'status' : 'new',
-
-                         }
-        this.props.createsession(session);                 
+                   
         }
 
 
     //code for actual customers joining live help
   }
-    
+  
+
   handleChange(e){
     alert(this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text);
      this.props.updatechannellist(e.target.value);

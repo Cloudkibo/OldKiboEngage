@@ -14,8 +14,8 @@ import moment from 'moment';
 class ClientChatView extends Component {
 
   constructor(props, context) {
-        console.log(props.customerid);
-        props.getChatRequest(props.customerid);
+    //    console.log(props.customerid);
+       props.getChatRequest(props.customerid);
         super(props, context);
        this.handleMessageSubmit= this.handleMessageSubmit.bind(this);
     
@@ -118,7 +118,7 @@ class ClientChatView extends Component {
             <label>Client Name : </label>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
             <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
-            <input ref="channelid" value = {this.props.sessiondetails.messagechannel} type="hidden" />
+            <input ref="channelid" value = {this.props.sessiondetails.channelid}  />
             <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
            
             </div>
@@ -189,11 +189,19 @@ class ClientChatView extends Component {
 
 function mapStateToProps(state) {
   return {
-    customerid :(state.dashboard.customerid),
-    customerchat :(state.dashboard.customerchat),
-    chatlist :(state.dashboard.chatlist),
     sessiondetails :(state.widget.sessiondetails),
     roomdetails :(state.widget.roomdetails), 
+
+
+    groupdetails:(state.dashboard.groupdetails),
+    userdetails:(state.dashboard.userdetails),
+    errorMessage:(state.dashboard.errorMessage),
+    agents:(state.dashboard.agents),
+    deptagents:(state.dashboard.deptagents),
+    customerchat :(state.dashboard.customerchat),
+    chatlist :(state.dashboard.chatlist),
+    channels :(state.dashboard.channels),
+    customers:(state.dashboard.customers),
      };
 }
 

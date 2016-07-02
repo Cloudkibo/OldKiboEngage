@@ -893,20 +893,18 @@ else{
 
 /***************** Chat Actions ********************/
 export function showAllChat(customerchat) {
- var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
+/* var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
                   {'id': '2','username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
                   {'id': '3','username' : 'Joe','group' :'Payment','msg' :'Please confirm Payment status' }]
  
+*/
 
-
-   var customerid = 1;
-  
+   
   console.log(customerchat);
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
-    customerid,
-
+   
   };
 }
 
@@ -928,12 +926,12 @@ export function getsessions(token) {
 
 export function getChatRequest(customerid,token){
   var chatlist =[];
-  var customerid = 1;
+ // var customerid = 1;
   console.log(chatlist);
   return {
     type: ActionTypes.SHOW_CHAT_HISTORY,
     chatlist,
-    customerid,
+  //  customerid,
 
   };
 }
