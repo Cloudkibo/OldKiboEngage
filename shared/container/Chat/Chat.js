@@ -29,13 +29,22 @@ class Chat extends Component {
       }
       
         super(props, context);
+        this.create_agentsession = this.create_agentsession.bind(this);
   
   
     
   }
+
+  create_agentsession(data){
+    console.log('your socket id is : ' + data.socketid);
+    this.refs.agentsocket.value = data.socketid;
+  }
   componentWillUpdate(){
       
        this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
+       this.props.route.socket.on('agentjoined',this.create_agentsession)
+   
+
     } 
   
    handleChange(e){
@@ -58,6 +67,8 @@ class Chat extends Component {
     
     return (
       <div>
+      <input  type = "hidden" ref = "agentsocket" />
+                
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
     
        <div className="page-container">
@@ -150,6 +161,7 @@ class Chat extends Component {
                 this.props.customerchat &&
                 <input type="hidden" ref = "sessionid" value = "0"/>
              		}
+
                 <table className="table">
              			<tbody>
 			             	<tr>
@@ -163,10 +175,11 @@ class Chat extends Component {
 					                      }
 			                     	</div>
 			                    </td>
-			                    <td className="col-md-6">
+
+                          <td className="col-md-6">
                           {
-                            this.refs.sessionid &&
-			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat[this.refs.sessionid.value].customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]}/>
+                            this.refs.sessionid && this.props.customerchat.length > 0 && this.props.customers &&
+			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat[this.refs.sessionid.value].customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]} socketid = {this.refs.agentsocket.value}/>
 			                   }
                           </td> 	
 			                </tr>

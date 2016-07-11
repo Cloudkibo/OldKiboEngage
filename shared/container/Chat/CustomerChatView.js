@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,getcustomers}  from '../../redux/actions/actions'
+import { getChatRequest,getcustomers,updatestatus,assignToAgent}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -27,7 +27,7 @@ class CustomerChatView extends Component {
 
         super(props, context);
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
-       
+        this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
 
   }
   componentDidMount() {
@@ -84,6 +84,69 @@ class CustomerChatView extends Component {
     }
 
  
+  assignSessionToAgent(e){
+     const { socket,dispatch } = this.props;
+     const usertoken = auth.getToken();
+    
+    alert('Are you sure,you want to assign this session to agent ?');
+   
+    // 1. Broadcast a log message to all agents and customer that session is assigned to agent
+
+    var message = {
+          sender : this.props.userdetails.firstname,
+          msg : 'Session is assigned to Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
+          time : moment.utc().format('lll'),
+          customersocket : this.refs.socketid_customer.value,
+          agentsocket : this.props.socketid,
+          type : 'log'
+        }
+
+        this.props.chatlist.push(message);
+        
+        socket.emit('send:message', message);
+        socket.emit('send:agentsocket' , message);
+         var saveChat = { 
+                          'to' : this.refs.customername.value,
+                          'from' : this.props.userdetails.firstname,
+                          'visitoremail' : this.refs.customeremail.value,
+                          'socketid' : this.refs.socketid_customer.value,
+                          'type': 'log',
+                           'msg' : 'Session is assigned to Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
+                           'datetime' : Date.now(),
+                           'request_id' : this.props.sessiondetails.request_id,
+                           'messagechannel': this.refs.channelid.value,
+                           'companyid': this.props.sessiondetails.companyid,
+                           'is_seen':'no'
+                      }
+        this.props.savechat(saveChat); 
+
+
+   // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
+
+    // 3. update session status on server   
+     var session = {
+      request_id : this.refs.requestid.value,
+      status : 'assigned',
+      usertoken :usertoken,
+    
+    }
+    this.props.updatestatus(session);
+
+    //4. update agent assignment table on server
+
+    // considering the use case of self assigning
+    var assignment = {
+      assignedto : this.props.userdetails._id,
+      assignedby : this.props.userdetails._id,
+      sessionid : this.refs.requestid.value,
+      companyid : this.props.userdetails.uniqueid,
+      datetime : Date.now(),
+
+    }
+
+    this.props.assignToAgent(assignment,usertoken);
+
+  }
  
    handleChange(e){
      alert(e.target.value);
@@ -157,6 +220,10 @@ var c = []
                    </div>   
                 </td>
               <td className="col-md-1">
+                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign </button>
+              </td> 
+                
+              <td className="col-md-1">
                 <button className="btn btn-primary"> Resolved </button>
               </td> 
               <td className="col-md-1">
@@ -173,7 +240,9 @@ var c = []
           <div>
           <input value = {c[0].name} ref="customername"/>
           <input value = {c[0].email} ref="customeremail"/>
-          
+          <input value = {this.props.sessiondetails.request_id} ref = "requestid"/>
+          <input value = {this.props.socketid} ref = "agentsocket"/>
+         
           <input value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length - 1]} ref="channelid"/>
           <input value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
@@ -259,4 +328,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList,getcustomers,updateSessionList,savechat})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

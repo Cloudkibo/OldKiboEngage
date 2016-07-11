@@ -1240,3 +1240,42 @@ export function  savechat(chat) {
     });
   };
 }
+
+
+
+/**** update chat status when the session is assigned to agent ***/
+
+export function updatestatus(session) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/updateStatus`, {
+      method: 'post',
+      body: JSON.stringify({
+        request_id : session.request_id,
+        status : session.status
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+       'Authorization': session.usertoken,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(updateSessionStatus(session)));
+  };
+}
+
+/**** update agent assignment table when the session is assigned to agent ***/
+
+export function assignToAgent(session,usertoken) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/assignToAgent`, {
+      method: 'post',
+      body: JSON.stringify({
+        sessionid : session.sessionid,
+        agentAssignment : session,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+       
+      }),
+    }).then((res) => res.json()).then(res => dispatch(assignToAgent(session)));
+  };
+}

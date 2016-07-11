@@ -37,7 +37,7 @@ create_session(data){
       var session = { 
                         'email' : email.value,
                         'departmentid': this.refs.grouplist.value,
-                        'channelid' : this.refs.channellist.value,
+                        'messagechannel' : this.refs.channellist.value,
                         'requesttime' : Date.now(),
 
                         'phone' :  phone.value,
@@ -95,7 +95,7 @@ create_session(data){
                     currentPage : 'www.kibosupport.com',
                     departmentid : this.refs.grouplist.value,
                     group:this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
-                    channelid : this.refs.channellist.value,
+                    messagechannel : this.refs.channellist.value,
                     channelname: this.refs.channellist.options[this.refs.channellist.selectedIndex].text,
                     fullurl :  'www.kibosupport.com',
                     phone :  phone.value,

@@ -18,12 +18,18 @@ class ClientChatView extends Component {
        props.getChatRequest(props.customerid);
         super(props, context);
        this.handleMessageSubmit= this.handleMessageSubmit.bind(this);
-    
+      this.getAgentSocket = this.getAgentSocket.bind(this);
+  }
+
+  getAgentSocket(data){
+    console.log('agent socket id is : ' + data.agentsocket);
+    this.refs.agentsocket.value =  data.agentsocket;
   }
   componentDidMount() {
     const { socket,dispatch } = this.props;
    
    socket.on('send:message',message => this.props.updateChatList(message));
+   socket.on('send:getAgent',this.getAgentSocket);
       }
  
  
@@ -35,20 +41,35 @@ class ClientChatView extends Component {
    handleMessageSubmit(e) {
     const { socket,dispatch } = this.props;
      if (e.which === 13) {
-          
+        var message;  
         e.preventDefault();
-        var message = {
+        if(this.refs.agentsocket.value != "")
+        {
+        message = {
           sender: this.refs.name.value,
           msg : this.refs.msg.value,
           time : moment.utc().format('lll'),
-          socketid : this.props.roomdetails.socketid
+          socketid : this.props.roomdetails.socketid,
+          toagent : this.refs.agentsocket.value
         }
+      }
+      else{
+         message = {
+          sender: this.refs.name.value,
+          msg : this.refs.msg.value,
+          time : moment.utc().format('lll'),
+          socketid : this.props.roomdetails.socketid,
+         
+        }
+      }
+
 
         this.props.chatlist.push(message);
         
          socket.emit('send:message', message);
         var saveChat={}
         if(this.props.sessiondetails.status == 'new'){
+
         saveChat = { 
                           'to' : 'All Agents',
                           'from' : this.refs.name.value,
@@ -116,9 +137,10 @@ class ClientChatView extends Component {
       <div>
           <div>
             <label>Client Name : </label>
+            <input ref ="agentsocket" type = "text"/>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
             <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
-            <input ref="channelid" value = {this.props.sessiondetails.channelid}  />
+            <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  />
             <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
            
             </div>

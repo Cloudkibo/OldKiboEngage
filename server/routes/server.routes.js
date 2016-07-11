@@ -54,4 +54,10 @@ router.route('/createsession').post(ChatController.createsession);
 router.route('/savechat').post(ChatController.savechat);
 router.route('/getsessions').get(ChatController.getsessions);
 
+router.route('/updateStatus').post(ChatController.updateStatus);
+router.route('/assignToAgent').post(ChatController.assignToAgent);
+
+
+
+
 export default router;

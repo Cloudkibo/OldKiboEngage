@@ -29,6 +29,16 @@ function onConnect(io2, socket) {
             time:data.time
           });
     }
+
+    else if(data.toagent){
+            console.log('sending point to point message to Agent');
+
+            io2.to(data.toagent).emit('send:message',{
+            sender: data.sender,
+            msg: data.msg,
+            time:data.time
+          });
+    }
     else
     {
           socket.broadcast.emit('send:message', {
@@ -38,6 +48,16 @@ function onConnect(io2, socket) {
           });
     }
   });
+
+
+  socket.on('send:agentsocket', function (data) {
+    console.log('sending agent socket to customer');
+    console.log(data);
+    io2.to(data.customersocket).emit('send:getAgent',{
+            agentsocket: data.agentsocket          
+          });
+    } 
+  );
 
   
 
@@ -158,7 +178,7 @@ function onConnect(io2, socket) {
 //      console.log('socket id is : ' + room.socketid);
       console.log("Agent  socket id: ", socket.id)
 
-     // socket.emit('joined', room);
+      socket.emit('agentjoined', room);
 
 
   });
