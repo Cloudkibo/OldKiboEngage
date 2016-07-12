@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,getcustomers,updatestatus,assignToAgent}  from '../../redux/actions/actions'
+import { getChatRequest,getcustomers,updatestatus,assignToAgent,movedToMessageChannel}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -28,18 +28,18 @@ class CustomerChatView extends Component {
         super(props, context);
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
-
+        this.moveToChannel = this.moveToChannel.bin(this);
+     
   }
   componentDidMount() {
-    const usertoken = auth.getToken();
+    
   
     this.props.route.socket.on('send:message',message => this.props.updateChatList(message));
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
-    this.props.route.socket.on('customer_joined',data =>this.props.getcustomers(usertoken));
-  
-    this.forceUpdate();
    
   }
+
+
   componentDidUpdate() {
     const messageList = this.refs.messageList;
     messageList.scrollTop = messageList.scrollHeight;
@@ -106,11 +106,11 @@ class CustomerChatView extends Component {
         socket.emit('send:message', message);
         socket.emit('send:agentsocket' , message);
          var saveChat = { 
-                          'to' : this.refs.customername.value,
-                          'from' : this.props.userdetails.firstname,
-                          'visitoremail' : this.refs.customeremail.value,
-                          'socketid' : this.refs.socketid_customer.value,
-                          'type': 'log',
+                           'to' : this.refs.customername.value,
+                           'from' : this.props.userdetails.firstname,
+                           'visitoremail' : this.refs.customeremail.value,
+                           'socketid' : this.refs.socketid_customer.value,
+                           'type': 'log',
                            'msg' : 'Session is assigned to Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
                            'datetime' : Date.now(),
                            'request_id' : this.props.sessiondetails.request_id,
@@ -148,6 +148,61 @@ class CustomerChatView extends Component {
 
   }
  
+
+
+
+ //move message to another message channel
+ moveToChannel(e){
+     const { socket,dispatch } = this.props;
+     const usertoken = auth.getToken();
+    
+    alert('Are you sure,you want to move this session to another channel ?');
+   
+    // 1. Broadcast a log message to all agents and customer that session is moved
+
+    var message = {
+          sender : this.props.userdetails.firstname,
+          msg : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
+          time : moment.utc().format('lll'),
+          customersocket : this.refs.socketid_customer.value,
+          agentsocket : this.props.socketid,
+          type : 'log'
+        }
+
+        this.props.chatlist.push(message);
+        
+        socket.emit('send:message', message);
+         var saveChat = { 
+                           'to' : this.refs.customername.value,
+                           'from' : this.props.userdetails.firstname,
+                           'visitoremail' : this.refs.customeremail.value,
+                           'socketid' : this.refs.socketid_customer.value,
+                           'type': 'log',
+                           'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
+                           'datetime' : Date.now(),
+                           'request_id' : this.props.sessiondetails.request_id,
+                           'messagechannel': this.refs.channelid.value,
+                           'companyid': this.props.sessiondetails.companyid,
+                           'is_seen':'no'
+                      }
+        this.props.savechat(saveChat); 
+
+        //save new channel id on server
+        var assignment = {
+            movedto : this.refs.channellist.value,
+            movedfrom : this.refs.channelid.value,
+            movedby : this.props.userdetails._id,
+            sessionid : this.refs.requestid.value,
+            companyid : this.props.userdetails.uniqueid,
+            datetime : Date.now(),
+
+    }
+
+    this.props.movedToMessageChannel(assignment,usertoken);
+
+
+}
+
    handleChange(e){
      alert(e.target.value);
    
@@ -221,6 +276,9 @@ var c = []
                 </td>
               <td className="col-md-1">
                 <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign </button>
+              </td> 
+              <td className="col-md-1">
+                <button className="btn btn-primary" onClick = {this.moveToChannel}> Move </button>
               </td> 
                 
               <td className="col-md-1">
@@ -328,4 +386,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList,movedToMessageChannel,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

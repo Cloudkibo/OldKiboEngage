@@ -4,13 +4,6 @@ import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
 
-var  headers =  {
- 'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
- 'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
- 'kibo-client-id': 'cd89f71715f2014725163952',
- 
- }
-
 var baseURL = `https://api.kibosupport.com`
 
 
@@ -104,6 +97,14 @@ export function getsessions(req, res) {
   //save chat
   /************************* Customer APIS ************************************/
 export function savechat(req, res) {
+  var  headers =  {
+ 'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+ 'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+ 'kibo-client-id': 'cd89f71715f2014725163952',
+ 
+ }
+
+
   console.log('create session is called');
   
   console.log(req.body.chat);
@@ -197,7 +198,6 @@ export function updateStatus(req, res) {
 
 export function assignToAgent(req, res) {
   console.log('assignToAgent is called');
-  
   console.log(req.body);
   var token = req.headers.authorization;
  
@@ -236,3 +236,41 @@ export function assignToAgent(req, res) {
   }
 
 
+export function movedToMessageChannel(req, res) {
+  console.log('movedToMessageChannel is called');
+  console.log(req.body);
+  var token = req.headers.authorization;
+ 
+
+  var options = {
+      url: `${baseURL}/api/visitorcalls/assignToChannel`,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      rejectUnauthorized : false,
+      json: req.body
+      
+     
+    };
+
+    function callback(error, response, body) {
+        console.log(error);
+        console.log(response.statusCode);
+
+        console.log(body);
+        
+       if(!error && response.statusCode == 200)
+       {
+           console.log(body)
+            return res.status(200).json({statusCode : 201,message:'success'});
+       }
+       else
+       {
+           res.sendStatus(422);
+           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+   
+       }    
+       }    
+           request.post(options, callback);
+   
+  }

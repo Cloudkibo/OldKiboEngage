@@ -1245,6 +1245,19 @@ export function  savechat(chat) {
 
 /**** update chat status when the session is assigned to agent ***/
 
+export function updateSessionStatus(session){
+
+  console.log('updateSessionStatus is called');
+}
+
+export function assignToAgentResponse(session){
+
+  console.log('assignToAgentResponse is called');
+}
+
+export function movedToMessageChannelResponse(session){
+  console.log('assignToChannelResponse is called');
+}
 export function updatestatus(session) {
   return (dispatch) => {
     fetch(`${baseURL}/api/updateStatus`, {
@@ -1276,6 +1289,24 @@ export function assignToAgent(session,usertoken) {
         'Authorization': usertoken,
        
       }),
-    }).then((res) => res.json()).then(res => dispatch(assignToAgent(session)));
+    }).then((res) => res.json()).then(res => dispatch(assignToAgentResponse(session)));
+  };
+}
+
+//moved to message channel
+export function movedToMessageChannel(session,usertoken) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/movedToMessageChannel`, {
+      method: 'post',
+      body: JSON.stringify({
+        sessionid : session.sessionid,
+        channelAssignment : session,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+       
+      }),
+    }).then((res) => res.json()).then(res => dispatch(movedToMessageChannelResponse(session)));
   };
 }

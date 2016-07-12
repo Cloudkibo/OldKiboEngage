@@ -56,7 +56,7 @@ router.route('/getsessions').get(ChatController.getsessions);
 
 router.route('/updateStatus').post(ChatController.updateStatus);
 router.route('/assignToAgent').post(ChatController.assignToAgent);
-
+router.route('/movedToMessageChannel').post(ChatController.movedToMessageChannel);
 
 
 

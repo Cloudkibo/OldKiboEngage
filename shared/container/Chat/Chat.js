@@ -23,14 +23,15 @@ class Chat extends Component {
     {
        
         console.log(usertoken);
-        props.getcustomers(usertoken)
+        props.getcustomers(usertoken);
         props.getsessions(usertoken);
 
       }
       
         super(props, context);
         this.create_agentsession = this.create_agentsession.bind(this);
-  
+        this.getupdatedSessions = this.getupdatedSessions.bind(this);
+
   
     
   }
@@ -39,11 +40,20 @@ class Chat extends Component {
     console.log('your socket id is : ' + data.socketid);
     this.refs.agentsocket.value = data.socketid;
   }
+   getupdatedSessions(data)
+  {
+    const usertoken = auth.getToken();
+    this.props.getcustomers(usertoken);
+    this.props.getsessions(usertoken);
+    this.forceUpdate();
+  }
+ 
   componentWillUpdate(){
       
        this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
        this.props.route.socket.on('agentjoined',this.create_agentsession)
-   
+       this.props.route.socket.on('customer_joined',this.getupdatedSessions);
+    
 
     } 
   
