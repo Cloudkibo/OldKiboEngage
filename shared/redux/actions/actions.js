@@ -1281,6 +1281,7 @@ export function assignToAgent(session,usertoken) {
     fetch(`${baseURL}/api/assignToAgent`, {
       method: 'post',
       body: JSON.stringify({
+        companyid : session.companyid,
         sessionid : session.sessionid,
         agentAssignment : session,
       }),
@@ -1299,6 +1300,7 @@ export function movedToMessageChannel(session,usertoken) {
     fetch(`${baseURL}/api/movedToMessageChannel`, {
       method: 'post',
       body: JSON.stringify({
+        companyid : session.companyid,
         sessionid : session.sessionid,
         channelAssignment : session,
       }),

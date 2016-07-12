@@ -77,7 +77,7 @@ class Chat extends Component {
     
     return (
       <div>
-      <input  type = "hidden" ref = "agentsocket" />
+      <input  type = "hidden" ref="agentsocket" />
                 
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
     

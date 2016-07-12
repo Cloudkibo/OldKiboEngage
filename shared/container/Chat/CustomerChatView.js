@@ -28,7 +28,7 @@ class CustomerChatView extends Component {
         super(props, context);
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
-        this.moveToChannel = this.moveToChannel.bin(this);
+        this.moveToChannel = this.moveToChannel.bind(this);
      
   }
   componentDidMount() {
@@ -299,7 +299,7 @@ var c = []
           <input value = {c[0].name} ref="customername"/>
           <input value = {c[0].email} ref="customeremail"/>
           <input value = {this.props.sessiondetails.request_id} ref = "requestid"/>
-          <input value = {this.props.socketid} ref = "agentsocket"/>
+          <input defaultValue = {this.props.socketid} ref = "agentsocket"/>
          
           <input value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length - 1]} ref="channelid"/>
           <input value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
