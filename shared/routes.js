@@ -44,7 +44,7 @@ import { browserHistory } from 'react-router'
 
 
 import io from 'socket.io-client'
-let socket = io(`http://localhost:8000`)
+let socket = io('')
 
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {

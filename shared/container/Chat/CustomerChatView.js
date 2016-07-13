@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,getcustomers,updatestatus,assignToAgent,movedToMessageChannel}  from '../../redux/actions/actions'
+import { getChatRequest,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -93,12 +93,14 @@ class CustomerChatView extends Component {
     // 1. Broadcast a log message to all agents and customer that session is assigned to agent
 
     var message = {
-          sender : this.props.userdetails.firstname,
+          sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
           msg : 'Session is assigned to Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
           time : moment.utc().format('lll'),
           customersocket : this.refs.socketid_customer.value,
-          agentsocket : this.props.socketid,
-          type : 'log'
+          agentsocket : this.refs.agentsocket.value,
+          type : 'log',
+          agentid : this.props.userdetails._id,
+
         }
 
         this.props.chatlist.push(message);
@@ -145,7 +147,9 @@ class CustomerChatView extends Component {
     }
 
     this.props.assignToAgent(assignment,usertoken);
-
+   // this.props.getcustomers(usertoken);
+   // this.props.getsessions(usertoken);
+     this.forceUpdate();
   }
  
 
@@ -199,7 +203,11 @@ class CustomerChatView extends Component {
     }
 
     this.props.movedToMessageChannel(assignment,usertoken);
+   //  this.props.getcustomers(usertoken);
+   
+   // this.props.getsessions(usertoken);
 
+    this.forceUpdate();
 
 }
 
@@ -235,6 +243,7 @@ var c = []
                         ))
 
       }  
+
  
      return (
 
@@ -265,7 +274,7 @@ var c = []
                   <div className="input-group">
                    <select  ref = "channellist" className="form-control" onChange={this.handleChange.bind(this)}   >
                           {
-                          this.props.channels && this.props.channels.map((channel,i) =>
+                          this.props.channels && this.props.channels.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((channel,i) =>
                             <option value={channel._id}>{channel.msg_channel_name}</option>
 
                             )
@@ -386,4 +395,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList,movedToMessageChannel,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

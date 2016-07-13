@@ -31,14 +31,20 @@ class Chat extends Component {
         super(props, context);
         this.create_agentsession = this.create_agentsession.bind(this);
         this.getupdatedSessions = this.getupdatedSessions.bind(this);
-
+      
   
     
   }
 
+componentWillMount(){
+        this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
+   
+
+}
   create_agentsession(data){
     console.log('your socket id is : ' + data.socketid);
-    this.refs.agentsocket.value = data.socketid;
+    this.refs.agentsocketfield.value = data.socketid;
+    console.log('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getupdatedSessions(data)
   {
@@ -50,7 +56,6 @@ class Chat extends Component {
  
   componentWillUpdate(){
       
-       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
        this.props.route.socket.on('agentjoined',this.create_agentsession)
        this.props.route.socket.on('customer_joined',this.getupdatedSessions);
     
@@ -77,7 +82,7 @@ class Chat extends Component {
     
     return (
       <div>
-      <input  type = "hidden" ref="agentsocket" />
+      <input  type = "hidden" ref = "agentsocketfield"/>
                 
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
     
@@ -169,7 +174,7 @@ class Chat extends Component {
              	<div className="table-responsive">
               {
                 this.props.customerchat &&
-                <input type="hidden" ref = "sessionid" value = "0"/>
+                <input type="hidden" ref = "sessionid"/>
              		}
 
                 <table className="table">
@@ -177,7 +182,7 @@ class Chat extends Component {
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.customerchat && this.props.customers &&
+					                      {this.props.customerchat && this.props.customers && this.refs.agentsocketfield.value &&
 					                        this.props.customerchat.map((customer, i) => (
 					                          <ChatListItem customer={customer} key={i} onClickSession={this.handleSession.bind(this,i)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
 					                                                      
@@ -188,8 +193,8 @@ class Chat extends Component {
 
                           <td className="col-md-6">
                           {
-                            this.refs.sessionid && this.props.customerchat.length > 0 && this.props.customers &&
-			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat[this.refs.sessionid.value].customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]} socketid = {this.refs.agentsocket.value}/>
+                            this.refs.sessionid && this.props.customerchat.length > 0 && this.props.customers && this.refs.agentsocketfield.value &&
+			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat[this.refs.sessionid.value].customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]} socketid = {this.refs.agentsocketfield.value}/>
 			                   }
                           </td> 	
 			                </tr>

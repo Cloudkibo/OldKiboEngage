@@ -12,8 +12,6 @@ import Footer from '../components/Footer/Footer.jsx';
 import SideBar from '../components/Header/SideBar';
 import auth from '../services/auth';
 import ReactTimeout from 'react-timeout'
-
-import io from 'socket.io-client';
 //const socket = io('');
 var dontCall = false;
 

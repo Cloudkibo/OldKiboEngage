@@ -22,8 +22,13 @@ class ClientChatView extends Component {
   }
 
   getAgentSocket(data){
-    console.log('agent socket id is : ' + data.agentsocket);
-    this.refs.agentsocket.value =  data.agentsocket;
+    console.log(data)
+    console.log('agent socket id is : ' + data.data.agentsocket);
+    this.refs.agentsocket.value =  data.data.agentsocket;
+    this.refs.agentid.value = data.data.agentid;
+    this.refs.agentname.value = data.data.sender;
+
+
   }
   componentDidMount() {
     const { socket,dispatch } = this.props;
@@ -43,6 +48,7 @@ class ClientChatView extends Component {
      if (e.which === 13) {
         var message;  
         e.preventDefault();
+        console.log('socket of agent : ' + this.refs.agentsocket.value);
         if(this.refs.agentsocket.value != "")
         {
         message = {
@@ -68,7 +74,7 @@ class ClientChatView extends Component {
         
          socket.emit('send:message', message);
         var saveChat={}
-        if(this.props.sessiondetails.status == 'new'){
+        if(this.refs.agentsocket.value == ''){
 
         saveChat = { 
                           'to' : 'All Agents',
@@ -86,13 +92,13 @@ class ClientChatView extends Component {
                     }
             else{
                        saveChat = { 
-                          'to' : this.props.sessiondetails.agentname,
+                          'to' : this.refs.agentname.value,
                           'from' : this.refs.name.value,
 
                           'visitoremail' : this.refs.email.value,
                           'agentemail' : this.props.sessiondetails.agentemail,
 
-                          'agentid': this.props.sessiondetails.agentid,
+                          'agentid': this.refs.agentid.value,
 
                           'type': 'message',
 
@@ -136,8 +142,13 @@ class ClientChatView extends Component {
 
       <div>
           <div>
-            <label>Client Name : </label>
+            <label>Agent socketid : </label>
             <input ref ="agentsocket" type = "text"/>
+            <label>Agent Name : </label>
+            <input ref ="agentname" type = "text"/>
+            <label>Agent ID : </label>
+           <input ref ="agentid" type = "text"/>
+           
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
             <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
             <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  />

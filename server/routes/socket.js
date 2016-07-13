@@ -11,7 +11,8 @@ function onDisconnect(io2, socket) {
 
 // When the user connects.. perform this
 function onConnect(io2, socket) {
- console.log(socket.id);
+ console.log(socket.id + ' connected');
+
   socket.on('logClient', function(data){
     //logger.clientLog(data.level, "Client side log: "+ data.data);
   });
@@ -54,7 +55,7 @@ function onConnect(io2, socket) {
     console.log('sending agent socket to customer');
     console.log(data);
     io2.to(data.customersocket).emit('send:getAgent',{
-            agentsocket: data.agentsocket          
+           data:data       
           });
     } 
   );
