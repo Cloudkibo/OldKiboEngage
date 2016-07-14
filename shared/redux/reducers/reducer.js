@@ -337,6 +337,21 @@ const dashboard = (state =dashboardState, action) => {
              customers : state.customers,
            
 
+            };     
+                case ActionTypes.FILTER_BY_AGENT:
+            return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : action.filtered,
+             customerchatold : state.customerchatold,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+           
+
             };            
 
           case ActionTypes.ADD_SESSION:

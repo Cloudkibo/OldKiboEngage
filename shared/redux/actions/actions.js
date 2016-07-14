@@ -977,6 +977,29 @@ export function filterbyChannel(id,customerchat) {
   };
 }
 
+export function filterbyAgent(id,customerchat) {
+  
+  var filtered;
+  if(id == "all")
+  {
+    filtered = customerchat
+  } 
+  else{
+
+    filtered = customerchat.filter((c) => c.agent_ids[c.agent_ids.length-1] == id)
+
+  } 
+    console.log(filtered);
+                 
+  console.log(customerchat);
+  return {
+    type: ActionTypes.FILTER_BY_AGENT,
+    filtered,
+    customerchat,
+   
+  };
+}
+
 
 
 

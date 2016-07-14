@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessions,getcustomers,filterbystatus,filterbyDept,filterbyChannel}  from '../../redux/actions/actions'
+import {getsessions,getcustomers,filterbystatus,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -85,6 +85,14 @@ componentWillMount(){
    
     }
 
+    handleChangeAgents(e){
+     alert(e.target.value);
+     this.props.filterbyAgent(e.target.value,this.props.customerchatold);
+     this.forceUpdate();
+   
+   
+    }
+
      handleSession(id,e){
       e.preventDefault();
       this.refs.sessionid.value = id;
@@ -149,7 +157,9 @@ componentWillMount(){
              		</td>
              		<td className="col-md-1">
              		
-             		  <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
+             		  <select  ref = "agentList" onChange={this.handleChangeAgents.bind(this)}   >
+                        <option value="all">All</option>
+              
                          {
                          	this.props.agents && this.props.agents.map((agent,i) =>
                          		<option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
@@ -261,4 +271,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getsessions,getcustomers,filterbystatus,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getsessions,getcustomers,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
