@@ -285,12 +285,59 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              customerchat : action.customerchat,
+             customerchatold : action.customerchat,
              chatlist : state.chatlist,
              channels : state.channels,
-            customers : state.customers,
+             customers : state.customers,
            
 
             };
+
+            case ActionTypes.FILTER_BY_STATUS:
+            return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : action.filtered,
+             customerchatold : state.customerchatold,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+           
+
+            };   
+             case ActionTypes.FILTER_BY_DEPT:
+            return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : action.filtered,
+             customerchatold : state.customerchatold,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+           
+
+            };   
+              case ActionTypes.FILTER_BY_CHANNEL:
+            return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : action.filtered,
+             customerchatold : state.customerchatold,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+           
+
+            };            
 
           case ActionTypes.ADD_SESSION:
            return {
@@ -300,6 +347,7 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              customerchat : [action.customerchat,...state.customerchat],
+             customerchatold : [action.customerchat,...state.customerchatold],
              chatlist : state.chatlist,
              channels : state.channels,
              customers:state.customers,
@@ -315,6 +363,8 @@ const dashboard = (state =dashboardState, action) => {
              deptagents :state.deptagents,
              chatlist : action.chatlist,
              customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+
              channels : state.channels,
             customers : state.customers, 
             };
@@ -328,7 +378,9 @@ const dashboard = (state =dashboardState, action) => {
              deptagents :state.deptagents,
              chatlist: [...state.chatlist,action.message],
              customerid : state.customerid,
-             customerchat : state.customerchat,
+              customerchat : state.customerchat,
+              customerchatold : state.customerchatold,
+
              channels : state.channels,
              customers : state.customers,  
             };
@@ -399,6 +451,9 @@ const dashboard = (state =dashboardState, action) => {
              notification: state.notification,
              customers : action.customers,
              customerchat : state.customerchat,
+              customerchatold : state.customerchatold,
+
+
              customerid : state.customerid,
              chatlist : state.chatlist,
             

@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessions,getcustomers}  from '../../redux/actions/actions'
+import {getsessions,getcustomers,filterbystatus,filterbyDept,filterbyChannel}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -44,7 +44,7 @@ componentWillMount(){
   create_agentsession(data){
     console.log('your socket id is : ' + data.socketid);
     this.refs.agentsocketfield.value = data.socketid;
-    console.log('setting agentsocket value :' + this.refs.agentsocketfield.value);
+    alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getupdatedSessions(data)
   {
@@ -64,6 +64,24 @@ componentWillMount(){
   
    handleChange(e){
      alert(e.target.value);
+     this.props.filterbystatus(e.target.value,this.props.customerchatold);
+     this.forceUpdate();
+   
+   
+    }
+
+    handleChangeDepartment(e){
+     alert(e.target.value);
+     this.props.filterbyDept(e.target.value,this.props.customerchatold);
+     this.forceUpdate();
+   
+   
+    }
+     handleChangeChannel(e){
+     alert(e.target.value);
+     this.props.filterbyChannel(e.target.value,this.props.customerchatold);
+     this.forceUpdate();
+   
    
     }
 
@@ -82,7 +100,6 @@ componentWillMount(){
     
     return (
       <div>
-      <input  type = "hidden" ref = "agentsocketfield"/>
                 
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
     
@@ -114,6 +131,7 @@ componentWillMount(){
              		<td className="col-md-1">
              		
              		  <select  ref = "status" onChange={this.handleChange.bind(this)}   >
+                          <option value="all">All</option>
                           <option value="new">New</option>
                           <option value="assigned">Assigned</option>
                           <option value="resolved">Resolved</option>
@@ -123,9 +141,10 @@ componentWillMount(){
              		<td className="col-md-1">
              		
              		  <select  ref = "client" onChange={this.handleChange.bind(this)}   >
+                          <option value="all">All</option>
                           <option value="mobile">Mobile</option>
                           <option value="web">Web</option>
-                         
+                          
                       </select>
              		</td>
              		<td className="col-md-1">
@@ -143,7 +162,8 @@ componentWillMount(){
              		</td>
              		<td className="col-md-1">
              		  
-             		  <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
+             		  <select  ref = "grouplist" onChange={this.handleChangeDepartment.bind(this)}   >
+                           <option value="all">All</option>
                           {
                          	this.props.groupdetails && this.props.groupdetails.map((group,i) =>
                          		<option value={group._id}>{group.deptname}</option>
@@ -151,18 +171,21 @@ componentWillMount(){
                          		)
                          }
                          
+
+                         
                       </select>
              
              		</td>
              		<td className="col-md-1">
-             		  <select  ref = "channellist" onChange={this.handleChange.bind(this)}   >
+             		  <select  ref = "channellist" onChange={this.handleChangeChannel.bind(this)}   >
+                             <option value="all">All</option>
                            {
                          	this.props.channels && this.props.channels.map((channel,i) =>
                          		<option value={channel._id}>{channel.msg_channel_name}</option>
 
                          		)
                          }
-                         
+                       
                       </select>
              
              		</td>
@@ -178,11 +201,16 @@ componentWillMount(){
              		}
 
                 <table className="table">
+
              			<tbody>
+                  <tr>
+                  <input  type = "text" ref = "agentsocketfield" name="agentsocketfield" value=""/>
+      
+                  </tr>
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.customerchat && this.props.customers && this.refs.agentsocketfield.value &&
+					                      {this.props.customerchat && this.props.customerchat.length > 0  && this.props.customers && 
 					                        this.props.customerchat.map((customer, i) => (
 					                          <ChatListItem customer={customer} key={i} onClickSession={this.handleSession.bind(this,i)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
 					                                                      
@@ -193,7 +221,7 @@ componentWillMount(){
 
                           <td className="col-md-6">
                           {
-                            this.refs.sessionid && this.props.customerchat.length > 0 && this.props.customers && this.refs.agentsocketfield.value &&
+                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customers && 
 			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat[this.refs.sessionid.value].customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]} socketid = {this.refs.agentsocketfield.value}/>
 			                   }
                           </td> 	
@@ -225,6 +253,7 @@ function mapStateToProps(state) {
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           customerchat :(state.dashboard.customerchat),
+          customerchatold :(state.dashboard.customerchatold),
           chatlist :(state.dashboard.chatlist),
  		      channels :(state.dashboard.channels),
           customers:(state.dashboard.customers),
@@ -232,4 +261,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getsessions,getcustomers})(Chat);
+export default connect(mapStateToProps,{getsessions,getcustomers,filterbystatus,filterbyDept,filterbyChannel})(Chat);

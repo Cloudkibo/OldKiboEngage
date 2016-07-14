@@ -909,6 +909,76 @@ export function showAllChat(customerchat) {
 }
 
 
+export function filterbystatus(status,customerchat) {
+
+  var filtered;
+  if(status == "all")
+  {
+    filtered = customerchat
+  } 
+ else{
+   filtered = customerchat.filter((c) => c.status == status)
+  
+ }
+ 
+  console.log(filtered);
+                 
+  console.log(customerchat);
+  return {
+    type: ActionTypes.FILTER_BY_STATUS,
+    filtered,
+    customerchat,
+   
+  };
+}
+
+
+export function filterbyDept(id,customerchat) {
+ var filtered;
+  if(id == "all")
+  {
+    filtered = customerchat
+  } 
+ else{
+  filtered = customerchat.filter((c) => c.departmentid == id)
+  
+ }
+  console.log(filtered);
+                 
+  console.log(customerchat);
+  return {
+    type: ActionTypes.FILTER_BY_DEPT,
+    filtered,
+    customerchat,
+   
+  };
+}
+
+export function filterbyChannel(id,customerchat) {
+  
+  var filtered;
+  if(id == "all")
+  {
+    filtered = customerchat
+  } 
+  else{
+
+    filtered = customerchat.filter((c) => c.messagechannel[c.messagechannel.length-1] == id)
+
+  } 
+    console.log(filtered);
+                 
+  console.log(customerchat);
+  return {
+    type: ActionTypes.FILTER_BY_CHANNEL,
+    filtered,
+    customerchat,
+   
+  };
+}
+
+
+
 
 /*** get notifications ***/
 export function getsessions(token) {
