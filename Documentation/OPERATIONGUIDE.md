@@ -70,7 +70,7 @@ Run following  command
 
 #### Updates
 
-If there is update in code, then we need to pull the code. Go to folder of KiboSupport using "cd KiboSupport". Run following commands
+If there is update in code, then we need to pull the code. Go to folder of KiboEngage using "cd KiboEngage". Run following commands
 
     git pull origin master
 
