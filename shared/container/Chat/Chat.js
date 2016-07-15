@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessions,getcustomers,setsocketid,filterbystatus,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessions,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -98,6 +98,7 @@ componentDidMount(){
       e.preventDefault();
       this.refs.sessionid.value = id;
       alert(this.refs.sessionid.value);
+      this.props.selectCustomerChat(id,this.props.customerchat);
       this.forceUpdate();
    
     }
@@ -223,7 +224,14 @@ componentDidMount(){
 			             			<div>
 					                      {this.props.customerchat && this.props.customerchat.length > 0  && this.props.customers && 
 					                        this.props.customerchat.map((customer, i) => (
-					                          <ChatListItem customer={customer} key={i} onClickSession={this.handleSession.bind(this,i)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
+                                  
+                                    (this.props.new_message_arrived_rid ?
+                                  
+                                    <ChatListItem   new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
+                                    :  
+                                    <ChatListItem  customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
+                                  )
+                                  
 					                                                      
 					                        ))
 					                      }
@@ -232,8 +240,8 @@ componentDidMount(){
 
                           <td className="col-md-6">
                           {
-                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customers && 
-			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat[this.refs.sessionid.value].customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat[this.refs.sessionid.value]} socketid = {this.refs.agentsocketfield.value}/>
+                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected && this.props.customers && 
+			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat_selected.customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value}/>
 			                   }
                           </td> 	
 			                </tr>
@@ -268,8 +276,9 @@ function mapStateToProps(state) {
           chatlist :(state.dashboard.chatlist),
  		      channels :(state.dashboard.channels),
           customers:(state.dashboard.customers),
-                  
+          customerchat_selected :(state.dashboard.customerchat_selected),
+          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid)        
                     };
 }
 
-export default connect(mapStateToProps,{getsessions,getcustomers,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getsessions,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);

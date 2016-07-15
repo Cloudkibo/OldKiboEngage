@@ -1000,6 +1000,14 @@ export function filterbyAgent(id,customerchat) {
   };
 }
 
+export function selectCustomerChat(id,customerchat){
+  var customerchat_selected = customerchat.filter((c) => c.request_id == id)
+  return {
+    type: ActionTypes.SELECT_CUSTOMERCHAT,
+    customerchat_selected,
+   
+  }; 
+}
 
 
 
@@ -1032,9 +1040,12 @@ export function getChatRequest(customerid,token){
 
 export function updateChatList(message)
 {
+  var new_message_arrived_rid = message.request_id;
+
    return {
     type: ActionTypes.ADD_CHAT_MESSAGE,
-    message
+    message,
+    new_message_arrived_rid,
 
   };
 }
