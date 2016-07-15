@@ -57,10 +57,11 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
 
 ###1.  Groups Container
 		Groups container will receive all groups data from Kibo support api.
-    #### Components:
-      i. Group : 
+	
+	    i. Group : 
           Each group component will hold details of a each group present in all groups data.
-         *Actions:*
+          *Actions:*
+         
             i.  Edit group
             ii. Delete group
             
@@ -69,7 +70,7 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
 
       iii. Edit group component:
           It will enable user to modify group details.
-          *Actions:*
+           *Actions:*
             i. Save
       
       iv. Create new group:
@@ -78,7 +79,7 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
 
 ###2.  Agents Container
 		Agents container will receive all agents data from Kibo support api.
-    #### Components:
+  
         i. Agent : 
             Each agent component will hold details of a each agent present in all agents data.
             *Actions:*
@@ -93,9 +94,7 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
 
 ###3.    Message Channels Container
       Message Channels container will receive  message channels data from KiboSupport Api.
-      
-      #### Components:
-      
+    
         i.  Message Channel:
             Each message channel is a component that will hold details of that channel.
         
@@ -108,7 +107,6 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
 ###4.    Chat Container
       Chat container will receive mobile users chat data from server. It will have following components:
       
-      #### Components:
         i.  Customer List:
             Customer list will be component that will hold data of chat messages.
         
@@ -126,8 +124,7 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
               
 ###5.    Notifications Container
       Notifications container will fetch notifications from server and pass that to Notifications List component.It will have following components:
-      
-      #### Components:
+ 
         i.  Notification List:
             Notification list will be component that will hold data of notifications.
         
@@ -142,8 +139,7 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
 ###6.    Customer Directory Container
       Customer directory container will fetch customer information from server.It will have following components:
 	
-      ####Components:
-        i. Customer : 
+	      i. Customer : 
             Each customer is a  component and will hold details of a that particular customer..
             *Actions:*
                 i.Send SMS/Email:
