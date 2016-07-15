@@ -56,7 +56,9 @@ class ClientChatView extends Component {
           msg : this.refs.msg.value,
           time : moment.utc().format('lll'),
           socketid : this.props.roomdetails.socketid,
-          toagent : this.refs.agentsocket.value
+          toagent : this.refs.agentsocket.value,
+          request_id : this.refs.reqId.value,
+                         
         }
       }
       else{
@@ -65,6 +67,8 @@ class ClientChatView extends Component {
           msg : this.refs.msg.value,
           time : moment.utc().format('lll'),
           socketid : this.props.roomdetails.socketid,
+          request_id : this.refs.reqId.value,
+                         
          
         }
       }
@@ -159,7 +163,7 @@ class ClientChatView extends Component {
           <div className="panel-body">
             <ul className="chat"  ref="messageList">
                           {this.props.chatlist &&
-                            this.props.chatlist.map((chat, i) => (
+                            this.props.chatlist.filter((chat) => chat.request_id == this.refs.reqId.value).map((chat, i) => (
                                      (this.refs.name.value === chat.sender?
                                    <li className="right clearfix agentChatBox">
                                       <span className="chat-img pull-right agentChat"> {chat.sender.substr(0,1)}

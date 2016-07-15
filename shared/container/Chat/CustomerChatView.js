@@ -57,6 +57,8 @@ class CustomerChatView extends Component {
           msg : this.refs.msg.value,
           time : moment.utc().format('lll'),
           to : this.refs.socketid_customer.value,
+          request_id : this.props.sessiondetails.request_id,
+                          
         }
 
         this.props.chatlist.push(message);
@@ -100,6 +102,8 @@ class CustomerChatView extends Component {
           agentsocket : this.refs.agentsocket.value,
           type : 'log',
           agentid : this.props.userdetails._id,
+          request_id : this.props.sessiondetails.request_id,
+                          
 
         }
 
@@ -170,7 +174,9 @@ class CustomerChatView extends Component {
           time : moment.utc().format('lll'),
           customersocket : this.refs.socketid_customer.value,
           agentsocket : this.props.socketid,
-          type : 'log'
+          type : 'log',
+          request_id : this.props.sessiondetails.request_id,
+                          
         }
 
         this.props.chatlist.push(message);
@@ -316,7 +322,7 @@ var c = []
           }
             <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}}  ref="messageList">
                           {this.props.chatlist &&
-                            this.props.chatlist.map((chat, i) => (
+                            this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
                              
                                (this.props.userdetails.firstname === chat.sender?
                                    <li className="right clearfix agentChatBox">

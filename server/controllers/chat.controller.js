@@ -51,7 +51,13 @@ export function createsession(req, res) {
    
   }
 
-
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = new Date(a[key]); var y = new Date(b[key]);
+       // return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+       return x.getTime() - y.getTime();
+    });
+}
 export function getsessions(req, res) {
   console.log('get session is called');
   
@@ -77,8 +83,10 @@ export function getsessions(req, res) {
        if(!error && response.statusCode == 200)
        {
           var info = JSON.parse(body);
-
-          return res.status(200).json(info);
+          var info_sorted = info.reverse();
+          console.log('info_sorted');
+          console.log(info_sorted);
+          return res.status(200).json(info_sorted);
        }
        else
        {

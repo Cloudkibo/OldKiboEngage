@@ -27,7 +27,9 @@ function onConnect(io2, socket) {
             io2.to(data.to).emit('send:message',{
             sender: data.sender,
             msg: data.msg,
-            time:data.time
+            time:data.time,
+            request_id : data.request_id,
+            type : data.type
           });
     }
 
@@ -37,7 +39,9 @@ function onConnect(io2, socket) {
             io2.to(data.toagent).emit('send:message',{
             sender: data.sender,
             msg: data.msg,
-            time:data.time
+            time:data.time,
+            request_id : data.request_id,
+            type : data.type
           });
     }
     else
@@ -45,7 +49,11 @@ function onConnect(io2, socket) {
           socket.broadcast.emit('send:message', {
             sender: data.sender,
             msg: data.msg,
-            time:data.time
+            time:data.time,
+            request_id : data.request_id,
+            type : data.type
+
+
           });
     }
   });

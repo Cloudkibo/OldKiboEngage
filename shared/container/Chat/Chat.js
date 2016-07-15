@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessions,getcustomers,filterbystatus,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessions,getcustomers,setsocketid,filterbystatus,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -36,15 +36,15 @@ class Chat extends Component {
     
   }
 
-componentWillMount(){
-        this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
-   
+componentDidMount(){
+        console.log('calling component did mount');
+    
 
 }
   create_agentsession(data){
     console.log('your socket id is : ' + data.socketid);
     this.refs.agentsocketfield.value = data.socketid;
-    alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
+  // alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getupdatedSessions(data)
   {
@@ -55,7 +55,8 @@ componentWillMount(){
   }
  
   componentWillUpdate(){
-      
+      console.log('calling componentWillUpdate');
+       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
        this.props.route.socket.on('agentjoined',this.create_agentsession)
        this.props.route.socket.on('customer_joined',this.getupdatedSessions);
     
