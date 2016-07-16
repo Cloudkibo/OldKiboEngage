@@ -169,7 +169,7 @@ Redux code is defined in shared/redux folder.
 ### Description of Actions
   Following is the description of action functions defined in actions.js
 
-  ###1. Actions related to Authentication:
+###1. Actions related to Authentication:
       Following actions are related to user login or signup.
       They will return user details and authentication token to reducer
 
@@ -182,7 +182,7 @@ Redux code is defined in shared/redux folder.
 
       vi   signupuser : For calling server API to register username
 
-  ###2. Actions related to Groups:
+###2. Actions related to Groups:
       Following actions are related to fetch and create groups/departments.
       They will return group details to reducer
 
@@ -193,7 +193,7 @@ Redux code is defined in shared/redux folder.
       v.  getGroupRequest : To get details of particular group requested
       vi. deletegroup : Call server api to delete group
 
-  ###3. Actions related to Agents:
+###3. Actions related to Agents:
       Following actions are related to fetch and create agents.
       They will return agent details to reducer
 
@@ -203,7 +203,7 @@ Redux code is defined in shared/redux folder.
       iv. inviteagent : Calls server api to invite agent
       v.  deleteagent : Calls server api to delete agent
 
- ###4. Actions related to Message Channels:
+###4. Actions related to Message Channels:
       Following actions are related to fetch and create message channels.
       They will return channel details to reducer
       
@@ -213,7 +213,7 @@ Redux code is defined in shared/redux folder.
       iv. getchannels : Calls server api to fetch message channels
       v.  deletechannel : Calls server api to delete channel
 
- ###5. Actions related to Canned Response:
+###5. Actions related to Canned Response:
       Following actions are related to fetch and create canned responses.
       They will return canned response details to reducer
  
