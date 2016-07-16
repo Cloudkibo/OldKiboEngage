@@ -52,6 +52,9 @@ Following is the general workflow that will be followed for all react containers
 
 ![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/Kiboengage architecture.PNG)
 
+
+## React Components
+
 React Containers will receive data from reducer,update their state and pass this data to react component as a ‘prop’(property).
 In Kibo Engage,section below is describing React Containers,Data that they will receive from Reducer,Actions that can take place in container,components of react container and what data each react component will receive from container.
 
@@ -122,6 +125,10 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
               vi. Filter customer messages by groups (New,Assigned,Resolved)
               vii.Filter customer messages by agents (visible to only Admin/Supervisor)
               
+
+![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/Flowchart for Chat Module.PNG)
+
+
 ###5.    Notifications Container
       Notifications container will fetch notifications from server and pass that to Notifications List component.It will have following components:
  
@@ -145,6 +152,125 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
                 i.Send SMS/Email:
                     Agent can send sms/email or can view chat history of that particular customer.
               
+
+
+
+## Redux Files Structure
+We have used Redux for data and state handling on client side.
+Redux code is defined in shared/redux folder.
+
+### actions/Actions.js
+  Actions.js contains functions through which we are calling server apis.
+  Each function defined in actions.js returns JSON object containing:
+
+    'type' : type of action defined in constants/contants.js to identify action in Reducer
+     data  : data return to update component state through reducer
+
+### Description of Actions
+  Following is the description of action functions defined in actions.js
+
+  ###1. Actions related to Authentication:
+      Following actions are related to user login or signup.
+      They will return user details and authentication token to reducer
+
+      i.   loginUser : Receives username and password from React Login Component
+      ii.  receiveLogin : Called if authentication succeed
+      iii. loginError   : Called if authentication fails
+
+      iv.  requestLogout : Called by Agent to logout from website
+      v.   receiveLogout : Called if logout succeed
+
+      vi   signupuser : For calling server API to register username
+
+  ###2. Actions related to Groups:
+      Following actions are related to fetch and create groups/departments.
+      They will return group details to reducer
+
+      i.  getusergroups : Calls server api to fetch agent's group information
+      ii. getcustomergroups : This is without-token version of getting grouplist for Chat widget
+      iii.  creategroup : Calls server api to create a group
+      iv. editGroup : Calls server api to edit group details
+      v.  getGroupRequest : To get details of particular group requested
+      vi. deletegroup : Call server api to delete group
+
+  ###3. Actions related to Agents:
+      Following actions are related to fetch and create agents.
+      They will return agent details to reducer
+
+      i.  getAgents : Calls server api to fetch agent's  information
+      ii. getDeptAgents : Calls server api to fetch agent's group information
+      iii.  editAgent : Calls server api to edit Agent's Role
+      iv. inviteagent : Calls server api to invite agent
+      v.  deleteagent : Calls server api to delete agent
+
+ ###4. Actions related to Message Channels:
+      Following actions are related to fetch and create message channels.
+      They will return channel details to reducer
+      
+      i.  createChannel : Calls server api to create message channel
+      ii. editChannel : Calls server api to edit details of message channel
+      iii.  getcustomerchannels : This is without-token version of getting channel list for Chat widget
+      iv. getchannels : Calls server api to fetch message channels
+      v.  deletechannel : Calls server api to delete channel
+
+ ###5. Actions related to Canned Response:
+      Following actions are related to fetch and create canned responses.
+      They will return canned response details to reducer
+ 
+      i.  createResponse : Calls server api to create canned response
+      ii. editResponse : Calls server api to edit canned response details
+      iii.  getresponses : Calls server api to fetch canned response
+      iv. deleteresponse : Calls server api to delete canned response
+
+###6. Actions related to Chat:
+      Following actions are related to Chat Module.
+      They will return chat message and user session details to reducer
+
+      i.  filterbystatus : To filter customer session list by status
+      ii. filterbyDept : To filter customer session list by department/group
+      iii.  filterbyChannel : To filter customer session list by message channel
+      iv. filterbyAgent : To filter customer session list by agent to whom session is assigned
+      v.  selectCustomerChat : To select session details of a particular customer through request id
+      vi. getsessions : Calls server api to fetch customer session details
+      vii.  updateChatList : To update chat messages when a new message arrives and also to update count of unread messages
+      viii. assignToAgent : Calls server api to assign sesison to agent
+      ix. moveToChannel : Calls server api to move chat session to another message channel
+      x. saveChat : Calls server api to save chat message
+      xi. createsession : Calls server api to create chat session between customer and agent
+      xii. updatesessionStatus : Calls server api to update chat session status
+###7. Actions related to Notifications:
+      Following actions are related to Notifications.
+      They will return notification details to reducer
+ 
+       i. getnotifications : Calls server api to fetch notifications 
+      ii. createNotification : Calls server api to create notification
+      iii.  deleteNotification : Calls server api to delete notification
+      iv. editNotification : Calls server api to edit notification
+
+###8. Actions related to Customer Directory:
+      Following actions are related to Customer Directory.
+      They will return customer details to reducer
+
+      i.  getcustomers : Calls server api to fetch customer details 
+      ii. createcustomer : Call server api to create customer when the customer fills form on Chat Widget
+      iii.  emailCustomer : Calls server api to send customer email from agent
+
+
+
+### reducers/reducer.js
+
+In reducer.js,we have defined three reducer
+
+i. Auth Reducer : To handle state changes when authentication actions are called
+ii. Dashboard Reducer : Contains action types related to groups,message channels,chat,customer directory,notifications and agents.
+iii. Widget Reducer : Contains action types related to customer widget
+
+iv. Signup Reducer : Contains action types related to signup actions
+
+We have then merged all reducers into One reducer for application.
+Reducer will return the updated state to React Component to update its UI against user actions.
+
+
 
 ## Libraries
 
