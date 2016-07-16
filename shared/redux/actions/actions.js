@@ -1000,12 +1000,26 @@ export function filterbyAgent(id,customerchat) {
   };
 }
 
-export function selectCustomerChat(id,customerchat){
+export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
+  if(new_message_arrived_rid && new_message_arrived_rid.length > 0)
+  {
+
+    for(var i = new_message_arrived_rid.length - 1; i >= 0; i--){
+      if(new_message_arrived_rid[i] == id){
+        //remove item from array
+          new_message_arrived_rid.splice(i, 1);
+      }
+    }
+
+  }
+  else{
+    new_message_arrived_rid=[]
+  }
   var customerchat_selected = customerchat.filter((c) => c.request_id == id)
   return {
     type: ActionTypes.SELECT_CUSTOMERCHAT,
     customerchat_selected,
-   
+    new_message_arrived_rid,
   }; 
 }
 
@@ -1025,8 +1039,11 @@ export function getsessions(token) {
   };
 }
 
-export function getChatRequest(customerid,token){
+export function getChatRequest(customerid,token,chlist){
   var chatlist =[];
+  if(chlist){
+      chatlist = chlist;
+  }
  // var customerid = 1;
   console.log(chatlist);
   return {
@@ -1038,14 +1055,26 @@ export function getChatRequest(customerid,token){
 }
 
 
-export function updateChatList(message)
+export function updateChatList(message,ch,id_not_added)
 {
+  // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
-
+  if(ch){
+    if(new_message_arrived_rid != id_not_added){
+    ch.push(new_message_arrived_rid);
+      }
+   }
+   else{
+    ch =[];
+    if(new_message_arrived_rid != id_not_added){
+    ch.push(new_message_arrived_rid);
+      }
+   
+   }
    return {
     type: ActionTypes.ADD_CHAT_MESSAGE,
     message,
-    new_message_arrived_rid,
+    ch,
 
   };
 }

@@ -98,7 +98,9 @@ componentDidMount(){
       e.preventDefault();
       this.refs.sessionid.value = id;
       alert(this.refs.sessionid.value);
-      this.props.selectCustomerChat(id,this.props.customerchat);
+      // when the user clicks on session,reset unread message Count to zero and also remove Red Background Color from Chatlist item
+     // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
+      this.props.selectCustomerChat(id,this.props.customerchat,this.props.new_message_arrived_rid);
       this.forceUpdate();
    
     }
@@ -209,7 +211,7 @@ componentDidMount(){
              	<div className="table-responsive">
               {
                 this.props.customerchat &&
-                <input type="hidden" ref = "sessionid"/>
+                <input type="hidden" ref = "sessionid" />
              		}
 
                 <table className="table">
@@ -227,9 +229,9 @@ componentDidMount(){
                                   
                                     (this.props.new_message_arrived_rid ?
                                   
-                                    <ChatListItem   new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
+                                    <ChatListItem selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
                                     :  
-                                    <ChatListItem  customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
+                                    <ChatListItem selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  cust = {this.props.customers.filter((c) => c._id == customer.customerid)}/>
                                   )
                                   
 					                                                      

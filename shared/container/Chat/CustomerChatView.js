@@ -22,7 +22,7 @@ class CustomerChatView extends Component {
        
         console.log(usertoken);
         console.log(props.sessiondetails.customerid);
-        props.getChatRequest(props.sessiondetails.customerid,usertoken);
+        props.getChatRequest(props.sessiondetails.customerid,usertoken,props.chatlist);
       }
 
         super(props, context);
@@ -34,7 +34,7 @@ class CustomerChatView extends Component {
   componentDidMount() {
     
   
-    this.props.route.socket.on('send:message',message => this.props.updateChatList(message));
+    this.props.route.socket.on('send:message',message => this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id));
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
    
   }
@@ -398,6 +398,8 @@ function mapStateToProps(state) {
           chatlist :(state.dashboard.chatlist),
           channels :(state.dashboard.channels),
           customers:(state.dashboard.customers),
+          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid)        
+          
   };
 }
 
