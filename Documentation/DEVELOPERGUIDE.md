@@ -126,7 +126,7 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
               vii.Filter customer messages by agents (visible to only Admin/Supervisor)
               
 
-![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/Flowchart for Chat Module.PNG)
+![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/Flowchart for Chat Module.png)
 
 
 ###5.    Notifications Container
