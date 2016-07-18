@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
+import { getChatRequest,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -29,12 +29,20 @@ class CustomerChatView extends Component {
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
         this.moveToChannel = this.moveToChannel.bind(this);
-     
+        this.getSocketmessage = this.getSocketmessage.bind(this);
+  }
+
+
+  getSocketmessage(message){
+     const usertoken = auth.getToken();
+     this.props.getuserchats(usertoken);
+     this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
+     this.forceUpdate();
   }
   componentDidMount() {
     
   
-    this.props.route.socket.on('send:message',message => this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id));
+    this.props.route.socket.on('send:message',this.getSocketmessage);
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
    
   }
@@ -398,9 +406,9 @@ function mapStateToProps(state) {
           chatlist :(state.dashboard.chatlist),
           channels :(state.dashboard.channels),
           customers:(state.dashboard.customers),
-          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid)        
-          
+          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),        
+            userchats :(state.dashboard.userchats),    
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{ getChatRequest,getuserchats,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

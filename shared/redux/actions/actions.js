@@ -1057,6 +1057,7 @@ export function getChatRequest(customerid,token,chlist){
 
 export function updateChatList(message,ch,id_not_added)
 {
+  
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
   if(ch){
@@ -1443,5 +1444,30 @@ export function movedToMessageChannel(session,usertoken) {
        
       }),
     }).then((res) => res.json()).then(res => dispatch(movedToMessageChannelResponse(session)));
+  };
+}
+
+
+
+export function showuserchat(userchats) {
+  return {
+    type: ActionTypes.ADD_USER_CHATS,
+    userchats,
+   
+
+  };
+}
+
+
+export function getuserchats(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getuserchats`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showuserchat(res.userchats)));
   };
 }

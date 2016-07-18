@@ -58,6 +58,7 @@ router.route('/updateStatus').post(ChatController.updateStatus);
 router.route('/assignToAgent').post(ChatController.assignToAgent);
 router.route('/movedToMessageChannel').post(ChatController.movedToMessageChannel);
 
+router.route('/getuserchats').get(ChatController.getuserchats);
 
 
 export default router;

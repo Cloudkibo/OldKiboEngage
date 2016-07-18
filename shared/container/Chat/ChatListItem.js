@@ -82,6 +82,15 @@ var unread = []
                         ))
 
 }
+
+var userchatMsg = [];
+{
+  props.userchats &&   props.userchats.map((unre, i) => (
+                           userchatMsg.push(unre.Value.msg)                            
+                        ))
+
+}
+
 var thisChat ='';
 var unreadCount = 0;
 for(var i = 0;i< unread.length;i++){
@@ -119,12 +128,11 @@ return res;
       <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
       <br/>
       <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-         
-
+     
       </div>
       <br/>
 
-      <p className='list-group-item-text' style={clearStyle}>{props.customer.msg}</p>
+      <p className='list-group-item-text' style={clearStyle}>{userchatMsg[0]}</p>
 
     </div> :
 
@@ -143,12 +151,12 @@ return res;
       <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
       <br/>
       <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-         
+      
 
       </div>
       <br/>
 
-      <p className='list-group-item-text' style={clearStyle}>{props.customer.msg}</p>
+      <p className='list-group-item-text' style={clearStyle}>{userchatMsg[0]}</p>
 
     </div> 
     )

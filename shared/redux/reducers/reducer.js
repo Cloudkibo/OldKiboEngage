@@ -47,6 +47,15 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         newagents:agentid,
         channels : state.channels,
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+             
       }; 
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
@@ -57,6 +66,16 @@ const dashboard = (state =dashboardState, action) => {
         agent: state.agents.filter((agent) => agent._id == action.id),
         channels : state.channels,
       
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };
 
     case ActionTypes.ADD_SELECTED_CHANNEL :
@@ -68,6 +87,15 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         channel: state.channels.filter((channel) => channel._id == action.id),
       
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };   
     case ActionTypes.ADD_SELECTED_RESPONSE :
       return {
@@ -79,6 +107,15 @@ const dashboard = (state =dashboardState, action) => {
         responses : state.responses,
         response: state.responses.filter((response) => response._id == action.id),
       
+      
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };         
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
@@ -86,7 +123,16 @@ const dashboard = (state =dashboardState, action) => {
             userdetails:action.user,
             channels : state.channels,
 
-          };
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
+};
    case ActionTypes.ADD_AGENTS:
           console.log(action.agents)
           return{
@@ -95,6 +141,16 @@ const dashboard = (state =dashboardState, action) => {
             deptagents :state.deptagents,
             groupdetails:state.groupdetails,
             channels : state.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
           };  
 
         
@@ -106,6 +162,17 @@ const dashboard = (state =dashboardState, action) => {
             deptagents :action.agents,
             groupdetails:state.groupdetails,
             channels : state.channels,
+
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
            
           };              
 
@@ -117,6 +184,16 @@ const dashboard = (state =dashboardState, action) => {
             agents : state.agents,
             deptagents :state.deptagents,
             channels : state.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };
 
    case ActionTypes.ADD_CHANNELS:
@@ -127,6 +204,16 @@ const dashboard = (state =dashboardState, action) => {
             agents : state.agents,
             deptagents :state.deptagents,
             channels : action.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };
 
     case ActionTypes.ADD_RESPONSES:
@@ -138,6 +225,17 @@ const dashboard = (state =dashboardState, action) => {
             deptagents :state.deptagents,
             channels : state.channels,
             responses : action.responses,
+
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };
   
     case ActionTypes.ADD_NEW_RESPONSE:
@@ -149,6 +247,16 @@ const dashboard = (state =dashboardState, action) => {
             deptagents :state.deptagents,
             channels : state.channels,
             responses : [action.response,...state.responses],
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };
   
     case ActionTypes.ADD_GROUP:
@@ -164,6 +272,17 @@ const dashboard = (state =dashboardState, action) => {
          agents : state.agents,
          deptagents :state.deptagents,
          channels : state.channels,
+
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
         };
 
      case ActionTypes.DELETE_GROUP :
@@ -174,6 +293,16 @@ const dashboard = (state =dashboardState, action) => {
         agents : state.agents,
         channels : state.channels,
         deptagents :state.deptagents,
+
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
        
       };
 
@@ -186,6 +315,17 @@ const dashboard = (state =dashboardState, action) => {
         errorMessage:'Message channel deleted successfully',
         agents : state.agents,
         deptagents :state.deptagents,
+
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
        
       };
 
@@ -198,6 +338,16 @@ const dashboard = (state =dashboardState, action) => {
         errorMessage:'Canned Response deleted successfully',
         agents : state.agents,
         deptagents :state.deptagents,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
        
 
       };
@@ -209,6 +359,16 @@ const dashboard = (state =dashboardState, action) => {
         agents : state.agents.filter((agent) => agent._id !== action.agent._id),
         deptagents :state.deptagents,
         channels : state.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
       };
 
       case ActionTypes.CREATEGROUP_FAILURE:
@@ -219,6 +379,16 @@ const dashboard = (state =dashboardState, action) => {
          agents : state.agents,
          channels : state.channels,
          deptagents :state.deptagents,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
        
         };
 
@@ -230,6 +400,16 @@ const dashboard = (state =dashboardState, action) => {
          agents : state.agents,
          deptagents :state.deptagents,
          channels : state.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
         }; 
 
       case ActionTypes.EDITAGENT_RESPONSE:
@@ -241,6 +421,16 @@ const dashboard = (state =dashboardState, action) => {
          deptagents :state.deptagents,
          agent: state.agent,
          channels : state.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
         };  
       
         
@@ -254,6 +444,16 @@ const dashboard = (state =dashboardState, action) => {
          deptagents :state.deptagents,
          agent: state.agent,
          channels : state.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
         };  
 
         case ActionTypes.SHOW_SPECIFIC_CHAT:
@@ -265,6 +465,17 @@ const dashboard = (state =dashboardState, action) => {
            deptagents :state.deptagents,
            channels : state.channels,
 
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
+
           };
 
           case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
@@ -275,10 +486,22 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              channels : state.channels,
+             userchats : state.userchats,
 
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
+            
             };
           case ActionTypes.SHOW_ALL_CHAT:
            return {
+             userchats : state.userchats,
              groupdetails: state.groupdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
@@ -292,6 +515,24 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
 
+            };
+
+          case ActionTypes.ADD_USER_CHATS:
+           return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:state.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchat,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : action.userchats,
+            
             };
 
             case ActionTypes.FILTER_BY_STATUS:
@@ -308,7 +549,8 @@ const dashboard = (state =dashboardState, action) => {
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
             new_message_arrived_rid : state.new_message_arrived_rid,
-
+            userchats : state.userchats,
+            
             };   
              case ActionTypes.FILTER_BY_DEPT:
             return {
@@ -324,7 +566,8 @@ const dashboard = (state =dashboardState, action) => {
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
-
+             userchats : state.userchats,
+            
             };   
               case ActionTypes.FILTER_BY_CHANNEL:
             return {
@@ -340,7 +583,8 @@ const dashboard = (state =dashboardState, action) => {
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
             new_message_arrived_rid : state.new_message_arrived_rid,
-
+            userchats : state.userchats,
+            
             };     
                 case ActionTypes.FILTER_BY_AGENT:
             return {
@@ -356,7 +600,8 @@ const dashboard = (state =dashboardState, action) => {
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid, 
-
+             userchats : state.userchats,
+            
             };            
             case ActionTypes.SELECT_CUSTOMERCHAT:
              return {
@@ -372,6 +617,8 @@ const dashboard = (state =dashboardState, action) => {
              customers : state.customers,
              customerchat_selected : action.customerchat_selected[0],
              new_message_arrived_rid : action.new_message_arrived_rid,
+             userchats : state.userchats,
+            
             };   
           case ActionTypes.ADD_SESSION:
            return {
@@ -385,8 +632,10 @@ const dashboard = (state =dashboardState, action) => {
              chatlist : state.chatlist,
              channels : state.channels,
              customers:state.customers,
-              customerchat_selected : state.customerchat_selected,
-              new_message_arrived_rid : state.new_message_arrived_rid,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+            
             };
 
           case ActionTypes.SHOW_CHAT_HISTORY:
@@ -403,6 +652,8 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid,
              channels : state.channels,
             customers : state.customers, 
+            userchats : state.userchats,
+            
             };
 
           case ActionTypes.ADD_CHAT_MESSAGE:
@@ -412,14 +663,18 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.chat_error,
              agents : state.agents,
              deptagents :state.deptagents,
+             
              chatlist: [...state.chatlist,action.message],
              customerid : state.customerid,
-              customerchat : state.customerchat,
-              customerchatold : state.customerchatold,
-               customerchat_selected : state.customerchat_selected,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : action.ch, 
+             userchats : state.userchats,
+             
              channels : state.channels,
              customers : state.customers,
-             new_message_arrived_rid : action.ch,  
+             
             };
 
           case ActionTypes.SHOW_NOTIFICATIONS:
@@ -432,6 +687,16 @@ const dashboard = (state =dashboardState, action) => {
              channels : state.channels, 
              notifications:action.notifications,
              customers:state.customers,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
             };
              case ActionTypes.CONFIRM_NOTIFICATION:
              return {
@@ -443,6 +708,16 @@ const dashboard = (state =dashboardState, action) => {
              notifications:state.notifications,
              addednotification : action.msg,
              errorMessage :action.msg,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+
 
             };
              case ActionTypes.DELETE_NOTIFICATION :
@@ -456,6 +731,14 @@ const dashboard = (state =dashboardState, action) => {
                 deptagents :state.deptagents,
                 notifications : state.notifications.filter((notification) => notification._id !== action.notification._id),
                
+
+                chatlist: state.chatlist,
+                 customerid : state.customerid,
+                 customerchat : state.customerchat,
+                 customerchatold : state.customerchatold,
+                 customerchat_selected : state.customerchat_selected,
+                 new_message_arrived_rid : state.new_message_arrived_rid, 
+                 userchats : state.userchats,
 
               };
               case ActionTypes.ADD_CUSTOMER :
@@ -475,6 +758,16 @@ const dashboard = (state =dashboardState, action) => {
               notifications : state.notifications,
               notification: state.notifications.filter((notification) => notification._id == action.id),
               customers:state.customers,
+            
+              chatlist: state.chatlist,
+               customerid : state.customerid,
+               customerchat : state.customerchat,
+               customerchatold : state.customerchatold,
+               customerchat_selected : state.customerchat_selected,
+               new_message_arrived_rid : state.new_message_arrived_rid, 
+               userchats : state.userchats,
+
+
             };  
             case ActionTypes.SHOW_CUSTOMERS:
              return {
@@ -494,6 +787,7 @@ const dashboard = (state =dashboardState, action) => {
              customerid : state.customerid,
              chatlist : state.chatlist,
              new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
             
           
             };
@@ -508,6 +802,16 @@ const dashboard = (state =dashboardState, action) => {
               customers:state.customers,
               customer: state.customers.filter((customer) => customer._id == action.id),
             
+           
+
+              chatlist: state.chatlist,
+               customerid : state.customerid,
+               customerchat : state.customerchat,
+               customerchatold : state.customerchatold,
+               customerchat_selected : state.customerchat_selected,
+               new_message_arrived_rid : state.new_message_arrived_rid, 
+               userchats : state.userchats,
+
             };  
     default:
       return state;
