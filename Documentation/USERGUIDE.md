@@ -108,7 +108,7 @@ When supervisor or admin edit the group, it can change the description of group 
 
 Agent list can be seen by admin and supervisor.
 
-![mange agent](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/manage%20agent.PNG)
+![manage agent](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/manage%20agent.PNG)
 
 Admin and supervisor can invite the agent using the email id. Invite link will be given to the agent via email, KiboEngage already has some information about the agent as given by admin or supervisor while sending invitation.
 
@@ -142,6 +142,40 @@ Invite the customer with their email id. Three sample emails are provided to age
 Admin can set the three sample emails for it agent and supervisor via profile settings. 
 
 ![myprofile invite sample](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/invited%20content.PNG)
+
+
+### Customer Directory
+
+Agent can view list of customers in Customer Directory Module.Agent can also send email to any customer
+
+![customer directory](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/customerDirectory.PNG)
+
+![customer directory mail](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/customerDirectoryMail.PNG)
+
+### Message Channels
+
+Agent can create a message channel by clicking on Create Channel button
+
+![message channels](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/messageChannel.PNG)
+
+
+Edit Message Channel
+![message channels edit](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/messageChannelEdit.PNG)
+
+
+### Canned Responses
+
+Agent can create a canned response by clicking on Add Canned Response button
+
+![canned responses](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/cannedResponse.PNG)
+
+Add Canned Response
+![Add canned responses](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/cannedResponseAdd.PNG)
+
+
+Edit Canned Response
+![edit canned response](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/cannedResponseEdit.PNG)
+
 
 ### Waiting calls
 
