@@ -11,8 +11,33 @@ import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
 import {savechat}  from '../../redux/actions/actions'
 
-class CustomerChatView extends Component {
 
+
+import Autosuggest from 'react-autosuggest';
+ 
+function getSuggestions(value,cr) {
+  console.log(cr);
+  const languages = cr
+
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+ 
+  return inputLength === 0 ? [] : languages.filter(lang =>
+    lang.shortcode.toLowerCase().slice(0, inputLength) === inputValue
+  );
+}
+ 
+function getSuggestionValue(suggestion) { // when suggestion selected, this function tells 
+  return suggestion.shortcode;                 // what should be the value of the input 
+}
+ 
+function renderSuggestion(suggestion) {
+  return (
+    <span>{suggestion.shortcode}</span>
+  );
+}
+
+class CustomerChatView extends Component {
   constructor(props, context) {
       //call action to get user groups 
      const usertoken = auth.getToken();
@@ -30,8 +55,45 @@ class CustomerChatView extends Component {
         this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
         this.moveToChannel = this.moveToChannel.bind(this);
         this.getSocketmessage = this.getSocketmessage.bind(this);
+
+
+        this.state = {
+          value: '',
+          suggestions: getSuggestions('',props.responses)
+        };
+     
+        this.onChange = this.onChange.bind(this);
+        this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
+        this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
+
   }
 
+ 
+
+
+onChange(event, { newValue }) {
+  
+    this.setState({
+      value: this.refs.autoSuggest.value + " " + newValue
+    });
+  }
+ 
+  onSuggestionsUpdateRequested({ value }) {
+     var v = value.split(" ");
+     console.log(v)
+ 
+    this.setState({
+      suggestions: getSuggestions(v[v.length-1],this.props.responses)
+    });
+  }
+
+onSuggestionSelected({ suggestion, suggestionValue})
+{
+  console.log("current value of input is  :" + this.refs.msg.value)
+   this.setState({
+      value: this.refs.msg.value + " " + suggestionValue
+    });
+}
 
   getSocketmessage(message){
      const usertoken = auth.getToken();
@@ -92,6 +154,8 @@ class CustomerChatView extends Component {
         this.forceUpdate();
       }
     }
+
+
 
  
   assignSessionToAgent(e){
@@ -258,6 +322,18 @@ var c = []
 
       }  
 
+
+const { value, suggestions } = this.state;
+    const inputProps = {
+      value,
+      onChange: this.onChange,
+      ref : "msg" ,
+      className :"form-control input-sm" ,
+      placeholder :"Type your message here...",
+      
+    };
+
+
  
      return (
 
@@ -374,10 +450,19 @@ var c = []
             </ul>
             </div>
 
+             
+
              <div className="panel-footer">
                     <div className="input-group">
-                        <input id="btn-input" ref = "msg" type="text" className="form-control input-sm" placeholder="Type your message here..."  onKeyDown={this.handleMessageSubmit}/>
-                        <span className="input-group-btn">
+                      <Autosuggest suggestions={suggestions}
+                       
+                   onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
+                   getSuggestionValue={getSuggestionValue}
+                   renderSuggestion={renderSuggestion}
+                   
+                   inputProps={inputProps} />
+
+      <span className="input-group-btn">
                             <button className="btn btn-warning btn-sm" id="btn-chat" onClick={this.handleMessageSubmit}>
                                 Send</button>
                         </span>
@@ -407,7 +492,8 @@ function mapStateToProps(state) {
           channels :(state.dashboard.channels),
           customers:(state.dashboard.customers),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),        
-            userchats :(state.dashboard.userchats),    
+          userchats :(state.dashboard.userchats),  
+          responses :(state.dashboard.responses),  
   };
 }
 

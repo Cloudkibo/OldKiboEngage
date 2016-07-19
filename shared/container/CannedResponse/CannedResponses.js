@@ -154,6 +154,7 @@ function mapStateToProps(state) {
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
+          
            };
 
 }

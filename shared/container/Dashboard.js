@@ -61,8 +61,7 @@ class Dashboard extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
                 <h1>Dashboard</h1>
-                <p>You made it!</p>
-                <p>My token {token} {this.props.userdetails.firstname}</p>
+                <p>Hi  {this.props.userdetails.firstname} ! Welcome to Dashboard</p>
                
             </div>
           </div>

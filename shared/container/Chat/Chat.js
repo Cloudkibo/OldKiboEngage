@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessions,getuserchats,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessions,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -26,6 +26,8 @@ class Chat extends Component {
         props.getcustomers(usertoken);
         props.getsessions(usertoken);
         props.getuserchats(usertoken);
+        props.getresponses(usertoken);
+     
 
       }
       
@@ -283,9 +285,10 @@ function mapStateToProps(state) {
           customers:(state.dashboard.customers),
           customerchat_selected :(state.dashboard.customerchat_selected),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
-          userchats :(state.dashboard.userchats),        
+          userchats :(state.dashboard.userchats),
+          responses :(state.dashboard.responses),        
                   
                     };
 }
 
-export default connect(mapStateToProps,{getsessions,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getsessions,getresponses,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
