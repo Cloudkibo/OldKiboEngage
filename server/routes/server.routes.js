@@ -59,6 +59,6 @@ router.route('/assignToAgent').post(ChatController.assignToAgent);
 router.route('/movedToMessageChannel').post(ChatController.movedToMessageChannel);
 
 router.route('/getuserchats').get(ChatController.getuserchats);
-
-
+router.route('/resolvechatsession').post(ChatController.resolvechatsession);
+router.route('/pickchatsession').post(ChatController.pickchatsession);
 export default router;

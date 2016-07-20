@@ -36,7 +36,6 @@ class CannedResponses extends Component {
 
     
   }
-
  handleClick(e) {
 
       this.setState({

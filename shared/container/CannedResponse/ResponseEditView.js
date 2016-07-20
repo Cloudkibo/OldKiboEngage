@@ -40,7 +40,7 @@ class ResponseEditView extends Component {
    
     if (shortcode.value &&  msg.value)
      {
-      var response = {'_id' : idRef.value,'shortcode' : shortcode.value,'message':msg.value,'companyid' : companyid.value}
+      var response = {'_id' : idRef.value,'shortcode' : "/" + shortcode.value,'message':msg.value,'companyid' : companyid.value}
       console.log(response);
       this.props.editResponse(response,usertoken);
      
@@ -95,10 +95,14 @@ class ResponseEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Name </label>
                    <div className="col-md-9">
-                         <input className="form-control" type='text'     defaultValue={ag[0].shortcode} ref = "shortcode"/>
+                     <div className="input-group">
+                      <span className="input-group-addon">
+                            /
+                      </span>
+                      <input className="form-control" type='text'     defaultValue={ag[0].shortcode.substr(1,ag[0].shortcode.length-1)} ref = "shortcode"/>
                          <input className="form-control" type='hidden'   value = {ag[0]._id} ref = "id"/>
                          <input className="form-control" type='hidden'   value = {ag[0].companyid} ref = "companyid"/>
-                    
+                    </div>
 
                    </div>
                 </div>

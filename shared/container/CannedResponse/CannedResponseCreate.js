@@ -27,7 +27,7 @@ class CannedResponseCreate extends Component {
     
     if (shortcode.value && msg.value)
      {
-       this.props.addResponse(shortcode.value,msg.value);
+       this.props.addResponse("/" + shortcode.value,msg.value);
        shortcode.value = msg.value = '';
      // this.props.createResponse(response,usertoken);
      
@@ -54,7 +54,13 @@ class CannedResponseCreate extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Short Code </label>
                    <div className="col-md-9">
-                         <input className="form-control input-medium" type='text'  ref = "shortcode" placeholder ="Enter short code for Response For e.g: Hey!"/>
+                  <div className="input-group">
+                    <span className="input-group-addon">
+                    /
+                    </span>
+                  
+                         <input className="form-control input-medium" type='text'  ref = "shortcode" placeholder ="Short Code e.g Hey!"/>
+                   </div>
                    </div>
                 </div>
 

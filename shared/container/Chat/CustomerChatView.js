@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
+import { getChatRequest,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -28,7 +28,7 @@ function getSuggestions(value,cr) {
 }
  
 function getSuggestionValue(suggestion) { // when suggestion selected, this function tells 
-  return suggestion.shortcode;                 // what should be the value of the input 
+  return suggestion.message;                 // what should be the value of the input 
 }
  
 function renderSuggestion(suggestion) {
@@ -54,6 +54,7 @@ class CustomerChatView extends Component {
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
         this.moveToChannel = this.moveToChannel.bind(this);
+        this.resolveSession = this.resolveSession.bind(this)
         this.getSocketmessage = this.getSocketmessage.bind(this);
 
 
@@ -74,7 +75,7 @@ class CustomerChatView extends Component {
 onChange(event, { newValue }) {
   
     this.setState({
-      value: this.refs.autoSuggest.value + " " + newValue
+      value: newValue
     });
   }
  
@@ -87,12 +88,27 @@ onChange(event, { newValue }) {
     });
   }
 
-onSuggestionSelected({ suggestion, suggestionValue})
+onSuggestionSelected({suggestionValue,method = 'click'})
 {
-  console.log("current value of input is  :" + this.refs.msg.value)
+  console.log("current value of input is  :" + this.state.value)
+   var v = this.state.value.split(" "); 
+   var prevVal = "";
+   for(var i = 0;i< v.length - 1;i++)
+   {
+    prevVal = prevVal + " " + v[i]
+   }
+   console.log("current value of input is  :" + prevVal)
+  if(prevVal == ""){
    this.setState({
-      value: this.refs.msg.value + " " + suggestionValue
+      value: suggestionValue
+    });}
+
+else{
+  
+   this.setState({
+      value: prevVal + " " + suggestionValue
     });
+}
 }
 
   getSocketmessage(message){
@@ -118,13 +134,16 @@ onSuggestionSelected({ suggestion, suggestionValue})
  
  
    handleMessageSubmit(e) {
+    console.log('handleMessageSubmit' + e.which)
+    console.log(this.state.value)
+    var messageVal = this.state.value
     const { socket,dispatch } = this.props;
-     if (e.which === 13) {
+     if (e.which === 13 && messageVal !="") {
           
         e.preventDefault();
         var message = {
           sender : this.props.userdetails.firstname,
-          msg : this.refs.msg.value,
+          msg : messageVal,
           time : moment.utc().format('lll'),
           to : this.refs.socketid_customer.value,
           request_id : this.props.sessiondetails.request_id,
@@ -142,7 +161,7 @@ onSuggestionSelected({ suggestion, suggestionValue})
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'message',
-                           'msg' : this.refs.msg.value,
+                           'msg' : messageVal,
                            'datetime' : Date.now(),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
@@ -150,14 +169,64 @@ onSuggestionSelected({ suggestion, suggestionValue})
                            'is_seen':'no'
                       }
         this.props.savechat(saveChat);               
-        this.refs.msg.value ='';
+        this.state.value ='';
         this.forceUpdate();
       }
     }
 
 
 
+ resolveSession(e){
+
+  // Only assigned agent can resolve session 
+    const { socket,dispatch } = this.props;
+  
+  if(this.props.sessiondetails.status == "new"){
+      alert('You cannot resolve this session.Only assigned sessions can be resolved')
  
+  } 
+  
+  else if(this.props.userdetails._id != this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1]){
+    alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
+  }
+
+
+  else{
+          var message = {
+          sender : this.props.userdetails.firstname,
+          msg : 'Session is marked as resolved' ,
+          time : moment.utc().format('lll'),
+          customersocket : this.refs.socketid_customer.value,
+          agentsocket : this.props.socketid,
+          type : 'log',
+          request_id : this.props.sessiondetails.request_id,
+                          
+        }
+
+        this.props.chatlist.push(message);
+        
+        socket.emit('send:message', message);
+         var saveChat = { 
+                           'to' : this.refs.customername.value,
+                           'from' : this.props.userdetails.firstname,
+                           'visitoremail' : this.refs.customeremail.value,
+                           'socketid' : this.refs.socketid_customer.value,
+                           'type': 'log',
+                            'msg' : 'Session is marked as resolved' ,
+                            'datetime' : Date.now(),
+                           'request_id' : this.props.sessiondetails.request_id,
+                           'messagechannel': this.refs.channelid.value,
+                           'companyid': this.props.sessiondetails.companyid,
+                           'is_seen':'no'
+                      }
+        this.props.savechat(saveChat); 
+      const usertoken = auth.getToken();
+    
+      this.props.resolvesession(this.props.sessiondetails.request_id,usertoken);//call action to mark session resolve;
+      this.props.getsessions(usertoken);
+      this.forceUpdate()
+  }
+ }
   assignSessionToAgent(e){
      const { socket,dispatch } = this.props;
      const usertoken = auth.getToken();
@@ -223,8 +292,8 @@ onSuggestionSelected({ suggestion, suggestionValue})
     }
 
     this.props.assignToAgent(assignment,usertoken);
-   // this.props.getcustomers(usertoken);
-   // this.props.getsessions(usertoken);
+    this.props.getcustomers(usertoken);
+    this.props.getsessions(usertoken);
      this.forceUpdate();
   }
  
@@ -327,10 +396,9 @@ const { value, suggestions } = this.state;
     const inputProps = {
       value,
       onChange: this.onChange,
-      ref : "msg" ,
       className :"form-control input-sm" ,
-      placeholder :"Type your message here...",
-      
+      placeholder :"Type your message here and press enter to send...",
+      onKeyDown :this.handleMessageSubmit,
     };
 
 
@@ -374,18 +442,17 @@ const { value, suggestions } = this.state;
                    </div>   
                 </td>
               <td className="col-md-1">
-                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign </button>
+                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To </button>
               </td> 
+          
               <td className="col-md-1">
                 <button className="btn btn-primary" onClick = {this.moveToChannel}> Move </button>
               </td> 
                 
               <td className="col-md-1">
-                <button className="btn btn-primary"> Resolved </button>
+                <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
               </td> 
-              <td className="col-md-1">
-                <button className="btn btn-primary"> Archive </button>
-              </td>  
+              
               </tr>
               </tbody>
             </table>
@@ -453,20 +520,18 @@ const { value, suggestions } = this.state;
              
 
              <div className="panel-footer">
-                    <div className="input-group">
-                      <Autosuggest suggestions={suggestions}
-                       
+                   
+                      <Autosuggest  ref = "msg" suggestions={suggestions}
+                      
                    onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
                    getSuggestionValue={getSuggestionValue}
                    renderSuggestion={renderSuggestion}
-                   
+
+                  
+
                    inputProps={inputProps} />
 
-      <span className="input-group-btn">
-                            <button className="btn btn-warning btn-sm" id="btn-chat" onClick={this.handleMessageSubmit}>
-                                Send</button>
-                        </span>
-                    </div>
+                   
                 </div>
       </div> 
   )
@@ -497,4 +562,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,getuserchats,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{ resolvesession,getChatRequest,getuserchats,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

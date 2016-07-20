@@ -1382,23 +1382,29 @@ export function  savechat(chat) {
 export function updateSessionStatus(session){
 
   console.log('updateSessionStatus is called');
+
 }
 
 export function assignToAgentResponse(session){
 
   console.log('assignToAgentResponse is called');
 }
+export function resolvesessionResponse(){
+
+  console.log('resolvesession called');
+}
 
 export function movedToMessageChannelResponse(session){
   console.log('assignToChannelResponse is called');
 }
+//this is for picking session
 export function updatestatus(session) {
   return (dispatch) => {
-    fetch(`${baseURL}/api/updateStatus`, {
+    fetch(`${baseURL}/api/pickchatsession`, {
       method: 'post',
       body: JSON.stringify({
         request_id : session.request_id,
-        status : session.status
+        
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -1471,3 +1477,24 @@ export function getuserchats(token) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showuserchat(res.userchats)));
   };
 }
+
+
+//mark session resolve
+export function resolvesession(request_id,usertoken) {
+  if(confirm("Are you sure,you want to mark session resolved?")){
+  return (dispatch) => {
+    fetch(`${baseURL}/api/resolvechatsession`, {
+      method: 'post',
+      body: JSON.stringify({
+        request_id : request_id,
+       }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+       
+      }),
+    }).then((res) => res.json()).then(res => dispatch(resolvesessionResponse()));
+  };
+}
+}
+
