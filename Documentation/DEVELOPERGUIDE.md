@@ -139,7 +139,7 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
             Add notification component requires only logged in agent information and will display a form to create a new notification.
             *Actions:*
               i.  Send:
-                  Send action will submit the notification to server which will then be sent to mobile clients
+                  Send action will submit the notification to server which will then be sent to mobile clients on socket and to webclients via Email
               
               ii. Cancel
 
