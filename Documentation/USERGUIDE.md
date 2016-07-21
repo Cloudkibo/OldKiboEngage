@@ -22,7 +22,7 @@ Support agents are on a typing spree when they are answering large number of cus
 Channels are topical conversation threads within the inbox. Channel is assigned to Group.A group can have more than one channel
 
 ### Groups
-
+Groups are the departments like IT,Customer Support ,Sales e.t.c with in a Company
 ### Personalized Calls
 client can have option to decide which support agent he wants to talk to.Clients can choose specific agent to discuss their issue.
 
@@ -152,6 +152,12 @@ Agent can view list of customers in Customer Directory Module.Agent can also sen
 ![customer directory](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/customerDirectory.PNG)
 
 ![customer directory mail](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/customerDirectoryMail.PNG)
+
+### Notifications
+Agents can create notifications
+
+![notifications](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/notifications.PNG)
+
 
 ### Message Channels
 
