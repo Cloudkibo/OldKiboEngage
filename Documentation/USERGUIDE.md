@@ -13,6 +13,7 @@ agents.
 Agents would have directory of previous customers or visitors
 
 ### Notifications
+Notifications are the messages broadcasted from Agents to all customers.Agent can send information related to new offers,product launch and other advertisements to customers
 
 ### Canned Repsonses
 Support agents are on a typing spree when they are answering large number of customers and typing same thing over and over may bore them and reduce their productivity. To keep things up and up for your agents and maintain their pace, you can create well-formatted - predetermined responses for commonly asked questions. 
