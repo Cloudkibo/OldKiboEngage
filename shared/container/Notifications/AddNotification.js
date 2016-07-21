@@ -24,7 +24,10 @@ class AddNotification extends Component {
  
 
   addNotifications(e) {  
-     e.preventDefault();
+    // we will send notification via email.
+    //Also mobile client will receive notifications on socket.
+
+    e.preventDefault();
     const usertoken = auth.getToken();
     const title = this.refs.title;
     const desc = this.refs.desc;
@@ -35,8 +38,23 @@ class AddNotification extends Component {
       var notification = {'title' : title.value,'description':desc.value,'companyid' : companyid,'agent_id' : this.props.userdetails._id}
       var customers = this.props.customers;
       console.log(notification);
+     //sending notification on socket
+
+      var message = {
+          sender : this.props.userdetails.firstname,
+          title : title.value,
+          msg : desc.value,
+          time : moment.utc().format('lll'),
+                          
+        }
+
+        
+         this.props.route.socket.emit('send:notification', message);
+
+
       this.props.createNotification({notification,usertoken,customers});
      
+
     }
 
   }

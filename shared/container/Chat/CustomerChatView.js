@@ -294,7 +294,7 @@ else{
     this.props.assignToAgent(assignment,usertoken);
     this.props.getcustomers(usertoken);
     this.props.getsessions(usertoken);
-     this.forceUpdate();
+    this.forceUpdate();
   }
  
 

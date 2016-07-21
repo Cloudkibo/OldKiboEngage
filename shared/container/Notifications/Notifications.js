@@ -95,6 +95,7 @@ class Notifications extends Component {
 
                     <tbody>                    
                       {
+                        this.props.agents && this.props.notifications &&
                         this.props.notifications.map((notification, i) => (
                           
                           <NotificationListItem notification={notification}  agent = {this.props.agents.filter((agent) => agent._id == notification.agent_id)}  onDelete={() => this.props.deletenotification(notification,token)}/>

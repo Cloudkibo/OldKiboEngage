@@ -95,7 +95,7 @@ const routes = (
     <Route path="/clientchat" component={ClientChat}  socket = {socket}/>
     
     <Route path="/notifications" component={Notifications} onEnter={requireAuth} />
-    <Route path="/addnotification" component={AddNotification} onEnter={requireAuth} />
+    <Route path="/addnotification" component={AddNotification} onEnter={requireAuth}  socket = {socket} />
     <Route path="/notification/:id" component={NotificationView}  onEnter={requireAuth}/>
     <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />

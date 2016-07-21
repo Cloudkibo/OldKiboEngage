@@ -59,6 +59,23 @@ function onConnect(io2, socket) {
   });
 
 
+
+
+// broadcast a notification to mobile client
+  socket.on('send:notification', function (data) {
+    console.log(data);
+    console.log('sending notification to mobile client');
+    socket.broadcast.emit('send:notification', {
+            sender: data.sender,
+            title:data.title,
+            msg: data.msg,
+            time:data.time,
+            
+          });
+    
+  });
+
+
   socket.on('send:agentsocket', function (data) {
     console.log('sending agent socket to customer');
     console.log(data);
