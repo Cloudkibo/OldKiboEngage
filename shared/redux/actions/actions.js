@@ -127,7 +127,7 @@ export function forgotpassword(creds) {
 
     })
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showForgotPassword(res.message)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showForgotPassword(res)));
   };
 
 }

@@ -21,8 +21,7 @@ export default class ForgotPassword extends Component {
   }
 
   render() {
-    const { errorMessage } = this.props
-
+  
     return (
       <div>
         <div  className="pageContainer">
@@ -49,10 +48,13 @@ export default class ForgotPassword extends Component {
                       Reset Password
                       </button>
 
-                      {this.props.errorMessage &&
-                         <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
+                      {this.props.errorMessage && this.props.errorMessage.status == "danger" &&
+                         <div className = "alert alert-danger"><span>{this.props.errorMessage.message}</span></div>
                       }
 
+                      {this.props.errorMessage && this.props.errorMessage.status == "success" &&
+                         <div className = "alert alert-success"><span>{this.props.errorMessage.message}</span></div>
+                      }
               </form>
               </div>
               </div>
@@ -73,14 +75,8 @@ export default class ForgotPassword extends Component {
 
 
 }
-
-ForgotPassword.propTypes = {
-
-  errorMessage: PropTypes.string
-}
 function mapStateToProps(state) {
   console.log('mapStateToProps function called');
-  console.log(state.auth.errorMessage)
-  return {errorMessage: (state.auth.errorMessage)};
+   return {errorMessage: (state.auth.errorMessage)};
 }
 export default connect(mapStateToProps, { forgotpassword })(ForgotPassword);
