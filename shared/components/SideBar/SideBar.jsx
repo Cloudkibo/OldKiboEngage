@@ -18,7 +18,7 @@ function SideBar() {
             </Link>
             </li>
             <li className="list-group-item clearfix">
-            <Link to='/passwordReset'>
+            <Link to='/forgotpassword'>
             <i className ="fa fa-angle-right"/>
             Reset Password
             </Link>

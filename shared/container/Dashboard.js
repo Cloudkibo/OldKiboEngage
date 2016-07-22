@@ -5,7 +5,7 @@ import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents} from '../redux/actions/actions'
 import {getusergroups} from '../redux/actions/actions'
-import {getchannels} from '../redux/actions/actions'
+import {getchannels,updateAgentList} from '../redux/actions/actions'
 
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
@@ -18,6 +18,8 @@ var dontCall = false;
 class Dashboard extends Component {
  constructor(props, context) {
     super(props, context);
+     this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
+  
     
   }
   componentWillMount(){
@@ -31,14 +33,19 @@ class Dashboard extends Component {
    
   }
 
-  
+  updateOnlineAgents(data){
+  console.log('updating updateOnlineAgents');
+  this.props.updateAgentList(data);
+  this.forceUpdate();
+}
+
   componentWillUpdate(){
    console.log(this.props.route.socket);
     
   //on component mount,join room
     if(this.props.userdetails.uniqueid && dontCall == false){
 
-      this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
+      this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email});
     //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
      
 
@@ -46,6 +53,8 @@ class Dashboard extends Component {
 
      // this.props.setTimeout(() => { alert('I do not leak!' + this.props.userdetails.uniqueid); }, 1000);
     } 
+    this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
+
   }
  
   render() {
@@ -81,7 +90,9 @@ function mapStateToProps(state) {
   deptagents:(state.dashboard.deptagents),
   groupdetails:(state.dashboard.groupdetails),
   channels :(state.dashboard.channels),
+  onlineAgents:(state.dashboard.onlineAgents),       
+       
    }
 }
 
-export default connect(mapStateToProps,{getuser,getAgents,getchannels,getDeptAgents,getusergroups})(ReactTimeout(Dashboard));
+export default connect(mapStateToProps,{getuser,updateAgentList,getAgents,getchannels,getDeptAgents,getusergroups})(ReactTimeout(Dashboard));

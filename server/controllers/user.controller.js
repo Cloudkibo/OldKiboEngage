@@ -14,7 +14,7 @@ var  headers =  {
 var baseURL = `https://api.kibosupport.com`
 //var baseURL = `https://192.168.8.101:8443`
 export function getlogin (req,res) {
-  console.log('Login api is called.');
+  //console.log('Login api is called.');
 
   if (!req.body.email || !req.body.password || !req.body.website ) {
     return res.status(403).end();
@@ -33,11 +33,11 @@ export function getlogin (req,res) {
       }
     };
     function callback(error, response, body) {
-      console.log(response.statusCode);
+      //console.log(response.statusCode);
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log('api calling succeed')
-       // console.log(info)
+        //console.log('api calling succeed')
+       // //console.log(info)
         return res.status(response.statusCode).send({token:info,statusCode:200});
 
       }
@@ -54,7 +54,7 @@ export function getlogin (req,res) {
 
       else
       {
-        console.log(response.error);
+        //console.log(response.error);
 
         res.status(501).send({message:"Something went wrong, please try again.", user: user,statusCode:501});
       }
@@ -66,7 +66,7 @@ export function getlogin (req,res) {
 
 
 export function signupUser(req, res) {
-  console.log('i am called');
+  //console.log('i am called');
   if (!req.body.firstname || !req.body.password || !req.body.lastname || !req.body.phone ||!req.body.companyName ||!req.body.website ||!req.body.email ) {
     return res.status(403).end();
   }
@@ -89,20 +89,20 @@ export function signupUser(req, res) {
 
           }
     };
-    console.log(options.form);
+    //console.log(options.form);
     function callback(error, response, body) {
 
       var validationErr =[];
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log('api calling succeed')
-       // console.log(info)
+        //console.log('api calling succeed')
+       // //console.log(info)
         validationErr.push('Your account is created successfully')
         return res.json({signup:{ validationErrs :validationErr ,token : info,statusCode : response.statusCode}});
 
       }
        else if (response.statusCode == 422) {
-       console.log('validation errors');
+       //console.log('validation errors');
        var errs = JSON.parse(body).errors;
 
        for(var err in errs)
@@ -110,12 +110,12 @@ export function signupUser(req, res) {
 
        validationErr.push(errs[err].message);
        }
-       console.log(validationErr);
+       //console.log(validationErr);
        return res.json({signup:{ validationErrs : validationErr ,token : null,statusCode : response.statusCode}});
       }
       else
       {
-        console.log(error);
+        //console.log(error);
         validationErr.push(error)
         return res.json({signup:{ validationErrs :validationErr ,token : null,statusCode : response.statusCode}});
 
@@ -132,9 +132,9 @@ export function signupUser(req, res) {
 
 
 export function getuser(req, res) {
-  console.log('get user is called');
+  //console.log('get user is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
+  //console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/users/me`,
       rejectUnauthorized : false,
@@ -147,7 +147,7 @@ export function getuser(req, res) {
     function callback(error, response, body) {
       if(response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(response.statusCode)
+        //console.log(response.statusCode)
       return res.status(200).json(info);
     }
 
@@ -164,9 +164,9 @@ export function getuser(req, res) {
 
 
 export function getagents(req, res) {
-  console.log('get deptagent is called');
+  //console.log('get deptagent is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
+  //console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/users/allagents`,
       rejectUnauthorized : false,
@@ -179,9 +179,9 @@ export function getagents(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(info.agents.length)
-      //  console.log(info.agents);
-        //console.log(info);
+        //console.log(info.agents.length)
+      //  //console.log(info.agents);
+        ////console.log(info);
       return res.status(200).json(info.agents);
     }
 
@@ -194,9 +194,9 @@ export function getagents(req, res) {
   }
 
   export function deptagents(req, res) {
-  console.log('get deptagents is called');
+  //console.log('get deptagents is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
+  //console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/deptagents/`,
       rejectUnauthorized : false,
@@ -209,9 +209,9 @@ export function getagents(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-       // console.log(info)
+       // //console.log(info)
        
-        //console.log(info);
+        ////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -228,9 +228,9 @@ export function getagents(req, res) {
 
 
 export function deleteAgent(req, res) {
-  console.log('deleteAgent is called.');
+  //console.log('deleteAgent is called.');
   var token = req.headers.authorization;
-  console.log(req.query.id);
+  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/users/deleteagent/${id}`,
@@ -242,18 +242,18 @@ export function deleteAgent(req, res) {
     };
     function callback(error, response, body) {
     
-    console.log(response.statusCode);
-    console.log(error);
+    //console.log(response.statusCode);
+    //console.log(error);
       var info = JSON.parse(body);
 
-      //  console.log(info.status);
+      //  //console.log(info.status);
         
       if(!error  && response.statusCode == 200) {
         res.status(200).json({info}); 
     
    }
    else{
-   // console.log(error);
+   // //console.log(error);
     res.status(422).json(info); 
    }
  }
@@ -265,9 +265,9 @@ export function deleteAgent(req, res) {
 
 
 export function editagent(req, res) {
-  console.log('edit agent is called');
+  //console.log('edit agent is called');
   var token = req.headers.authorization;
-  console.log(req.body);
+  //console.log(req.body);
    var options = {
       url: `${baseURL}/api/users/updaterole/`,
       rejectUnauthorized : false,
@@ -283,10 +283,10 @@ export function editagent(req, res) {
      
     };
     function callback(error, response, body) {
-        console.log(error);
+        //console.log(error);
         var info = JSON.parse(body);
-        console.log(info.msg);
-       console.log(info.status);
+        //console.log(info.msg);
+       //console.log(info.status);
     
       if(!error  && response.statusCode == 200) {
        if(info.status == 'success')
@@ -310,9 +310,9 @@ export function editagent(req, res) {
 
 
 export function inviteAgent(req, res) {
-  console.log('invite agent is called');
+  //console.log('invite agent is called');
   var token = req.headers.authorization;
-  console.log(req.body);
+  //console.log(req.body);
    var options = {
       url: `${baseURL}/api/tempaccounts/kiboengage`,
       rejectUnauthorized : false,
@@ -327,10 +327,10 @@ export function inviteAgent(req, res) {
      
     };
     function callback(error, response, body) {
-        console.log(error);
+        //console.log(error);
         var info = JSON.parse(body);
-        console.log(info.msg);
-       console.log(info.status);
+        //console.log(info.msg);
+       //console.log(info.status);
     
       if(!error  && response.statusCode == 200) {
        if(info.status == 'success')
@@ -351,9 +351,9 @@ export function inviteAgent(req, res) {
   }
 /************************* Canned Response APIs *********************************/
 export function createResponse(req, res) {
-  console.log('create Response is called');
+  //console.log('create Response is called');
   var token = req.headers.authorization;
-  console.log(req.body);
+  //console.log(req.body);
   var cr = req.body;
    var options = {
       url: `${baseURL}/api/shortcuts/`,
@@ -373,8 +373,8 @@ export function createResponse(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
-        console.log(error)
+        //console.log(body);
+        //console.log(error)
       if(!error  && response.statusCode == 201) {
             return res.status(201).json({statusCode : 201,data : body});
       }
@@ -391,9 +391,9 @@ export function createResponse(req, res) {
 
 
 export function getresponses(req, res) {
-  console.log('get getresponses is called');
+  //console.log('get getresponses is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
+  //console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/shortcuts/`,
       rejectUnauthorized : false,
@@ -404,11 +404,11 @@ export function getresponses(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(body);
-       console.log(error);
+      //console.log(body);
+       //console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(info);
+        //console.log(info);
       return res.status(200).json(info);
     }
 
@@ -422,9 +422,9 @@ export function getresponses(req, res) {
 
 
 export function destroyResponse(req, res) {
-  console.log('destroyResponse is called.');
+  //console.log('destroyResponse is called.');
   var token = req.headers.authorization;
-  console.log(req.query.id);
+  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/shortcuts/${id}`,
@@ -436,14 +436,14 @@ export function destroyResponse(req, res) {
     };
     function callback(error, response, body) {
     
-    console.log(response.statusCode);
-    console.log(error);
+    //console.log(response.statusCode);
+    //console.log(error);
       if(!error  && response.statusCode == 204) {
         res.sendStatus(200); 
     
    }
    else{
-    console.log(error);
+    //console.log(error);
      res.sendStatus(422);  
    }
  }
@@ -452,12 +452,12 @@ export function destroyResponse(req, res) {
 }
 
 export function editResponse(req, res) {
-  console.log('edit Response is called');
+  //console.log('edit Response is called');
   var token = req.headers.authorization;
-  console.log(req.body);
-  console.log(req.body.response);
+  //console.log(req.body);
+  //console.log(req.body.response);
   var id = req.body.response._id;
-  console.log(id);
+  //console.log(id);
    var options = {
       url: `${baseURL}/api/shortcuts/${id}`,
       rejectUnauthorized : false,
@@ -471,8 +471,8 @@ export function editResponse(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
-        console.log(error)
+        //console.log(body);
+        //console.log(error)
       if(!error  && response.statusCode == 200) {
       
             return res.status(200).json({statusCode : 200,body});
@@ -491,8 +491,8 @@ export function editResponse(req, res) {
 
 export function invitetoken(req,res){
 
-  console.log('invitetoken is called');
-  console.log(req.query.id);
+  //console.log('invitetoken is called');
+  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/inviteagenttokens?id=${id}`,
@@ -501,14 +501,14 @@ export function invitetoken(req,res){
     };
     
     function callback(error, response, body) {
-        console.log(body);
-        console.log(response.statusCode);
-        console.log(error);
-        console.log(body.length);
+        //console.log(body);
+        //console.log(response.statusCode);
+        //console.log(error);
+        //console.log(body.length);
         var parsedJSON = JSON.parse(body);
-        console.log(parsedJSON);
+        //console.log(parsedJSON);
        for (var i=0;i<parsedJSON.length;i++) {
-            console.log(parsedJSON[i].email);
+            //console.log(parsedJSON[i].email);
          }
         
       if(!error && body.length == 0)
@@ -534,8 +534,8 @@ export function invitetoken(req,res){
 
 export function verifytoken(req,res){
 
-  console.log('verifytoken is called');
-  console.log(req.query.id);
+  //console.log('verifytoken is called');
+  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/verificationtokens/kiboengage/${id}`,
@@ -544,7 +544,7 @@ export function verifytoken(req,res){
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
 
       if(!error && response.status == 'success')
       {
@@ -560,3 +560,45 @@ export function verifytoken(req,res){
    }
         request.get(options, callback);
 }
+
+
+
+/****** forgot password *********/
+
+export function forgotpassword (req,res) {
+  if (!req.body.email || !req.body.website ) {
+    return res.status(403).end();
+  }
+  else
+  {
+    var user = req.body;
+    var options = {
+      url: `${baseURL}/api/users/requestpasswordchange`,
+      rejectUnauthorized : false,
+      headers:headers,
+      form: {
+        'email'     :user.email,
+        'website' : user.website
+      }
+    };
+    function callback(error, response, body) {
+      //console.log(response.statusCode);
+      if (!error) {
+        var info = JSON.parse(body);
+        //console.log('api calling succeed')
+        console.log(info)
+        return res.status(200).send({status:info.status,message:info.msg});
+
+      }
+
+      else
+      {
+        console.log(error);
+
+        res.status(501).send({message:"Something went wrong, please try again.", user: user,statusCode:501});
+      }
+    }
+
+    request.post(options, callback);
+  }
+};

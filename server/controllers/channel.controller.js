@@ -15,10 +15,10 @@ var baseURL = `https://api.kibosupport.com`
 
 /************************* Channel APIS ************************************/
 export function createChannel(req, res) {
-  console.log('create Channel is called');
+  ////console.log('create Channel is called');
   var token = req.headers.authorization;
-  console.log(req.body);
-  console.log(req.body.channel);
+  ////console.log(req.body);
+  ////console.log(req.body.channel);
    var options = {
       url: `${baseURL}/api/messagechannels/`,
       rejectUnauthorized : false,
@@ -32,11 +32,11 @@ export function createChannel(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
-        console.log(error);
+        ////console.log(body);
+        ////console.log(error);
       if(!error  && response.statusCode == 201) {
       
-            console.log('messagechannels');
+            ////console.log('messagechannels');
             return res.status(200).json({statusCode : 200,body});
       
     }
@@ -53,9 +53,9 @@ export function createChannel(req, res) {
 
 
 export function getchannels(req, res) {
-  console.log('get getchannels is called');
+  ////console.log('get getchannels is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
+  ////console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/messagechannels`,
       rejectUnauthorized : false,
@@ -66,11 +66,11 @@ export function getchannels(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(body);
-       console.log(error);
+      ////console.log(body);
+       ////console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(info);
+        ////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -84,7 +84,7 @@ export function getchannels(req, res) {
 
 
 export function getcustomerchannels(req, res) {
-  console.log('get  customer channels is called');
+  ////console.log('get  customer channels is called');
    var options = {
       url: `${baseURL}/api/messagechannels`,
       rejectUnauthorized : false,
@@ -93,10 +93,10 @@ export function getcustomerchannels(req, res) {
      
     };
     function callback(error, response, body) {
-       console.log(error);
+       ////console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(info);
+        ////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -109,9 +109,9 @@ export function getcustomerchannels(req, res) {
   }
 
 export function destroyChannel(req, res) {
-  console.log('destroyChannel is called.');
+  ////console.log('destroyChannel is called.');
   var token = req.headers.authorization;
-  console.log(req.query.id);
+  ////console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/messagechannels/${id}`,
@@ -123,14 +123,14 @@ export function destroyChannel(req, res) {
     };
     function callback(error, response, body) {
     
-    console.log(response.statusCode);
-    console.log(error);
+    ////console.log(response.statusCode);
+    ////console.log(error);
       if(!error  && response.statusCode == 204) {
         res.sendStatus(200); 
     
    }
    else{
-    console.log(error);
+    ////console.log(error);
      res.sendStatus(422);  
    }
  }
@@ -139,12 +139,12 @@ export function destroyChannel(req, res) {
 }
 
 export function editChannel(req, res) {
-  console.log('edit Channel is called');
+  ////console.log('edit Channel is called');
   var token = req.headers.authorization;
-  console.log(req.body);
-  console.log(req.body.channel);
+  ////console.log(req.body);
+  ////console.log(req.body.channel);
   var id = req.body.channel._id;
-  console.log(id);
+  ////console.log(id);
    var options = {
       url: `${baseURL}/api/messagechannels/${id}`,
       rejectUnauthorized : false,
@@ -158,8 +158,8 @@ export function editChannel(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
-        console.log(error)
+        ////console.log(body);
+        ////console.log(error)
       if(!error  && response.statusCode == 200) {
       
             return res.status(200).json({statusCode : 200,body});

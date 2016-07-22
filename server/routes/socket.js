@@ -4,9 +4,23 @@
 
 'use strict';
 
-
+var onlineAgents = [];
 // When the user disconnects.. perform this
 function onDisconnect(io2, socket) {
+  console.log('calling onDisconnect  :' + socket.id);
+  //Remove agent from onlineAgents array
+  for(var j = 0;j<onlineAgents.length ;j++){
+    if(onlineAgents[j].socketid == socket.id){
+      console.log('Remove agent with  email : ' + onlineAgents[j].email);
+      onlineAgents.splice(j,1);
+      console.log(onlineAgents);
+      socket.broadcast.to(onlineAgents[j].room).emit('updateOnlineAgentList', onlineAgents);
+   
+      break;
+    }
+
+  }
+
 }
 
 // When the user connects.. perform this
@@ -193,7 +207,17 @@ function onConnect(io2, socket) {
 
     console.log(room.room);
     socket.join(room.room);
-   
+    
+
+    // append in online agents array
+    if(room.agentEmail){
+    onlineAgents.push({email:room.agentEmail,socketid:socket.id,room:room.room});
+  }
+    console.log("Agents online :");
+    console.log(onlineAgents);
+    //inform other agents that new agent is online now
+
+    socket.broadcast.to(room.room).emit('updateOnlineAgentList', onlineAgents);
     var clients = findClientsSocket(room.room); // This change is because of socket version change
 
     var numClients = clients.length; // This change is because of socket version change

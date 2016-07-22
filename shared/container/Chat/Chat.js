@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessions,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -34,7 +34,7 @@ class Chat extends Component {
         super(props, context);
         this.create_agentsession = this.create_agentsession.bind(this);
         this.getupdatedSessions = this.getupdatedSessions.bind(this);
-      
+        this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
   
     
   }
@@ -43,6 +43,11 @@ componentDidMount(){
         console.log('calling component did mount');
     
 
+}
+updateOnlineAgents(data){
+  console.log('updating updateOnlineAgents');
+  this.props.updateAgentList(data);
+  this.forceUpdate();
 }
   create_agentsession(data){
     console.log('your socket id is : ' + data.socketid);
@@ -64,7 +69,7 @@ componentDidMount(){
        this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
        this.props.route.socket.on('agentjoined',this.create_agentsession)
        this.props.route.socket.on('customer_joined',this.getupdatedSessions);
-    
+       this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
 
     } 
   
@@ -247,8 +252,8 @@ componentDidMount(){
 
                           <td className="col-md-6">
                           {
-                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected && this.props.customers && 
-			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat_selected.customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value}/>
+                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected && this.props.customers && this.props.onlineAgents &&
+			                    	<CustomerChatView  cust = {this.props.customers.filter((c) => c._id == this.props.customerchat_selected.customerid)}  socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents}/>
 			                   }
                           </td> 	
 			                </tr>
@@ -286,9 +291,10 @@ function mapStateToProps(state) {
           customerchat_selected :(state.dashboard.customerchat_selected),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
           userchats :(state.dashboard.userchats),
-          responses :(state.dashboard.responses),        
+          responses :(state.dashboard.responses), 
+          onlineAgents:(state.dashboard.onlineAgents),       
                   
                     };
 }
 
-export default connect(mapStateToProps,{getsessions,getresponses,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getsessions,getresponses,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);

@@ -2,6 +2,8 @@ import { Route, IndexRoute } from 'react-router';
 import React from 'react';
 import App from './container/App';
 import LoginContainer from './container/Auth/Login';
+import ForgotPassword from './container/Auth/ForgotPassword';
+
 import SignupContainer from './container/Auth/Signup';
 import Verification from './container/Auth/Verification';
 import VerificationFailure from './container/Auth/VerificationFailure';
@@ -71,6 +73,8 @@ const routes = (
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
+      <Route path="/forgotpassword" component={ForgotPassword} />
+  
     <Route path="joincompany/:id" component={JoinCompany}/>
      <Route path="/join" component={JoinPage}/>
      <Route path="/joincompanyfailure" component={JoinCompanyFailure} />

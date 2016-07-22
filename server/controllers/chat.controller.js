@@ -27,11 +27,11 @@ export function createsession(req, res) {
         console.log(error);
         console.log(response.statusCode);
 
-        console.log(body);
+       // console.log(body);
         
        if(!error && response.statusCode == 200)
        {
-           console.log(body)
+          // console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -85,7 +85,7 @@ export function getsessions(req, res) {
           var info = JSON.parse(body);
           var info_sorted = info.reverse();
           console.log('info_sorted');
-          console.log(info_sorted);
+         // console.log(info_sorted);
           return res.status(200).json(info_sorted);
        }
        else
@@ -136,7 +136,7 @@ export function savechat(req, res) {
         
        if(!error && response.statusCode == 201)
        {
-           console.log(body)
+         //  console.log(body)
             return res.status(201).json({statusCode : 201,message:'success'});
        }
        else
@@ -269,7 +269,7 @@ export function movedToMessageChannel(req, res) {
         
        if(!error && response.statusCode == 200)
        {
-           console.log(body)
+          // console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -399,7 +399,7 @@ export function pickchatsession(req, res) {
         
        if(!error && response.statusCode == 200)
        {
-           console.log(body)
+          // console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else

@@ -103,6 +103,36 @@ else {
 }
 }
 
+
+//forgot password
+
+export function showForgotPassword(msg){
+  return {
+    type: ActionTypes.ADD_FORGOTPASSWORD_WARNINGS,
+    errormessage : msg,
+
+  }; 
+}
+export function forgotpassword(creds) {
+  console.log(creds);
+     return (dispatch) => {
+    fetch(`${baseURL}/api/forgotpassword`, {
+        method: 'post',
+        headers: new Headers({
+           'Content-Type':'application/json'
+        }),
+       body: JSON.stringify({
+      'email' :    creds.email,
+      'website' :  creds.website
+
+    })
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showForgotPassword(res.message)));
+  };
+
+}
+
+
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
@@ -1316,6 +1346,12 @@ export function addRoom(room) {
   };
 }
 
+export function updateAgentList(onlineAgents){
+  return {
+    type : ActionTypes.ONLINE_AGENTS,
+    onlineAgents,
+  }
+}
 
 /***** session create ****/
 export function  createsession(session) {

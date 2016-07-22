@@ -14,7 +14,7 @@ var  headers =  {
 var baseURL = `https://api.kibosupport.com`
 
 export function getcustomergroups(req,res){
-  console.log('get customer group');
+  //console.log('get customer group');
       var options = {
       url: `${baseURL}/api/departments`,
       rejectUnauthorized : false,
@@ -23,7 +23,7 @@ export function getcustomergroups(req,res){
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        //console.log(info);
+        ////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -36,9 +36,9 @@ export function getcustomergroups(req,res){
     
 }
 export function getgroups(req, res) {
-  console.log('get getgroups is called');
+  //console.log('get getgroups is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
+  //console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/departments`,
       rejectUnauthorized : false,
@@ -51,7 +51,7 @@ export function getgroups(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        //console.log(info);
+        ////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -65,9 +65,9 @@ export function getgroups(req, res) {
 
 
  export function creategroup(req, res) {
-  console.log('create group is called');
+  //console.log('create group is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
+  //console.log('token received is  : ' + token);
   
    var options = {
       url: `${baseURL}/api/departments`,
@@ -86,9 +86,9 @@ export function getgroups(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(body);
-        console.log(info.msg);
-       console.log(info.status);
+        //console.log(body);
+        //console.log(info.msg);
+       //console.log(info.status);
        if(info.status == 'success')
        {
             return res.status(200).json({statusCode : 200,message:info.msg});
@@ -111,10 +111,10 @@ export function getgroups(req, res) {
   }
 
 export function getGroup(req, res) {
-  console.log('getGroup is called.');
+  //console.log('getGroup is called.');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
-  console.log(req.query.id);
+  //console.log('token received is  : ' + token);
+  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/departments/${id}`,
@@ -127,14 +127,14 @@ export function getGroup(req, res) {
     function callback(error, response, body) {
     
       var info = JSON.parse(body);
-      //  console.log(info);
+      //  //console.log(info);
         
       if(!error  && response.statusCode == 200) {
         res.status(200).json({group:info}); 
     
    }
    else{
-    console.log(error);
+    //console.log(error);
     res.status(422).json(info); 
    }
  }
@@ -144,9 +144,9 @@ export function getGroup(req, res) {
 
 
 export function destroyGroup(req, res) {
-  console.log('destroyGroup is called.');
+  //console.log('destroyGroup is called.');
   var token = req.headers.authorization;
-  console.log(req.query.id);
+  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/departments/${id}`,
@@ -158,18 +158,18 @@ export function destroyGroup(req, res) {
     };
     function callback(error, response, body) {
     
-    console.log(response.statusCode);
-    console.log(error);
+    //console.log(response.statusCode);
+    //console.log(error);
       var info = JSON.parse(body);
 
-      //  console.log(info.status);
+      //  //console.log(info.status);
         
       if(!error  && response.statusCode == 200) {
         res.status(200).json({info}); 
     
    }
    else{
-   // console.log(error);
+   // //console.log(error);
     res.status(422).json(info); 
    }
  }
@@ -178,10 +178,10 @@ export function destroyGroup(req, res) {
 }
 
 export function editgroup(req, res) {
-  console.log('edit group is called');
+  //console.log('edit group is called');
   var token = req.headers.authorization;
-  console.log(req.body.dept);
-  console.log(req.body.deptagents);
+  //console.log(req.body.dept);
+  //console.log(req.body.deptagents);
    var options = {
       url: `${baseURL}/api/departments/update/`,
       rejectUnauthorized : false,
@@ -196,9 +196,9 @@ export function editgroup(req, res) {
       
      
     };
-    console.log(options.json.dept);
+    //console.log(options.json.dept);
     function callback(error, response, body) {
-        console.log(body);
+        //console.log(body);
     
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')

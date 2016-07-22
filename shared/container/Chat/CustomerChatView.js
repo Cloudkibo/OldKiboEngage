@@ -417,8 +417,8 @@ const { value, suggestions } = this.state;
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
                          {
-                          this.props.agents && this.props.agents.map((agent,i) =>
-                            <option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
+                          this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
+                            <option value={agent.socketid}>{agent.email}</option>
 
                             )
                          }
@@ -559,6 +559,7 @@ function mapStateToProps(state) {
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),        
           userchats :(state.dashboard.userchats),  
           responses :(state.dashboard.responses),  
+          onlineAgents:(state.dashboard.onlineAgents),
   };
 }
 
