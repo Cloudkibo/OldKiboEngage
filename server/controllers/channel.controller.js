@@ -153,8 +153,6 @@ export function editChannel(req, res) {
                 
                  },
       json: req.body.channel
-      
-     
     };
     
     function callback(error, response, body) {

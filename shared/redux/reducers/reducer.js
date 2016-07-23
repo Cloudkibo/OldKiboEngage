@@ -952,6 +952,8 @@ function auth(state = {isAuthenticated: false}, action) {
         errorMessage: action.errormessage
       })
     
+
+    
     case ActionTypes.LOGIN_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,

@@ -38,17 +38,21 @@ class Chat extends Component {
   
     
   }
-
-componentDidMount(){
-        console.log('calling component did mount');
-    
-
-}
 updateOnlineAgents(data){
   console.log('updating updateOnlineAgents');
   this.props.updateAgentList(data);
   this.forceUpdate();
 }
+componentWillMount(){
+        console.log('calling component will mount');
+       //get online agents list
+        this.props.route.socket.emit('getOnlineAgentList');
+
+
+}
+
+
+
   create_agentsession(data){
     console.log('your socket id is : ' + data.socketid);
     this.refs.agentsocketfield.value = data.socketid;

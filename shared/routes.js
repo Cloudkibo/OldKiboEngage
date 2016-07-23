@@ -24,6 +24,8 @@ import ChannelEditView from './container/MessageChannel/ChannelEditView'
 import JoinCompany from './container/Agents/JoinCompany'
 import JoinCompanyFailure from './container/Agents/JoinCompanyFailure'
 
+import ResetPassword from './container/Auth/ResetPassword'
+import ResetPasswordFailure from './container/Auth/ResetPasswordFailure'
 
 import CannedResponseCreate from './container/CannedResponse/CannedResponseCreate'
 import CannedResponses from './container/CannedResponse/CannedResponses'
@@ -73,11 +75,11 @@ const routes = (
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
-      <Route path="/forgotpassword" component={ForgotPassword} />
+    <Route path="/forgotpassword" component={ForgotPassword} />
   
     <Route path="joincompany/:id" component={JoinCompany}/>
-     <Route path="/join" component={JoinPage}/>
-     <Route path="/joincompanyfailure" component={JoinCompanyFailure} />
+    <Route path="/join" component={JoinPage}/>
+    <Route path="/joincompanyfailure" component={JoinCompanyFailure} />
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} socket = {socket}/>
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
@@ -95,6 +97,10 @@ const routes = (
     <Route path="/editresponse/:id" component={ResponseEditView}  onEnter={requireAuth}/>
     <Route path="/verification/:id" component={Verification}/>
     <Route path="/verificationfailure" component={VerificationFailure} />
+   
+    <Route path="/resetpassword/:id" component={ResetPassword}/>
+    <Route path="/resetpasswordfailure" component={ResetPasswordFailure}/>
+    
     <Route path="/chat" component={Chat} onEnter={requireAuth}  socket = {socket}/>
     <Route path="/clientchat" component={ClientChat}  socket = {socket}/>
     

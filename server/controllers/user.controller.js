@@ -573,7 +573,7 @@ export function forgotpassword (req,res) {
   {
     var user = req.body;
     var options = {
-      url: `${baseURL}/api/users/requestpasswordchange`,
+      url: `${baseURL}/api/users/requestpasswordchangeKiboEngage`,
       rejectUnauthorized : false,
       headers:headers,
       form: {
@@ -596,6 +596,73 @@ export function forgotpassword (req,res) {
         console.log(error);
 
         res.status(501).send({message:"Something went wrong, please try again.", user: user,statusCode:501});
+      }
+    }
+
+    request.post(options, callback);
+  }
+};
+
+export function verifypasswordResettoken(req,res){
+
+   var id = req.query.id;
+   var options = {
+      url: `${baseURL}/api/passwordresettokens/${id}`,
+      rejectUnauthorized : false,
+          
+    };
+    
+    function callback(error, response, body) {
+      console.log(body);
+      console.log(response.statusCode);
+      if(!error && response.statusCode == 200)
+      {
+         return res.status(200).json({statusCode:200,status : 'success'});
+      }  
+    
+    else
+    {
+      console.log(error);
+
+      return res.status(422).json({statusCode:422,status : 'failed'}); 
+
+    }
+
+   }
+        request.get(options, callback);
+}
+
+
+
+export function changepassword (req,res) {
+  if (!req.body.token || !req.body.password) {
+    return res.status(403).end();
+  }
+  else
+  {
+    var user = req.body;
+    var options = {
+      url: `${baseURL}/api/users/changepassword`,
+      rejectUnauthorized : false,
+      headers:headers,
+      form: {
+        'token'     :user.token,
+        'password' : user.password
+      }
+    };
+    function callback(error, response, body) {
+      console.log(response.statusCode);
+      console.log(body);
+      if (!error && response.statusCode == 200) {
+        return res.status(200).send({status:'success',message:body});
+
+      }
+
+      else
+      {
+        console.log(error);
+
+        res.status(501).send({status :'danger',message:"Something went wrong, please try again.", user: user,statusCode:501});
       }
     }
 

@@ -100,12 +100,17 @@ function onConnect(io2, socket) {
   );
 
   
-
+// get online agents list
+socket.on('getOnlineAgentList',function() {
+    console.log('getOnlineAgentList is called by :');
+    socket.emit('updateOnlineAgentList',onlineAgents);
+  });
 
   socket.on('message', function (message) {
     //log('Got message:', message);
     io2.to(message.to).emit('message', message);
   });
+
 
   socket.on('impicked', function (room) {
 

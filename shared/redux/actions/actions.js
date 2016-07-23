@@ -113,6 +113,8 @@ export function showForgotPassword(msg){
 
   }; 
 }
+
+
 export function forgotpassword(creds) {
   console.log(creds);
      return (dispatch) => {
@@ -132,6 +134,45 @@ export function forgotpassword(creds) {
 
 }
 
+export function resetpassword(creds) {
+  console.log(creds);
+     return (dispatch) => {
+    fetch(`${baseURL}/api/changepassword`, {
+        method: 'post',
+        headers: new Headers({
+           'Content-Type':'application/json'
+        }),
+       body: JSON.stringify({
+      'token' :    creds.token,
+      'password' :  creds.password
+
+    })
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showForgotPassword(res)));
+  };
+
+}
+
+
+// verify password reset token
+
+export function verifyPasswordResettoken(token) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/verifypasswordResettoken?id=${token}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }), 
+    }).then((res) => res.json()).then((res) => res).then((res) =>{
+      console.log(res.statusCode);
+          if(res.statusCode != 200){
+
+            browserHistory.push('/resetpasswordfailure')
+          }
+    }) 
+
+      };
+}
 
 // Logs the user out
 export function logoutUser() {
@@ -620,6 +661,9 @@ export function verifyEmail(token) {
 
       };
 }
+
+
+
 
 
 export function deleteAGENT(agent) {

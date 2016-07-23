@@ -31,7 +31,8 @@ router.route('/editagent').post(UserController.editagent);
 router.route('/inviteAgent').post(UserController.inviteAgent);
 router.route('/invitetoken').get(UserController.invitetoken);
 router.route('/verifytoken').get(UserController.verifytoken);
-
+router.route('/verifypasswordResettoken').get(UserController.verifypasswordResettoken);
+router.route('/changepassword').post(UserController.changepassword);
 router.route('/createChannel').post(ChannelController.createChannel);
 router.route('/editChannel').post(ChannelController.editChannel);
 router.route('/getchannels').get(ChannelController.getchannels);

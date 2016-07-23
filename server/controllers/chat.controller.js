@@ -9,10 +9,10 @@ var baseURL = `https://api.kibosupport.com`
 
 /************************* Customer APIS ************************************/
 export function createsession(req, res) {
-  console.log('create session is called');
+  //console.log('create session is called');
   
-  console.log(req.body.session);
-  console.log(req.body.session.length)
+  //console.log(req.body.session);
+  //console.log(req.body.session.length)
  if(req.body.session)
  {
   var options = {
@@ -24,14 +24,14 @@ export function createsession(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
+        //console.log(error);
+        //console.log(response.statusCode);
 
-       // console.log(body);
+       // //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
-          // console.log(body)
+          // //console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -59,7 +59,7 @@ function sortByKey(array, key) {
     });
 }
 export function getsessions(req, res) {
-  console.log('get session is called');
+  //console.log('get session is called');
   
    var token = req.headers.authorization;
    var chat = [];
@@ -75,17 +75,17 @@ export function getsessions(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
+        //console.log(error);
+        //console.log(response.statusCode);
 
-       // console.log(body);
+       // //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
           var info = JSON.parse(body);
           var info_sorted = info.reverse();
-          console.log('info_sorted');
-         // console.log(info_sorted);
+          //console.log('info_sorted');
+         // //console.log(info_sorted);
           return res.status(200).json(info_sorted);
        }
        else
@@ -113,9 +113,9 @@ export function savechat(req, res) {
  }
 
 
-  console.log('create session is called');
+  //console.log('create session is called');
   
-  console.log(req.body.chat);
+  //console.log(req.body.chat);
  
  if(req.body.chat)
  {
@@ -129,14 +129,14 @@ export function savechat(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
+        //console.log(error);
+        //console.log(response.statusCode);
 
-        console.log(body);
+        //console.log(body);
         
        if(!error && response.statusCode == 201)
        {
-         //  console.log(body)
+         //  //console.log(body)
             return res.status(201).json({statusCode : 201,message:'success'});
        }
        else
@@ -160,9 +160,9 @@ export function savechat(req, res) {
 // update status
 
 export function updateStatus(req, res) {
-  console.log('update status is called');
+  //console.log('update status is called');
   
-  console.log(req.body);
+  //console.log(req.body);
   var token = req.headers.authorization;
  
 
@@ -178,14 +178,14 @@ export function updateStatus(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
+        //console.log(error);
+        //console.log(response.statusCode);
 
-        console.log(body);
+        //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
-           console.log(body)
+           //console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -205,8 +205,8 @@ export function updateStatus(req, res) {
 
 
 export function assignToAgent(req, res) {
-  console.log('assignToAgent is called');
-  console.log(req.body);
+  //console.log('assignToAgent is called');
+  //console.log(req.body);
   var token = req.headers.authorization;
  
 
@@ -222,14 +222,14 @@ export function assignToAgent(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
+        //console.log(error);
+        //console.log(response.statusCode);
 
-        console.log(body);
+        //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
-           console.log(body)
+           //console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -245,8 +245,8 @@ export function assignToAgent(req, res) {
 
 
 export function movedToMessageChannel(req, res) {
-  console.log('movedToMessageChannel is called');
-  console.log(req.body);
+  //console.log('movedToMessageChannel is called');
+  //console.log(req.body);
   var token = req.headers.authorization;
  
 
@@ -262,14 +262,14 @@ export function movedToMessageChannel(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
+        //console.log(error);
+        //console.log(response.statusCode);
 
-        console.log(body);
+        //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
-          // console.log(body)
+          // //console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -288,8 +288,8 @@ export function movedToMessageChannel(req, res) {
 /**** get user chat ***/
 
 export function getuserchats(req, res) {
-  console.log('getuserchat');
-  //console.log(req.body);
+  //console.log('getuserchat');
+  ////console.log(req.body);
   var token = req.headers.authorization;
  
 
@@ -305,21 +305,21 @@ export function getuserchats(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
+        //console.log(error);
+        //console.log(response.statusCode);
 
-        console.log(body);
+        //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
 
         var linq = Enumerable.from(body);
-        console.log(linq);
+        //console.log(linq);
         var result =
             linq.groupBy(function(x){return x.request_id;})
             .select(function(x){return { request_id:x.key(),Value:x.last() };})
             .toArray();
-        console.log(result);
+        //console.log(result);
         var info = result;
         return res.status(200).json({statusCode : 201,userchats:info});
        }
@@ -337,8 +337,8 @@ export function getuserchats(req, res) {
 // resolve session
 
 export function resolvechatsession(req, res) {
-  console.log('resolvesession is called');
-  console.log(req.body);
+  //console.log('resolvesession is called');
+  //console.log(req.body);
   var token = req.headers.authorization;
  
 
@@ -354,13 +354,13 @@ export function resolvechatsession(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
-        console.log(body);
+        //console.log(error);
+        //console.log(response.statusCode);
+        //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
-           console.log(body)
+           //console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -377,8 +377,8 @@ export function resolvechatsession(req, res) {
 // pick session
 
 export function pickchatsession(req, res) {
-  console.log('picksession is called');
-  console.log(req.body);
+  //console.log('picksession is called');
+  //console.log(req.body);
   var token = req.headers.authorization;
  
 
@@ -393,13 +393,13 @@ export function pickchatsession(req, res) {
     };
 
     function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
-        console.log(body);
+        //console.log(error);
+        //console.log(response.statusCode);
+        //console.log(body);
         
        if(!error && response.statusCode == 200)
        {
-          // console.log(body)
+          // //console.log(body)
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
