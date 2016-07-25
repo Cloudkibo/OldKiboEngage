@@ -47,6 +47,11 @@ class AddCustomer extends Component {
     console.log(props.params.id);
     this.addCustomers = this.addCustomers.bind(this);
     this.create_session = this.create_session.bind(this);
+    this.noagent = this.noagent.bind(this);
+  }
+  noagent(data){
+    alert('We are offline now.');
+    browserHistory.push('/');
   }
 create_session(data){
     console.log('i am called')
@@ -86,14 +91,18 @@ create_session(data){
         this.props.createsession(session);
         this.props.addRoom(data);
       
+      
   }  
   
  
    componentDidMount() {
   // socket.on('joined',this.create_session)
+    this.props.route.socket.on('empty',this.noagent);
+   
    this.props.route.socket.on('joined',this.create_session)
    
       }
+     
   addCustomers(e) {
     e.preventDefault();
     /*var pathname = getParameterByName('pathname'); 
