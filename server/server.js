@@ -105,7 +105,7 @@ const renderFullPage = (html, initialState) => {
              <script src="assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>      
              <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
              <!--[if lt IE 9]>
-             <script src="assets/gloabal/plugins/excanvas.min.js"></script>
+             <script src="assets/global/plugins/excanvas.min.js"></script>
              <script src="assets/global/plugins/respond.min.js"></script>  
              <![endif]-->   
              <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
@@ -138,6 +138,7 @@ const renderFullPage = (html, initialState) => {
             <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script> 
             <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
             <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+            <script src="scripts/widgetapp.js" type="text/javascript" ></script>
             
 
         <!-- BEGIN RevolutionSlider -->  

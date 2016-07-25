@@ -109,7 +109,7 @@ const routes = (
     <Route path="/notification/:id" component={NotificationView}  onEnter={requireAuth}/>
     <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
-     <Route path="/createcustomer/:id" component={AddCustomer}  socket = {socket}/>
+     <Route path="/livehelp" component={AddCustomer} socket={socket}/> 
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
    
     <Route path="*" component={NotFound} />

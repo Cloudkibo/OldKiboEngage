@@ -5,6 +5,19 @@ import Header from '../components/Header/Header.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 
 class Intro extends Component {
+  constructor(props, context) {
+       super(props, context);
+       this.handleClick = this.handleClick.bind(this);
+    
+    
+  }
+
+handleClick(e){
+  alert('i am clicked');
+  e.preventDefault();
+  loadKiboWidget('cd89f71715f2014725163952')
+}
+ 
   render() {
     return (
       <div classNameNameName="corporate">
@@ -15,6 +28,7 @@ class Intro extends Component {
                     <ul className="list-unstyled list-inline">
                         <li><i className="fa fa-phone"></i><span>1-425-890-9414</span></li>
                         <li><i className="fa fa-envelope-o"></i><span>support@cloudkibo.com</span></li>
+                        <li><button onClick={this.handleClick}> Live Help </button></li>
                     </ul>
                 </div>
                

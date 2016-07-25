@@ -14,6 +14,16 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
 import io from 'socket.io-client';
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 
 
 
@@ -22,7 +32,12 @@ class AddCustomer extends Component {
     props.getcustomergroups();
     props.getcustomerchannels();
     super(props, context);
-   
+    var pathname = getParameterByName('pathname'); 
+    var fullurl = getParameterByName('fullurl'); 
+    var companyid = getParameterByName('id'); 
+    console.log(pathname)
+    console.log(fullurl)
+    console.log(companyid)
     this.addCustomers = this.addCustomers.bind(this);
     this.create_session = this.create_session.bind(this);
   }
@@ -32,14 +47,17 @@ create_session(data){
       const email = this.refs.email;
       const country = this.refs.country;
       const phone = this.refs.phone;
-      var companyid = this.props.params.id;
+      var companyid = getParameterByName('id'); 
+      var pathname = getParameterByName('pathname'); 
+      var fullurl = getParameterByName('fullurl'); 
      
       var session = { 
                         'email' : email.value,
                         'departmentid': this.refs.grouplist.value,
                         'messagechannel' : this.refs.channellist.value,
                         'requesttime' : Date.now(),
-
+                        'fullurl' :  fullurl,
+                        'currentPage' : pathname,
                         'phone' :  phone.value,
                         'browser' : 'Chrome',
                         'ipAddress':'192.168.1.2',
@@ -64,11 +82,13 @@ create_session(data){
       }
   addCustomers(e) {
     e.preventDefault();
+    var pathname = getParameterByName('pathname'); 
+    var fullurl = getParameterByName('fullurl'); 
     const name = this.refs.name;
     const email = this.refs.email;
     const country = this.refs.country;
     const phone = this.refs.phone;
-    var companyid = this.props.params.id;
+    var companyid = getParameterByName('id');
     const btn = this.refs.btn
 
     //Code used for creating dummy customers
@@ -92,12 +112,12 @@ create_session(data){
             var socketsession =  {
                     username : name.value,
                     useremail :email.value,
-                    currentPage : 'www.kibosupport.com',
                     departmentid : this.refs.grouplist.value,
                     group:this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
                     messagechannel : this.refs.channellist.value,
                     channelname: this.refs.channellist.options[this.refs.channellist.selectedIndex].text,
-                    fullurl :  'www.kibosupport.com',
+                    fullurl :  fullurl,
+                    currentPage : pathname,
                     phone :  phone.value,
                     browser : 'Chrome',
                     ipAddress:'192.168.1.2',
@@ -248,6 +268,7 @@ create_session(data){
       )                   
      }
 }
+
 
 
 function mapStateToProps(state) {
