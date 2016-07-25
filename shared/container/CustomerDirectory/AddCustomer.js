@@ -12,7 +12,11 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
-import io from 'socket.io-client';
+
+
+
+/*import io from 'socket.io-client'
+let socket = io('')
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -23,7 +27,7 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-
+*/
 
 
 
@@ -32,12 +36,15 @@ class AddCustomer extends Component {
     props.getcustomergroups();
     props.getcustomerchannels();
     super(props, context);
-    var pathname = getParameterByName('pathname'); 
+   /* var pathname = getParameterByName('pathname'); 
     var fullurl = getParameterByName('fullurl'); 
     var companyid = getParameterByName('id'); 
     console.log(pathname)
     console.log(fullurl)
-    console.log(companyid)
+    console.log(companyid)*/
+
+    //console.log(props.params.pathname);
+    console.log(props.params.id);
     this.addCustomers = this.addCustomers.bind(this);
     this.create_session = this.create_session.bind(this);
   }
@@ -47,9 +54,14 @@ create_session(data){
       const email = this.refs.email;
       const country = this.refs.country;
       const phone = this.refs.phone;
-      var companyid = getParameterByName('id'); 
+  /*    var companyid = getParameterByName('id'); 
       var pathname = getParameterByName('pathname'); 
-      var fullurl = getParameterByName('fullurl'); 
+      var fullurl = getParameterByName('fullurl'); */
+
+      var companyid = this.props.params.id;
+      var pathname = "";
+      var fullurl = "";
+
      
       var session = { 
                         'email' : email.value,
@@ -78,17 +90,24 @@ create_session(data){
   
  
    componentDidMount() {
+  // socket.on('joined',this.create_session)
    this.props.route.socket.on('joined',this.create_session)
+   
       }
   addCustomers(e) {
     e.preventDefault();
-    var pathname = getParameterByName('pathname'); 
-    var fullurl = getParameterByName('fullurl'); 
+    /*var pathname = getParameterByName('pathname'); 
+    var fullurl = getParameterByName('fullurl');
+    var companyid = getParameterByName('id');
+   */
+    var companyid = this.props.params.id;
+    var pathname = "";
+    var fullurl = "";
+
     const name = this.refs.name;
     const email = this.refs.email;
     const country = this.refs.country;
     const phone = this.refs.phone;
-    var companyid = getParameterByName('id');
     const btn = this.refs.btn
 
     //Code used for creating dummy customers
@@ -128,7 +147,8 @@ create_session(data){
                     webrtc_browser :'true',
                     msg : 'User joined session'
              };
-             this.props.route.socket.emit('join meeting',socketsession);
+        //    socket.emit('join meeting',socketsession);
+           this.props.route.socket.emit('join meeting',socketsession);
          
          //  this.props.route.socket.on('customer_joined',data => create_session(data));
   

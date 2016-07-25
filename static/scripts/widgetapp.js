@@ -8,10 +8,12 @@ function loadKiboWidget(id_client){
     fullURL = fullURL.replace('#','');
     console.log('changed url: '+ fullURL)
   }
-
-  if(OPEN_AS_WINDOW_OR_TAB_PLACEHOLDER)
-    window.open('http://kiboengage.cloudapp.net/livehelp?pathname='+ document.title+'&fullurl='+fullURL+'&id='+id_client+'&role=visitor','KiboEngage','width=475,height=595,resizable=yes');
+ // window.open('http://localhost:8000/signup')
+ window.open('http://kiboengage.cloudapp.net/livehelp/'+id_client,'KiboEngage','width=475,height=595,resizable=yes');
+ /* if(OPEN_AS_WINDOW_OR_TAB_PLACEHOLDER)
+    window.open('localhost:8000/livehelp?pathname='+ document.title+'&fullurl='+fullURL+'&id='+id_client+'&role=visitor','KiboEngage','width=475,height=595,resizable=yes');
   else
     
-    window.open('http://kiboengage.cloudapp.net/livehelp?pathname='+ document.title+'&fullurl='+fullURL+'&id='+id_client+'&role=visitor','width=475,height=595,resizable=yes');
+    window.open('localhost:8000/livehelp?pathname='+ document.title+'&fullurl='+fullURL+'&id='+id_client+'&role=visitor','width=475,height=595,resizable=yes');
+*/
 }
