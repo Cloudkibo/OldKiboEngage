@@ -64,7 +64,7 @@ const renderFullPage = (html, initialState) => {
         <link href="https://www.cloudkibo.com/admin_assets/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
         <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
         <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-         <link href="assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
+        <link href="assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
  
          <link rel="stylesheet" href='/css/bootstrap/css/bootstrap.min.css' />
          <link rel="stylesheet" href='/css/style.css' />
@@ -98,7 +98,7 @@ const renderFullPage = (html, initialState) => {
 
         <div id="root">${html}</div>
     
-              <script src="/socket.io/socket.io.js"></script>
+             <script src="/socket.io/socket.io.js"></script>
              <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
              <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
              <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->

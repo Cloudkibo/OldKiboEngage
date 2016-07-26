@@ -15,7 +15,7 @@ class Intro extends Component {
 handleClick(e){
   alert('i am clicked');
   e.preventDefault();
-  loadKiboWidget('cd89f71715f2014725163952')
+  loadKiboEngageWidget('cd89f71715f2014725163952')
 }
  
   render() {

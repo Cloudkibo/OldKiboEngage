@@ -1,4 +1,4 @@
-function loadKiboWidget(id_client){
+function loadKiboEngageWidget(id_client){
 
   var fullURL = location.href;
   var OPEN_AS_WINDOW_OR_TAB_PLACEHOLDER = true;
