@@ -171,7 +171,7 @@ create_session(data){
   
 
   handleChange(e){
-    alert(this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text);
+    //alert(this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text);
      this.props.updatechannellist(e.target.value);
       this.forceUpdate();
 

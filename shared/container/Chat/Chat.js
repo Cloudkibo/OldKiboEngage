@@ -43,7 +43,7 @@ updateOnlineAgents(data){
   this.props.updateAgentList(data);
   this.forceUpdate();
 }
-componentWillMount(){
+componentDidMount(){
         console.log('calling component will mount');
        //get online agents list
         this.props.route.socket.emit('getOnlineAgentList');
@@ -70,7 +70,7 @@ componentWillMount(){
  
   componentWillUpdate(){
       console.log('calling componentWillUpdate');
-       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
+    //   this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
        this.props.route.socket.on('agentjoined',this.create_agentsession)
        this.props.route.socket.on('customer_joined',this.getupdatedSessions);
        this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
@@ -238,7 +238,7 @@ componentWillMount(){
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.customerchat && this.props.customerchat.length > 0  && this.props.customers && 
+					                      {this.props.userchats && this.props.customerchat && this.props.customerchat.length > 0  && this.props.customers && 
 					                        this.props.customerchat.map((customer, i) => (
                                   
                                     (this.props.new_message_arrived_rid ?

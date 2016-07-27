@@ -100,9 +100,9 @@ for(var i = 0;i< unread.length;i++){
     unreadCount = unreadCount+1;
   }
 }
-console.log('thisChat' + thisChat)
+//console.log('thisChat' + thisChat)
 
-console.log(unread);
+//console.log(unread);
 var handleDate = function(d){
 var c = new Date(d);
 var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()

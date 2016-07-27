@@ -309,26 +309,30 @@ picksession(e){
      const { socket,dispatch } = this.props;
      const usertoken = auth.getToken();
     
-    alert('Are you sure,you want to assign this session to agent ?');
+    if(confirm("Are you sure you want to assign this session to " + this.refs.agentList.options[this.refs.agentList.selectedIndex].text))
+    {
    
     // 1. Broadcast a log message to all agents and customer that session is assigned to agent
-
+    
     var message = {
           sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-          msg : 'Session is assigned to Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
+          msg : 'Session is assigned to Agent ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
           time : moment.utc().format('lll'),
           customersocket : this.refs.socketid_customer.value,
-          agentsocket : this.refs.agentsocket.value,
+          agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
           type : 'log',
-          agentid : this.props.userdetails._id,
+          agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
           request_id : this.props.sessiondetails.request_id,
                           
 
         }
 
+
         this.props.chatlist.push(message);
         
         socket.emit('send:message', message);
+        // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
+
         socket.emit('send:agentsocket' , message);
          var saveChat = { 
                            'to' : this.refs.customername.value,
@@ -336,7 +340,7 @@ picksession(e){
                            'visitoremail' : this.refs.customeremail.value,
                            'socketid' : this.refs.socketid_customer.value,
                            'type': 'log',
-                           'msg' : 'Session is assigned to Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
+                           'msg' : 'Session is assigned to Agent ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
@@ -346,8 +350,7 @@ picksession(e){
         this.props.savechat(saveChat); 
 
 
-   // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
-
+   
     // 3. update session status on server   
      var session = {
       request_id : this.refs.requestid.value,
@@ -361,7 +364,7 @@ picksession(e){
 
     // considering the use case of self assigning
     var assignment = {
-      assignedto : this.props.userdetails._id,
+      assignedto : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
       assignedby : this.props.userdetails._id,
       sessionid : this.refs.requestid.value,
       companyid : this.props.userdetails.uniqueid,
@@ -373,6 +376,9 @@ picksession(e){
     this.props.getcustomers(usertoken);
     this.props.getsessions(usertoken);
     this.forceUpdate();
+  }
+
+
   }
  
 
@@ -437,7 +443,7 @@ picksession(e){
 }
 
    handleChange(e){
-     alert(e.target.value);
+     alert(e.target.data-attrib);
    
     }
 
@@ -488,26 +494,40 @@ const { value, suggestions } = this.state;
              <table className="table table-colored">
              <tbody>
              <tr>
+                 <td className="col-md-4">
+                 <label className="control-label text-right">Assigned To</label>
+                 </td>
+                 <td className="col-md-4">
+                 </td>
+                 <td className="col-md-4">
+                 <label className="control-label text-right">Move To</label>
+                 </td>
+             </tr>
+             <tr>    
              <td className="col-md-4">
                 
                   
-                  <label className="control-label text-right">Assigned To</label>
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
                          {
                           this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
-                            <option value={agent.socketid}>{agent.email}</option>
-
+                            agent.agentId == this.props.userdetails._id?
+                            <option value={agent.socketid} data-attrib = {agent.agentId}>Yourself</option>:
+                             <option value={agent.socketid} data-attrib = {agent.agentId}>{agent.agentName}</option>
+                              
                             )
                          }
 
                       </select>
                     
                  </div>     
-                </td>
+              </td>
               <td className="col-md-4">
-                  <label className="control-label text-right">Move To</label>
-                  <div className="input-group">
+                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To </button>
+              </td> 
+             
+              <td className="col-md-4">
+                 <div className="input-group">
                    <select  ref = "channellist" className="form-control" onChange={this.handleChange.bind(this)}   >
                           {
                           this.props.channels && this.props.channels.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((channel,i) =>
@@ -519,15 +539,12 @@ const { value, suggestions } = this.state;
                       </select>
                    </div>   
                 </td>
-              <td className="col-md-1">
-                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To </button>
-              </td> 
-          
+             {/*
               <td className="col-md-1">
                 <button className="btn btn-primary" onClick = {this.picksession}> Pick Session </button>
-              </td> 
+              </td>*/}
 
-              <td className="col-md-1">
+              <td className="col-md-4">
                 <button className="btn btn-primary" onClick = {this.moveToChannel}> Move </button>
               </td> 
                 

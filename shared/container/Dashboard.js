@@ -28,24 +28,29 @@ class Dashboard extends Component {
     this.props.getAgents(usertoken);
     this.props.getDeptAgents(usertoken);
     this.props.getusergroups(usertoken);
-    this.props.getchannels(usertoken)
-  
+    this.props.getchannels(usertoken);
+
+    
    
+  }
+
+  componentDidMount(){
+    // fetch online agent list
+   // this.props.route.socket.emit('getOnlineAgentList');
+  
   }
 
   updateOnlineAgents(data){
   console.log('updating updateOnlineAgents');
   this.props.updateAgentList(data);
-  this.forceUpdate();
+  //this.forceUpdate();
 }
 
   componentWillUpdate(){
-   console.log(this.props.route.socket);
-    
   //on component mount,join room
     if(this.props.userdetails.uniqueid && dontCall == false){
 
-      this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email});
+      this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
     //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
      
 
@@ -53,7 +58,7 @@ class Dashboard extends Component {
 
      // this.props.setTimeout(() => { alert('I do not leak!' + this.props.userdetails.uniqueid); }, 1000);
     } 
-    this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
+   // this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
 
   }
  

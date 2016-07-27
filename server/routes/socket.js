@@ -12,9 +12,10 @@ function onDisconnect(io2, socket) {
   for(var j = 0;j<onlineAgents.length ;j++){
     if(onlineAgents[j].socketid == socket.id){
       console.log('Remove agent with  email : ' + onlineAgents[j].email);
+      var room = onlineAgents[j].room;
       onlineAgents.splice(j,1);
       console.log(onlineAgents);
-      socket.broadcast.to(onlineAgents[j].room).emit('updateOnlineAgentList', onlineAgents);
+      socket.broadcast.to(room).emit('updateOnlineAgentList', onlineAgents);
    
       break;
     }
@@ -55,6 +56,7 @@ function onConnect(io2, socket) {
             msg: data.msg,
             time:data.time,
             request_id : data.request_id,
+     
             type : data.type
           });
     }
@@ -183,6 +185,7 @@ socket.on('getOnlineAgentList',function() {
    
   });
 
+
   socket.on('join scheduled meeting', function (room) {
 
     var clients = findClientsSocket(room.room); // This change is because of socket version change
@@ -213,11 +216,24 @@ socket.on('getOnlineAgentList',function() {
     console.log(room.room);
     socket.join(room.room);
     
-
+    var flag = 0;
     // append in online agents array
     if(room.agentEmail){
-    onlineAgents.push({email:room.agentEmail,socketid:socket.id,room:room.room});
-  }
+    //only push if not already pushed
+    for(var i = 0;i< onlineAgents.length;i++)
+    {
+          if(onlineAgents[i].email == room.agentEmail){
+            //set flag to true
+            flag = 1;
+            break;
+          } 
+    }
+    if(flag == 0)
+    {
+       onlineAgents.push({email:room.agentEmail,socketid:socket.id,room:room.room,agentName : room.agentName,agentId : room.agentId});
+ 
+    }
+    }
     console.log("Agents online :");
     console.log(onlineAgents);
     //inform other agents that new agent is online now
