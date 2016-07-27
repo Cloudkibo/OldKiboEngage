@@ -316,7 +316,7 @@ picksession(e){
     
     var message = {
           sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-          msg : 'Session is assigned to Agent ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
+          msg : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
           time : moment.utc().format('lll'),
           customersocket : this.refs.socketid_customer.value,
           agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
@@ -340,7 +340,7 @@ picksession(e){
                            'visitoremail' : this.refs.customeremail.value,
                            'socketid' : this.refs.socketid_customer.value,
                            'type': 'log',
-                           'msg' : 'Session is assigned to Agent ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
+                           'msg' : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
@@ -512,7 +512,7 @@ const { value, suggestions } = this.state;
                          {
                           this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
                             agent.agentId == this.props.userdetails._id?
-                            <option value={agent.socketid} data-attrib = {agent.agentId}>Yourself</option>:
+                            <option value={agent.socketid} data-attrib = {agent.agentId}>Myself</option>:
                              <option value={agent.socketid} data-attrib = {agent.agentId}>{agent.agentName}</option>
                               
                             )

@@ -44,7 +44,7 @@ class Notifications extends Component {
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
     
        <div className="page-container">
-         <SideBar/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Notifications Management </h3>

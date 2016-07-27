@@ -38,7 +38,12 @@ class AgentEditView extends Component {
     
     const idRef = this.refs.id;
    const roleRef = this.refs.role;
-    if (idRef.value && roleRef.value) {
+   if(idRef.value == this.props.userdetails._id){
+    alert("You cannot change your own role.");
+
+   }
+
+   else if(idRef.value && roleRef.value) {
       this.props.editAgent(idRef.value,roleRef.value,usertoken);
      
     }
@@ -78,7 +83,7 @@ class AgentEditView extends Component {
       <div>
 
        <div className="page-container">
-         <SideBar/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Agents Management </h3>
@@ -193,7 +198,8 @@ function mapStateToProps(state) {
     deptagents:(state.dashboard.deptagents),
     agent :(state.dashboard.agent),
     errorMessage:(state.dashboard.errorMessage),
-     channels :(state.dashboard.channels),
+    channels :(state.dashboard.channels),
+    userdetails:(state.dashboard.userdetails),
   };
 }
 export default connect(mapStateToProps,{ getAgentRequest,editAgent})(AgentEditView);

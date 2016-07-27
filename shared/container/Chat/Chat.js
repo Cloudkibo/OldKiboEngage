@@ -131,7 +131,7 @@ componentDidMount(){
     
        <div className="page-container">
 
-         <SideBar/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
             <div className="portlet box grey-cascade">

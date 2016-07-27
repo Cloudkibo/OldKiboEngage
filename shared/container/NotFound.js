@@ -23,7 +23,7 @@ class NotFound extends Component {
              <div>
                  <AuthorizedHeader name = {this.props.userdetails.firstname} />
                  <div className="page-container">
-                    <SideBar/> 
+                    <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
                     <div className="page-content-wrapper">
                       <div className="page-content"> 
                           <h1>404 : Page Not Found</h1>

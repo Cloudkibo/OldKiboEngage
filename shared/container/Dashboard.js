@@ -69,9 +69,9 @@ class Dashboard extends Component {
     console.log(username)
     return (
       <div>
-       <AuthorizedHeader name = {this.props.userdetails.firstname} roomid = {this.props.userdetails.uniqueid} />
+       <AuthorizedHeader name = {this.props.userdetails.firstname} isAdmin ={this.props.userdetails.isAdmin} roomid = {this.props.userdetails.uniqueid} />
        <div className="page-container">
-          <SideBar/> 
+          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
                 <h1>Dashboard</h1>
@@ -80,7 +80,9 @@ class Dashboard extends Component {
             </div>
           </div>
        </div>
-       </div> 
+       </div>
+       
+    
   )
   }
 }

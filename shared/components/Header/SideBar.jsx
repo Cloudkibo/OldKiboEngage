@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { Component,PropTypes } from 'react';
+
 import { Link } from 'react-router';
 
-function SideBar() {
+export default class SideBar extends Component
+{
+
+  render()
+  {
   return (
    <div className="page-sidebar navbar-collapse collapse">
 
@@ -89,7 +94,7 @@ function SideBar() {
                   </span>
                 </Link>
               </li>
-
+             {this.props.isAdmin == "Yes"?
               <li className="">
                 <Link to= '/agents'>
                   <i className="fa fa-user">
@@ -101,7 +106,8 @@ function SideBar() {
                   </span>
                 </Link>
               </li>
-
+                :<li></li>
+                }
               <li className="">
                 <Link to='/groups'>
                   <i className="fa fa-group">
@@ -199,6 +205,7 @@ function SideBar() {
   </div>
 
  );
+}
 }
 
 export default SideBar;

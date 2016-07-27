@@ -21,11 +21,16 @@ function GroupListItem(props) {
         <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
          View
         </Link>
+         {
+        props.userdetails.isAdmin == "Yes" ?
+        <span>
         <Link to={`/editgroup/${props.group._id}`} className="btn blue-madison" >
          Edit
         </Link>
         <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+        </span> : <span></span>
 
+        }
       </td>
 
     

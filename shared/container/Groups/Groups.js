@@ -65,7 +65,7 @@ class Groups extends Component {
     
        <div className="page-container">
 
-         <SideBar/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Groups Management </h3>
@@ -87,13 +87,17 @@ class Groups extends Component {
                     Groups
                 </div> 
               </div>    
-        
-           <div className="portlet-body">
+          <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
+                 { this.props.userdetails.isAdmin == "Yes" ?
+         
                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Group
+                   
                     <i className="fa fa-plus"/>
                     </button>
+                 :<br/>
+               }
                  </div>
               </div>
                {this.props.errorMessage &&
@@ -116,7 +120,7 @@ class Groups extends Component {
                       {
                         this.props.groupdetails.map((group, i) => (
                           
-                          <GroupListItem group={group} key={group._id}   onDelete={() => this.props.deletegroup(group,token)}/>
+                          <GroupListItem group={group} key={group._id}   onDelete={() => this.props.deletegroup(group,token)} userdetails ={this.props.userdetails}/>
                                                       
                         ))
                       }
