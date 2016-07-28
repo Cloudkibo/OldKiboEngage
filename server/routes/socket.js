@@ -254,6 +254,11 @@ socket.on('getOnlineAgentList',function() {
 
   });
 
+  socket.on('returnMySocketId',function(){
+      console.log('your socketid is : ' + socket.id);
+      socket.emit('getmysocketid',socket.id);
+  });
+
   socket.on('leave meeting for agent', function (room) {
 
     console.log('agent leaving the room now '+ JSON.stringify(room));

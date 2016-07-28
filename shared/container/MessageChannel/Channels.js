@@ -42,7 +42,7 @@ class Channels extends Component {
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
     
        <div className="page-container">
-         <SideBar/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">MessageChannels Management </h3>
@@ -68,9 +68,15 @@ class Channels extends Component {
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
+                 { this.props.userdetails.isAgent == "Yes"?
+                    <br/> :
                     <Link id="sample_editable_1_new" className="btn green" to='/createmessagechannel'> Create Message Channel
                     <i className="fa fa-plus"/>
                     </Link>
+                
+                    
+                    
+                 }
                  </div>
               </div>
                {this.props.errorMessage &&
@@ -86,16 +92,17 @@ class Channels extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Active</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created On</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
-           
+                     { this.props.userdetails.isAgent == "Yes"?<br/> :
+                      <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
+                      }
                     </tr>
                     </thead>
 
                     <tbody>                    
                       {
-                        this.props.channels.map((channel, i) => (
+                        this.props.groupdetails && this.props.channels.map((channel, i) => (
                           
-                          <ChannelListItem channel={channel} key={channel._id} group = {this.props.groupdetails.filter((group) => group._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token)}/>
+                          <ChannelListItem channel={channel} key={channel._id} group = {this.props.groupdetails.filter((group) => group._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token)} userdetails={this.props.userdetails}/>
                                                       
                         ))
                       }

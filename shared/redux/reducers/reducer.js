@@ -55,7 +55,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-           onlineAgents : state.onlineAgents,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
              
       }; 
    case ActionTypes.ADD_SELECTED_AGENT :
@@ -66,7 +66,7 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         agent: state.agents.filter((agent) => agent._id == action.id),
         channels : state.channels,
-          onlineAgents : state.onlineAgents,
+        onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
 
 
         chatlist: state.chatlist,
@@ -116,7 +116,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-           onlineAgents : state.onlineAgents,
+           onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
 
       };         
    case ActionTypes.ADD_USER_DETAILS:
@@ -133,7 +133,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-           onlineAgents : state.onlineAgents,
+           onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
 
 };
    case ActionTypes.ADD_AGENTS:
@@ -144,7 +144,7 @@ const dashboard = (state =dashboardState, action) => {
             deptagents :state.deptagents,
             groupdetails:state.groupdetails,
             channels : state.channels,
-            onlineAgents : state.onlineAgents,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             chatlist: state.chatlist,
            customerid : state.customerid,
            customerchat : state.customerchat,
@@ -164,7 +164,7 @@ const dashboard = (state =dashboardState, action) => {
             deptagents :action.agents,
             groupdetails:state.groupdetails,
             channels : state.channels,
-            onlineAgents : state.onlineAgents,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -193,7 +193,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
       };
@@ -206,7 +206,7 @@ const dashboard = (state =dashboardState, action) => {
             agents : state.agents,
             deptagents :state.deptagents,
             channels : action.channels,
-    onlineAgents : state.onlineAgents,
+    onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
         chatlist: state.chatlist,
@@ -236,7 +236,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
       };
@@ -250,7 +250,7 @@ const dashboard = (state =dashboardState, action) => {
             deptagents :state.deptagents,
             channels : state.channels,
             responses : [action.response,...state.responses],
-            onlineAgents : state.onlineAgents,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -274,7 +274,7 @@ const dashboard = (state =dashboardState, action) => {
          agents : state.agents,
          deptagents :state.deptagents,
          channels : state.channels,
-         onlineAgents : state.onlineAgents,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
           chatlist: state.chatlist,
            customerid : state.customerid,
            customerchat : state.customerchat,
@@ -304,7 +304,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-         onlineAgents : state.onlineAgents,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
        
       };
@@ -328,7 +328,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
        
@@ -352,7 +352,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
        
@@ -375,7 +375,7 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
       };
@@ -505,7 +505,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
                 
@@ -527,11 +527,32 @@ const dashboard = (state =dashboardState, action) => {
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
-                 onlineAgents : state.onlineAgents,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,
+             
+            };
+          case ActionTypes.SET_SOCKET_ID:
+          return {
+             userchats : state.userchats,
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : action.customerchat,
+             customerchatold : action.customerchat,
+              responses : state.responses,
+       
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : action.yoursocketid
         
 
             };
-
           case ActionTypes.ADD_USER_CHATS:
            return {
              groupdetails: state.groupdetails,
@@ -549,7 +570,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : action.userchats,
-                 onlineAgents : state.onlineAgents,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
             
             };
@@ -571,7 +592,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
             new_message_arrived_rid : state.new_message_arrived_rid,
             userchats : state.userchats,
-                onlineAgents : state.onlineAgents,
+                onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
             };   
              case ActionTypes.FILTER_BY_DEPT:
@@ -591,10 +612,11 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
             
-            };   
+            }; 
+
               case ActionTypes.FILTER_BY_CHANNEL:
             return {
              groupdetails: state.groupdetails,
@@ -605,18 +627,17 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : action.filtered,
              customerchatold : state.customerchatold,
              chatlist : state.chatlist,
-              responses : state.responses,
-       
+             responses : state.responses,
              channels : state.channels,
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
-            new_message_arrived_rid : state.new_message_arrived_rid,
-            userchats : state.userchats,
-                onlineAgents : state.onlineAgents,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
             
             };     
-                case ActionTypes.FILTER_BY_AGENT:
+            case ActionTypes.FILTER_BY_AGENT:
             return {
              groupdetails: state.groupdetails,
              userdetails: state.userdetails,
@@ -633,7 +654,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
             
             };            
@@ -652,8 +673,8 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : action.customerchat_selected[0],
              new_message_arrived_rid : action.new_message_arrived_rid,
              userchats : state.userchats,
-              responses : state.responses,
-                  onlineAgents : state.onlineAgents,
+             responses : state.responses,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
        
             
@@ -674,7 +695,7 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
               responses : state.responses,
-                  onlineAgents : state.onlineAgents,
+                  onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
        
             
@@ -717,7 +738,7 @@ const dashboard = (state =dashboardState, action) => {
             customers : state.customers, 
             userchats : state.userchats,
              responses : state.responses,
-            onlineAgents : state.onlineAgents,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
           
        
             
@@ -742,7 +763,7 @@ const dashboard = (state =dashboardState, action) => {
        
              channels : state.channels,
              customers : state.customers,
-               onlineAgents : state.onlineAgents,
+               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
              
             };
 
@@ -756,7 +777,7 @@ const dashboard = (state =dashboardState, action) => {
              channels : state.channels, 
              notifications:action.notifications,
              customers:state.customers,
-               onlineAgents : state.onlineAgents,
+               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -776,7 +797,7 @@ const dashboard = (state =dashboardState, action) => {
              notifications:state.notifications,
              addednotification : action.msg,
              errorMessage :action.msg,
-             onlineAgents : state.onlineAgents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
               chatlist: state.chatlist,
                customerid : state.customerid,
                customerchat : state.customerchat,
@@ -806,7 +827,7 @@ const dashboard = (state =dashboardState, action) => {
                  customerchat_selected : state.customerchat_selected,
                  new_message_arrived_rid : state.new_message_arrived_rid, 
                  userchats : state.userchats,
-                   onlineAgents : state.onlineAgents,
+                   onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
 
               };
               case ActionTypes.ADD_CUSTOMER :
@@ -834,7 +855,7 @@ const dashboard = (state =dashboardState, action) => {
                customerchat_selected : state.customerchat_selected,
                new_message_arrived_rid : state.new_message_arrived_rid, 
                userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
 
 
             };  
@@ -859,7 +880,7 @@ const dashboard = (state =dashboardState, action) => {
              chatlist : state.chatlist,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-               onlineAgents : state.onlineAgents,
+               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             
           
             };
@@ -873,7 +894,7 @@ const dashboard = (state =dashboardState, action) => {
               notifications : state.notifications,
               customers:state.customers,
               customer: state.customers.filter((customer) => customer._id == action.id),
-                onlineAgents : state.onlineAgents,
+                onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
            
                responses : state.responses,
        
@@ -977,7 +998,8 @@ function auth(state = {isAuthenticated: false}, action) {
     case ActionTypes.LOGOUT_SUCCESS:
       return Object.assign({}, state, {
         isFetching: true,
-        isAuthenticated: false
+        isAuthenticated: false,
+        errormessage:''
       })
     default:
       return state

@@ -7,7 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
 import InviteAgent from './InviteAgent';
-import {inviteagent} from '../../redux/actions/actions'
+import {inviteagent,getAgents} from '../../redux/actions/actions'
 
 import {deleteagent} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
@@ -26,10 +26,11 @@ class Agents extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.cancelInvite = this.cancelInvite.bind(this);
     this.add = this.add.bind(this);
+    props.getAgents(usertoken);
+   
 
     
   }
-
 
   add(email) {
      const usertoken = auth.getToken();
@@ -153,6 +154,17 @@ function mapStateToProps(state) {
           agent :(state.dashboard.agent),
           deptagents:(state.dashboard.deptagents),
           channels :(state.dashboard.channels),
+          groupdetails:(state.dashboard.groupdetails),
+          customerchat :(state.dashboard.customerchat),
+          customerchatold :(state.dashboard.customerchatold),
+          chatlist :(state.dashboard.chatlist),
+          channels :(state.dashboard.channels),
+          customers:(state.dashboard.customers),
+          customerchat_selected :(state.dashboard.customerchat_selected),
+          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
+          userchats :(state.dashboard.userchats),
+          responses :(state.dashboard.responses), 
+          onlineAgents:(state.dashboard.onlineAgents),      
 
            };
 }
@@ -160,7 +172,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   // Whenever selectBook is called, the result shoudl be passed
   // to all of our reducers
-  return bindActionCreators({ deleteagent:deleteagent,inviteagent:inviteagent}, dispatch);
+  return bindActionCreators({ deleteagent:deleteagent,inviteagent:inviteagent,getAgents:getAgents}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Agents);
 

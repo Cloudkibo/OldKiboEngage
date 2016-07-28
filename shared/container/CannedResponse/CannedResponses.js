@@ -93,9 +93,16 @@ class CannedResponses extends Component {
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
-                    <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Add Canned Response
+                   { this.props.userdetails.isAgent == "Yes"?
+                    <br/> :
+                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Add Canned Response
                     <i className="fa fa-plus"/>
                     </button>
+                
+                    
+                    
+                 }
+
                  </div>
               </div>
                {this.props.errorMessage &&
@@ -109,9 +116,12 @@ class CannedResponses extends Component {
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Short Code </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Response</th>
-                  
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
+                      { this.props.userdetails.isAgent == "Yes"?<br/> :
+                         <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
            
+
+                     }
+                   
                     </tr>
                     </thead>
 
@@ -120,7 +130,7 @@ class CannedResponses extends Component {
                         this.props.responses &&
                         this.props.responses.map((response, i) => (
                           
-                          <ResponseListItem response={response} key={response._id}  onDelete={() => this.props.deleteresponse(response,token)}/>
+                          <ResponseListItem response={response} key={response._id}  onDelete={() => this.props.deleteresponse(response,token)} userdetails={this.props.userdetails}/>
                                                       
                         ))
                       }

@@ -26,13 +26,22 @@ function ChannelListItem(props) {
       <td>{getDeptName(props.group)}</td>
       <td>{props.channel.activeStatus}</td>
       <td>{handleDate(props.channel.creationdate)}</td>
-       <td>
-        <Link to={`/editchannel/${props.channel._id}`} className="btn blue-madison" >
-        Edit
-        </Link>
-        <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+       
 
-      </td>
+        { props.userdetails.isAgent == "Yes"?
+                    <br/> :
+                    <td>
+                    <Link to={`/editchannel/${props.channel._id}`} className="btn blue-madison" >
+                    Edit
+                    </Link>
+                    <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+                    </td>
+                
+                    
+                    
+                 }
+
+     
     
     </tr>
     

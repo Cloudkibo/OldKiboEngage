@@ -561,13 +561,17 @@ const { value, suggestions } = this.state;
           {
             this.props.sessiondetails &&
           <div>
+          <label>Customer Name :</label>
           <input value = {c[0].name} ref="customername"/>
-          <input value = {c[0].email} ref="customeremail"/>
-          <input value = {this.props.sessiondetails.request_id} ref = "requestid"/>
-          <input defaultValue = {this.props.socketid} ref = "agentsocket"/>
+          
+           <label>Email :</label>
+           <input value = {c[0].email} ref="customeremail"/>
+          <br/>
+          <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
+          <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
          
-          <input value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length - 1]} ref="channelid"/>
-          <input value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
+          <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length - 1]} ref="channelid"/>
+          <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
             <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}}  ref="messageList">

@@ -43,21 +43,25 @@ updateOnlineAgents(data){
   this.props.updateAgentList(data);
   this.forceUpdate();
 }
+ create_agentsession(socketid){
+    console.log('your socket id is : ' + socketid);
+    this.props.setsocketid(socketid);
+    //this.refs.agentsocketfield.value = socketid;
+    //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
+  }
 componentDidMount(){
-        console.log('calling component will mount');
+        //alert('componentDidMount is called');
        //get online agents list
         this.props.route.socket.emit('getOnlineAgentList');
-
+        this.props.route.socket.emit('returnMySocketId');
+        
+      
 
 }
 
 
 
-  create_agentsession(data){
-    console.log('your socket id is : ' + data.socketid);
-    this.refs.agentsocketfield.value = data.socketid;
-  // alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
-  }
+ 
    getupdatedSessions(data)
   {
     const usertoken = auth.getToken();
@@ -71,7 +75,9 @@ componentDidMount(){
   componentWillUpdate(){
       console.log('calling componentWillUpdate');
     //   this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
-       this.props.route.socket.on('agentjoined',this.create_agentsession)
+    //   this.props.route.socket.on('agentjoined',this.create_agentsession)
+         this.props.route.socket.on('getmysocketid',this.create_agentsession);
+
        this.props.route.socket.on('customer_joined',this.getupdatedSessions);
        this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
 
@@ -232,8 +238,10 @@ componentDidMount(){
 
              			<tbody>
                   <tr>
-                  <input  type = "text" ref = "agentsocketfield" name="agentsocketfield" value=""/>
-      
+                  {
+                  this.props.yoursocketid &&  
+                  <input  type = "hidden" ref = "agentsocketfield" name="agentsocketfield" value={this.props.yoursocketid}/>
+                  }
                   </tr>
 			             	<tr>
 			             		<td  className="col-md-3">
@@ -296,9 +304,10 @@ function mapStateToProps(state) {
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
           userchats :(state.dashboard.userchats),
           responses :(state.dashboard.responses), 
-          onlineAgents:(state.dashboard.onlineAgents),       
+          onlineAgents:(state.dashboard.onlineAgents),
+          yoursocketid :(state.dashboard.yoursocketid),       
                   
                     };
 }
 
-export default connect(mapStateToProps,{getsessions,getresponses,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getsessions,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);

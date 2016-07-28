@@ -1534,7 +1534,14 @@ export function movedToMessageChannel(session,usertoken) {
 }
 
 
+export function setsocketid(yoursocketid){
+  return {
+    type: ActionTypes.SET_SOCKET_ID,
+    yoursocketid,
+   
 
+  };
+}
 export function showuserchat(userchats) {
   return {
     type: ActionTypes.ADD_USER_CHATS,
