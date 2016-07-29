@@ -222,3 +222,33 @@ export function editgroup(req, res) {
    
   }
  
+ //get my groups
+ export function getmyusergroups(req, res) {
+  var token = req.headers.authorization;
+  var options = {
+      url: `${baseURL}/api/departments/mydepartments`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      console.log(error);
+      console.log(body);
+        if(!error  && response.statusCode == 200) {
+       var info = JSON.parse(body);
+
+      console.log(info);
+      return res.status(200).json({depts:info});
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
+

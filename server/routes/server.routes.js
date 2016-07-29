@@ -18,6 +18,7 @@ router.route('/forgotpassword').post(UserController.forgotpassword);
 
 
 router.route('/getgroups').get(GroupController.getgroups);
+router.route('/getmyusergroups').get(GroupController.getmyusergroups);
 router.route('/getcustomergroups').get(GroupController.getcustomergroups);
 router.route('/creategroup').post(GroupController.creategroup);
 

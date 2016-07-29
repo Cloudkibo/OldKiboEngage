@@ -1585,3 +1585,30 @@ export function resolvesession(request_id,usertoken) {
 }
 }
 
+
+
+
+/************* My Profile functions***/
+
+// My Groups
+export function showMyGroups(mygroups) {
+  console.log(mygroups);
+  return {
+    type: ActionTypes.ADD_MY_GROUPS,
+    mygroups,
+
+  };
+}
+export function getmyusergroups(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getmyusergroups`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then(res => dispatch(showMyGroups(res.depts)));
+  };
+}
+

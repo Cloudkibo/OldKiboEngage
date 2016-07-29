@@ -28,10 +28,10 @@ export default class AuthorizedHeader extends Component
                   </a>
               <ul className="dropdown-menu">
                   <li>
-                    <a href="/myprofile">
+                    <Link to="/mygroups">
                       <i className="fa fa-user"/>
                       My Profile
-                    </a>
+                    </Link>
                   </li> 
                   <li>
                     <a href="/mymsg">

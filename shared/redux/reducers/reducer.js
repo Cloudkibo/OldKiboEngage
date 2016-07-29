@@ -260,7 +260,26 @@ const dashboard = (state =dashboardState, action) => {
              userchats : state.userchats,
 
       };
-  
+    case ActionTypes.ADD_MY_GROUPS:
+          return{
+            groupdetails:state.groupdetails,
+            mygroupdetails:action.mygroups,
+            userdetails: state.userdetails,
+            agents : state.agents,
+            deptagents :state.deptagents,
+            channels : state.channels,
+            responses : state.responses,
+            onlineAgents : state.onlineAgents,
+            yoursocketid : state.yoursocketid,
+            chatlist: state.chatlist,
+             customerid : state.customerid,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid, 
+             userchats : state.userchats,
+
+      };
     case ActionTypes.ADD_GROUP:
     console.log(action.deptname);
       return {
@@ -474,16 +493,13 @@ const dashboard = (state =dashboardState, action) => {
            deptagents :state.deptagents,
            channels : state.channels,
             responses : state.responses,
-       
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid, 
-         userchats : state.userchats,
+          chatlist: state.chatlist,
+           customerid : state.customerid,
+           customerchat : state.customerchat,
+           customerchatold : state.customerchatold,
+           customerchat_selected : state.customerchat_selected,
+           new_message_arrived_rid : state.new_message_arrived_rid, 
+           userchats : state.userchats,
 
 
           };
@@ -678,7 +694,8 @@ const dashboard = (state =dashboardState, action) => {
         
        
             
-            };   
+            };
+
           case ActionTypes.ADD_SESSION:
            return {
              groupdetails: state.groupdetails,

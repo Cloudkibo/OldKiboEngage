@@ -1141,11 +1141,17 @@ steps block and steps block elements
 
 /* breadcrumb */
 .breadcrumb {
-	background: none;
+	/*background: none;
 	padding: 0;
 	font: 14px "Open Sans", sans-serif;
 	color: #5f6d7b;
-	margin-bottom: 22px;
+	margin-bottom: 22px;*/
+
+	padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
 }
 .breadcrumb > li + li:before {
 	content: "\f105 ";
