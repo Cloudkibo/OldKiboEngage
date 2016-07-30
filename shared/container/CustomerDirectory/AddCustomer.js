@@ -54,7 +54,7 @@ class AddCustomer extends Component {
     browserHistory.push('/');
   }
 create_session(data){
-    console.log('i am called')
+     console.log('i am called')
       const name = this.refs.name;
       const email = this.refs.email;
       const country = this.refs.country;
@@ -147,6 +147,8 @@ create_session(data){
                     fullurl :  fullurl,
                     currentPage : pathname,
                     phone :  phone.value,
+                    requesttime:Date.now(),
+                    status : "new",
                     browser : 'Chrome',
                     ipAddress:'192.168.1.2',
                     country : country.value,
@@ -154,7 +156,7 @@ create_session(data){
                     room: companyid,
                     request_id : unique_id,
                     webrtc_browser :'true',
-                    msg : 'User joined session'
+                    msg : 'User joined session',
              };
         //    socket.emit('join meeting',socketsession);
            this.props.route.socket.emit('join meeting',socketsession);

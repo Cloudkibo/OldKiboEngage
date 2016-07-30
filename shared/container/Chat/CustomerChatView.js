@@ -112,8 +112,12 @@ else{
 }
 
   getSocketmessage(message){
-     const usertoken = auth.getToken();
-     this.props.getuserchats(usertoken);
+   //  const usertoken = auth.getToken();
+   //  this.props.getuserchats(usertoken);
+    
+   //get updated chat messages from socket
+      this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);   
+
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      this.forceUpdate();
   }
@@ -144,16 +148,15 @@ else{
         var message = {
           sender : this.props.userdetails.firstname,
           msg : messageVal,
-          time : moment.utc().format('lll'),
           to : this.refs.socketid_customer.value,
           request_id : this.props.sessiondetails.request_id,
                           
         }
+      
 
         this.props.chatlist.push(message);
         
-        socket.emit('send:message', message);
-
+      
         
          var saveChat = { 
                           'to' : this.refs.customername.value,
@@ -163,11 +166,14 @@ else{
                           'type': 'message',
                            'msg' : messageVal,
                            'datetime' : Date.now(),
+                           'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.sessiondetails.companyid,
                            'is_seen':'no'
                       }
+        socket.emit('send:message', saveChat);
+              
         this.props.savechat(saveChat);               
         this.state.value ='';
         this.forceUpdate();
@@ -466,15 +472,6 @@ picksession(e){
  
       };
 
-var c = []
-      {
-         this.props.cust &&
-                        this.props.cust.map((customerd, i) => (
-                           c.push(customerd)                            
-                        ))
-
-      }  
-
 
 const { value, suggestions } = this.state;
     const inputProps = {
@@ -562,10 +559,10 @@ const { value, suggestions } = this.state;
             this.props.sessiondetails &&
           <div>
           <label>Customer Name :</label>
-          <input value = {c[0].name} ref="customername"/>
+          <input value = {this.props.sessiondetails.username} ref="customername"/>
           
            <label>Email :</label>
-           <input value = {c[0].email} ref="customeremail"/>
+           <input value = {this.props.sessiondetails.useremail} ref="customeremail"/>
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
@@ -578,13 +575,13 @@ const { value, suggestions } = this.state;
                           {this.props.chatlist &&
                             this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
                              
-                               (this.props.userdetails.firstname === chat.sender?
+                               (this.props.userdetails.firstname === chat.from?
                                    <li className="right clearfix agentChatBox">
-                                      <span className="chat-img pull-right agentChat"> {chat.sender.substr(0,1)}
+                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.sender}</strong> 
+                                            <strong className="pull-right primary-font">{chat.from}</strong> 
                                             <small className=" text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
@@ -597,11 +594,11 @@ const { value, suggestions } = this.state;
 
                                     <li className="left clearfix userChatBox">
                                       <span className="chat-img pull-left userChat">
-                                      {chat.sender.substr(0,1)}
+                                      {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="primary-font">{chat.sender}</strong> 
+                                            <strong className="primary-font">{chat.from}</strong> 
                                             <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>

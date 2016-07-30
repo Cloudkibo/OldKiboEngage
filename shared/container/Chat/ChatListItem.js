@@ -50,7 +50,7 @@ var changecc ={
   
 var ag = []
 
-var c = []
+
 var ch=[]
      {
          props.group &&
@@ -61,13 +61,7 @@ var ch=[]
       }  
     
 
-     {
-         props.cust &&
-                        props.cust.map((customerd, i) => (
-                           c.push(customerd.name)                            
-                        ))
-
-      }  
+  
   {
          props.channel &&
                         props.channel.map((cha, i) => (
@@ -115,7 +109,7 @@ return res;
   
    	<div className="list-group-item" style={changecc}>
 
-      <h4 className = 'list-group-item-heading' style={hleft}>{c[0]}</h4>
+      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.username}</h4>
         {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
        
@@ -139,7 +133,7 @@ return res;
 
      <div className="list-group-item" >
 
-      <h4 className = 'list-group-item-heading' style={hleft}>{c[0]}</h4>
+      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.username}</h4>
        {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
        

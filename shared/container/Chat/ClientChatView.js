@@ -32,11 +32,35 @@ class ClientChatView extends Component {
   }
   componentDidMount() {
     const { socket,dispatch } = this.props;
-   
+   // also broadcast a notification message
+
+  /*   var hellomsg = {
+            to: 'All Agents',
+            from : this.props.roomdetails.username,
+            visitoremail:this.props.roomdetails.useremail,
+            datetime: Date.now(),
+            msg: 'User joined a chat session',
+            time:Date.now(),
+            type : 'message',
+            request_id :this.props.roomdetails.request_id,
+            messagechannel:this.props.roomdetails.messagechannel,
+            companyid:this.props.roomdetails.room,
+            is_seen:'no'
+
+
+          }
+
+          socket.emit('send:message',hellomsg);*/
+
    socket.on('send:message',message => this.props.updateChatList(message));
    socket.on('send:getAgent',this.getAgentSocket);
+  
+   
       }
  
+ componentWillUpdate(){
+    
+ }
  
  componentDidUpdate() {
     const messageList = this.refs.messageList;
@@ -49,34 +73,7 @@ class ClientChatView extends Component {
         var message;  
         e.preventDefault();
         console.log('socket of agent : ' + this.refs.agentsocket.value);
-        if(this.refs.agentsocket.value != "")
-        {
-        message = {
-          sender: this.refs.name.value,
-          msg : this.refs.msg.value,
-          time : moment.utc().format('lll'),
-          socketid : this.props.roomdetails.socketid,
-          toagent : this.refs.agentsocket.value,
-          request_id : this.refs.reqId.value,
-                         
-        }
-      }
-      else{
-         message = {
-          sender: this.refs.name.value,
-          msg : this.refs.msg.value,
-          time : moment.utc().format('lll'),
-          socketid : this.props.roomdetails.socketid,
-          request_id : this.refs.reqId.value,
-                         
-         
-        }
-      }
-
-
-        this.props.chatlist.push(message);
-        
-         socket.emit('send:message', message);
+       
         var saveChat={}
         if(this.refs.agentsocket.value == ''){
 
@@ -85,40 +82,41 @@ class ClientChatView extends Component {
                           'from' : this.refs.name.value,
                            'visitoremail' : this.refs.email.value,
                            'type': 'message',
+
                            'msg' : this.refs.msg.value,
                            'datetime' : Date.now(),
                            'request_id' : this.refs.reqId.value,
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.sessiondetails.companyid,
                            'is_seen':'no',
-                           'socketid' : this.props.roomdetails.socketid
+                           'time' : moment.utc().format('lll')
+                           
                       }
                     }
             else{
                        saveChat = { 
                           'to' : this.refs.agentname.value,
                           'from' : this.refs.name.value,
-
                           'visitoremail' : this.refs.email.value,
                           'agentemail' : this.props.sessiondetails.agentemail,
-
                           'agentid': this.refs.agentid.value,
-
+                          'toagent' : this.refs.agentsocket.value ,
                           'type': 'message',
-
                            'msg' : this.refs.msg.value,
-
                            'datetime' : Date.now(),
+                           'time' : moment.utc().format('lll'),
                            'request_id' : this.refs.reqId.value,
                            'messagechannel': this.refs.channelid.value,
-
                            'companyid': this.props.sessiondetails.companyid,
-
                            'is_seen':'no',
                            'socketid' : this.props.roomdetails.socketid
                       }
                     }
-         this.props.savechat(saveChat);           
+         this.props.chatlist.push(saveChat);
+        
+         socket.emit('send:message', saveChat);
+                   
+        // this.props.savechat(saveChat);           
         this.refs.msg.value ='';
         this.forceUpdate();
       }
@@ -166,13 +164,13 @@ class ClientChatView extends Component {
             <ul className="chat"  ref="messageList">
                           {this.props.chatlist &&
                             this.props.chatlist.filter((chat) => chat.request_id == this.refs.reqId.value).map((chat, i) => (
-                                     (this.refs.name.value === chat.sender?
+                                     (this.refs.name.value === chat.from?
                                    <li className="right clearfix agentChatBox">
-                                      <span className="chat-img pull-right agentChat"> {chat.sender.substr(0,1)}
+                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.sender}</strong> 
+                                            <strong className="pull-right primary-font">{chat.from}</strong> 
                                             <small className=" text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
@@ -185,11 +183,11 @@ class ClientChatView extends Component {
 
                                     <li className="left clearfix userChatBox">
                                       <span className="chat-img pull-left userChat">
-                                      {chat.sender.substr(0,1)}
+                                      {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="primary-font">{chat.sender}</strong> 
+                                            <strong className="primary-font">{chat.from}</strong> 
                                             <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>

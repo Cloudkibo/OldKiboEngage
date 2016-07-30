@@ -5,6 +5,10 @@
 'use strict';
 
 var onlineAgents = [];
+var onlineWebClientsSession = []; //array to hold customer sessions who are online.This is for our WebClients
+
+var userchats = [];//array to hold all  chat msgs
+
 // When the user disconnects.. perform this
 function onDisconnect(io2, socket) {
   console.log('calling onDisconnect  :' + socket.id);
@@ -36,15 +40,28 @@ function onConnect(io2, socket) {
 // broadcast a user's message to other users
   socket.on('send:message', function (data) {
     console.log(data);
-    if(data.to){
+    userchats.push(data);
+
+    if(data.socketid){
             console.log('sending point to point message');
 
-            io2.to(data.to).emit('send:message',{
-            sender: data.sender,
+            io2.to(data.socketid).emit('send:message',{
+            to: data.to,
+            socketid:data.socketid,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
             msg: data.msg,
             time:data.time,
-            request_id : data.request_id,
-            type : data.type
+            type : data.type,
+            request_id :data.request_id,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
+
+
+
+          
           });
     }
 
@@ -52,22 +69,34 @@ function onConnect(io2, socket) {
             console.log('sending point to point message to Agent');
 
             io2.to(data.toagent).emit('send:message',{
-            sender: data.sender,
+            to: data.to,
+            toagent:data.toagent,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
             msg: data.msg,
             time:data.time,
             request_id : data.request_id,
-     
-            type : data.type
+            type : data.type,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
           });
     }
     else
     {
-          socket.broadcast.emit('send:message', {
-            sender: data.sender,
+          socket.broadcast.to(data.companyid).emit('send:message', {
+            to: data.to,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
             msg: data.msg,
             time:data.time,
-            request_id : data.request_id,
-            type : data.type
+            type : data.type,
+            request_id :data.request_id,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
 
 
           });
@@ -75,7 +104,20 @@ function onConnect(io2, socket) {
   });
 
 
+socket.on('getuserchats',function(room){
+  //return userchats currently happening in room
+  var roomchats =[];
+  for(var c = 0;c<userchats.length;c++){
+    if(c.companyid == room)
+    {
+      roomchats.push(userchats[c]);
 
+    }
+  }
+
+  console.log('return userchats : ' + roomchats.length);
+  socket.emit('returnUserChat',roomchats);  
+});
 
 // broadcast a notification to mobile client
   socket.on('send:notification', function (data) {
@@ -169,23 +211,36 @@ socket.on('getOnlineAgentList',function() {
      
       socket.join(room.room);
       room.socketid = socket.id;
-//      console.log('socket id is : ' + room.socketid);
       console.log("Your  socket id: ", socket.id)
-
       socket.emit('joined', room);
-      //  console.log('Widget is joining this room: ', room.room)
 
-     // if(room.username !== 'agent123')
-     //   socket.broadcast.to(room.room).emit('join', room);
+      //push customer session in the array of onlineWebClientsSession
+
+      onlineWebClientsSession.push(room);
+      
+      socket.broadcast.to(room.room).emit('customer_joined',onlineWebClientsSession);
+
+     
+
+     
 
     }
 
-    //console.log(io2.sockets.manager.rooms)
-   socket.broadcast.emit('customer_joined',room);
    
   });
 
+  socket.on('getCustomerSessionsList',function(roomid){
+    var customer_in_company_room =[]; //only online customers who are in your room
 
+    for(var j = 0;j<onlineWebClientsSession.length;j++){
+      if(onlineWebClientsSession[j].room == roomid){
+        customer_in_company_room.push(onlineWebClientsSession[j]);
+      }
+    }
+
+    console.log('getCustomerSessionsList is called.Currently in your room : ' + roomid +' ,customers online :' + customer_in_company_room.length); 
+    socket.emit('returnCustomerSessionsList',customer_in_company_room);
+  });
   socket.on('join scheduled meeting', function (room) {
 
     var clients = findClientsSocket(room.room); // This change is because of socket version change

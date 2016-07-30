@@ -966,6 +966,15 @@ else{
 
 
 /***************** Chat Actions ********************/
+
+export function getsessionsfromsocket(customerchat){
+
+  return {
+    type: ActionTypes.SHOW_ALL_CHAT,
+    customerchat,
+   
+  };
+}
 export function showAllChat(customerchat) {
 /* var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
                   {'id': '2','username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
@@ -1538,6 +1547,15 @@ export function setsocketid(yoursocketid){
   return {
     type: ActionTypes.SET_SOCKET_ID,
     yoursocketid,
+   
+
+  };
+}
+
+export function getchatsfromsocket(data){
+   return {
+    type: ActionTypes.ADD_USER_CHATS,
+    userchats : data,
    
 
   };

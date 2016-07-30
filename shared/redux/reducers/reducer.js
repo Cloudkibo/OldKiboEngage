@@ -123,18 +123,22 @@ const dashboard = (state =dashboardState, action) => {
           console.log(action.user.firstname)
           return{
             userdetails:action.user,
-            channels : state.channels,
-
-
-         chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid, 
-         userchats : state.userchats,
-           onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
-
+             userchats : state.userchats,
+             groupdetails: state.groupdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : action.customerchat,
+             customerchatold : action.customerchat,
+              responses : state.responses,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,
+             
 };
    case ActionTypes.ADD_AGENTS:
           console.log(action.agents)
@@ -206,16 +210,14 @@ const dashboard = (state =dashboardState, action) => {
             agents : state.agents,
             deptagents :state.deptagents,
             channels : action.channels,
-    onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
-        
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid, 
-         userchats : state.userchats,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            chatlist: state.chatlist,
+             customerid : state.customerid,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid, 
+             userchats : state.userchats,
 
       };
 
