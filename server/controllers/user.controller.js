@@ -669,3 +669,49 @@ export function changepassword (req,res) {
     request.post(options, callback);
   }
 };
+
+
+
+//update profile
+export function updateprofile (req,res) {
+  
+    var user = req.body;
+    var token = req.headers.authorization;
+ 
+    var options = {
+      url: `${baseURL}/api/users/updateprofile`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      form: {
+        'firstname' :user.firstname,
+        'lastname'  :user.lastname,
+        'phone'     :user.phone,
+        'country'     :user.country,
+        'state'     :user.state,
+        'city'     :user.city,
+      }
+    };
+    function callback(error, response, body) {
+      //console.log(response.statusCode);
+      if (!error) {
+        var info = JSON.parse(body);
+        //console.log('api calling succeed')
+        console.log(info)
+        return res.status(200).send({status:'success',message:'Information has been updated successfully.'});
+
+      }
+
+      else
+      {
+        console.log(error);
+
+        res.status(501).send({status:'danger',message:"Something went wrong, please try again.", user: user,statusCode:501});
+      }
+    }
+
+    request.post(options, callback);
+  
+};

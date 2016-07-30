@@ -39,6 +39,7 @@ import Notifications from './container/Notifications/Notifications'
 import NotificationView from './container/Notifications/NotificationView'
 import EditNotification from './container/Notifications/EditNotification'
 import MyGroups from './container/MyProfile/MyGroups'
+import MyProfile from './container/MyProfile/MyProfile'
 
 import Customers from './container/CustomerDirectory/Customers'
 import AddCustomer from './container/CustomerDirectory/AddCustomer'
@@ -113,6 +114,7 @@ const routes = (
      <Route path="/livehelp/:id" component={AddCustomer} socket={socket}/> 
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
      <Route path="/mygroups" component={MyGroups}  onEnter={requireAuth}/>
+     <Route path="/myprofile" component={MyProfile}  onEnter={requireAuth}/>
    
     <Route path="*" component={NotFound} />
   </Route>

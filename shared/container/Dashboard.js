@@ -24,7 +24,7 @@ class Dashboard extends Component {
   }
   componentWillMount(){
     const usertoken = auth.getToken();
-    this.props.getuser(usertoken)
+    this.props.getuser(usertoken);
     this.props.getAgents(usertoken);
     this.props.getDeptAgents(usertoken);
     this.props.getusergroups(usertoken);

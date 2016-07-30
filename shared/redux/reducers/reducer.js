@@ -492,8 +492,8 @@ const dashboard = (state =dashboardState, action) => {
            agents : state.agents,
            deptagents :state.deptagents,
            channels : state.channels,
-            responses : state.responses,
-          chatlist: state.chatlist,
+           responses : state.responses,
+           chatlist: state.chatlist,
            customerid : state.customerid,
            customerchat : state.customerchat,
            customerchatold : state.customerchatold,
@@ -504,6 +504,27 @@ const dashboard = (state =dashboardState, action) => {
 
           };
 
+        case ActionTypes.ADD_UPDATE_PROFILE_WARNINGS:
+        return {
+           groupdetails: state.groupdetails,
+           userdetails: state.userdetails,
+           chat:state.chat,
+           agents : state.agents,
+           deptagents :state.deptagents,
+           channels : state.channels,
+           responses : state.responses,
+           chatlist: state.chatlist,
+           customerid : state.customerid,
+           customerchat : state.customerchat,
+           customerchatold : state.customerchatold,
+           customerchat_selected : state.customerchat_selected,
+           new_message_arrived_rid : state.new_message_arrived_rid, 
+           userchats : state.userchats,
+           errorMessageProfile : action.errormessage,
+
+
+
+          };
           case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
           return {
              groupdetails: state.groupdetails,

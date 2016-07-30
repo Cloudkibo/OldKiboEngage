@@ -9,15 +9,15 @@ export default class ProfileSideBar extends Component
   return (
   <div className="col-md-3">
         <ul className="ver-inline-menu tabbable margin-bottom-10">
-        {this.props.iscurrent && this.props.iscurrent == "personalinfo"?
+        {this.props.iscurrent && this.props.iscurrent == "myprofile"?
             <li className="active">
-                <Link to='/mypersonalinfo'>
+                <Link to='/myprofile'>
                   <i className ="fa fa-cog"/>
                     Personal info
                 </Link>
             </li>:
              <li>
-                <Link to='/mypersonalinfo'>
+                <Link to='/myprofile'>
                   <i className ="fa fa-cog"/>
                     Personal info
                 </Link>

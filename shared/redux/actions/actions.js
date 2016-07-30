@@ -1612,3 +1612,37 @@ export function getmyusergroups(token) {
   };
 }
 
+//update profile
+export function showUpdateProfile(msg){
+  console.log(msg);
+  return {
+    type: ActionTypes.ADD_UPDATE_PROFILE_WARNINGS,
+    errormessage : msg,
+
+  }; 
+}
+export function updateprofile(user,token) {
+  console.log(user);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/updateprofile`, {
+      method: 'post',
+        body: JSON.stringify({
+        'firstname' :user.firstname,
+        'lastname'  :user.lastname,
+        'phone'     :user.phone,
+        'country'     :user.country,
+        'state'     :user.state,
+        'city'     :user.city,
+       
+
+      }),
+        headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
+      
+   
+      );
+  };
+}
