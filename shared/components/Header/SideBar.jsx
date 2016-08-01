@@ -189,11 +189,11 @@ export default class SideBar extends Component
                 </Link>
               </li>
               <li className="">
-                <Link to="/clientchat">
+                <Link to="/companyprofile">
                   <i className="fa fa-cogs">
                   </i>      
                   <span className="title">
-                     Settings
+                    Company Settings
                   </span>      
                   <span className="selected">
                   </span>

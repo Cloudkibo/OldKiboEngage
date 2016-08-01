@@ -1323,6 +1323,7 @@ export function getcustomers(token) {
 }
 
 
+
 export function confirmCustomer(customer) {
   return {
     type: ActionTypes.ADD_CUSTOMER,
@@ -1678,5 +1679,28 @@ export function updateprofile(user,token) {
       
    
       );
+  };
+}
+
+
+export function showcompanyprofile(companysettings) {
+  console.log(companysettings);
+  return {
+    type: ActionTypes.COMPANY_PROFILE,
+    companysettings,
+
+  };
+}
+export function getcompanysettings(token,id) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcompanyprofile`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+        'Id': id,
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showcompanyprofile(res)));
   };
 }

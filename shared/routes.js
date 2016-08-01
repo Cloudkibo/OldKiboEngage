@@ -14,7 +14,7 @@ import Groups from './container/Groups/Groups';
 import Agents from './container/Agents/Agents';
 import Chat from './container/Chat/Chat';
 import ClientChat from './container/Chat/ClientChat';
-
+import CompanySettings from './container/CompanySettings/CompanySettings';
 import GroupDetailView from './container/Groups/GroupDetailView';
 import GroupEditView from './container/Groups/GroupEditView';
 import AgentEditView from './container/Agents/AgentEditView';
@@ -115,6 +115,7 @@ const routes = (
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
      <Route path="/mygroups" component={MyGroups}  onEnter={requireAuth}/>
      <Route path="/myprofile" component={MyProfile}  onEnter={requireAuth}/>
+     <Route path="/companyprofile" component={CompanySettings}  onEnter={requireAuth}/>
    
     <Route path="*" component={NotFound} />
   </Route>

@@ -161,6 +161,38 @@ export function getuser(req, res) {
 
 
 
+//get company settings
+export function getcompanyprofile(req, res) {
+  //console.log('get user is called');
+  var token = req.headers.authorization;
+  var id = req.headers.id;
+  console.log(id);
+  var options = {
+      url: `${baseURL}/api/companyprofiles/fetch`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+     console.log(body);
+      if(response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info)
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
+
+
 
 
 export function getagents(req, res) {

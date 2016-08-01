@@ -603,7 +603,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchatold : state.customerchat,
              chatlist : state.chatlist,
              channels : state.channels,
-              responses : state.responses,
+             responses : state.responses,
        
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
@@ -947,6 +947,30 @@ const dashboard = (state =dashboardState, action) => {
                userchats : state.userchats,
 
             };  
+
+          case ActionTypes.COMPANY_PROFILE:
+           return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:state.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchat,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             responses : state.responses,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+            onlineAgents : state.onlineAgents,
+            yoursocketid : state.yoursocketid,
+            companysettings : action.companysettings,
+        
+            
+            };
+
     default:
       return state;
   }
