@@ -26,7 +26,7 @@ class ClientChatView extends Component {
     console.log('agent socket id is : ' + data.data.agentsocket);
     this.refs.agentsocket.value =  data.data.agentsocket;
     this.refs.agentid.value = data.data.agentid;
-    this.refs.agentname.value = data.data.sender;
+    this.refs.agentname.value = data.data.from;
 
 
   }
@@ -34,7 +34,7 @@ class ClientChatView extends Component {
     const { socket,dispatch } = this.props;
    // also broadcast a notification message
 
-  /*   var hellomsg = {
+     var hellomsg = {
             to: 'All Agents',
             from : this.props.roomdetails.username,
             visitoremail:this.props.roomdetails.useremail,
@@ -50,7 +50,7 @@ class ClientChatView extends Component {
 
           }
 
-          socket.emit('send:message',hellomsg);*/
+          socket.emit('send:messageToAgent',hellomsg);
 
    socket.on('send:message',message => this.props.updateChatList(message));
    socket.on('send:getAgent',this.getAgentSocket);
@@ -58,10 +58,7 @@ class ClientChatView extends Component {
    
       }
  
- componentWillUpdate(){
-    
- }
- 
+
  componentDidUpdate() {
     const messageList = this.refs.messageList;
     messageList.scrollTop = messageList.scrollHeight;
@@ -114,9 +111,9 @@ class ClientChatView extends Component {
                     }
          this.props.chatlist.push(saveChat);
         
-         socket.emit('send:message', saveChat);
+         socket.emit('send:messageToAgent', saveChat);
                    
-        // this.props.savechat(saveChat);           
+         this.props.savechat(saveChat);           
         this.refs.msg.value ='';
         this.forceUpdate();
       }

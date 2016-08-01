@@ -1471,20 +1471,36 @@ export function  savechat(chat) {
 export function updateSessionStatus(session){
 
   console.log('updateSessionStatus is called');
+  return {
+    type : ActionTypes.UPDATE_SESSION_STATUS,
+    session,
+  }
 
 }
 
 export function assignToAgentResponse(session){
 
   console.log('assignToAgentResponse is called');
+   return {
+    type : ActionTypes.ASSIGN_CHAT_TO_AGENT,
+    session,
+  }
 }
 export function resolvesessionResponse(){
 
   console.log('resolvesession called');
+   return {
+    type : ActionTypes.RESOLVE_SESSION,
+    session,
+  }
 }
 
 export function movedToMessageChannelResponse(session){
   console.log('assignToChannelResponse is called');
+   return {
+    type : ActionTypes.MOVE_TO_MESSAGECHANNEL,
+    session,
+  }
 }
 //this is for picking session
 export function updatestatus(session) {

@@ -52,7 +52,7 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
 componentDidMount(){
-        //alert('componentDidMount is called');
+        alert('componentDidMount is called');
        //get online agents list
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
@@ -86,9 +86,8 @@ componentDidMount(){
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-
+    alert('getupdatedSessions is called');
     this.props.getchatsfromsocket(data);
-
     this.forceUpdate();
   }
   componentWillUpdate(){

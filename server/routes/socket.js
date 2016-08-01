@@ -104,6 +104,50 @@ function onConnect(io2, socket) {
   });
 
 
+socket.on('send:messageToAgent', function (data) {
+    console.log(data);
+    userchats.push(data);
+
+    
+
+    if(data.toagent){
+            console.log('sending point to point message to Agent');
+
+            io2.to(data.toagent).emit('send:message',{
+            to: data.to,
+            toagent:data.toagent,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
+            msg: data.msg,
+            time:data.time,
+            request_id : data.request_id,
+            type : data.type,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
+          });
+    }
+    else
+    {
+          socket.broadcast.to(data.companyid).emit('send:message', {
+            to: data.to,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
+            msg: data.msg,
+            time:data.time,
+            type : data.type,
+            request_id :data.request_id,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
+
+
+          });
+    }
+  });
+
 socket.on('getuserchats',function(room){
   //return userchats currently happening in room
   var roomchats =[];
@@ -137,11 +181,37 @@ socket.on('getuserchats',function(room){
   socket.on('send:agentsocket', function (data) {
     console.log('sending agent socket to customer');
     console.log(data);
-    io2.to(data.customersocket).emit('send:getAgent',{
+    io2.to(data.socketid).emit('send:getAgent',{
            data:data       
           });
     } 
   );
+
+ socket.on('updatesessionstatus',function(data){
+  console.log('updatesessionstatus is called');
+  console.log(data);
+  for(var i =0 ;i< onlineWebClientsSession.length ;i++){
+    if(onlineWebClientsSession[i].request_id == data.request_id){
+      console.log('updating session status :');
+      onlineWebClientsSession[i].status = data.status;
+      break;
+    }
+  }
+
+
+  var customer_in_company_room =[]; //only online customers who are in your room
+
+    for(var j = 0;j<onlineWebClientsSession.length;j++){
+      if(onlineWebClientsSession[j].room == data.room){
+        customer_in_company_room.push(onlineWebClientsSession[j]);
+      }
+    }
+
+
+  console.log('customers online : ' + customer_in_company_room.length);
+  //ask clients to update their session list
+   socket.broadcast.to(data.room).emit('returnCustomerSessionsList',customer_in_company_room);
+ }); 
 
   
 // get online agents list

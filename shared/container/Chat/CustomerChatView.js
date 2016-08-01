@@ -116,7 +116,7 @@ else{
    //  this.props.getuserchats(usertoken);
     
    //get updated chat messages from socket
-      this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);   
+   //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);   
 
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      this.forceUpdate();
@@ -145,19 +145,7 @@ else{
      if (e.which === 13 && messageVal !="") {
           
         e.preventDefault();
-        var message = {
-          sender : this.props.userdetails.firstname,
-          msg : messageVal,
-          to : this.refs.socketid_customer.value,
-          request_id : this.props.sessiondetails.request_id,
-                          
-        }
-      
-
-        this.props.chatlist.push(message);
-        
-      
-        
+   
          var saveChat = { 
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
@@ -169,11 +157,12 @@ else{
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
-                           'companyid': this.props.sessiondetails.companyid,
+                           'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no'
                       }
         socket.emit('send:message', saveChat);
-              
+        this.props.chatlist.push(saveChat);
+            
         this.props.savechat(saveChat);               
         this.state.value ='';
         this.forceUpdate();
@@ -247,7 +236,7 @@ picksession(e){
    
     // 1. Broadcast a log message to all agents and customer that session is assigned to agent
 
-    var message = {
+     var message = {
           sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
           msg : 'Session is picked by Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
           time : moment.utc().format('lll'),
@@ -320,39 +309,45 @@ picksession(e){
    
     // 1. Broadcast a log message to all agents and customer that session is assigned to agent
     
-    var message = {
-          sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-          msg : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
-          time : moment.utc().format('lll'),
-          customersocket : this.refs.socketid_customer.value,
-          agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-          type : 'log',
-          agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-          request_id : this.props.sessiondetails.request_id,
+   // var message = {
+   //       sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
+   //       msg : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
+   //       time : moment.utc().format('lll'),
+   //       customersocket : this.refs.socketid_customer.value,
+   //       agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+   //       type : 'log',
+   //       agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+   //       request_id : this.props.sessiondetails.request_id,
                           
 
-        }
-
-
-        this.props.chatlist.push(message);
-        
-        socket.emit('send:message', message);
-        // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
-
-        socket.emit('send:agentsocket' , message);
-         var saveChat = { 
-                           'to' : this.refs.customername.value,
-                           'from' : this.props.userdetails.firstname,
-                           'visitoremail' : this.refs.customeremail.value,
-                           'socketid' : this.refs.socketid_customer.value,
-                           'type': 'log',
+  //      }
+    
+ var saveChat = { 
+                          'to' : this.refs.customername.value,
+                          'from' : this.props.userdetails.firstname,
+                          'visitoremail' : this.refs.customeremail.value,
+                          'socketid' : this.refs.socketid_customer.value,
+                          'type': 'log',
                            'msg' : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
+                           'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
-                           'companyid': this.props.sessiondetails.companyid,
-                           'is_seen':'no'
+                           'companyid': this.props.userdetails.uniqueid,
+                           'is_seen':'no',
+
+                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+         
                       }
+
+        this.props.chatlist.push(saveChat);
+        
+        socket.emit('send:message', saveChat);
+        // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
+
+        socket.emit('send:agentsocket' , saveChat);
+        
         this.props.savechat(saveChat); 
 
 
@@ -379,8 +374,14 @@ picksession(e){
     }
 
     this.props.assignToAgent(assignment,usertoken);
-    this.props.getcustomers(usertoken);
-    this.props.getsessions(usertoken);
+   
+    //update session status on socket
+    socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
+                                        'status' : 'assigned',
+                                        'room' : this.props.userdetails.uniqueid});
+
+   // this.props.getcustomers(usertoken);
+   // this.props.getsessions(usertoken);
     this.forceUpdate();
   }
 
@@ -567,7 +568,7 @@ const { value, suggestions } = this.state;
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
          
-          <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length - 1]} ref="channelid"/>
+          <input type="hidden" value = {this.props.sessiondetails.messagechannel} ref="channelid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
