@@ -1046,7 +1046,7 @@ export function filterbyChannel(id,customerchat) {
   } 
   else{
 
-    filtered = customerchat.filter((c) => c.messagechannel[c.messagechannel.length-1] == id)
+    filtered = customerchat.filter((c) => c.messagechannel == id)
 
   } 
     console.log(filtered);
@@ -1069,7 +1069,7 @@ export function filterbyAgent(id,customerchat) {
   } 
   else{
 
-    filtered = customerchat.filter((c) => c.agent_ids[c.agent_ids.length-1] == id)
+    filtered = customerchat.filter((c) => c.agent_ids == id)
 
   } 
     console.log(filtered);
@@ -1492,7 +1492,7 @@ export function resolvesessionResponse(){
   console.log('resolvesession called');
    return {
     type : ActionTypes.RESOLVE_SESSION,
-    session,
+    
   }
 }
 

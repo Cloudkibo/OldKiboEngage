@@ -194,10 +194,13 @@ socket.on('getuserchats',function(room){
     if(onlineWebClientsSession[i].request_id == data.request_id){
       console.log('updating session status :');
       onlineWebClientsSession[i].status = data.status;
+      onlineWebClientsSession[i].agent_ids = data.agentid;
+      console.log(onlineWebClientsSession[i]);
       break;
     }
   }
 
+ 
 
   var customer_in_company_room =[]; //only online customers who are in your room
 
@@ -213,6 +216,35 @@ socket.on('getuserchats',function(room){
    socket.broadcast.to(data.room).emit('returnCustomerSessionsList',customer_in_company_room);
  }); 
 
+
+socket.on('updatesessionchannel',function(data){
+  console.log('updatesessionchannel is called');
+  console.log(data);
+  for(var i =0 ;i< onlineWebClientsSession.length ;i++){
+    if(onlineWebClientsSession[i].request_id == data.request_id){
+      console.log('updating session channel :');
+     
+      onlineWebClientsSession[i].messagechannel = data.channelid;
+      console.log(onlineWebClientsSession[i]);
+      break;
+    }
+  }
+
+ 
+
+  var customer_in_company_room =[]; //only online customers who are in your room
+
+    for(var j = 0;j<onlineWebClientsSession.length;j++){
+      if(onlineWebClientsSession[j].room == data.room){
+        customer_in_company_room.push(onlineWebClientsSession[j]);
+      }
+    }
+
+
+  console.log('customers online : ' + customer_in_company_room.length);
+  //ask clients to update their session list
+   socket.broadcast.to(data.room).emit('returnCustomerSessionsList',customer_in_company_room);
+ }); 
   
 // get online agents list
 socket.on('getOnlineAgentList',function() {

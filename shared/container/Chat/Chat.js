@@ -52,7 +52,6 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
 componentDidMount(){
-        alert('componentDidMount is called');
        //get online agents list
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
@@ -251,6 +250,9 @@ componentDidMount(){
                 <input type="hidden" ref = "sessionid" />
              		}
 
+                {this.props.customerchat && this.props.customerchat.length == 0?
+                  <p>No Sessions found.</p>
+                  :
                 <table className="table">
 
              			<tbody>
@@ -278,16 +280,24 @@ componentDidMount(){
 					                      }
 			                     	</div>
 			                    </td>
-
+                          {this.refs.sessionid? 
                           <td className="col-md-6">
                           {
-                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.props.onlineAgents &&
+                            
+                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents &&
 			                    	<CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents}/>
 			                   }
-                          </td> 	
+                          </td> : 
+                         <td className="col-md-6">
+                              <p>Click on session to view Chat messages</p>
+                         </td>
+
+                          
+                          }	
 			                </tr>
 			            </tbody>
                 </table>
+              }
         		</div>
                 
             </div>

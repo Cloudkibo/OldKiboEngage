@@ -16,7 +16,7 @@ class ClientChatView extends Component {
   constructor(props, context) {
     //    console.log(props.customerid);
        props.getChatRequest(props.customerid);
-        super(props, context);
+       super(props, context);
        this.handleMessageSubmit= this.handleMessageSubmit.bind(this);
       this.getAgentSocket = this.getAgentSocket.bind(this);
   }

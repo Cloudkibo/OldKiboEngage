@@ -78,6 +78,7 @@ create_session(data){
                         'phone' :  phone.value,
                         'browser' : 'Chrome',
                         'ipAddress':'192.168.1.2',
+                        'agent_ids':'',
                         'country' : country.value,
                         'companyid' : companyid,
                         'session_id' : data.request_id,

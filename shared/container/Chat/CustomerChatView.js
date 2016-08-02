@@ -56,8 +56,7 @@ class CustomerChatView extends Component {
         this.moveToChannel = this.moveToChannel.bind(this);
         this.resolveSession = this.resolveSession.bind(this)
         this.getSocketmessage = this.getSocketmessage.bind(this);
-        this.picksession = this.picksession.bind(this);
-
+        
         this.state = {
           value: '',
           suggestions: getSuggestions('',props.responses)
@@ -181,127 +180,67 @@ else{
  
   } 
   
-  else if(this.props.userdetails._id != this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1]){
+  else if(this.props.userdetails._id != this.props.sessiondetails.agent_ids){
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
   }
 
 
   else{
-          var message = {
-          sender : this.props.userdetails.firstname,
-          msg : 'Session is marked as resolved' ,
-          time : moment.utc().format('lll'),
-          customersocket : this.refs.socketid_customer.value,
-          agentsocket : this.props.socketid,
-          type : 'log',
-          request_id : this.props.sessiondetails.request_id,
-                          
-        }
-
-        this.props.chatlist.push(message);
         
-        socket.emit('send:message', message);
-         var saveChat = { 
-                           'to' : this.refs.customername.value,
-                           'from' : this.props.userdetails.firstname,
-                           'visitoremail' : this.refs.customeremail.value,
-                           'socketid' : this.refs.socketid_customer.value,
-                           'type': 'log',
-                            'msg' : 'Session is marked as resolved' ,
-                            'datetime' : Date.now(),
+        var saveChat = { 
+                          'to' : this.refs.customername.value,
+                          'from' : this.props.userdetails.firstname,
+                          'visitoremail' : this.refs.customeremail.value,
+                          'socketid' : this.refs.socketid_customer.value,
+                          'type': 'log',
+                           'msg' : 'Session is marked as Resolved',
+                           'datetime' : Date.now(),
+                           'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
-                           'companyid': this.props.sessiondetails.companyid,
-                           'is_seen':'no'
+                           'companyid': this.props.userdetails.uniqueid,
+                           'is_seen':'no',
+                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+         
                       }
-        this.props.savechat(saveChat); 
+
+        this.props.chatlist.push(saveChat);
+
+        socket.emit('send:message', saveChat);
+        
+      this.props.savechat(saveChat); 
       const usertoken = auth.getToken();
     
       this.props.resolvesession(this.props.sessiondetails.request_id,usertoken);//call action to mark session resolve;
-      this.props.getsessions(usertoken);
-      this.forceUpdate()
+
+      //update session status on socket
+    socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
+                                        'status' : 'resolved',
+                                        'room' : this.props.userdetails.uniqueid,
+                                        'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                                       });
+
+      
+
+      this.forceUpdate();
   }
  }
   
 
 
 
-// Pick session 
-
-picksession(e){
-     const { socket,dispatch } = this.props;
-     const usertoken = auth.getToken();
-    
-    alert('Are you sure,you want to assign this session to agent ?');
-   
-    // 1. Broadcast a log message to all agents and customer that session is assigned to agent
-
-     var message = {
-          sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-          msg : 'Session is picked by Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
-          time : moment.utc().format('lll'),
-          customersocket : this.refs.socketid_customer.value,
-          agentsocket : this.refs.agentsocket.value,
-          type : 'log',
-          agentid : this.props.userdetails._id,
-          request_id : this.props.sessiondetails.request_id,
-                          
-
-        }
-
-        this.props.chatlist.push(message);
-        
-        socket.emit('send:message', message);
-        socket.emit('send:agentsocket' , message);
-         var saveChat = { 
-                           'to' : this.refs.customername.value,
-                           'from' : this.props.userdetails.firstname,
-                           'visitoremail' : this.refs.customeremail.value,
-                           'socketid' : this.refs.socketid_customer.value,
-                           'type': 'log',
-                           'msg' : 'Session is picked by Agent ' + this.props.userdetails.firstname +' ' + this.props.userdetails.lastname ,
-                           'datetime' : Date.now(),
-                           'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
-                           'companyid': this.props.sessiondetails.companyid,
-                           'is_seen':'no'
-                      }
-        this.props.savechat(saveChat); 
-
-
-   // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
-
-    // 3. update session status on server   
-     var session = {
-      request_id : this.refs.requestid.value,
-      status : 'assigned',
-      usertoken :usertoken,
-    
-    }
-    this.props.updatestatus(session);
-
-    //4. update agent assignment table on server
-
-    // considering the use case of self assigning
-    var assignment = {
-      assignedto : this.props.userdetails._id,
-      assignedby : this.props.userdetails._id,
-      sessionid : this.refs.requestid.value,
-      companyid : this.props.userdetails.uniqueid,
-      datetime : Date.now(),
-
-    }
-
-    this.props.assignToAgent(assignment,usertoken);
-    this.props.getcustomers(usertoken);
-    this.props.getsessions(usertoken);
-    this.forceUpdate();
-  }
- 
 
 // Assign chat to other agent
   assignSessionToAgent(e){
      const { socket,dispatch } = this.props;
+
+     // local changes
+
+  this.props.sessiondetails.status = "assigned"; 
+  this.props.sessiondetails.agent_ids =  this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib;
+  
+
      const usertoken = auth.getToken();
     
     if(confirm("Are you sure you want to assign this session to " + this.refs.agentList.options[this.refs.agentList.selectedIndex].text))
@@ -309,19 +248,7 @@ picksession(e){
    
     // 1. Broadcast a log message to all agents and customer that session is assigned to agent
     
-   // var message = {
-   //       sender : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-   //       msg : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
-   //       time : moment.utc().format('lll'),
-   //       customersocket : this.refs.socketid_customer.value,
-   //       agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-   //       type : 'log',
-   //       agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-   //       request_id : this.props.sessiondetails.request_id,
-                          
-
-  //      }
-    
+          
  var saveChat = { 
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
@@ -378,7 +305,9 @@ picksession(e){
     //update session status on socket
     socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
                                         'status' : 'assigned',
-                                        'room' : this.props.userdetails.uniqueid});
+                                        'room' : this.props.userdetails.uniqueid,
+                                        'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                                       });
 
    // this.props.getcustomers(usertoken);
    // this.props.getsessions(usertoken);
@@ -397,36 +326,31 @@ picksession(e){
      const usertoken = auth.getToken();
     
     alert('Are you sure,you want to move this session to another channel ?');
-   
+   this.props.sessiondetails.messagechannel = this.refs.channellist.value;
     // 1. Broadcast a log message to all agents and customer that session is moved
-
-    var message = {
-          sender : this.props.userdetails.firstname,
-          msg : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
-          time : moment.utc().format('lll'),
-          customersocket : this.refs.socketid_customer.value,
-          agentsocket : this.props.socketid,
-          type : 'log',
-          request_id : this.props.sessiondetails.request_id,
-                          
-        }
-
-        this.props.chatlist.push(message);
-        
-        socket.emit('send:message', message);
-         var saveChat = { 
-                           'to' : this.refs.customername.value,
-                           'from' : this.props.userdetails.firstname,
-                           'visitoremail' : this.refs.customeremail.value,
-                           'socketid' : this.refs.socketid_customer.value,
-                           'type': 'log',
-                           'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
+        var saveChat = { 
+                          'to' : this.refs.customername.value,
+                          'from' : this.props.userdetails.firstname,
+                          'visitoremail' : this.refs.customeremail.value,
+                          'socketid' : this.refs.socketid_customer.value,
+                          'type': 'log',
+                          'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
                            'datetime' : Date.now(),
+                           'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
-                           'companyid': this.props.sessiondetails.companyid,
-                           'is_seen':'no'
+                           'messagechannel': this.refs.channellist.value,
+                           'companyid': this.props.userdetails.uniqueid,
+                           'is_seen':'no',
+
+                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+         
                       }
+   
+        this.props.chatlist.push(saveChat);
+        
+        socket.emit('send:message', saveChat);
+        
         this.props.savechat(saveChat); 
 
         //save new channel id on server
@@ -441,10 +365,15 @@ picksession(e){
     }
 
     this.props.movedToMessageChannel(assignment,usertoken);
-   //  this.props.getcustomers(usertoken);
-   
-   // this.props.getsessions(usertoken);
 
+     //update session status on socket
+    socket.emit('updatesessionchannel',{'request_id':this.refs.requestid.value,
+                                        'room' : this.props.userdetails.uniqueid,
+                                        'channelid' : this.refs.channellist.value
+                                                                              
+                                        });
+
+  
     this.forceUpdate();
 
 }
