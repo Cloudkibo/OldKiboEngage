@@ -16,6 +16,7 @@ router.route('/signupUser').post(UserController.signupUser);
 router.route('/getuser').get(UserController.getuser);
 router.route('/forgotpassword').post(UserController.forgotpassword);
 router.route('/updateprofile').post(UserController.updateprofile);
+router.route('/updatesettings').post(UserController.updatesettings);
 
 router.route('/getgroups').get(GroupController.getgroups);
 router.route('/getmyusergroups').get(GroupController.getmyusergroups);

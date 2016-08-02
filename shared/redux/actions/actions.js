@@ -1683,6 +1683,44 @@ export function updateprofile(user,token) {
 }
 
 
+export function updatesettings(company,token) {
+  console.log(company);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/updatesettings`, {
+      method: 'post',
+        body:JSON.stringify({
+                   'abandonedscheduleemail1':company.abandonedscheduleemail1,
+                    'abandonedscheduleemail2':company.abandonedscheduleemail2,
+                    'abandonedscheduleemail3':company.abandonedscheduleemail3,
+                    'completedscheduleemail1': company.completedscheduleemail1,
+                    'completedscheduleemail2':company.completedscheduleemail2,
+                    'completedscheduleemail3':company.completedscheduleemail3,
+                    'invitedscheduleemail1':company.invitedscheduleemail1,
+                    'invitedscheduleemail2':company.invitedscheduleemail2,
+                    'invitedscheduleemail3':company.invitedscheduleemail3,
+                    'maxnumberofdepartment':company.maxnumberofdepartment,
+                    'notificationemailaddress':company.notificationemailaddress,
+                    'widgetwindowtab':company.widgetwindowtab,
+                    'showsummary':company.showsummary,
+                    'smsphonenumber':company.smsphonenumber,
+                    'allowemailnotification':company.allowemailnotification,
+                    'allowsmsnotification':company.allowsmsnotification,
+                    'isdomainemail':company.isdomainemail,
+                    'allowChat':company.allowChat,
+       
+
+      }),
+        headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
+      
+   
+      );
+  };
+}
+
 export function showcompanyprofile(companysettings) {
   console.log(companysettings);
   return {

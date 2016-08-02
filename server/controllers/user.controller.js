@@ -747,3 +747,44 @@ export function updateprofile (req,res) {
     request.post(options, callback);
   
 };
+
+
+
+//update company settings
+
+export function updatesettings (req,res) {
+  
+    console.log('update settings is called');
+    var company = req.body;
+    console.log(company);
+    var token = req.headers.authorization;
+ 
+    var options = {
+      url: `${baseURL}/api/companyprofiles/updatecompanyprofile`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      json:company
+    };
+    function callback(error, response, body) {
+      console.log(body);
+      if (!error && response.statusCode == 200) {
+       
+        //console.log('api calling succeed')
+        return res.status(200).send({status:'success',message:'Information has been updated successfully.'});
+
+      }
+
+      else
+      {
+        console.log(error);
+
+        res.status(501).send({status:'danger',message:body.msg,statusCode:501});
+      }
+    }
+
+    request.post(options, callback);
+  
+};

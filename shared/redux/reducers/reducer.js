@@ -509,6 +509,7 @@ const dashboard = (state =dashboardState, action) => {
         case ActionTypes.ADD_UPDATE_PROFILE_WARNINGS:
         return {
            groupdetails: state.groupdetails,
+           companysettings:state.companysettings,
            userdetails: state.userdetails,
            chat:state.chat,
            agents : state.agents,

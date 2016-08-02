@@ -10,6 +10,11 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 
+var style1 = {
+  'marginLeft': '-1.75px',
+  'width': '782px', 
+  'height': '94px',
+}
 class CompanySettings extends Component {
 
  constructor(props, context) {
@@ -35,28 +40,31 @@ class CompanySettings extends Component {
   onSubmit(event)
     {
        const usertoken = auth.getToken();
-   
-      event.preventDefault();
-                const fnameRef = this.refs.fname;
-                const lnameRef = this.refs.lname;
-                const phoneRef = this.refs.phone;
-                const country = this.refs.country;
-                const city = this.refs.city;
-                const stateRef = this.refs.state;
-               
-                if (fnameRef.value && lnameRef.value && phoneRef.value) {
-                  var user = {
-                    'firstname': fnameRef.value,
-                    'lastname': lnameRef.value,
-                    'phone': phoneRef.value,
-                    'city':city.value,
-                    'state':stateRef.value,
-                    'country':country.value,
-                    
+       event.preventDefault();
+       if(confirm("Are you sure you want to update company settings?")){
+       var companyprofile = {
+                    'abandonedscheduleemail1':this.refs.abandonedscheduleemail1.value,
+                    'abandonedscheduleemail2':this.refs.abandonedscheduleemail2.value,
+                    'abandonedscheduleemail3':this.refs.abandonedscheduleemail3.value,
+                    'completedscheduleemail1': this.refs.completedscheduleemail1.value,
+                    'completedscheduleemail2': this.refs.completedscheduleemail2.value,
+                    'completedscheduleemail3':this.refs.completedscheduleemail3.value,
+                    'invitedscheduleemail1':this.refs.invitedscheduleemail1.value,
+                    'invitedscheduleemail2':this.refs.invitedscheduleemail2.value,
+                    'invitedscheduleemail3':this.refs.invitedscheduleemail3.value,
+                    'maxnumberofdepartment':this.refs.maxnumberofdepartment.value,
+                    'notificationemailaddress':this.refs.notificationemailaddress.value,
+                    'widgetwindowtab':this.refs.widgetwindowtab.options[this.refs.widgetwindowtab.selectedIndex].value,
+                    'showsummary':this.refs.showsummary.options[this.refs.showsummary.selectedIndex].value,
+                    'smsphonenumber':this.refs.smsphonenumber.value,
+                    'allowemailnotification':this.refs.allowemailnotification.options[this.refs.allowemailnotification.selectedIndex].value,
+                    'allowsmsnotification':this.refs.allowsmsnotification.options[this.refs.allowemailnotification.selectedIndex].value,
+                    'isdomainemail':this.refs.isdomainemail.options[this.refs.isdomainemail.selectedIndex].value,
+                    'allowChat':this.refs.allowChat.options[this.refs.allowChat.selectedIndex].value,
                   }
-                  console.log(user);
+                  console.log(companyprofile);
 
-                  this.props.updatesettings(user,usertoken);
+                  this.props.updatesettings(companyprofile,usertoken);
                 }
     }
 
@@ -92,8 +100,7 @@ class CompanySettings extends Component {
                       </li>               
       
                     </ul>
-                </div>
-              </div>      
+                 
          
             <div className="portlet box green-meadow">
             <div className="portlet-title">
@@ -102,145 +109,214 @@ class CompanySettings extends Component {
                    Company settings
               </div>
             </div>       
-            <div className="portlet body">
+            <div className="portlet-body form">
+
             {this.props.companysettings &&
-                <form onSubmit={this.onSubmit} className ="css-form">
+                <form onSubmit={this.onSubmit} className ="form-horizontal form-bordered css-form">
+                  <div className="form-body">
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Max number of Groups</label>
                                                 
                                                 <div className="col-md-9">
-                                                <div className="input-group input-small">
-                                                <input type="Number"  className="form-control " ref = "maxgrp" required  defaultValue={this.props.companysettings.maxnumberofdepartment}/>
-                                                </div>
+                                                  <div id="spinner1">
+                                                    <div className="input-group input-small">
+                                                      <input type="Number"  className="form-control " ref = "maxnumberofdepartment" required  defaultValue={this.props.companysettings.maxnumberofdepartment}/>
+                                                    </div>
+                                                  </div>
                                                 </div>
                                               </div>
                                               
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Company domain emails</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "domainemails" defaultValue={this.props.companysettings.isdomainemail}>
+                                                <select  className="form-control"  ref = "isdomainemail" defaultValue={this.props.companysettings.isdomainemail}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
-                                                
                                                 </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
 
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Notify by email</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "notifyemails" defaultValue={this.props.companysettings.allowemailnotification}>
+                                                <select  className="form-control"  ref = "allowemailnotification" defaultValue={this.props.companysettings.allowemailnotification}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
-                                                
                                                 </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Notification Email address</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <input type="email"  className="form-control " ref = "email" required  placeholder='example@abc.com' defaultValue={this.props.companysettings.notificationemailaddress}/>
+                                                <input type="email"  className="form-control " ref = "notificationemailaddress" required  placeholder='example@abc.com' defaultValue={this.props.companysettings.notificationemailaddress}/>
                                                 </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">SMS Phone number</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <input type="text"  className="form-control " maxlength='20' ref = "smsno"   defaultValue={this.props.companysettings.smsphonenumber} placeholder='+90123456789'/>
-                                                </div>
+                                                <input type="text"  className="form-control " maxlength='20' ref = "smsphonenumber"   defaultValue={this.props.companysettings.smsphonenumber} placeholder='+90123456789'/>
+                                               </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">SMS Notification</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "smsnotification" defaultValue={this.props.companysettings.allowsmsnotification}>
+                                                <select  className="form-control"  ref = "allowsmsnotification" defaultValue={this.props.companysettings.allowsmsnotification}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
-                                                
                                                 </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
 
                                                <div className="form-group">
                                                 <label className="control-label col-md-3">Show Summary</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
                                                 <select  className="form-control"  ref = "showsummary" defaultValue={this.props.companysettings.showsummary}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
-                                                
                                                 </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
                                                <div className="form-group">
                                                 <label className="control-label col-md-3">Allow Chat</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
                                                 <select  className="form-control"  ref = "allowChat" defaultValue={this.props.companysettings.allowChat}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
-                                                
                                                 </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
 
                                                <div className="form-group">
                                                 <label className="control-label col-md-3">Open widget as a separate</label>
+                                                <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
                                                 <select  className="form-control"  ref = "widgetwindowtab" defaultValue={this.props.companysettings.widgetwindowtab}>
                                                   <option value="window">Window</option>
                                                   <option value="tab">Tab</option>
                                                 </select>
-                                                
-                                                </div>
+                                               </div>
+                                                  </div>
                                                 </div>
                                               </div>
 
-
-
+                                              <div className="hide">
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 1 (Reschedule Abandoned Call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref= "abandonedscheduleemail1" defaultValue={this.props.companysettings.abandonedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 2 (Reschedule Abandoned Call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" maxlength="5000"  ref = "abandonedscheduleemail2" defaultValue={this.props.companysettings.abandonedscheduleemail2} rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 3 (Reschedule Abandoned Call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref="abandonedscheduleemail3" defaultValue={this.props.companysettings.abandonedscheduleemail3} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 1 (Reschedule Resolved Call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref = "completedscheduleemail1" defaultValue={this.props.companysettings.completedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 2 (Reschedule Resolved Call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref ="completedscheduleemail2"  defaultValue={this.props.companysettings.completedscheduleemail2} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 3 (Reschedule Resolved Call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref="completedscheduleemail3" defaultValue={this.props.companysettings.completedscheduleemail3} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 1 (Invite to call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref="invitedscheduleemail1" defaultValue={this.props.companysettings.invitedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 2 (Invite to call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref="invitedscheduleemail2" defaultValue={this.props.companysettings.invitedscheduleemail2} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 3 (Invite to call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref="invitedscheduleemail3"  defaultValue={this.props.companysettings.invitedscheduleemail3} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              </div>
                                            
-                                              <div className="form-actions">
-                                                      <button type="submit" className="btn green btn-send">Save</button>
-                                                      <Link to='/dashboard' className="btn default"> Cancel </Link> 
-                                              </div>
-
-
-                                             {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "danger" &&
+                                               {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "danger" &&
                                                  <div className = "alert alert-danger"><span>{this.props.errorMessageProfile.message}</span></div>
                                               }
 
                                               {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "success" &&
                                                  <div className = "alert alert-success"><span>{this.props.errorMessageProfile.message}</span></div>
                                               }
+                                           
+                                              <div className="form-actions">
+                                                      <button type="submit" className="btn green btn-send">Save</button>
+                                                      <Link to='/dashboard' className="btn default"> Back </Link> 
+                                              </div>
 
-
+                                            
+                                            
+                                              <br/>
+                                             </div> 
                                   </form>
                                 }
-             
-              
-            </div>
+                     </div>
+              </div>
             </div>
           </div>
-
-       </div> 
+        </div>
+      </div>
       </div>
       </div> 
       
