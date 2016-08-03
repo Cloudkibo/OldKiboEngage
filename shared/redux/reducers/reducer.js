@@ -735,8 +735,8 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-              responses : state.responses,
-                  onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             responses : state.responses,
+              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
        
             
@@ -759,6 +759,7 @@ const dashboard = (state =dashboardState, action) => {
              userchats : state.userchats,
              responses : state.responses,
              onlineAgents : action.onlineAgents,
+             yoursocketid : state.yoursocketid
 
             
             };

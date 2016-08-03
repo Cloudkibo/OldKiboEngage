@@ -65,6 +65,7 @@ function onConnect(io2, socket) {
           });
     }
 
+
     else if(data.toagent){
             console.log('sending point to point message to Agent');
 
@@ -104,33 +105,40 @@ function onConnect(io2, socket) {
   });
 
 
-socket.on('send:messageToAgent', function (data) {
+
+
+ socket.on('informAgent', function (data) {
     console.log(data);
     userchats.push(data);
-
-    
-
-    if(data.toagent){
-            console.log('sending point to point message to Agent');
-
-            io2.to(data.toagent).emit('send:message',{
+    io2.to(data.agentsocket).emit('send:message',{
             to: data.to,
-            toagent:data.toagent,
+            socketid:data.socketid,
             from : data.from,
             visitoremail:data.visitoremail,
             datetime:data.datetime,
             msg: data.msg,
             time:data.time,
-            request_id : data.request_id,
             type : data.type,
+            request_id :data.request_id,
             messagechannel:data.messagechannel,
             companyid:data.companyid,
             is_seen:data.is_seen
+
+
+
+          
           });
-    }
-    else
-    {
-          socket.broadcast.to(data.companyid).emit('send:message', {
+    
+    
+  });
+
+
+
+socket.on('send:messageToAgent', function (data) {
+    console.log('sending a hello message to all agents');
+    console.log(data);
+    userchats.push(data);
+    socket.broadcast.to(data.companyid).emit('send:message', {
             to: data.to,
             from : data.from,
             visitoremail:data.visitoremail,
@@ -145,7 +153,7 @@ socket.on('send:messageToAgent', function (data) {
 
 
           });
-    }
+    
   });
 
 socket.on('getuserchats',function(room){

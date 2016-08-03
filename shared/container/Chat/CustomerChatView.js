@@ -309,8 +309,31 @@ else{
                                         'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
                                        });
 
-   // this.props.getcustomers(usertoken);
-   // this.props.getsessions(usertoken);
+    
+   
+    // inform assignee that he has been assigned a Chat Session
+
+     var informMsg = { 
+                          'to' : this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
+                          'from' : this.props.userdetails.firstname,
+                          'visitoremail' : this.refs.customeremail.value,
+                          'socketid' : this.refs.socketid_customer.value,
+                          'type': 'log',
+                           'msg' : 'This session is assigned to you',
+                           'datetime' : Date.now(),
+                           'time' : moment.utc().format('lll'),
+                           'request_id' : this.props.sessiondetails.request_id,
+                           'messagechannel': this.refs.channelid.value,
+                           'companyid': this.props.userdetails.uniqueid,
+                           'is_seen':'no',
+                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+         
+                      }
+
+    socket.emit('informAgent',informMsg);
+        
+
     this.forceUpdate();
   }
 

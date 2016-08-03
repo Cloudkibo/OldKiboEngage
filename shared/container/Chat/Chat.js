@@ -53,10 +53,17 @@ updateOnlineAgents(data){
   }
 componentDidMount(){
        //get online agents list
+       alert('componentDidMount is called');
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
         this.props.route.socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
         this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+        this.props.route.socket.on('getmysocketid',this.create_agentsession);
+        this.props.route.socket.on('customer_joined',this.getupdatedSessions);
+        this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
+        this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
+        this.props.route.socket.on('returnUserChat',this.getupdatedChats);
+  
 
 }
 
@@ -89,14 +96,7 @@ componentDidMount(){
     this.props.getchatsfromsocket(data);
     this.forceUpdate();
   }
-  componentWillUpdate(){
-      console.log('calling componentWillUpdate');
-      this.props.route.socket.on('getmysocketid',this.create_agentsession);
-      this.props.route.socket.on('customer_joined',this.getupdatedSessions);
-      this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
-      this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
-      this.props.route.socket.on('returnUserChat',this.getupdatedChats);
-    } 
+   
   
    handleChange(e){
      alert(e.target.value);
@@ -250,8 +250,8 @@ componentDidMount(){
                 <input type="hidden" ref = "sessionid" />
              		}
 
-                {this.props.customerchat && this.props.customerchat.length == 0?
-                  <p>No Sessions found.</p>
+                {this.props.customerchatold && this.props.customerchatold.length == 0?
+                  <p>No Customer is online currently.</p>
                   :
                 <table className="table">
 
