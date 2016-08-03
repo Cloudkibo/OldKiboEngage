@@ -154,6 +154,8 @@ export function resetpassword(creds) {
 }
 
 
+
+
 // verify password reset token
 
 export function verifyPasswordResettoken(token) {
@@ -1682,6 +1684,26 @@ export function updateprofile(user,token) {
   };
 }
 
+
+export function changepassword(user,token) {
+     return (dispatch) => {
+    fetch(`${baseURL}/api/changenewpassword`, {
+        method: 'post',
+        headers: new Headers({
+           'Content-Type':'application/json',
+            'Authorization': token,
+        }),
+       body: JSON.stringify({
+       'email' : user.email,
+       'password' : user.password,
+       'newpassword' :user.newpassword        
+
+    })
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showUpdateProfile(res)));
+  };
+
+}
 
 export function updatesettings(company,token) {
   console.log(company);

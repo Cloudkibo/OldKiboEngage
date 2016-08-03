@@ -40,6 +40,7 @@ import NotificationView from './container/Notifications/NotificationView'
 import EditNotification from './container/Notifications/EditNotification'
 import MyGroups from './container/MyProfile/MyGroups'
 import MyProfile from './container/MyProfile/MyProfile'
+import ChangePassword from './container/MyProfile/ChangePassword'
 
 import Customers from './container/CustomerDirectory/Customers'
 import AddCustomer from './container/CustomerDirectory/AddCustomer'
@@ -102,7 +103,7 @@ const routes = (
    
     <Route path="/resetpassword/:id" component={ResetPassword}/>
     <Route path="/resetpasswordfailure" component={ResetPasswordFailure}/>
-    
+    <Route path="/changepassword" component={ChangePassword} onEnter={requireAuth}/>
     <Route path="/chat" component={Chat} onEnter={requireAuth}  socket = {socket}/>
     <Route path="/clientchat" component={ClientChat}  socket = {socket}/>
     

@@ -749,6 +749,50 @@ export function updateprofile (req,res) {
 };
 
 
+//change password
+
+export function changenewpassword(req,res) {
+  
+    var user = req.body;
+    var token = req.headers.authorization;
+ 
+    var options = {
+      url: `${baseURL}/api/users/resetpassword`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      form: {
+       'email' : user.email,
+       'password' : user.password,
+       'newpassword' :user.newpassword 
+      }
+    };
+    function callback(error, response, body) {
+      console.log(response.statusCode);
+      if (!error && response.statusCode == 200) {
+        return res.status(200).send({status:'success',message:'Password has been changed successfully.'});
+
+      }
+      else if(!error && response.statusCode == 403)
+      {
+      
+        res.status(403).send({status:'danger',message:"Authentication failed."});
+      }
+      else
+      {
+        console.log(error);
+
+        res.status(501).send({status:'danger',message:"Something went wrong, please try again.", user: user,statusCode:501});
+      }
+    }
+
+    request.post(options, callback);
+  
+};
+
+
 
 //update company settings
 

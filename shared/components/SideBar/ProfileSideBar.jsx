@@ -40,7 +40,7 @@ export default class ProfileSideBar extends Component
             </li>
         }
 
-        {this.props.iscurrent && this.props.iscurrent == "changepwd"?
+        {this.props.iscurrent && this.props.iscurrent == "changepassword"?
              <li className="active">
                 <Link to='/changepassword'>
                   <i className ="fa fa-lock"/>
