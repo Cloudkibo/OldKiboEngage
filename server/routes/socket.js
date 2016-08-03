@@ -138,7 +138,28 @@ socket.on('send:messageToAgent', function (data) {
     console.log('sending a hello message to all agents');
     console.log(data);
     userchats.push(data);
-    socket.broadcast.to(data.companyid).emit('send:message', {
+
+    if(data.toagent){
+            console.log('sending point to point message to Agent');
+
+            io2.to(data.toagent).emit('send:message',{
+            to: data.to,
+            toagent:data.toagent,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
+            msg: data.msg,
+            time:data.time,
+            request_id : data.request_id,
+            type : data.type,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
+          });
+    }
+    else
+    {
+          socket.broadcast.to(data.companyid).emit('send:message', {
             to: data.to,
             from : data.from,
             visitoremail:data.visitoremail,
@@ -153,7 +174,7 @@ socket.on('send:messageToAgent', function (data) {
 
 
           });
-    
+    }
   });
 
 socket.on('getuserchats',function(room){
