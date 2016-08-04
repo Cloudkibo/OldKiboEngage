@@ -5,7 +5,7 @@ import {signupuser} from '../../redux/actions/actions'
 import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
-
+import { browserHistory } from 'react-router'
 
 export default class Signup extends React.Component {
 
@@ -108,8 +108,27 @@ export default class Signup extends React.Component {
                                                     <div className = "alert alert-danger"><span>{err}</span></div>
                                                   )
                                                 }
+
+
                                               )
 
+
+                                            }
+
+
+                                             {
+
+                                                this.props.signupwarnings && this.props.signupwarnings.statusCode == 200 &&
+                                              this.props.signupwarnings.validationErrs.map(function (err, i) {
+                                                  return(
+                                                    <div className = "alert alert-success"><span>{err}</span></div>
+                                                  )
+                                                }
+
+                                                
+                                              )
+
+                                              
 
                                             }
 
