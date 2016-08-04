@@ -46,6 +46,7 @@
     "net": "^1.0.2",
     "react": "^15.0.1",
     "react-autosuggest": "^3.8.0",
+    "react-avatar-cropper": "^0.1.2",
     "react-cookie": "^0.4.5",
     "react-dom": "^15.0.1",
     "react-redux": "^4.1.2",

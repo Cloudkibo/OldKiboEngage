@@ -40,6 +40,8 @@ import NotificationView from './container/Notifications/NotificationView'
 import EditNotification from './container/Notifications/EditNotification'
 import MyGroups from './container/MyProfile/MyGroups'
 import MyProfile from './container/MyProfile/MyProfile'
+import MyPickedSessions from './container/MyProfile/MyPickedSessions'
+import ChangeAvatar from './container/MyProfile/ChangeAvatar'
 import ChangePassword from './container/MyProfile/ChangePassword'
 
 import Customers from './container/CustomerDirectory/Customers'
@@ -117,7 +119,8 @@ const routes = (
      <Route path="/mygroups" component={MyGroups}  onEnter={requireAuth}/>
      <Route path="/myprofile" component={MyProfile}  onEnter={requireAuth}/>
      <Route path="/companyprofile" component={CompanySettings}  onEnter={requireAuth}/>
-   
+     <Route path="/changeavatar" component={ChangeAvatar}  onEnter={requireAuth}/>
+     <Route path="/mypickedchatsessions"  component={MyPickedSessions}  onEnter={requireAuth}/>
     <Route path="*" component={NotFound} />
   </Route>
  

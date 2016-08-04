@@ -42,10 +42,10 @@ export default class AuthorizedHeader extends Component
                   
                   <li>
 
-                    <a href="/mypickedcalls">
+                    <Link to="/mypickedchatsessions">
                       <i className="fa fa-phone-square"/>
-                       My Picked Calls
-                    </a>
+                       My Picked Sessions
+                    </Link>
                   </li> 
                   <li>
                     <a href="/myscheduledcalls">

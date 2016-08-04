@@ -993,6 +993,15 @@ export function showAllChat(customerchat) {
   };
 }
 
+export function showMyPickChatSessions(sessions,userid){
+  var mypickedsessions = sessions.filter((c) => c.status != "new" && c.agent_ids.length>0 && c.agent_ids[c.agent_ids.length-1] == userid)
+  return {
+    type: ActionTypes.SHOW_MY_PICKED_SESSIONS,
+    mypickedsessions : mypickedsessions,
+   
+  };
+}
+
 
 export function filterbystatus(status,customerchat) {
 
@@ -1110,7 +1119,19 @@ export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
 
 
 
-/*** get notifications ***/
+export function getmypickedsessions(token,userid){
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getsessions`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showMyPickChatSessions(res,userid)));
+  };
+}
+/*** get session ***/
 export function getsessions(token) {
   console.log(token);
   return (dispatch) => {
