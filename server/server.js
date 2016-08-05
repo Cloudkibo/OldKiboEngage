@@ -65,7 +65,7 @@ const renderFullPage = (html, initialState) => {
         <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
         <link href="https://www.cloudkibo.com/admin_assets/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
         <link href="assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
- 
+  
          <link rel="stylesheet" href='/css/bootstrap/css/bootstrap.min.css' />
          <link rel="stylesheet" href='/css/style.css' />
        
@@ -91,8 +91,8 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/style-responsive.css" rel="stylesheet">
         <link href="assets/frontend/layout/css/themes/red.css" rel="stylesheet" id="style-color">
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
-  
       
+        <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">   
   </head>
       <body>
 

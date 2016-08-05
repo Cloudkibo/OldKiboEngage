@@ -7,14 +7,13 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import ProfileSideBar from '../../components/SideBar/ProfileSideBar';
-
+import Cropper from 'react-cropper';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 
 
 
-
-
+const src = '';
 class ChangeAvatar extends Component {
 
  constructor(props, context) {
@@ -23,34 +22,53 @@ class ChangeAvatar extends Component {
        super(props, context);
      
         this.onSubmit = this.onSubmit.bind(this);
-        this.state = {file: '',imagePreviewUrl: ''};
-   
+       // this.state = {file: '',imagePreviewUrl: ''};
+         this.state = {
+              src,
+              cropResult: null,
+              };
+        this._cropImage = this._cropImage.bind(this);
+        this._onChange = this._onChange.bind(this);
+        
+  }
 
    
     
+  
+  _cropImage() {
+    if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
+      return;
+    }
+    this.setState({
+      cropResult: this.refs.cropper.getCroppedCanvas().toDataURL(),
+    });
   }
+
+  _onChange(e) {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({ src: reader.result });
+    };
+    reader.readAsDataURL(files[0]);
+  }
+
+  
+
+
  _handleSubmit(e) {
     e.preventDefault();
     // TODO: do something with -> this.state.file
     console.log('handle uploading-', this.state.file);
   }
 
-  _handleImageChange(e) {
-    e.preventDefault();
-
-    let reader = new FileReader();
-    let file = e.target.files[0];
-
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result
-      });
-    }
-
-    reader.readAsDataURL(file)
-  }
-
+  
   onSubmit(event)
     {
       /* const usertoken = auth.getToken();
@@ -78,13 +96,7 @@ class ChangeAvatar extends Component {
   render() {
     const token = auth.getToken()
     console.log(token)
-    let {imagePreviewUrl} = this.state;
-    let $imagePreview = null;
-    if (imagePreviewUrl) {
-      $imagePreview = (<img src={imagePreviewUrl} />);
-    } else {
-      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
-    }
+    
 
     return (
       <div>
@@ -117,19 +129,32 @@ class ChangeAvatar extends Component {
           <div className="col-md-9">
             <div className="portlet box">
             <div className="portlet body">
-               <h1>Your Display Picture</h1>
-              
-                    <div className="previewComponent">
-                        <form onSubmit={(e)=>this._handleSubmit(e)}>
-                          <input className="fileInput" type="file" onChange={(e)=>this._handleImageChange(e)} />
-                          <button className="submitButton" type="submit" onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
-                        </form>
-                        <div className="imgPreview">
-                          {$imagePreview}
-                        </div>
-                     </div>
-                    
-            </div>
+           
+                  <div>
+                    <input type="file" onChange={this._onChange} />
+                    <br />
+                    <div style={{float:'left'}}>
+                    <Cropper
+                      style={{ height: 400, width: '400' }}
+                      aspectRatio={2/2}
+                      preview=".img-preview"
+                      guides={false}
+                      src={this.state.src}
+                      ref="cropper"
+                      crop={this._crop}
+                    />
+                   </div>
+                   
+                    <div className="box" style={{ width: '200',height:'200',float:'right'}}>
+                     
+                        <button onClick={ this._cropImage } >
+                          Crop Image
+                        </button>
+                     
+                      <img style={{ width: '200',height:'200',border:'1px solid rgba(0, 0, 0, 0.26)' }} src={this.state.cropResult} ref="profilepic"/>
+                    </div>
+                  </div>
+              </div>
             </div>
           </div>
        </div>

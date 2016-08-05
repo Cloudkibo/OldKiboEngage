@@ -35,11 +35,11 @@ export default class SideBar extends Component
                 </Link>
               </li> 
               <li className="">
-                <Link to='/inprogresscalls'>
+                <Link to='/assignedchatsessions'>
                   <i className="fa fa-chain">
                   </i>      
                   <span className="title">
-                    Inprogress Calls
+                    Assigned Chat Sessions
                   </span>      
                   <span className="selected">
                   </span>

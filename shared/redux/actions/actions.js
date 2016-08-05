@@ -1003,6 +1003,16 @@ export function showMyPickChatSessions(sessions,userid){
 }
 
 
+export function showAssignedChatSessions(sessions){
+  var assignedsessions = sessions.filter((c) => c.status == "assigned" && c.agent_ids.length>0)
+  return {
+    type: ActionTypes.SHOW_ASSIGNED_SESSIONS,
+    assignedsessions : assignedsessions,
+   
+  };
+}
+
+
 export function filterbystatus(status,customerchat) {
 
   var filtered;
@@ -1131,6 +1141,21 @@ export function getmypickedsessions(token,userid){
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showMyPickChatSessions(res,userid)));
   };
 }
+
+
+export function getassignedsessions(token){
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getsessions`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showAssignedChatSessions(res)));
+  };
+}
+
 /*** get session ***/
 export function getsessions(token) {
   console.log(token);
