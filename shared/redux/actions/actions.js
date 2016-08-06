@@ -1250,20 +1250,28 @@ export function showNotifications(notifications) {
   };
 }
 
-export function uploadpicture(data) {
+export function uploadpicture(data,fname) {
   console.log(data);
+  var values = {
+       file: data,
+       fileName:fname
+     
+     };
+
   return (dispatch) => {
     fetch(`${baseURL}/upload`, {
         method: 'put',
          headers: new Headers({
-            'content-type': 'application/octet-stream'
+           'Accept': 'application/json',
+           'Content-Type': 'application/json'
 
       }),
-      data:data
+      body: JSON.stringify(values)   
+      
      
     
     });
-}
+   }
       };
 
 

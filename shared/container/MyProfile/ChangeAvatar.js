@@ -14,6 +14,7 @@ import { bindActionCreators } from 'redux';
 
 
 
+
 const src = '';
 class ChangeAvatar extends Component {
 
@@ -38,6 +39,7 @@ class ChangeAvatar extends Component {
     
   
   _cropImage() {
+   this.refs.submitbtn.disabled = false;
     if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
       return;
     }
@@ -95,14 +97,8 @@ class ChangeAvatar extends Component {
         
        }*/
 
-          console.log(this.state.image);
-          /* request.put("http://localhost:8000/upload")    
-            .attach("image-file", this.state.image, this.state.image.name)
-            .end(function(res){
-                console.log(res);
-            });*/
-
-          this.props.uploadpicture(this.state.cropResult);  
+        console.log(this.state.image);
+        this.props.uploadpicture(this.state.cropResult,this.state.image.name);  
         event.preventDefault();     
         
     }
@@ -172,7 +168,7 @@ class ChangeAvatar extends Component {
                       <img style={{ width: '200',height:'200',border:'1px solid rgba(0, 0, 0, 0.26)' }} src={this.state.cropResult} ref="profilepic"/>
                     </div>
                   
-                    <button onClick={ this.onSubmit } >
+                    <button onClick={ this.onSubmit } ref="submitbtn" >
                           Submit
                         </button>
                   </div>

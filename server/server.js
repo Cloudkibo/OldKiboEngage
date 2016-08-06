@@ -64,27 +64,34 @@ function decodeBase64Image(dataString) {
   return response;
 }
 
+function getRandomSalt() {
+    var milliseconds = new Date().getTime();
+    var timestamp = (milliseconds.toString()).substring(9, 13)
+    var random = ("" + Math.random()).substring(2, 8);
+    var random_number = timestamp+random;  // string will be unique because timestamp never repeat itself
+    /*var random_string = base64_encode(random_number).substring(2, 8); // you can set size here of return string
+    var return_string = '';
+    var Exp = /((^[0-9]+[a-z]+)|(^[a-z]+[0-9]+))+[0-9a-z]+$/i;
+    if (random_string.match(Exp)) {                 //check here whether string is alphanumeric or not
+        return_string = random_string;
+    } else {
+        return getRandomSalt();  // call recursivley again
+    }*/
+    return random_number;
+}
 app.put("/upload", function(req, res){  
   console.log('file upload is called');
-  /*req.busboy.on("file", function(fieldName, file,filename){
-    console.log('onfile')
-    //console.log(fieldName, file);
-    console.log(file);
-    console.log(filename);
-    var saveTo = path.join(path.resolve(__dirname, '../static'),'profileImages', path.basename(filename));
-    console.log(saveTo);
-    file.pipe(fs.createWriteStream(saveTo));
-    res.end();
-  }); 
-  req.pipe(req.busboy);
-  */
-  console.log(req.body);
-  var imageBuffer = decodeBase64Image(req.data);
+  
+  var imageBuffer = decodeBase64Image(req.body.file);
+  var file_ext = req.body.fileName.substr((Math.max(0, req.body.fileName.lastIndexOf(".")) || Infinity) + 1);
+  var newFileName = getRandomSalt() + '.' + file_ext;
   console.log(imageBuffer);
-  var saveTo = path.join(path.resolve(__dirname, '../static'),'profileImages','test.jpg');
+  var saveTo = path.join(path.resolve(__dirname, '../static'),'profileImages',newFileName);
   console.log(saveTo);  
   //var f=fs.createWriteStream(saveTo);
   fs.writeFile(saveTo, imageBuffer.data);
+  //fs.end();
+  res.send(200);
 });
 
 
