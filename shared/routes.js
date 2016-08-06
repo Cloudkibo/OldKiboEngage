@@ -122,7 +122,7 @@ const routes = (
      <Route path="/companyprofile" component={CompanySettings}  onEnter={requireAuth}/>
      <Route path="/changeavatar" component={ChangeAvatar}  onEnter={requireAuth}/>
      <Route path="/mypickedchatsessions"  component={MyPickedSessions}  onEnter={requireAuth}/>
-     <Route path="/assignedchatsessions"  component={AssignedSessions}  onEnter={requireAuth}/>
+     <Route path="/assignedchatsessions"  component={AssignedSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="*" component={NotFound} />
   </Route>
  

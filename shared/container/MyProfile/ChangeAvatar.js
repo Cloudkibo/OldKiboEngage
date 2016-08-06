@@ -1,7 +1,7 @@
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {changepassword} from '../../redux/actions/actions'
+import {changepassword,uploadpicture} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -9,6 +9,7 @@ import SideBar from '../../components/Header/SideBar';
 import ProfileSideBar from '../../components/SideBar/ProfileSideBar';
 import Cropper from 'react-cropper';
 import auth from '../../services/auth';
+import request from 'superagent';
 import { bindActionCreators } from 'redux';
 
 
@@ -24,8 +25,9 @@ class ChangeAvatar extends Component {
         this.onSubmit = this.onSubmit.bind(this);
        // this.state = {file: '',imagePreviewUrl: ''};
          this.state = {
-              src,
+              src : './profileImages/time.PNG',
               cropResult: null,
+              image:null,
               };
         this._cropImage = this._cropImage.bind(this);
         this._onChange = this._onChange.bind(this);
@@ -52,9 +54,14 @@ class ChangeAvatar extends Component {
     } else if (e.target) {
       files = e.target.files;
     }
+
+    this.setState({ image:e.target.files[0]
+                       });
+
     const reader = new FileReader();
     reader.onload = () => {
-      this.setState({ src: reader.result });
+      this.setState({ src: reader.result,
+                       });
     };
     reader.readAsDataURL(files[0]);
   }
@@ -71,6 +78,8 @@ class ChangeAvatar extends Component {
   
   onSubmit(event)
     {
+       alert('i am onClick');
+   
       /* const usertoken = auth.getToken();
        event.preventDefault();
        if(this.refs.cpwd.value != '' && this.refs.cpwd.value.length >= 6 && this.refs.cpwd.value != '' && this.refs.cpwd.value.length && this.refs.npwd.value != '' && this.refs.npwd.value.length >=6)
@@ -85,7 +94,16 @@ class ChangeAvatar extends Component {
                   this.props.changepassword(user,usertoken);
         
        }*/
-               
+
+          console.log(this.state.image);
+          /* request.put("http://localhost:8000/upload")    
+            .attach("image-file", this.state.image, this.state.image.name)
+            .end(function(res){
+                console.log(res);
+            });*/
+
+          this.props.uploadpicture(this.state.cropResult);  
+        event.preventDefault();     
         
     }
 
@@ -129,7 +147,7 @@ class ChangeAvatar extends Component {
           <div className="col-md-9">
             <div className="portlet box">
             <div className="portlet body">
-           
+                             
                   <div>
                     <input type="file" onChange={this._onChange} />
                     <br />
@@ -153,6 +171,10 @@ class ChangeAvatar extends Component {
                      
                       <img style={{ width: '200',height:'200',border:'1px solid rgba(0, 0, 0, 0.26)' }} src={this.state.cropResult} ref="profilepic"/>
                     </div>
+                  
+                    <button onClick={ this.onSubmit } >
+                          Submit
+                        </button>
                   </div>
               </div>
             </div>
@@ -184,6 +206,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   
-  return bindActionCreators({ changepassword:changepassword}, dispatch);
+  return bindActionCreators({ changepassword:changepassword,uploadpicture:uploadpicture}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(ChangeAvatar);

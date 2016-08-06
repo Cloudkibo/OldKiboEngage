@@ -9,6 +9,9 @@ import webpack from 'webpack';
 import config from '../webpack.config.dev';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import Buffer from 'Buffer';
+import busboy from  'connect-busboy'; 
+
 
 // Initialize the Express App
 const app = new Express();
@@ -32,7 +35,9 @@ import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
 import serverroutes from './routes/server.routes';
 import serverConfig from './config';
-
+import os from 'os';
+import fs from 'fs';
+ 
 
 
 // Apply body Parser and server public assets and routes
@@ -40,6 +45,49 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
 app.use('/api', serverroutes);
+
+
+
+app.use(busboy());
+
+function decodeBase64Image(dataString) {
+  var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    response = {};
+
+  if (matches.length !== 3) {
+    return new Error('Invalid input string');
+  }
+
+  response.type = matches[1];
+  response.data = new Buffer(matches[2], 'base64');
+
+  return response;
+}
+
+app.put("/upload", function(req, res){  
+  console.log('file upload is called');
+  /*req.busboy.on("file", function(fieldName, file,filename){
+    console.log('onfile')
+    //console.log(fieldName, file);
+    console.log(file);
+    console.log(filename);
+    var saveTo = path.join(path.resolve(__dirname, '../static'),'profileImages', path.basename(filename));
+    console.log(saveTo);
+    file.pipe(fs.createWriteStream(saveTo));
+    res.end();
+  }); 
+  req.pipe(req.busboy);
+  */
+  console.log(req.body);
+  var imageBuffer = decodeBase64Image(req.data);
+  console.log(imageBuffer);
+  var saveTo = path.join(path.resolve(__dirname, '../static'),'profileImages','test.jpg');
+  console.log(saveTo);  
+  //var f=fs.createWriteStream(saveTo);
+  fs.writeFile(saveTo, imageBuffer.data);
+});
+
+
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {

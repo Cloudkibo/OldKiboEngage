@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
-import {getassignedsessions,getcustomers} from '../../redux/actions/actions'
+import {getassignedsessions,getcustomers,getassignedsessionsfromsocket} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 
 class AssignedSessions extends Component {
@@ -27,12 +27,23 @@ class AssignedSessions extends Component {
         }
       }
     super(props, context);
-   
+    this.getupdatedSessions = this.getupdatedSessions.bind(this);
+       
 
     
   }
  
+  getupdatedSessions(data)
+  {
+    const usertoken = auth.getToken();
+    this.props.getassignedsessionsfromsocket(data,this.props.assignedsessions);
 
+    this.forceUpdate();
+  }
+
+  componentDidMount(){
+       this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
+  }
   render() {
     const token = auth.getToken()
     console.log(token)
@@ -82,6 +93,16 @@ class AssignedSessions extends Component {
 
                     <tbody>                    
                       {
+                        this.props.assignedsocketsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
+                        this.props.assignedsocketsessions.map((session, i) => (
+                          
+                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids)} customername = {session.username} email = {session.useremail}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel)} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                                                      
+                        ))
+                      }
+
+
+                      {
                         this.props.assignedsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
                         this.props.assignedsessions.map((session, i) => (
                           
@@ -119,13 +140,14 @@ function mapStateToProps(state) {
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           assignedsessions :(state.dashboard.assignedsessions),
-          customers:(state.dashboard.customers)
+          customers:(state.dashboard.customers),
+          assignedsocketsessions : (state.dashboard.assignedsocketsessions)
            };
 
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getassignedsessions:getassignedsessions,getcustomers:getcustomers}, dispatch);
+  return bindActionCreators({getassignedsessions:getassignedsessions,getassignedsessionsfromsocket:getassignedsessionsfromsocket,getcustomers:getcustomers}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(AssignedSessions);
 

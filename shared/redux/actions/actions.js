@@ -1013,6 +1013,23 @@ export function showAssignedChatSessions(sessions){
 }
 
 
+export function getassignedsessionsfromsocket(sessions,serversessions){
+  var assignedsocketsessions = sessions.filter((c) => c.status == "assigned")
+  for(var j=0;j<assignedsocketsessions.length-1;j++){
+     for(var i=0;i<serversessions.length-1;i++){
+  
+      if(serversessions[i].request_id == assignedsocketsessions[j].request_id){
+        serversessions.splice(i,1);
+        break;
+      }
+    }
+  }
+  return {
+    type: ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS,
+    assignedsocketsessions : assignedsocketsessions,
+    assignedsessions : serversessions,
+  }; 
+}
 export function filterbystatus(status,customerchat) {
 
   var filtered;
@@ -1145,6 +1162,8 @@ export function getmypickedsessions(token,userid){
 
 export function getassignedsessions(token){
   console.log(token);
+
+
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
         method: 'get',
@@ -1172,6 +1191,7 @@ export function getsessions(token) {
 
 export function getChatRequest(customerid,token,chlist){
   var chatlist =[];
+  
   if(chlist){
       chatlist = chlist;
   }
@@ -1229,6 +1249,23 @@ export function showNotifications(notifications) {
     notifications,
   };
 }
+
+export function uploadpicture(data) {
+  console.log(data);
+  return (dispatch) => {
+    fetch(`${baseURL}/upload`, {
+        method: 'put',
+         headers: new Headers({
+            'content-type': 'application/octet-stream'
+
+      }),
+      data:data
+     
+    
+    });
+}
+      };
+
 
 /*** get notifications ***/
 export function getnotifications(token) {

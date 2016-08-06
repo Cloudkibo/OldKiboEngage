@@ -40,7 +40,9 @@ var agentname = []
 }
   return (
    
-    <tr className = "odd">
+    props.customers && ag ?
+      <tr className = "odd">
+    
       <td>{ag[0].name} </td>
       <td>{ag[0].email}</td>
       <td>{gname[0].deptname}</td>
@@ -48,7 +50,22 @@ var agentname = []
       <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
       <td>{props.session.status}</td>
       
-    </tr>
+    </tr> :
+
+     <tr className = "odd">
+    
+      <td>{props.customername} </td>
+      <td>{props.email}</td>
+      <td>{gname[0].deptname}</td>
+      <td>{ch[0].msg_channel_name}</td>
+      <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
+      <td>{props.session.status}</td>
+      
+    </tr> 
+
+    
+
+     
     
   );
 }
