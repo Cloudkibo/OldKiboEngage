@@ -9,7 +9,6 @@ import SideBar from '../../components/Header/SideBar';
 import ProfileSideBar from '../../components/SideBar/ProfileSideBar';
 import Cropper from 'react-cropper';
 import auth from '../../services/auth';
-import request from 'superagent';
 import { bindActionCreators } from 'redux';
 
 

@@ -10,7 +10,6 @@ import config from '../webpack.config.dev';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import Buffer from 'Buffer';
-import busboy from  'connect-busboy'; 
 
 
 // Initialize the Express App
@@ -48,7 +47,6 @@ app.use('/api', serverroutes);
 
 
 
-app.use(busboy());
 
 
 
