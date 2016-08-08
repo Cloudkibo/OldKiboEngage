@@ -79,7 +79,8 @@ class ChangeAvatar extends Component {
           alert('Please crop picture first');
         }
         else{
-        this.props.uploadpicture(this.state.cropResult,this.state.image.name,usertoken); 
+
+        this.props.uploadpicture(this.state.cropResult,this.state.image.name,usertoken,this.props.userdetails.picture); 
         } 
         event.preventDefault();     
         

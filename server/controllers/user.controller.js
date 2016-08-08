@@ -877,7 +877,14 @@ export function uploadpicture (req,res)
 {  
   console.log('file upload is called');
   var token = req.headers.authorization;
- 
+ /* first delete previous profile picture*/
+ if(req.body.oldprofile && req.body.oldprofile != ""){
+  var foldfile = path.join(path.resolve(__dirname, '../../static'),'profileImages',req.body.oldprofile);
+  fs.unlink(foldfile,function(err){
+        if(err) return console.log(err);
+        console.log('file deleted successfully');
+   });  
+}
   
   var imageBuffer = decodeBase64Image(req.body.file);
   var file_ext = req.body.fileName.substr((Math.max(0, req.body.fileName.lastIndexOf(".")) || Infinity) + 1);

@@ -1250,11 +1250,12 @@ export function showNotifications(notifications) {
   };
 }
 
-export function uploadpicture(data,fname,token) {
+export function uploadpicture(data,fname,token,picture) {
   console.log(data);
   var values = {
        file: data,
-       fileName:fname
+       fileName:fname,
+       oldprofile : picture
      
      };
   return (dispatch) => {
@@ -1811,6 +1812,7 @@ export function updatesettings(company,token) {
                     'invitedscheduleemail2':company.invitedscheduleemail2,
                     'invitedscheduleemail3':company.invitedscheduleemail3,
                     'maxnumberofdepartment':company.maxnumberofdepartment,
+                    'maxnumberofchannels':company.maxnumberofchannels,
                     'notificationemailaddress':company.notificationemailaddress,
                     'widgetwindowtab':company.widgetwindowtab,
                     'showsummary':company.showsummary,

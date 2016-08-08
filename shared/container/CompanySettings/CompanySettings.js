@@ -53,6 +53,7 @@ class CompanySettings extends Component {
                     'invitedscheduleemail2':this.refs.invitedscheduleemail2.value,
                     'invitedscheduleemail3':this.refs.invitedscheduleemail3.value,
                     'maxnumberofdepartment':this.refs.maxnumberofdepartment.value,
+                    'maxnumberofchannels':this.refs.maxnumberofchannels.value,
                     'notificationemailaddress':this.refs.notificationemailaddress.value,
                     'widgetwindowtab':this.refs.widgetwindowtab.options[this.refs.widgetwindowtab.selectedIndex].value,
                     'showsummary':this.refs.showsummary.options[this.refs.showsummary.selectedIndex].value,
@@ -120,12 +121,26 @@ class CompanySettings extends Component {
                                                 <div className="col-md-9">
                                                   <div id="spinner1">
                                                     <div className="input-group input-small">
-                                                      <input type="Number"  className="form-control " ref = "maxnumberofdepartment" required  defaultValue={this.props.companysettings.maxnumberofdepartment}/>
+                                                      <input type="Number"  className="form-control " min="1" max="20" ref = "maxnumberofdepartment" required  defaultValue={this.props.companysettings.maxnumberofdepartment}/>
                                                     </div>
                                                   </div>
                                                 </div>
                                               </div>
                                               
+
+
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Max number of Channels per group</label>
+                                                
+                                                <div className="col-md-9">
+                                                  <div id="spinner1">
+                                                    <div className="input-group input-small">
+                                                      <input type="Number"  className="form-control " min="1"  ref = "maxnumberofchannels" required  defaultValue={this.props.companysettings.maxnumberofchannels}/>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Company domain emails</label>
                                                 <div id="spinner1">
