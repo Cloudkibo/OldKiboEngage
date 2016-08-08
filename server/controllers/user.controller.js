@@ -3,6 +3,10 @@ import cuid from 'cuid';
 import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
+import Buffer from 'Buffer';
+import path from 'path';
+import fs from 'fs';
+
 
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
@@ -830,5 +834,93 @@ export function updatesettings (req,res) {
     }
 
     request.post(options, callback);
+  
+};
+
+
+
+//upload picture
+
+
+function decodeBase64Image(dataString) {
+  var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    response = {};
+
+  if (matches.length !== 3) {
+    return new Error('Invalid input string');
+  }
+
+  response.type = matches[1];
+  response.data = new Buffer(matches[2], 'base64');
+
+  return response;
+}
+
+
+function getRandomSalt() {
+    var milliseconds = new Date().getTime();
+    var timestamp = (milliseconds.toString()).substring(9, 13)
+    var random = ("" + Math.random()).substring(2, 8);
+    var random_number = timestamp+random;  // string will be unique because timestamp never repeat itself
+    /*var random_string = base64_encode(random_number).substring(2, 8); // you can set size here of return string
+    var return_string = '';
+    var Exp = /((^[0-9]+[a-z]+)|(^[a-z]+[0-9]+))+[0-9a-z]+$/i;
+    if (random_string.match(Exp)) {                 //check here whether string is alphanumeric or not
+        return_string = random_string;
+    } else {
+        return getRandomSalt();  // call recursivley again
+    }*/
+    return random_number;
+}
+
+export function uploadpicture (req,res)
+{  
+  console.log('file upload is called');
+  var token = req.headers.authorization;
+ 
+  
+  var imageBuffer = decodeBase64Image(req.body.file);
+  var file_ext = req.body.fileName.substr((Math.max(0, req.body.fileName.lastIndexOf(".")) || Infinity) + 1);
+  var newFileName = getRandomSalt() + '.' + file_ext;
+  console.log(imageBuffer);
+  var saveTo = path.join(path.resolve(__dirname, '../../static'),'profileImages',newFileName);
+  console.log(saveTo);  
+  //var f=fs.createWriteStream(saveTo);
+  fs.writeFile(saveTo, imageBuffer.data);
+
+  var options = {
+      url: `${baseURL}/api/users/updateprofilepicture`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      form: {
+        'picture' :newFileName,
+       
+      }
+    };
+    function callback(error, response, body) {
+      console.log(response.statusCode);
+      console.log(body);
+      if (!error) {
+        
+       
+        return res.status(200).send({status:'success',message:'Profile picture uploaded successfully.'});
+
+      }
+
+      else
+      {
+        console.log(error);
+
+        res.status(501).send({status:'danger',message:"Something went wrong, please try again."});
+      }
+    }
+
+    request.post(options, callback);
+  
+
+  //fs.end();
   
 };

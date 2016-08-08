@@ -26,7 +26,7 @@ class ChangeAvatar extends Component {
         this.onSubmit = this.onSubmit.bind(this);
        // this.state = {file: '',imagePreviewUrl: ''};
          this.state = {
-              src : './profileImages/time.PNG',
+              src : '',
               cropResult: null,
               image:null,
               };
@@ -68,44 +68,23 @@ class ChangeAvatar extends Component {
     reader.readAsDataURL(files[0]);
   }
 
-  
-
-
- _handleSubmit(e) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-    console.log('handle uploading-', this.state.file);
-  }
-
-  
   onSubmit(event)
     {
-       alert('i am onClick');
-   
-      /* const usertoken = auth.getToken();
-       event.preventDefault();
-       if(this.refs.cpwd.value != '' && this.refs.cpwd.value.length >= 6 && this.refs.cpwd.value != '' && this.refs.cpwd.value.length && this.refs.npwd.value != '' && this.refs.npwd.value.length >=6)
-       {
-                    var user = {
-                         'email' : this.props.userdetails.email,
-                         'password' : this.refs.cpwd.value,
-                         'newpassword' :this.refs.npwd.value                    
-                  }
-                  console.log(user);
-
-                  this.props.changepassword(user,usertoken);
-        
-       }*/
-
+        const usertoken = auth.getToken();
         console.log(this.state.image);
-        this.props.uploadpicture(this.state.cropResult,this.state.image.name);  
+        if(this.state.image == null){
+          alert('Please upload picture');
+        }
+        else if(this.state.cropResult == null && this.state.image != null ){
+          alert('Please crop picture first');
+        }
+        else{
+        this.props.uploadpicture(this.state.cropResult,this.state.image.name,usertoken); 
+        } 
         event.preventDefault();     
         
     }
 
-
-   
- 
 
   render() {
     const token = auth.getToken()
@@ -124,7 +103,7 @@ class ChangeAvatar extends Component {
             <div className="page-content">
               <div className="row">
                 <div className="col-md-12">
-                    <h3 className ="page-title">My Profile </h3>
+                    <h3 className ="page-title">Change Avatar</h3>
                      <ul className="page-breadcrumb breadcrumb">
                       <li>
                         <i className="fa fa-home"/>
@@ -145,11 +124,19 @@ class ChangeAvatar extends Component {
             <div className="portlet body">
                              
                   <div>
-                    <input type="file" onChange={this._onChange} />
+                  {this.props.userdetails.picture &&
+                    <div>
+                    <h1> Your Profile Picture</h1>
+                    <img  style={{ height: '200', width: '200' }} src = {'./profileImages/'+ this.props.userdetails.picture}/>
+                    </div>
+                  }
+                  <div className="row">
+                    <label> Upload new image </label>
+                    <input type="file" onChange={this._onChange} accept='image/*' />
                     <br />
-                    <div style={{float:'left'}}>
+                    <div style={{height: '400', width: '400'}}>
                     <Cropper
-                      style={{ height: 400, width: '400' }}
+                      style={{ height: '400', width: '400' }}
                       aspectRatio={2/2}
                       preview=".img-preview"
                       guides={false}
@@ -157,21 +144,41 @@ class ChangeAvatar extends Component {
                       ref="cropper"
                       crop={this._crop}
                     />
-                   </div>
-                   
-                    <div className="box" style={{ width: '200',height:'200',float:'right'}}>
-                     
-                        <button onClick={ this._cropImage } >
+
+                    <br/>
+                      <button onClick={ this._cropImage } className="btn green" >
                           Crop Image
                         </button>
-                     
-                      <img style={{ width: '200',height:'200',border:'1px solid rgba(0, 0, 0, 0.26)' }} src={this.state.cropResult} ref="profilepic"/>
+
+                   </div>
+                   <br/>
+                   <br/>
+                   <br/>
+                   <br/>
+                    <div className="row" >
+                      <h4> Preview Picture</h4>
+                      <img style={{ width: '200',height:'200',border:'1px solid rgba(0, 0, 0, 0.26)',display:'block' }} src={this.state.cropResult} ref="profilepic"/>
                     </div>
                   
-                    <button onClick={ this.onSubmit } ref="submitbtn" >
-                          Submit
-                        </button>
+                    
                   </div>
+                  </div>
+                  <br/>
+                  <div className="row">
+                  <button onClick={ this.onSubmit } ref="submitbtn" className="btn green" >
+                          Submit
+                  </button>
+                  <br/>
+                   {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "danger" &&
+                                                 <div className = "alert alert-danger"><span>{this.props.errorMessageProfile.message}</span></div>
+                                              }
+
+                                              {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "success" &&
+                                                 <div className = "alert alert-success"><span>{this.props.errorMessageProfile.message}</span></div>
+                                              }
+
+                  </div>                            
+
               </div>
             </div>
           </div>

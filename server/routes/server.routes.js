@@ -43,6 +43,8 @@ router.route('/getcustomerchannels').get(ChannelController.getcustomerchannels);
 router.route('/deleteChannel').delete(ChannelController.destroyChannel);
 
 router.route('/createResponse').post(UserController.createResponse);
+router.route('/uploadpicture').put(UserController.uploadpicture);
+
 router.route('/editResponse').post(UserController.editResponse);
 router.route('/getresponses').get(UserController.getresponses);
 router.route('/deleteResponse').delete(UserController.destroyResponse);

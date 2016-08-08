@@ -1250,29 +1250,28 @@ export function showNotifications(notifications) {
   };
 }
 
-export function uploadpicture(data,fname) {
+export function uploadpicture(data,fname,token) {
   console.log(data);
   var values = {
        file: data,
        fileName:fname
      
      };
-
   return (dispatch) => {
-    fetch(`${baseURL}/upload`, {
-        method: 'put',
-         headers: new Headers({
-           'Accept': 'application/json',
-           'Content-Type': 'application/json'
-
+    fetch(`${baseURL}/api/uploadpicture`, {
+      method: 'put',
+        body: JSON.stringify(values),
+        headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
       }),
-      body: JSON.stringify(values)   
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
       
-     
-    
-    });
-   }
-      };
+   
+      );
+  };
+
+};
 
 
 /*** get notifications ***/
