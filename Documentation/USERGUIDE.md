@@ -196,7 +196,7 @@ Vistors data is captured like:
 ### New Chat Session List
 
 This list shows list of chat sessions that are not yet assigned to any agent
-![new sessions](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/newchatSessions.PNG)
+![new sessions](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/newchatsessions.PNG)
 
 
 ### My picked chat sessions
