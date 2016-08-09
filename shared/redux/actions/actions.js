@@ -1260,7 +1260,7 @@ export function uploadpicture(data,fname,token,picture) {
      };
   return (dispatch) => {
     fetch(`${baseURL}/api/uploadpicture`, {
-      method: 'put',
+      method: 'post',
         body: JSON.stringify(values),
         headers: new Headers({
         'Content-Type': 'application/json',

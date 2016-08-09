@@ -892,39 +892,50 @@ export function uploadpicture (req,res)
   var saveTo = path.join(path.resolve(__dirname, '../../static'),'profileImages',newFileName);
   console.log(saveTo);  
   //var f=fs.createWriteStream(saveTo);
-  fs.writeFile(saveTo, imageBuffer.data);
-  console.log('file saved on server');
-  var options = {
-      url: `${baseURL}/api/users/updateprofilepicture`,
-      rejectUnauthorized : false,
-      headers :  {
-                 'Authorization': `Bearer ${token}`,
-                
-                 },
-      form: {
-        'picture' :newFileName,
-       
+  fs.writeFile(saveTo, imageBuffer.data, function (err) {
+   if(err){
+          console.log('error occured in writing file');
+          res.status(501).send({status:'danger',message:"Something went wrong, please try again."});
+          
+   }
+
+
+   else{
+          console.log('file saved on server');
+          var options = {
+            url: `${baseURL}/api/users/updateprofilepicture`,
+            rejectUnauthorized : false,
+            headers :  {
+                       'Authorization': `Bearer ${token}`,
+                      
+                       },
+            form: {
+              'picture' :newFileName,
+             
+            }
+          };
+          function callback(error, response, body) {
+            console.log(response.statusCode);
+            console.log(body);
+            if (!error && response.statusCode == 200) {
+              
+             
+              return res.status(200).send({status:'success',message:'Profile picture uploaded successfully.'});
+
+            }
+
+            else
+            {
+            //  console.log(error);
+
+              res.status(501).send({status:'danger',message:"Something went wrong, please try again."});
+            }
+          }
+
+          request.post(options, callback);
+    
       }
-    };
-    function callback(error, response, body) {
-      console.log(response.statusCode);
-      console.log(body);
-      if (!error && response.statusCode == 200) {
-        
-       
-        return res.status(200).send({status:'success',message:'Profile picture uploaded successfully.'});
-
-      }
-
-      else
-      {
-      //  console.log(error);
-
-        res.status(501).send({status:'danger',message:"Something went wrong, please try again."});
-      }
-    }
-
-    request.post(options, callback);
+});
   
 
   //fs.end();
