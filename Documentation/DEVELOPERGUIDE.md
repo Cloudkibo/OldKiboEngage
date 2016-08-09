@@ -125,8 +125,14 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
               vi. Filter customer messages by groups (New,Assigned,Resolved)
               vii.Filter customer messages by agents (visible to only Admin/Supervisor)
               
-
+** FlowChart Describing the Work flow of Chat Module **
 ![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/Flowchart for Chat Module.png)
+
+
+For webclients,only the list of customer sessions currently going on will be displayed to agent.
+** FlowChart for Retrieving Session List from Socket for Webclients **
+
+![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/listofsessionsflowchart.png)
 
 
 ###5.    Notifications Container
@@ -151,9 +157,14 @@ In Kibo Engage,section below is describing React Containers,Data that they will 
             *Actions:*
                 i.Send SMS/Email:
                     Agent can send sms/email or can view chat history of that particular customer.
-              
 
+###7.    Assigned Session List Container
+      This container will fetch assigned sessions list from server and also gets updated when a session is assigned to some agent.This update is retrieved from socket.
+      
+###8.    New Session List Container
+      This container will fetch new sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket.      
 
+      
 
 ## Redux Files Structure
 We have used Redux for data and state handling on client side.
@@ -238,6 +249,7 @@ Redux code is defined in shared/redux folder.
       x. saveChat : Calls server api to save chat message
       xi. createsession : Calls server api to create chat session between customer and agent
       xii. updatesessionStatus : Calls server api to update chat session status
+      
 ###7. Actions related to Notifications:
       Following actions are related to Notifications.
       They will return notification details to reducer
@@ -254,7 +266,24 @@ Redux code is defined in shared/redux folder.
       i.  getcustomers : Calls server api to fetch customer details 
       ii. createcustomer : Call server api to create customer when the customer fills form on Chat Widget
       iii.  emailCustomer : Calls server api to send customer email from agent
+      
+###9. Actions related to Company Settings:
+      Following actions are related to CompanySettings.
+      
+      i.  getcompanysettings : Calls server api to fetch current company settings
+      ii. updatesettings : Call server api to update company settings
 
+###10. Actions related to Profile:
+      Following actions are related to Profile.
+      
+      i.   getuserdetails : Calls server api to fetch current user profile
+      ii.  updateprofile : Call server api to update user profile
+      iii. changepassword : Call server api to change user password
+      iv.  getmyusergroups : Call server api to fetch list of groups user has joined
+      v.   uploadpicture : Call server api to upload avatar
+      
+      
+    
 
 
 ### reducers/reducer.js
