@@ -214,6 +214,11 @@ Also gives option to change password and Profile picture.
 
 ![password](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/changepassword.PNG)
 
+### My Groups
+ This shows a list of groups agent has created or joined
+
+![mygroups](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/mygroups.PNG)
+
 
 ### Report (This feature will be implemented in V2)
 
