@@ -193,6 +193,12 @@ Vistors data is captured like:
 
 ![assigned sessions](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedChatSessions.PNG)
 
+### New Chat Session List
+
+This list shows list of chat sessions that are not yet assigned to any agent
+![new sessions](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/newchatSessions.PNG)
+
+
 ### My picked chat sessions
 
 This list shows list of chat sessions that are piked by user.
