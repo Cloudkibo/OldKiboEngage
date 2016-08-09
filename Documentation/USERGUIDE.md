@@ -130,20 +130,9 @@ Admin can give rights to supervisor to remove an agent from group and to assign 
 
 ![agent rights](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/agent%20change%20role.PNG)
 
-### Invite to call
+### Invite to call (This feature will be in V3)
 Admin, Supervisor or Agent can invite a customer to have conversation with and solve its problem. Inviting a vistor
-for call is simple and easy, KiboEngage generates a unique URL for its visitor and agent to connect in. 
-
-![invite for](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/invite%20other%20to%20call.PNG)
-
-Invite the customer with their email id. Three sample emails are provided to agent and supervisor that are set by company Admin during the company settings. Agent can edit and send the email or just copy the unique generated URL and send it by another mean. For this calls can be simply scheduled or can be scheduled via sample email y clicking the button "Schedule and send email".
-
-![email](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/invite%20sample%20email%20and%20preview.PNG)
-
-Admin can set the three sample emails for it agent and supervisor via profile settings. 
-
-![myprofile invite sample](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/invited%20content.PNG)
-
+for call is simple and easy, KiboEngage will generate a unique URL for its visitor and agent to connect in. 
 
 ### Customer Directory
 
@@ -184,9 +173,9 @@ Edit Canned Response
 ![edit canned response](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/cannedResponseEdit.PNG)
 
 
-### Waiting calls
+### Assigned Chat Session List
 
-When new visitor joins via widget, it can be seen in the waiting list by Admin and Agent and Supervisor of the relevant group the visitor has tried to connect to. 
+When new visitor joins via widget,and agent picks or assign chat session to another agent, it can be seen in the assigned session list by Admin and Agent and Supervisor of the relevant group the visitor has tried to connect to. 
 
 Vistors data is captured like:
 
@@ -196,60 +185,18 @@ Vistors data is captured like:
 - Phone
 - Current Page Full URL
 - Device
-- Call Request Time
-- Question
+- Request Time
+- Message Channel
+- Group
 - Current page
 
 
-![waiting calls](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/waiting%20caller%20detail.PNG)
+![assigned sessions](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedChatSessions.PNG)
 
-Agent can join the call using 'Help Visitor' button
+### My picked chat sessions
 
-![waiting list](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/waiting%20calls.PNG)
-
-### Inprogress calls
-
-When an agent picks call its entry is seen in inprogres calls list. So, you can now which calls are in progress. 
-This also records time when agent and visitor are in call.
-When call is done, agent click the button 'Complete' so it can be seen by everyone that call has been completed. 
-
-![inprogress calls](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/inprogress%20calls.PNG)
-
-It also shows name for agent who picked the call and the initiator. Initiator indicates if the caller has been invited by agent into the call or if visitor has made the call request from company widget.
-
-### Complete calls
-
-Completed calls list shows the calls that are received and completed by the agent, superisor or admin.
-It shows call duration entry. That is the time the all took. 
-
-![completed calls](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/completed%20call.PNG)
-
-A button "Reschedule" is provided so that agent can 
-schedule call with the same visitor again.
-
-![schduel complete](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/completed%20call%20reschedue.PNG)
-
-This is similar functionality as of "Invite to call". Three sample emails are provided by admin of the company, Agent and Supervisor can edit and send the email with unique URL for call by pressing "Schedule and send email" button. Or just copy the URL and send it with other mean and press "Schedule" button. The email can be previewed before sending to visitor
-
-### Abandoned calls
-
-When a call is missed by agent it is entered in the list of Abandoned calls list. It gived the option for scheduling the call.
-Three sample emails are provided by admin of the company, Agent and Supervisor can edit and send the email with unique URL for call by pressing "Schedule and send email" button. Or just copy the URL and send it with other mean and press "Schedule" button. The email can be previewed before sending to visitor
-
-![Abandoned calls](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/abandoned%20call.PNG)
-
-### Consolidated calls
-
-
-### My scheduled calls
-
-User can see calls that are scheduled using "Invite to call" feature of KiboEngage. 
-![my scheduled](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/my%20scheduled%20list.PNG)
-
-### My picked calls
-
-This list shows list of calls that are piked by user. This includes all agent initiated and visitor initiated calls.
-![picked calls](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/my%20picked%20calls.PNG)
+This list shows list of chat sessions that are piked by user.
+![picked calls](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/mypickedsessions.PNG)
 
 ### Profile
 
@@ -261,44 +208,16 @@ Profile settings allow you to edit and change the profile settings. For example:
 - State
 - Country
 
-![profile](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/change%20profile.PNG)
+![profile](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/myprofile.PNG)
 
-Also gives option to change password, Profile picture and to enable desktop notification and chime with notification.
+Also gives option to change password and Profile picture.
 
-![password](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/upload%20profile%20picture.PNG)
-![chime](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/settings.PNG)
+![password](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/changepassword.PNG)
 
-### Report
+
+### Report (This feature will be implemented in V2)
 
 Our Real-Time report gives you an overview of agents' activity. Measure your live call engagement with visitor. These reports can be viewed for Today, Last month and This Year
-
-**Top Group calls**
-
-This graph shows groups with respect to frequeny of calls made for.
-
-![group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/top%20groups%20report.PNG)
-
-**Agents picked calls**
-
-This graph represents the agent with respect to number of calls picked by them.
-
-![agent call](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/agent%20contribution%20report.PNG)
-
-**Averages**
-
-This graph shows the average of wait time of all calls and average of call time during progress call.
-
-![averages](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/average%20cll%20time%20report.PNG)
-
-****
-
-This graph shows the number of calls picked and completed with the number of calls abandoned.
-![cal](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/call%20stats%20report.PNG)
-
-
-
-
-
 
 
 
