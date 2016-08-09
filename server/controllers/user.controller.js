@@ -889,12 +889,11 @@ export function uploadpicture (req,res)
   var imageBuffer = decodeBase64Image(req.body.file);
   var file_ext = req.body.fileName.substr((Math.max(0, req.body.fileName.lastIndexOf(".")) || Infinity) + 1);
   var newFileName = getRandomSalt() + '.' + file_ext;
-  console.log(imageBuffer);
   var saveTo = path.join(path.resolve(__dirname, '../../static'),'profileImages',newFileName);
   console.log(saveTo);  
   //var f=fs.createWriteStream(saveTo);
   fs.writeFile(saveTo, imageBuffer.data);
-
+  console.log('file saved on server');
   var options = {
       url: `${baseURL}/api/users/updateprofilepicture`,
       rejectUnauthorized : false,
@@ -910,7 +909,7 @@ export function uploadpicture (req,res)
     function callback(error, response, body) {
       console.log(response.statusCode);
       console.log(body);
-      if (!error) {
+      if (!error && response.statusCode == 200) {
         
        
         return res.status(200).send({status:'success',message:'Profile picture uploaded successfully.'});
@@ -919,7 +918,7 @@ export function uploadpicture (req,res)
 
       else
       {
-        console.log(error);
+      //  console.log(error);
 
         res.status(501).send({status:'danger',message:"Something went wrong, please try again."});
       }
