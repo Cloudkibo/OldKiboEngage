@@ -47,7 +47,11 @@ var agentname = []
       <td>{ag[0].email}</td>
       <td>{gname[0].deptname}</td>
       <td>{ch[0].msg_channel_name}</td>
-      <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
+      {
+        props.agent &&
+         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
+      }
+     
       <td>{props.session.status}</td>
       
     </tr> :
@@ -58,7 +62,10 @@ var agentname = []
       <td>{props.email}</td>
       <td>{gname[0].deptname}</td>
       <td>{ch[0].msg_channel_name}</td>
-      <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
+      {
+        props.agent &&
+         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
+      }
       <td>{props.session.status}</td>
       
     </tr> 

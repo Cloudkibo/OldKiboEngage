@@ -163,7 +163,7 @@ function mapStateToProps(state) {
   console.log(state.dashboard.response);
   
    return {
-    
+    userdetails :(state.dashboard.userdetails),
     group: (state.dashboard.group),
     channels:(state.dashboard.channels),
     deptagents:(state.dashboard.deptagents),

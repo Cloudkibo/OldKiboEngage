@@ -349,7 +349,16 @@ socket.on('getOnlineAgentList',function() {
 
       onlineWebClientsSession.push(room);
       
-      socket.broadcast.to(room.room).emit('customer_joined',onlineWebClientsSession);
+      var customer_in_company_room =[]; //only online customers who are in your room
+      for(var j = 0;j<onlineWebClientsSession.length;j++){
+      if(onlineWebClientsSession[j].room == room.room){
+         customer_in_company_room.push(onlineWebClientsSession[j]);
+        }
+      }
+
+      socket.broadcast.to(room.room).emit('customer_joined',customer_in_company_room);
+
+      
 
      
 

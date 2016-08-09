@@ -616,6 +616,29 @@ const dashboard = (state =dashboardState, action) => {
              
             };
 
+            case ActionTypes.SHOW_NEW_SESSIONS:
+             return {
+             userchats : state.userchats,
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage: state.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : action.customerchat,
+             responses : state.responses,
+             newsessions : action.newsessions,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,
+             
+            };
+
+          
              case ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS:
              return {
              userchats : state.userchats,
@@ -638,6 +661,34 @@ const dashboard = (state =dashboardState, action) => {
              yoursocketid : state.yoursocketid,
              
             };
+
+
+             case ActionTypes.SHOW_NEW_SOCKET_SESSIONS:
+             return {
+             userchats : state.userchats,
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage: state.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : action.customerchat,
+             responses : state.responses,
+             newsessions : action.newsessions,
+             newsocketsessions : action.newsocketsessions,
+
+             assignedsessions : state.assignedsessions,
+             assignedsocketsessions : state.assignedsocketsessions,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,
+             
+            };
+
 
 
           case ActionTypes.SET_SOCKET_ID:
@@ -980,6 +1031,7 @@ const dashboard = (state =dashboardState, action) => {
              channels : state.channels, 
               responses : state.responses,
              assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
              notifications:state.notifications,
              notification: state.notification,
              customers : action.customers,

@@ -47,11 +47,11 @@ export default class SideBar extends Component
               </li>
 
               <li className="">
-                <Link to='/abandonedcalls'>
+                <Link to='/newchatsessions'>
                   <i className="fa fa-chain-broken">
                   </i>      
                   <span className="title">
-                     Abandoned Calls
+                     New Chat Sessions
                   </span>      
                   <span className="selected">
                   </span>
