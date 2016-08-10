@@ -1021,6 +1021,34 @@ export function showAssignedChatSessions(sessions){
   };
 }
 
+export function showResolvedChatSessions(sessions){
+  var resolvedsessions = sessions.filter((c) => c.status == "resolved" && c.agent_ids.length>0)
+  return {
+    type: ActionTypes.SHOW_RESOLVED_SESSIONS,
+    resolvedsessions : resolvedsessions,
+   
+  };
+}
+
+
+
+export function getresolvedsessionsfromsocket(sessions,serversessions){
+  var resolvedsocketsessions = sessions.filter((c) => c.status == "resolved")
+  for(var j=0;j<resolvedsocketsessions.length-1;j++){
+     for(var i=0;i<serversessions.length-1;i++){
+  
+      if(serversessions[i].request_id == resolvedsocketsessions[j].request_id){
+        serversessions.splice(i,1);
+        break;
+      }
+    }
+  }
+  return {
+    type: ActionTypes.SHOW_RESOLVED_SOCKET_SESSIONS,
+    resolvedsocketsessions : resolvedsocketsessions,
+    resolvedsessions : serversessions,
+  }; 
+}
 
 export function getnewsessionsfromsocket(sessions,serversessions){
   var newsocketsessions = sessions.filter((c) => c.status == "new")
@@ -1203,6 +1231,23 @@ export function getnewsessions(token){
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showNewChatSessions(res)));
   };
 }
+
+
+export function getresolvedsessions(token){
+  console.log(token);
+
+
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getsessions`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showResolvedChatSessions(res)));
+  };
+}
+
 
 
 

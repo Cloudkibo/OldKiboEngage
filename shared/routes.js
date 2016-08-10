@@ -42,6 +42,8 @@ import MyGroups from './container/MyProfile/MyGroups'
 import MyProfile from './container/MyProfile/MyProfile'
 import MyPickedSessions from './container/MyProfile/MyPickedSessions'
 import AssignedSessions from './container/ChatSessions/AssignedSessions'
+import ResolvedSessions from './container/ChatSessions/ResolvedSessions'
+
 import NewSessions from './container/ChatSessions/NewSessions'
 
 import ChangeAvatar from './container/MyProfile/ChangeAvatar'
@@ -126,6 +128,8 @@ const routes = (
      <Route path="/mypickedchatsessions"  component={MyPickedSessions}  onEnter={requireAuth}/>
      <Route path="/assignedchatsessions"  component={AssignedSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/newchatsessions"  component={NewSessions}  socket={socket} onEnter={requireAuth}/>
+     <Route path="/resolvedchatsessions"  component={ResolvedSessions}  socket={socket} onEnter={requireAuth}/>
+   
      <Route path="*" component={NotFound} />
   </Route>
  

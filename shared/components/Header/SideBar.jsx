@@ -59,11 +59,11 @@ export default class SideBar extends Component
               </li>
 
                <li className="">
-                <Link to="/completedcalls">
+                <Link to="/resolvedchatsessions">
                   <i className="fa fa-check">
                   </i>      
                   <span className="title">
-                     Completed Calls
+                     Resolved Chat Sessions
                   </span>      
                   <span className="selected">
                   </span>
@@ -71,18 +71,7 @@ export default class SideBar extends Component
               </li>
 
 
-               <li className="">
-                <Link to="/completedcalls">
-                  <i className="fa fa-reorder">
-                  </i>      
-                  <span className="title">
-                     Consolidated Calls
-                  </span>      
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
-
+               
               <li className="">
                 <Link to="/completedcalls">
                   <i className="fa fa-phone-square">
