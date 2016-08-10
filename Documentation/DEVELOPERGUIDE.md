@@ -162,7 +162,11 @@ For webclients,only the list of customer sessions currently going on will be dis
       This container will fetch assigned sessions list from server and also gets updated when a session is assigned to some agent.This update is retrieved from socket.
       
 ###8.    New Session List Container
-      This container will fetch new sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket.      
+      This container will fetch new sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket. 
+
+###9.    Resolved Session List Container
+      This container will fetch resolved sessions list from server and also gets updated when a agent mark chat session 'resolved'.This update is retrieved from socket. 
+      
 
       
 
@@ -281,6 +285,8 @@ Redux code is defined in shared/redux folder.
       iii. changepassword : Call server api to change user password
       iv.  getmyusergroups : Call server api to fetch list of groups user has joined
       v.   uploadpicture : Call server api to upload avatar
+      
+      
       
       
     
