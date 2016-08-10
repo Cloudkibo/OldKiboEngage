@@ -46,14 +46,26 @@ var agentname = []
       <td>{ag[0].name} </td>
       <td>{ag[0].email}</td>
       <td>{gname[0].deptname}</td>
-      <td>{ch[0].msg_channel_name}</td>
       {
-        props.agent &&
-         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
+        ch[0] &&
+      <td>{ch[0].msg_channel_name}</td>
+      }
+      {
+        props.agent && agentname[0] ?
+         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td> :
+          <td>-</td>
+
       }
      
       <td>{props.session.status}</td>
-      
+      {
+        props.viewoption &&
+        <td>
+         <Link to={`/chatsessionview/${props.session._id}`} className="btn blue-madison" >
+         View Details
+        </Link>
+        </td>
+      }
     </tr> :
 
      <tr className = "odd">
@@ -61,9 +73,13 @@ var agentname = []
       <td>{props.customername} </td>
       <td>{props.email}</td>
       <td>{gname[0].deptname}</td>
-      <td>{ch[0].msg_channel_name}</td>
       {
-        props.agent &&
+        ch[0] &&
+         <td>{ch[0].msg_channel_name}</td>
+     
+      }
+      {
+        props.agent && agentname[0] &&
          <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
       }
       <td>{props.session.status}</td>

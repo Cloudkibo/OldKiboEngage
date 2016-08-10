@@ -977,6 +977,13 @@ export function getsessionsfromsocket(customerchat){
    
   };
 }
+export function showChatSummary(sessions){
+  return {
+    type: ActionTypes.SHOW_CHAT_SUMMARY,
+    sessionsummary : sessions,
+   
+  };
+}
 export function showAllChat(customerchat) {
 /* var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
                   {'id': '2','username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
@@ -1276,7 +1283,7 @@ export function getsessions(token) {
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showAllChat(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showChatSummary(res)));
   };
 }
 

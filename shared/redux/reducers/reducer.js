@@ -1092,10 +1092,40 @@ const dashboard = (state =dashboardState, action) => {
              chatlist : state.chatlist,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             
           
             };
+            
+
+            case ActionTypes.SHOW_CHAT_SUMMARY:
+             return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+              responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+              customerchatold : state.customerchatold,
+              sessionsummary : action.sessionsummary,
+              customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            
+          
+            };
+            
             case ActionTypes.ADD_SELECTED_CUSTOMER :
             return {
               userdetails: state.userdetails,

@@ -73,11 +73,11 @@ export default class SideBar extends Component
 
                
               <li className="">
-                <Link to="/completedcalls">
+                <Link to="/summarychatsessions">
                   <i className="fa fa-phone-square">
                   </i>      
                   <span className="title">
-                     Invite to Call
+                     Summary of Chat Sessions
                   </span>      
                   <span className="selected">
                   </span>
