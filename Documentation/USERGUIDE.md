@@ -199,6 +199,12 @@ This list shows list of chat sessions that are not yet assigned to any agent
 ![new sessions](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/newchatsessions.PNG)
 
 
+### Resolved Chat Session List
+
+This list shows list of chat sessions that are resolved by any agent
+![resolved sessions](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/resolvedchatsessions.PNG)
+
+
 ### My picked chat sessions
 
 This list shows list of chat sessions that are piked by user.
