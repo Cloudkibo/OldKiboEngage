@@ -800,6 +800,14 @@ export function getchannels(token) {
   };
 }
 
+
+export function getSessionDetailsRequest(id,usertoken)
+{
+  return {
+    type: ActionTypes.ADD_SELECTED_SESSIONSUMMARY,
+    id,
+  };
+}
 export function getChannelRequest(id,usertoken) {
   console.log(id)
   return {
@@ -1778,6 +1786,15 @@ export function showuserchat(userchats) {
 }
 
 
+export function showuserchatspecific(userchats) {
+  return {
+    type: ActionTypes.ADD_USER_CHATS_SPECIFIC,
+    userchathistory : userchats,
+   
+
+  };
+}
+
 export function getuserchats(token) {
   console.log(token);
   return (dispatch) => {
@@ -1811,6 +1828,26 @@ export function resolvesession(request_id,usertoken) {
 }
 }
 
+
+
+//get specific chat messages history
+export function getspecificuserchats(request_id,companyid,usertoken) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getspecificuserchats`, {
+      method: 'post',
+      body: JSON.stringify({
+        request_id : request_id,
+        companyid : companyid,
+       }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+       
+      }),
+    }).then((res) => res.json()).then(res => dispatch(showuserchatspecific(res.userchats)));
+  };
+
+}
 
 
 

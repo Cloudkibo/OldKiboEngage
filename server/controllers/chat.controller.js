@@ -334,6 +334,51 @@ export function getuserchats(req, res) {
    
   }
 
+
+
+export function getspecificuserchats(req, res) {
+  var token = req.headers.authorization;
+  var options = {
+      url: `${baseURL}/api/userchats/getSpecificChat`,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      rejectUnauthorized : false,
+      json: req.body
+      
+     
+    };
+
+    function callback(error, response, body) {
+        //console.log(error);
+        console.log(response.statusCode);
+
+        //console.log(body);
+        
+       if(!error && response.statusCode == 200)
+       {
+
+       /* var linq = Enumerable.from(body);
+        //console.log(linq);
+        var result =
+            linq.groupBy(function(x){return x.request_id;})
+            .select(function(x){return { request_id:x.key(),Value:x.last() };})
+            .toArray();
+        //console.log(result);
+        var info = result;*/
+        return res.status(200).json({statusCode : 201,userchats:body});
+       }
+       else
+       {
+           res.sendStatus(422);
+           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+   
+       }    
+       }    
+           request.post(options, callback);
+   
+  }
+
 // resolve session
 
 export function resolvechatsession(req, res) {

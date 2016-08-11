@@ -1125,6 +1125,68 @@ const dashboard = (state =dashboardState, action) => {
             
           
             };
+
+            case ActionTypes.ADD_SELECTED_SESSIONSUMMARY:
+             return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             sessionsummary : state.sessionsummary,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             sessionsummarydetail : state.sessionsummary.filter((c) => c.request_id == action.id),
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            
+          
+            };
+
+
+             case ActionTypes.ADD_USER_CHATS_SPECIFIC:
+             return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             sessionsummary : state.sessionsummary,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             sessionsummarydetail : state.sessionsummarydetail,
+             userchathistory : action.userchathistory,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            
+          
+            };
+
+
             
             case ActionTypes.ADD_SELECTED_CUSTOMER :
             return {

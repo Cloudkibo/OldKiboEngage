@@ -61,7 +61,7 @@ var agentname = []
       {
         props.viewoption &&
         <td>
-         <Link to={`/chatsessionview/${props.session._id}`} className="btn blue-madison" >
+         <Link to={`/chatsessionview/${props.session.request_id}`} className="btn blue-madison" >
          View Details
         </Link>
         </td>

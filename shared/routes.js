@@ -30,6 +30,7 @@ import ResetPasswordFailure from './container/Auth/ResetPasswordFailure'
 import CannedResponseCreate from './container/CannedResponse/CannedResponseCreate'
 import CannedResponses from './container/CannedResponse/CannedResponses'
 import ResponseEditView from './container/CannedResponse/ResponseEditView'
+import SessionDetailView from './container/ChatSessions/SessionDetailView'
 import JoinPage from './container/Agents/JoinPage'
 import NotFound from './container/NotFound'
 import auth from './services/auth';
@@ -132,7 +133,7 @@ const routes = (
      <Route path="/newchatsessions"  component={NewSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/resolvedchatsessions"  component={ResolvedSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/summarychatsessions"  component={SessionSummary}  socket={socket} onEnter={requireAuth}/>
-   
+     <Route path="/chatsessionview/:id"  component={SessionDetailView} onEnter={requireAuth}/>
      <Route path="*" component={NotFound} />
   </Route>
  
