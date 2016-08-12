@@ -7,6 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import CustomerListItem from './CustomerListItem';
 import {getcustomers} from '../../redux/actions/actions'
+import { browserHistory } from 'react-router'
 
 import { bindActionCreators } from 'redux';
 
@@ -14,6 +15,9 @@ class Customers extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
     const usertoken = auth.getToken();
     console.log('constructor is called');
     if(usertoken != null)

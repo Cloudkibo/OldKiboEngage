@@ -57,7 +57,7 @@ import AddCustomer from './container/CustomerDirectory/AddCustomer'
 import EmailCustomer from './container/CustomerDirectory/EmailCustomer'
 import Router from 'react-router';
 import { browserHistory } from 'react-router'
-
+import NotVerified from './container/NotVerified'
 
 
 import io from 'socket.io-client'
@@ -89,6 +89,7 @@ const routes = (
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
     <Route path="/forgotpassword" component={ForgotPassword} />
+    <Route path="/notverified" component={NotVerified}  onEnter={requireAuth}/>
   
     <Route path="joincompany/:id" component={JoinCompany}/>
     <Route path="/join" component={JoinPage}/>

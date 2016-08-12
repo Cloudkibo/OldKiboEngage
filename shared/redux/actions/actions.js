@@ -1911,6 +1911,20 @@ export function updateprofile(user,token) {
 }
 
 
+export function verifyaccount(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/verifyaccount`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
+      
+   
+      );
+  };
+}
+
 export function changepassword(user,token) {
      return (dispatch) => {
     fetch(`${baseURL}/api/changenewpassword`, {

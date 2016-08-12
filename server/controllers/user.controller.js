@@ -753,6 +753,44 @@ export function updateprofile (req,res) {
 };
 
 
+// verify account
+export function verifyaccount (req,res) {
+  
+var token = req.headers.authorization;
+    console.log('verify account is called');
+    var options = {
+      url: `${baseURL}/api/users/reapplyverificationlink/kiboengage`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+     
+    };
+    function callback(error, response, body) {
+      //console.log(response.statusCode);
+      if (!error) {
+        //var info = JSON.parse(body);
+        //console.log('api calling succeed')
+        console.log(body)
+        return res.status(200).send({status:'success',message:'Check your inbox. Verification link has been emailed to you.'});
+
+      }
+
+      else
+      {
+        console.log(error);
+
+        res.status(501).send({status:'danger',message:"Something went wrong, please try again.",statusCode:501});
+      }
+    }
+
+    request.get(options, callback);
+  
+};
+
+
+
 //change password
 
 export function changenewpassword(req,res) {

@@ -10,6 +10,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router'
 
 import io from 'socket.io-client';
 
@@ -17,6 +18,9 @@ class Chat extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
     const usertoken = auth.getToken();
      console.log('componentWillMount is called');
     if(usertoken != null)
@@ -53,7 +57,7 @@ updateOnlineAgents(data){
   }
 componentDidMount(){
        //get online agents list
-       alert('componentDidMount is called');
+      // alert('componentDidMount is called');
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
         this.props.route.socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
@@ -92,7 +96,7 @@ componentDidMount(){
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-    alert('getupdatedSessions is called');
+   // alert('getupdatedSessions is called');
     this.props.getchatsfromsocket(data);
     this.forceUpdate();
   }

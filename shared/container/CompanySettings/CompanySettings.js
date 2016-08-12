@@ -6,6 +6,7 @@ import {getcompanysettings,updatesettings} from '../../redux/actions/actions'
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
+import { browserHistory } from 'react-router'
 
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
@@ -19,6 +20,10 @@ class CompanySettings extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
+   
     const usertoken = auth.getToken();
     console.log('componentWillMount is called');
     if(usertoken != null)

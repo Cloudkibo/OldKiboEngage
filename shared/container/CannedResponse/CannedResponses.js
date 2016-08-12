@@ -11,11 +11,15 @@ import {deleteresponse} from '../../redux/actions/actions'
 import {createResponse}  from '../../redux/actions/actions'
 import CannedResponseCreate from './CannedResponseCreate'
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router'
 
 class CannedResponses extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
     const usertoken = auth.getToken();
     console.log('constructor is called');
     if(usertoken != null)

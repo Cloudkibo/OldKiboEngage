@@ -16,6 +16,9 @@ class MyGroups extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
     const usertoken = auth.getToken();
     console.log('componentWillMount is called');
     if(usertoken != null)

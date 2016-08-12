@@ -11,11 +11,16 @@ import {deletenotification} from '../../redux/actions/actions'
 import {getcustomers} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router'
+
 
 class Notifications extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
     const usertoken = auth.getToken();
     console.log('constructor is called');
     if(usertoken != null)

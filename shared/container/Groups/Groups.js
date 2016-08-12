@@ -12,11 +12,16 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router'
 
 class Groups extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
+   
     const usertoken = auth.getToken();
      console.log('componentWillMount is called');
     if(usertoken != null)

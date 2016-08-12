@@ -12,11 +12,17 @@ import Footer from '../components/Footer/Footer.jsx';
 import SideBar from '../components/Header/SideBar';
 import auth from '../services/auth';
 import ReactTimeout from 'react-timeout'
+import { browserHistory } from 'react-router'
+
 //const socket = io('');
 var dontCall = false;
 
 class Dashboard extends Component {
  constructor(props, context) {
+
+ if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
     super(props, context);
      this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
   
@@ -37,6 +43,7 @@ class Dashboard extends Component {
   componentDidMount(){
     // fetch online agent list
    // this.props.route.socket.emit('getOnlineAgentList');
+  
   
   }
 

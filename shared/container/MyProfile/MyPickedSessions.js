@@ -8,11 +8,15 @@ import auth from '../../services/auth';
 import MyPickedSessionListItem from './MyPickedSessionListItem';
 import {getmypickedsessions,getcustomers} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router'
 
 class MyPickedSessions extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    if(props.userdetails.accountVerified == "No"){
+    browserHistory.push('/notverified');
+   }
     const usertoken = auth.getToken();
     console.log('constructor is called');
     if(usertoken != null)
