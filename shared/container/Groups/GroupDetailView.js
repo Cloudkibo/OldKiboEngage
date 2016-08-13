@@ -2,7 +2,7 @@ import GroupListItem from './GroupListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getGroupRequest}  from '../../redux/actions/actions'
+import { getGroupRequest,getDeptAgents}  from '../../redux/actions/actions'
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
@@ -19,7 +19,10 @@ class GroupDetailView extends Component {
        
         console.log(usertoken);
         console.log(props.params.id);
+         props.getDeptAgents(usertoken);
         props.getGroupRequest(props.params.id,usertoken);
+       
+    
       }
       
         super(props, context);
@@ -148,4 +151,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getGroupRequest})(GroupDetailView);
+export default connect(mapStateToProps,{ getGroupRequest,getDeptAgents})(GroupDetailView);

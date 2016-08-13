@@ -177,6 +177,11 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
 
+
+
+             group: state.group,
+             newagents : state.newagents,
+        
            
           };              
 
