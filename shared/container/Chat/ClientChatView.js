@@ -26,7 +26,7 @@ class ClientChatView extends Component {
     console.log('agent socket id is : ' + data.data.agentsocket);
     this.refs.agentsocket.value =  data.data.agentsocket;
     this.refs.agentid.value = data.data.agentid;
-    this.refs.agentname.value = data.data.from;
+    this.refs.agentname.value = data.data.assignedagentname;
 
 
   }

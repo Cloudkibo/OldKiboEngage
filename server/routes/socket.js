@@ -112,6 +112,7 @@ function onConnect(io2, socket) {
     userchats.push(data);
     io2.to(data.agentsocket).emit('send:message',{
             to: data.to,
+            assignedagentname : data.assignedagentname,
             socketid:data.socketid,
             from : data.from,
             visitoremail:data.visitoremail,

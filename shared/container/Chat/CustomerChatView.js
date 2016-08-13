@@ -262,7 +262,7 @@ else{
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
-
+                           'assignedagentname': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name,
                             agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                             agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
          
@@ -462,8 +462,8 @@ const { value, suggestions } = this.state;
                          {
                           this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
                             agent.agentId == this.props.userdetails._id?
-                            <option value={agent.socketid} data-attrib = {agent.agentId}>Myself</option>:
-                             <option value={agent.socketid} data-attrib = {agent.agentId}>{agent.agentName}</option>
+                            <option value={agent.socketid} data-attrib = {agent.agentId} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname}>Myself</option>:
+                             <option value={agent.socketid} data-attrib = {agent.agentId} data-name={agent.agentName}>{agent.agentName}</option>
                               
                             )
                          }
