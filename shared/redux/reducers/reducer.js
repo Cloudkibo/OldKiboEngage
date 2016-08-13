@@ -1121,6 +1121,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : state.customerchat,
               customerchatold : state.customerchatold,
               sessionsummary : action.sessionsummary,
+              sessionsummaryfiltered : action.sessionsummary,
               customerchat_selected : state.customerchat_selected,
              customerid : state.customerid,
              chatlist : state.chatlist,
@@ -1149,6 +1150,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : state.customerchat,
              customerchatold : state.customerchatold,
              sessionsummary : state.sessionsummary,
+             sessionsummaryfiltered : state.sessionsummaryfiltered,
              customerchat_selected : state.customerchat_selected,
              customerid : state.customerid,
              chatlist : state.chatlist,
@@ -1179,6 +1181,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : state.customerchat,
              customerchatold : state.customerchatold,
              sessionsummary : state.sessionsummary,
+             sessionsummary:state.sessionsummaryfiltered,
              customerchat_selected : state.customerchat_selected,
              customerid : state.customerid,
              chatlist : state.chatlist,
@@ -1191,6 +1194,37 @@ const dashboard = (state =dashboardState, action) => {
           
             };
 
+
+             case ActionTypes.FILTER_BY_SESSION:
+             return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             sessionsummary : state.sessionsummary,
+             sessionsummaryfiltered:action.sessionsummaryfiltered,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             sessionsummarydetail : state.sessionsummarydetail,
+             userchathistory : state.userchathistory,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            
+          
+            };
 
             
             case ActionTypes.ADD_SELECTED_CUSTOMER :

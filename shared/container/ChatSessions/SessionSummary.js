@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
-import {getsessions,getcustomers} from '../../redux/actions/actions'
+import {getsessions,getcustomers,filterbysessionDept,filterbysessionChannel,filterbysessionAgent,filterbysessionstatus} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
@@ -17,7 +17,6 @@ class SessionSummary extends Component {
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
-   
     const usertoken = auth.getToken();
     console.log('constructor is called');
     if(usertoken != null)
@@ -52,8 +51,8 @@ class SessionSummary extends Component {
 
   handleChange(e){
      alert(e.target.value);
-    // this.props.filterbystatus(e.target.value,this.props.customerchatold);
-    // this.forceUpdate();
+     this.props.filterbysessionstatus(e.target.value,this.props.sessionsummary);
+     this.forceUpdate();
    
    
     }
@@ -61,23 +60,23 @@ class SessionSummary extends Component {
 
     handleChangeDepartment(e){
      alert(e.target.value);
-     //this.props.filterbyDept(e.target.value,this.props.customerchatold);
-     //this.forceUpdate();
+     this.props.filterbysessionDept(e.target.value,this.props.sessionsummary);
+     this.forceUpdate();
    
    
     }
      handleChangeChannel(e){
      alert(e.target.value);
-     //this.props.filterbyChannel(e.target.value,this.props.customerchatold);
-     //this.forceUpdate();
+     this.props.filterbysessionChannel(e.target.value,this.props.sessionsummary);
+     this.forceUpdate();
    
    
     }
 
     handleChangeAgents(e){
      alert(e.target.value);
-     //this.props.filterbyAgent(e.target.value,this.props.customerchatold);
-     //this.forceUpdate();
+     this.props.filterbysessionAgent(e.target.value,this.props.sessionsummary);
+     this.forceUpdate();
    
    
     }
@@ -193,7 +192,7 @@ class SessionSummary extends Component {
                                   </table>
                          </div>
 
-             { this.props.sessionsummary &&
+             { this.props.sessionsummaryfiltered &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -211,8 +210,8 @@ class SessionSummary extends Component {
 
                     <tbody>                    
                       {
-                        this.props.sessionsummary && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
-                        this.props.sessionsummary.map((session, i) => (
+                        this.props.sessionsummaryfiltered && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
+                        this.props.sessionsummaryfiltered.map((session, i) => (
                           
                            <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
                                                      
@@ -253,13 +252,15 @@ function mapStateToProps(state) {
           sessions :(state.dashboard.sessions),
           customers:(state.dashboard.customers),
           customerchat : (state.dashboard.customerchat),
-          sessionsummary : (state.dashboard.sessionsummary)          
+          sessionsummary : (state.dashboard.sessionsummary),
+          sessionsummaryfiltered : (state.dashboard.sessionsummaryfiltered)
+
            };
 
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers}, dispatch);
+  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,filterbysessionDept:filterbysessionDept,filterbysessionChannel:filterbysessionChannel,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(SessionSummary);
 

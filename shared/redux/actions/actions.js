@@ -2005,3 +2005,88 @@ export function getcompanysettings(token,id) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showcompanyprofile(res)));
   };
 }
+
+
+
+/*********** filter sessionsummary ***********/
+
+
+export function filterbysessionstatus(status,sessionsummary) {
+
+  var sessionsummaryfiltered;
+  if(status == "all")
+  {
+    sessionsummaryfiltered = sessionsummary
+  } 
+ else{
+   sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status)
+  
+ }
+ 
+  return {
+    type: ActionTypes.FILTER_BY_SESSION,
+    sessionsummaryfiltered,
+    sessionsummary,
+   
+  };
+}
+
+
+export function filterbysessionDept(id,sessionsummary) {
+ var sessionsummaryfiltered;
+  if(id == "all")
+  {
+    sessionsummaryfiltered = sessionsummary
+  } 
+ else{
+  sessionsummaryfiltered = sessionsummary.filter((c) => c.departmentid == id)
+  
+ }
+                 
+  return {
+    type: ActionTypes.FILTER_BY_SESSION,
+    sessionsummaryfiltered,
+    sessionsummary,
+   
+  };
+}
+
+export function filterbysessionChannel(id,sessionsummary) {
+  
+  var sessionsummaryfiltered;
+  if(id == "all")
+  {
+    sessionsummaryfiltered = sessionsummary
+  } 
+  else{
+
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length-1] == id)
+
+  } 
+   return {
+    type: ActionTypes.FILTER_BY_SESSION,
+    sessionsummaryfiltered,
+    sessionsummary,
+   
+  };
+}
+
+export function filterbysessionAgent(id,sessionsummary) {
+  
+  var sessionsummaryfiltered;
+  if(id == "all")
+  {
+    sessionsummaryfiltered = sessionsummary
+  } 
+  else{
+
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids[c.agent_ids.length-1] == id)
+
+  } 
+   return {
+    type: ActionTypes.FILTER_BY_SESSION,
+    sessionsummaryfiltered,
+   sessionsummary,
+   
+  };
+}
