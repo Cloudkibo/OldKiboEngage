@@ -959,6 +959,13 @@ const dashboard = (state =dashboardState, action) => {
             };
 
           case ActionTypes.ADD_CHAT_MESSAGE:
+          var chatlistt = []
+            if(state.chatlist){
+              chatlistt = [...state.chatlist,action.message]
+            }
+            else{
+              chatlistt = [action.message]
+            }
            return {
              groupdetails: state.groupdetails,
              userdetails: state.userdetails,
@@ -966,7 +973,7 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              
-             chatlist: [...state.chatlist,action.message],
+             chatlist: chatlistt,
              customerid : state.customerid,
              customerchat : state.customerchat,
              customerchatold : state.customerchatold,

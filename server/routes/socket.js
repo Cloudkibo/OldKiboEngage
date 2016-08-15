@@ -26,8 +26,35 @@ function onDisconnect(io2, socket) {
 
   }
 
-}
+  //remove session also
+  var session_remove = false;
+  var room
+  for(var j = 0;j< onlineWebClientsSession.length;j++){
+    if(onlineWebClientsSession[j].socketid == socket.id){
+       console.log('Remove session,customer went offline');
+      room = onlineWebClientsSession[j].room;
+      onlineWebClientsSession.splice(j,1);
+      console.log(onlineWebClientsSession);
+      session_remove = true
+      break;
+    }
+  }
 
+  if(session_remove == true){
+   var customer_in_company_room =[]; //only online customers who are in your room
+
+    for(var j = 0;j<onlineWebClientsSession.length;j++){
+      if(onlineWebClientsSession[j].room == room){
+        customer_in_company_room.push(onlineWebClientsSession[j]);
+      }
+    }
+
+  console.log('customers online : ' + customer_in_company_room.length);
+  //ask clients to update their session list
+   socket.broadcast.to(room).emit('returnCustomerSessionsList',customer_in_company_room);
+   session_remove = false;
+  }
+}
 // When the user connects.. perform this
 function onConnect(io2, socket) {
  console.log(socket.id + ' connected');

@@ -332,7 +332,8 @@ else{
                       }
 
     socket.emit('informAgent',informMsg);
-        
+    socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
+         
 
     this.forceUpdate();
   }

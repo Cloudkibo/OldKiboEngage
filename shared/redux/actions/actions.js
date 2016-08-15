@@ -1317,6 +1317,18 @@ export function updateChatList(message,ch,id_not_added)
   
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
+  if(!id_not_added){
+    if(ch){
+    ch.push(new_message_arrived_rid);
+  }
+  else{
+    ch =[];
+    ch.push(new_message_arrived_rid);
+  }
+    
+  }
+  else
+    {
   if(ch){
     if(new_message_arrived_rid != id_not_added){
     ch.push(new_message_arrived_rid);
@@ -1329,6 +1341,7 @@ export function updateChatList(message,ch,id_not_added)
       }
    
    }
+ }
    return {
     type: ActionTypes.ADD_CHAT_MESSAGE,
     message,

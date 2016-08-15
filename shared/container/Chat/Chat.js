@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessionsfromsocket,getchatsfromsocket,getsessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessionsfromsocket,updateChatList,getchatsfromsocket,getsessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -42,7 +42,8 @@ class Chat extends Component {
         this.getupdatedSessions = this.getupdatedSessions.bind(this);
         this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
         this.getupdatedChats = this.getupdatedChats.bind(this);
-    
+         this.getSocketmessage = this.getSocketmessage.bind(this);
+       
   }
 updateOnlineAgents(data){
   console.log('updating updateOnlineAgents');
@@ -55,9 +56,20 @@ updateOnlineAgents(data){
     //this.refs.agentsocketfield.value = socketid;
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
+   getSocketmessage(message){
+    if(!this.props.customerchat_selected){ 
+     this.props.updateChatList(message,this.props.new_message_arrived_rid);
+     this.forceUpdate();
+   }
+  }
+  
+    
+  
 componentDidMount(){
        //get online agents list
       // alert('componentDidMount is called');
+
+        this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
         this.props.route.socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
@@ -78,7 +90,7 @@ componentDidMount(){
   {
     const usertoken = auth.getToken();
     // not asking from server to give updated sessions
-
+   // alert('updating session list');
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
@@ -341,4 +353,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getsessions,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getsessions,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
