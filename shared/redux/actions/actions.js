@@ -2103,3 +2103,44 @@ export function filterbysessionAgent(id,sessionsummary) {
    
   };
 }
+
+
+
+
+/****** High Charts
+**/
+export function channelwisestats(channelwisestats){
+  return {
+    type: ActionTypes.CHANNEL_STATS,
+    channelwisestats,
+   
+  };
+}
+export function getchannelwisestats(departmentid,token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getchannelwisecalls`, {
+      method: 'post',
+      body: JSON.stringify({
+        departmentid:departmentid,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+       
+      }),
+    }).then((res) => res.json()).then(res => dispatch(channelwisestats(res.body)));
+  };
+}
+
+
+export function getplatformwisestats(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getplatformwisecalls`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(channelwisestats(res.info)));
+  };
+}

@@ -111,7 +111,7 @@ export default class SideBar extends Component
 
              
               <li className="">
-                <Link to="/completedcalls">
+                <Link to="/reports">
                   <i className="fa fa-bar-chart-o">
                   </i>      
                   <span className="title">

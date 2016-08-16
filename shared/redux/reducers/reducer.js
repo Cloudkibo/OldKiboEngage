@@ -1088,13 +1088,40 @@ const dashboard = (state =dashboardState, action) => {
              agents : state.agents,
              deptagents :state.deptagents,
              channels : state.channels, 
-              responses : state.responses,
+             responses : state.responses,
              assignedsessions : state.assignedsessions,
              newsessions : state.newsessions,
              resolvedsessions : state.resolvedsessions,
              notifications:state.notifications,
              notification: state.notification,
              customers : action.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            
+            };
+            
+            case ActionTypes.CHANNEL_STATS:
+              return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+              responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
              mypickedsessions : state.mypickedsessions,
              customerchat : state.customerchat,
               customerchatold : state.customerchatold,
@@ -1105,10 +1132,11 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
-            
+             channelwisestats : action.channelwisestats
+          
+          
           
             };
-            
 
             case ActionTypes.SHOW_CHAT_SUMMARY:
              return {

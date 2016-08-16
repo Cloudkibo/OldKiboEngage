@@ -10,6 +10,7 @@ import VerificationFailure from './container/Auth/VerificationFailure';
 
 import Intro from './container/Intro';
 import Dashboard from './container/Dashboard';
+import Reports from './container/HighCharts/HighCharts'
 import Groups from './container/Groups/Groups';
 import Agents from './container/Agents/Agents';
 import Chat from './container/Chat/Chat';
@@ -134,6 +135,8 @@ const routes = (
      <Route path="/newchatsessions"  component={NewSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/resolvedchatsessions"  component={ResolvedSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/summarychatsessions"  component={SessionSummary}  socket={socket} onEnter={requireAuth}/>
+     <Route path="/reports"  component={Reports}  onEnter={requireAuth}/>
+     
      <Route path="/chatsessionview/:id"  component={SessionDetailView} onEnter={requireAuth}/>
      <Route path="*" component={NotFound} />
   </Route>

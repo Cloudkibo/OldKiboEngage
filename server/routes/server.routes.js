@@ -41,7 +41,8 @@ router.route('/createChannel').post(ChannelController.createChannel);
 router.route('/editChannel').post(ChannelController.editChannel);
 router.route('/getchannels').get(ChannelController.getchannels);
 router.route('/getcustomerchannels').get(ChannelController.getcustomerchannels);
-
+router.route('/getchannelwisecalls').post(ChannelController.getchannelwisecalls);
+router.route('/getplatformwisecalls').get(ChannelController.getplatformwisecalls);
 router.route('/deleteChannel').delete(ChannelController.destroyChannel);
 
 router.route('/createResponse').post(UserController.createResponse);

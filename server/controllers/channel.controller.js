@@ -172,3 +172,74 @@ export function editChannel(req, res) {
         request.put(options, callback);
    
   }
+
+
+
+/*** channel wise calls for High Charts
+**/
+
+export function getchannelwisecalls(req, res) {
+  ////console.log('edit Channel is called');
+  var token = req.headers.authorization;
+  console.log(req.body.departmentid);
+  ////console.log(id);
+   var options = {
+      url: `${baseURL}/api/visitorcalls/reportsv2/statsbymessagechannel`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+      json: req.body
+    };
+    
+    function callback(error, response, body) {
+        console.log(body);
+      if(!error  && response.statusCode == 200) {
+      
+            return res.status(200).json({statusCode : 200,body});
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,body}); 
+
+    }
+
+   }
+        request.post(options, callback);
+   
+  }
+
+
+  export function getplatformwisecalls(req, res) {
+  ////console.log('edit Channel is called');
+  var token = req.headers.authorization;
+  ////console.log(id);
+   var options = {
+      url: `${baseURL}/api/visitorcalls/reportsv2/statsbyplatform`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+     
+    };
+    
+    function callback(error, response, body) {
+        console.log(body);
+      if(!error  && response.statusCode == 200) {
+      
+            var info = JSON.parse(body)
+            console.log(info)
+            return res.status(200).json({statusCode : 200,info});
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,body}); 
+
+    }
+
+   }
+        request.get(options, callback);
+   
+  }
