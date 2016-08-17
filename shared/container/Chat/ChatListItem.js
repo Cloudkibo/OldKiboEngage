@@ -50,6 +50,15 @@ var changecc ={
   
 var ag = []
 
+var agentname = []
+if(props.customer.agent_ids)
+
+{
+  props.agents.filter((c) => c._id == props.customer.agent_ids).map((c,i) =>(
+                           agentname.push(c.firstname + ' ' + c.lastname)                          
+                        ))
+
+}
 
 var ch=[]
      {
@@ -122,7 +131,11 @@ return res;
       <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
       <br/>
       <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-     
+     <br/>
+     {
+      (agentname.length > 0?
+      <span  style={rightAgent}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
+     )}
       </div>
       <br/>
 
@@ -145,7 +158,11 @@ return res;
       <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
       <br/>
       <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-      
+       <br/>
+         {
+      (agentname.length > 0?
+      <span  style={rightAgent}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
+     )}
 
       </div>
       <br/>

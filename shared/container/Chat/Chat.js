@@ -281,14 +281,14 @@ componentDidMount(){
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.userchats && this.props.customerchat && this.props.customerchat.length > 0  &&  
+					                      {this.props.userchats && this.props.agents && this.props.customerchat && this.props.customerchat.length > 0  &&  
 					                        this.props.customerchat.map((customer, i) => (
                                   
                                     (this.props.new_message_arrived_rid ?
                                   
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel)}  />
+                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel)}  agents = {this.props.agents}/>
                                     :  
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel)}  />
+                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel)}  agents = {this.props.agents}/>
                                   )
                                   
 					                                                      

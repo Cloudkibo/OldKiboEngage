@@ -141,7 +141,7 @@ class HighCharts extends Component {
       }
 
       if(this.refs.CallStats.value == 'Last 7 days'){
-        alert(this.refs.CallStats.value)
+        //alert(this.refs.CallStats.value)
         
         var tempArray = [];
         for(var i in pageStatsData){
@@ -174,11 +174,12 @@ class HighCharts extends Component {
           this.state.categories.push(tempArray[i].currentpage);
 
         }
+       // alert(this.state.chartSeries[0].data.length);
        this.refs.targetDate.value = (new Date(new Date().setDate(new Date().getDate()-7)));
       }
 
       if(this.refs.CallStats.value == 'Last 30 days'){
-        alert(this.refs.CallStats.value)
+      //  alert(this.refs.CallStats.value)
         
         var tempArray = [];
         for(i in pageStatsData){
@@ -217,7 +218,7 @@ class HighCharts extends Component {
       }
 
       if(this.refs.CallStats.value == 'This Year'){
-        alert(this.refs.CallStats.value)
+        //alert(this.refs.CallStats.value)
         
         var tempArray =[];
         for(var i in pageStatsData){
@@ -385,7 +386,8 @@ class DonutChart extends React.Component {
   }
   
   componentWillReceiveProps(props) {
-    this.chart.highcharts().series[0].setData(props.series.data);
+    alert('i am called');
+    this.chart.highcharts().series[0].setData(props.series[0].data);
   }
   
   render() {
