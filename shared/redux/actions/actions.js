@@ -2116,6 +2116,22 @@ export function channelwisestats(channelwisestats){
    
   };
 }
+
+export function platformwisestats(platformwisestats){
+  return {
+    type: ActionTypes.PLATFORM_STATS,
+   platformwisestats,
+   
+  };
+}
+
+export function deptwisestats(deptwisestats){
+  return {
+  type: ActionTypes.DEPT_STATS,
+   deptwisestats,
+   
+  };
+}
 export function getchannelwisestats(departmentid,token) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getchannelwisecalls`, {
@@ -2141,6 +2157,19 @@ export function getplatformwisestats(token) {
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
-    }).then((res) => res.json()).then(res => dispatch(channelwisestats(res.info)));
+    }).then((res) => res.json()).then(res => dispatch(platformwisestats(res.info)));
+  };
+}
+
+
+export function getdeptwisestats(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getdeptwisecalls`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(deptwisestats(res.info)));
   };
 }
