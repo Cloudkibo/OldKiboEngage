@@ -1135,8 +1135,44 @@ const dashboard = (state =dashboardState, action) => {
              channelwisestats : action.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
+             countrywisestats : state.countrywisestats,
+              pagewisestats : state.pagewisestats,
+          
+          
+          
+            };
 
 
+            case ActionTypes.PAGE_STATS:
+              return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             channelwisestats : state.channelwisestats,
+             deptwisestats : state.deptwisestats,
+             platformwisestats : state.platformwisestats,
+             pagewisestats : action.pagewisestats,
+             countrywisestats : state.countrywisestats,
           
           
           
@@ -1169,7 +1205,8 @@ const dashboard = (state =dashboardState, action) => {
              channelwisestats : state.channelwisestats,
              deptwisestats : action.deptwisestats,
              platformwisestats : state.platformwisestats,
-             
+              pagewisestats : state.pagewisestats,
+              countrywisestats : state.countrywisestats
           
           
             };
@@ -1203,6 +1240,42 @@ const dashboard = (state =dashboardState, action) => {
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : action.platformwisestats,
+             pagewisestats : state.pagewisestats,
+             countrywisestats : state.countrywisestats
+             
+          
+          
+            };
+
+            case ActionTypes.COUNTRY_STATS:
+              return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+             responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             channelwisestats : state.channelwisestats,
+             deptwisestats : state.deptwisestats,
+             platformwisestats : state.platformwisestats,
+             pagewisestats : state.pagewisestats,
+             countrywisestats : action.countrywisestats
              
           
           

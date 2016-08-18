@@ -2132,6 +2132,23 @@ export function deptwisestats(deptwisestats){
    
   };
 }
+
+
+export function pagewisestats(pagewisestats){
+  return {
+  type: ActionTypes.PAGE_STATS,
+   pagewisestats,
+   
+  };
+}
+
+export function countrywisestats(countrywisestats){
+  return {
+  type: ActionTypes.COUNTRY_STATS,
+  countrywisestats,
+   
+  };
+}
 export function getchannelwisestats(departmentid,token) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getchannelwisecalls`, {
@@ -2171,5 +2188,29 @@ export function getdeptwisestats(token) {
         'Authorization': token,
       }),
     }).then((res) => res.json()).then(res => dispatch(deptwisestats(res.info)));
+  };
+}
+
+export function getpagewisestats(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getpagewisecalls`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(pagewisestats(res.info)));
+  };
+}
+
+export function getcountrywisestats(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcountrywisecalls`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(countrywisestats(res.info)));
   };
 }

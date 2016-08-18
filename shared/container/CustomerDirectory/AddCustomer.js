@@ -16,7 +16,7 @@ import { browserHistory } from 'react-router'
 
 
 /*import io from 'socket.io-client'
-let socket = io('')
+let socket = io('')*/
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -27,7 +27,7 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-*/
+
 
 
 
@@ -36,15 +36,17 @@ class AddCustomer extends Component {
     props.getcustomergroups();
     props.getcustomerchannels();
     super(props, context);
-   /* var pathname = getParameterByName('pathname'); 
-    var fullurl = getParameterByName('fullurl'); 
-    var companyid = getParameterByName('id'); 
+   // var pathname = getParameterByName('pathname'); 
+    //var fullurl = getParameterByName('fullurl'); 
+   // var companyid = getParameterByName('id'); 
+    var companyid = props.params.id;
+    var pathname = props.params.pathname;
     console.log(pathname)
-    console.log(fullurl)
-    console.log(companyid)*/
+   // console.log(fullurl)
+    console.log(companyid)
 
     //console.log(props.params.pathname);
-    console.log(props.params.id);
+   // console.log(props.params.id);
     this.addCustomers = this.addCustomers.bind(this);
     this.create_session = this.create_session.bind(this);
     this.noagent = this.noagent.bind(this);
@@ -59,12 +61,13 @@ create_session(data){
       const email = this.refs.email;
       const country = this.refs.country;
       const phone = this.refs.phone;
-  /*    var companyid = getParameterByName('id'); 
-      var pathname = getParameterByName('pathname'); 
-      var fullurl = getParameterByName('fullurl'); */
+     // var companyid = getParameterByName('id'); 
+     // var pathname = getParameterByName('pathname'); 
+     /* var fullurl = getParameterByName('fullurl'); */
 
-      var companyid = this.props.params.id;
-      var pathname = "";
+    var companyid = this.props.params.id;
+    var pathname = this.props.params.pathname;
+  //    var pathname = "";
       var fullurl = "";
 
      
@@ -106,12 +109,15 @@ create_session(data){
      
   addCustomers(e) {
     e.preventDefault();
-    /*var pathname = getParameterByName('pathname'); 
-    var fullurl = getParameterByName('fullurl');
-    var companyid = getParameterByName('id');
-   */
+   // var companyid = getParameterByName('id');
+
+   // var pathname = getParameterByName('pathname'); 
+    /*var fullurl = getParameterByName('fullurl');
+       */
+//    var companyid = this.props.params.id;
+   // var pathname = "";
     var companyid = this.props.params.id;
-    var pathname = "";
+    var pathname = this.props.params.pathname;
     var fullurl = "";
 
     const name = this.refs.name;
