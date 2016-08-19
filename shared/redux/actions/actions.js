@@ -2149,6 +2149,15 @@ export function countrywisestats(countrywisestats){
    
   };
 }
+
+
+export function mobilewisestats(mobilewisestats){
+  return {
+  type: ActionTypes.MOBILE_STATS,
+  mobilewisestats,
+   
+  };
+}
 export function getchannelwisestats(departmentid,token) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getchannelwisecalls`, {
@@ -2212,5 +2221,17 @@ export function getcountrywisestats(token) {
         'Authorization': token,
       }),
     }).then((res) => res.json()).then(res => dispatch(countrywisestats(res.info)));
+  };
+}
+
+export function getmobilewisestats(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getmobilecalls`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(mobilewisestats(res.info)));
   };
 }

@@ -1136,7 +1136,44 @@ const dashboard = (state =dashboardState, action) => {
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
              countrywisestats : state.countrywisestats,
-              pagewisestats : state.pagewisestats,
+             pagewisestats : state.pagewisestats,
+             mobilewisestats : state.mobilewisestats,
+          
+          
+          
+            };
+
+            case ActionTypes.MOBILE_STATS:
+              return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+              responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+              customerchatold : state.customerchatold,
+
+              customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             channelwisestats : action.channelwisestats,
+             deptwisestats : state.deptwisestats,
+             platformwisestats : state.platformwisestats,
+             countrywisestats : state.countrywisestats,
+             pagewisestats : state.pagewisestats,
+             mobilewisestats : action.mobilewisestats,
           
           
           
@@ -1173,7 +1210,7 @@ const dashboard = (state =dashboardState, action) => {
              platformwisestats : state.platformwisestats,
              pagewisestats : action.pagewisestats,
              countrywisestats : state.countrywisestats,
-          
+              mobilewisestats : state.mobilewisestats,
           
           
             };
@@ -1206,8 +1243,8 @@ const dashboard = (state =dashboardState, action) => {
              deptwisestats : action.deptwisestats,
              platformwisestats : state.platformwisestats,
               pagewisestats : state.pagewisestats,
-              countrywisestats : state.countrywisestats
-          
+              countrywisestats : state.countrywisestats,
+                mobilewisestats : state.mobilewisestats,
           
             };
 
@@ -1241,7 +1278,8 @@ const dashboard = (state =dashboardState, action) => {
              deptwisestats : state.deptwisestats,
              platformwisestats : action.platformwisestats,
              pagewisestats : state.pagewisestats,
-             countrywisestats : state.countrywisestats
+             countrywisestats : state.countrywisestats,
+             mobilewisestats : state.mobilewisestats,
              
           
           
@@ -1271,11 +1309,13 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
              pagewisestats : state.pagewisestats,
-             countrywisestats : action.countrywisestats
+             countrywisestats : action.countrywisestats,
+             mobilewisestats : state.mobilewisestats,
              
           
           

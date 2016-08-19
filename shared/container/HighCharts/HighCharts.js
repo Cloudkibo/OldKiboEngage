@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import {getchannelwisestats,getcountrywisestats,getpagewisestats,getplatformwisestats,getdeptwisestats} from '../../redux/actions/actions'
+import {getchannelwisestats,getmobilewisestats,getcountrywisestats,getpagewisestats,getplatformwisestats,getdeptwisestats} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 import Groupwise from './Groupwise'
@@ -17,7 +17,8 @@ var Highcharts = require('highcharts');
 var platform_bool ;//= false; 
 var group_bool ;//= false;
 var pages_bool;// = false;
-var country_bool;//  = false;
+var mobile_bool;
+var country_bool;
 var handleDate = function(d){
 return d.toDateString();
 }
@@ -46,11 +47,12 @@ class HighCharts extends Component {
         props.getdeptwisestats(usertoken);
         props.getpagewisestats(usertoken);
         props.getcountrywisestats(usertoken);
+        props.getmobilewisestats(usertoken);
     }
     super(props, context);
      
     
-    this.state = {categories:[],categoriesPages:[],categoriesCountry:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesGroup : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesCountry : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
+    this.state = {categories:[],categoriesPages:[],categoriesMobile:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesGroup : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
     this._getgroupwisestats = this._getgroupwisestats.bind(this);
     this._getplatformwisestats = this._getplatformwisestats.bind(this);
     this._getpagewisestats = this._getpagewisestats.bind(this);
@@ -198,12 +200,13 @@ pages_bool = false;
 country_bool = false;
 group_bool = false;
 platform_bool = false;
+mobile_bool = false;
 
 }
 
  componentWillReceiveProps(props) {
     
-     if(props.platformwisestats && platform_bool == false){
+    if(props.platformwisestats && platform_bool == false){
       var platformStatsData = props.platformwisestats;
       platform_bool = true;
       var CallStats = this.refs.CallStats.value;
@@ -248,22 +251,16 @@ platform_bool = false;
         this.refs.targetDate.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
       }
 
-
-    /*** country wise call stats ****/
-
-      if(props.countrywisestats && country_bool == false){
-      var countryStatsData = props.countrywisestats;
-      country_bool = true;
-    //  var CallStatsCountry = this.refs.CallStatsCountry.value;
-      this.state.categoriesCountry =[];
-     // alert(this.state.categories.length);
-      //if(CallStatsCountry == 'This Year'){
-
-        var tempArray =[];
-        for(var i in countryStatsData){
-      
-            var tempCurrentPage = countryStatsData[i]._id.country;
-            var tempCount = countryStatsData[i].count;
+//mobile client stats
+      if(props.mobilewisestats && mobile_bool == false){
+        var mobileStatsData = props.mobilewisestats;
+        mobile_bool = true;
+       this.state.categoriesMobile =[];
+       var tempArray =[];
+       for(var i in mobileStatsData){
+          
+            var tempCurrentPage = mobileStatsData[i]._id.isMobileClient;
+            var tempCount = mobileStatsData[i].count;
 
             var foundInArray = false;
             for(var i in tempArray){
@@ -273,26 +270,32 @@ platform_bool = false;
               }
             }
 
-            if(!foundInArray){
-              tempArray.push({currentpage : tempCurrentPage,
+            if(!foundInArray && tempCurrentPage == "false"){
+              tempArray.push({currentpage : "Web Clients",
                 count: tempCount});
             }
 
-          
-        }
+            else if(!foundInArray && tempCurrentPage == "true"){
+              tempArray.push({currentpage : "Mobile Clients",
+                count: tempCount});
+            }
+          }
+        
 
         for(var i in tempArray){
 
-          this.state.chartSeriesCountry[0].data.push(tempArray[i].count);
-          this.state.categoriesCountry.push(tempArray[i].currentpage);
+          this.state.chartSeriesMobile[0].data.push(tempArray[i].count);
+          this.state.categoriesMobile.push(tempArray[i].currentpage);
 
         }
-    
+    //}
 
         //alert( this.state.categories.length);
-    //    this.refs.targetDateCountry.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
+     //   this.refs.targetDate.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
       }
 
+
+    
     /**** group wise call stats ********/
 
      if(props.deptwisestats && group_bool == false){
@@ -725,11 +728,40 @@ refreshData3(e){
            <br/>
           <br/>
 
-           {
-              this.props.countrywisestats && this.state.categoriesCountry.length > 0 &&
-                <Countrywise series = {this.state.chartSeriesCountry} categories = {this.state.categoriesCountry} title="Country wise Sessions Stats"/>
-            }
+          <center><h3>Country wise Stats</h3></center>
+          <table className="table table-striped table-bordered table-hover dataTable">
+            <thead>
+              <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Country</th>
+              <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Number of Sessions</th>
+            </thead>
+           <tbody>
+            {
+                          this.props.countrywisestats && this.props.countrywisestats.map((country,i) =>
+                            <tr>
+                              <td>{country._id.country}</td>
+                              <td>{country.count}</td>
+                            </tr>
+                            )
+             }
+            
+            </tbody>
+          </table>   
+    
 
+         <br/>
+          <br/>
+
+           {
+              this.props.mobilewisestats && this.state.categoriesMobile.length > 0 &&
+                <Countrywise series = {this.state.chartSeriesMobile} categories = {this.state.categoriesMobile} title="Mobile Clients vs. Web Clients"/>
+            }
+        
+
+
+          
+          
+
+          
        </div>
        </div> 
       </div>
@@ -749,6 +781,8 @@ function mapStateToProps(state) {
           deptwisestats : state.dashboard.deptwisestats,
           platformwisestats : state.dashboard.platformwisestats,
           pagewisestats : state.dashboard.pagewisestats,
+          mobilewisestats : state.dashboard.mobilewisestats,
+          
           countrywisestats : state.dashboard.countrywisestats,
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
@@ -761,7 +795,7 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps,{getpagewisestats,getcountrywisestats,getchannelwisestats,getplatformwisestats,getdeptwisestats})(HighCharts);
+export default connect(mapStateToProps,{getpagewisestats,getmobilewisestats,getcountrywisestats,getchannelwisestats,getplatformwisestats,getdeptwisestats})(HighCharts);
 
 
 

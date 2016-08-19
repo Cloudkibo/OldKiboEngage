@@ -350,3 +350,38 @@ export function getchannelwisecalls(req, res) {
         request.get(options, callback);
    
   }
+
+
+  // mobile clients
+
+   export function getmobilecalls(req, res) {
+  var token = req.headers.authorization;
+  ////console.log(id);
+   var options = {
+      url: `${baseURL}/api/customers/reportsv2/statsbymobile`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                
+                 },
+     
+    };
+    
+    function callback(error, response, body) {
+      console.log(body);
+      if(!error  && response.statusCode == 200) {
+      
+            var info = JSON.parse(body)
+            console.log(info)
+            return res.status(200).json({statusCode : 200,info});
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,body}); 
+
+    }
+
+   }
+        request.get(options, callback);
+   
+  }
