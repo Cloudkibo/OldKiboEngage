@@ -90,7 +90,7 @@ class MyGroups extends Component {
                       {
                         this.props.mygroupdetails.map((group, i) => (
                           
-                          <MyGroupListItem group={group} key={group._id} />
+                          <MyGroupListItem group={group.deptid?group.deptid:group} key={group._id} />
                                                       
                         ))
                       }

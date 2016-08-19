@@ -14,10 +14,10 @@ import Pagewise from './Pagewise'
 import Countrywise from './Countrywise'
 var ReactDOM = require('react-dom');
 var Highcharts = require('highcharts');
-var platform_bool = false; 
-var group_bool = false;
-var pages_bool = false;
-var country_bool  = false;
+var platform_bool ;//= false; 
+var group_bool ;//= false;
+var pages_bool;// = false;
+var country_bool;//  = false;
 var handleDate = function(d){
 return d.toDateString();
 }
@@ -193,6 +193,13 @@ _getpagewisestats(day){
       
   }
 
+componentDidMount(){
+pages_bool = false;
+country_bool = false;
+group_bool = false;
+platform_bool = false;
+
+}
 
  componentWillReceiveProps(props) {
     
@@ -247,17 +254,14 @@ _getpagewisestats(day){
       if(props.countrywisestats && country_bool == false){
       var countryStatsData = props.countrywisestats;
       country_bool = true;
-      var CallStatsCountry = this.refs.CallStatsCountry.value;
+    //  var CallStatsCountry = this.refs.CallStatsCountry.value;
       this.state.categoriesCountry =[];
      // alert(this.state.categories.length);
-      if(CallStatsCountry == 'This Year'){
+      //if(CallStatsCountry == 'This Year'){
 
         var tempArray =[];
         for(var i in countryStatsData){
-          var gotDate = new Date(countryStatsData[i]._id.year,platformStatsData[i]._id.month-1,countryStatsData[i]._id.day, 0,0,0,0);
-          
-          if((new Date(new Date().setDate(new Date().getDate()-365))) <= (gotDate)){
-
+      
             var tempCurrentPage = countryStatsData[i]._id.country;
             var tempCount = countryStatsData[i].count;
 
@@ -274,7 +278,7 @@ _getpagewisestats(day){
                 count: tempCount});
             }
 
-          }
+          
         }
 
         for(var i in tempArray){
@@ -283,10 +287,10 @@ _getpagewisestats(day){
           this.state.categoriesCountry.push(tempArray[i].currentpage);
 
         }
-    }
+    
 
         //alert( this.state.categories.length);
-        this.refs.targetDateCountry.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
+    //    this.refs.targetDateCountry.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
       }
 
     /**** group wise call stats ********/
@@ -380,6 +384,7 @@ _getpagewisestats(day){
 
         }
     }
+
 
 //        alert( this.state.chartSeries[0].data.length);
         this.refs.targetDatePages.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
@@ -692,32 +697,6 @@ refreshData3(e){
           </div>
 
 
-
-          <br/>
-          <br/>
-
-           {
-              this.props.countrywisestats && this.state.categoriesCountry.length > 0 &&
-                <Countrywise series = {this.state.chartSeriesCountry} categories = {this.state.categoriesCountry} title="Country wise Sessions Stats"/>
-            }
-        
-
-
-           <div class="clearfix">
-            From <input ref="targetDateCountry" type="text"/>
-                       <br/>
-           To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
-           </div>
-          
-
-          <div class="btn-group">
-            <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData3.bind(this)} className="btn btn-success">Today</label>
-            <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData3.bind(this)} className="btn btn-success">Last 7 days</label>
-            <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData3.bind(this)} className="btn btn-success">Last 30 days</label>
-            <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData3.bind(this)} className="btn btn-success">This Year</label>
-          </div>
-
-
           <br/>
           <br/>
 
@@ -741,6 +720,15 @@ refreshData3(e){
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData3.bind(this)} className="btn btn-success">Last 30 days</label>
             <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData3.bind(this)} className="btn btn-success">This Year</label>
           </div>
+
+
+           <br/>
+          <br/>
+
+           {
+              this.props.countrywisestats && this.state.categoriesCountry.length > 0 &&
+                <Countrywise series = {this.state.chartSeriesCountry} categories = {this.state.categoriesCountry} title="Country wise Sessions Stats"/>
+            }
 
        </div>
        </div> 

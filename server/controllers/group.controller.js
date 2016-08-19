@@ -226,7 +226,7 @@ export function editgroup(req, res) {
  export function getmyusergroups(req, res) {
   var token = req.headers.authorization;
   var options = {
-      url: `${baseURL}/api/departments/mydepartments`,
+      url: `${baseURL}/api/departments/mydepartmentsKiboEngage`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -239,9 +239,28 @@ export function editgroup(req, res) {
       console.log(body);
         if(!error  && response.statusCode == 200) {
        var info = JSON.parse(body);
+       var totalDept = [];
+       var isAgent = true;
+       if(info.agentDept){
+        isAgent = false;
+        for(var i = 0;i< info.agentDept.length;i++){
+          totalDept.push(info.agentDept[i].deptid);
+        }
+       }
 
-      console.log(info);
-      return res.status(200).json({depts:info});
+       if(info.createdDept){
+        isAgent = false;
+         for(var i = 0;i< info.createdDept.length;i++){
+          totalDept.push(info.createdDept[i]);
+        }
+       }
+
+      if(isAgent == false){ 
+      return res.status(200).json({depts:totalDept});
+    }
+    else{
+     return res.status(200).json({depts:info}); 
+    }
     }
 
     else
