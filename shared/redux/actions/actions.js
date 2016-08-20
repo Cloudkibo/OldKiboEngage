@@ -158,6 +158,25 @@ export function resetpassword(creds) {
 
 // verify password reset token
 
+export function showTokenResponse(status){
+  var s = '';
+  if(status == 200){
+    console.log('status is '+ status);
+    s = 'success';
+
+  }
+  else{
+    s = 'fail'
+  }
+
+  return {
+    type: ActionTypes.SHOW_TOKEN_RESPONSE,
+    errormessage : success,
+
+  }; 
+
+
+}
 export function verifyPasswordResettoken(token) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/verifypasswordResettoken?id=${token}`, {
@@ -165,15 +184,11 @@ export function verifyPasswordResettoken(token) {
       headers: new Headers({
         'Content-Type': 'application/json',
       }), 
-    }).then((res) => res.json()).then((res) => res).then((res) =>{
-      console.log(res.statusCode);
-          if(res.statusCode != 200){
-
-            browserHistory.push('/resetpasswordfailure')
-          }
-    }) 
-
-      };
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showTokenResponse(res.statusCode))  
+      
+   
+      );
+  };
 }
 
 // Logs the user out

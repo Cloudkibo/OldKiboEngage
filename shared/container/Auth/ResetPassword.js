@@ -4,6 +4,7 @@ import {resetpassword,verifyPasswordResettoken} from '../../redux/actions/action
 import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
+import { browserHistory } from 'react-router'
 
 export default class ResetPassword extends Component {
 
@@ -30,6 +31,9 @@ export default class ResetPassword extends Component {
   }
 
   render() {
+  {this.props.errorMessage && this.props.errorMessage == "fail" &&
+         browserHistory.push('/resetpasswordfailure')
+  }
   
     return (
       <div>
@@ -60,6 +64,8 @@ export default class ResetPassword extends Component {
                       {this.props.errorMessage && this.props.errorMessage.status == "success" &&
                          <div className = "alert alert-success"><span>{this.props.errorMessage.message}</span></div>
                       }
+
+
               </form>
               </div>
               </div>

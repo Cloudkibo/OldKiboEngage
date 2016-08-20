@@ -642,6 +642,7 @@ export function forgotpassword (req,res) {
 export function verifypasswordResettoken(req,res){
 
    var id = req.query.id;
+   console.log(id);
    var options = {
       url: `${baseURL}/api/passwordresettokens/${id}`,
       rejectUnauthorized : false,

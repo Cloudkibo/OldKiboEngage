@@ -5,13 +5,15 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import {getchannelwisestats,getmobilewisestats,getcountrywisestats,getpagewisestats,getplatformwisestats,getdeptwisestats} from '../../redux/actions/actions'
+import {getchannelwisestats,getresolvedsessions,getmobilewisestats,getcountrywisestats,getpagewisestats,getplatformwisestats,getdeptwisestats} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 import Groupwise from './Groupwise'
 import Platform from './Platform'
 import Pagewise from './Pagewise'
 import Countrywise from './Countrywise'
+import AvgCall from './AvgCall'
+
 var ReactDOM = require('react-dom');
 var Highcharts = require('highcharts');
 var platform_bool ;//= false; 
@@ -19,6 +21,8 @@ var group_bool ;//= false;
 var pages_bool;// = false;
 var mobile_bool;
 var country_bool;
+var avg_call;
+
 var handleDate = function(d){
 return d.toDateString();
 }
@@ -29,6 +33,178 @@ var getIndexFromPropertyValue3 =  function (theList, id) {
             return i;
         }
   }
+
+
+var getAverageCallTime =  function(allCallsList){
+        var count = 0;
+        var sum = 0;
+        var countForCall = 0;
+        var sumForCall = 0;
+
+        var data = allCallsList;
+        for(var index in data){
+          if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) < 8){
+            if(data[index].picktime != undefined){
+              count += 1;
+              sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
+
+            }
+            
+            if(data[index].endtime != undefined && data[index].picktime != undefined){
+              countForCall += 1;
+              sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
+
+            }
+          }
+        }
+
+        var averageCallHour = ((sumForCall/countForCall)/(1000*60*60)%60).toFixed(0);
+        var averageCallMin = ((sumForCall/countForCall)/(1000*60)%60).toFixed(0);
+        var averageCallSec = ((sumForCall/countForCall)/(1000)%60).toFixed(0);
+        var averageWaitHour = ((sum/count)/(1000*60*60)%60).toFixed(0);
+        var averageWaitMin = ((sum/count)/(1000*60)%60).toFixed(0);
+        var averageWaitSec = ((sum/count)/(1000)%60).toFixed(0);
+        var averageCallTime;
+        //console.log(averageCallMin)
+        if(averageCallMin == 'NaN')
+          averageCallTime = 'No Calls (last 8 hrs)';
+        else
+          averageCallTime = averageCallHour +":"+ averageCallMin +":"+ averageCallSec +" (last 8 hrs)";
+
+        return averageCallTime;
+      }
+
+var getAverageWaitTime =  function(allCallsList){
+        var count = 0;
+        var sum = 0;
+        var countForCall = 0;
+        var sumForCall = 0;
+
+        var data = allCallsList;
+        //console.log(allCallsList)
+        for(var index in data){
+          //console.log((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2))
+          if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) < 8){
+
+            //console.log(data[index].picktime)
+            if(data[index].picktime != undefined){
+              count += 1;
+              sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
+
+            }
+           //console.log(data[index].endtime)
+            if(data[index].endtime != undefined){
+              countForCall += 1;
+              sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
+
+            }
+          }
+        }
+
+
+        var averageCallHour = ((sumForCall/countForCall)/(1000*60*60)%60).toFixed(0);
+        //console.log(averageCallHour)
+        var averageCallMin = ((sumForCall/countForCall)/(1000*60)%60).toFixed(0);
+        //console.log(averageCallMin)
+        var averageCallSec = ((sumForCall/countForCall)/(1000)%60).toFixed(0);
+        //console.log(averageCallSec)
+        var averageWaitHour = ((sum/count)/(1000*60*60)%60).toFixed(0);
+        //console.log(averageWaitHour)
+        var averageWaitMin = ((sum/count)/(1000*60)%60).toFixed(0);
+        //console.log(averageWaitMin)
+        var averageWaitSec = ((sum/count)/(1000)%60).toFixed(0);
+        var averageWaitTime;
+        //console.log(averageWaitMin)
+        if(averageWaitMin == 'NaN')
+          averageWaitTime = 'No Visitors (last 8 hrs)';
+        else
+          averageWaitTime = averageWaitHour +":"+ averageWaitMin +":"+ averageWaitSec +" (last 8 hrs)";
+
+        return averageWaitTime;
+      }
+
+var getAverageWaitMin = function(allCallsList,days){
+        var count = 0;
+        var sum = 0;
+        var countForCall = 0;
+        var sumForCall = 0;
+
+        //console.log(allCallsList);
+        var data = allCallsList;
+        //console.log(data)
+        for(var index in data){
+          if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) < days*24){
+           
+            if(data[index].picktime != undefined){
+              count += 1;
+              sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
+
+            }
+           
+            if(data[index].endtime != undefined){
+              countForCall += 1;
+              sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
+
+            }
+          //console.log('Wait ' + count +' '+ sum + ' '+ sumForCall +' '+ countForCall)
+          }
+        }
+
+        var averageCallHour = ((sumForCall/countForCall)/(1000*60*60)%60).toFixed(0);
+        var averageCallMin = ((sumForCall/countForCall)/(1000*60)%60).toFixed(0);
+        var averageCallSec = ((sumForCall/countForCall)/(1000)%60).toFixed(0);
+        var averageWaitHour = ((sum/count)/(1000*60*60)%60).toFixed(0);
+        var averageWaitMin = ((sum/count)/(1000*60)%60).toFixed(0);
+        var averageWaitSec = ((sum/count)/(1000)%60).toFixed(0);
+        if(sum === 0 && count === 0) return 0;
+        return ((sum/count)/(1000*60)%60).toFixed(2);
+      }
+
+var getAverageCallMin =  function(allCallsList,days){
+        var count = 0;
+        var sum = 0;
+        var countForCall = 0;
+        var sumForCall = 0;
+
+        var data = allCallsList;
+   
+        for(var index in data){
+          //console.log((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2))
+
+          if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) <= days*24){
+            if(data[index].picktime != undefined){
+              count += 1;
+              sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
+
+            }
+            
+            if(data[index].endtime != undefined && data[index].picktime != undefined){
+              countForCall += 1;
+              sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
+
+            }
+          }
+        }
+
+        var averageCallHour = ((sumForCall/countForCall)/(1000*60*60)%60).toFixed(0);
+        var averageCallMin = ((sumForCall/countForCall)/(1000*60)%60).toFixed(0);
+        var averageCallSec = ((sumForCall/countForCall)/(1000)%60).toFixed(0);
+        var averageWaitHour = ((sum/count)/(1000*60*60)%60).toFixed(0);
+        var averageWaitMin = ((sum/count)/(1000*60)%60).toFixed(0);
+        var averageWaitSec = ((sum/count)/(1000)%60).toFixed(0);
+
+        if(sum === 0 && count === 0) return 0;
+        return (((sumForCall/countForCall)/(1000*60)%60).toFixed(2));
+
+      }
+
+    
+
+
+
+
+
+
 
 class HighCharts extends Component {
 
@@ -48,11 +224,16 @@ class HighCharts extends Component {
         props.getpagewisestats(usertoken);
         props.getcountrywisestats(usertoken);
         props.getmobilewisestats(usertoken);
+
+
+        //get resolved sessions
+        props.getresolvedsessions(usertoken);
+     
     }
     super(props, context);
      
     
-    this.state = {categories:[],categoriesPages:[],categoriesMobile:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesGroup : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
+    this.state = {categories:[],categoriesAvg:[],categoriesPages:[],categoriesMobile:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesAvg : [{"name": "Average Time", "data": [], type: "column"}], chartSeriesGroup : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
     this._getgroupwisestats = this._getgroupwisestats.bind(this);
     this._getplatformwisestats = this._getplatformwisestats.bind(this);
     this._getpagewisestats = this._getpagewisestats.bind(this);
@@ -201,11 +382,30 @@ country_bool = false;
 group_bool = false;
 platform_bool = false;
 mobile_bool = false;
+avg_call = false;
 
 }
 
  componentWillReceiveProps(props) {
     
+
+    if(props.resolvedsessions && avg_call == false){
+      var CallStats = this.refs.CallStatsAvg.value;
+      avg_call = true;
+      if(CallStats == 'This Year'){
+        var x = getAverageWaitMin(props.resolvedsessions,365);
+        var x2 = getAverageCallMin(props.resolvedsessions,365);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x * 10) / 10);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x2 * 10) / 10);
+
+       //this.state.chartSeriesAvg[0].data.push(20);
+       // this.state.chartSeriesAvg[0].data.push(30);
+        this.state.categoriesAvg.push('Average Wait Time');
+        this.state.categoriesAvg.push('Average Call Time');
+        this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
+    
+      }
+    }
     if(props.platformwisestats && platform_bool == false){
       var platformStatsData = props.platformwisestats;
       platform_bool = true;
@@ -600,6 +800,70 @@ refreshData3(e){
 
  }
 
+
+
+refreshData4(e){
+      this.refs.CallStatsAvg.value = e.target.dataset.attrib;
+      this.state.chartSeriesAvg[0].data = [];
+      var currentDate1;
+      if(this.refs.CallStatsAvg.value  == 'Today'){
+        var x = getAverageWaitMin(this.props.resolvedsessions,1);
+        var x2 = getAverageCallMin(this.props.resolvedsessions,1);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x * 10) / 10);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x2 * 10) / 10);
+
+       //this.state.chartSeriesAvg[0].data.push(20);
+       // this.state.chartSeriesAvg[0].data.push(30);
+        currentDate1 = this.state.currentDate; 
+        this.refs.targetDateAvg.value = handleDate(this.state.currentDate);
+     
+    
+      }
+
+      if(this.refs.CallStatsAvg.value == 'Last 7 days'){
+       
+        var x = getAverageWaitMin(this.props.resolvedsessions,7);
+        var x2 = getAverageCallMin(this.props.resolvedsessions,7);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x * 10) / 10);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x2 * 10) / 10);
+
+       //this.state.chartSeriesAvg[0].data.push(20);
+       // this.state.chartSeriesAvg[0].data.push(30);
+        currentDate1 = this.state.currentDate; 
+        this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-7)));
+   
+      }
+
+      if(this.refs.CallStatsAvg.value == 'Last 30 days'){
+          var x = getAverageWaitMin(this.props.resolvedsessions,30);
+        var x2 = getAverageCallMin(this.props.resolvedsessions,30);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x * 10) / 10);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x2 * 10) / 10);
+
+       //this.state.chartSeriesAvg[0].data.push(20);
+       // this.state.chartSeriesAvg[0].data.push(30);
+        currentDate1 = this.state.currentDate; 
+        this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-30)));
+   
+        }
+
+      if(this.refs.CallStatsAvg.value == 'This Year'){
+          var x = getAverageWaitMin(this.props.resolvedsessions,365);
+        var x2 = getAverageCallMin(this.props.resolvedsessions,365);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x * 10) / 10);
+        this.state.chartSeriesAvg[0].data.push(Math.round(x2 * 10) / 10);
+
+       //this.state.chartSeriesAvg[0].data.push(20);
+       // this.state.chartSeriesAvg[0].data.push(30);
+        currentDate1 = this.state.currentDate; 
+        this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
+   
+        }
+      this.forceUpdate()
+
+ }
+
+
  handleChangeDepartment(e){
      alert(e.target.value);
      const token = auth.getToken();
@@ -661,6 +925,7 @@ refreshData3(e){
            <input defaultValue="This Year" ref="CallStatsDept" type="hidden"/>
            <input defaultValue="This Year" ref="CallStatsPages" type="hidden"/>
            <input defaultValue="This Year" ref="CallStatsCountry" type="hidden"/>
+           <input defaultValue="This Year" ref="CallStatsAvg" type="hidden"/>
            
            <div class="clearfix">
             From <input ref="targetDate" type="text"/>
@@ -758,6 +1023,29 @@ refreshData3(e){
         
 
 
+          <br/>
+          <br/>
+
+           {
+              this.props.resolvedsessions && this.state.categoriesAvg.length>0 &&
+                <AvgCall series = {this.state.chartSeriesAvg} categories = {this.state.categoriesAvg} />
+            }
+        
+
+
+           <div class="clearfix">
+            From <input ref="targetDateAvg" type="text"/>
+                       <br/>
+           To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
+           </div>
+          
+
+          <div class="btn-group">
+            <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData4.bind(this)} className="btn btn-success">Today</label>
+            <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData4.bind(this)} className="btn btn-success">Last 7 days</label>
+            <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData4.bind(this)} className="btn btn-success">Last 30 days</label>
+            <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData4.bind(this)} className="btn btn-success">This Year</label>
+          </div>
           
           
 
@@ -782,7 +1070,6 @@ function mapStateToProps(state) {
           platformwisestats : state.dashboard.platformwisestats,
           pagewisestats : state.dashboard.pagewisestats,
           mobilewisestats : state.dashboard.mobilewisestats,
-          
           countrywisestats : state.dashboard.countrywisestats,
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
@@ -790,12 +1077,13 @@ function mapStateToProps(state) {
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
+          resolvedsessions :(state.dashboard.resolvedsessions)
 
            };
 }
 
 
-export default connect(mapStateToProps,{getpagewisestats,getmobilewisestats,getcountrywisestats,getchannelwisestats,getplatformwisestats,getdeptwisestats})(HighCharts);
+export default connect(mapStateToProps,{getpagewisestats,getresolvedsessions,getmobilewisestats,getcountrywisestats,getchannelwisestats,getplatformwisestats,getdeptwisestats})(HighCharts);
 
 
 

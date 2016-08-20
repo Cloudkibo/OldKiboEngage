@@ -640,6 +640,14 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
              yoursocketid : state.yoursocketid,
+
+               channelwisestats : state.channelwisestats,
+             deptwisestats : state.deptwisestats,
+             platformwisestats : state.platformwisestats,
+             pagewisestats : state.pagewisestats,
+             countrywisestats : state.countrywisestats,
+             mobilewisestats : state.mobilewisestats,
+           
              
             };
 
@@ -1571,6 +1579,13 @@ function auth(state = {isAuthenticated: false}, action) {
         isFetching: false,
         isAuthenticated: true,
         errorMessage: 'Login went successfully'
+      })
+
+
+     case ActionTypes.SHOW_TOKEN_RESPONSE:
+      return Object.assign({}, state, {
+       
+        errorMessage: action.errormessage
       })
 
     case ActionTypes.LOGIN_FAILURE:
