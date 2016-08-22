@@ -661,7 +661,7 @@ export function verifypasswordResettoken(req,res){
     {
       console.log(error);
 
-      return res.status(422).json({statusCode:422,status : 'failed'}); 
+      return res.status(200).json({statusCode:422,status : 'failed'}); 
 
     }
 

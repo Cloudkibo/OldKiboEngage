@@ -171,7 +171,7 @@ export function showTokenResponse(status){
 
   return {
     type: ActionTypes.SHOW_TOKEN_RESPONSE,
-    errormessage : success,
+    errormessage : s,
 
   }; 
 
