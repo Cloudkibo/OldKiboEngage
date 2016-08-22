@@ -2173,6 +2173,33 @@ export function mobilewisestats(mobilewisestats){
    
   };
 }
+
+
+export function agentwisestats(agentwisestats){
+  return {
+  type: ActionTypes.AGENT_STATS,
+  agentwisestats,
+   
+  };
+}
+
+
+export function agentwisenotifications(agentwisenotifications){
+  return {
+  type: ActionTypes.AGENT_NOTIFICATIONS,
+  agentwisenotifications,
+   
+  };
+}
+
+export function customerstats(customerwisestats){
+  return {
+  type: ActionTypes.CUSTOMER_STATS,
+  customerwisestats,
+   
+  };
+}
+
 export function getchannelwisestats(departmentid,token) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getchannelwisecalls`, {
@@ -2248,5 +2275,46 @@ export function getmobilewisestats(token) {
         'Authorization': token,
       }),
     }).then((res) => res.json()).then(res => dispatch(mobilewisestats(res.info)));
+  };
+}
+
+
+//get top 10 customers
+export function gettopcustomers(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/gettopcustomers`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(customerstats(res.info)));
+  };
+}
+
+//agent wise calls
+export function getagentwisecalls(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getagentwisecalls`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(agentwisestats(res.info)));
+  };
+}
+
+// agent notifications
+
+export function getagentwisenotifications(token) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getagentnotifications`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then(res => dispatch(agentwisenotifications(res.info)));
   };
 }

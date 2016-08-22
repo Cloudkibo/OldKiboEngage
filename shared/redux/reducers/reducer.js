@@ -622,7 +622,7 @@ const dashboard = (state =dashboardState, action) => {
             };
 
             case ActionTypes.SHOW_RESOLVED_SESSIONS:
-             return {
+            return {
              userchats : state.userchats,
              groupdetails: state.groupdetails,
              userdetails: state.userdetails,
@@ -640,13 +640,16 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
              yoursocketid : state.yoursocketid,
-
-               channelwisestats : state.channelwisestats,
+             channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
              pagewisestats : state.pagewisestats,
              countrywisestats : state.countrywisestats,
              mobilewisestats : state.mobilewisestats,
+             customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,
+           
            
              
             };
@@ -1146,11 +1149,131 @@ const dashboard = (state =dashboardState, action) => {
              countrywisestats : state.countrywisestats,
              pagewisestats : state.pagewisestats,
              mobilewisestats : state.mobilewisestats,
+
+             customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,       
+          
           
           
           
             };
 
+
+            case ActionTypes.CUSTOMER_STATS:
+              return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+              responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+              customerchatold : state.customerchatold,
+
+              customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             channelwisestats : state.channelwisestats,
+             deptwisestats : state.deptwisestats,
+             platformwisestats : state.platformwisestats,
+             countrywisestats : state.countrywisestats,
+             pagewisestats : state.pagewisestats,
+             mobilewisestats : state.mobilewisestats,
+             customerwisestats : action.customerwisestats,
+
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,       
+          
+          
+            };
+
+
+            case ActionTypes.AGENT_STATS:
+              return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+              responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             channelwisestats : state.channelwisestats,
+             deptwisestats : state.deptwisestats,
+             platformwisestats : state.platformwisestats,
+             countrywisestats : state.countrywisestats,
+             pagewisestats : state.pagewisestats,
+             mobilewisestats : state.mobilewisestats,
+             customerwisestats : state.customerwisestats,
+             agentwisestats : action.agentwisestats, 
+             agentwisenotifications : state.agentwisenotifications,       
+                  
+          
+            };
+
+
+             case ActionTypes.AGENT_NOTIFICATIONS:
+              return {
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels, 
+              responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             channelwisestats : state.channelwisestats,
+             deptwisestats : state.deptwisestats,
+             platformwisestats : state.platformwisestats,
+             countrywisestats : state.countrywisestats,
+             pagewisestats : state.pagewisestats,
+             mobilewisestats : state.mobilewisestats,
+             
+             customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : action.agentwisenotifications,       
+          
+            };
             case ActionTypes.MOBILE_STATS:
               return {
              groupdetails: state.groupdetails,
@@ -1182,7 +1305,10 @@ const dashboard = (state =dashboardState, action) => {
              countrywisestats : state.countrywisestats,
              pagewisestats : state.pagewisestats,
              mobilewisestats : action.mobilewisestats,
-          
+            
+             customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,
           
           
             };
@@ -1221,6 +1347,9 @@ const dashboard = (state =dashboardState, action) => {
               mobilewisestats : state.mobilewisestats,
           
           
+            customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,
             };
 
             case ActionTypes.DEPT_STATS:
@@ -1253,6 +1382,10 @@ const dashboard = (state =dashboardState, action) => {
               pagewisestats : state.pagewisestats,
               countrywisestats : state.countrywisestats,
                 mobilewisestats : state.mobilewisestats,
+
+             customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,
           
             };
 
@@ -1289,7 +1422,9 @@ const dashboard = (state =dashboardState, action) => {
              countrywisestats : state.countrywisestats,
              mobilewisestats : state.mobilewisestats,
              
-          
+             customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,
           
             };
 
@@ -1324,6 +1459,10 @@ const dashboard = (state =dashboardState, action) => {
              pagewisestats : state.pagewisestats,
              countrywisestats : action.countrywisestats,
              mobilewisestats : state.mobilewisestats,
+
+             customerwisestats : state.customerwisestats,
+             agentwisestats : state.agentwisestats,  
+             agentwisenotifications : state.agentwisenotifications,
              
           
           
