@@ -220,6 +220,8 @@ class HighCharts extends Component {
    }
     const usertoken = auth.getToken();
     console.log('constructor is called');
+    
+    super(props, context);
     if(usertoken != null)
     {
        
@@ -230,17 +232,16 @@ class HighCharts extends Component {
         props.getcountrywisestats(usertoken);
         props.getmobilewisestats(usertoken);
 
+
         props.gettopcustomers(usertoken);
         props.getagentwisecalls(usertoken);
         props.getagentwisenotifications(usertoken);
         //get resolved sessions
         props.getresolvedsessions(usertoken);
-     
-    }
-    super(props, context);
-     
+        props.getchannelwisestats(this.props.groupdetails[0]._id,usertoken);
+    } 
     
-    this.state = {categories:[],categoriesCustomer :[],categoriesNotif:[],categoriesAgent :[],categoriesAvg:[],categoriesPages:[],categoriesMobile:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesNotif : [{"name": "Number of Notifications", "data": [], type: "column"}],chartSeriesCustomer: [{"name": "Number of Sessions", "data": [], type: "column"}], chartSeriesAvg : [{"name": "Average Time", "data": [], type: "column"}],chartSeriesAgent : [{"name": "Agent wise stats", "data": [], type: "column"}], chartSeriesGroup : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
+    this.state = {categories:[],categoriesChannels :[],categoriesCustomer :[],categoriesNotif:[],categoriesAgent :[],categoriesAvg:[],categoriesPages:[],categoriesMobile:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesChannels : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesNotif : [{"name": "Number of Notifications", "data": [], type: "column"}],chartSeriesCustomer: [{"name": "Number of Sessions", "data": [], type: "column"}], chartSeriesAvg : [{"name": "Average Time", "data": [], type: "column"}],chartSeriesAgent : [{"name": "Agent wise stats", "data": [], type: "column"}], chartSeriesGroup : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
     this._getgroupwisestats = this._getgroupwisestats.bind(this);
     this._getplatformwisestats = this._getplatformwisestats.bind(this);
     this._getpagewisestats = this._getpagewisestats.bind(this);
@@ -249,7 +250,7 @@ class HighCharts extends Component {
     this._getagentwisestats = this._getagentwisestats.bind(this);
     this._getagentwisenotif = this._getagentwisenotif.bind(this);
     this._getcustomerwisestats = this._getcustomerwisestats.bind(this);
-   // this._getchannelwisestats = this._getchannelwisestats.bind(this);
+    this._getchannelwisestats = this._getchannelwisestats.bind(this);
   }
 
 _getcountrywisestats(day){
@@ -300,6 +301,56 @@ _getgroupwisestats(day){
       
     
 }
+
+
+_getchannelwisestats(day,stats,channellist){
+      this.state.chartSeriesChannels[0].data = [];
+      this.state.categoriesChannels = [];
+      var channelStatsData = stats;
+
+        var tempArray =[];
+        for(var i in channelStatsData){
+          var gotDate = new Date(channelStatsData[i]._id.year,channelStatsData[i]._id.month-1,channelStatsData[i]._id.day, 0,0,0,0);
+         
+      
+            if((new Date(new Date().setDate(new Date().getDate()-day))) <= (gotDate)){
+
+              var tempChName = channellist[getIndexFromPropertyValue3(channellist, channelStatsData[i]._id.messagechannel)].msg_channel_name;
+              var tempCount = channelStatsData[i].count;
+              var foundInArray = false;
+
+              for (var i in tempArray) {
+                if (tempChName === tempArray[i].chName) {
+                  tempArray[i].count += tempCount;
+                  foundInArray = true;
+                }
+              }
+
+              if (!foundInArray) {
+                tempArray.push({
+                  chName: tempChName,
+                  count: tempCount
+                });
+              }
+            }
+          }
+
+          for(var i in tempArray){
+             this.state.chartSeriesChannels[0].data.push(tempArray[i].count);
+             this.state.categoriesChannels.push(tempArray[i].chName);
+        }
+
+        
+       
+          this.refs.targetDateChannel.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
+         // alert(this.state.categoriesChannels)
+     
+          this.forceUpdate();
+
+      
+    
+}
+
 
 
 
@@ -780,6 +831,13 @@ customer_bool = false;
     agent_notif_bool = true;
     this._getagentwisenotif(props.agentwisenotifications,props.agents);
     }
+
+
+   if(props.channelwisestats){
+   // channel_bool = true;
+    //alert('i am called');
+    this._getchannelwisestats(365,props.channelwisestats,props.channels);
+    }  
 }
 
  refreshData1(e){
@@ -964,7 +1022,7 @@ refreshData5(e){
       }
 
       if(this.refs.CallStatsAgent.value == 'Last 7 days'){
-          alert(this.props.agentwisestats.length);
+          //alert(this.props.agentwisestats.length);
           this._getagentwisestats(7,this.props.agentwisestats,this.props.agents)
 
         
@@ -1045,6 +1103,77 @@ refreshData6(e){
 
       if(this.refs.CallStatsCust.value == 'This Year'){
             this._getcustomerwisestats(365,this.props.customerwisestats)
+
+
+    }
+      this.forceUpdate()
+
+ }
+
+
+
+
+refreshData7(e){
+      this.refs.CallStatsChannel.value = e.target.dataset.attrib;
+      this.state.chartSeriesChannels[0].data = [];
+      this.state.categoriesChannels= [];
+      var  channelStatsData = this.props.channelwisestats;
+      var chList = this.props.channels;
+    
+      if(this.refs.CallStatsChannel.value  == 'Today'){
+        var tempArray =[];
+         for(var i in channelStatsData){
+          var gotDate = new Date(channelStatsData[i]._id.year,channelStatsData[i]._id.month-1,channelStatsData[i]._id.day, 0,0,0,0);
+         
+          var currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0,0,0,0);
+          var currentDate1 = new Date(); 
+        
+            if((currentDate.getTime()) == (gotDate.getTime())){
+
+              var tempChName = channellist[getIndexFromPropertyValue3(channellist, channelStatsData[i]._id.messagechannel)].msg_channel_name;
+              var tempCount = channelStatsData[i].count;
+              var foundInArray = false;
+
+              for (var i in tempArray) {
+                if (tempChName === tempArray[i].agName) {
+                  tempArray[i].count += tempCount;
+                  foundInArray = true;
+                }
+              }
+
+              if (!foundInArray) {
+                tempArray.push({
+                  agName: tempChName,
+                  count: tempCount
+                });
+              }
+            }
+          }
+
+          for(var i in tempArray){
+             this.state.chartSeriesChannels[0].data.push(tempArray[i].count);
+             this.state.categoriesChannels.push(tempArray[i].agName);
+        }
+
+        currentDate1 = this.state.currentDate; 
+        this.refs.targetDateChannel.value = handleDate(this.state.currentDate);
+      }
+
+      if(this.refs.CallStatsChannel.value == 'Last 7 days'){
+          this._getchannelwisestats(7,this.props.channelwisestats,this.props.channels)
+
+        
+      }
+
+      if(this.refs.CallStatsChannel.value == 'Last 30 days'){
+
+         this._getchannelwisestats(30,this.props.channelwisestats,this.props.channels)
+
+      
+       }
+
+      if(this.refs.CallStatsChannel.value == 'This Year'){
+           this._getchannelwisestats(365,this.props.channelwisestats,this.props.channels)
 
 
     }
@@ -1188,10 +1317,11 @@ refreshData4(e){
  handleChangeDepartment(e){
      alert(e.target.value);
      const token = auth.getToken();
-    
+   // this.state.categoriesChannels = [];
+    //this.state.chartSeriesChannels = [];
      this.props.getchannelwisestats(e.target.value,token);
     
-     this.forceUpdate();
+    // this.forceUpdate();
    
    
     }
@@ -1235,7 +1365,35 @@ refreshData4(e){
                          
 
                          
-                      </select>
+                </select>
+
+          <br/>
+          <br/>
+
+           {
+              this.state.categoriesChannels.length>0 ?
+                <Channelwise series = {this.state.chartSeriesChannels} categories = {this.state.categoriesChannels}  title = "Channel wise Session Stats"/>
+            :
+            <p>No data found</p>
+            }
+        
+
+
+           <div class="clearfix">
+            From <input ref="targetDateChannel" type="text"/>
+                       <br/>
+           To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
+           </div>
+          
+
+          <div class="btn-group">
+            <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData7.bind(this)} className="btn btn-success">Today</label>
+            <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData7.bind(this)} className="btn btn-success">Last 7 days</label>
+            <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData7.bind(this)} className="btn btn-success">Last 30 days</label>
+            <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData7.bind(this)} className="btn btn-success">This Year</label>
+          </div>
+          
+
             </div>
             {
               this.props.platformwisestats && this.state.categories.length > 0 &&

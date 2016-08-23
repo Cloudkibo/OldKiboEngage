@@ -45,8 +45,10 @@ class Channelwise extends React.Component {
   }
   
   componentWillReceiveProps(props) {
-    //alert('i am called');
+   // alert(this.chart.highcharts().xAxis[0].categories.length);
     this.chart.highcharts().series[0].setData(props.series[0].data);
+    this.chart.highcharts().xAxis[0].categories = props.categories;
+    this.chart.highcharts().redraw();
   }
   
   render() {
