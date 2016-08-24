@@ -236,7 +236,13 @@ Also gives option to change password and Profile picture.
 
 Our Real-Time report gives you an overview of agents' activity. Measure your live call engagement with visitor. These reports can be viewed for Today, Last month and This Year
 
+![messagechannel stats](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/channelwise.PNG)
 
+![agent stats](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/agent.PNG)
+
+![department stats](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/group.PNG)
+
+![customer](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/customer.PNG)
 
 
 
