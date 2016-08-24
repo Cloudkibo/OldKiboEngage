@@ -167,7 +167,9 @@ For webclients,only the list of customer sessions currently going on will be dis
 ###9.    Resolved Session List Container
       This container will fetch resolved sessions list from server and also gets updated when a agent mark chat session 'resolved'.This update is retrieved from socket. 
       
-
+###10.    Reports Container
+      For reports,we have use HighCharts library to present interative charts.For each type of type like Message Channel wise Session Stats,Department wise session stats,Platform wise session stats there is a separate high chart component.
+      
       
 
 ## Redux Files Structure
@@ -285,6 +287,18 @@ Redux code is defined in shared/redux folder.
       iii. changepassword : Call server api to change user password
       iv.  getmyusergroups : Call server api to fetch list of groups user has joined
       v.   uploadpicture : Call server api to upload avatar
+      
+###11. Actions related to Reports:
+      Following actions are related to Reports Module.
+      
+      i.    getplatformwisestats : Calls server api to fetch platform(web/mobile) wise session statistics
+      ii.   getdeptwisestats : Calls server api to fetch department wise session statistics
+      iii.  getpagewisestats : Calls server api to fetch page wise session statistics
+      iv.   getcountrywisestats : Calls server api to fetch country wise session statistics
+      v.    gettopcustomers : Calls server api to fetch customer wise session stats
+      vi.   getagentwisecalls : Calls server api to fetch agent wise session stats
+      vii.  getagentwisenotifications : Calls server api to fetch agent wise notification stats
+      viii. getchannelwisestats : Calls server api to fetch channel wise session stats 
       
       
       
