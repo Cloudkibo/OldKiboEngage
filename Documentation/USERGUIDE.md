@@ -232,7 +232,7 @@ Also gives option to change password and Profile picture.
 ![mygroups](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/mygroups.PNG)
 
 
-### Report (This feature will be implemented in V2)
+### Report 
 
 Our Real-Time report gives you an overview of agents' activity. Measure your live call engagement with visitor. These reports can be viewed for Today, Last month and This Year
 
