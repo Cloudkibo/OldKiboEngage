@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import SessionListItem from './SessionListItem';
+import ResolvedSessionListItem from './ResolvedSessionListItem';
 import {getresolvedsessions,getcustomers,getresolvedsessionsfromsocket} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
@@ -91,7 +91,8 @@ class ResolvedSessions extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
-                      
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
+                       
                    
                     </tr>
                     </thead>
@@ -101,7 +102,7 @@ class ResolvedSessions extends Component {
                         this.props.resolvedsocketsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
                         this.props.resolvedsocketsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids)} customername = {session.username} email = {session.useremail}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel)} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids)} customername = {session.username} email = {session.useremail}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel)} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
@@ -111,7 +112,7 @@ class ResolvedSessions extends Component {
                         this.props.resolvedsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
                         this.props.resolvedsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }

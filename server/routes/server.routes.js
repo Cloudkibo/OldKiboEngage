@@ -69,6 +69,8 @@ router.route('/deleteNotification').delete(NotificationController.destroyNotific
 router.route('/createCustomer').post(CustomerController.createCustomer);
 router.route('/getCustomers').get(CustomerController.getcustomers);
 router.route('/emailCustomer').post(CustomerController.emailCustomer);
+router.route('/rescheduleEmail').post(CustomerController.rescheduleEmail);
+
 router.route('/createsession').post(ChatController.createsession);
 router.route('/savechat').post(ChatController.savechat);
 router.route('/getsessions').get(ChatController.getsessions);

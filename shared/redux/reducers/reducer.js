@@ -574,6 +574,9 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
              yoursocketid : state.yoursocketid,
+             resolvedsessions : state.resolvedsessions,
+             assignedsessions : state.assignedsessions,
+             resolvedsocketsessions:state.resolvedsocketsessions
              
             };
 

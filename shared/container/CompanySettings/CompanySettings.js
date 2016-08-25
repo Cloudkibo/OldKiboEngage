@@ -255,6 +255,13 @@ class CompanySettings extends Component {
                                                 </div>
                                               </div>
 
+                                               <div className="form-group">
+                                                <label className="control-label col-md-3">Email Template 1 (Reschedule Resolved Call)</label>
+                                                <div className="col-md-9">
+                                                  <textarea id="maxlength_textarea" ref = "completedscheduleemail1" defaultValue={this.props.companysettings.completedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
+                                                </div>
+                                              </div>
+                                              
                                               <div className="hide">
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Email Template 1 (Reschedule Abandoned Call)</label>
@@ -274,12 +281,7 @@ class CompanySettings extends Component {
                                                   <textarea id="maxlength_textarea" ref="abandonedscheduleemail3" defaultValue={this.props.companysettings.abandonedscheduleemail3} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
                                                 </div>
                                               </div>
-                                              <div className="form-group">
-                                                <label className="control-label col-md-3">Email Template 1 (Reschedule Resolved Call)</label>
-                                                <div className="col-md-9">
-                                                  <textarea id="maxlength_textarea" ref = "completedscheduleemail1" defaultValue={this.props.companysettings.completedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
-                                                </div>
-                                              </div>
+                                             
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Email Template 2 (Reschedule Resolved Call)</label>
                                                 <div className="col-md-9">

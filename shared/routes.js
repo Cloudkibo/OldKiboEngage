@@ -24,10 +24,8 @@ import Channel from './container/MessageChannel/Channels'
 import ChannelEditView from './container/MessageChannel/ChannelEditView'
 import JoinCompany from './container/Agents/JoinCompany'
 import JoinCompanyFailure from './container/Agents/JoinCompanyFailure'
-
 import ResetPassword from './container/Auth/ResetPassword'
 import ResetPasswordFailure from './container/Auth/ResetPasswordFailure'
-
 import CannedResponseCreate from './container/CannedResponse/CannedResponseCreate'
 import CannedResponses from './container/CannedResponse/CannedResponses'
 import ResponseEditView from './container/CannedResponse/ResponseEditView'
@@ -35,7 +33,6 @@ import SessionDetailView from './container/ChatSessions/SessionDetailView'
 import JoinPage from './container/Agents/JoinPage'
 import NotFound from './container/NotFound'
 import auth from './services/auth';
-
 import AddNotification from './container/Notifications/AddNotification'
 import Notifications from './container/Notifications/Notifications'
 import NotificationView from './container/Notifications/NotificationView'
@@ -59,7 +56,7 @@ import EmailCustomer from './container/CustomerDirectory/EmailCustomer'
 import Router from 'react-router';
 import { browserHistory } from 'react-router'
 import NotVerified from './container/NotVerified'
-
+import RescheduleResolvedSessions from './container/ChatSessions/RescheduleResolvedSessions'
 
 import io from 'socket.io-client'
 let socket = io('')
@@ -138,6 +135,8 @@ const routes = (
      <Route path="/reports"  component={Reports}  onEnter={requireAuth}/>
      
      <Route path="/chatsessionview/:id"  component={SessionDetailView} onEnter={requireAuth}/>
+     <Route path="/rescheduleresolvedsession/:id/:name/:email"  component={RescheduleResolvedSessions} onEnter={requireAuth}/>
+     
      <Route path="*" component={NotFound} />
   </Route>
  

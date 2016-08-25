@@ -1609,6 +1609,40 @@ export function  emailCustomer(customer) {
 }
 
 
+
+
+export function  submitemail(customer) {
+  console.log(customer);  
+  return (dispatch) => {
+    fetch(`${baseURL}/api/rescheduleEmail`, {
+      method: 'post',
+      body: JSON.stringify({
+        to : customer.emailMsg.to,
+        emailAdd : customer.emailMsg.emailAdd,
+        subject : customer.emailMsg.subject,
+        body : customer.emailMsg.body,
+        from : customer.emailMsg.from,
+        url : customer.emailMsg.url
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': customer.usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => {
+      console.log(res.statusCode);
+        if(res.statusCode == 200){
+        alert('Email sent successfully.');  
+        browserHistory.push('/resolvedchatsessions'); 
+      }
+       else{
+        alert('Email not sent to customer.There might be some errors.');  
+        browserHistory.push('/resolvedchatsessions'); 
+      }
+    });
+  };
+}
+
 export function confirmSession(session) {
   return {
     type: ActionTypes.CREATE_SESSION,
