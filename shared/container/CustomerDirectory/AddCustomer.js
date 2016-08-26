@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
 import {createcustomer}  from '../../redux/actions/actions'
 import {getcustomergroups}  from '../../redux/actions/actions'
-import {getcustomerchannels}  from '../../redux/actions/actions'
+import {getcustomerchannels,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
 import {updatechannellist}  from '../../redux/actions/actions'
 import {createsession}  from '../../redux/actions/actions'
 import {addRoom} from '../../redux/actions/actions'
@@ -30,12 +30,13 @@ function getParameterByName(name, url) {
 
 
 
-
+var call_customer_details;
 class AddCustomer extends Component {
    constructor(props, context) {
     props.getcustomergroups();
     props.getcustomerchannels();
     super(props, context);
+    call_customer_details = false;
    // var pathname = getParameterByName('pathname'); 
     //var fullurl = getParameterByName('fullurl'); 
    // var companyid = getParameterByName('id'); 
@@ -44,7 +45,10 @@ class AddCustomer extends Component {
     console.log(pathname)
    // console.log(fullurl)
     console.log(companyid)
-
+    if(props.params.requestid){
+      //alert(props.params.requestid);
+      props.getspecificsession(props.params.requestid);
+    }
     //console.log(props.params.pathname);
    // console.log(props.params.id);
     this.addCustomers = this.addCustomers.bind(this);
@@ -99,12 +103,47 @@ create_session(data){
   }  
   
  
+   componentWillReceiveProps(props) {
+    if(props.specificsession && props.channels && props.groupdetails && props.channels && call_customer_details == false){
+     /* var dept_name = '';
+      for(var i = 0;i< props.groupdetails.length;i++){
+        if(props.groupdetails[i]._id == props.specificsession.departmentid)
+        {
+            dept_name = props.groupdetails[i].deptname;
+        }
+      }*/
+      this.refs.grouplist.value = props.specificsession.departmentid;
+      this.props.updatechannellist(props.specificsession.departmentid);
+      this.props.getspecificcustomer(props.specificsession.customerid);
+      
+      call_customer_details = true;
+     // this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
+      
+     // this.forceUpdate();
+    }
+    if(props.specificcustomer){
+      this.refs.grouplist.value = props.specificsession.departmentid;
+      this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
+      //alert(this.refs.channellist.value)
+      this.refs.name.value = props.specificcustomer.name;
+      this.refs.email.value = props.specificcustomer.email;
+      this.refs.country.value = props.specificcustomer.country;
+      this.refs.phone.value = props.specificcustomer.phone;
+      this.forceUpdate()
+    }
+
+    }
    componentDidMount() {
   // socket.on('joined',this.create_session)
     this.props.route.socket.on('empty',this.noagent);
    
    this.props.route.socket.on('joined',this.create_session)
    
+   if(this.props.specificsession){
+     //  this.props.getspecificcustomer(this.props.specificsession.customerid);
+      
+    }
+
       }
      
   addCustomers(e) {
@@ -260,7 +299,7 @@ create_session(data){
                       </select>
                   </div>
                  </div>     
-                   
+                
                 <div className="form-group">
                    <label className="control-label col-md-3"> Choose Channel</label>
                    <div className="col-md-9">
@@ -274,7 +313,8 @@ create_session(data){
                          
                    </select>
                   </div>
-                 </div>     
+                 </div>
+                   
               <div className="form-actions fluid">
               <div className="row">
                 <div className="col-md-3">
@@ -318,9 +358,11 @@ function mapStateToProps(state) {
     channels :(state.widget.channels),
     filterlist :(state.widget.filterlist),
     sessiondetails : (state.widget.sessiondetails),
+    specificsession : (state.widget.specificsession),
     roomdetails :(state.widget.roomdetails),
+    specificcustomer : (state.widget.specificcustomer),
   };
 }
-export default connect(mapStateToProps,{getcustomergroups,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
+export default connect(mapStateToProps,{getcustomergroups,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
 
 

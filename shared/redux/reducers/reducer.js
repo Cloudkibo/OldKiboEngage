@@ -1656,22 +1656,52 @@ function widget(state = widgetState, action){
             groupdetails:action.groups,
             channels : state.channels,
             roomdetails : state.roomdetails,
+            specificsession : state.specificsession,
+             specificcustomer : state.specificcustomer,
+             filterlist : state.filterlist,
 
-         
             };
     case ActionTypes.ADD_CUSTOMER_CHANNELS:
           return{
             groupdetails:state.groupdetails,
             channels : action.channels,
             roomdetails : state.roomdetails,
+            specificsession : state.specificsession,
+            specificcustomer : state.specificcustomer,
+            filterlist : state.filterlist,
 
       };
+
+     case ActionTypes.ADD_CUSTOMER_SESSION:
+          return{
+            groupdetails:state.groupdetails,
+            channels : state.channels,
+            roomdetails : state.roomdetails,
+            specificsession : action.specificsession,
+            specificcustomer : state.specificcustomer,
+            filterlist : state.filterlist,
+
+      }; 
+
+      case ActionTypes.ADD_CUSTOMER_DETAILS:
+          return{
+            groupdetails:state.groupdetails,
+            channels : state.channels,
+            roomdetails : state.roomdetails,
+            specificsession : state.specificsession,
+            specificcustomer : action.specificcustomer,
+            filterlist : state.filterlist,
+
+      };  
     case ActionTypes.ADD_ROOM_DETAILS :
          return{
             groupdetails:state.groupdetails,
             channels : state.channels,
             sessiondetails :state.session ,
             roomdetails : action.room,
+            specificsession : state.specificsession,
+            specificcustomer : state.specificcustomer,
+            filterlist : state.filterlist,
 
 
       };
@@ -1681,6 +1711,9 @@ function widget(state = widgetState, action){
             channels : state.channels,
             filterlist : state.channels.filter((channel) => channel.groupid == action.id),
             roomdetails : state.room,
+            specificcustomer : state.specificcustomer,
+            specificsession : state.specificsession,
+          
       };
     case ActionTypes.CREATE_SESSION:
          return{
@@ -1688,6 +1721,10 @@ function widget(state = widgetState, action){
             channels : state.channels,
             sessiondetails :action.session ,
             roomdetails : state.roomdetails,
+            specificcustomer : state.specificcustomer,
+            specificsession : state.specificsession,
+            filterlist : state.filterlist,
+          
 
       };
         

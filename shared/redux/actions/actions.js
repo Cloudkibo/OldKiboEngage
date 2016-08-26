@@ -341,6 +341,42 @@ export function getcustomergroups(){
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerGroups(res)));
   };
 }
+
+export function getspecificsession(requestid) {
+  console.log('requestid is ' + requestid);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcustomersession/`, {
+        method: 'post',
+        body: JSON.stringify({
+          request_id: requestid,
+         
+
+      })
+        ,
+        headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerSession(res)));
+  };
+}
+export function getspecificcustomer(customerid) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcustomerdetails/`, {
+        method: 'post',
+        body: JSON.stringify({
+          customerid: customerid,
+         
+
+      })
+        ,
+        headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerDetails(res)));
+  };
+}
 export function creategroupError(message) {
   console.log(message);
   return {
@@ -370,6 +406,24 @@ export function showCustomerGroups(groups){
   return {
     type: ActionTypes.ADD_CUSTOMER_GROUPS,
     groups,
+
+  };
+}
+
+export function showCustomerSession(specificsession){
+  return {
+    type: ActionTypes.ADD_CUSTOMER_SESSION,
+    specificsession,
+    
+
+  };
+}
+
+export function showCustomerDetails(specificcustomer){
+  return {
+    type: ActionTypes.ADD_CUSTOMER_DETAILS,
+    specificcustomer,
+    
 
   };
 }

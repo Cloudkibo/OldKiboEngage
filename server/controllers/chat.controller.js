@@ -458,3 +458,68 @@ export function pickchatsession(req, res) {
    
   }
 
+
+
+export function getcustomersession(req,res){
+        var  headers =  {
+       'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+       'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+       'kibo-client-id': 'cd89f71715f2014725163952',
+       
+       }
+      var options = {
+      url: `${baseURL}/api/visitorcalls/getSession`,
+      rejectUnauthorized : false,
+      headers,
+      json : req.body
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+          //call api to get customer details
+
+      return res.status(200).json(body);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    
+    }
+    request.post(options, callback);
+    
+}
+
+
+
+export function getcustomerdetails(req,res){
+        var  headers =  {
+       'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+       'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+       'kibo-client-id': 'cd89f71715f2014725163952',
+       
+       }
+      var options = {
+      url: `${baseURL}/api/customers/getcustomer`,
+      rejectUnauthorized : false,
+      headers,
+      json : req.body
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+          //call api to get customer details
+
+      return res.status(200).json(body);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    
+    }
+    request.post(options, callback);
+    
+}
+
+
