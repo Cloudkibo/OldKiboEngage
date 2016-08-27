@@ -57,7 +57,7 @@ import Router from 'react-router';
 import { browserHistory } from 'react-router'
 import NotVerified from './container/NotVerified'
 import RescheduleResolvedSessions from './container/ChatSessions/RescheduleResolvedSessions'
-
+import RescheduleAbandonedSessions from './container/ChatSessions/RescheduleAbandonedSessions'
 import io from 'socket.io-client'
 let socket = io('')
 
@@ -136,7 +136,7 @@ const routes = (
      
      <Route path="/chatsessionview/:id"  component={SessionDetailView} onEnter={requireAuth}/>
      <Route path="/rescheduleresolvedsession/:id/:name/:email"  component={RescheduleResolvedSessions} onEnter={requireAuth}/>
-     
+     <Route path="/rescheduleabandonedsession/:id/:name/:email"  component={RescheduleAbandonedSessions} onEnter={requireAuth}/>
      <Route path="*" component={NotFound} />
   </Route>
  

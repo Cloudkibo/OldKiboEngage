@@ -51,7 +51,7 @@ export default class SideBar extends Component
                   <i className="fa fa-chain-broken">
                   </i>      
                   <span className="title">
-                     New Chat Sessions
+                     Abandoned Chat Sessions
                   </span>      
                   <span className="selected">
                   </span>

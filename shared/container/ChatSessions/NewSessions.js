@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import SessionListItem from './SessionListItem';
+import NewSessionListItem from './NewSessionListItem';
 import {getnewsessions,getcustomers,getnewsessionsfromsocket} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
@@ -89,7 +89,9 @@ class NewSessions extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Is Rescheduled</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Rescheduled By</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
                       
                    
                     </tr>
@@ -100,7 +102,7 @@ class NewSessions extends Component {
                         this.props.newsocketsessions && this.props.customers && this.props.channels && this.props.groupdetails && 
                         this.props.newsocketsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id}  customername = {session.username} email = {session.useremail}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel)} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <NewSessionListItem session={session} key={session.request_id}  customername = {session.username} email = {session.useremail}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel)} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} agents = {this.props.agents}/>
                                                       
                         ))
                       }
@@ -110,7 +112,7 @@ class NewSessions extends Component {
                         this.props.newsessions && this.props.customers && this.props.channels && this.props.groupdetails &&
                         this.props.newsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <NewSessionListItem session={session} key={session.request_id} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} agents = {this.props.agents}/>
                                                       
                         ))
                       }

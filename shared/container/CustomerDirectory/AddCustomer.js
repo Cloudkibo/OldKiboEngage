@@ -56,11 +56,49 @@ class AddCustomer extends Component {
     this.noagent = this.noagent.bind(this);
   }
   noagent(data){
-    alert('We are offline now.');
+    alert('We are offline now.We will contact you soon');
+
+
+    //creating abandoned session
+      const name = this.refs.name;
+      const email = this.refs.email;
+      const country = this.refs.country;
+      const phone = this.refs.phone;
+     // var companyid = getParameterByName('id'); 
+     // var pathname = getParameterByName('pathname'); 
+     /* var fullurl = getParameterByName('fullurl'); */
+
+    var companyid = this.props.params.id;
+    var pathname = this.props.params.pathname;
+  //    var pathname = "";
+      var fullurl = "";
+
+     
+      var session = { 
+                        'email' : email.value,
+                        'departmentid': this.refs.grouplist.value,
+                        'messagechannel' : this.refs.channellist.value,
+                        'requesttime' : Date.now(),
+                        'fullurl' :  fullurl,
+                        'currentPage' : pathname,
+                        'phone' :  phone.value,
+                        'browser' : 'Chrome',
+                        'ipAddress':'192.168.1.2',
+                        'agent_ids':'',
+                        'country' : country.value,
+                        'companyid' : companyid,
+                        'session_id' : data.request_id,
+                        'platform': 'web',
+                        'customerName' : name.value,
+                        'isMobile' : "false",
+                        'status' : 'new',
+                        'socketid' : data.socketid,
+
+                         }
+    this.props.createsession(session); //added to create abandoned session
     browserHistory.push('/');
   }
 create_session(data){
-     console.log('i am called')
       const name = this.refs.name;
       const email = this.refs.email;
       const country = this.refs.country;

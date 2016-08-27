@@ -1667,7 +1667,7 @@ export function  emailCustomer(customer) {
 
 export function  submitemail(customer) {
   console.log(customer);  
-  return (dispatch) => {
+ return (dispatch) => {
     fetch(`${baseURL}/api/rescheduleEmail`, {
       method: 'post',
       body: JSON.stringify({
@@ -1687,14 +1687,36 @@ export function  submitemail(customer) {
       console.log(res.statusCode);
         if(res.statusCode == 200){
         alert('Email sent successfully.');  
-        browserHistory.push('/resolvedchatsessions'); 
+        browserHistory.push('/dashboard'); 
       }
        else{
         alert('Email not sent to customer.There might be some errors.');  
-        browserHistory.push('/resolvedchatsessions'); 
+        browserHistory.push('/dashboard'); 
       }
     });
   };
+}
+
+
+
+export function  updatereschedule(session,customer) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/updatereschedule`, {
+      method: 'post',
+      body: JSON.stringify({
+        is_rescheduled : session.is_rescheduled,
+        rescheduled_by : session.rescheduled_by,
+        request_id : session.request_id,
+        companyid : session.companyid,
+       
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': session.usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => dispatch(submitemail(customer)));
+ };
 }
 
 export function confirmSession(session) {
@@ -1740,7 +1762,7 @@ export function  createsession(session) {
     }).then((res) => res.json()).then(res => {
         console.log(res.statusCode);
         if(res.statusCode == 201){
-        alert('session created successfully.');  
+       // alert('session created successfully.');  
         dispatch(confirmSession(session));
       }
        else{

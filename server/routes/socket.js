@@ -361,7 +361,7 @@ socket.on('getOnlineAgentList',function() {
     var numClients = clients.length; // This change is because of socket version change
     console.log('Clients connected to socket  : ' + numClients);
     if (numClients === 0) {
-      socket.emit('empty', room.room);
+      socket.emit('empty', room);
 
       // TODO do the following work using API
     }

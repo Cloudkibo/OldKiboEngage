@@ -25,6 +25,7 @@ router.route('/getmyusergroups').get(GroupController.getmyusergroups);
 router.route('/getcustomergroups').get(GroupController.getcustomergroups);
 router.route('/getcustomersession').post(ChatController.getcustomersession);
 router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
+router.route('/updatereschedule').post(ChatController.updatereschedule);
 router.route('/creategroup').post(GroupController.creategroup);
 
 router.route('/getGroup').get(GroupController.getGroup);
