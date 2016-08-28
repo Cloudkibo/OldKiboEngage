@@ -130,9 +130,15 @@ Admin can give rights to supervisor to remove an agent from group and to assign 
 
 ![agent rights](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/agent%20change%20role.PNG)
 
-### Invite to call (This feature will be in V3)
-Admin, Supervisor or Agent can invite a customer to have conversation with and solve its problem. Inviting a vistor
-for call is simple and easy, KiboEngage will generate a unique URL for its visitor and agent to connect in. 
+### Reschedule Abandoned Session
+If the customer arrives on the widget and left the widget due to unavailability of Agents,then KiboEngage will let agents to reschedule abandoned session.Agent can invite customer to have a session with him on provided URL
+
+![abandoned session](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/reschedule1.PNG)
+
+### Reschedule Resolved Session
+Once the chat session is marked as Resolved by the agent then agent can anytime reschedule this session to have further discussion with customer.Agent can invite customer to have a session with him on provided URL
+
+![resolved session](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/reschedule2.PNG)
 
 ### Customer Directory
 
