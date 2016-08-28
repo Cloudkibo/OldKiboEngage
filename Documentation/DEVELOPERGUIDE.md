@@ -161,8 +161,9 @@ For webclients,only the list of customer sessions currently going on will be dis
 ###7.    Assigned Session List Container
       This container will fetch assigned sessions list from server and also gets updated when a session is assigned to some agent.This update is retrieved from socket.
       
-###8.    New Session List Container
-      This container will fetch new sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket. 
+###8.    Abandoned List Container
+     This container will fetch abandoned sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket.Abandoned Sessions are those sessions where the customer is unable to communicate wit h the agent
+     
 
 ###9.    Resolved Session List Container
       This container will fetch resolved sessions list from server and also gets updated when a agent mark chat session 'resolved'.This update is retrieved from socket. 
