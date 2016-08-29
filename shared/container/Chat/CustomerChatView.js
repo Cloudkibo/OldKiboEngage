@@ -56,7 +56,8 @@ class CustomerChatView extends Component {
         this.moveToChannel = this.moveToChannel.bind(this);
         this.resolveSession = this.resolveSession.bind(this)
         this.getSocketmessage = this.getSocketmessage.bind(this);
-        
+        this.connectToCall = this.connectToCall.bind(this);
+        this.connectCall = this.connectCall.bind(this);
         this.state = {
           value: '',
           suggestions: getSuggestions('',props.responses)
@@ -70,7 +71,34 @@ class CustomerChatView extends Component {
 
  
 
+connectCall(data){
+   if(confirm("Other person is calling you to a call. Confirm to join."))
+        window.location.href = data.url;
+ }
+connectToCall(e){
+      var call= {};
+      var today = new Date();
+      var uid = Math.random().toString(36).substring(7);
+      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
+      
+      call.from = this.props.userdetails.firstname;
+      call.to = this.refs.customername.value;
+      call.to_id = this.refs.socketid_customer.value;
+      call.agentemail = this.props.userdetails.email;
+      call.visitoremail = this.refs.customeremail.value;
+      call.request_id = this.props.sessiondetails.request_id;
+      call.url = meetingURLString;
+      console.log(call);
+      console.log(meetingURLString);
+      this.props.route.socket.emit('connecttocall', {room: this.props.userdetails.uniqueid, stanza: call});
+
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
+
+      window.location.href = meetingURLString;
+
+}
 onChange(event, { newValue }) {
   
     this.setState({
@@ -124,6 +152,8 @@ else{
     
   
     this.props.route.socket.on('send:message',this.getSocketmessage);
+    this.props.route.socket.on('connecttocall',this.connectCall);
+  
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
    
   }
@@ -263,9 +293,10 @@ else{
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
                            'assignedagentname': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name,
-                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-         
+                            'agentsocket' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                          'assignedagentemail': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email,
+                           
                       }
 
         this.props.chatlist.push(saveChat);
@@ -463,8 +494,8 @@ const { value, suggestions } = this.state;
                          {
                           this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
                             agent.agentId == this.props.userdetails._id?
-                            <option value={agent.socketid} data-attrib = {agent.agentId} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname}>Myself</option>:
-                             <option value={agent.socketid} data-attrib = {agent.agentId} data-name={agent.agentName}>{agent.agentName}</option>
+                            <option value={agent.socketid} data-attrib = {agent.agentId} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.socketid} data-attrib = {agent.agentId} data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
                               
                             )
                          }
@@ -587,6 +618,8 @@ const { value, suggestions } = this.state;
 
                    
                 </div>
+               <br/> 
+              <button className="btn green" onClick ={this.connectToCall}> Start Call </button>  
       </div> 
   )
   }

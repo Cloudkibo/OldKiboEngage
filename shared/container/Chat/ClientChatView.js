@@ -18,15 +18,23 @@ class ClientChatView extends Component {
        props.getChatRequest(props.customerid);
        super(props, context);
        this.handleMessageSubmit= this.handleMessageSubmit.bind(this);
-      this.getAgentSocket = this.getAgentSocket.bind(this);
+       this.getAgentSocket = this.getAgentSocket.bind(this);
+       this.connectToCall = this.connectToCall.bind(this);
+       this.connectCall = this.connectCall.bind(this);
   }
 
+ connectCall(data){
+   if(confirm("Other person is calling you to a call. Confirm to join."))
+        window.location.href = data.url;
+ }
   getAgentSocket(data){
     console.log(data)
     console.log('agent socket id is : ' + data.data.agentsocket);
     this.refs.agentsocket.value =  data.data.agentsocket;
     this.refs.agentid.value = data.data.agentid;
     this.refs.agentname.value = data.data.assignedagentname;
+    this.refs.agentemail.value = data.data.assignedagentemail;
+               
 
 
   }
@@ -54,6 +62,7 @@ class ClientChatView extends Component {
 
    socket.on('send:message',message => this.props.updateChatList(message));
    socket.on('send:getAgent',this.getAgentSocket);
+   socket.on('connecttocall',this.connectCall);
   
    
       }
@@ -119,6 +128,31 @@ class ClientChatView extends Component {
       }
     }
 
+  connectToCall(e){
+    const { socket,dispatch } = this.props;
+    
+    var call= {};
+      var today = new Date();
+      var uid = Math.random().toString(36).substring(7);
+      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value+'&agentname='+this.refs.agentname.value+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
+      
+      call.from = this.props.sessiondetails.customerName;
+      call.to = this.refs.agentname.value;
+      call.to_id = this.refs.agentsocket.value;
+      call.agentemail = this.refs.agentemail.value;
+      call.visitoremail = this.props.sessiondetails.email;
+      call.request_id = this.props.sessiondetails.session_id;
+      call.url = meetingURLString;
+      console.log(call);
+      console.log(meetingURLString);
+      socket.emit('connecttocall', {room: this.props.sessiondetails.companyid, stanza: call});
+
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value+'&agentname='+this.refs.agentname.value+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
+
+      window.location.href = meetingURLString;
+  }
   render() {
    
     var leftStyle = {
@@ -146,13 +180,15 @@ class ClientChatView extends Component {
             <label>Agent Name : </label>
             <input ref ="agentname" type = "text"/>
             <label>Agent ID : </label>
-           <input ref ="agentid" type = "text"/>
+            <input ref ="agentid" type = "text"/>
+            <label>Agent Email: </label>
+            <input ref ="agentemail" type = "text"/>
            {this.props.sessiondetails &&
             <div>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
             <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
             <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  />
-            <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
+            <input ref="email" value = {this.props.sessiondetails.email} type="text" />
            </div>
            }
             </div>
@@ -212,6 +248,12 @@ class ClientChatView extends Component {
                         </span>
                     </div>
                 </div>
+
+             <br/> 
+             {this.refs.agentname && this.refs.agentname.value && this.refs.agentname.value != '' ? 
+              <button className="btn green" onClick ={this.connectToCall}> Start Call </button> :
+              <button className="btn green hide" onClick ={this.connectToCall}> Start Call </button> 
+              }  
       </div> 
   )
   }
