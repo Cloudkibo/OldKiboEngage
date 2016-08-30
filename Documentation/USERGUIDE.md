@@ -85,6 +85,13 @@ Visitor can click the widget button and fill the form and ask question from any 
 
 And wait for agent to respond.
 
+##### Audio Video Call
+
+Agent and customer during chat can invite each other to audio/video call by clicking on Start Call button.This will redirect both of them to Cloudkibo Conference
+
+![Audio Video Call](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/audiovideo.PNG)
+
+
 ### Group
 
 Company can create group so that agent can be categoried according to their relevent area. To create group simple name the group and give description. To activate the group you need to assign an agent to the group to make it operative.
