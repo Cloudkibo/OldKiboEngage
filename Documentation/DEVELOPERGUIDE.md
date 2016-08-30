@@ -59,118 +59,160 @@ React Containers will receive data from reducer,update their state and pass this
 In Kibo Engage,section below is describing React Containers,Data that they will receive from Reducer,Actions that can take place in container,components of react container and what data each react component will receive from container.
 
 ###1.  Groups Container
-		Groups container will receive all groups data from Kibo support api.
-	
-	    i. Group : 
-          Each group component will hold details of a each group present in all groups data.
-          *Actions:*
-         
-            i.  Edit group
-            ii. Delete group
-            
-      ii.View Component:
-          It will display details of a particular group whose id is passed as a parameter
 
-      iii. Edit group component:
-          It will enable user to modify group details.
-           *Actions:*
-            i. Save
-      
-      iv. Create new group:
-            No prior data required.
-            *Actions :* Submit
+Groups container will receive all groups data from Kibo support api.
+
+i. Group : 
+
+Each group component will hold details of a each group present in all groups data.
+
+**Actions:**
+
+i.  Edit group
+
+ii. Delete group
+
+iii.View Component:
+
+It will display details of a particular group whose id is passed as a parameter
+
+iv. Edit group component:
+
+It will enable user to modify group details.
+
+  **Actions:**
+  
+  i. Save
+
+iv. Create new group:
+
+No prior data required.
+
+**Actions :** 
+
+  Submit
 
 ###2.  Agents Container
-		Agents container will receive all agents data from Kibo support api.
-  
-        i. Agent : 
-            Each agent component will hold details of a each agent present in all agents data.
-            *Actions:*
-              i.    Change Role
-              ii.   Delete
-              iii.  Save Changes
-        
-        ii. Invite new agent:
-            It will display form to fill details of a new agent
-            *Actions:*
-              i.    Submit
+
+Agents container will receive all agents data from Kibo support api.
+
+**i. Agent :** 
+
+Each agent component will hold details of a each agent present in all agents data.
+
+**Actions:**
+
+  i.    Change Role
+
+  ii.   Delete
+
+  iii.  Save Changes
+
+**ii. Invite new agent:**
+
+It will display form to fill details of a new agent
+
+**Actions:**
+
+  i.    Submit
 
 ###3.    Message Channels Container
-      Message Channels container will receive  message channels data from KiboSupport Api.
-    
-        i.  Message Channel:
-            Each message channel is a component that will hold details of that channel.
-        
-        ii. Add Channel:
-            This will show a form to create a new message channel
-            *Actions:*
-              i.  Save
-              ii. Cancel
+Message Channels container will receive  message channels data from KiboSupport Api.
+
+i.  Message Channel:
+
+Each message channel is a component that will hold details of that channel.
+
+ii. Add Channel:
+
+This will show a form to create a new message channel
+
+**Actions:**
+
+  i.  Save
+
+  ii. Cancel
 
 ###4.    Chat Container
-      Chat container will receive mobile users chat data from server. It will have following components:
-      
-        i.  Customer List:
-            Customer list will be component that will hold data of chat messages.
+Chat container will receive mobile users chat data from server. It will have following components:
+
+i.  Customer List:
+Customer list will be component that will hold data of chat messages.
+
+ii. Chat:
+Chat component will show the history of chats of logged in agent for a particular customer
+
+**Actions:** <br/>
+
+  i.  Resolve : This action will mark the chat message status as resolved.
+
+  ii. Assigned To:This action allow agent to redirect/reassign chat message to some other agent
+
+  iii. Move To : This action allow agent to move the chat message to other group if he finds message not related to the group it has 
+  been sent to.
+  
+  iv. Send : This action will dispatch the agent message to server to be send to customer
+  
+  v. Filter customer messages by status (New,Assigned,Resolved)
+  
+  vi. Filter customer messages by groups (New,Assigned,Resolved)
+  
+  vii.Filter customer messages by agents (visible to only Admin/Supervisor)
         
-        ii. Chat:
-            Chat component will show the history of chats of logged in agent for a particular customer
-            *Actions:*
-            
-              i.  Resolve : This action will mark the chat message status as resolved.
-              ii. Assigned To:This action allow agent to redirect/reassign chat message to some other agent
-              iii. Move To : This action allow agent to move the chat message to other group if he finds message not related to the group it has been sent to.
-              iv. Send : This action will dispatch the agent message to server to be send to customer
-              v. Filter customer messages by status (New,Assigned,Resolved)
-              vi. Filter customer messages by groups (New,Assigned,Resolved)
-              vii.Filter customer messages by agents (visible to only Admin/Supervisor)
-              
-** FlowChart Describing the Work flow of Chat Module **
+**FlowChart Describing the Work flow of Chat Module**
 ![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/Flowchart for Chat Module.png)
 
 
 For webclients,only the list of customer sessions currently going on will be displayed to agent.
-** FlowChart for Retrieving Session List from Socket for Webclients **
+
+**FlowChart for Retrieving Session List from Socket for Webclients**
 
 ![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/listofsessionsflowchart.png)
 
 
 ###5.    Notifications Container
-      Notifications container will fetch notifications from server and pass that to Notifications List component.It will have following components:
- 
-        i.  Notification List:
-            Notification list will be component that will hold data of notifications.
+Notifications container will fetch notifications from server and pass that to Notifications List component.It will have following components:
+
+  i.  Notification List:
+      Notification list will be component that will hold data of notifications.
+  
+  ii.Add Notification:
+      Add notification component requires only logged in agent information and will display a form to create a new notification.
+      
+      <b> Actions:<b><br/>
+        i.  Send:
+            Send action will submit the notification to server which will then be sent to mobile clients on socket and to webclients via Email
         
-        ii.Add Notification:
-            Add notification component requires only logged in agent information and will display a form to create a new notification.
-            *Actions:*
-              i.  Send:
-                  Send action will submit the notification to server which will then be sent to mobile clients on socket and to webclients via Email
-              
-              ii. Cancel
+        ii. Cancel
 
 ###6.    Customer Directory Container
-      Customer directory container will fetch customer information from server.It will have following components:
-	
-	      i. Customer : 
-            Each customer is a  component and will hold details of a that particular customer..
-            *Actions:*
-                i.Send SMS/Email:
-                    Agent can send sms/email or can view chat history of that particular customer.
+Customer directory container will fetch customer information from server.It will have following components:
+
+i. Customer : 
+  Each customer is a  component and will hold details of a that particular customer..
+ 
+  <b>Actions: </b>
+
+  a.Send SMS/Email: <br/>
+    Agent can send sms/email or can view chat history of that particular customer.
 
 ###7.    Assigned Session List Container
-      This container will fetch assigned sessions list from server and also gets updated when a session is assigned to some agent.This update is retrieved from socket.
+This container will fetch assigned sessions list from server and also gets updated when a session is assigned to some agent.This update is retrieved from socket.
       
 ###8.    Abandoned List Container
-     This container will fetch abandoned sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket.Abandoned Sessions are those sessions where the customer is unable to communicate wit h the agent
+
+This container will fetch abandoned sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket.Abandoned Sessions are those sessions where the customer is unable to communicate wit h the agent
      
 
 ###9.    Resolved Session List Container
-      This container will fetch resolved sessions list from server and also gets updated when a agent mark chat session 'resolved'.This update is retrieved from socket. 
+
+This container will fetch resolved sessions list from server and also gets updated when a agent mark chat session 'resolved'.This update is retrieved from socket. 
+      
+      Each 
       
 ###10.    Reports Container
-      For reports,we have use HighCharts library to present interative charts.For each type of type like Message Channel wise Session Stats,Department wise session stats,Platform wise session stats there is a separate high chart component.
-      
+For reports,we have use HighCharts library to present interative charts.For each type of type like Message Channel wise Session Stats,Department wise session stats,Platform wise session stats there is a separate high chart component.
+
       
 
 ## Redux Files Structure
