@@ -142,7 +142,7 @@ Customer list will be component that will hold data of chat messages.
 ii. Chat:
 Chat component will show the history of chats of logged in agent for a particular customer
 
-**Actions:** <br/>
+**Actions:**
 
   i.  Resolve : This action will mark the chat message status as resolved.
 
@@ -158,6 +158,9 @@ Chat component will show the history of chats of logged in agent for a particula
   vi. Filter customer messages by groups (New,Assigned,Resolved)
   
   vii.Filter customer messages by agents (visible to only Admin/Supervisor)
+  
+  viii. Start Call : On clicking Start Call button,the visitor will be informed through socket alert that the agent wants to have audio/video call with him.Upon confirming alert,both visitor and agent will be redirected to Cloudkibo Conference
+  
         
 **FlowChart Describing the Work flow of Chat Module**
 ![Client Diaagram](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/Flowchart for Chat Module.png)
@@ -171,19 +174,24 @@ For webclients,only the list of customer sessions currently going on will be dis
 
 
 ###5.    Notifications Container
+
 Notifications container will fetch notifications from server and pass that to Notifications List component.It will have following components:
 
   i.  Notification List:
-      Notification list will be component that will hold data of notifications.
+
+  Notification list will be component that will hold data of notifications.
   
   ii.Add Notification:
-      Add notification component requires only logged in agent information and will display a form to create a new notification.
-      
-      <b> Actions:<b><br/>
-        i.  Send:
-            Send action will submit the notification to server which will then be sent to mobile clients on socket and to webclients via Email
-        
-        ii. Cancel
+ 
+  Add notification component requires only logged in agent information and will display a form to create a new notification.
+  
+  **Actions:**
+  
+  i.  Send:
+  
+  Send action will submit the notification to server which will then be sent to mobile clients on socket and to webclients via Email
+    
+  ii. Cancel
 
 ###6.    Customer Directory Container
 Customer directory container will fetch customer information from server.It will have following components:
@@ -199,39 +207,50 @@ i. Customer :
 ###7.    Assigned Session List Container
 This container will fetch assigned sessions list from server and also gets updated when a session is assigned to some agent.This update is retrieved from socket.
       
-###8.    Abandoned List Container
+###8.    Abandoned Session List Container
 
 This container will fetch abandoned sessions list from server and also gets updated when a customer joins livehelp through widget.This update is retrieved from socket.Abandoned Sessions are those sessions where the customer is unable to communicate wit h the agent
-     
+
+Agent can reschedule abandoned sessions by inviting visitor via. Email.
+
+**FlowChart - Workflow of Abandoned Session Rescheduling**
+
+![Reschedule 2](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/reschedule_abandoned_sessions.png)
 
 ###9.    Resolved Session List Container
 
 This container will fetch resolved sessions list from server and also gets updated when a agent mark chat session 'resolved'.This update is retrieved from socket. 
-      
-      Each 
-      
-###10.    Reports Container
-For reports,we have use HighCharts library to present interative charts.For each type of type like Message Channel wise Session Stats,Department wise session stats,Platform wise session stats there is a separate high chart component.
+
+Each resolved session can be rescheduled in future.To reschedule the session Agent clicks on **Reschedule Session** button.The visitor is informed about the rescheduled session via. Email
+
+**FlowChart - Workflow of Resolved Session Rescheduling**
+
+![Reschedule 1](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/reschedule_resolved_sessions.png)
 
       
+###10.    Reports Container
+
+For reports,we have use HighCharts library to present interative charts.For each type of type like Message Channel wise Session Stats,Department wise session stats,Platform wise session stats there is a separate high chart component.
+
 
 ## Redux Files Structure
 We have used Redux for data and state handling on client side.
 Redux code is defined in shared/redux folder.
 
 ### actions/Actions.js
-  Actions.js contains functions through which we are calling server apis.
-  Each function defined in actions.js returns JSON object containing:
+Actions.js contains functions through which we are calling server apis.
+Each function defined in actions.js returns JSON object containing:
 
     'type' : type of action defined in constants/contants.js to identify action in Reducer
      data  : data return to update component state through reducer
 
 ### Description of Actions
-  Following is the description of action functions defined in actions.js
+
+Following is the description of action functions defined in actions.js
 
 ###1. Actions related to Authentication:
-      Following actions are related to user login or signup.
-      They will return user details and authentication token to reducer
+
+Following actions are related to user login or signup.They will return user details and authentication token to reducer
 
       i.   loginUser : Receives username and password from React Login Component
       ii.  receiveLogin : Called if authentication succeed
@@ -243,8 +262,8 @@ Redux code is defined in shared/redux folder.
       vi   signupuser : For calling server API to register username
 
 ###2. Actions related to Groups:
-      Following actions are related to fetch and create groups/departments.
-      They will return group details to reducer
+
+Following actions are related to fetch and create groups/departments.They will return group details to reducer
 
       i.  getusergroups : Calls server api to fetch agent's group information
       ii. getcustomergroups : This is without-token version of getting grouplist for Chat widget
@@ -254,8 +273,8 @@ Redux code is defined in shared/redux folder.
       vi. deletegroup : Call server api to delete group
 
 ###3. Actions related to Agents:
-      Following actions are related to fetch and create agents.
-      They will return agent details to reducer
+
+Following actions are related to fetch and create agents.They will return agent details to reducer
 
       i.  getAgents : Calls server api to fetch agent's  information
       ii. getDeptAgents : Calls server api to fetch agent's group information
@@ -264,9 +283,9 @@ Redux code is defined in shared/redux folder.
       v.  deleteagent : Calls server api to delete agent
 
 ###4. Actions related to Message Channels:
-      Following actions are related to fetch and create message channels.
-      They will return channel details to reducer
-      
+
+Following actions are related to fetch and create message channels.They will return channel details to reducer
+
       i.  createChannel : Calls server api to create message channel
       ii. editChannel : Calls server api to edit details of message channel
       iii.  getcustomerchannels : This is without-token version of getting channel list for Chat widget
@@ -274,8 +293,8 @@ Redux code is defined in shared/redux folder.
       v.  deletechannel : Calls server api to delete channel
 
 ###5. Actions related to Canned Response:
-      Following actions are related to fetch and create canned responses.
-      They will return canned response details to reducer
+
+Following actions are related to fetch and create canned responses.They will return canned response details to reducer
  
       i.  createResponse : Calls server api to create canned response
       ii. editResponse : Calls server api to edit canned response details
@@ -283,8 +302,8 @@ Redux code is defined in shared/redux folder.
       iv. deleteresponse : Calls server api to delete canned response
 
 ###6. Actions related to Chat:
-      Following actions are related to Chat Module.
-      They will return chat message and user session details to reducer
+
+Following actions are related to Chat Module.They will return chat message and user session details to reducer
 
       i.  filterbystatus : To filter customer session list by status
       ii. filterbyDept : To filter customer session list by department/group
@@ -300,8 +319,8 @@ Redux code is defined in shared/redux folder.
       xii. updatesessionStatus : Calls server api to update chat session status
       
 ###7. Actions related to Notifications:
-      Following actions are related to Notifications.
-      They will return notification details to reducer
+
+Following actions are related to Notifications.They will return notification details to reducer
  
        i. getnotifications : Calls server api to fetch notifications 
       ii. createNotification : Calls server api to create notification
@@ -309,21 +328,23 @@ Redux code is defined in shared/redux folder.
       iv. editNotification : Calls server api to edit notification
 
 ###8. Actions related to Customer Directory:
-      Following actions are related to Customer Directory.
-      They will return customer details to reducer
+
+Following actions are related to Customer Directory.They will return customer details to reducer
 
       i.  getcustomers : Calls server api to fetch customer details 
       ii. createcustomer : Call server api to create customer when the customer fills form on Chat Widget
       iii.  emailCustomer : Calls server api to send customer email from agent
       
 ###9. Actions related to Company Settings:
-      Following actions are related to CompanySettings.
+
+Following actions are related to CompanySettings.
       
       i.  getcompanysettings : Calls server api to fetch current company settings
       ii. updatesettings : Call server api to update company settings
 
 ###10. Actions related to Profile:
-      Following actions are related to Profile.
+
+Following actions are related to Profile.
       
       i.   getuserdetails : Calls server api to fetch current user profile
       ii.  updateprofile : Call server api to update user profile
@@ -332,7 +353,8 @@ Redux code is defined in shared/redux folder.
       v.   uploadpicture : Call server api to upload avatar
       
 ###11. Actions related to Reports:
-      Following actions are related to Reports Module.
+
+Following actions are related to Reports Module.
       
       i.    getplatformwisestats : Calls server api to fetch platform(web/mobile) wise session statistics
       ii.   getdeptwisestats : Calls server api to fetch department wise session statistics
@@ -343,18 +365,15 @@ Redux code is defined in shared/redux folder.
       vii.  getagentwisenotifications : Calls server api to fetch agent wise notification stats
       viii. getchannelwisestats : Calls server api to fetch channel wise session stats 
       
-      
-      
-      
-    
-
 
 ### reducers/reducer.js
 
 In reducer.js,we have defined three reducer
 
 i. Auth Reducer : To handle state changes when authentication actions are called
+
 ii. Dashboard Reducer : Contains action types related to groups,message channels,chat,customer directory,notifications and agents.
+
 iii. Widget Reducer : Contains action types related to customer widget
 
 iv. Signup Reducer : Contains action types related to signup actions
