@@ -70,7 +70,7 @@ export function getgroups(req, res) {
   //console.log('token received is  : ' + token);
   
    var options = {
-      url: `${baseURL}/api/departments`,
+      url: `${baseURL}/api/departments/kiboengage`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
