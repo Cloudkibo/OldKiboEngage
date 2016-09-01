@@ -122,13 +122,21 @@ export default class JoinCompany extends React.Component {
                                               {
 
                                                 this.props.signupwarnings && this.props.signupwarnings.statusCode == 422 &&
-                                              this.props.signupwarnings.validationErrs.map(function (err, i) {
-                                                  return(
-                                                    <div className = "alert alert-danger"><span>{err}</span></div>
+                                                  this.props.signupwarnings.validationErrs.map(function (err, i) {
+                                                      return(
+                                                        <div className = "alert alert-danger"><span>{err}</span></div>
+                                                      )
+                                                    }
                                                   )
                                                 }
-                                              )
-
+                                                {
+                                                this.props.signupwarnings && this.props.signupwarnings.statusCode == 200 &&
+                                                  this.props.signupwarnings.validationErrs.map(function (err, i) {
+                                                      return(
+                                                        <div className = "alert alert-success"><span>{err} .Please goto <Link to = '/login'>Login Page </Link></span></div>
+                                                      )
+                                                    }
+                                                  )
 
                                             }
 

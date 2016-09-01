@@ -16,13 +16,11 @@ import { browserHistory } from 'react-router'
 
 //const socket = io('');
 var dontCall = false;
-
+var is_routed = false;
 class Dashboard extends Component {
  constructor(props, context) {
 
- if(props.userdetails.accountVerified == "No"){
-    browserHistory.push('/notverified');
-   }
+
     super(props, context);
      this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
   
@@ -40,13 +38,16 @@ class Dashboard extends Component {
    
   }
 
-  componentDidMount(){
-    // fetch online agent list
-   // this.props.route.socket.emit('getOnlineAgentList');
-  
-  
-  }
+ componentWillReceiveProps(props){
+   if(props.userdetails && props.userdetails.accountVerified == "No" && is_routed == false){
+    is_routed = true;
+    browserHistory.push('/notverified');
+    
 
+   }
+  
+ }
+ 
   updateOnlineAgents(data){
   console.log('updating updateOnlineAgents');
   this.props.updateAgentList(data);
