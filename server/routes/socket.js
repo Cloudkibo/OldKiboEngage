@@ -3,6 +3,41 @@
  */
 
 'use strict';
+var azure = require('azure-sb');
+var notificationHubService = azure.createNotificationHubService('Cloudkibo','Endpoint=sb://cloudkibo.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=arTrXZQGBUeuLYLcwTTzCVqFDN1P3a6VrxA15yvpnqE=');
+
+function sendPushNotification(tagname, payload){
+  tagname = tagname.substring(1);
+  var iOSMessage = {
+    alert : payload.msg,
+    sound : 'UILocalNotificationDefaultSoundName',
+    badge : payload.badge,
+    payload : payload
+  };
+  var androidMessage = {
+    to : tagname,
+    priority : "high",
+    data : {
+      message : payload
+    }
+  }
+  notificationHubService.gcm.send(tagname, androidMessage, function(error){
+    if(!error){
+      logger.serverLog('info', 'Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+    } else {
+      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+  notificationHubService.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+      logger.serverLog('info', 'Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+    } else {
+      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+}
+
+
 
 var onlineAgents = [];
 var onlineWebClientsSession = []; //array to hold customer sessions who are online.This is for our WebClients
@@ -80,6 +115,7 @@ function onConnect(io2, socket) {
             datetime:data.datetime,
             msg: data.msg,
             time:data.time,
+            uniqueid : data.uniqueid,
             type : data.type,
             request_id :data.request_id,
             messagechannel:data.messagechannel,
@@ -119,6 +155,7 @@ function onConnect(io2, socket) {
             visitoremail:data.visitoremail,
             datetime:data.datetime,
             msg: data.msg,
+            uniqueid : data.uniqueid,
             time:data.time,
             type : data.type,
             request_id :data.request_id,
@@ -144,6 +181,7 @@ function onConnect(io2, socket) {
             from : data.from,
             visitoremail:data.visitoremail,
             datetime:data.datetime,
+            uniqueid: data.uniqueid,
             msg: data.msg,
             time:data.time,
             type : data.type,
@@ -176,6 +214,7 @@ socket.on('send:messageToAgent', function (data) {
             from : data.from,
             visitoremail:data.visitoremail,
             datetime:data.datetime,
+            uniqueid:data.uniqueid,
             msg: data.msg,
             time:data.time,
             request_id : data.request_id,
@@ -194,6 +233,8 @@ socket.on('send:messageToAgent', function (data) {
             datetime:data.datetime,
             msg: data.msg,
             time:data.time,
+            uniqueid:data.uniqueid,
+            
             type : data.type,
             request_id :data.request_id,
             messagechannel:data.messagechannel,

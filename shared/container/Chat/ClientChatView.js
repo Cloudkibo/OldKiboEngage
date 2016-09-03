@@ -41,12 +41,17 @@ class ClientChatView extends Component {
   componentDidMount() {
     const { socket,dispatch } = this.props;
    // also broadcast a notification message
-
+    //generate unique id of message - this change is for mobile clients
+    var today = new Date();
+    var uid = Math.random().toString(36).substring(7);
+    var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+   
      var hellomsg = {
             to: 'All Agents',
             from : this.props.roomdetails.username,
             visitoremail:this.props.roomdetails.useremail,
             datetime: Date.now(),
+            uniqueid : unique_id,
             msg: 'User joined a chat session',
             time:Date.now(),
             type : 'message',
@@ -79,6 +84,10 @@ class ClientChatView extends Component {
         var message;  
         e.preventDefault();
         console.log('socket of agent : ' + this.refs.agentsocket.value);
+           //generate unique id of message - this change is for mobile clients
+        var today = new Date();
+        var uid = Math.random().toString(36).substring(7);
+        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
        
         var saveChat={}
         if(this.refs.agentsocket.value == ''){
@@ -88,7 +97,7 @@ class ClientChatView extends Component {
                           'from' : this.refs.name.value,
                            'visitoremail' : this.refs.email.value,
                            'type': 'message',
-
+                           'uniqueid' : unique_id,
                            'msg' : this.refs.msg.value,
                            'datetime' : Date.now(),
                            'request_id' : this.refs.reqId.value,
@@ -108,6 +117,7 @@ class ClientChatView extends Component {
                           'agentid': this.refs.agentid.value,
                           'toagent' : this.refs.agentsocket.value ,
                           'type': 'message',
+                          'uniqueid' : unique_id,
                            'msg' : this.refs.msg.value,
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),

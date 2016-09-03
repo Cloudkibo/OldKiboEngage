@@ -171,23 +171,29 @@ else{
     console.log(this.state.value)
     var messageVal = this.state.value
     const { socket,dispatch } = this.props;
+    
      if (e.which === 13 && messageVal !="") {
           
         e.preventDefault();
-   
+            //generate unique id of message - this change is for mobile clients
+        var today = new Date();
+        var uid = Math.random().toString(36).substring(7);
+        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+       
          var saveChat = { 
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'message',
-                           'msg' : messageVal,
-                           'datetime' : Date.now(),
-                           'time' : moment.utc().format('lll'),
-                           'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
-                           'companyid': this.props.userdetails.uniqueid,
-                           'is_seen':'no'
+                          'uniqueid' : unique_id,
+                          'msg' : messageVal,
+                          'datetime' : Date.now(),
+                          'time' : moment.utc().format('lll'),
+                          'request_id' : this.props.sessiondetails.request_id,
+                          'messagechannel': this.refs.channelid.value,
+                          'companyid': this.props.userdetails.uniqueid,
+                          'is_seen':'no'
                       }
         socket.emit('send:message', saveChat);
         this.props.chatlist.push(saveChat);
@@ -216,13 +222,18 @@ else{
 
 
   else{
-        
+        //generate unique id of message - this change is for mobile clients
+        var today = new Date();
+        var uid = Math.random().toString(36).substring(7);
+        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+   
         var saveChat = { 
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'log',
+                          'uniqueid' : unique_id,
                            'msg' : 'Session is marked as Resolved',
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
@@ -278,12 +289,17 @@ else{
    
     // 1. Broadcast a log message to all agents and customer that session is assigned to agent
     
-          
+    //generate unique id of message - this change is for mobile clients
+    var today = new Date();
+    var uid = Math.random().toString(36).substring(7);
+    var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+         
  var saveChat = { 
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
+                          'uniqueid' : unique_id,
                           'type': 'log',
                            'msg' : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
@@ -382,12 +398,19 @@ else{
     
     alert('Are you sure,you want to move this session to another channel ?');
    this.props.sessiondetails.messagechannel = this.refs.channellist.value;
+
+   // generatate unique id for the chat message
+    var today = new Date();
+    var uid = Math.random().toString(36).substring(7);
+    var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+           
     // 1. Broadcast a log message to all agents and customer that session is moved
         var saveChat = { 
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
+                          'uniqueid' : unique_id,
                           'type': 'log',
                           'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
                            'datetime' : Date.now(),
