@@ -7,7 +7,7 @@ var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('Cloudkibo','Endpoint=sb://cloudkibo.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=arTrXZQGBUeuLYLcwTTzCVqFDN1P3a6VrxA15yvpnqE=');
 
 function sendPushNotification(tagname, payload){
-  tagname = tagname.substring(1);
+  //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
     alert : payload.msg,
     sound : 'UILocalNotificationDefaultSoundName',
@@ -101,6 +101,10 @@ function onConnect(io2, socket) {
 
 // broadcast a user's message to other users
   socket.on('send:message', function (data) {
+    
+    /*** Add the logic here to send message as a push notification using customerid as a tag name for moble customers
+    ***/
+
     console.log(data);
     userchats.push(data);
 

@@ -193,7 +193,8 @@ else{
                           'request_id' : this.props.sessiondetails.request_id,
                           'messagechannel': this.refs.channelid.value,
                           'companyid': this.props.userdetails.uniqueid,
-                          'is_seen':'no'
+                          'is_seen':'no',
+                          'customerid' : this.props.sessiondetails.customerid,
                       }
         socket.emit('send:message', saveChat);
         this.props.chatlist.push(saveChat);
@@ -236,6 +237,7 @@ else{
                           'uniqueid' : unique_id,
                            'msg' : 'Session is marked as Resolved',
                            'datetime' : Date.now(),
+                           'customerid' : this.props.sessiondetails.customerid,
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
                            'messagechannel': this.refs.channelid.value,
@@ -300,6 +302,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'uniqueid' : unique_id,
+                          'customerid' : this.props.sessiondetails.customerid, 'customerid' : this.props.sessiondetails.customerid,
                           'type': 'log',
                            'msg' : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
@@ -411,6 +414,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'uniqueid' : unique_id,
+                          'customerid' : this.props.sessiondetails.customerid,
                           'type': 'log',
                           'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
                            'datetime' : Date.now(),
