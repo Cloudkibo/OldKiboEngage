@@ -114,24 +114,24 @@ create_session(data){
 
      
       var session = { 
-'email' : email.value,
-'departmentid': this.refs.grouplist.value,
-'messagechannel' : this.refs.channellist.value,
-'requesttime' : Date.now(),
-'fullurl' :  fullurl,
-'currentPage' : pathname,
-'phone' :  phone.value,
-'browser' : 'Chrome',
-'ipAddress':'192.168.1.2',
-'agent_ids':'',
-'country' : country.value,
-'companyid' : companyid,
-'session_id' : data.request_id,
-'platform': 'web',
-'customerName' : name.value,
-'isMobile' : "false",
-'status' : 'new',
-'socketid' : data.socketid,
+                      'email' : email.value,
+                      'departmentid': this.refs.grouplist.value,
+                      'messagechannel' : this.refs.channellist.value,
+                      'requesttime' : Date.now(),
+                      'fullurl' :  fullurl,
+                      'currentPage' : pathname,
+                      'phone' :  phone.value,
+                      'browser' : 'Chrome',
+                      'ipAddress':'192.168.1.2',
+                      'agent_ids':'',
+                      'country' : country.value,
+                      'companyid' : companyid,
+                      'session_id' : data.request_id,
+                      'platform': 'web',
+                      'customerName' : name.value,
+                      'isMobile' : "false",
+                      'status' : 'new',
+                      'socketid' : data.socketid,
 
                          }
         this.props.createsession(session);
@@ -142,7 +142,15 @@ create_session(data){
   
  
    componentWillReceiveProps(props) {
-    if(props.specificsession && props.channels && props.groupdetails && props.channels && call_customer_details == false){
+
+    // bind the channel list of first group on load
+    if(props.groupdetails  && props.channels.length > 0 && !props.params.requestid && call_customer_details == false ){
+      //alert(props.channels.length);
+      this.props.updatechannellist(props.groupdetails[0]._id);
+       call_customer_details = true;
+      this.forceUpdate();
+    }
+    else if(props.specificsession && props.channels && props.groupdetails  && call_customer_details == false){
      /* var dept_name = '';
       for(var i = 0;i< props.groupdetails.length;i++){
         if(props.groupdetails[i]._id == props.specificsession.departmentid)
@@ -263,7 +271,7 @@ create_session(data){
 
     }  
     handleChannelChange(e){
-     alert(e.target.value);
+     //alert(e.target.value);
    
     }  
   render() {

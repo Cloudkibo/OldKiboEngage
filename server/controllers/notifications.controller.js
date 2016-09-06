@@ -12,6 +12,8 @@ var  headers =  {
  }
 
 var baseURL = `https://api.kibosupport.com`
+var azure = require('azure-sb');
+var notificationHubService = azure.createNotificationHubService('Cloudkibo','Endpoint=sb://cloudkibo.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=arTrXZQGBUeuLYLcwTTzCVqFDN1P3a6VrxA15yvpnqE=');
 
 
 /************************* Channel APIS ************************************/
@@ -63,18 +65,71 @@ export function createNotification(req, res) {
 function sendemail(customers,body){
 console.log(customers);  
 console.log('Length of customers : ' + customers.length);
-var emailArray = [];
+var emailArray = []; // for holding web customers
+var pushNotificationArray = [] ;//for holding mobile customers
 var emailBody = body.description;
 var emailSub = body.title;
 for(var i = 0;i<customers.length;i++){
-      emailArray.push(customers[i].email);
+      if(customers[i].isMobileClient == 'false')
+          emailArray.push(customers[i].email);
+
+      else{
+        pushNotificationArray.push(customers[i]._id);//we are using _id as a tagname
+      }
+
 }
 
 for(var i=0;i<emailArray.length;i++){
   sendemailNotification(emailArray[i],emailSub,emailBody);
 }
+
+for(var i=0;i<pushNotificationArray.length;i++){
+  sendPushNotification(pushNotificationArray[i],emailBody);
+}
 }
 
+
+//for mobile customers
+function sendPushNotification(tagname,notificationBody){
+  
+   var payload = {
+        data: {
+          msg: notificationBody
+        },
+        badge: 0
+      };
+
+  //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
+  var iOSMessage = {
+    alert : payload.data.msg,
+    sound : 'UILocalNotificationDefaultSoundName',
+    badge : payload.badge,
+    payload : payload
+  };
+  var androidMessage = {
+    to : tagname,
+    priority : "high",
+    data : {
+      message : payload
+    }
+  }
+  notificationHubService.gcm.send(tagname, androidMessage, function(error){
+    if(!error){
+      logger.serverLog('info', 'Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+    } else {
+      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+  notificationHubService.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+      logger.serverLog('info', 'Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+    } else {
+      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+}
+
+//for web customers
 function sendemailNotification(emailid,emailSub,emailBody){
 console.log('Email address : ' + emailid);
 var sendgrid = require("sendgrid")('cloudkibo','cl0udk1b0');
