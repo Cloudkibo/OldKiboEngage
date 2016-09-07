@@ -101,7 +101,7 @@ class AssignedSessions extends Component {
                         this.props.assignedsocketsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
                         this.props.assignedsocketsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids)} customername = {session.username} email = {session.useremail}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel)} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
@@ -111,7 +111,7 @@ class AssignedSessions extends Component {
                         this.props.assignedsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
                         this.props.assignedsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }

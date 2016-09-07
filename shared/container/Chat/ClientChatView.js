@@ -48,15 +48,15 @@ class ClientChatView extends Component {
    
      var hellomsg = {
             to: 'All Agents',
-            from : this.props.roomdetails.username,
-            visitoremail:this.props.roomdetails.useremail,
+            from : this.props.roomdetails.customerid.name,
+            visitoremail:this.props.roomdetails.customerid.email,
             datetime: Date.now(),
             uniqueid : unique_id,
             msg: 'User joined a chat session',
             time:Date.now(),
             type : 'message',
             request_id :this.props.roomdetails.request_id,
-            messagechannel:this.props.roomdetails.messagechannel,
+            messagechannel:this.props.roomdetails.messagechannel[this.props.roomdetails.messagechannel.length-1],
             companyid:this.props.roomdetails.room,
             is_seen:'no'
 

@@ -5,13 +5,7 @@ import { Link } from 'react-router';
 function ResolvedSessionListItem(props) {
 var ag = []
 var ch=[]
-     {
-         props.customers &&
-                        props.customers.map((grp, i) => (
-                           ag.push(grp)                            
-                        ))
-
-      }  
+  
   
   {
          props.channels &&
@@ -38,11 +32,10 @@ var agentname = []
 }
   return (
    
-    props.customers && ag ?
       <tr className = "odd">
     
-      <td>{ag[0].name} </td>
-      <td>{ag[0].email}</td>
+      <td>{props.session.customerid.name} </td>
+      <td>{props.session.customerid.email}</td>
       <td>{gname[0].deptname}</td>
       {
         ch[0] &&
@@ -65,37 +58,10 @@ var agentname = []
         </td>
       }
 
-      <Link to={`/rescheduleresolvedsession/${props.session.request_id}/${ag[0].name}/${ag[0].email}`} className="btn blue-madison" >
+      <Link to={`/rescheduleresolvedsession/${props.session.request_id}/${props.session.customerid.name}/${props.session.customerid.email}`} className="btn blue-madison" >
         Reschedule
       </Link>
-    </tr> :
-
-     <tr className = "odd">
-    
-      <td>{props.customername} </td>
-      <td>{props.email}</td>
-      <td>{gname[0].deptname}</td>
-      {
-        ch[0] &&
-         <td>{ch[0].msg_channel_name}</td>
-     
-      }
-      {
-        props.agent && agentname[0] &&
-         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
-      }
-      <td>{props.session.status}</td>
-
-       <td>
-      <Link to={`/rescheduleresolvedsession/${props.session.request_id}/${props.customername}/${props.email}`} className="btn blue-madison" >
-        Reschedule
-      </Link>
-    
-
-       </td>
-      
     </tr> 
-
     
 
      

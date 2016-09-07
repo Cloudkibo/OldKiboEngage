@@ -13,11 +13,12 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
 import io from 'socket.io-client';
-
+var callMobileChatSessions
 class Chat extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
+    callMobileChatSessions =  false;
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -65,7 +66,13 @@ updateOnlineAgents(data){
    }
   }
   
+componentWillReceiveProps(props) {
+  if(props.customerchat && callMobileChatSessions == false){
+     this.props.route.socket.emit('getCustomerSessionsListFirst',props.customerchat,props.userdetails.uniqueid);
+     callMobileChatSessions = true  
+  }
     
+}    
   
 componentDidMount(){
        //get online agents list
@@ -74,7 +81,6 @@ componentDidMount(){
         this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
-        this.props.route.socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
         this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
         this.props.route.socket.on('customer_joined',this.getupdatedSessions);

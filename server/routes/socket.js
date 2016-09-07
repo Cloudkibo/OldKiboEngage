@@ -67,7 +67,7 @@ function onDisconnect(io2, socket) {
   for(var j = 0;j< onlineWebClientsSession.length;j++){
     if(onlineWebClientsSession[j].socketid == socket.id){
        console.log('Remove session,customer went offline');
-      room = onlineWebClientsSession[j].room;
+      room = onlineWebClientsSession[j].companyid;
       onlineWebClientsSession.splice(j,1);
       console.log(onlineWebClientsSession);
       session_remove = true
@@ -79,7 +79,7 @@ function onDisconnect(io2, socket) {
    var customer_in_company_room =[]; //only online customers who are in your room
 
     for(var j = 0;j<onlineWebClientsSession.length;j++){
-      if(onlineWebClientsSession[j].room == room){
+      if(onlineWebClientsSession[j].companyid == room){
         customer_in_company_room.push(onlineWebClientsSession[j]);
       }
     }
@@ -172,9 +172,40 @@ function onConnect(io2, socket) {
     }
   });
 
+function removeDuplicates(originalArray, prop) {
+     var newArray = [];
+     var lookupObject  = {};
 
+     for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+     }
 
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
+      return newArray;
+ }
 
+//push mobile chat sessions retreived from server into list of socket sessions
+socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
+    var customer_in_company_room =[]; //only online customers who are in your room
+    console.log(roomid);
+    console.log('mobile sessions length : ' + sessions.length);
+    for(var i = 0 ;i< sessions.length;i++){
+    onlineWebClientsSession.push(sessions[i]);
+  }
+    //remove duplicates
+    onlineWebClientsSession = removeDuplicates(onlineWebClientsSession,'request_id');
+    console.log('total no. of sessions :' + onlineWebClientsSession.length); 
+    for(var j = 0;j<onlineWebClientsSession.length;j++){
+      if(onlineWebClientsSession[j].companyid == roomid){
+        customer_in_company_room.push(onlineWebClientsSession[j]);
+      }
+    }
+
+    console.log('getCustomerSessionsList is called.Currently in your room : ' + roomid +' ,customers online :' + customer_in_company_room.length); 
+    socket.emit('returnCustomerSessionsList',customer_in_company_room);
+  });
  socket.on('informAgent', function (data) {
     console.log(data);
     userchats.push(data);
@@ -307,7 +338,7 @@ socket.on('getuserchats',function(room){
   var customer_in_company_room =[]; //only online customers who are in your room
 
     for(var j = 0;j<onlineWebClientsSession.length;j++){
-      if(onlineWebClientsSession[j].room == data.room){
+      if(onlineWebClientsSession[j].companyid == data.room){
         customer_in_company_room.push(onlineWebClientsSession[j]);
       }
     }
@@ -337,7 +368,7 @@ socket.on('updatesessionchannel',function(data){
   var customer_in_company_room =[]; //only online customers who are in your room
 
     for(var j = 0;j<onlineWebClientsSession.length;j++){
-      if(onlineWebClientsSession[j].room == data.room){
+      if(onlineWebClientsSession[j].companyid == data.room){
         customer_in_company_room.push(onlineWebClientsSession[j]);
       }
     }
@@ -421,10 +452,10 @@ socket.on('getOnlineAgentList',function() {
       //push customer session in the array of onlineWebClientsSession
 
       onlineWebClientsSession.push(room);
-      
+      onlineWebClientsSession = onlineWebClientsSession.reverse();
       var customer_in_company_room =[]; //only online customers who are in your room
       for(var j = 0;j<onlineWebClientsSession.length;j++){
-      if(onlineWebClientsSession[j].room == room.room){
+      if(onlineWebClientsSession[j].companyid == room.room){
          customer_in_company_room.push(onlineWebClientsSession[j]);
         }
       }
@@ -446,7 +477,7 @@ socket.on('getOnlineAgentList',function() {
     var customer_in_company_room =[]; //only online customers who are in your room
 
     for(var j = 0;j<onlineWebClientsSession.length;j++){
-      if(onlineWebClientsSession[j].room == roomid){
+      if(onlineWebClientsSession[j].companyid == roomid){
         customer_in_company_room.push(onlineWebClientsSession[j]);
       }
     }

@@ -14,13 +14,7 @@ var rescheduled_by_name = []
                         ))
 }
 
-    {
-         props.customers &&
-                        props.customers.map((grp, i) => (
-                           ag.push(grp)                            
-                        ))
-
-      }  
+  
   
   {
          props.channels &&
@@ -47,11 +41,11 @@ var agentname = []
 }
   return (
    
-    props.customers && ag ?
+    
       <tr className = "odd">
     
-      <td>{ag[0].name} </td>
-      <td>{ag[0].email}</td>
+      <td>{props.session.customerid.name} </td>
+      <td>{props.session.customerid.name}</td>
       <td>{gname[0].deptname}</td>
       {
         ch[0] &&
@@ -69,38 +63,11 @@ var agentname = []
         </td>
       }
       <td>
-      <Link to={`/rescheduleabandonedsession/${props.session.request_id}/${ag[0].name}/${ag[0].email}`} className="btn blue-madison" >
+      <Link to={`/rescheduleabandonedsession/${props.session.request_id}/${props.session.customerid.name}/${props.session.customerid.email}`} className="btn blue-madison" >
         Reschedule
       </Link>
       </td>
-    </tr> :
-
-     <tr className = "odd">
-    
-      <td>{props.customername} </td>
-      <td>{props.email}</td>
-      <td>{gname[0].deptname}</td>
-      {
-        ch[0] &&
-         <td>{ch[0].msg_channel_name}</td>
-     
-      }
-      {
-        props.agent && agentname[0] &&
-         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
-      }
-      <td> {props.session.is_rescheduled ? props.session.is_rescheduled : "false" } </td>
-      <td>{props.session.rescheduled_by?rescheduled_by_name[0] : "-"}</td>
-     
-       <td>
-      <Link to={`/rescheduleabandonedsession/${props.session.request_id}/${props.customername}/${props.email}`} className="btn blue-madison" >
-        Reschedule
-      </Link>
-    
-
-       </td>
-      
-    </tr> 
+    </tr>
 
     
 

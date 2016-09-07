@@ -102,7 +102,7 @@ class NewSessions extends Component {
                         this.props.newsocketsessions && this.props.customers && this.props.channels && this.props.groupdetails && 
                         this.props.newsocketsessions.map((session, i) => (
                           
-                          <NewSessionListItem session={session} key={session.request_id}  customername = {session.username} email = {session.useremail}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel)} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} agents = {this.props.agents}/>
+                          <NewSessionListItem session={session} key={session.request_id}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} agents = {this.props.agents}/>
                                                       
                         ))
                       }
@@ -112,7 +112,7 @@ class NewSessions extends Component {
                         this.props.newsessions && this.props.customers && this.props.channels && this.props.groupdetails &&
                         this.props.newsessions.map((session, i) => (
                           
-                          <NewSessionListItem session={session} key={session.request_id} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} agents = {this.props.agents}/>
+                          <NewSessionListItem session={session} key={session.request_id} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} agents = {this.props.agents}/>
                                                       
                         ))
                       }
