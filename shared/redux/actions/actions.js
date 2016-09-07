@@ -1054,6 +1054,16 @@ export function getsessionsfromsocket(customerchat){
    
   };
 }
+
+export function getsessionsfromserver(customerchat){
+// add a filter here to filter only mobile clients sessions
+  return {
+    type: ActionTypes.SHOW_ALL_CHAT,
+    customerchat,
+   
+  };
+}
+
 export function showChatSummary(sessions){
   return {
     type: ActionTypes.SHOW_CHAT_SUMMARY,
@@ -1350,7 +1360,7 @@ export function getassignedsessions(token){
   };
 }
 
-/*** get session ***/
+/*** get session for Chat Summary Page ***/
 export function getsessions(token) {
   console.log(token);
   return (dispatch) => {
@@ -1361,6 +1371,20 @@ export function getsessions(token) {
 
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showChatSummary(res)));
+  };
+}
+
+// for fetching mobile clients sesions
+export function getmobilesessions(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getsessions`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver(res)));
   };
 }
 

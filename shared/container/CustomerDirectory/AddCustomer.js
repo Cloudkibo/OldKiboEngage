@@ -229,12 +229,17 @@ create_session(data){
             var today = new Date();
             var uid = Math.random().toString(36).substring(7);
             var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+            var chArray = []
+            chArray.push(this.refs.channellist.value);
+            var agIds = []
+            var customerid = {'name' : name.value,'email' : email.value,'country' : country.value,'phone' : phone.value,'companyid' : companyid,'isMobileClient':"false"}
             var socketsession =  {
-                    username : name.value,
-                    useremail :email.value,
+                    customerid : customerid,
                     departmentid : this.refs.grouplist.value,
+                    platform : "web",
+                    agent_ids : agIds,
                     group:this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
-                    messagechannel : this.refs.channellist.value,
+                    messagechannel : chArray,
                     channelname: this.refs.channellist.options[this.refs.channellist.selectedIndex].text,
                     fullurl :  fullurl,
                     currentPage : pathname,
@@ -243,8 +248,9 @@ create_session(data){
                     status : "new",
                     browser : 'Chrome',
                     ipAddress:'192.168.1.2',
-                    country : country.value,
+                    is_rescheduled:"false",
                     initiator : 'visitor',
+                    companyid : companyid,
                     room: companyid,
                     request_id : unique_id,
                     webrtc_browser :'true',

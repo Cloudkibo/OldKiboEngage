@@ -1,4 +1,3 @@
-import Post from '../models/post';
 import cuid from 'cuid';
 import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
@@ -13,7 +12,7 @@ var  headers =  {
 
 var baseURL = `https://api.kibosupport.com`
 var azure = require('azure-sb');
-var notificationHubService = azure.createNotificationHubService('Cloudkibo','Endpoint=sb://cloudkibo.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=arTrXZQGBUeuLYLcwTTzCVqFDN1P3a6VrxA15yvpnqE=');
+var notificationHubService = azure.createNotificationHubService('KiboEngage','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=gDirYG/+a/dN5Md5rOXMX6QFfiFnX0Dg3kabUNCjIy0=');
 
 
 /************************* Channel APIS ************************************/

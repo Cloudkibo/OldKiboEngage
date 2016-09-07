@@ -3,15 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 function SessionListItem(props) {
-var ag = []
 var ch=[]
-     {
-         props.customers &&
-                        props.customers.map((grp, i) => (
-                           ag.push(grp)                            
-                        ))
-
-      }  
+    
     
 
   
@@ -40,11 +33,11 @@ var agentname = []
 }
   return (
    
-    props.customers && ag ?
+    
       <tr className = "odd">
     
-      <td>{ag[0].name} </td>
-      <td>{ag[0].email}</td>
+      <td>{props.session.customerid.name} </td>
+      <td>{props.session.customerid.email}</td>
       <td>{gname[0].deptname}</td>
       {
         ch[0] &&
@@ -66,27 +59,7 @@ var agentname = []
         </Link>
         </td>
       }
-    </tr> :
-
-     <tr className = "odd">
-    
-      <td>{props.customername} </td>
-      <td>{props.email}</td>
-      <td>{gname[0].deptname}</td>
-      {
-        ch[0] &&
-         <td>{ch[0].msg_channel_name}</td>
-     
-      }
-      {
-        props.agent && agentname[0] &&
-         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td>
-      }
-      <td>{props.session.status}</td>
-      
     </tr> 
-
-    
 
      
     

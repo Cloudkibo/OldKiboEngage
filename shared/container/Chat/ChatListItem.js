@@ -51,10 +51,10 @@ var changecc ={
 var ag = []
 
 var agentname = []
-if(props.customer.agent_ids)
+if(props.customer.agent_ids.length > 0)
 
 {
-  props.agents.filter((c) => c._id == props.customer.agent_ids).map((c,i) =>(
+  props.agents.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1]).map((c,i) =>(
                            agentname.push(c.firstname + ' ' + c.lastname)                          
                         ))
 
@@ -118,7 +118,7 @@ return res;
   
    	<div className="list-group-item" style={changecc}>
 
-      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.username}</h4>
+      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name}</h4>
         {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
        
@@ -146,7 +146,7 @@ return res;
 
      <div className="list-group-item" >
 
-      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.username}</h4>
+      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name}</h4>
        {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
        

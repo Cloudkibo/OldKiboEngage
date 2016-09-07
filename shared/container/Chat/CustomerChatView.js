@@ -571,15 +571,15 @@ const { value, suggestions } = this.state;
             this.props.sessiondetails &&
           <div>
           <label>Customer Name :</label>
-          <input value = {this.props.sessiondetails.username} ref="customername"/>
+          <input value = {this.props.sessiondetails.customerid.name} ref="customername"/>
           
            <label>Email :</label>
-           <input value = {this.props.sessiondetails.useremail} ref="customeremail"/>
+           <input value = {this.props.sessiondetails.customerid.email} ref="customeremail"/>
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
          
-          <input type="hidden" value = {this.props.sessiondetails.messagechannel} ref="channelid"/>
+          <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="channelid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }

@@ -4,7 +4,7 @@
 
 'use strict';
 var azure = require('azure-sb');
-var notificationHubService = azure.createNotificationHubService('Cloudkibo','Endpoint=sb://cloudkibo.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=arTrXZQGBUeuLYLcwTTzCVqFDN1P3a6VrxA15yvpnqE=');
+var notificationHubService = azure.createNotificationHubService('KiboEngage','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=gDirYG/+a/dN5Md5rOXMX6QFfiFnX0Dg3kabUNCjIy0=');
 
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
@@ -296,7 +296,7 @@ socket.on('getuserchats',function(room){
     if(onlineWebClientsSession[i].request_id == data.request_id){
       console.log('updating session status :');
       onlineWebClientsSession[i].status = data.status;
-      onlineWebClientsSession[i].agent_ids = data.agentid;
+      onlineWebClientsSession[i].agent_ids.push(data.agentid);
       console.log(onlineWebClientsSession[i]);
       break;
     }
@@ -326,7 +326,7 @@ socket.on('updatesessionchannel',function(data){
     if(onlineWebClientsSession[i].request_id == data.request_id){
       console.log('updating session channel :');
      
-      onlineWebClientsSession[i].messagechannel = data.channelid;
+      onlineWebClientsSession[i].messagechannel.push(data.channelid);
       console.log(onlineWebClientsSession[i]);
       break;
     }
