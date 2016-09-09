@@ -96,14 +96,7 @@ var sessionsummarydetail = []
                         ))
 
       }
-var ag = []
- {
-         this.props.customers && sessionsummarydetail[0].customerid &&
-                        this.props.customers.filter((c) => c._id == sessionsummarydetail[0].customerid).map((grp, i) => (
-                           ag.push(grp)                            
-                        ))
-
-      }     
+    
 var grpp = []
  {
          this.props.groupdetails &&
@@ -146,14 +139,14 @@ var grpp = []
                     <div className="form-group">
                       <label className="control-label col-md-3"> Customer Name </label>
                        <div className="col-md-9">
-                             <input className="form-control" type='text' value = {ag[0].name}/>
+                             <input className="form-control" type='text' value = {sessionsummarydetail[0].customerid.name}/>
                        </div>
                     </div>
 
                     <div className="form-group">
                       <label className="control-label col-md-3"> Email </label>
                        <div className="col-md-9">
-                             <input className="form-control" type='text' value = {ag[0].email}/>
+                             <input className="form-control" type='text' value = {sessionsummarydetail[0].customerid.email}/>
                        </div>
                     </div>
 
