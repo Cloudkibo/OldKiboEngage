@@ -12,7 +12,7 @@ var  headers =  {
 
 var baseURL = `https://api.kibosupport.com`
 var azure = require('azure-sb');
-var notificationHubService = azure.createNotificationHubService('KiboEngage','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=gDirYG/+a/dN5Md5rOXMX6QFfiFnX0Dg3kabUNCjIy0=');
+var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
 
 
 /************************* Channel APIS ************************************/

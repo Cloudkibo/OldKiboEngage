@@ -565,8 +565,7 @@ const dashboard = (state =dashboardState, action) => {
              deptagents :state.deptagents,
              customerchat : action.customerchat,
              customerchatold : action.customerchat,
-              responses : state.responses,
-       
+             responses : state.responses,
              chatlist : state.chatlist,
              channels : state.channels,
              customers : state.customers,
@@ -577,6 +576,31 @@ const dashboard = (state =dashboardState, action) => {
              resolvedsessions : state.resolvedsessions,
              assignedsessions : state.assignedsessions,
              resolvedsocketsessions:state.resolvedsocketsessions
+             
+            };
+
+            case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
+           return {
+             userchats : state.userchats,
+             groupdetails: state.groupdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchat,
+             responses : state.responses,
+             chatlist : state.chatlist,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,
+             resolvedsessions : state.resolvedsessions,
+             assignedsessions : state.assignedsessions,
+             resolvedsocketsessions:state.resolvedsocketsessions,
+             mobileuserchat : action.mobileuserchat,
              
             };
 

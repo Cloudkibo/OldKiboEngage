@@ -1057,6 +1057,8 @@ export function getsessionsfromsocket(customerchat){
 
 export function getsessionsfromserver(customerchat){
 // add a filter here to filter only mobile clients sessions
+customerchat = customerchat.filter((c) => c.platform == "mobile")
+
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
@@ -1957,6 +1959,15 @@ export function showuserchatspecific(userchats) {
   };
 }
 
+
+export function showuserchatspecific_mobile(userchats) {
+  return {
+    type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
+    mobileuserchat : userchats,
+   
+
+  };
+}
 export function getuserchats(token) {
   console.log(token);
   return (dispatch) => {
@@ -1992,7 +2003,30 @@ export function resolvesession(request_id,usertoken) {
 
 
 
+//for fetching history of mobile clients
+export function getspecificuserchats_mobile(request_id,companyid,usertoken) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getspecificuserchats`, {
+      method: 'post',
+      body: JSON.stringify({
+        request_id : request_id,
+        companyid : companyid,
+       }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+       
+      }),
+    }).then((res) => res.json()).then(res => dispatch(showuserchatspecific_mobile(res.userchats)));
+  };
+
+}
+
+
 //get specific chat messages history
+// for session summary page
+
+
 export function getspecificuserchats(request_id,companyid,usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getspecificuserchats`, {

@@ -4,7 +4,7 @@
 
 'use strict';
 var azure = require('azure-sb');
-var notificationHubService = azure.createNotificationHubService('KiboEngage','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=gDirYG/+a/dN5Md5rOXMX6QFfiFnX0Dg3kabUNCjIy0=');
+var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
 
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
@@ -64,10 +64,19 @@ function onDisconnect(io2, socket) {
   //remove session also
   var session_remove = false;
   var room
+  var req_id;
   for(var j = 0;j< onlineWebClientsSession.length;j++){
     if(onlineWebClientsSession[j].socketid == socket.id){
        console.log('Remove session,customer went offline');
       room = onlineWebClientsSession[j].companyid;
+      req_id = onlineWebClientsSession[j].request_id;
+      //we will remove all the user chat from socket.io with this request id
+      for(var k=0;k<userchats.length;k++){
+        if(userchats[k].request_id == req_id){
+          userchats.splice(k,1);
+        }
+      }
+     
       onlineWebClientsSession.splice(j,1);
       console.log(onlineWebClientsSession);
       session_remove = true
@@ -106,8 +115,15 @@ function onConnect(io2, socket) {
     ***/
 
     console.log(data);
-    userchats.push(data);
-
+    // don't push messages in userchats that come from mobile
+    //add logic here
+    if(data.fromMobile && data.fromMobile == 'yes'){
+        console.log('data from mobile.Not pushed in userchats');
+    }
+    else     {
+          userchats.push(data);
+         }
+       
     if(data.socketid){
             console.log('sending point to point message');
 

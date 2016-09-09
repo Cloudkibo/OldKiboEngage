@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessionsfromsocket,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessionsfromsocket,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -14,11 +14,13 @@ import { browserHistory } from 'react-router'
 
 import io from 'socket.io-client';
 var callMobileChatSessions
+var callOnce
 class Chat extends Component {
 
  constructor(props, context) {
       //call action to get user groups 
     callMobileChatSessions =  false;
+    callOnce = false;
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -68,6 +70,7 @@ updateOnlineAgents(data){
   
 componentWillReceiveProps(props) {
   if(props.customerchat && callMobileChatSessions == false){
+   // alert('calling')
      this.props.route.socket.emit('getCustomerSessionsListFirst',props.customerchat,props.userdetails.uniqueid);
      callMobileChatSessions = true  
   }
@@ -77,11 +80,10 @@ componentWillReceiveProps(props) {
 componentDidMount(){
        //get online agents list
       // alert('componentDidMount is called');
-
-        this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
         this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+        this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
         this.props.route.socket.on('customer_joined',this.getupdatedSessions);
         this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
@@ -154,12 +156,25 @@ componentDidMount(){
    
     }
 
-     handleSession(id,e){
+     handleSession(id,platform,e){
+      console.log(platform);
+      console.log(id);
       e.preventDefault();
+      const usertoken = auth.getToken();
+   
       this.refs.sessionid.value = id;
       alert(this.refs.sessionid.value);
+      
+      //retrieve chat history for mobile clients Only
+        if(platform == "mobile"){
+
+            this.props.getspecificuserchats_mobile(this.refs.sessionid.value,this.props.userdetails.uniqueid,usertoken)
+            //this.forceUpdate()
+        }
+
       // when the user clicks on session,reset unread message Count to zero and also remove Red Background Color from Chatlist item
      // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
+      
       this.props.selectCustomerChat(id,this.props.customerchat,this.props.new_message_arrived_rid);
       this.forceUpdate();
    
@@ -294,9 +309,9 @@ componentDidMount(){
                                   
                                     (this.props.new_message_arrived_rid ?
                                   
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
+                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
                                     :  
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
+                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
                                   )
                                   
 					                                                      
@@ -309,7 +324,7 @@ componentDidMount(){
                           {
                             
                             this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents &&
-			                    	<CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents}/>
+			                    	<CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat}/>
 			                   }
                           </td> : 
                          <td className="col-md-6">
@@ -356,9 +371,10 @@ function mapStateToProps(state) {
           userchats :(state.dashboard.userchats),
           responses :(state.dashboard.responses), 
           onlineAgents:(state.dashboard.onlineAgents),
-          yoursocketid :(state.dashboard.yoursocketid),       
+          yoursocketid :(state.dashboard.yoursocketid), 
+          mobileuserchat : (state.dashboard.mobileuserchat)      
                   
                     };
 }
 
-export default connect(mapStateToProps,{getmobilesessions,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getmobilesessions,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);

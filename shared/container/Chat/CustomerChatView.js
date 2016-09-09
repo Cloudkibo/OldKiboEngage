@@ -14,7 +14,10 @@ import {savechat}  from '../../redux/actions/actions'
 
 
 import Autosuggest from 'react-autosuggest';
- 
+ var handleDate = function(d){
+var c = new Date(d);
+return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
+}
 function getSuggestions(value,cr) {
   console.log(cr);
   const languages = cr
@@ -39,6 +42,7 @@ function renderSuggestion(suggestion) {
 
 class CustomerChatView extends Component {
   constructor(props, context) {
+    // alert('calling constructor')
       //call action to get user groups 
      const usertoken = auth.getToken();
      console.log('constructor is called');
@@ -48,6 +52,8 @@ class CustomerChatView extends Component {
         console.log(usertoken);
         console.log(props.sessiondetails.customerid);
         props.getChatRequest(props.sessiondetails.customerid,usertoken,props.chatlist);
+
+       
       }
 
         super(props, context);
@@ -145,12 +151,17 @@ else{
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);   
 
+    if(this.props.sessiondetails.platform == 'web'){
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
+     }
+
+     else{
+      this.props.mobileuserchat.push(message);
+     }
      this.forceUpdate();
   }
   componentDidMount() {
     
-  
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
   
@@ -158,7 +169,8 @@ else{
    
   }
 
-
+ 
+    
   componentDidUpdate() {
     const messageList = this.refs.messageList;
     messageList.scrollTop = messageList.scrollHeight;
@@ -196,8 +208,20 @@ else{
                           'is_seen':'no',
                           'customerid' : this.props.sessiondetails.customerid,
                       }
+        if(this.props.sessiondetails.platform == 'mobile'){
+          saveChat.fromMobile = 'yes'
+        }              
         socket.emit('send:message', saveChat);
+
+        // for mobile customers
+        if(this.props.sessiondetails.platform == 'mobile'){
+             this.props.mobileuserchat.push(saveChat);
+        }
+
+        //for web customers
+        else{
         this.props.chatlist.push(saveChat);
+        }
             
         this.props.savechat(saveChat);               
         this.state.value ='';
@@ -247,8 +271,19 @@ else{
                             agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
          
                       }
+         if(this.props.sessiondetails.platform == 'mobile'){
+          saveChat.fromMobile = 'yes'
+        } 
+         // for mobile customers
+        if(this.props.sessiondetails.platform == 'mobile'){
+             this.props.mobileuserchat.push(saveChat);
+        }
 
+        //for web customers
+        else{
         this.props.chatlist.push(saveChat);
+        }
+
 
         socket.emit('send:message', saveChat);
         
@@ -317,8 +352,18 @@ else{
                           'assignedagentemail': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email,
                            
                       }
+         if(this.props.sessiondetails.platform == 'mobile'){
+          saveChat.fromMobile = 'yes'
+        } 
+         // for mobile customers
+        if(this.props.sessiondetails.platform == 'mobile'){
+             this.props.mobileuserchat.push(saveChat);
+        }
 
+        //for web customers
+        else{
         this.props.chatlist.push(saveChat);
+        }
         
         socket.emit('send:message', saveChat);
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
@@ -428,8 +473,18 @@ else{
                             agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
          
                       }
-   
+         if(this.props.sessiondetails.platform == 'mobile'){
+          saveChat.fromMobile = 'yes'
+        } 
+         // for mobile customers
+        if(this.props.sessiondetails.platform == 'mobile'){
+             this.props.mobileuserchat.push(saveChat);
+        }
+
+        //for web customers
+        else{
         this.props.chatlist.push(saveChat);
+        }
         
         socket.emit('send:message', saveChat);
         
@@ -576,7 +631,7 @@ const { value, suggestions } = this.state;
            <label>Email :</label>
            <input value = {this.props.sessiondetails.customerid.email} ref="customeremail"/>
           <br/>
-          <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
+          <input type ="text" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
          
           <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="channelid"/>
@@ -584,8 +639,9 @@ const { value, suggestions } = this.state;
           </div>
           }
             <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}}  ref="messageList">
-                          {this.props.chatlist &&
-                            this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
+                          
+                          {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
+                            this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
                              
                                (this.props.userdetails.firstname === chat.from?
                                    <li className="right clearfix agentChatBox">
@@ -595,7 +651,7 @@ const { value, suggestions } = this.state;
                                         <div>
                                             <strong className="pull-right primary-font">{chat.from}</strong> 
                                             <small className=" text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{chat.time}
+                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
                                         </div>
                                        <p  className='pull-right chatmsg'>
@@ -612,7 +668,48 @@ const { value, suggestions } = this.state;
                                         <div>
                                             <strong className="primary-font">{chat.from}</strong> 
                                             <small className="pull-right text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{chat.time}
+                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}                                            </small>
+                                        </div>
+                                       <p className="chatmsg">
+                                            {chat.msg}
+                                       </p>
+                                     </div>
+                                   </li>
+
+                               )
+                               
+                                                          
+                            ))
+                          }
+                           {this.props.sessiondetails.platform == "web" && this.props.chatlist &&
+                            this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
+                             
+                               (this.props.userdetails.firstname === chat.from?
+                                   <li className="right clearfix agentChatBox">
+                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
+                                      </span>
+                                      <div className="chat-body clearfix">
+                                        <div>
+                                            <strong className="pull-right primary-font">{chat.from}</strong> 
+                                            <small className=" text-muted">
+                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
+                                            </small>
+                                        </div>
+                                       <p  className='pull-right chatmsg'>
+                                            {chat.msg}
+                                       </p>
+                                     </div>
+                                   </li> :
+
+                                    <li className="left clearfix userChatBox">
+                                      <span className="chat-img pull-left userChat">
+                                      {chat.from.substr(0,1)}
+                                      </span>
+                                      <div className="chat-body clearfix">
+                                        <div>
+                                            <strong className="primary-font">{chat.from}</strong> 
+                                            <small className="pull-right text-muted">
+                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
                                         </div>
                                        <p className="chatmsg">
@@ -626,6 +723,8 @@ const { value, suggestions } = this.state;
                                                           
                             ))
                           }
+
+                         
             </ul>
             </div>
 
@@ -657,7 +756,6 @@ const { value, suggestions } = this.state;
 
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps of GroupDetailView is called');
   console.log(state.dashboard.group);
   return {
     
@@ -674,7 +772,8 @@ function mapStateToProps(state) {
           userchats :(state.dashboard.userchats),  
           responses :(state.dashboard.responses),  
           onlineAgents:(state.dashboard.onlineAgents),
+          mobileuserchat : (state.dashboard.mobileuserchat),
   };
 }
 
-export default connect(mapStateToProps,{ resolvesession,getChatRequest,getuserchats,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{resolvesession,getChatRequest,getuserchats,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

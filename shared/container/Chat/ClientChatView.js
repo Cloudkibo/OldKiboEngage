@@ -53,16 +53,16 @@ class ClientChatView extends Component {
             datetime: Date.now(),
             uniqueid : unique_id,
             msg: 'User joined a chat session',
-            time:Date.now(),
+            time : moment.utc().format('lll'),
             type : 'message',
             request_id :this.props.roomdetails.request_id,
             messagechannel:this.props.roomdetails.messagechannel[this.props.roomdetails.messagechannel.length-1],
             companyid:this.props.roomdetails.room,
-            is_seen:'no'
+            is_seen:'no',
+            fromMobile : 'no'
 
 
           }
-
    socket.emit('send:messageToAgent',hellomsg);
 
    socket.on('send:message',message => this.props.updateChatList(message));
@@ -104,7 +104,8 @@ class ClientChatView extends Component {
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.sessiondetails.companyid,
                            'is_seen':'no',
-                           'time' : moment.utc().format('lll')
+                           'time' : moment.utc().format('lll'),
+                           'fromMobile' : 'no'
                            
                       }
                     }
@@ -125,6 +126,7 @@ class ClientChatView extends Component {
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.sessiondetails.companyid,
                            'is_seen':'no',
+                           'fromMobile' : 'no',
                            'socketid' : this.props.roomdetails.socketid
                       }
                     }
