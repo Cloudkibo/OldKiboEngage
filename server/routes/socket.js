@@ -23,16 +23,16 @@ function sendPushNotification(tagname, payload){
   }
   notificationHubService.gcm.send(tagname, androidMessage, function(error){
     if(!error){
-      logger.serverLog('info', 'Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+      console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
     } else {
-      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+      console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
   notificationHubService.apns.send(tagname, iOSMessage, function(error){
     if(!error){
-      logger.serverLog('info', 'Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
     } else {
-      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+      console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
 }
@@ -225,7 +225,7 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
  socket.on('informAgent', function (data) {
     console.log(data);
     userchats.push(data);
-    io2.to(data.agentsocket).emit('send:message',{
+    io2.to(data.agentsocket).emit('informAgent',{
             to: data.to,
             assignedagentname : data.assignedagentname,
             socketid:data.socketid,
@@ -300,8 +300,10 @@ socket.on('send:messageToAgent', function (data) {
 socket.on('getuserchats',function(room){
   //return userchats currently happening in room
   var roomchats =[];
+  console.log('user chats : ' + userchats.length);
   for(var c = 0;c<userchats.length;c++){
-    if(c.companyid == room)
+
+    if(userchats[c].companyid == room)
     {
       roomchats.push(userchats[c]);
 
@@ -330,11 +332,31 @@ socket.on('getuserchats',function(room){
   socket.on('send:agentsocket', function (data) {
     console.log('sending agent socket to customer');
     console.log(data);
+
+    // if session is mobile then inform customer through push notification
+    if(data.fromMobile && data.fromMobile == 'yes' ){
+
+      var payload = {
+        data: {
+          agentname: data.assignedagentname,
+          agentemail : data.assignedagentemail,
+          agentsocket : data.agentsocket,
+          agentid : data.agentid,
+
+
+        },
+        badge: 0
+      };
+
+      sendPushNotification(data.customerid._id,payload)
+    }
+    else{
     io2.to(data.socketid).emit('send:getAgent',{
            data:data       
           });
     } 
-  );
+  
+  });
 
  socket.on('updatesessionstatus',function(data){
   console.log('updatesessionstatus is called');

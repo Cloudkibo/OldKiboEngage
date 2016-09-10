@@ -85,6 +85,8 @@ for(var i=0;i<emailArray.length;i++){
 for(var i=0;i<pushNotificationArray.length;i++){
   sendPushNotification(pushNotificationArray[i],emailBody);
 }
+
+//sendPushNotification('sojharo',emailBody);
 }
 
 
@@ -114,16 +116,16 @@ function sendPushNotification(tagname,notificationBody){
   }
   notificationHubService.gcm.send(tagname, androidMessage, function(error){
     if(!error){
-      logger.serverLog('info', 'Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+      console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
     } else {
-      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+      console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
   notificationHubService.apns.send(tagname, iOSMessage, function(error){
     if(!error){
-      logger.serverLog('info', 'Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
     } else {
-      logger.serverLog('info', 'Azure push notification error : '+ JSON.stringify(error));
+      console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
 }

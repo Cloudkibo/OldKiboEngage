@@ -89,7 +89,8 @@ var unread = []
 var userchatMsg = [];
 {
   props.userchats &&   props.userchats.map((unre, i) => (
-                           userchatMsg.push(unre.Value.msg)                            
+                           //userchatMsg.push(unre.Value.msg) 
+                           userchatMsg.push(unre.msg) 
                         ))
 
 }

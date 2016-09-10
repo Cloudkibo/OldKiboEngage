@@ -337,7 +337,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'uniqueid' : unique_id,
-                          'customerid' : this.props.sessiondetails.customerid, 'customerid' : this.props.sessiondetails.customerid,
+                          'customerid' : this.props.sessiondetails.customerid,
                           'type': 'log',
                            'msg' : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
@@ -346,6 +346,7 @@ else{
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
+
                            'assignedagentname': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name,
                             'agentsocket' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                             'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,

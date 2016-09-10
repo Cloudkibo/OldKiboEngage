@@ -33,7 +33,6 @@ class Chat extends Component {
        //for webclients no need to fetch sessions and customer list from server
        
        //but for mobile clients we will fetch list of sessions and customers from server
-       // props.getcustomers(usertoken);
         props.getmobilesessions(usertoken);
        // props.getuserchats(usertoken);
        
@@ -47,6 +46,7 @@ class Chat extends Component {
         this.getupdatedSessions = this.getupdatedSessions.bind(this);
         this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
         this.getupdatedChats = this.getupdatedChats.bind(this);
+       // this.getSessionInfo = this.getSessionInfo.bind(this);
          this.getSocketmessage = this.getSocketmessage.bind(this);
        
   }
@@ -68,6 +68,20 @@ updateOnlineAgents(data){
    }
   }
   
+
+//this code was for fetching previous chat messages when the agent is assigned a chat message
+
+/*getSessionInfo(message){
+    // fetch user chats
+    this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+    if(!this.props.customerchat_selected){ 
+     this.props.updateChatList(message,this.props.new_message_arrived_rid);
+     
+   }
+
+   this.forceUpdate();
+  }*/
+
 componentWillReceiveProps(props) {
   if(props.customerchat && callMobileChatSessions == false){
    // alert('calling')
@@ -84,6 +98,7 @@ componentDidMount(){
         this.props.route.socket.emit('returnMySocketId');
         this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
         this.props.route.socket.on('send:message',this.getSocketmessage);
+        //this.props.route.socket.on('informAgent',this.getSessionInfo);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
         this.props.route.socket.on('customer_joined',this.getupdatedSessions);
         this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
