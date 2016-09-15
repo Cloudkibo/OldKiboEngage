@@ -225,7 +225,16 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
  socket.on('informAgent', function (data) {
     console.log(data);
     userchats.push(data);
-    io2.to(data.agentsocket).emit('informAgent',{
+
+    var previous_chat = []
+    for(var i=0;i< userchats.length;i++){
+      if(userchats[i].request_id == data.request_id){
+      previous_chat.push(userchats[i])
+    }
+    }
+
+    console.log('chat messages of this conversation is of length : ' + previous_chat.length);
+   /* io2.to(data.agentsocket).emit('informAgent',{
             to: data.to,
             assignedagentname : data.assignedagentname,
             socketid:data.socketid,
@@ -244,7 +253,9 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
 
 
           
-          });
+          });*/
+           io2.to(data.agentsocket).emit('informAgent',previous_chat);     
+
     
     
   });

@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessionsfromsocket,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessionsfromsocket,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -46,7 +46,7 @@ class Chat extends Component {
         this.getupdatedSessions = this.getupdatedSessions.bind(this);
         this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
         this.getupdatedChats = this.getupdatedChats.bind(this);
-       // this.getSessionInfo = this.getSessionInfo.bind(this);
+        this.getSessionInfo = this.getSessionInfo.bind(this);
          this.getSocketmessage = this.getSocketmessage.bind(this);
        
   }
@@ -71,16 +71,10 @@ updateOnlineAgents(data){
 
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
-/*getSessionInfo(message){
-    // fetch user chats
-    this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-    if(!this.props.customerchat_selected){ 
-     this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     
-   }
-
+getSessionInfo(message){
+   this.props.previousChat(message);
    this.forceUpdate();
-  }*/
+  }
 
 componentWillReceiveProps(props) {
   if(props.customerchat && callMobileChatSessions == false){
@@ -98,7 +92,7 @@ componentDidMount(){
         this.props.route.socket.emit('returnMySocketId');
         this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
         this.props.route.socket.on('send:message',this.getSocketmessage);
-        //this.props.route.socket.on('informAgent',this.getSessionInfo);
+        this.props.route.socket.on('informAgent',this.getSessionInfo);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
         this.props.route.socket.on('customer_joined',this.getupdatedSessions);
         this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
@@ -392,4 +386,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getmobilesessions,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getmobilesessions,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);

@@ -1390,6 +1390,15 @@ export function getmobilesessions(token) {
   };
 }
 
+export function previousChat(chatlist){
+    return {
+    type: ActionTypes.SHOW_CHAT_HISTORY,
+    chatlist,
+  //  customerid,
+
+  };
+}
+
 export function getChatRequest(customerid,token,chlist){
   var chatlist =[];
   
