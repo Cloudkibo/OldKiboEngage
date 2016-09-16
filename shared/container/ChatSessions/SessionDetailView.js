@@ -99,7 +99,7 @@ var sessionsummarydetail = []
     
 var grpp = []
  {
-         this.props.groupdetails && sessionsummarydetail &&
+         this.props.groupdetails && sessionsummarydetail && sessionsummarydetail.length > 0 &&
                         this.props.groupdetails.filter((c) => c._id == sessionsummarydetail[0].departmentid).map((grp, i) => (
                            grpp.push(grp)                            
                         ))
