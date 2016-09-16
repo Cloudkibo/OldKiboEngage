@@ -108,7 +108,7 @@ function onConnect(io2, socket) {
   });
 
 
-// broadcast a user's message to other users
+// from agent to customer
   socket.on('send:message', function (data) {
     
     /*** Add the logic here to send message as a push notification using customerid as a tag name for moble customers
@@ -149,43 +149,6 @@ function onConnect(io2, socket) {
     }
 
 
-    else if(data.toagent){
-            console.log('sending point to point message to Agent');
-
-            io2.to(data.toagent).emit('send:message',{
-            to: data.to,
-            toagent:data.toagent,
-            from : data.from,
-            visitoremail:data.visitoremail,
-            datetime:data.datetime,
-            msg: data.msg,
-            time:data.time,
-            request_id : data.request_id,
-            type : data.type,
-            messagechannel:data.messagechannel,
-            companyid:data.companyid,
-            is_seen:data.is_seen
-          });
-    }
-    else
-    {
-          socket.broadcast.to(data.companyid).emit('send:message', {
-            to: data.to,
-            from : data.from,
-            visitoremail:data.visitoremail,
-            datetime:data.datetime,
-            msg: data.msg,
-            uniqueid : data.uniqueid,
-            time:data.time,
-            type : data.type,
-            request_id :data.request_id,
-            messagechannel:data.messagechannel,
-            companyid:data.companyid,
-            is_seen:data.is_seen
-
-
-          });
-    }
   });
 
 function removeDuplicates(originalArray, prop) {
@@ -254,7 +217,17 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
 
           
           });*/
-           io2.to(data.agentsocket).emit('informAgent',previous_chat);     
+
+          for(var i=0;i< onlineAgents.length;i++){
+            if(onlineAgents[i].email == data.agentemail)
+            {
+              console.log('agent is online');
+              io2.to(onlineAgents[i].socketid).emit('informAgent',previous_chat);
+              break;
+            }
+          }
+                
+          
 
     
     
@@ -269,22 +242,32 @@ socket.on('send:messageToAgent', function (data) {
 
     if(data.toagent){
             console.log('sending point to point message to Agent');
+            //find the socket id
+            for(var i = 0;i < onlineAgents.length;i++)
+            {
+              if(onlineAgents[i].email == data.toagent){
+                 console.log('agent is online');
+                 io2.to(onlineAgents[i].socketid).emit('send:message',{
+                            to: data.to,
+                            toagent:data.toagent,
+                            from : data.from,
+                            visitoremail:data.visitoremail,
+                            datetime:data.datetime,
+                            uniqueid:data.uniqueid,
+                            msg: data.msg,
+                            time:data.time,
+                            request_id : data.request_id,
+                            type : data.type,
+                            messagechannel:data.messagechannel,
+                            companyid:data.companyid,
+                            is_seen:data.is_seen
+                          });
+              
+                break;
+              }
 
-            io2.to(data.toagent).emit('send:message',{
-            to: data.to,
-            toagent:data.toagent,
-            from : data.from,
-            visitoremail:data.visitoremail,
-            datetime:data.datetime,
-            uniqueid:data.uniqueid,
-            msg: data.msg,
-            time:data.time,
-            request_id : data.request_id,
-            type : data.type,
-            messagechannel:data.messagechannel,
-            companyid:data.companyid,
-            is_seen:data.is_seen
-          });
+            }
+           
     }
     else
     {
@@ -296,7 +279,6 @@ socket.on('send:messageToAgent', function (data) {
             msg: data.msg,
             time:data.time,
             uniqueid:data.uniqueid,
-            
             type : data.type,
             request_id :data.request_id,
             messagechannel:data.messagechannel,
@@ -351,7 +333,6 @@ socket.on('getuserchats',function(room){
         data: {
           agentname: data.assignedagentname,
           agentemail : data.assignedagentemail,
-          agentsocket : data.agentsocket,
           agentid : data.agentid,
 
 
@@ -648,9 +629,27 @@ socket.on('getOnlineAgentList',function() {
 
   socket.on('connecttocall', function(call){
 
+  if(!call.stanza.to_id){
+    //this call is from customer to agent
+    //check if agent is online
+
+      for(var i = 0;i < onlineAgents.length;i++)
+            {
+              if(onlineAgents[i].email == call.agentemail){
+                console.log('agent is online');
+
+                io2.to(onlineAgents[i].socketid).emit('connecttocall', call.stanza);
+
+              }
+            }
+
+  }
+  else{
+    //from agent to customer
   io2.to(call.stanza.to_id).emit('connecttocall', call.stanza);
     //io2.sockets.socket(call.stanza.to_id).emit('connecttocall', call.stanza);
 
+  }
   });
 
   socket.on('agentid', function(data){

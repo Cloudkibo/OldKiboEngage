@@ -267,8 +267,8 @@ else{
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
-                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                            'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
          
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
@@ -348,9 +348,8 @@ else{
                            'is_seen':'no',
 
                            'assignedagentname': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name,
-                            'agentsocket' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-                            'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-                          'assignedagentemail': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email,
+                           'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                           'assignedagentemail': this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email,
                            
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
@@ -422,8 +421,8 @@ else{
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
-                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                            'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
          
                       }
 
@@ -470,8 +469,8 @@ else{
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
 
-                            agentsocket : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-                            agentid : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                            'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                            'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
          
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
@@ -574,14 +573,25 @@ const { value, suggestions } = this.state;
                   
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
-                         {
+                        {this.props.sessiondetails.platform == "web"?
+                         
                           this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
                             agent.agentId == this.props.userdetails._id?
-                            <option value={agent.socketid} data-attrib = {agent.agentId} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
-                            <option value={agent.socketid} data-attrib = {agent.agentId} data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
+                            <option value={agent.email} data-attrib = {agent.agentId} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.email} data-attrib = {agent.agentId} data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
                               
                             )
-                         }
+                         :
+
+                         
+                          this.props.agents && this.props.agents.map((agent,i) =>
+                            agent._id == this.props.userdetails._id?
+                            <option value={agent.email} data-attrib = {agent._id} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.email} data-attrib = {agent._id} data-name={agent.firstname +' '+ agent.lastname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
+                              
+                            )
+                         
+                        }
 
                       </select>
                     

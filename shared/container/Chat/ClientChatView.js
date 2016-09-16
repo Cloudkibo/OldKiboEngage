@@ -30,8 +30,7 @@ class ClientChatView extends Component {
   getAgentSocket(data){
     console.log(data)
     console.log('agent socket id is : ' + data.data.agentsocket);
-    this.refs.agentsocket.value =  data.data.agentsocket;
-    this.refs.agentid.value = data.data.agentid;
+     this.refs.agentid.value = data.data.agentid;
     this.refs.agentname.value = data.data.assignedagentname;
     this.refs.agentemail.value = data.data.assignedagentemail;
                
@@ -83,14 +82,13 @@ class ClientChatView extends Component {
      if (e.which === 13) {
         var message;  
         e.preventDefault();
-        console.log('socket of agent : ' + this.refs.agentsocket.value);
            //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
        
         var saveChat={}
-        if(this.refs.agentsocket.value == ''){
+        if(this.refs.agentemail.value == ''){
 
         saveChat = { 
                           'to' : 'All Agents',
@@ -116,7 +114,7 @@ class ClientChatView extends Component {
                           'visitoremail' : this.refs.email.value,
                           'agentemail' : this.props.sessiondetails.agentemail,
                           'agentid': this.refs.agentid.value,
-                          'toagent' : this.refs.agentsocket.value ,
+                          'toagent' : this.refs.agentemail.value ,
                           'type': 'message',
                           'uniqueid' : unique_id,
                            'msg' : this.refs.msg.value,
@@ -152,7 +150,6 @@ class ClientChatView extends Component {
       
       call.from = this.props.sessiondetails.customerName;
       call.to = this.refs.agentname.value;
-      call.to_id = this.refs.agentsocket.value;
       call.agentemail = this.refs.agentemail.value;
       call.visitoremail = this.props.sessiondetails.email;
       call.request_id = this.props.sessiondetails.session_id;
@@ -187,8 +184,6 @@ class ClientChatView extends Component {
 
       <div>
           <div>
-            <label>Agent socketid : </label>
-            <input ref ="agentsocket" type = "text"/>
             <label>Agent Name : </label>
             <input ref ="agentname" type = "text"/>
             <label>Agent ID : </label>
