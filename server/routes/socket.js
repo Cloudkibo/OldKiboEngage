@@ -636,7 +636,7 @@ socket.on('getOnlineAgentList',function() {
 
       for(var i = 0;i < onlineAgents.length;i++)
             {
-              if(onlineAgents[i].email == call.agentemail){
+              if(onlineAgents[i].email == call.stanza.agentemail){
                 console.log('agent is online');
 
                 io2.to(onlineAgents[i].socketid).emit('connecttocall', call.stanza);
