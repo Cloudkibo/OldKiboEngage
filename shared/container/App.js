@@ -10,7 +10,7 @@ function notifyMe(message) {
   // Let's check if the user is okay to get some notification
   else if (Notification.permission === "granted") {
     // If it's okay let's create a notification
- var notification = new Notification("This is a title", {
+ var notification = new Notification("KiboEngage", {
         dir: "auto",
         lang: "",
         body: message,
@@ -29,7 +29,7 @@ function notifyMe(message) {
       // If the user is okay, let's create a notification
       if (permission === "granted") {
        
-        var notification = new Notification("This is a title", {
+        var notification = new Notification("KiboEngage", {
         dir: "auto",
         lang: "",
         body: message,
@@ -49,11 +49,17 @@ class App extends Component {
 
   constructor(props, context) {
     super(props, context);
+    this.alertme = this.alertme.bind(this);
 
   }
   
+  alertme(data){
+    notifyMe('customer joined a session');
+
+  }
   componentDidMount(){
-        this.props.route.socket.on('customer_joined',notifyMe('user joined chat session'));
+
+        this.props.route.socket.on('customer_joined',this.alertme);
         
 
 }

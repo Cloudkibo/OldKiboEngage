@@ -490,6 +490,7 @@ socket.on('getOnlineAgentList',function() {
         }
       }
 
+      console.log('Customer joined room');
       socket.broadcast.to(room.room).emit('customer_joined',customer_in_company_room);
 
       
