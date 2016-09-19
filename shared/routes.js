@@ -82,7 +82,7 @@ function redirectAuthUsers(nextState, replace) {
 }
 
 const routes = (
-   <Route path="/" component={App} >
+   <Route path="/" component={App} socket = {socket}>
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />

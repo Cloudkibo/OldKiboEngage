@@ -15,6 +15,7 @@ import { browserHistory } from 'react-router'
 import io from 'socket.io-client';
 var callMobileChatSessions
 var callOnce
+
 class Chat extends Component {
 
  constructor(props, context) {

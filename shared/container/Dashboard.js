@@ -17,6 +17,7 @@ import { browserHistory } from 'react-router'
 //const socket = io('');
 var dontCall = false;
 var is_routed = false;
+
 class Dashboard extends Component {
  constructor(props, context) {
 
@@ -70,6 +71,10 @@ class Dashboard extends Component {
 
   }
  
+
+ 
+
+
   render() {
     //console.log(this.props.userdetails)
     const token = auth.getToken()
