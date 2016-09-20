@@ -58,13 +58,13 @@ export default class ProfileSideBar extends Component
              <li className="active">
                 <Link to='/mygroups'>
                   <i className ="fa fa-eye"/>
-                   My Groups
+                   My Teams
                 </Link>
             </li>:
              <li>
                 <Link to='/mygroups'>
                   <i className ="fa fa-eye"/>
-                   My Groups
+                   My Teams
                 </Link>
             </li>
           }  
