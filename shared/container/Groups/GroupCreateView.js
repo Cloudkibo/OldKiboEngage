@@ -24,14 +24,14 @@ class GroupCreateView extends Component {
           <div className="portlet-title">
             <div className="caption">
               <i className="fa fa-group"/>
-               Create a group
+               Create a Team
             </div>
           </div>     
       <div className="portlet-body ">
       <div className="form">
         <div className="form-body">
           <div className="form-group">
-                 <label> Group Name</label>
+                 <label> Team Name</label>
                   <div className="input-group">
                     <span className="input-group-addon">
                       <i className="fa fa-chevron-right"/>
@@ -50,7 +50,7 @@ class GroupCreateView extends Component {
           </div>
           <div className="form-group">
                   <b> Note:
-                   Please, add at least one agent to the group to make it operational. Click on the group name in the list to add agents.
+                   Please, add at least one agent to the team to make it operational. Click on the team name in the list to add agents.
                   </b> 
           </div>        
           <div className="form-actions">

@@ -119,7 +119,7 @@ return res;
   
    	<div className="list-group-item" style={changecc}>
 
-      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name}</h4>
+      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
         {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
        
@@ -147,7 +147,7 @@ return res;
 
      <div className="list-group-item" >
 
-      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name}</h4>
+      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
        {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
        

@@ -44,8 +44,9 @@ var agentname = []
     
       <tr className = "odd">
     
-      <td>{props.session.customerid.name} </td>
-      <td>{props.session.customerid.name}</td>
+      <td>{props.session.customerid.name?props.session.customerid.name : props.session.customerid.customerID} </td>
+      <td>{props.session.customerid.email?props.session.customerid.email : "N/A"}</td>
+      
       <td>{gname[0].deptname}</td>
       {
         ch[0] &&
@@ -62,10 +63,14 @@ var agentname = []
         </Link>
         </td>
       }
+
       <td>
+      {
+        props.session.platform == "web" &&
       <Link to={`/rescheduleabandonedsession/${props.session.request_id}/${props.session.customerid.name}/${props.session.customerid.email}`} className="btn blue-madison" >
         Reschedule
       </Link>
+      }
       </td>
     </tr>
 

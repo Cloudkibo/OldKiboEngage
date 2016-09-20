@@ -534,7 +534,7 @@ export function deleteGROUP(group) {
 }
 export function deletegroup(group,usertoken) {
   console.log('deletegroup Action is called '+ group._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this group?"))
+  if(confirm("Do you want to delete this team?"))
   {
   return (dispatch) => {
     return fetch(`${baseURL}/api/deleteGroup?id=${group._id}`, {
@@ -1047,7 +1047,6 @@ else{
 /***************** Chat Actions ********************/
 
 export function getsessionsfromsocket(customerchat){
-
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
@@ -1062,6 +1061,7 @@ customerchat = customerchat.filter((c) => c.platform == "mobile")
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
+    serverresponse : 'received',
    
   };
 }
@@ -1080,8 +1080,6 @@ export function showAllChat(customerchat) {
  
 */
 
-   
-  console.log(customerchat);
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,

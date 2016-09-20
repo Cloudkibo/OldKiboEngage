@@ -78,7 +78,7 @@ class SessionDetailView extends Component {
     const body = this.refs.body;
     var companyid = this.props.userdetails.uniqueid;
 
-    if (subject.value && body.value && companyid)
+    if (subject.value && body.value && companyid && emailAdd.value != "N/A")
      {
       var emailMsg = {'to':name.value,'emailAdd':emailAdd.value,'subject' : subject.value,'body':body.value,'from' : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname }
       this.props.emailCustomer({emailMsg,usertoken});
@@ -139,14 +139,14 @@ var grpp = []
                     <div className="form-group">
                       <label className="control-label col-md-3"> Customer Name </label>
                        <div className="col-md-9">
-                             <input className="form-control" type='text' value = {sessionsummarydetail[0].customerid.name}/>
+                             <input className="form-control" type='text' value = {sessionsummarydetail[0].customerid.name?sessionsummarydetail[0].customerid.name:sessionsummarydetail[0].customerid.customerID}/>
                        </div>
                     </div>
 
                     <div className="form-group">
                       <label className="control-label col-md-3"> Email </label>
                        <div className="col-md-9">
-                             <input className="form-control" type='text' value = {sessionsummarydetail[0].customerid.email}/>
+                             <input className="form-control" type='text' value = {sessionsummarydetail[0].customerid.email?sessionsummarydetail[0].customerid.email:"N/A"}/>
                        </div>
                     </div>
 
@@ -249,7 +249,8 @@ var grpp = []
                       </ul>
             </div>
 
-
+            {
+              sessionsummarydetail[0].customerid.email && sessionsummarydetail[0].customerid.email != "N/A" && 
             <div style={{clear:'both'}}>
 
                 <div className="portlet box grey-cascade">
@@ -318,6 +319,7 @@ var grpp = []
           </div>
 
             </div>
+          }
           
 
           </div>

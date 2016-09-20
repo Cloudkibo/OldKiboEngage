@@ -76,6 +76,7 @@ class AddCustomer extends Component {
      
       var session = { 
                         'email' : email.value,
+                        'customerID' : email.value,
                         'departmentid': this.refs.grouplist.value,
                         'messagechannel' : this.refs.channellist.value,
                         'requesttime' : Date.now(),
@@ -119,6 +120,7 @@ create_session(data){
                       'messagechannel' : this.refs.channellist.value,
                       'requesttime' : Date.now(),
                       'fullurl' :  fullurl,
+                      'customerID' : email.value, //new field added
                       'currentPage' : pathname,
                       'phone' :  phone.value,
                       'browser' : 'Chrome',
@@ -232,7 +234,7 @@ create_session(data){
             var chArray = []
             chArray.push(this.refs.channellist.value);
             var agIds = []
-            var customerid = {'name' : name.value,'email' : email.value,'country' : country.value,'phone' : phone.value,'companyid' : companyid,'isMobileClient':"false"}
+            var customerid = {'customerID' : email.value,'name' : name.value,'email' : email.value,'country' : country.value,'phone' : phone.value,'companyid' : companyid,'isMobileClient':"false"}
             var socketsession =  {
                     customerid : customerid,
                     departmentid : this.refs.grouplist.value,

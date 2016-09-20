@@ -96,7 +96,7 @@ class GroupEditView extends Component {
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">Groups Management </h3>
+              <h3 className ="page-title">Team Management  </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -104,7 +104,7 @@ class GroupEditView extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/groups"> Groups Management</Link>
+                               <Link to="/groups">Team Management </Link>
                   </li>               
   
             </ul>
@@ -118,7 +118,7 @@ class GroupEditView extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                    {this.props.group.deptname} Groups
+                    {this.props.group.deptname} Team
                 </div> 
               </div>    
         
@@ -126,7 +126,7 @@ class GroupEditView extends Component {
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
                 <div className="form-group">
-                  <label className="control-label col-md-3"> Group Name </label>
+                  <label className="control-label col-md-3"> Team Name </label>
                    <div className="col-md-9">
                          <input className="form-control" type='text'  defaultValue={this.props.group.deptname} ref = "name"/>
                          <input className="form-control" type='hidden'   defaultValue = {this.props.group._id} ref = "id"/>

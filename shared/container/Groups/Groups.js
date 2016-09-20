@@ -73,7 +73,7 @@ class Groups extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">Groups Management </h3>
+              <h3 className ="page-title">Team Management </h3>
                  <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -81,7 +81,7 @@ class Groups extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/groups"> Groups Management</Link>
+                               <Link to="/groups">Team Management </Link>
                   </li>               
   
             </ul>
@@ -89,7 +89,7 @@ class Groups extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                    Groups
+                    Teams
                 </div> 
               </div>    
           <div className="portlet-body">
@@ -97,7 +97,7 @@ class Groups extends Component {
                  <div className="btn-group">
                  { this.props.userdetails.isAdmin == "Yes" ?
          
-                    <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Group
+                    <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Team
                    
                     <i className="fa fa-plus"/>
                     </button>

@@ -102,7 +102,7 @@ export default class SideBar extends Component
                   <i className="fa fa-group">
                   </i>      
                   <span className="title">
-                     Groups
+                     Teams
                   </span>      
                   <span className="selected">
                   </span>

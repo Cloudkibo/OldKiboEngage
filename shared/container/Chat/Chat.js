@@ -26,7 +26,7 @@ class Chat extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-     console.log('componentWillMount is called');
+     alert('constructor is called');
     if(usertoken != null)
     {
        
@@ -48,7 +48,7 @@ class Chat extends Component {
         this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
         this.getupdatedChats = this.getupdatedChats.bind(this);
         this.getSessionInfo = this.getSessionInfo.bind(this);
-         this.getSocketmessage = this.getSocketmessage.bind(this);
+        this.getSocketmessage = this.getSocketmessage.bind(this);
        
   }
 updateOnlineAgents(data){
@@ -78,7 +78,8 @@ getSessionInfo(message){
   }
 
 componentWillReceiveProps(props) {
-  if(props.customerchat && callMobileChatSessions == false){
+  // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
+  if(props.customerchat && callMobileChatSessions == false && props.serverresponse && props.serverresponse == 'received'){
    // alert('calling')
      this.props.route.socket.emit('getCustomerSessionsListFirst',props.customerchat,props.userdetails.uniqueid);
      callMobileChatSessions = true  
@@ -89,6 +90,7 @@ componentWillReceiveProps(props) {
 componentDidMount(){
        //get online agents list
       // alert('componentDidMount is called');
+       const usertoken = auth.getToken();
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
         this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
@@ -114,9 +116,9 @@ componentDidMount(){
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-
-    this.props.getsessionsfromsocket(data);
-
+   
+     this.props.getsessionsfromsocket(data);
+    
     this.forceUpdate();
   }
  
@@ -280,7 +282,7 @@ componentDidMount(){
                              <option value="all">All</option>
                            {
                          	this.props.channels && this.props.channels.map((channel,i) =>
-                         		<option value={channel._id}>{channel.msg_channel_name}</option>
+                         		<option value={channel._id}>{this.props.groupdetails.filter((d) => d._id == channel.groupid)[0].deptname + ' : ' +channel.msg_channel_name}</option>
 
                          		)
                          }
@@ -382,8 +384,8 @@ function mapStateToProps(state) {
           responses :(state.dashboard.responses), 
           onlineAgents:(state.dashboard.onlineAgents),
           yoursocketid :(state.dashboard.yoursocketid), 
-          mobileuserchat : (state.dashboard.mobileuserchat)      
-                  
+          mobileuserchat : (state.dashboard.mobileuserchat),      
+          serverresponse : (state.dashboard.serverresponse)                  
                     };
 }
 
