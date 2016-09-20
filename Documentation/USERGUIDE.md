@@ -98,7 +98,7 @@ Agent and customer during chat can invite each other to audio/video call by clic
 
 Company can create teams so that agent can be categoried according to their relevent area. To create team simple name the team and give description. To activate the team you need to assign an agent to the team to make it operative.
 
-![Manage team](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/create%20new%20group.PNG)
+![Manage team](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/create%20new%20team.PNG)
 
 List of Teams can be seen also each team can be viewed and deleted. Compnay admin can give the right to supervisor to edit the team and agent can only view the team. further roles of Admin, Supervisor and Agent can be seen here 
 
@@ -107,11 +107,10 @@ List of Teams can be seen also each team can be viewed and deleted. Compnay admi
 ![role detail](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/roles%20details.PNG)
 
 
-![List group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/manage%20groups.PNG)
+![List group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/manageteam.PNG)
 
 When supervisor or admin edit the Team, it can change the description of team and assign and remove agent from the team.
 
-![edit group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/edit%20group.PNG)
 
 
 ### Agent
