@@ -10,7 +10,7 @@ import auth from '../../services/auth';
 class NotificationView extends Component {
 
   constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
    
       
         super(props, context);
@@ -127,7 +127,7 @@ function mapStateToProps(state) {
     notification: (state.dashboard.notification),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
-    groupdetails:(state.dashboard.groupdetails),
+    teamdetails:(state.dashboard.teamdetails),
     userdetails:(state.dashboard.userdetails),
     channels :(state.dashboard.channels),
     notifications:(state.dashboard.notifications),

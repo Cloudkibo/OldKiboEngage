@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 
 class MessageChannelCreate extends Component {
   constructor(props, context) {
-       //call action to get user groups 
+       //call action to get user teams 
     const usertoken = auth.getToken();
     console.log('constructor is called');
     super(props, context);
@@ -26,30 +26,30 @@ class MessageChannelCreate extends Component {
     const usertoken = auth.getToken();
     const nameRef = this.refs.name;
     const descRef = this.refs.desc;
-    const groupid = this.refs.groupid;
+    const teamid = this.refs.teamid;
     var companyid;
     var createdBy = this.props.userdetails._id;
 
-    for(var j = 0;j<this.props.groupdetails.length;j++)
+    for(var j = 0;j<this.props.teamdetails.length;j++)
     {
-      if(this.props.groupdetails[j]._id == groupid.value)
+      if(this.props.teamdetails[j]._id == teamid.value)
       {
-         companyid = this.props.groupdetails[j].companyid;
+         companyid = this.props.teamdetails[j].companyid;
           break;
       }
     }
 
-    if (nameRef.value && descRef.value && groupid.value)
+    if (nameRef.value && descRef.value && teamid.value)
      {
-      var channel = {'msg_channel_name' : nameRef.value,'msg_channel_description':descRef.value,'companyid' : companyid,'groupid' : groupid.value,'createdby' : createdBy}
+      var channel = {'msg_channel_name' : nameRef.value,'msg_channel_description':descRef.value,'companyid' : companyid,'teamid' : teamid.value,'createdby' : createdBy}
       console.log(channel);
       this.props.createChannel(channel,usertoken);
      
     }
   }
   handleChange(e){
-      const groupidRef =  this.refs.groupid;
-      groupidRef.value =  e.target.value;
+      const teamidRef =  this.refs.teamid;
+      teamidRef.value =  e.target.value;
    
     }
     
@@ -107,16 +107,16 @@ class MessageChannelCreate extends Component {
                    </div>
                 </div>
                  <div className="form-group">
-                  <label className="control-label col-md-3"> Select Group </label>
+                  <label className="control-label col-md-3"> Select Team </label>
                   <div className="col-md-9">   
                   {
-                        <select  ref = "groupid" onChange={this.handleChange.bind(this)}   >
+                        <select  ref = "teamid" onChange={this.handleChange.bind(this)}   >
                           {
-                           this.props.groupdetails &&
+                           this.props.teamdetails &&
                         
-                           this.props.groupdetails.map((group, i) => (
+                           this.props.teamdetails.map((team, i) => (
                           
-                          <option value={group._id} key={group._id}> {group.deptname}</option>
+                          <option value={team._id} key={team._id}> {team.deptname}</option>
                                                       
                         ))
                         }
@@ -171,7 +171,7 @@ function mapStateToProps(state) {
   console.log(state.dashboard.agent);
   
    return {
-    groupdetails:(state.dashboard.groupdetails),
+    teamdetails:(state.dashboard.teamdetails),
     userdetails:(state.dashboard.userdetails),
     errorMessage:(state.dashboard.errorMessage),
     agents:(state.dashboard.agents),

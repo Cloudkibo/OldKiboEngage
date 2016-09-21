@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents} from '../redux/actions/actions'
-import {getusergroups} from '../redux/actions/actions'
+import {getuserteams} from '../redux/actions/actions'
 import {getchannels,updateAgentList} from '../redux/actions/actions'
 
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
@@ -32,7 +32,7 @@ class Dashboard extends Component {
     this.props.getuser(usertoken);
     this.props.getAgents(usertoken);
     this.props.getDeptAgents(usertoken);
-    this.props.getusergroups(usertoken);
+    this.props.getuserteams(usertoken);
     this.props.getchannels(usertoken);
 
     
@@ -108,11 +108,11 @@ function mapStateToProps(state) {
   userdetails:(state.dashboard.userdetails),
   agents:(state.dashboard.agents),
   deptagents:(state.dashboard.deptagents),
-  groupdetails:(state.dashboard.groupdetails),
+  teamdetails:(state.dashboard.teamdetails),
   channels :(state.dashboard.channels),
   onlineAgents:(state.dashboard.onlineAgents),       
        
    }
 }
 
-export default connect(mapStateToProps,{getuser,updateAgentList,getAgents,getchannels,getDeptAgents,getusergroups})(ReactTimeout(Dashboard));
+export default connect(mapStateToProps,{getuser,updateAgentList,getAgents,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));

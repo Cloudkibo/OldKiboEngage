@@ -6,25 +6,25 @@ var handleDate = function(d){
 var c = new Date(d);
 return c.toDateString();
 }
-function GroupListItem(props) {
+function TeamListItem(props) {
 
   
   return (
   
     <tr className = "odd">
-      <td>{props.group.deptname}</td>
-      <td>{props.group.deptdescription}</td>
-      <td>{props.group.createdby.firstname}</td>
-      <td>{handleDate(props.group.creationdate)}</td>
+      <td>{props.team.deptname}</td>
+      <td>{props.team.deptdescription}</td>
+      <td>{props.team.createdby.firstname}</td>
+      <td>{handleDate(props.team.creationdate)}</td>
      
       <td>
-        <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
+        <Link to={`/team/${props.team._id}`} className="btn blue-madison" >
          View
         </Link>
          {
         props.userdetails.isAdmin == "Yes" ?
         <span>
-        <Link to={`/editgroup/${props.group._id}`} className="btn blue-madison" >
+        <Link to={`/editteam/${props.team._id}`} className="btn blue-madison" >
          Edit
         </Link>
         <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
@@ -39,10 +39,10 @@ function GroupListItem(props) {
   );
 }
 
-GroupListItem.propTypes = {
+TeamListItem.propTypes = {
   onDelete: PropTypes.func.isRequired,
  
 };
 
 
-export default GroupListItem;
+export default TeamListItem;

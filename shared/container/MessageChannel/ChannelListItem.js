@@ -7,10 +7,10 @@ var c = new Date(d);
 return c.toDateString();
 }
 
-var getDeptName = function(group){
+var getDeptName = function(team){
     var grp = [];
    
-     group.map((gr,i) =>(
+     team.map((gr,i) =>(
       grp.push(gr.deptname)
       ));
      return grp[0];
@@ -23,7 +23,7 @@ function ChannelListItem(props) {
     <tr className = "odd">
       <td>{props.channel.msg_channel_name} </td>
       <td>{props.channel.msg_channel_description}</td>
-      <td>{getDeptName(props.group)}</td>
+      <td>{getDeptName(props.team)}</td>
       <td>{props.channel.activeStatus}</td>
       <td>{handleDate(props.channel.creationdate)}</td>
        

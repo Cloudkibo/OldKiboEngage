@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 class ChannelEditView extends Component {
   constructor(props, context) {
-       //call action to get user groups 
+       //call action to get user teams 
     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
@@ -37,13 +37,13 @@ class ChannelEditView extends Component {
     const name = this.refs.name;
     const desc = this.refs.desc;
     const status = this.refs.status;
-    const groupid = this.refs.groupid;
+    const teamid = this.refs.teamid;
     const companyid = this.refs.companyid;
     const createdby = this.refs.createdby;
 
-    if (name.value && desc.value && groupid.value)
+    if (name.value && desc.value && teamid.value)
      {
-      var channel = {'_id' : idRef.value,'msg_channel_name' : name.value,'msg_channel_description':desc.value,'companyid' : companyid.value,'groupid' : groupid.value,'createdby' : createdby.value,'activeStatus':status.value}
+      var channel = {'_id' : idRef.value,'msg_channel_name' : name.value,'msg_channel_description':desc.value,'companyid' : companyid.value,'teamid' : teamid.value,'createdby' : createdby.value,'activeStatus':status.value}
       console.log(channel);
       this.props.editChannel(channel,usertoken);
      
@@ -108,7 +108,7 @@ class ChannelEditView extends Component {
                          <input className="form-control" type='text'     defaultValue={ag[0].msg_channel_name} ref = "name"/>
                          <input className="form-control" type='hidden'   value = {ag[0]._id} ref = "id"/>
                          <input className="form-control" type='hidden'   value = {ag[0].companyid} ref = "companyid"/>
-                         <input className="form-control" type='hidden'   value = {ag[0].groupid} ref = "groupid"/>
+                         <input className="form-control" type='hidden'   value = {ag[0].teamid} ref = "teamid"/>
                          <input className="form-control" type='hidden'   value = {ag[0].createdby} ref = "createdby"/>
             
 
@@ -182,11 +182,11 @@ function mapStateToProps(state) {
   
    return {
     
-    group: (state.dashboard.group),
+    team: (state.dashboard.team),
     channels:(state.dashboard.channels),
     deptagents:(state.dashboard.deptagents),
     channel :(state.dashboard.channel),
-    groupdetails:(state.dashboard.groupdetails),
+    teamdetails:(state.dashboard.teamdetails),
     errorMessage:(state.dashboard.errorMessage),
   };
 }

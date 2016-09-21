@@ -16,7 +16,7 @@ import { browserHistory } from 'react-router'
 class Agents extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -94,7 +94,7 @@ class Agents extends Component {
         
            <div className="portlet-body">
              <div className="table-toolbar">
-                 <div className="btn-group">
+                 <div className="btn-team">
                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Invite Agent
                     <i className="fa fa-plus"/>
                     </button>
@@ -158,7 +158,7 @@ function mapStateToProps(state) {
           agent :(state.dashboard.agent),
           deptagents:(state.dashboard.deptagents),
           channels :(state.dashboard.channels),
-          groupdetails:(state.dashboard.groupdetails),
+          teamdetails:(state.dashboard.teamdetails),
           customerchat :(state.dashboard.customerchat),
           customerchatold :(state.dashboard.customerchatold),
           chatlist :(state.dashboard.chatlist),

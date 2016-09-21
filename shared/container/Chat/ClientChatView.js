@@ -276,7 +276,7 @@ function mapStateToProps(state) {
     roomdetails :(state.widget.roomdetails), 
 
 
-    groupdetails:(state.dashboard.groupdetails),
+    teamdetails:(state.dashboard.teamdetails),
     userdetails:(state.dashboard.userdetails),
     errorMessage:(state.dashboard.errorMessage),
     agents:(state.dashboard.agents),

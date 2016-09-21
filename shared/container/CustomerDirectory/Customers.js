@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux';
 class Customers extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -70,7 +70,7 @@ class Customers extends Component {
         
            <div className="portlet-body">
              <div className="table-toolbar">
-                 <div className="btn-group">
+                 <div className="btn-team">
                    <label> Search </label>
                    <input type="text" placeholder = "Search Customer " /> 
                  </div>
@@ -125,7 +125,7 @@ function mapStateToProps(state) {
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           notifications:(state.dashboard.notifications),
           agents:(state.dashboard.agents),

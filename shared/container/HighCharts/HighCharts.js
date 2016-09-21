@@ -8,7 +8,7 @@ import auth from '../../services/auth';
 import {getchannelwisestats,getagentwisenotifications,gettopcustomers,getagentwisecalls,getresolvedsessions,getmobilewisestats,getcountrywisestats,getpagewisestats,getplatformwisestats,getdeptwisestats} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
-import Groupwise from './Groupwise'
+import Teamwise from './Teamwise'
 import Platform from './Platform'
 import Pagewise from './Pagewise'
 import Countrywise from './Countrywise'
@@ -25,7 +25,7 @@ import Channelwise from './Channelwise'
 var ReactDOM = require('react-dom');
 var Highcharts = require('highcharts');
 var platform_bool ;//= false; 
-var group_bool ;//= false;
+var team_bool ;//= false;
 var pages_bool;// = false;
 var mobile_bool;
 var country_bool;
@@ -214,7 +214,7 @@ var getAverageCallMin =  function(allCallsList,days){
 class HighCharts extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
   if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -238,11 +238,11 @@ class HighCharts extends Component {
         props.getagentwisenotifications(usertoken);
         //get resolved sessions
         props.getresolvedsessions(usertoken);
-        props.getchannelwisestats(this.props.groupdetails[0]._id,usertoken);
+        props.getchannelwisestats(this.props.teamdetails[0]._id,usertoken);
     } 
     
-    this.state = {categories:[],categoriesChannels :[],categoriesCustomer :[],categoriesNotif:[],categoriesAgent :[],categoriesAvg:[],categoriesPages:[],categoriesMobile:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesChannels : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesNotif : [{"name": "Number of Notifications", "data": [], type: "column"}],chartSeriesCustomer: [{"name": "Number of Sessions", "data": [], type: "column"}], chartSeriesAvg : [{"name": "Average Time", "data": [], type: "column"}],chartSeriesAgent : [{"name": "Agent wise stats", "data": [], type: "column"}], chartSeriesGroup : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
-    this._getgroupwisestats = this._getgroupwisestats.bind(this);
+    this.state = {categories:[],categoriesChannels :[],categoriesCustomer :[],categoriesNotif:[],categoriesAgent :[],categoriesAvg:[],categoriesPages:[],categoriesMobile:[],categoriesTeam:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesChannels : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesNotif : [{"name": "Number of Notifications", "data": [], type: "column"}],chartSeriesCustomer: [{"name": "Number of Sessions", "data": [], type: "column"}], chartSeriesAvg : [{"name": "Average Time", "data": [], type: "column"}],chartSeriesAgent : [{"name": "Agent wise stats", "data": [], type: "column"}], chartSeriesTeam : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
+    this._getteamwisestats = this._getteamwisestats.bind(this);
     this._getplatformwisestats = this._getplatformwisestats.bind(this);
     this._getpagewisestats = this._getpagewisestats.bind(this);
     this._getcountrywisestats = this._getcountrywisestats.bind(this);
@@ -256,9 +256,9 @@ class HighCharts extends Component {
 _getcountrywisestats(day){
 
 }
-_getgroupwisestats(day){
-      this.state.chartSeriesGroup[0].data = [];
-      this.state.categoriesGroup = [];
+_getteamwisestats(day){
+      this.state.chartSeriesTeam[0].data = [];
+      this.state.categoriesTeam = [];
       var deptStatsData = this.props.deptwisestats;
 
         var tempArray =[];
@@ -289,13 +289,13 @@ _getgroupwisestats(day){
           }
 
           for(var i in tempArray){
-             this.state.chartSeriesGroup[0].data.push(tempArray[i].count);
-             this.state.categoriesGroup.push(tempArray[i].deptName);
+             this.state.chartSeriesTeam[0].data.push(tempArray[i].count);
+             this.state.categoriesTeam.push(tempArray[i].deptName);
         }
 
         
        
-          this.refs.targetDateGroup.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
+          this.refs.targetDateTeam.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
 
 
       
@@ -577,7 +577,7 @@ _getpagewisestats(day){
 componentDidMount(){
 pages_bool = false;
 country_bool = false;
-group_bool = false;
+team_bool = false;
 platform_bool = false;
 mobile_bool = false;
 avg_call = false;
@@ -698,13 +698,13 @@ customer_bool = false;
 
 
     
-    /**** group wise call stats ********/
+    /**** team wise call stats ********/
 
-     if(props.deptwisestats && group_bool == false){
+     if(props.deptwisestats && team_bool == false){
       var deptStatsData = props.deptwisestats;
-      group_bool  = true;
+      team_bool  = true;
       var CallStatsDept = this.refs.CallStatsDept.value;
-       this.state.categoriesGroup =[];
+       this.state.categoriesTeam =[];
       
       if(CallStatsDept == 'This Year'){
 
@@ -734,11 +734,11 @@ customer_bool = false;
           }
         }
         for(var i in tempArray){
-          this.state.chartSeriesGroup[0].data.push(tempArray[i].count);
-          this.state.categoriesGroup.push(tempArray[i].deptName);
+          this.state.chartSeriesTeam[0].data.push(tempArray[i].count);
+          this.state.categoriesTeam.push(tempArray[i].deptName);
         }
 
-        this.refs.targetDateGroup.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
+        this.refs.targetDateTeam.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
       }
 
    
@@ -911,8 +911,8 @@ customer_bool = false;
 
 refreshData2(e){
       this.refs.CallStatsDept.value = e.target.dataset.attrib;
-      this.state.chartSeriesGroup[0].data = [];
-      this.state.categoriesGroup = [];
+      this.state.chartSeriesTeam[0].data = [];
+      this.state.categoriesTeam = [];
       var deptStatsData = this.props.deptwisestats;
       
     
@@ -947,28 +947,28 @@ refreshData2(e){
           }
 
           for(var i in tempArray){
-             this.state.chartSeriesGroup[0].data.push(tempArray[i].count);
-             this.state.categoriesGroup.push(tempArray[i].deptName);
+             this.state.chartSeriesTeam[0].data.push(tempArray[i].count);
+             this.state.categoriesTeam.push(tempArray[i].deptName);
         }
 
         currentDate1 = this.state.currentDate; 
-        this.refs.targetDateGroup.value = handleDate(this.state.currentDate);
+        this.refs.targetDateTeam.value = handleDate(this.state.currentDate);
       }
 
       if(this.refs.CallStatsDept.value == 'Last 7 days'){
 
-          this._getgroupwisestats(7)
+          this._getteamwisestats(7)
 
         
       }
 
       if(this.refs.CallStatsDept.value == 'Last 30 days'){
 
-        this._getgroupwisestats(30)         
+        this._getteamwisestats(30)         
        }
 
       if(this.refs.CallStatsDept.value == 'This Year'){
-        this._getgroupwisestats(365)       
+        this._getteamwisestats(365)       
     }
       this.forceUpdate()
 
@@ -1354,11 +1354,11 @@ refreshData4(e){
 
             <div>
               <label> Choose Department </label>
-               <select  ref = "grouplist" onChange={this.handleChangeDepartment.bind(this)}   >
+               <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
                           
                           {
-                          this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                            <option value={group._id}>{group.deptname}</option>
+                          this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                            <option value={team._id}>{team.deptname}</option>
 
                             )
                          }
@@ -1386,7 +1386,7 @@ refreshData4(e){
            </div>
           
 
-          <div class="btn-group">
+          <div class="btn-team">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData7.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData7.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData7.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1418,7 +1418,7 @@ refreshData4(e){
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-           <div class="btn-group">
+           <div class="btn-team">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData1.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData1.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData1.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1430,20 +1430,20 @@ refreshData4(e){
           <br/>
 
            {
-              this.props.deptwisestats && this.state.categoriesGroup.length > 0 &&
-                <Groupwise series = {this.state.chartSeriesGroup} categories = {this.state.categoriesGroup} title="Group wise Sessions Stats"/>
+              this.props.deptwisestats && this.state.categoriesTeam.length > 0 &&
+                <Teamwise series = {this.state.chartSeriesTeam} categories = {this.state.categoriesTeam} title="Team wise Sessions Stats"/>
             }
         
 
 
            <div class="clearfix">
-            From <input ref="targetDateGroup" type="text"/>
+            From <input ref="targetDateTeam" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
           
 
-          <div class="btn-group">
+          <div class="btn-team">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData2.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData2.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData2.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1468,7 +1468,7 @@ refreshData4(e){
            </div>
           
 
-          <div class="btn-group">
+          <div class="btn-team">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData3.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData3.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData3.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1526,7 +1526,7 @@ refreshData4(e){
            </div>
           
 
-          <div class="btn-group">
+          <div class="btn-team">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData4.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData4.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData4.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1553,7 +1553,7 @@ refreshData4(e){
            </div>
           
 
-          <div class="btn-group">
+          <div class="btn-team">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData5.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData5.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData5.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1589,7 +1589,7 @@ refreshData4(e){
            </div>
           
 
-          <div class="btn-group">
+          <div class="btn-team">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData6.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData6.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData6.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1620,7 +1620,7 @@ function mapStateToProps(state) {
           countrywisestats : state.dashboard.countrywisestats,
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),

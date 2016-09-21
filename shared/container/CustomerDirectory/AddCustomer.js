@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
 import {createcustomer}  from '../../redux/actions/actions'
-import {getcustomergroups}  from '../../redux/actions/actions'
+import {getcustomerteams}  from '../../redux/actions/actions'
 import {getcustomerchannels,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
 import {updatechannellist}  from '../../redux/actions/actions'
 import {createsession}  from '../../redux/actions/actions'
@@ -33,7 +33,7 @@ function getParameterByName(name, url) {
 var call_customer_details;
 class AddCustomer extends Component {
    constructor(props, context) {
-    props.getcustomergroups();
+    props.getcustomerteams();
     props.getcustomerchannels();
     super(props, context);
     call_customer_details = false;
@@ -77,7 +77,7 @@ class AddCustomer extends Component {
       var session = { 
                         'email' : email.value,
                         'customerID' : email.value,
-                        'departmentid': this.refs.grouplist.value,
+                        'departmentid': this.refs.teamlist.value,
                         'messagechannel' : this.refs.channellist.value,
                         'requesttime' : Date.now(),
                         'fullurl' :  fullurl,
@@ -116,7 +116,7 @@ create_session(data){
      
       var session = { 
                       'email' : email.value,
-                      'departmentid': this.refs.grouplist.value,
+                      'departmentid': this.refs.teamlist.value,
                       'messagechannel' : this.refs.channellist.value,
                       'requesttime' : Date.now(),
                       'fullurl' :  fullurl,
@@ -145,22 +145,22 @@ create_session(data){
  
    componentWillReceiveProps(props) {
 
-    // bind the channel list of first group on load
-    if(props.groupdetails  && props.channels.length > 0 && !props.params.requestid && call_customer_details == false ){
+    // bind the channel list of first team on load
+    if(props.teamdetails  && props.channels.length > 0 && !props.params.requestid && call_customer_details == false ){
       //alert(props.channels.length);
-      this.props.updatechannellist(props.groupdetails[0]._id);
+      this.props.updatechannellist(props.teamdetails[0]._id);
        call_customer_details = true;
       this.forceUpdate();
     }
-    else if(props.specificsession && props.channels && props.groupdetails  && call_customer_details == false){
+    else if(props.specificsession && props.channels && props.teamdetails  && call_customer_details == false){
      /* var dept_name = '';
-      for(var i = 0;i< props.groupdetails.length;i++){
-        if(props.groupdetails[i]._id == props.specificsession.departmentid)
+      for(var i = 0;i< props.teamdetails.length;i++){
+        if(props.teamdetails[i]._id == props.specificsession.departmentid)
         {
-            dept_name = props.groupdetails[i].deptname;
+            dept_name = props.teamdetails[i].deptname;
         }
       }*/
-      this.refs.grouplist.value = props.specificsession.departmentid;
+      this.refs.teamlist.value = props.specificsession.departmentid;
       this.props.updatechannellist(props.specificsession.departmentid);
       this.props.getspecificcustomer(props.specificsession.customerid);
       
@@ -170,7 +170,7 @@ create_session(data){
      // this.forceUpdate();
     }
     if(props.specificcustomer){
-      this.refs.grouplist.value = props.specificsession.departmentid;
+      this.refs.teamlist.value = props.specificsession.departmentid;
       this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
       //alert(this.refs.channellist.value)
       this.refs.name.value = props.specificcustomer.name;
@@ -237,10 +237,10 @@ create_session(data){
             var customerid = {'customerID' : email.value,'name' : name.value,'email' : email.value,'country' : country.value,'phone' : phone.value,'companyid' : companyid,'isMobileClient':"false"}
             var socketsession =  {
                     customerid : customerid,
-                    departmentid : this.refs.grouplist.value,
+                    departmentid : this.refs.teamlist.value,
                     platform : "web",
                     agent_ids : agIds,
-                    group:this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
+                    team:this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text,
                     messagechannel : chArray,
                     channelname: this.refs.channellist.options[this.refs.channellist.selectedIndex].text,
                     fullurl :  fullurl,
@@ -273,7 +273,7 @@ create_session(data){
   
 
   handleChange(e){
-    //alert(this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text);
+    //alert(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text);
      this.props.updatechannellist(e.target.value);
       this.forceUpdate();
 
@@ -340,12 +340,12 @@ create_session(data){
                 </div>
                 <div className="form-group">
 
-                   <label className="control-label col-md-3"> Choose Group</label>
+                   <label className="control-label col-md-3"> Choose Team</label>
                    <div className="col-md-9">
-                  <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
+                  <select  ref = "teamlist" onChange={this.handleChange.bind(this)}   >
                           {
-                          this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                            <option value={group._id} >{group.deptname}</option>
+                          this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                            <option value={team._id} >{team.deptname}</option>
 
                             )
                          }
@@ -408,7 +408,7 @@ function mapStateToProps(state) {
   
    return {
     
-    groupdetails :(state.widget.groupdetails),
+    teamdetails :(state.widget.teamdetails),
     channels :(state.widget.channels),
     filterlist :(state.widget.filterlist),
     sessiondetails : (state.widget.sessiondetails),
@@ -417,6 +417,6 @@ function mapStateToProps(state) {
     specificcustomer : (state.widget.specificcustomer),
   };
 }
-export default connect(mapStateToProps,{getcustomergroups,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
+export default connect(mapStateToProps,{getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
 
 

@@ -16,8 +16,8 @@ var ch=[]
       }
  var gname =[]
      {
-         props.groups &&
-                        props.groups.map((cha, i) => (
+         props.teams &&
+                        props.teams.map((cha, i) => (
                            gname.push(cha)                            
                         ))
 

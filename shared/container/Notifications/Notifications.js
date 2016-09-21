@@ -17,7 +17,7 @@ import { browserHistory } from 'react-router'
 class Notifications extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -74,7 +74,7 @@ class Notifications extends Component {
         
            <div className="portlet-body">
              <div className="table-toolbar">
-                 <div className="btn-group">
+                 <div className="btn-team">
                     <Link id="sample_editable_1_new" className="btn green" to='/addnotification'> Add Notification
                     <i className="fa fa-plus"/>
                     </Link>
@@ -131,7 +131,7 @@ function mapStateToProps(state) {
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           notifications:(state.dashboard.notifications),
           agents:(state.dashboard.agents),

@@ -6,18 +6,18 @@ var handleDate = function(d){
 var c = new Date(d);
 return c.toDateString();
 }
-function MyGroupListItem(props) {
+function MyTeamListItem(props) {
 
   
   return (
   
     <tr className = "odd">
-      <td>{props.group.deptname}</td>
-      <td>{props.group.deptdescription}</td>
-      <td>{handleDate(props.group.creationdate)}</td>
+      <td>{props.team.deptname}</td>
+      <td>{props.team.deptdescription}</td>
+      <td>{handleDate(props.team.creationdate)}</td>
      
       <td>
-        <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
+        <Link to={`/team/${props.team._id}`} className="btn blue-madison" >
          View
         </Link>
        
@@ -32,4 +32,4 @@ function MyGroupListItem(props) {
 
 
 
-export default MyGroupListItem;
+export default MyTeamListItem;

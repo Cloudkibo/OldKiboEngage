@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux';
 class ChangePassword extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
    
        super(props, context);
         this.onChangeCurrentPassword = this.onChangeCurrentPassword.bind(this);
@@ -199,13 +199,13 @@ onChangeCurrentPassword(event) {
 function mapStateToProps(state) {
   
   return {
-          groupdetails:(state.dashboard.groupdetails),
+          teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
           errorMessageProfile:(state.dashboard.errorMessageProfile),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           channels :(state.dashboard.channels),
-          mygroupdetails:(state.dashboard.mygroupdetails),
+          myteamdetails:(state.dashboard.myteamdetails),
            };
 }
 

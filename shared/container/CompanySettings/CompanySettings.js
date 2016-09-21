@@ -19,7 +19,7 @@ var style1 = {
 class CompanySettings extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -121,7 +121,7 @@ class CompanySettings extends Component {
                 <form onSubmit={this.onSubmit} className ="form-horizontal form-bordered css-form">
                   <div className="form-body">
                                               <div className="form-group">
-                                                <label className="control-label col-md-3">Max number of Groups</label>
+                                                <label className="control-label col-md-3">Max number of Teams</label>
                                                 
                                                 <div className="col-md-9">
                                                   <div id="spinner1">
@@ -135,7 +135,7 @@ class CompanySettings extends Component {
 
 
                                               <div className="form-group">
-                                                <label className="control-label col-md-3">Max number of Channels per group</label>
+                                                <label className="control-label col-md-3">Max number of Channels per team</label>
                                                 
                                                 <div className="col-md-9">
                                                   <div id="spinner1">
@@ -352,13 +352,13 @@ class CompanySettings extends Component {
 function mapStateToProps(state) {
   
   return {
-          groupdetails:(state.dashboard.groupdetails),
+          teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
           errorMessageProfile:(state.dashboard.errorMessageProfile),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           channels :(state.dashboard.channels),
-          mygroupdetails:(state.dashboard.mygroupdetails),
+          myteamdetails:(state.dashboard.myteamdetails),
           companysettings:(state.dashboard.companysettings),
            };
 }

@@ -36,8 +36,8 @@ Contains code for calling KiboSupport API for Chat
 *customer.controller.js*
 Contains code for calling KiboSupport API for adding and retrieving customers
 
-*group.controller.js*
-Contains code for calling KiboSupport API for Groups
+*team.controller.js*
+Contains code for calling KiboSupport API for Teams
 
 *notification.controller.js*
 Contains code for calling KiboSupport API for Notifications
@@ -58,33 +58,33 @@ Following is the general workflow that will be followed for all react containers
 React Containers will receive data from reducer,update their state and pass this data to react component as a ‘prop’(property).
 In Kibo Engage,section below is describing React Containers,Data that they will receive from Reducer,Actions that can take place in container,components of react container and what data each react component will receive from container.
 
-###1.  Groups Container
+###1.  Teams Container
 
-Groups container will receive all groups data from Kibo support api.
+Teams container will receive all teams data from Kibo support api.
 
-i. Group : 
+i. Team : 
 
-Each group component will hold details of a each group present in all groups data.
+Each team component will hold details of a each team present in all teams data.
 
 **Actions:**
 
-i.  Edit group
+i.  Edit team
 
-ii. Delete group
+ii. Delete team
 
 iii.View Component:
 
-It will display details of a particular group whose id is passed as a parameter
+It will display details of a particular team whose id is passed as a parameter
 
-iv. Edit group component:
+iv. Edit team component:
 
-It will enable user to modify group details.
+It will enable user to modify team details.
 
   **Actions:**
   
   i. Save
 
-iv. Create new group:
+iv. Create new team:
 
 No prior data required.
 
@@ -148,14 +148,14 @@ Chat component will show the history of chats of logged in agent for a particula
 
   ii. Assigned To:This action allow agent to redirect/reassign chat message to some other agent
 
-  iii. Move To : This action allow agent to move the chat message to other group if he finds message not related to the group it has 
+  iii. Move To : This action allow agent to move the chat message to other team if he finds message not related to the team it has 
   been sent to.
   
   iv. Send : This action will dispatch the agent message to server to be send to customer
   
   v. Filter customer messages by status (New,Assigned,Resolved)
   
-  vi. Filter customer messages by groups (New,Assigned,Resolved)
+  vi. Filter customer messages by teams (New,Assigned,Resolved)
   
   vii.Filter customer messages by agents (visible to only Admin/Supervisor)
   
@@ -261,23 +261,23 @@ Following actions are related to user login or signup.They will return user deta
 
       vi   signupuser : For calling server API to register username
 
-###2. Actions related to Groups:
+###2. Actions related to Teams:
 
-Following actions are related to fetch and create groups/departments.They will return group details to reducer
+Following actions are related to fetch and create teams/departments.They will return team details to reducer
 
-      i.  getusergroups : Calls server api to fetch agent's group information
-      ii. getcustomergroups : This is without-token version of getting grouplist for Chat widget
-      iii.  creategroup : Calls server api to create a group
-      iv. editGroup : Calls server api to edit group details
-      v.  getGroupRequest : To get details of particular group requested
-      vi. deletegroup : Call server api to delete group
+      i.  getuserteams : Calls server api to fetch agent's team information
+      ii. getcustomerteams : This is without-token version of getting teamlist for Chat widget
+      iii.  createteam : Calls server api to create a team
+      iv. editTeam : Calls server api to edit team details
+      v.  getTeamRequest : To get details of particular team requested
+      vi. deleteteam : Call server api to delete team
 
 ###3. Actions related to Agents:
 
 Following actions are related to fetch and create agents.They will return agent details to reducer
 
       i.  getAgents : Calls server api to fetch agent's  information
-      ii. getDeptAgents : Calls server api to fetch agent's group information
+      ii. getDeptAgents : Calls server api to fetch agent's team information
       iii.  editAgent : Calls server api to edit Agent's Role
       iv. inviteagent : Calls server api to invite agent
       v.  deleteagent : Calls server api to delete agent
@@ -306,7 +306,7 @@ Following actions are related to fetch and create canned responses.They will ret
 Following actions are related to Chat Module.They will return chat message and user session details to reducer
 
       i.  filterbystatus : To filter customer session list by status
-      ii. filterbyDept : To filter customer session list by department/group
+      ii. filterbyDept : To filter customer session list by department/team
       iii.  filterbyChannel : To filter customer session list by message channel
       iv. filterbyAgent : To filter customer session list by agent to whom session is assigned
       v.  selectCustomerChat : To select session details of a particular customer through request id
@@ -349,7 +349,7 @@ Following actions are related to Profile.
       i.   getuserdetails : Calls server api to fetch current user profile
       ii.  updateprofile : Call server api to update user profile
       iii. changepassword : Call server api to change user password
-      iv.  getmyusergroups : Call server api to fetch list of groups user has joined
+      iv.  getmyuserteams : Call server api to fetch list of teams user has joined
       v.   uploadpicture : Call server api to upload avatar
       
 ###11. Actions related to Reports:
@@ -372,7 +372,7 @@ In reducer.js,we have defined three reducer
 
 i. Auth Reducer : To handle state changes when authentication actions are called
 
-ii. Dashboard Reducer : Contains action types related to groups,message channels,chat,customer directory,notifications and agents.
+ii. Dashboard Reducer : Contains action types related to teams,message channels,chat,customer directory,notifications and agents.
 
 iii. Widget Reducer : Contains action types related to customer widget
 

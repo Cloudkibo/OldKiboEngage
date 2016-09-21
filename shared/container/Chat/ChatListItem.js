@@ -62,8 +62,8 @@ if(props.customer.agent_ids.length > 0)
 
 var ch=[]
      {
-         props.group &&
-                        props.group.map((grp, i) => (
+         props.team &&
+                        props.team.map((grp, i) => (
                            ag.push(grp)                            
                         ))
 

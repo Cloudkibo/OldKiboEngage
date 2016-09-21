@@ -163,7 +163,7 @@ handleClick(e){
                 data-speed="400"
                 data-start="2500"
                 data-easing="easeOutExpo">
-                Reach more customers by easily managing multiple Kibosupport communication features<br/> Make groups to reach diversity of customer questions
+                Reach more customers by easily managing multiple Kibosupport communication features<br/> Make teams to reach diversity of customer questions
               </div>
               <Link className="caption lft btn green slide_btn slide_item_left" to="/signup"
                 data-x="30"
@@ -334,7 +334,7 @@ handleClick(e){
               <em><i className="fa fa-check red"></i></em>
               <span>Reports</span>
             </div>
-            <p>View reports on performance by agents and groups, agent response time, call statistic, group traffic to get the insights.</p>
+            <p>View reports on performance by agents and teams, agent response time, call statistic, team traffic to get the insights.</p>
           </div>
           <div className="col-md-4 col-sm-4">
             <div className="service-box-heading">
@@ -363,7 +363,7 @@ handleClick(e){
           <div className="col-md-4 col-sm-4 front-step-col">
             <div className="front-step front-step3">
               <h2>Reports</h2>
-              <p>View insights of work by agents, groups and call traffic.</p>
+              <p>View insights of work by agents, teams and call traffic.</p>
             </div>
           </div>
         </div>

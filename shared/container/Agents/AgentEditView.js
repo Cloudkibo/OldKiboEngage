@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 class AgentEditView extends Component {
   constructor(props, context) {
-       //call action to get user groups 
+       //call action to get user teams 
    
     super(props, context);
     
@@ -193,7 +193,7 @@ function mapStateToProps(state) {
   
    return {
     
-    group: (state.dashboard.group),
+    team: (state.dashboard.team),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
     agent :(state.dashboard.agent),

@@ -3,8 +3,8 @@ import * as ActionTypes from '../constants/constants';
 import { push } from 'react-router-redux';
 import store from '../store/configureStore'
 const initialState = { signupwarnings: {},userdetails : {}};
-const dashboardState = { userdetails : {},groupdetails:[]};
-const widgetState ={groupdetails:[],channels:[]}
+const dashboardState = { userdetails : {},teamdetails:[]};
+const widgetState ={teamdetails:[],channels:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
 
@@ -27,11 +27,11 @@ const signup = (state =initialState, action) => {
 const dashboard = (state =dashboardState, action) => {
   switch (action.type) {
 
-  case ActionTypes.ADD_SELECTED_GROUP :
+  case ActionTypes.ADD_SELECTED_TEAM :
       var agentid =[];
       if(state.deptagents)
       {
-      state.deptagents.filter((agent) => agent.deptid == action.group._id).map((agent, i)=> (
+      state.deptagents.filter((agent) => agent.deptid == action.team._id).map((agent, i)=> (
                           state.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
                           (
                              agentid.push({"_id" :ag._id})
@@ -40,9 +40,9 @@ const dashboard = (state =dashboardState, action) => {
        };
 
       return {
-        group: action.group,
+        team: action.team,
         userdetails: state.userdetails,
-        groupdetails:state.groupdetails,
+        teamdetails:state.teamdetails,
         agents : state.agents,
         deptagents :state.deptagents,
         newagents:agentid,
@@ -61,7 +61,7 @@ const dashboard = (state =dashboardState, action) => {
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
         userdetails: state.userdetails,
-        groupdetails:state.groupdetails,
+        teamdetails:state.teamdetails,
         agents : state.agents,
         deptagents :state.deptagents,
         agent: state.agents.filter((agent) => agent._id == action.id),
@@ -82,7 +82,7 @@ const dashboard = (state =dashboardState, action) => {
     case ActionTypes.ADD_SELECTED_CHANNEL :
       return {
         userdetails: state.userdetails,
-        groupdetails:state.groupdetails,
+        teamdetails:state.teamdetails,
         agents : state.agents,
         channels : state.channels,
         deptagents :state.deptagents,
@@ -101,7 +101,7 @@ const dashboard = (state =dashboardState, action) => {
     case ActionTypes.ADD_SELECTED_RESPONSE :
       return {
         userdetails: state.userdetails,
-        groupdetails:state.groupdetails,
+        teamdetails:state.teamdetails,
         agents : state.agents,
         deptagents :state.deptagents,
         channels : state.channels,
@@ -124,7 +124,7 @@ const dashboard = (state =dashboardState, action) => {
           return{
             userdetails:action.user,
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
              deptagents :state.deptagents,
@@ -147,7 +147,7 @@ mobileuserchat : state.mobileuserchat,
             userdetails:state.userdetails,
             agents:action.agents,
             deptagents :state.deptagents,
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : state.channels,
             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             chatlist: state.chatlist,
@@ -167,7 +167,7 @@ mobileuserchat : state.mobileuserchat,
             userdetails:state.userdetails,
             agents:state.agents,
             deptagents :action.agents,
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : state.channels,
             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
             chatlist: state.chatlist,
@@ -180,16 +180,16 @@ mobileuserchat : state.mobileuserchat,
 
 
 
-             group: state.group,
+             team: state.team,
              newagents : state.newagents,
         
            
           };              
 
-   case ActionTypes.ADD_GROUPS:
-          console.log(action.groups)
+   case ActionTypes.ADD_TEAMS:
+          console.log(action.teams)
           return{
-            groupdetails:action.groups,
+            teamdetails:action.teams,
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
@@ -211,7 +211,7 @@ mobileuserchat : state.mobileuserchat,
    case ActionTypes.ADD_CHANNELS:
           console.log(action.channels)
           return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
@@ -230,7 +230,7 @@ mobileuserchat : state.mobileuserchat,
     case ActionTypes.ADD_RESPONSES:
          console.log(action.responses)
           return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
@@ -254,7 +254,7 @@ mobileuserchat : state.mobileuserchat,
     case ActionTypes.ADD_NEW_RESPONSE:
          console.log(action.response)
           return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
@@ -270,10 +270,10 @@ mobileuserchat : state.mobileuserchat,
              userchats : state.userchats,
 
       };
-    case ActionTypes.ADD_MY_GROUPS:
+    case ActionTypes.ADD_MY_TEAMS:
           return{
-            groupdetails:state.groupdetails,
-            mygroupdetails:action.mygroups,
+            teamdetails:state.teamdetails,
+            myteamdetails:action.myteams,
             userdetails: state.userdetails,
             agents : state.agents,
             deptagents :state.deptagents,
@@ -290,16 +290,16 @@ mobileuserchat : state.mobileuserchat,
              userchats : state.userchats,
 
       };
-    case ActionTypes.ADD_GROUP:
+    case ActionTypes.ADD_TEAM:
     console.log(action.deptname);
       return {
-        groupdetails: [{
+        teamdetails: [{
           deptname: action.deptname,
           deptdescription: action.deptdescription,
 
-        }, ...state.groupdetails],
+        }, ...state.teamdetails],
          userdetails: state.userdetails,
-         errorMessage:'Group created successfully',
+         errorMessage:'Team created successfully',
          agents : state.agents,
          deptagents :state.deptagents,
          channels : state.channels,
@@ -315,9 +315,9 @@ mobileuserchat : state.mobileuserchat,
         };
 
         
-     case ActionTypes.DELETE_GROUP :
+     case ActionTypes.DELETE_TEAM :
       return {
-        groupdetails: state.groupdetails.filter((group) => group._id !== action.group._id),
+        teamdetails: state.teamdetails.filter((team) => team._id !== action.team._id),
         userdetails: state.userdetails,
         errorMessage:'Team deleted successfully',
         agents : state.agents,
@@ -341,7 +341,7 @@ mobileuserchat : state.mobileuserchat,
 
       case ActionTypes.DELETE_CHANNEL :
       return {
-        groupdetails: state.groupdetails,
+        teamdetails: state.teamdetails,
         channels : state.channels.filter((channel) => channel._id !== action.channel._id),
         userdetails: state.userdetails,
         errorMessage:'Message channel deleted successfully',
@@ -365,7 +365,7 @@ mobileuserchat : state.mobileuserchat,
 
       case ActionTypes.DELETE_RESPONSE :
       return {
-        groupdetails: state.groupdetails,
+        teamdetails: state.teamdetails,
         channels : state.channels,
         responses : state.responses.filter((response) => response._id !== action.response._id),
         userdetails: state.userdetails,
@@ -389,7 +389,7 @@ mobileuserchat : state.mobileuserchat,
       };
       case ActionTypes.DELETE_AGENT :
       return {
-        groupdetails: state.groupdetails,
+        teamdetails: state.teamdetails,
         userdetails: state.userdetails,
         errorMessage:'Agent deleted successfully',
         agents : state.agents.filter((agent) => agent._id !== action.agent._id),
@@ -411,7 +411,7 @@ mobileuserchat : state.mobileuserchat,
 
       case ActionTypes.CREATEGROUP_FAILURE:
       return {
-         groupdetails: state.groupdetails,
+         teamdetails: state.teamdetails,
          userdetails: state.userdetails,
          errorMessage:action.message,
          agents : state.agents,
@@ -432,7 +432,7 @@ mobileuserchat : state.mobileuserchat,
 
       case ActionTypes.EDITGROUP_RESPONSE:
       return {
-         groupdetails: state.groupdetails,
+         teamdetails: state.teamdetails,
          userdetails: state.userdetails,
          errorMessage:action.message,
          agents : state.agents,
@@ -452,7 +452,7 @@ mobileuserchat : state.mobileuserchat,
 
       case ActionTypes.EDITAGENT_RESPONSE:
       return {
-         groupdetails: state.groupdetails,
+         teamdetails: state.teamdetails,
          userdetails: state.userdetails,
          errorMessage:action.message,
          agents : state.agents,
@@ -475,7 +475,7 @@ mobileuserchat : state.mobileuserchat,
           
       case ActionTypes.INVITE_AGENT_RESPONSE:
       return {
-         groupdetails: state.groupdetails,
+         teamdetails: state.teamdetails,
          userdetails: state.userdetails,
          errorMessage:action.message,
          agents : state.agents,
@@ -496,7 +496,7 @@ mobileuserchat : state.mobileuserchat,
 
         case ActionTypes.SHOW_SPECIFIC_CHAT:
         return {
-           groupdetails: state.groupdetails,
+           teamdetails: state.teamdetails,
            userdetails: state.userdetails,
            chat:action.chat,
            agents : state.agents,
@@ -516,7 +516,7 @@ mobileuserchat : state.mobileuserchat,
 
         case ActionTypes.ADD_UPDATE_PROFILE_WARNINGS:
         return {
-           groupdetails: state.groupdetails,
+           teamdetails: state.teamdetails,
            companysettings:state.companysettings,
            userdetails: state.userdetails,
            chat:state.chat,
@@ -538,7 +538,7 @@ mobileuserchat : state.mobileuserchat,
           };
           case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
           return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -561,7 +561,7 @@ mobileuserchat : state.mobileuserchat,
           case ActionTypes.SHOW_ALL_CHAT:
            return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -588,7 +588,7 @@ mobileuserchat : state.mobileuserchat,
             case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
            return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -613,7 +613,7 @@ mobileuserchat : state.mobileuserchat,
            case ActionTypes.SHOW_MY_PICKED_SESSIONS:
            return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -636,7 +636,7 @@ mobileuserchat : state.mobileuserchat,
           case ActionTypes.SHOW_ASSIGNED_SESSIONS:
              return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -659,7 +659,7 @@ mobileuserchat : state.mobileuserchat,
             case ActionTypes.SHOW_RESOLVED_SESSIONS:
             return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -693,7 +693,7 @@ mobileuserchat : state.mobileuserchat,
             case ActionTypes.SHOW_NEW_SESSIONS:
              return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -717,7 +717,7 @@ mobileuserchat : state.mobileuserchat,
              case ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS:
              return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -742,7 +742,7 @@ mobileuserchat : state.mobileuserchat,
              case ActionTypes.SHOW_NEW_SOCKET_SESSIONS:
              return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -770,7 +770,7 @@ mobileuserchat : state.mobileuserchat,
             case ActionTypes.SHOW_RESOLVED_SOCKET_SESSIONS:
              return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -797,7 +797,7 @@ mobileuserchat : state.mobileuserchat,
           case ActionTypes.SET_SOCKET_ID:
           return {
              userchats : state.userchats,
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -819,7 +819,7 @@ mobileuserchat : state.mobileuserchat,
             };
           case ActionTypes.ADD_USER_CHATS:
            return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:state.chat_error,
              agents : state.agents,
@@ -842,7 +842,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.FILTER_BY_STATUS:
             return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -863,7 +863,7 @@ mobileuserchat : state.mobileuserchat,
             };   
              case ActionTypes.FILTER_BY_DEPT:
             return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -886,7 +886,7 @@ mobileuserchat : state.mobileuserchat,
 
               case ActionTypes.FILTER_BY_CHANNEL:
             return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -907,7 +907,7 @@ mobileuserchat : state.mobileuserchat,
             };     
             case ActionTypes.FILTER_BY_AGENT:
             return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -929,7 +929,7 @@ mobileuserchat : state.mobileuserchat,
             };            
             case ActionTypes.SELECT_CUSTOMERCHAT:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage: state.chat_error,
              agents : state.agents,
@@ -952,7 +952,7 @@ mobileuserchat : state.mobileuserchat,
 
           case ActionTypes.ADD_SESSION:
            return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -975,7 +975,7 @@ mobileuserchat : state.mobileuserchat,
 
           case ActionTypes.ONLINE_AGENTS:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:state.chat_error,
              agents : state.agents,
@@ -998,7 +998,7 @@ mobileuserchat : state.mobileuserchat,
 
           case ActionTypes.SHOW_CHAT_HISTORY:
            return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1027,7 +1027,7 @@ mobileuserchat : state.mobileuserchat,
               chatlistt = [action.message]
             }
            return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1050,7 +1050,7 @@ mobileuserchat : state.mobileuserchat,
 
           case ActionTypes.SHOW_NOTIFICATIONS:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1070,7 +1070,7 @@ mobileuserchat : state.mobileuserchat,
             };
              case ActionTypes.CONFIRM_NOTIFICATION:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              agents : state.agents,
              deptagents :state.deptagents,
@@ -1091,7 +1091,7 @@ mobileuserchat : state.mobileuserchat,
             };
              case ActionTypes.DELETE_NOTIFICATION :
               return {
-                groupdetails: state.groupdetails,
+                teamdetails: state.teamdetails,
                 channels : state.channels,
                 responses : state.responses,
                 userdetails: state.userdetails,
@@ -1121,7 +1121,7 @@ mobileuserchat : state.mobileuserchat,
             case ActionTypes.ADD_SELECTED_NOTIFICATION :
             return {
               userdetails: state.userdetails,
-              groupdetails:state.groupdetails,
+              teamdetails:state.teamdetails,
               agents : state.agents,
               channels : state.channels,
               deptagents :state.deptagents,
@@ -1142,7 +1142,7 @@ mobileuserchat : state.mobileuserchat,
             };  
             case ActionTypes.SHOW_CUSTOMERS:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1170,7 +1170,7 @@ mobileuserchat : state.mobileuserchat,
             
             case ActionTypes.CHANNEL_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1213,7 +1213,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.CUSTOMER_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1254,7 +1254,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.AGENT_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1293,7 +1293,7 @@ mobileuserchat : state.mobileuserchat,
 
              case ActionTypes.AGENT_NOTIFICATIONS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1330,7 +1330,7 @@ mobileuserchat : state.mobileuserchat,
             };
             case ActionTypes.MOBILE_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1371,7 +1371,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.PAGE_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1410,7 +1410,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.DEPT_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1450,7 +1450,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.PLATFORM_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1488,7 +1488,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.COUNTRY_STATS:
               return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1529,7 +1529,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.SHOW_CHAT_SUMMARY:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              agents : state.agents,
              deptagents :state.deptagents,
@@ -1559,7 +1559,7 @@ mobileuserchat : state.mobileuserchat,
 
             case ActionTypes.ADD_SELECTED_SESSIONSUMMARY:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              agents : state.agents,
              deptagents :state.deptagents,
@@ -1591,7 +1591,7 @@ mobileuserchat : state.mobileuserchat,
 
              case ActionTypes.ADD_USER_CHATS_SPECIFIC:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              agents : state.agents,
              deptagents :state.deptagents,
@@ -1624,7 +1624,7 @@ mobileuserchat : state.mobileuserchat,
 
              case ActionTypes.FILTER_BY_SESSION:
              return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              agents : state.agents,
              deptagents :state.deptagents,
@@ -1658,7 +1658,7 @@ mobileuserchat : state.mobileuserchat,
             case ActionTypes.ADD_SELECTED_CUSTOMER :
             return {
               userdetails: state.userdetails,
-              groupdetails:state.groupdetails,
+              teamdetails:state.teamdetails,
               agents : state.agents,
               channels : state.channels,
               deptagents :state.deptagents,
@@ -1681,7 +1681,7 @@ mobileuserchat : state.mobileuserchat,
 
           case ActionTypes.COMPANY_PROFILE:
            return {
-             groupdetails: state.groupdetails,
+             teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:state.chat_error,
              agents : state.agents,
@@ -1712,9 +1712,9 @@ mobileuserchat : state.mobileuserchat,
 
 function widget(state = widgetState, action){
   switch(action.type){
-    case ActionTypes.ADD_CUSTOMER_GROUPS:
+    case ActionTypes.ADD_CUSTOMER_TEAMS:
           return {
-            groupdetails:action.groups,
+            teamdetails:action.teams,
             channels : state.channels,
             roomdetails : state.roomdetails,
             specificsession : state.specificsession,
@@ -1724,7 +1724,7 @@ function widget(state = widgetState, action){
             };
     case ActionTypes.ADD_CUSTOMER_CHANNELS:
           return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : action.channels,
             roomdetails : state.roomdetails,
             specificsession : state.specificsession,
@@ -1735,7 +1735,7 @@ function widget(state = widgetState, action){
 
      case ActionTypes.ADD_CUSTOMER_SESSION:
           return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : state.channels,
             roomdetails : state.roomdetails,
             specificsession : action.specificsession,
@@ -1746,7 +1746,7 @@ function widget(state = widgetState, action){
 
       case ActionTypes.ADD_CUSTOMER_DETAILS:
           return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : state.channels,
             roomdetails : state.roomdetails,
             specificsession : state.specificsession,
@@ -1756,7 +1756,7 @@ function widget(state = widgetState, action){
       };  
     case ActionTypes.ADD_ROOM_DETAILS :
          return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : state.channels,
             sessiondetails :state.session ,
             roomdetails : action.room,
@@ -1768,7 +1768,7 @@ function widget(state = widgetState, action){
       };
     case ActionTypes.FILTER_CHANNELS:
           return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : state.channels,
             filterlist : state.channels.filter((channel) => channel.groupid == action.id),
             roomdetails : state.room,
@@ -1778,7 +1778,7 @@ function widget(state = widgetState, action){
       };
     case ActionTypes.CREATE_SESSION:
          return{
-            groupdetails:state.groupdetails,
+            teamdetails:state.teamdetails,
             channels : state.channels,
             sessiondetails :action.session ,
             roomdetails : state.roomdetails,
@@ -1864,3 +1864,8 @@ const appReducer = combineReducers({
 
 
 export default appReducer;
+
+
+
+
+

@@ -98,7 +98,7 @@ export default class SideBar extends Component
                 :<li></li>
                 }
               <li className="">
-                <Link to='/groups'>
+                <Link to='/teams'>
                   <i className="fa fa-group">
                   </i>      
                   <span className="title">

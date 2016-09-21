@@ -15,7 +15,7 @@ import { browserHistory } from 'react-router'
 class Channels extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -71,7 +71,7 @@ class Channels extends Component {
         
            <div className="portlet-body">
              <div className="table-toolbar">
-                 <div className="btn-group">
+                 <div className="btn-team">
                  { this.props.userdetails.isAgent == "Yes"?
                     <br/> :
                     <Link id="sample_editable_1_new" className="btn green" to='/createmessagechannel'> Create Message Channel
@@ -93,7 +93,7 @@ class Channels extends Component {
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group </th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Active</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created On</th>
                      { this.props.userdetails.isAgent == "Yes"?<br/> :
@@ -104,9 +104,9 @@ class Channels extends Component {
 
                     <tbody>                    
                       {
-                        this.props.groupdetails && this.props.channels.map((channel, i) => (
+                        this.props.teamdetails && this.props.channels.map((channel, i) => (
                           
-                          <ChannelListItem channel={channel} key={channel._id} group = {this.props.groupdetails.filter((group) => group._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token)} userdetails={this.props.userdetails}/>
+                          <ChannelListItem channel={channel} key={channel._id} team = {this.props.teamdetails.filter((team) => team._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token)} userdetails={this.props.userdetails}/>
                                                       
                         ))
                       }
@@ -134,7 +134,7 @@ function mapStateToProps(state) {
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),

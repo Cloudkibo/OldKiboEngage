@@ -19,7 +19,7 @@ var callOnce
 class Chat extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     callMobileChatSessions =  false;
     callOnce = false;
     if(props.userdetails.accountVerified == "No"){
@@ -223,7 +223,7 @@ componentDidMount(){
              		<th className="col-md-1">Status</th>
              		<th className="col-md-1">Medium</th>
              		<th className="col-md-1">Agents</th>
-             		<th className="col-md-1">Group</th>
+             		<th className="col-md-1">Team</th>
              		<th className="col-md-1">Message Channel</th>
              	</tr>
              	<tr>
@@ -263,11 +263,11 @@ componentDidMount(){
              		</td>
              		<td className="col-md-1">
              		  
-             		  <select  ref = "grouplist" onChange={this.handleChangeDepartment.bind(this)}   >
+             		  <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
                            <option value="all">All</option>
                           {
-                         	this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                         		<option value={group._id}>{group.deptname}</option>
+                         	this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                         		<option value={team._id}>{team.deptname}</option>
 
                          		)
                          }
@@ -282,7 +282,7 @@ componentDidMount(){
                              <option value="all">All</option>
                            {
                          	this.props.channels && this.props.channels.map((channel,i) =>
-                         		<option value={channel._id}>{this.props.groupdetails.filter((d) => d._id == channel.groupid)[0].deptname + ' : ' +channel.msg_channel_name}</option>
+                         		<option value={channel._id}>{this.props.teamdetails.filter((d) => d._id == channel.groupid)[0].deptname + ' : ' +channel.msg_channel_name}</option>
 
                          		)
                          }
@@ -321,9 +321,9 @@ componentDidMount(){
                                   
                                     (this.props.new_message_arrived_rid ?
                                   
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
+                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
                                     :  
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
+                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents}/>
                                   )
                                   
 					                                                      
@@ -364,11 +364,11 @@ componentDidMount(){
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.groupdetails);
+  console.log(state.dashboard.teamdetails);
   console.log(state.dashboard.errorMessage);
 
   return {
-          groupdetails:(state.dashboard.groupdetails),
+          teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),

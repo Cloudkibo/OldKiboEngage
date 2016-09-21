@@ -12,8 +12,8 @@ var  headers =  {
 
 var baseURL = `https://api.kibosupport.com`
 
-export function getcustomergroups(req,res){
-  //console.log('get customer group');
+export function getcustomerteams(req,res){
+  //console.log('get customer team');
       var options = {
       url: `${baseURL}/api/departments`,
       rejectUnauthorized : false,
@@ -34,8 +34,8 @@ export function getcustomergroups(req,res){
     request.get(options, callback);
     
 }
-export function getgroups(req, res) {
-  //console.log('get getgroups is called');
+export function getteams(req, res) {
+  //console.log('get getteams is called');
   var token = req.headers.authorization;
   //console.log('token received is  : ' + token);
   var options = {
@@ -63,8 +63,8 @@ export function getgroups(req, res) {
   }
 
 
- export function creategroup(req, res) {
-  //console.log('create group is called');
+ export function createteam(req, res) {
+  //console.log('create team is called');
   var token = req.headers.authorization;
   //console.log('token received is  : ' + token);
   
@@ -109,8 +109,8 @@ export function getgroups(req, res) {
    
   }
 
-export function getGroup(req, res) {
-  //console.log('getGroup is called.');
+export function getTeam(req, res) {
+  //console.log('getTeam is called.');
   var token = req.headers.authorization;
   //console.log('token received is  : ' + token);
   //console.log(req.query.id);
@@ -129,7 +129,7 @@ export function getGroup(req, res) {
       //  //console.log(info);
         
       if(!error  && response.statusCode == 200) {
-        res.status(200).json({group:info}); 
+        res.status(200).json({team:info}); 
     
    }
    else{
@@ -142,8 +142,8 @@ export function getGroup(req, res) {
 }
 
 
-export function destroyGroup(req, res) {
-  //console.log('destroyGroup is called.');
+export function destroyTeam(req, res) {
+  //console.log('destroyTeam is called.');
   var token = req.headers.authorization;
   //console.log(req.query.id);
   var id = req.query.id;
@@ -176,8 +176,8 @@ export function destroyGroup(req, res) {
     
 }
 
-export function editgroup(req, res) {
-  //console.log('edit group is called');
+export function editteam(req, res) {
+  //console.log('edit team is called');
   var token = req.headers.authorization;
   //console.log(req.body.dept);
   //console.log(req.body.deptagents);
@@ -221,8 +221,8 @@ export function editgroup(req, res) {
    
   }
  
- //get my groups
- export function getmyusergroups(req, res) {
+ //get my teams
+ export function getmyuserteams(req, res) {
   var token = req.headers.authorization;
   var options = {
       url: `${baseURL}/api/departments/mydepartmentsKiboEngage`,

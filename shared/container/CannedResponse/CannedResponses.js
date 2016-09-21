@@ -16,7 +16,7 @@ import { browserHistory } from 'react-router'
 class CannedResponses extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -96,7 +96,7 @@ class CannedResponses extends Component {
         
            <div className="portlet-body">
              <div className="table-toolbar">
-                 <div className="btn-group">
+                 <div className="btn-team">
                    { this.props.userdetails.isAgent == "Yes"?
                     <br/> :
                      <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Add Canned Response
@@ -162,7 +162,7 @@ function mapStateToProps(state) {
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

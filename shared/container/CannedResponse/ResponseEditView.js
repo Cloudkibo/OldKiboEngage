@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 class ResponseEditView extends Component {
   constructor(props, context) {
-       //call action to get user groups 
+       //call action to get user teams 
     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
@@ -164,12 +164,12 @@ function mapStateToProps(state) {
   
    return {
     userdetails :(state.dashboard.userdetails),
-    group: (state.dashboard.group),
+    team: (state.dashboard.team),
     channels:(state.dashboard.channels),
     deptagents:(state.dashboard.deptagents),
     channel :(state.dashboard.channel),
     response :(state.dashboard.response),
-    groupdetails:(state.dashboard.groupdetails),
+    teamdetails:(state.dashboard.teamdetails),
     errorMessage:(state.dashboard.errorMessage),
    agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),

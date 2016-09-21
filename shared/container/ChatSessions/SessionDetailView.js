@@ -46,7 +46,7 @@ var getagentname = function(agents,id){
 class SessionDetailView extends Component {
 
   constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
@@ -99,8 +99,8 @@ var sessionsummarydetail = []
     
 var grpp = []
  {
-         this.props.groupdetails && sessionsummarydetail && sessionsummarydetail.length > 0 &&
-                        this.props.groupdetails.filter((c) => c._id == sessionsummarydetail[0].departmentid).map((grp, i) => (
+         this.props.teamdetails && sessionsummarydetail && sessionsummarydetail.length > 0 &&
+                        this.props.teamdetails.filter((c) => c._id == sessionsummarydetail[0].departmentid).map((grp, i) => (
                            grpp.push(grp)                            
                         ))
 
@@ -159,7 +159,7 @@ var grpp = []
                     </div>
 
                      <div className="form-group">
-                      <label className="control-label col-md-3"> Group </label>
+                      <label className="control-label col-md-3"> Team </label>
                        <div className="col-md-9">
                             <input className="form-control" type='text' value = {grpp[0].deptname}/>
                  
@@ -353,7 +353,7 @@ function mapStateToProps(state) {
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

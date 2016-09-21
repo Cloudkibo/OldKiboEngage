@@ -13,7 +13,7 @@ import { browserHistory } from 'react-router'
 class MyPickedSessions extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -73,7 +73,7 @@ class MyPickedSessions extends Component {
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
-                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group</th>
+                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
                       
@@ -83,10 +83,10 @@ class MyPickedSessions extends Component {
 
                     <tbody>                    
                       {
-                        this.props.mypickedsessions && this.props.customers && this.props.channels && this.props.groupdetails &&
+                        this.props.mypickedsessions && this.props.customers && this.props.channels && this.props.teamdetails &&
                         this.props.mypickedsessions.map((session, i) => (
                           
-                          <MyPickedSessionListItem session={session} key={session.request_id} userdetails={this.props.userdetails} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <MyPickedSessionListItem session={session} key={session.request_id} userdetails={this.props.userdetails} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
@@ -114,7 +114,7 @@ function mapStateToProps(state) {
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

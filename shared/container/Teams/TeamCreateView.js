@@ -1,22 +1,25 @@
+/***** Renamed as Teams **********/
+
+
 import React, { Component, PropTypes } from 'react';
 
-class GroupCreateView extends Component {
+class TeamCreateView extends Component {
   constructor(props, context) {
     super(props, context);
-    this.addGroup = this.addGroup.bind(this);
+    this.addTeam = this.addTeam.bind(this);
   }
 
-  addGroup() {
+  addTeam() {
     const nameRef = this.refs.name;
    const descRef = this.refs.desc;
     if (nameRef.value && descRef.value) {
-      this.props.addGroup(nameRef.value,descRef.value);
+      this.props.addTeam(nameRef.value,descRef.value);
       nameRef.value = descRef.value = '';
     }
   }
 
   render() {
-    const cls = `form ${(this.props.showAddGroup ? 'appear' : 'hide')}`;
+    const cls = `form ${(this.props.showAddTeam ? 'appear' : 'hide')}`;
 
     return (
       <div className={cls}>
@@ -36,7 +39,7 @@ class GroupCreateView extends Component {
                     <span className="input-group-addon">
                       <i className="fa fa-chevron-right"/>
                     </span>  
-                    <input className="form-control" placeholder="Enter group title"  ref="name" required = "required"/>
+                    <input className="form-control" placeholder="Enter team title"  ref="name" required = "required"/>
                   </div>
           </div> 
           <div className="form-group">
@@ -54,7 +57,7 @@ class GroupCreateView extends Component {
                   </b> 
           </div>        
           <div className="form-actions">
-              <button className="btn blue"  onClick={this.addGroup}> Submit </button> 
+              <button className="btn blue"  onClick={this.addTeam}> Submit </button> 
          </div>
         </div>
       </div>
@@ -65,9 +68,9 @@ class GroupCreateView extends Component {
   }
 }
 
-GroupCreateView.propTypes = {
-  addGroup: PropTypes.func.isRequired,
-  showAddGroup: PropTypes.bool.isRequired,
+TeamCreateView.propTypes = {
+  addTeam: PropTypes.func.isRequired,
+  showAddTeam: PropTypes.bool.isRequired,
 };
 
-export default GroupCreateView;
+export default TeamCreateView;

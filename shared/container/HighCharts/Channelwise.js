@@ -17,7 +17,7 @@ class Channelwise extends React.Component {
     }
   
   componentDidMount() {
-  this.chart = $(ReactDOM.findDOMNode(this.refs.chartGroup)).highcharts({
+  this.chart = $(ReactDOM.findDOMNode(this.refs.chartTeam)).highcharts({
         chart: {
                 type: 'areaspline'
             },
@@ -53,7 +53,7 @@ class Channelwise extends React.Component {
   
   render() {
       return (
-        <div ref='chartGroup'>
+        <div ref='chartTeam'>
         </div>
       )
   }

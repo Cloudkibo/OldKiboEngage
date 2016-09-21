@@ -1,20 +1,20 @@
-import GroupListItem from './GroupListItem';
+import TeamListItem from './TeamListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getGroupRequest,getDeptAgents}  from '../../redux/actions/actions'
-import { editGroup}  from '../../redux/actions/actions'
+import { getTeamRequest,getDeptAgents}  from '../../redux/actions/actions'
+import { editTeam}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
-import GroupCreateView from './GroupCreateView';
+import TeamCreateView from './TeamCreateView';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 
-class GroupEditView extends Component {
+class TeamEditView extends Component {
 
   constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
@@ -24,19 +24,19 @@ class GroupEditView extends Component {
         console.log(props.params.id);
         props.getDeptAgents(usertoken);
        
-        props.getGroupRequest(props.params.id,usertoken);
+        props.getTeamRequest(props.params.id,usertoken);
       }
 
       
         super(props, context);
-        this.editGroupDetail = this.editGroupDetail.bind(this);
+        this.editTeamDetail = this.editTeamDetail.bind(this);
        
 
   }
  
  
 
-  editGroupDetail(e) {
+  editTeamDetail(e) {
      e.preventDefault();
         const usertoken = auth.getToken();
         const nameRef = this.refs.name;
@@ -44,7 +44,7 @@ class GroupEditView extends Component {
         const idRef = this.refs.id;
     if (nameRef.value && descRef.value) {
       //alert(nameRef.value);
-      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents});
+      this.props.editTeam({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents});
      
     }
   }
@@ -65,7 +65,7 @@ class GroupEditView extends Component {
         this.props.newagents.push({"_id" :id});
     }
     else{
-      alert('Agent Already added in the group');  
+      alert('Agent Already added in the team');  
     }
      e.preventDefault();
      this.forceUpdate();
@@ -104,7 +104,7 @@ class GroupEditView extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/groups">Team Management </Link>
+                               <Link to="/teams">Team Management </Link>
                   </li>               
   
             </ul>
@@ -113,12 +113,12 @@ class GroupEditView extends Component {
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
          
-             {this.props.group &&
+             {this.props.team &&
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                    {this.props.group.deptname} Team
+                    {this.props.team.deptname} Team
                 </div> 
               </div>    
         
@@ -128,8 +128,8 @@ class GroupEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Team Name </label>
                    <div className="col-md-9">
-                         <input className="form-control" type='text'  defaultValue={this.props.group.deptname} ref = "name"/>
-                         <input className="form-control" type='hidden'   defaultValue = {this.props.group._id} ref = "id"/>
+                         <input className="form-control" type='text'  defaultValue={this.props.team.deptname} ref = "name"/>
+                         <input className="form-control" type='hidden'   defaultValue = {this.props.team._id} ref = "id"/>
             
                    </div>
                 </div>
@@ -137,7 +137,7 @@ class GroupEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Description </label>
                    <div className="col-md-9">
-                         <textarea className="form-control" type='text' rows='4' ref = "desc" defaultValue = {this.props.group.deptdescription}/>
+                         <textarea className="form-control" type='text' rows='4' ref = "desc" defaultValue = {this.props.team.deptdescription}/>
                    </div>
                 </div>
 
@@ -190,7 +190,7 @@ class GroupEditView extends Component {
               <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.editGroupDetail} type="submit">
+                    <button className="btn green" onClick={this.editTeamDetail} type="submit">
                       <i className="fa fa-pencil"/>
                        Submit
                     </button>
@@ -199,7 +199,7 @@ class GroupEditView extends Component {
                </div> 
                 <div className="col-md-9">
                   <div className="col-md-9">
-                    <Link to="/groups" className="btn green">
+                    <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
@@ -227,18 +227,18 @@ class GroupEditView extends Component {
 }
 
 
-GroupEditView.contextTypes = {
+TeamEditView.contextTypes = {
   router: React.PropTypes.object,
 };
 
 
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps of GroupDetailView is called');
-  console.log(state.dashboard.group);
+  console.log('mapStateToProps of TeamDetailView is called');
+  console.log(state.dashboard.team);
   return {
     
-    group: (state.dashboard.group),
+    team: (state.dashboard.team),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
     errorMessage:(state.dashboard.errorMessage),
@@ -247,4 +247,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{ getGroupRequest,getDeptAgents,editGroup})(GroupEditView);
+export default connect(mapStateToProps,{ getTeamRequest,getDeptAgents,editTeam})(TeamEditView);

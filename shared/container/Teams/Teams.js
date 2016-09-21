@@ -1,23 +1,23 @@
-import GroupListItem from './GroupListItem';
+import TeamListItem from './TeamListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getusergroups} from '../../redux/actions/actions'
-import {creategroup} from '../../redux/actions/actions'
-import {deletegroup} from '../../redux/actions/actions'
+import {getuserteams} from '../../redux/actions/actions'
+import {createteam} from '../../redux/actions/actions'
+import {deleteteam} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
-import GroupCreateView from './GroupCreateView';
+import TeamCreateView from './TeamCreateView';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
-class Groups extends Component {
+class Teams extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -28,13 +28,13 @@ class Groups extends Component {
     {
        
         console.log(usertoken);
-        props.getusergroups(usertoken)
+        props.getuserteams(usertoken)
       }
       
         super(props, context);
   
     this.state = {
-      showAddGroup: false,
+      showAddTeam: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -46,16 +46,16 @@ class Groups extends Component {
    handleClick(e) {
 
       this.setState({
-      showAddGroup: !this.state.showAddGroup,
+      showAddTeam: !this.state.showAddTeam,
       });
       e.preventDefault();
   }
 
   add(name,description) {
      const usertoken = auth.getToken();
-    this.props.creategroup({ name,description,usertoken });
+    this.props.createteam({ name,description,usertoken });
      this.setState({
-      showAddGroup: false,
+      showAddTeam: false,
     });
  }
  
@@ -81,7 +81,7 @@ class Groups extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/groups">Team Management </Link>
+                               <Link to="/teams">Team Management </Link>
                   </li>               
   
             </ul>
@@ -94,7 +94,7 @@ class Groups extends Component {
               </div>    
           <div className="portlet-body">
              <div className="table-toolbar">
-                 <div className="btn-group">
+                 <div className="btn-team">
                  { this.props.userdetails.isAdmin == "Yes" ?
          
                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Team
@@ -109,8 +109,8 @@ class Groups extends Component {
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-              <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>      
-                { this.props.groupdetails &&
+              <TeamCreateView addTeam={this.add}  showAddTeam= {this.state.showAddTeam}/>      
+                { this.props.teamdetails &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -123,9 +123,9 @@ class Groups extends Component {
                     </thead>
                     <tbody>                    
                       {
-                        this.props.groupdetails.map((group, i) => (
+                        this.props.teamdetails.map((team, i) => (
                           
-                          <GroupListItem group={group} key={group._id}   onDelete={() => this.props.deletegroup(group,token)} userdetails ={this.props.userdetails}/>
+                          <TeamListItem team={team} key={team._id}   onDelete={() => this.props.deleteteam(team,token)} userdetails ={this.props.userdetails}/>
                                                       
                         ))
                       }
@@ -144,18 +144,18 @@ class Groups extends Component {
   }
 }
 
-Groups.propTypes = {
+Teams.propTypes = {
 
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.groupdetails);
+  console.log(state.dashboard.teamdetails);
   console.log(state.dashboard.errorMessage);
 
   return {
-          groupdetails:(state.dashboard.groupdetails),
+          teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
@@ -167,6 +167,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   
-  return bindActionCreators({ deletegroup:deletegroup,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
+  return bindActionCreators({ deleteteam:deleteteam,getuserteams:getuserteams,createteam:createteam }, dispatch);
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Groups);
+export default connect(mapStateToProps,mapDispatchToProps)(Teams);

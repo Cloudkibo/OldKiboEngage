@@ -43,7 +43,7 @@ function renderSuggestion(suggestion) {
 class CustomerChatView extends Component {
   constructor(props, context) {
     // alert('calling constructor')
-      //call action to get user groups 
+      //call action to get user teams 
      const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
@@ -767,10 +767,10 @@ const { value, suggestions } = this.state;
 
 
 function mapStateToProps(state) {
-  console.log(state.dashboard.group);
+  console.log(state.dashboard.team);
   return {
     
-          groupdetails:(state.dashboard.groupdetails),
+          teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),

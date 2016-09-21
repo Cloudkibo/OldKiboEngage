@@ -10,14 +10,14 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 var Highcharts = require('highcharts')
 
-class Groupwise extends React.Component {
+class Teamwise extends React.Component {
   constructor(props) {
       super(props);
         this.chart = undefined;
     }
   
   componentDidMount() {
-  this.chart = $(ReactDOM.findDOMNode(this.refs.chartGroup)).highcharts({
+  this.chart = $(ReactDOM.findDOMNode(this.refs.chartTeam)).highcharts({
         chart: {
                 type: 'areaspline'
             },
@@ -51,10 +51,10 @@ class Groupwise extends React.Component {
   
   render() {
       return (
-        <div ref='chartGroup'>
+        <div ref='chartTeam'>
         </div>
       )
   }
 }
 
-export default Groupwise
+export default Teamwise

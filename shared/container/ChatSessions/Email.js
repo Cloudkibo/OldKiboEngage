@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 
 class Email extends Component {
   constructor(props, context) {
-       //call action to get user groups 
+       //call action to get user teams 
    /* const usertoken = auth.getToken();
     console.log('constructor is called');
    
@@ -139,7 +139,7 @@ function mapStateToProps(state) {
    return {
     channels:(state.dashboard.channels),
     userdetails:(state.dashboard.userdetails),
-    groupdetails :(state.dashboard.groupdetails),
+    teamdetails :(state.dashboard.teamdetails),
     errorMessage:(state.dashboard.errorMessage),
     notifications:(state.dashboard.notifications),
     agents:(state.dashboard.agents),

@@ -13,7 +13,7 @@ import { browserHistory } from 'react-router'
 class ResolvedSessions extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -87,7 +87,7 @@ class ResolvedSessions extends Component {
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
-                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group</th>
+                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
@@ -99,20 +99,20 @@ class ResolvedSessions extends Component {
 
                     <tbody>                    
                       {
-                        this.props.resolvedsocketsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
+                        this.props.resolvedsocketsessions && this.props.customers && this.props.channels && this.props.teamdetails && this.props.agents &&
                         this.props.resolvedsocketsessions.map((session, i) => (
                           
-                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])}   channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])}   channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
 
 
                       {
-                        this.props.resolvedsessions && this.props.customers && this.props.channels && this.props.groupdetails && this.props.agents &&
+                        this.props.resolvedsessions && this.props.customers && this.props.channels && this.props.teamdetails && this.props.agents &&
                         this.props.resolvedsessions.map((session, i) => (
                           
-                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
@@ -140,7 +140,7 @@ function mapStateToProps(state) {
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),
-          groupdetails :(state.dashboard.groupdetails),
+          teamdetails :(state.dashboard.teamdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

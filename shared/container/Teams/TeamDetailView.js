@@ -1,17 +1,17 @@
-import GroupListItem from './GroupListItem';
+import TeamListItem from './TeamListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getGroupRequest,getDeptAgents}  from '../../redux/actions/actions'
+import { getTeamRequest,getDeptAgents}  from '../../redux/actions/actions'
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 
-class GroupDetailView extends Component {
+class TeamDetailView extends Component {
 
   constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user teams 
     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
@@ -20,7 +20,7 @@ class GroupDetailView extends Component {
         console.log(usertoken);
         console.log(props.params.id);
          props.getDeptAgents(usertoken);
-        props.getGroupRequest(props.params.id,usertoken);
+        props.getTeamRequest(props.params.id,usertoken);
        
     
       }
@@ -35,7 +35,7 @@ class GroupDetailView extends Component {
 
   
   render() {
-    //alert(this.props.group)
+    //alert(this.props.team)
    
      return (
       <div>
@@ -51,16 +51,16 @@ class GroupDetailView extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/groups"> Team Management </Link>
+                               <Link to="/teams"> Team Management </Link>
                   </li>               
   
             </ul>
-             {this.props.group &&
+             {this.props.team &&
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                    {this.props.group.deptname} Team
+                    {this.props.team.deptname} Team
                 </div> 
               </div>    
         
@@ -70,14 +70,14 @@ class GroupDetailView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Team Name </label>
                    <div className="col-md-9">
-                         <input className="form-control" type='text' disabled value = {this.props.group.deptname}/>
+                         <input className="form-control" type='text' disabled value = {this.props.team.deptname}/>
                    </div>
                 </div>
 
                 <div className="form-group">
                   <label className="control-label col-md-3"> Description </label>
                    <div className="col-md-9">
-                         <textarea className="form-control" type='text' disabled rows='4' value = {this.props.group.deptdescription}/>
+                         <textarea className="form-control" type='text' disabled rows='4' value = {this.props.team.deptdescription}/>
                    </div>
                 </div>
 
@@ -87,7 +87,7 @@ class GroupDetailView extends Component {
                    <ul>
                    {
                     this.props.deptagents &&
-                         this.props.deptagents.filter((agent) => agent.deptid == this.props.group._id).map((agent, i)=> (
+                         this.props.deptagents.filter((agent) => agent.deptid == this.props.team._id).map((agent, i)=> (
                           this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
                           (
                           <li>{ag.firstname + ' ' + ag.lastname}</li>
@@ -106,7 +106,7 @@ class GroupDetailView extends Component {
               <div className="form-actions fluid">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <Link to="/groups" className="btn green">
+                    <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
@@ -132,23 +132,23 @@ class GroupDetailView extends Component {
 }
 
 
-GroupDetailView.contextTypes = {
+TeamDetailView.contextTypes = {
   router: React.PropTypes.object,
 };
 
 
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps of GroupDetailView is called');
-  console.log(state.dashboard.group);
+  console.log('mapStateToProps of TeamDetailView is called');
+  console.log(state.dashboard.team);
   return {
-    group: (state.dashboard.group),
+    team: (state.dashboard.team),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
-    groupdetails:(state.dashboard.groupdetails),
+    teamdetails:(state.dashboard.teamdetails),
     userdetails:(state.dashboard.userdetails),
      channels :(state.dashboard.channels),
   };
 }
 
-export default connect(mapStateToProps,{ getGroupRequest,getDeptAgents})(GroupDetailView);
+export default connect(mapStateToProps,{ getTeamRequest,getDeptAgents})(TeamDetailView);
