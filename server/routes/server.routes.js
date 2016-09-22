@@ -5,6 +5,7 @@ import * as ChannelController from '../controllers/channel.controller';
 import * as NotificationController from '../controllers/notifications.controller';
 import * as CustomerController from '../controllers/customer.controller';
 import * as ChatController from '../controllers/chat.controller';
+import * as GroupController from '../controllers/group.controller';
 
 
 const router = new Router();
@@ -27,6 +28,7 @@ router.route('/getcustomersession').post(ChatController.getcustomersession);
 router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
 router.route('/updatereschedule').post(ChatController.updatereschedule);
 router.route('/createteam').post(TeamController.createteam);
+router.route('/creategroup').post(GroupController.creategroup);
 
 router.route('/getTeam').get(TeamController.getTeam);
 router.route('/deleteTeam').delete(TeamController.destroyTeam);

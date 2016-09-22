@@ -20,6 +20,8 @@ import TeamDetailView from './container/Teams/TeamDetailView';
 import TeamEditView from './container/Teams/TeamEditView';
 import AgentEditView from './container/Agents/AgentEditView';
 import MessageChannelCreate from './container/MessageChannel/messageChannelCreate'
+import CreateGroup from './container/Groups/CreateGroup'
+
 import Channel from './container/MessageChannel/Channels'
 import ChannelEditView from './container/MessageChannel/ChannelEditView'
 import JoinCompany from './container/Agents/JoinCompany'
@@ -100,6 +102,8 @@ const routes = (
     <Route path="/editteam/:id" component={TeamEditView}  onEnter={requireAuth}/>
     <Route path="/editagent/:id" component={AgentEditView}  onEnter={requireAuth}/>
     <Route path="/createmessagechannel" component={MessageChannelCreate}  onEnter={requireAuth}/>
+    <Route path="/creategroup" component={CreateGroup}  onEnter={requireAuth}/>
+    
     <Route path="/messagechannels" component={Channel}  onEnter={requireAuth}/>
     <Route path="/editchannel/:id" component={ChannelEditView}  onEnter={requireAuth}/>
 

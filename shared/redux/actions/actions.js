@@ -313,7 +313,7 @@ export function getuser(token) {
 
 
 /********************************************************************************************/
-/*              GROUP RELATED actions                                                       */
+/*              Team RELATED actions                                                       */
 
 /********************************************************************************************/
 
@@ -2491,5 +2491,37 @@ export function getagentwisenotifications(token) {
         'Authorization': token,
       }),
     }).then((res) => res.json()).then(res => dispatch(agentwisenotifications(res.info)));
+  };
+}
+
+
+
+/********************* Group Related Actions ************/
+export function creategroupError(message) {
+  return {
+    type: ActionTypes.CREATEGROUP_FAILURE,
+    message,
+  }
+}
+export function createGroup(group,usertoken) {
+    
+  return (dispatch) => {
+    fetch(`${baseURL}/api/creategroup`, {
+      method: 'post',
+      
+      body: JSON.stringify({
+          groupname: group.groupname,
+          groupdescription: group.groupdescription,
+          status : group.status,
+
+
+      }),
+    
+      headers: new Headers({
+         'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+     
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(creategroupError(res)));
   };
 }

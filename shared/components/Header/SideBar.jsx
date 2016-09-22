@@ -109,6 +109,17 @@ export default class SideBar extends Component
                 </Link>
               </li>
 
+              <li className="">
+                <Link to='/creategroup'>
+                  <i className="fa fa-group">
+                  </i>      
+                  <span className="title">
+                     Groups
+                  </span>      
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
              
               <li className="">
                 <Link to="/reports">
