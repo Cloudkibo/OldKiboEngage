@@ -22,6 +22,8 @@ router.route('/updateprofile').post(UserController.updateprofile);
 router.route('/updatesettings').post(UserController.updatesettings);
 router.route('/changenewpassword').post(UserController.changenewpassword);
 router.route('/getteams').get(TeamController.getteams);
+router.route('/getgroups').get(GroupController.getgroups);
+
 router.route('/getmyuserteams').get(TeamController.getmyuserteams);
 router.route('/getcustomerteams').get(TeamController.getcustomerteams);
 router.route('/getcustomersession').post(ChatController.getcustomersession);
@@ -31,10 +33,15 @@ router.route('/createteam').post(TeamController.createteam);
 router.route('/creategroup').post(GroupController.creategroup);
 
 router.route('/getTeam').get(TeamController.getTeam);
+router.route('/getGroup').get(GroupController.getGroup);
+
 router.route('/deleteTeam').delete(TeamController.destroyTeam);
 router.route('/deleteAgent').delete(UserController.deleteAgent);
 router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
+router.route('/groupagents').get(GroupController.groupagents);
+router.route('/editgroup').post(GroupController.editgroup);
+
 router.route('/editteam').post(TeamController.editteam);
 router.route('/editagent').post(UserController.editagent);
 router.route('/inviteAgent').post(UserController.inviteAgent);

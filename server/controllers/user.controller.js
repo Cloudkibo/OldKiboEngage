@@ -228,7 +228,7 @@ export function getagents(req, res) {
     request.get(options, callback);
   }
 
-  export function deptagents(req, res) {
+export function deptagents(req, res) {
   //console.log('get deptagents is called');
   var token = req.headers.authorization;
   //console.log('token received is  : ' + token);

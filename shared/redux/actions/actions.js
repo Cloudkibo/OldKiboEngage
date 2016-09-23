@@ -502,6 +502,39 @@ export function editTeam(team) {
   };
 }
 
+
+
+export function editGroup(group) {
+  //alert(team)
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editgroup`, {
+      method: 'post',
+      body: JSON.stringify({
+        group :{
+          _id:group.id,
+          groupname: group.name,
+          groupdescription: group.desc,
+          status : group.status,
+        },
+        groupagents: group.groupagents
+
+      })
+      ,
+      headers: new Headers({
+         'Authorization': group.token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+         console.log(res.statusCode);
+         alert(res.message);
+         browserHistory.push('/groups');
+    
+        }
+    );
+  };
+}
+
+
 export function addSelectedTeam(team) {
   console.log(team)
   return {
@@ -510,6 +543,12 @@ export function addSelectedTeam(team) {
   };
 }
 
+export function addSelectedGroup(group) {
+  return {
+    type: ActionTypes.ADD_SELECTED_GROUP,
+    group,
+  };
+}
 
 
 
@@ -525,6 +564,20 @@ export function getTeamRequest(team,usertoken) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedTeam(res.team)));
   };
 }
+
+
+export function getGroupRequest(group,usertoken) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/getGroup?id=${group}`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedGroup(res.group)));
+  };
+}
+
 
 export function deleteGROUP(team) {
   return {
@@ -588,6 +641,14 @@ export function showDeptAgents(agents) {
   };
 }
 
+export function showGroupAgents(agents) {
+  console.log(agents);
+  return {
+    type: ActionTypes.ADD_GROUPAGENTS,
+    agents,
+
+  };
+}
 export function editagentError(message) {
   console.log(message);
   return {
@@ -631,6 +692,22 @@ export function getDeptAgents(token) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showDeptAgents(res)));
   };
 }
+
+
+/****** get user details ***/
+export function getGroupAgents(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/groupagents`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroupAgents(res)));
+  };
+}
+
 
 export function editAgent(id,role,token) {
   console.log('editAgent action called');
@@ -2525,3 +2602,24 @@ export function createGroup(group,usertoken) {
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(creategroupError(res)));
   };
 }
+
+export function showGroups(groups) {
+  return {
+    type: ActionTypes.ADD_GROUPS,
+    groups,
+
+  };
+}
+export function getgroups(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getgroups`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroups(res)));
+  };
+}
+

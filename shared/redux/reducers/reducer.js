@@ -58,6 +58,41 @@ const dashboard = (state =dashboardState, action) => {
          onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
              
       }; 
+
+      case ActionTypes.ADD_SELECTED_GROUP :
+      var agentid =[];
+      if(state.groupagents)
+      {
+      state.groupagents.filter((agent) => agent.groupid == action.group._id).map((agent, i)=> (
+                          state.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
+                          (
+                             agentid.push({"_id" :ag._id})
+                          ))
+                          ));
+       };
+
+      return {
+        group: action.group,
+        userdetails: state.userdetails,
+        teamdetails:state.teamdetails,
+        agents : state.agents,
+        groupagents : state.groupagents,
+        deptagents :state.deptagents,
+        newagents:agentid,
+        channels : state.channels,
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             
+      }; 
+
+
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
         userdetails: state.userdetails,
@@ -185,6 +220,28 @@ mobileuserchat : state.mobileuserchat,
         
            
           };              
+          case ActionTypes.ADD_GROUPAGENTS:
+          return{
+            userdetails:state.userdetails,
+            agents:state.agents,
+            deptagents : state.deptagents,
+            groupagents : action.agents,
+            teamdetails:state.teamdetails,
+            channels : state.channels,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            chatlist: state.chatlist,
+             customerid : state.customerid,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid, 
+             userchats : state.userchats,
+             team: state.team,
+             group : state.group,
+             newagents : state.newagents,
+        
+           
+          };              
 
    case ActionTypes.ADD_TEAMS:
           console.log(action.teams)
@@ -207,6 +264,29 @@ mobileuserchat : state.mobileuserchat,
         
 
       };
+
+
+    case ActionTypes.ADD_GROUPS:
+          return{
+            teamdetails:state.teams,
+            groupdetails : action.groups,
+            userdetails: state.userdetails,
+            agents : state.agents,
+            deptagents :state.deptagents,
+            channels : state.channels,
+
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+        
+
+      };   
 
    case ActionTypes.ADD_CHANNELS:
           console.log(action.channels)

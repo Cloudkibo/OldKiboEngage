@@ -12,12 +12,17 @@ import Intro from './container/Intro';
 import Dashboard from './container/Dashboard';
 import Reports from './container/HighCharts/HighCharts'
 import Teams from './container/Teams/Teams';
+import Groups from './container/Groups/Groups';
+
 import Agents from './container/Agents/Agents';
 import Chat from './container/Chat/Chat';
 import ClientChat from './container/Chat/ClientChat';
 import CompanySettings from './container/CompanySettings/CompanySettings';
 import TeamDetailView from './container/Teams/TeamDetailView';
 import TeamEditView from './container/Teams/TeamEditView';
+import GroupEditView from './container/Groups/GroupEditView';
+import GroupDetailView from './container/Groups/GroupDetailView';
+
 import AgentEditView from './container/Agents/AgentEditView';
 import MessageChannelCreate from './container/MessageChannel/messageChannelCreate'
 import CreateGroup from './container/Groups/CreateGroup'
@@ -99,10 +104,15 @@ const routes = (
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
     
     <Route path="/team/:id" component={TeamDetailView}  onEnter={requireAuth}/>
+    <Route path="/group/:id" component={GroupDetailView}  onEnter={requireAuth}/>
+    
     <Route path="/editteam/:id" component={TeamEditView}  onEnter={requireAuth}/>
+    <Route path="/editgroup/:id" component={GroupEditView}  onEnter={requireAuth}/>
+    
     <Route path="/editagent/:id" component={AgentEditView}  onEnter={requireAuth}/>
     <Route path="/createmessagechannel" component={MessageChannelCreate}  onEnter={requireAuth}/>
     <Route path="/creategroup" component={CreateGroup}  onEnter={requireAuth}/>
+    <Route path="/groups" component={Groups}  onEnter={requireAuth}/>
     
     <Route path="/messagechannels" component={Channel}  onEnter={requireAuth}/>
     <Route path="/editchannel/:id" component={ChannelEditView}  onEnter={requireAuth}/>

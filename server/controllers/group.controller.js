@@ -34,12 +34,12 @@ export function getcustomerteams(req,res){
     request.get(options, callback);
     
 }
-export function getteams(req, res) {
+export function getgroups(req, res) {
   //console.log('get getteams is called');
   var token = req.headers.authorization;
   //console.log('token received is  : ' + token);
   var options = {
-      url: `${baseURL}/api/departments`,
+      url: `${baseURL}/api/groups`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -61,6 +61,7 @@ export function getteams(req, res) {
     }
     request.get(options, callback);
   }
+
 
 
  export function creategroup(req, res) {
@@ -107,14 +108,12 @@ export function getteams(req, res) {
    
   }
 
-export function getTeam(req, res) {
+export function getGroup(req, res) {
   //console.log('getTeam is called.');
   var token = req.headers.authorization;
-  //console.log('token received is  : ' + token);
-  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
-      url: `${baseURL}/api/departments/${id}`,
+      url: `${baseURL}/api/groups/${id}`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
@@ -127,7 +126,7 @@ export function getTeam(req, res) {
       //  //console.log(info);
         
       if(!error  && response.statusCode == 200) {
-        res.status(200).json({team:info}); 
+        res.status(200).json({group:info}); 
     
    }
    else{
@@ -138,6 +137,36 @@ export function getTeam(req, res) {
         request.get(options, callback);
     
 }
+
+export function groupagents(req, res) {
+  var token = req.headers.authorization;
+  //console.log('token received is  : ' + token);
+  var options = {
+      url: `${baseURL}/api/groupagents/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+      
+     
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+       // //console.log(info)
+       
+        ////console.log(info);
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.get(options, callback);
+  }
+
 
 
 export function destroyTeam(req, res) {
@@ -174,21 +203,19 @@ export function destroyTeam(req, res) {
     
 }
 
-export function editteam(req, res) {
+export function editgroup(req, res) {
   //console.log('edit team is called');
   var token = req.headers.authorization;
-  //console.log(req.body.dept);
-  //console.log(req.body.deptagents);
    var options = {
-      url: `${baseURL}/api/departments/update/`,
+      url: `${baseURL}/api/groups/update/`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
                 
                  },
       json: {
-           'dept' : req.body.dept,
-           'deptagents': req.body.deptagents,
+           'group' : req.body.group,
+           'groupagents': req.body.groupagents,
           }
       
      

@@ -110,7 +110,7 @@ export default class SideBar extends Component
               </li>
 
               <li className="">
-                <Link to='/creategroup'>
+                <Link to='/groups'>
                   <i className="fa fa-group">
                   </i>      
                   <span className="title">
