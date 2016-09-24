@@ -34,9 +34,11 @@ router.route('/creategroup').post(GroupController.creategroup);
 
 router.route('/getTeam').get(TeamController.getTeam);
 router.route('/getGroup').get(GroupController.getGroup);
-
+router.route('/joinGroup').post(GroupController.joinGroup);
 router.route('/deleteTeam').delete(TeamController.destroyTeam);
 router.route('/deleteAgent').delete(UserController.deleteAgent);
+router.route('/deleteGroup').delete(GroupController.destroyGroup);
+
 router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
 router.route('/groupagents').get(GroupController.groupagents);

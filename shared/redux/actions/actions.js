@@ -579,12 +579,20 @@ export function getGroupRequest(group,usertoken) {
 }
 
 
-export function deleteGROUP(team) {
+export function deleteTeam(team) {
   return {
     type: ActionTypes.DELETE_TEAM,
     team,
   };
 }
+
+export function deleteGROUP(group) {
+  return {
+    type: ActionTypes.DELETE_GROUP,
+    group,
+  };
+}
+
 export function deleteteam(team,usertoken) {
   console.log('deleteteam Action is called '+ team._id + 'your token : '  + usertoken);
   if(confirm("Do you want to delete this team?"))
@@ -596,7 +604,7 @@ export function deleteteam(team,usertoken) {
         'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteGROUP(team)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteTeam(team)));
   };
 }
 else{
@@ -607,8 +615,52 @@ else{
 }
 
 
+export function deletegroup(group,usertoken) {
+  if(confirm("Do you want to delete this Group?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteGroup?id=${group._id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteGROUP(group)));
+  };
+}
+else{
+  browserHistory.push('/groups');
 
+}
 
+}
+
+export function joingroup(group,userid,usertoken) {
+  if(confirm("Do you want to join this Group?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/joinGroup`, {
+      method: 'post',
+      body: JSON.stringify({
+            groupid : group._id,
+            agentid : userid,
+       
+      }),
+      
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+   }).then((res) => res.json()).then((res) => res).then((res) => {
+         console.log(res.statusCode);
+         alert(res.message);
+         browserHistory.push('/dashboard');
+    
+        }
+    );
+  };
+}
+}
 
 
 

@@ -7,7 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import GroupListItem from './GroupListItem';
 import {getgroups} from '../../redux/actions/actions'
-import {deletegroup} from '../../redux/actions/actions'
+import {deletegroup,joingroup,getGroupAgents} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
@@ -25,7 +25,9 @@ class Groups extends Component {
     {
        
         console.log(usertoken);
-        props.getgroups(usertoken)
+        props.getgroups(usertoken);
+        props.getGroupAgents(usertoken);
+       
       }
     super(props, context);
   
@@ -82,7 +84,7 @@ class Groups extends Component {
               </div>
                {this.props.errorMessage &&
 
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
+                     <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
                       }
                 { this.props.groupdetails &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
@@ -103,8 +105,8 @@ class Groups extends Component {
                     <tbody>                    
                        {
                         this.props.groupdetails.map((group, i) => (
-                          
-                          <GroupListItem group={group} key={group._id}   onDelete={() => this.props.deletegroup(group,token)} userdetails ={this.props.userdetails}/>
+
+                          <GroupListItem group={group} key={group._id}  groupagents = {this.props.groupagents} onDelete={() => this.props.deletegroup(group,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.joingroup(group,this.props.userdetails._id,token)} />
                                                       
                         ))
                       }
@@ -136,13 +138,14 @@ function mapStateToProps(state) {
           groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
+          groupagents : (state.dashboard.groupagents),
           deptagents:(state.dashboard.deptagents),
 
            };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getgroups:getgroups,deletegroup:deletegroup}, dispatch);
+  return bindActionCreators({getgroups:getgroups,deletegroup:deletegroup,getGroupAgents:getGroupAgents,joingroup:joingroup}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Groups);
 

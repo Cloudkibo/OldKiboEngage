@@ -169,13 +169,13 @@ export function groupagents(req, res) {
 
 
 
-export function destroyTeam(req, res) {
+export function destroyGroup(req, res) {
   //console.log('destroyTeam is called.');
   var token = req.headers.authorization;
   //console.log(req.query.id);
   var id = req.query.id;
    var options = {
-      url: `${baseURL}/api/departments/${id}`,
+      url: `${baseURL}/api/groups/${id}`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
@@ -211,7 +211,6 @@ export function editgroup(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
                  },
       json: {
            'group' : req.body.group,
@@ -295,3 +294,44 @@ export function editgroup(req, res) {
     request.get(options, callback);
   }
 
+
+//join group
+export function joinGroup(req, res) {
+  //console.log('edit team is called');
+  var token = req.headers.authorization;
+   var options = {
+      url: `${baseURL}/api/groups/join/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+                 },
+      json: req.body,
+      
+     
+    };
+    //console.log(options.json.dept);
+    function callback(error, response, body) {
+        //console.log(body);
+    
+      if(!error  && response.statusCode == 200) {
+       if(body.status == 'success')
+       {
+            return res.status(200).json({statusCode : 200,message:body.msg});
+       }
+       else
+       {
+            return res.status(422).json({statusCode : 422 ,message:body.msg}); 
+   
+       }
+    }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,message:error}); 
+
+    }
+
+   }
+        request.post(options, callback);
+   
+  }
+ 

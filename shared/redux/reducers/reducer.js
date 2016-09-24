@@ -226,6 +226,7 @@ mobileuserchat : state.mobileuserchat,
             agents:state.agents,
             deptagents : state.deptagents,
             groupagents : action.agents,
+            groupdetails : state.groupdetails,
             teamdetails:state.teamdetails,
             channels : state.channels,
             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
@@ -274,15 +275,14 @@ mobileuserchat : state.mobileuserchat,
             agents : state.agents,
             deptagents :state.deptagents,
             channels : state.channels,
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid, 
-         userchats : state.userchats,
+            groupagents : state.groupagents,
+            chatlist: state.chatlist,
+             customerid : state.customerid,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid, 
+             userchats : state.userchats,
              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
         
 
@@ -406,6 +406,28 @@ mobileuserchat : state.mobileuserchat,
 
 
 
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid, 
+         userchats : state.userchats,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+        
+       
+      };
+
+       case ActionTypes.DELETE_GROUP :
+      return {
+        teamdetails: state.teamdetails,
+        groupdetails : state.groupdetails.filter((group) => group._id !== action.group._id),
+        userdetails: state.userdetails,
+        errorMessage:'Group deleted successfully',
+        agents : state.agents,
+        channels : state.channels,
+        deptagents :state.deptagents,
+        groupagents : state.groupagents,
         chatlist: state.chatlist,
          customerid : state.customerid,
          customerchat : state.customerchat,

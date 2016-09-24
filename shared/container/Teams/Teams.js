@@ -107,7 +107,7 @@ class Teams extends Component {
               </div>
                {this.props.errorMessage &&
 
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
+                     <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
                       }
               <TeamCreateView addTeam={this.add}  showAddTeam= {this.state.showAddTeam}/>      
                 { this.props.teamdetails &&

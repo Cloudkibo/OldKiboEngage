@@ -7,7 +7,13 @@ var c = new Date(d);
 return c.toDateString();
 }
 function GroupListItem(props) {
-
+var useringroup = false
+for(var i=0;i<props.groupagents.length;i++){
+  if(props.groupagents[i].agentid == props.userdetails._id && props.groupagents[i].groupid == props.group._id){
+    useringroup = true
+    break
+  }
+}
   
   return (
   
@@ -19,17 +25,40 @@ function GroupListItem(props) {
        <td>{props.group.status}</td>
      
       <td>
+      {
+        props.userdetails._id == props.group.createdby._id ?
+        <span>
         <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
          View
         </Link>
-         {
-        props.userdetails.isAdmin == "Yes" ?
-        <span>
+       
         <Link to={`/editgroup/${props.group._id}`} className="btn blue-madison" >
          Edit
         </Link>
         <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
-        </span> : <span></span>
+        </span> :
+         <span>
+         {
+          props.group.status == "public" && useringroup == false?
+          <button className="btn blue-madison" onClick={props.onJoin}> Join Group </button>
+        
+        :
+        <span></span>
+
+
+         }
+
+          {
+          props.userdetails._id != props.group.createdby._id && useringroup == true?
+          <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
+         View
+        </Link>
+        :
+        <span></span>
+
+
+         }
+         </span>
 
         }
       </td>
