@@ -121,7 +121,7 @@ class CreateGroup extends Component {
                </div> 
                 <div className="col-md-9">
                   <div className="col-md-9">
-                    <Link to="/groups" className="btn green">
+                    <Link to="/dashboard" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>

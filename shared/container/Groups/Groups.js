@@ -11,6 +11,8 @@ import {deletegroup,joingroup,getGroupAgents} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
+const PureRenderMixin = require('react-addons-pure-render-mixin');  
+import Immutable from 'immutable';
 
 class Groups extends Component {
 
@@ -31,16 +33,41 @@ class Groups extends Component {
       }
     super(props, context);
   
-  
+     this.state = { 
+      data: Immutable.List(),
+      filteredData: Immutable.List(),
+    };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+
 
     
   }
 
- 
+  componentWillReceiveProps(props){
+    if(props.groupdetails){
+       this.setState({ 
+      data: Immutable.fromJS(props.groupdetails).toList(),
+      filteredData: Immutable.fromJS(props.groupdetails).toList() 
+    });
+    }
+  }
+
+  filterData(event) {
+    event.preventDefault();
+    const regex = new RegExp(event.target.value, 'i');
+    const filtered = this.state.data.filter(function(datum) {
+      return (datum.get('groupname').search(regex) > -1);
+    });
+
+    this.setState({
+      filteredData: filtered,
+    });
+  }
 
   render() {
     const token = auth.getToken()
     console.log(token)
+    const { filteredData } = this.state;
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
@@ -82,6 +109,11 @@ class Groups extends Component {
                  
                  </div>
               </div>
+                      <input
+                              type="text"
+                              className="form-control"
+                              onChange={ this.filterData.bind(this) }
+                              placeholder="Search" />
                {this.props.errorMessage &&
 
                      <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
@@ -104,9 +136,9 @@ class Groups extends Component {
 
                     <tbody>                    
                        {
-                        this.props.groupdetails.map((group, i) => (
+                        this.props.groupagents && filteredData && filteredData.map((group, i) => (
 
-                          <GroupListItem group={group} key={group._id}  groupagents = {this.props.groupagents} onDelete={() => this.props.deletegroup(group,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.joingroup(group,this.props.userdetails._id,token)} />
+                          <GroupListItem group={group} key={group.get('_id')}  groupagents = {this.props.groupagents} onDelete={() => this.props.deletegroup(group,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.joingroup(group,this.props.userdetails._id,token)} />
                                                       
                         ))
                       }

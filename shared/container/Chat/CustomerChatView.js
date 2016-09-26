@@ -24,7 +24,6 @@ function getSuggestions(value,cr) {
 
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
- 
   return inputLength === 0 ? [] : languages.filter(lang =>
     lang.shortcode.toLowerCase().slice(0, inputLength) === inputValue
   );

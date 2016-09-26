@@ -78,15 +78,15 @@ for(var i = 0;i<customers.length;i++){
 
 }
 
-for(var i=0;i<emailArray.length;i++){
+/*for(var i=0;i<emailArray.length;i++){
   sendemailNotification(emailArray[i],emailSub,emailBody);
 }
 
 for(var i=0;i<pushNotificationArray.length;i++){
   sendPushNotification(pushNotificationArray[i],emailBody);
-}
+}*/
 
-//sendPushNotification('sojharo',emailBody);
+sendPushNotification('sojharo',emailBody);
 }
 
 

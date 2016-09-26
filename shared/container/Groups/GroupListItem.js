@@ -9,7 +9,7 @@ return c.toDateString();
 function GroupListItem(props) {
 var useringroup = false
 for(var i=0;i<props.groupagents.length;i++){
-  if(props.groupagents[i].agentid == props.userdetails._id && props.groupagents[i].groupid == props.group._id){
+  if(props.groupagents[i].agentid == props.userdetails._id && props.groupagents[i].groupid == props.group.get('_id')){
     useringroup = true
     break
   }
@@ -18,28 +18,28 @@ for(var i=0;i<props.groupagents.length;i++){
   return (
   
     <tr className = "odd">
-      <td>{props.group.groupname}</td>
-      <td>{props.group.groupdescription}</td>
-      <td>{props.group.createdby.firstname}</td>
-      <td>{handleDate(props.group.creationdate)}</td>
-       <td>{props.group.status}</td>
+      <td>{props.group.get('groupname')}</td>
+      <td>{props.group.get('groupdescription')}</td>
+      <td>{props.group.get('createdby').get('firstname')}</td>
+      <td>{handleDate(props.group.get('creationdate'))}</td>
+       <td>{props.group.get('status')}</td>
      
       <td>
       {
-        props.userdetails._id == props.group.createdby._id ?
+        props.userdetails._id == props.group.get('createdby').get('_id') ?
         <span>
-        <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
+        <Link to={`/group/${props.group.get('_id')}`} className="btn blue-madison" >
          View
         </Link>
        
-        <Link to={`/editgroup/${props.group._id}`} className="btn blue-madison" >
+        <Link to={`/editgroup/${props.group.get('_id')}`} className="btn blue-madison" >
          Edit
         </Link>
         <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
         </span> :
          <span>
          {
-          props.group.status == "public" && useringroup == false?
+          props.group.get('status') == "public" && useringroup == false?
           <button className="btn blue-madison" onClick={props.onJoin}> Join Group </button>
         
         :
@@ -49,8 +49,8 @@ for(var i=0;i<props.groupagents.length;i++){
          }
 
           {
-          props.userdetails._id != props.group.createdby._id && useringroup == true?
-          <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
+          props.userdetails._id != props.group.get('createdby').get('_id') && useringroup == true?
+          <Link to={`/group/${props.group.get('_id')}`} className="btn blue-madison" >
          View
         </Link>
         :
