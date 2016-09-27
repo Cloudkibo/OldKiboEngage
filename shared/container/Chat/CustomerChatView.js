@@ -53,6 +53,7 @@ class CustomerChatView extends Component {
         props.getChatRequest(props.sessiondetails.customerid,usertoken,props.chatlist);
 
        
+       
       }
 
         super(props, context);
@@ -574,32 +575,35 @@ const { value, suggestions } = this.state;
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
                         {this.props.sessiondetails.platform == "web"?
                          
-                          this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
+                         (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
                             agent.agentId == this.props.userdetails._id?
-                            <option value={agent.email} data-attrib = {agent.agentId} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
-                            <option value={agent.email} data-attrib = {agent.agentId} data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
+                            <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
                               
-                            )
+                            ))
                          :
 
-                         
                           this.props.agents && this.props.agents.map((agent,i) =>
                             agent._id == this.props.userdetails._id?
-                            <option value={agent.email} data-attrib = {agent._id} data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
-                            <option value={agent.email} data-attrib = {agent._id} data-name={agent.firstname +' '+ agent.lastname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
+                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname +' '+ agent.lastname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
                               
-                            )
-                         
+                            ) 
+                                                 
                         }
 
                       </select>
+
                     
                  </div>     
               </td>
+
               <td className="col-md-4">
-                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To </button>
+                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
               </td> 
              
+             
+
               <td className="col-md-4">
                  <div className="input-group">
                    <select  ref = "channellist" className="form-control" onChange={this.handleChange.bind(this)}   >
@@ -627,10 +631,30 @@ const { value, suggestions } = this.state;
               </td> 
               
               </tr>
+
+              <tr>
+               <td className="col-md-4">
+                 <div className="input-group">
+                   <select  ref = "grouplist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                          {
+                          this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                            <option value={group._id}>{group.groupname}</option>
+
+                            )
+                         }
+                         
+                      </select>
+                   </div>   
+               </td>
+                <td className="col-md-4">
+                <button className="btn btn-primary" onClick = {this.assignSessionToGroup}> Assigned To Group</button>
+                </td> 
+            </tr>
               </tbody>
             </table>
-
+         
           </div>
+
           <div className="panel-body">
           {
             this.props.sessiondetails &&
@@ -783,6 +807,10 @@ function mapStateToProps(state) {
           responses :(state.dashboard.responses),  
           onlineAgents:(state.dashboard.onlineAgents),
           mobileuserchat : (state.dashboard.mobileuserchat),
+
+          groupagents : (state.dashboard.groupagents),
+          groupdetails :(state.dashboard.groupdetails),
+          
   };
 }
 

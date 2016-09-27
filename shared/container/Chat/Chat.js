@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessionsfromsocket,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessionsfromsocket,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -15,7 +15,6 @@ import { browserHistory } from 'react-router'
 import io from 'socket.io-client';
 var callMobileChatSessions
 var callOnce
-
 class Chat extends Component {
 
  constructor(props, context) {
@@ -39,6 +38,10 @@ class Chat extends Component {
        
         props.getresponses(usertoken);
      
+      // get groups list and agents
+        props.getgroups(usertoken);
+        props.getGroupAgents(usertoken);
+
 
       }
       
@@ -303,6 +306,7 @@ componentDidMount(){
 
                 {this.props.customerchatold && this.props.customerchatold.length == 0?
                   <p>No Customer is online currently.</p>
+                
                   :
                 <table className="table">
 
@@ -385,8 +389,10 @@ function mapStateToProps(state) {
           onlineAgents:(state.dashboard.onlineAgents),
           yoursocketid :(state.dashboard.yoursocketid), 
           mobileuserchat : (state.dashboard.mobileuserchat),      
-          serverresponse : (state.dashboard.serverresponse)                  
+          serverresponse : (state.dashboard.serverresponse) ,
+          groupagents : (state.dashboard.groupagents),
+          groupdetails :(state.dashboard.groupdetails),                 
                     };
 }
 
-export default connect(mapStateToProps,{getmobilesessions,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);

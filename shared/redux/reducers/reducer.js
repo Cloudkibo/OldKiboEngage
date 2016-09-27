@@ -55,7 +55,8 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
       }; 
 
@@ -80,7 +81,6 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         newagents:agentid,
         channels : state.channels,
-
         chatlist: state.chatlist,
          customerid : state.customerid,
          customerchat : state.customerchat,
@@ -88,7 +88,8 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
       }; 
 
@@ -101,7 +102,8 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         agent: state.agents.filter((agent) => agent._id == action.id),
         channels : state.channels,
-        onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+        onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
 
 
         chatlist: state.chatlist,
@@ -142,8 +144,6 @@ const dashboard = (state =dashboardState, action) => {
         channels : state.channels,
         responses : state.responses,
         response: state.responses.filter((response) => response._id == action.id),
-      
-      
         chatlist: state.chatlist,
          customerid : state.customerid,
          customerchat : state.customerchat,
@@ -151,7 +151,8 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-           onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+           onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
 
       };         
    case ActionTypes.ADD_USER_DETAILS:
@@ -167,13 +168,14 @@ const dashboard = (state =dashboardState, action) => {
              customerchatold : action.customerchat,
               responses : state.responses,
              chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
+              mobileuserchat : state.mobileuserchat,
              channels : state.channels,
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
 };
    case ActionTypes.ADD_AGENTS:
@@ -184,7 +186,8 @@ mobileuserchat : state.mobileuserchat,
             deptagents :state.deptagents,
             teamdetails:state.teamdetails,
             channels : state.channels,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             chatlist: state.chatlist,
            customerid : state.customerid,
            customerchat : state.customerchat,
@@ -204,7 +207,8 @@ mobileuserchat : state.mobileuserchat,
             deptagents :action.agents,
             teamdetails:state.teamdetails,
             channels : state.channels,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -229,7 +233,8 @@ mobileuserchat : state.mobileuserchat,
             groupdetails : state.groupdetails,
             teamdetails:state.teamdetails,
             channels : state.channels,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -261,7 +266,8 @@ mobileuserchat : state.mobileuserchat,
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
 
       };
@@ -269,7 +275,7 @@ mobileuserchat : state.mobileuserchat,
 
     case ActionTypes.ADD_GROUPS:
           return{
-            teamdetails:state.teams,
+            teamdetails:state.teamdetails,
             groupdetails : action.groups,
             userdetails: state.userdetails,
             agents : state.agents,
@@ -284,7 +290,7 @@ mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
-        
+             
 
       };   
 
@@ -296,7 +302,8 @@ mobileuserchat : state.mobileuserchat,
             agents : state.agents,
             deptagents :state.deptagents,
             channels : action.channels,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -326,7 +333,8 @@ mobileuserchat : state.mobileuserchat,
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
 
       };
@@ -340,7 +348,8 @@ mobileuserchat : state.mobileuserchat,
             deptagents :state.deptagents,
             channels : state.channels,
             responses : [action.response,...state.responses],
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -360,7 +369,8 @@ mobileuserchat : state.mobileuserchat,
             channels : state.channels,
             responses : state.responses,
             onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
+            yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -383,7 +393,8 @@ mobileuserchat : state.mobileuserchat,
          agents : state.agents,
          deptagents :state.deptagents,
          channels : state.channels,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
           chatlist: state.chatlist,
            customerid : state.customerid,
            customerchat : state.customerchat,
@@ -413,7 +424,8 @@ mobileuserchat : state.mobileuserchat,
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
        
       };
@@ -435,7 +447,8 @@ mobileuserchat : state.mobileuserchat,
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
        
       };
@@ -459,7 +472,8 @@ mobileuserchat : state.mobileuserchat,
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
 
        
@@ -483,7 +497,8 @@ mobileuserchat : state.mobileuserchat,
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
 
        
@@ -506,7 +521,8 @@ mobileuserchat : state.mobileuserchat,
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid, 
          userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
 
       };
@@ -655,7 +671,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
 
                 
@@ -679,12 +696,14 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              resolvedsessions : state.resolvedsessions,
              assignedsessions : state.assignedsessions,
-             resolvedsocketsessions:state.resolvedsocketsessions,
-
-             
+            resolvedsocketsessions:state.resolvedsocketsessions,
+            groupagents : state.groupagents,
+            groupdetails :state.groupdetails,
+            
             };
 
             case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
@@ -704,10 +723,13 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              resolvedsessions : state.resolvedsessions,
              assignedsessions : state.assignedsessions,
-             resolvedsocketsessions:state.resolvedsocketsessions,
+            resolvedsocketsessions:state.resolvedsocketsessions,
+groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              mobileuserchat : action.mobileuserchat,
              
             };
@@ -731,7 +753,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
             };
 
@@ -754,7 +777,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
             };
 
@@ -777,7 +801,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -811,7 +836,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
             };
 
@@ -836,7 +862,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
             };
 
@@ -864,7 +891,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
             };
 
@@ -889,7 +917,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
             };
 
@@ -937,7 +966,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : action.userchats,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
             
             };
@@ -960,7 +990,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
             new_message_arrived_rid : state.new_message_arrived_rid,
             userchats : state.userchats,
-                onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+                onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
             };   
              case ActionTypes.FILTER_BY_DEPT:
@@ -981,7 +1012,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
             
             }; 
@@ -1003,7 +1035,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
             
             };     
@@ -1025,7 +1058,8 @@ mobileuserchat : state.mobileuserchat,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
             
             };            
@@ -1046,8 +1080,10 @@ mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : action.new_message_arrived_rid,
              userchats : state.userchats,
              responses : state.responses,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
-        
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
+         
        
             
             };
@@ -1069,7 +1105,9 @@ mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
              responses : state.responses,
-              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+              onlineAgents : state.onlineAgents,
+              yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
         
        
             
@@ -1114,8 +1152,10 @@ mobileuserchat : state.mobileuserchat,
             customers : state.customers, 
             userchats : state.userchats,
              responses : state.responses,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
-          
+            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
+            groupdetails:state.groupdetails,
+            groupagents:state.groupagents
        
             
             };
@@ -1146,7 +1186,8 @@ mobileuserchat : state.mobileuserchat,
        
              channels : state.channels,
              customers : state.customers,
-               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+             groupdetails :state.groupdetails,
              
             };
 
@@ -1160,7 +1201,8 @@ mobileuserchat : state.mobileuserchat,
              channels : state.channels, 
              notifications:action.notifications,
              customers:state.customers,
-               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             chatlist: state.chatlist,
              customerid : state.customerid,
              customerchat : state.customerchat,
@@ -1180,7 +1222,8 @@ mobileuserchat : state.mobileuserchat,
              notifications:state.notifications,
              addednotification : action.msg,
              errorMessage :action.msg,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
               chatlist: state.chatlist,
                customerid : state.customerid,
                customerchat : state.customerchat,
@@ -1210,7 +1253,8 @@ mobileuserchat : state.mobileuserchat,
                  customerchat_selected : state.customerchat_selected,
                  new_message_arrived_rid : state.new_message_arrived_rid, 
                  userchats : state.userchats,
-                   onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+                   onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
 
               };
               case ActionTypes.ADD_CUSTOMER :
@@ -1238,7 +1282,8 @@ mobileuserchat : state.mobileuserchat,
                customerchat_selected : state.customerchat_selected,
                new_message_arrived_rid : state.new_message_arrived_rid, 
                userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
 
 
             };  
@@ -1266,7 +1311,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             
             };
             
@@ -1295,7 +1341,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : action.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -1338,7 +1385,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -1378,7 +1426,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -1417,7 +1466,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -1455,7 +1505,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : action.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -1496,7 +1547,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -1534,7 +1586,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : state.channelwisestats,
              deptwisestats : action.deptwisestats,
              platformwisestats : state.platformwisestats,
@@ -1574,7 +1627,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
              platformwisestats : action.platformwisestats,
@@ -1612,7 +1666,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
              
              channelwisestats : state.channelwisestats,
              deptwisestats : state.deptwisestats,
@@ -1654,7 +1709,8 @@ mobileuserchat : state.mobileuserchat,
 mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             
           
             };
@@ -1685,7 +1741,8 @@ mobileuserchat : state.mobileuserchat,
              sessionsummarydetail : state.sessionsummary.filter((c) => c.request_id == action.id),
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             
           
             };
@@ -1718,7 +1775,8 @@ mobileuserchat : state.mobileuserchat,
              userchathistory : action.userchathistory,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             
           
             };
@@ -1751,7 +1809,8 @@ mobileuserchat : state.mobileuserchat,
              userchathistory : state.userchathistory,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             
           
             };
@@ -1767,7 +1826,8 @@ mobileuserchat : state.mobileuserchat,
               notifications : state.notifications,
               customers:state.customers,
               customer: state.customers.filter((customer) => customer._id == action.id),
-                onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,
+                onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
            
                responses : state.responses,
        
@@ -1799,7 +1859,8 @@ mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
             onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
+            yoursocketid : state.yoursocketid,groupagents : state.groupagents,
+groupdetails :state.groupdetails,
             companysettings : action.companysettings,
         
             
