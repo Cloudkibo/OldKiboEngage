@@ -246,12 +246,26 @@ socket.on('send:messageToAgent', function (data) {
     if(data.toagent){
             console.log('sending point to point message to Agent');
             //find the socket id
+            var socketids =[]
+           
             for(var j=0;j< data.toagent.length;j++){
                 for(var i = 0;i < onlineAgents.length;i++)
                 {
                   if(onlineAgents[i].email == data.toagent[j]){
                      console.log('agent is online');
-                     io2.to(onlineAgents[i].socketid).emit('send:message',{
+                     
+                    socketids.push(onlineAgents[i].socketid);
+                    break;
+                  }
+
+            }
+          }
+
+           for(var i=0;i<socketids.length;i++){
+            io2.sockets.connected[socketids[i]].join('grp');
+          }
+           //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
+           io2.to('grp').emit('send:message',{
                                 to: data.to,
                                 toagent:data.toagent,
                                 from : data.from,
@@ -266,12 +280,8 @@ socket.on('send:messageToAgent', function (data) {
                                 companyid:data.companyid,
                                 is_seen:data.is_seen
                               });
-                  
-                    break;
-                  }
-
-            }
-          }
+                    
+                    
            
     }
     else

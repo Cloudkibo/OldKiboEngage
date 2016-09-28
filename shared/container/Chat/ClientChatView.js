@@ -35,7 +35,7 @@ class ClientChatView extends Component {
      this.refs.agentid.value = this.refs.agentid.value + ' ' + data.data.agentid[i];
     
     this.refs.agentname.value = this.refs.agentname.value + ' ' + data.data.assignedagentname[i];
-    this.refs.agentemail.value = this.refs.agentname.value + ' ' + data.data.assignedagentemail[i];
+    this.refs.agentemail.value = this.refs.agentemail.value + ' ' + data.data.assignedagentemail[i];
      }          
 
 
