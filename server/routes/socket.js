@@ -218,14 +218,17 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
           
           });*/
 
-          for(var i=0;i< onlineAgents.length;i++){
-            if(onlineAgents[i].email == data.agentemail)
-            {
-              console.log('agent is online');
-              io2.to(onlineAgents[i].socketid).emit('informAgent',previous_chat);
-              break;
-            }
-          }
+
+          for(var j = 0;j< data.agentemail.length;j++){
+              for(var i=0;i< onlineAgents.length;i++){
+                if(onlineAgents[i].email == data.agentemail[j])
+                {
+                  console.log('agent is online');
+                  io2.to(onlineAgents[i].socketid).emit('informAgent',previous_chat);
+                  break;
+                }
+              }
+        }
                 
           
 
@@ -243,30 +246,32 @@ socket.on('send:messageToAgent', function (data) {
     if(data.toagent){
             console.log('sending point to point message to Agent');
             //find the socket id
-            for(var i = 0;i < onlineAgents.length;i++)
-            {
-              if(onlineAgents[i].email == data.toagent){
-                 console.log('agent is online');
-                 io2.to(onlineAgents[i].socketid).emit('send:message',{
-                            to: data.to,
-                            toagent:data.toagent,
-                            from : data.from,
-                            visitoremail:data.visitoremail,
-                            datetime:data.datetime,
-                            uniqueid:data.uniqueid,
-                            msg: data.msg,
-                            time:data.time,
-                            request_id : data.request_id,
-                            type : data.type,
-                            messagechannel:data.messagechannel,
-                            companyid:data.companyid,
-                            is_seen:data.is_seen
-                          });
-              
-                break;
-              }
+            for(var j=0;j< data.toagent.length;j++){
+                for(var i = 0;i < onlineAgents.length;i++)
+                {
+                  if(onlineAgents[i].email == data.toagent[j]){
+                     console.log('agent is online');
+                     io2.to(onlineAgents[i].socketid).emit('send:message',{
+                                to: data.to,
+                                toagent:data.toagent,
+                                from : data.from,
+                                visitoremail:data.visitoremail,
+                                datetime:data.datetime,
+                                uniqueid:data.uniqueid,
+                                msg: data.msg,
+                                time:data.time,
+                                request_id : data.request_id,
+                                type : data.type,
+                                messagechannel:data.messagechannel,
+                                companyid:data.companyid,
+                                is_seen:data.is_seen
+                              });
+                  
+                    break;
+                  }
 
             }
+          }
            
     }
     else
@@ -331,9 +336,9 @@ socket.on('getuserchats',function(room){
 
       var payload = {
         data: {
-          agentname: data.assignedagentname,
-          agentemail : data.assignedagentemail,
-          agentid : data.agentid,
+          agentname: data.assignedagentname, // this is array field
+          agentemail : data.assignedagentemail, //this is array field
+          agentid : data.agentid, //this is array field
 
 
         },

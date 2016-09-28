@@ -2029,6 +2029,7 @@ export function assignToAgent(session,usertoken) {
         companyid : session.companyid,
         sessionid : session.sessionid,
         agentAssignment : session,
+        type : session.type,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',

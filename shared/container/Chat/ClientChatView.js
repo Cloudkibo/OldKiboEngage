@@ -30,10 +30,13 @@ class ClientChatView extends Component {
   getAgentSocket(data){
     console.log(data)
     console.log('agent socket id is : ' + data.data.agentsocket);
-     this.refs.agentid.value = data.data.agentid;
-    this.refs.agentname.value = data.data.assignedagentname;
-    this.refs.agentemail.value = data.data.assignedagentemail;
-               
+    // agentid,agentname and agentemail will now be array fields
+    for(var i = 0;i< data.data.agentid.length;i++){
+     this.refs.agentid.value = this.refs.agentid.value + ' ' + data.data.agentid[i];
+    
+    this.refs.agentname.value = this.refs.agentname.value + ' ' + data.data.assignedagentname[i];
+    this.refs.agentemail.value = this.refs.agentname.value + ' ' + data.data.assignedagentemail[i];
+     }          
 
 
   }
@@ -113,8 +116,8 @@ class ClientChatView extends Component {
                           'from' : this.refs.name.value,
                           'visitoremail' : this.refs.email.value,
                           'agentemail' : this.props.sessiondetails.agentemail,
-                          'agentid': this.refs.agentid.value,
-                          'toagent' : this.refs.agentemail.value ,
+                          'agentid': this.refs.agentid.value.split(" "),
+                          'toagent' : this.refs.agentemail.value.split(" ") ,
                           'type': 'message',
                           'uniqueid' : unique_id,
                            'msg' : this.refs.msg.value,
