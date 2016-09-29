@@ -5,6 +5,12 @@ import request from 'request';
 var Enumerable = require('linq');
 var baseURL = `https://api.kibosupport.com`
 
+var  headers =  {
+ 'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+ 'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+ 'kibo-client-id': 'cd89f71715f2014725163952',
+ 
+ }
 
 /************************* Customer APIS ************************************/
 export function createsession(req, res) {
@@ -17,8 +23,8 @@ export function createsession(req, res) {
   var options = {
       url: `${baseURL}/api/visitorcalls/createsession`,
       rejectUnauthorized : false,
-      json: req.body.session
-      
+      json: req.body.session,
+      headers
      
     };
 

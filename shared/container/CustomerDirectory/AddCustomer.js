@@ -74,7 +74,7 @@ class AddCustomer extends Component {
       var fullurl = "";
 
      
-      var session = { 
+     var session = { 
                         'email' : email.value,
                         'customerID' : email.value,
                         'departmentid': this.refs.teamlist.value,
@@ -96,6 +96,8 @@ class AddCustomer extends Component {
                         'socketid' : data.socketid,
 
                          }
+
+       
     this.props.createsession(session); //added to create abandoned session
     browserHistory.push('/');
   }
@@ -136,6 +138,9 @@ create_session(data){
                       'socketid' : data.socketid,
 
                          }
+
+ 
+
         this.props.createsession(session);
         this.props.addRoom(data);
       

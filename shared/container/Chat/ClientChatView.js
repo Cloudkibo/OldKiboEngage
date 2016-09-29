@@ -116,8 +116,8 @@ class ClientChatView extends Component {
                           'from' : this.refs.name.value,
                           'visitoremail' : this.refs.email.value,
                           'agentemail' : this.props.sessiondetails.agentemail,
-                          'agentid': this.refs.agentid.value.split(" "),
-                          'toagent' : this.refs.agentemail.value.split(" ") ,
+                          'agentid': this.refs.agentid.value.trim().split(" "),
+                          'toagent' : this.refs.agentemail.value.trim().split(" ") ,
                           'type': 'message',
                           'uniqueid' : unique_id,
                            'msg' : this.refs.msg.value,
@@ -135,7 +135,7 @@ class ClientChatView extends Component {
         
          socket.emit('send:messageToAgent', saveChat);
                    
-         this.props.savechat(saveChat);           
+//         this.props.savechat(saveChat);           
         this.refs.msg.value ='';
         this.forceUpdate();
       }
