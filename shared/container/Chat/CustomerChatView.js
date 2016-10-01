@@ -47,13 +47,9 @@ class CustomerChatView extends Component {
      console.log('constructor is called');
     if(usertoken != null)
      {
-       
         console.log(usertoken);
         console.log(props.sessiondetails.customerid);
         props.getChatRequest(props.sessiondetails.customerid,usertoken,props.chatlist);
-
-       
-       
       }
 
         super(props, context);
@@ -65,6 +61,7 @@ class CustomerChatView extends Component {
         this.getSocketmessage = this.getSocketmessage.bind(this);
         this.connectToCall = this.connectToCall.bind(this);
         this.connectCall = this.connectCall.bind(this);
+        this.getgroupmembers = this.getgroupmembers.bind(this);
         this.state = {
           value: '',
           suggestions: getSuggestions('',props.responses)
@@ -161,11 +158,17 @@ else{
      }
      this.forceUpdate();
   }
+  getgroupmembers(data){
+    //alert(data.getmembers.join(" "));
+    this.refs.groupmembers.value = data.getmembers.join(" ");
+    this.forceUpdate()
+  }
   componentDidMount() {
     
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
-  
+    this.props.route.socket.on('send:groupmembers',this.getgroupmembers);
+    
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
    
   }
@@ -208,6 +211,8 @@ else{
                           'companyid': this.props.userdetails.uniqueid,
                           'is_seen':'no',
                           'customerid' : this.props.sessiondetails.customerid,
+                          'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                          'sendersEmail' : this.props.userdetails.email,
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
@@ -236,13 +241,28 @@ else{
 
   // Only assigned agent can resolve session 
     const { socket,dispatch } = this.props;
-  
+  var agentingroup = false
+   // check that agent is in this group
+
+   if(this.props.sessiondetails.agent_ids.type == "group")
+   {
+    for(var i=0;i<this.props.groupagents.length;i++){
+      if(this.props.groupagents[i].groupid._id == this.props.sessiondetails.agent_ids.id && this.props.userdetails._id == this.props.groupagents[i].agentid._id){
+        agentingroup = true
+        break
+      }
+   }
+  }
+
   if(this.props.sessiondetails.status == "new"){
       alert('You cannot resolve this session.Only assigned sessions can be resolved')
  
   } 
-  
-  else if(this.props.userdetails._id != this.props.sessiondetails.agent_ids){
+  else if(this.props.userdetails._id != this.props.sessiondetails.agent_ids.id && this.props.sessiondetails.agent_ids.type == "agent"){
+    alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
+  }
+
+  else if(agentingroup == false){
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
   }
 
@@ -270,7 +290,8 @@ else{
                            'is_seen':'no',
                             'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                             'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-         
+                            'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                             'sendersEmail' : this.props.userdetails.email,
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
@@ -315,7 +336,6 @@ else{
      const { socket,dispatch } = this.props;
 
      // local changes
-
   this.props.sessiondetails.status = "assigned"; 
   this.props.sessiondetails.agent_ids =  {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'};
   
@@ -347,11 +367,11 @@ else{
                            'messagechannel': this.refs.channelid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
-
                            'assignedagentname': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name],
                            'agentid' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
                            
+                           'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
@@ -365,7 +385,8 @@ else{
         else{
         this.props.chatlist.push(saveChat);
         }
-        
+        this.refs.groupmembers.value = "";
+  
         socket.emit('send:message', saveChat);
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
 
@@ -499,6 +520,7 @@ else{
                            'assignedagentemail': agentemail,
                            
                       }
+         this.refs.groupmembers.value =  agentemail.join(" ");             
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
         } 
@@ -556,9 +578,9 @@ else{
 
     
    
-    // inform assignee that he has been assigned a Chat Session
+    // inform all group members about each others' email
 
-     var informMsg = { 
+    /* var informMsg = { 
                           'to' : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text ,//group name
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -574,9 +596,9 @@ else{
                            'agentemail' : agentemail,
                            'agentid' : agentids,
          
-                      }
+                      }*/
 
-    socket.emit('informAgent',informMsg);
+    socket.emit('informGroupMembers',agentemail);
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
          
 
@@ -617,10 +639,10 @@ else{
                            'messagechannel': this.refs.channellist.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
-
-                            'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-                            'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-         
+                           'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                           'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                           'groupmembers' : this.refs.groupmembers.value.trim().split(" "), 
+                            'sendersEmail' : this.props.userdetails.email,    
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
@@ -816,7 +838,8 @@ const { value, suggestions } = this.state;
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
-         
+          <input type="text" defaultValue = "" ref="groupmembers"/>
+          
           <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="channelid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>

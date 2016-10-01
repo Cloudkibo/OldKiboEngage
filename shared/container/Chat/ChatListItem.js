@@ -51,11 +51,21 @@ var changecc ={
 var ag = []
 
 var agentname = []
-if(props.customer.agent_ids.length > 0)
+if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.customer.agent_ids.length -1].type == "agent")
 
 {
-  props.agents.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1]).map((c,i) =>(
+  props.agents.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1].id).map((c,i) =>(
                            agentname.push(c.firstname + ' ' + c.lastname)                          
+                        ))
+
+}
+
+
+if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.customer.agent_ids.length -1].type == "group")
+
+{
+  props.group.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1].id).map((c,i) =>(
+                           agentname.push(c.groupname + ' Group')                          
                         ))
 
 }
