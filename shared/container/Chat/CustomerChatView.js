@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
+import { getChatRequest,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -307,15 +307,14 @@ else{
         }
 
 
-        socket.emit('send:message', saveChat);
+      socket.emit('send:message', saveChat);
         
       this.props.savechat(saveChat); 
       const usertoken = auth.getToken();
     
       this.props.resolvesession(this.props.sessiondetails.request_id,usertoken);//call action to mark session resolve;
-
       //update session status on socket
-    socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
+      socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
                                         'status' : 'resolved',
                                         'room' : this.props.userdetails.uniqueid,
                                         'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
@@ -452,7 +451,22 @@ else{
 
     socket.emit('informAgent',informMsg);
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
-         
+    
+
+    // create a news to inform agent that this session is assigned to him/her,if the assigned agent is not the user himself
+    if(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib != this.props.userdetails._id){
+        var news = {
+          'dateCreated' : Date.now(),
+          'message' : this.props.userdetails.firstname + ' has assigned a new session to you.',
+          'createdBy' :  this.props.userdetails._id,
+          'unread' : 'true',
+          'companyid' : this.props.userdetails.uniqueid,
+          'target' :  this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,//agent id for whom the news is intended
+          'url' : '/chat',
+        }
+
+        this.props.createnews(news,usertoken);
+    }     
 
     this.forceUpdate();
   }
@@ -600,13 +614,35 @@ else{
 
     socket.emit('informGroupMembers',agentemail);
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
-         
+    
 
+
+   // create a news to inform all agents in the group that this session is assigned to him/her,if the assigned agent is not the user himself
+    var news_array = []
+    for(var i=0;i<agentids.length;i++){
+    if(agentids[i] != this.props.userdetails._id){
+
+        var news = {
+          'dateCreated' : Date.now(),
+          'message' : this.props.userdetails.firstname + ' has assigned a new session to ' + this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text + ' group',
+          'createdBy' :  this.props.userdetails._id,
+          'unread' : 'true',
+          'companyid' : this.props.userdetails.uniqueid,
+          'target' : agentids[i],//agent id for whom the news is intended
+          'url' : '/chat',
+        }
+
+        news_array.push(news);
+      }
+    }
+    alert('Creating news ' + news_array.length);
+    if(news_array.length > 0){
+        this.props.createnews(news_array,usertoken);
+    }
     this.forceUpdate();
-  }
-
-
-  }
+  
+   }
+ }
 
 
 
@@ -986,4 +1022,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{resolvesession,getChatRequest,getuserchats,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

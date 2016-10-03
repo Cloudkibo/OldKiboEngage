@@ -6,6 +6,7 @@ import * as NotificationController from '../controllers/notifications.controller
 import * as CustomerController from '../controllers/customer.controller';
 import * as ChatController from '../controllers/chat.controller';
 import * as GroupController from '../controllers/group.controller';
+import * as NewsController from '../controllers/news.controller';
 
 
 const router = new Router();
@@ -97,4 +98,6 @@ router.route('/getuserchats').get(ChatController.getuserchats);
 router.route('/getspecificuserchats').post(ChatController.getspecificuserchats);
 router.route('/resolvechatsession').post(ChatController.resolvechatsession);
 router.route('/pickchatsession').post(ChatController.pickchatsession);
+router.route('/createnews').post(NewsController.createNews);
+
 export default router;

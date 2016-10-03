@@ -2676,3 +2676,22 @@ export function getgroups(token) {
   };
 }
 
+/**** News related actions*****/
+export function createnews(news,usertoken) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createnews`, {
+      method: 'post',
+      body: JSON.stringify({
+        news: news,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => {
+
+        console.log(res);
+    });
+  };
+}
