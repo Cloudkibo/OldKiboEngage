@@ -259,6 +259,23 @@ Our Real-Time report gives you an overview of agents' activity. Measure your liv
 ![customer](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/customer.PNG)
 
 
+### Groups
+
+Agent Groups will be the group comprises of more than one agent.Any chat session can be assigned to a Group other than individual agent.The purpose of the group is to allow agents to work in collaboration for solving customer queries.There can be two types of Groups:
+
+  *1. Public Groups :*
+      Public Groups are visible to all agents within a company.Any agent can search and join a public group
+
+  *2. Private Groups :*
+      Only the agent who created a private group can add other agents in his group
+
+![creategroup](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/creategroup.PNG)
+
+![viewgroups](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/grouplist.PNG)
+
+![assignToGroup](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedToGroup.PNG)
+
+
 
 
 
