@@ -44,7 +44,13 @@ class GroupEditView extends Component {
         const idRef = this.refs.id;
     if (nameRef.value && descRef.value) {
       //alert(nameRef.value);
-      this.props.editGroup({name :nameRef.value,desc:descRef.value,status : status.value,id:idRef.value,token:usertoken,groupagents: this.props.newagents});
+      var ag=[]
+      for(var i=0;i< this.props.newagents.length;i++){
+        if(this.props.newagents[i].groupid._id == this.props.group._id){
+          ag.push(this.props.newagents[i].agentid);
+        }
+      }
+      this.props.editGroup({name :nameRef.value,desc:descRef.value,status : status.value,id:idRef.value,token:usertoken,groupagents: ag});
      
     }
   }
@@ -54,7 +60,7 @@ class GroupEditView extends Component {
     var flag = 0;
     for(var j = 0;j<this.props.newagents.length;j++)
     {
-      if(this.props.newagents[j]._id == id)
+      if(this.props.newagents[j].agentid._id == id && this.props.newagents[j].groupid._id == this.props.group._id)
       {
           flag = 1;
           break;
@@ -62,7 +68,7 @@ class GroupEditView extends Component {
     }
     if(flag == 0)
     {
-        this.props.newagents.push({"_id" :id});
+        this.props.newagents.push({"agentid" : {"_id" :id},"groupid" :  {"_id" :this.props.group._id}});
     }
     else{
       alert('Agent Already added in the team');  
@@ -76,7 +82,7 @@ class GroupEditView extends Component {
     
     for(var j = 0;j<this.props.newagents.length;j++)
     {
-      if(this.props.newagents[j]._id == id)
+      if(this.props.newagents[j].agentid._id == id && this.props.newagents[j].groupid._id == this.props.group._id)
       {
           this.props.newagents.splice(j,1);
           break;
@@ -159,8 +165,8 @@ class GroupEditView extends Component {
                  
                    {
                     this.props.newagents &&
-                          this.props.newagents.map((agent, i)=> (
-                          this.props.agents.filter((ag) => ag._id == agent._id).map((ag,j) =>
+                          this.props.newagents.filter((agent) => agent.groupid._id == this.props.group._id).map((agent, i)=> (
+                          this.props.agents.filter((ag) => ag._id == agent.agentid._id).map((ag,j) =>
                           (
                           <li key ={i}  onClick = {this.removeAgent.bind(this,ag._id)}>{ag.firstname + ' ' + ag.lastname}</li>
                           ))

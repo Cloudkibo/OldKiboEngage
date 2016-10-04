@@ -244,7 +244,7 @@ groupdetails :state.groupdetails,
              userchats : state.userchats,
              team: state.team,
              group : state.group,
-             newagents : state.newagents,
+             newagents : action.agents,
         
            
           };              

@@ -99,8 +99,8 @@ class GroupDetailView extends Component {
                    <ul>
                    {
                     this.props.groupagents &&
-                         this.props.groupagents.filter((agent) => agent.groupid == this.props.group._id).map((agent, i)=> (
-                          this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
+                         this.props.groupagents.filter((agent) => agent.groupid._id == this.props.group._id).map((agent, i)=> (
+                          this.props.agents.filter((ag) => ag._id == agent.agentid._id).map((ag,j) =>
                           (
                           <li>{ag.firstname + ' ' + ag.lastname}</li>
                           ))
