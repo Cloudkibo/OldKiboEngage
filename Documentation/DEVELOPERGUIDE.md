@@ -147,6 +147,8 @@ Chat component will show the history of chats of logged in agent for a particula
   i.  Resolve : This action will mark the chat message status as resolved.
 
   ii. Assigned To:This action allow agent to redirect/reassign chat message to some other agent
+  
+  iii. Assigned To Group:This action allow agent to redirect/reassign chat message to group.This will enable agents with in that group to collaborate
 
   iii. Move To : This action allow agent to move the chat message to other team if he finds message not related to the team it has 
   been sent to.
