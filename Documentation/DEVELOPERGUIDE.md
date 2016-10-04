@@ -233,6 +233,31 @@ Each resolved session can be rescheduled in future.To reschedule the session Age
 For reports,we have use HighCharts library to present interative charts.For each type of type like Message Channel wise Session Stats,Department wise session stats,Platform wise session stats there is a separate high chart component.
 
 
+###11.  Groups Container
+
+Agent Groups will be the group comprises of more than one agent.Any chat session can be assigned to a Group other than individual agent.The purpose of the group is to allow agents to work in collaboration for solving customer queries.There can be two types of Groups:
+
+1. Public Groups : Public Groups are visible to all agents within a company.Any agent can search and join a public group
+
+2. Private Groups : Only the agent who created a private group can add other agents in his group
+
+Groups container will receive all groups data from Kibo support api.
+
+i. GroupDetailView : 
+
+In GroupDetailView.js,the details of a specific group will be presented.
+
+
+ii. GroupDetailView :
+
+It will enable user to modify group details and add other agents to group.
+
+iii. GroupCreateView :
+
+It will enable user to create a group
+
+
+
 ## Redux Files Structure
 We have used Redux for data and state handling on client side.
 Redux code is defined in shared/redux folder.
@@ -365,6 +390,16 @@ Following actions are related to Reports Module.
       vii.  getagentwisenotifications : Calls server api to fetch agent wise notification stats
       viii. getchannelwisestats : Calls server api to fetch channel wise session stats 
       
+###12. Actions related to Groups:
+
+Following actions are related to fetch and create groups.They will return group details to reducer
+
+      i.  getgroups : Calls server api to fetch agent's groups information
+      ii. getGroupAgents : Call server api to fetch the details of agents and groups joined list
+      iii.createGroup : Calls server api to create a group
+      iv. editGroup : Calls server api to edit group details
+      v.  joingroup : This will add agent to group
+      vi. deletegroup : Call server api to delete group
 
 ### reducers/reducer.js
 
