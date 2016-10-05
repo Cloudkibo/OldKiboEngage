@@ -68,6 +68,10 @@ class Groups extends Component {
     const token = auth.getToken()
     console.log(token)
     const { filteredData } = this.state;
+    if(this.props.errorMessage){
+      this.props.getgroups(token);
+      this.props.getGroupAgents(token);
+    }
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} />
@@ -117,7 +121,8 @@ class Groups extends Component {
                {this.props.errorMessage &&
 
                      <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
-                      }
+                      
+                }
                 { this.props.groupdetails &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
@@ -138,7 +143,7 @@ class Groups extends Component {
                        {
                         this.props.groupagents && filteredData && filteredData.map((group, i) => (
 
-                          <GroupListItem group={group} key={group.get('_id')}  groupagents = {this.props.groupagents} onDelete={() => this.props.deletegroup(group,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.joingroup(group,this.props.userdetails._id,token)} />
+                          <GroupListItem group={group} key={group.get('_id')}  groupagents = {this.props.groupagents} onDelete={() => this.props.deletegroup(group,group.get('_id'),token)} userdetails ={this.props.userdetails} onJoin={() => this.props.joingroup(group,this.props.userdetails._id,token)} />
                                                       
                         ))
                       }

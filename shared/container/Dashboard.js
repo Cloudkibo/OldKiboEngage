@@ -81,7 +81,9 @@ class Dashboard extends Component {
     const username = this.props.userdetails.firstname
     console.log(username)
     return (
-      <div>
+    this.props.userdetails &&
+       <div>
+       
        <AuthorizedHeader name = {this.props.userdetails.firstname} isAdmin ={this.props.userdetails.isAdmin} roomid = {this.props.userdetails.uniqueid} />
        <div className="page-container">
           <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 

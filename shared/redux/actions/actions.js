@@ -591,6 +591,8 @@ export function deleteGROUP(group) {
     type: ActionTypes.DELETE_GROUP,
     group,
   };
+
+ 
 }
 
 export function deleteteam(team,usertoken) {
@@ -615,11 +617,11 @@ else{
 }
 
 
-export function deletegroup(group,usertoken) {
+export function deletegroup(group,id,usertoken) {
   if(confirm("Do you want to delete this Group?"))
   {
   return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteGroup?id=${group._id}`, {
+    return fetch(`${baseURL}/api/deleteGroup?id=${id}`, {
       method: 'delete',
       headers: new Headers({
         'Authorization': usertoken,

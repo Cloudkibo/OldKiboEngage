@@ -170,10 +170,11 @@ export function groupagents(req, res) {
 
 
 export function destroyGroup(req, res) {
-  //console.log('destroyTeam is called.');
+  console.log('destroy Group is called.');
   var token = req.headers.authorization;
-  //console.log(req.query.id);
+  console.log(req.query.id);
   var id = req.query.id;
+
    var options = {
       url: `${baseURL}/api/groups/${id}`,
       rejectUnauthorized : false,
@@ -184,11 +185,11 @@ export function destroyGroup(req, res) {
     };
     function callback(error, response, body) {
     
-    //console.log(response.statusCode);
-    //console.log(error);
+    console.log(response.statusCode);
+    console.log(error);
       var info = JSON.parse(body);
 
-      //  //console.log(info.status);
+      // console.log(info.status);
         
       if(!error  && response.statusCode == 200) {
         res.status(200).json({info}); 
