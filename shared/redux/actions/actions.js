@@ -2665,6 +2665,7 @@ export function showGroups(groups) {
 
   };
 }
+
 export function getgroups(token) {
   console.log(token);
   return (dispatch) => {
@@ -2695,5 +2696,30 @@ export function createnews(news,usertoken) {
 
         console.log(res);
     });
+  };
+}
+
+export function showNews(news,userid) {
+  news = news.filter((c) => c.target == userid && c.unread == "true");
+  return {
+    type: ActionTypes.ADD_NEWS,
+    news,
+
+  };
+}
+
+export function getnews(userid,usertoken) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getnews`, {
+      method: 'post',
+      body: JSON.stringify({
+        target : userid
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showNews(res,userid)));
   };
 }

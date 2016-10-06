@@ -2,8 +2,32 @@ import React, { Component,PropTypes } from 'react';
 import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Logout from '../../container/Auth/Logout';
-export default class AuthorizedHeader extends Component
+import moment from 'moment'
+import { getnews}  from '../../redux/actions/actions'
+import { connect } from 'react-redux';
+
+var handleDate = function(d){
+var c = new Date(d);
+return c.toDateString();
+}
+
+class AuthorizedHeader extends Component
 {
+ constructor(props, context) {
+
+
+    super(props, context);
+    
+    
+  }
+
+ 
+  componentDidMount(){
+
+       const usertoken = auth.getToken();
+       this.props.getnews(this.props.user._id,usertoken);
+     
+  }
 
   render()
   {
@@ -19,64 +43,42 @@ export default class AuthorizedHeader extends Component
           </div >
           <div className="top-menu">
             <ul  className ="nav navbar-nav pull-right">
-              
+                    {this.props.news &&
+                        
                   <li className="dropdown dropdown-extended dropdown-notification">
                       <a href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                       <i className="fa fa-bell-o"></i>
-                          <span className="badge badge-default">7 </span>
+                          <span className="badge badge-default">{this.props.news.length} </span>
                       </a>
                      <ul className="dropdown-menu">
                           <li className="external">
-                            <h3><span className="bold">12 pending</span> notifications</h3>
+                            <h3><span className="bold">{this.props.news.length}</span> notifications</h3>
                             <a href="extra_profile.html">view all</a>
                           </li>
+                       
                           <li>
-                              <ul className="dropdown-menu-list scroller" style={{height: 250+'px'}} data-handle-color="#637283">
+                              <ul className="dropdown-menu-list scroller" style={{height: 250+'px',overflowY: 'scroll'}} data-handle-color="#637283">
+                                  {
+                                    this.props.news && this.props.news.map((news, i) => (
+                      
                                   <li>
-                                    <a href="javascript:;">
-                                          <span className="time">just now</span>
+                                    <Link to={news.url}>
+                                          <span className="time">{handleDate(news.dateCreated)}</span>
                                           <span className="details">
                                           <span className="label label-sm label-icon label-success">
-                                          <i className="fa fa-plus"></i>
+                                          <i className="fa fa-bell-o"></i>
                                           </span>
-                                          New user registered. </span>
-                                    </a>
+                                          {news.message} </span>
+                                    </Link>
                                   </li>
-                                  <li>
-                                    <a href="javascript:;">
-                                    <span className="time">3 mins</span>
-                                    <span className="details">
-                                    <span className="label label-sm label-icon label-danger">
-                                    <i className="fa fa-bolt"></i>
-                                    </span>
-                                    Server #12 overloaded. </span>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="javascript:;">
-                                    <span className="time">10 mins</span>
-                                    <span className="details">
-                                    <span className="label label-sm label-icon label-warning">
-                                    <i className="fa fa-bell-o"></i>
-                                    </span>
-                                    Server #2 not responding. </span>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="javascript:;">
-                                    <span className="time">14 hrs</span>
-                                    <span className="details">
-                                    <span className="label label-sm label-icon label-info">
-                                    <i className="fa fa-bullhorn"></i>
-                                    </span>
-                                    Application error. </span>
-                                    </a>
-                                  </li>
+                                    ))
+
+                                  }
                                 </ul>
                               </li>  
                      </ul>
                   </li>
-           
+            }
              <li className="dropdown dropdown-user">
                         <a  href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                           <span className ="username">
@@ -130,5 +132,19 @@ export default class AuthorizedHeader extends Component
   }
 }
 
+function mapStateToProps(state) {
+   return {
+    
+    team: (state.dashboard.team),
+    agents:(state.dashboard.agents),
+    deptagents:(state.dashboard.deptagents),
+    agent :(state.dashboard.agent),
+    errorMessage:(state.dashboard.errorMessage),
+    channels :(state.dashboard.channels),
+    userdetails:(state.dashboard.userdetails),
+    news : (state.dashboard.news)
+  };
+}
+export default connect(mapStateToProps,{ getnews})(AuthorizedHeader);
 
-export default AuthorizedHeader;
+

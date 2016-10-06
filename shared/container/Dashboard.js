@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
-import {getDeptAgents} from '../redux/actions/actions'
+import {getDeptAgents,getnews} from '../redux/actions/actions'
 import {getuserteams} from '../redux/actions/actions'
 import {getchannels,updateAgentList} from '../redux/actions/actions'
 
@@ -17,7 +17,7 @@ import { browserHistory } from 'react-router'
 //const socket = io('');
 var dontCall = false;
 var is_routed = false;
-
+var fetchnews = false;
 class Dashboard extends Component {
  constructor(props, context) {
 
@@ -38,7 +38,6 @@ class Dashboard extends Component {
     
    
   }
-
  componentWillReceiveProps(props){
    if(props.userdetails && props.userdetails.accountVerified == "No" && is_routed == false){
     is_routed = true;
@@ -46,6 +45,7 @@ class Dashboard extends Component {
     
 
    }
+   
   
  }
  
@@ -81,10 +81,12 @@ class Dashboard extends Component {
     const username = this.props.userdetails.firstname
     console.log(username)
     return (
-    this.props.userdetails &&
        <div>
-       
-       <AuthorizedHeader name = {this.props.userdetails.firstname} isAdmin ={this.props.userdetails.isAdmin} roomid = {this.props.userdetails.uniqueid} />
+       {
+        this.props.userdetails &&
+  
+       <AuthorizedHeader name = {this.props.userdetails.firstname} isAdmin ={this.props.userdetails.isAdmin} user ={this.props.userdetails} roomid = {this.props.userdetails.uniqueid} />
+       }
        <div className="page-container">
           <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
@@ -112,9 +114,10 @@ function mapStateToProps(state) {
   deptagents:(state.dashboard.deptagents),
   teamdetails:(state.dashboard.teamdetails),
   channels :(state.dashboard.channels),
-  onlineAgents:(state.dashboard.onlineAgents),       
+  onlineAgents:(state.dashboard.onlineAgents), 
+  news : (state.dashboard.news),      
        
    }
 }
 
-export default connect(mapStateToProps,{getuser,updateAgentList,getAgents,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));
+export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));

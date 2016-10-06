@@ -55,26 +55,25 @@ export function createNews(req, res) {
   }
 
 
-/*export function getnotifications(req, res) {
-  console.log('get getnotifications is called');
+export function getnews(req, res) {
+  console.log('get getnews is called');
   var token = req.headers.authorization;
-  console.log('token received is  : ' + token);
   var options = {
-      url: `${baseURL}/api/notifications/`,
+      url: `${baseURL}/api/news/`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
-                 }
+                 },
       
+      json : req.body
      
     };
     function callback(error, response, body) {
       console.log(body);
        console.log(error);
       if(!error  && response.statusCode == 200) {
-        var info = JSON.parse(body);
-        console.log(info);
-      return res.status(200).json(info);
+       
+      return res.status(200).json(body);
     }
 
     else
@@ -86,7 +85,7 @@ export function createNews(req, res) {
   }
 
 
-export function destroyNotification(req, res) {
+/*export function destroyNotification(req, res) {
   console.log('destroyNotification is called.');
   var token = req.headers.authorization;
   console.log(req.query.id);

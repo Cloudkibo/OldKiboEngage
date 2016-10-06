@@ -25,7 +25,6 @@ class Chat extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-     alert('constructor is called');
     if(usertoken != null)
     {
        
@@ -203,7 +202,7 @@ componentDidMount(){
     return (
       <div>
                 
-       <AuthorizedHeader name = {this.props.userdetails.firstname} />
+       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
     
        <div className="page-container">
 

@@ -8,7 +8,6 @@ import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
 import InviteAgent from './InviteAgent';
 import {inviteagent,getAgents} from '../../redux/actions/actions'
-
 import {deleteagent} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
@@ -66,7 +65,7 @@ class Agents extends Component {
     console.log(this.props.agents);
     return (
       <div>
-       <AuthorizedHeader name = {this.props.userdetails.firstname} />
+       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
     
        <div className="page-container">
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
