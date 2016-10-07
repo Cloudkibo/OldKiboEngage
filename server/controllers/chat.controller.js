@@ -566,3 +566,16 @@ export function updatereschedule(req, res) {
            request.post(options, callback);
    
   }
+
+
+/*************** This endpoint will be exposed to mobile clients ***************/
+// Endpoint will receive chat message from mobile client and then forward to agents thorugh socket ******/
+
+// Get list of things
+export function getChatMessage(req, res) {
+  
+    var chat   = req.body;
+    console.log(chat);
+    return res.json(200,{'status' : 'success'});
+  
+};

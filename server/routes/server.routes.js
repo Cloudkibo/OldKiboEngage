@@ -101,4 +101,6 @@ router.route('/pickchatsession').post(ChatController.pickchatsession);
 router.route('/createnews').post(NewsController.createNews);
 router.route('/getnews').post(NewsController.getnews);
 
+router.route('/getchat').post(ChatController.getChatMessage);
+
 export default router;
