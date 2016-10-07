@@ -338,7 +338,7 @@ componentDidMount(){
                           <td className="col-md-6">
                           {
                             
-                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents &&
+                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses &&
 			                    	<CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat}/>
 			                   }
                           </td> : 
