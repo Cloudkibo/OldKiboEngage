@@ -73,7 +73,7 @@ for(var i = 0;i<customers.length;i++){
           emailArray.push(customers[i].email);
 
       else{
-        pushNotificationArray.push(customers[i]._id);//we are using _id as a tagname
+        pushNotificationArray.push(customers[i].customerID);//we are using _id as a tagname
       }
 
 }
