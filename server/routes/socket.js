@@ -102,6 +102,8 @@ function onDisconnect(io2, socket) {
 // When the user connects.. perform this
 function onConnect(io2, socket) {
  console.log(socket.id + ' connected');
+ // Insert sockets below
+  require('../controllers/chat.controller').register(socket);
 
   socket.on('logClient', function(data){
     //logger.clientLog(data.level, "Client side log: "+ data.data);
@@ -119,7 +121,18 @@ function onConnect(io2, socket) {
     //add logic here
     if(data.fromMobile && data.fromMobile == 'yes'){
         console.log('data from mobile.Not pushed in userchats');
+        var payload = {
+        data: {
+          uniqueid: data.uniqueid, // this is uniqueid of message
+          request_id : data.request_id, //this is request id of session
+        
+        },
+        badge: 0
+      };
+
+      sendPushNotification(data.customerid.customerID,payload)
     }
+
     else     {
           userchats.push(data);
          }
@@ -338,7 +351,76 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
     
   });
 
+//for mobile clients
+socket.on('getmessagefromserver',function(data){
 
+    console.log('sending a hello message to all agents');
+    console.log(data);
+    userchats.push(data);
+
+    if(data.toagent){
+            console.log('sending point to point message to Agent');
+            //find the socket id
+            var socketids =[]
+           
+            for(var j=0;j< data.toagent.length;j++){
+                for(var i = 0;i < onlineAgents.length;i++)
+                {
+                  if(onlineAgents[i].email == data.toagent[j]){
+                     console.log('agent is online');
+                     
+                    socketids.push(onlineAgents[i].socketid);
+                    break;
+                  }
+
+            }
+          }
+
+           for(var i=0;i<socketids.length;i++){
+            io2.sockets.connected[socketids[i]].join('grp');
+          }
+           //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
+           io2.to('grp').emit('send:message',{
+                                to: data.to,
+                                toagent:data.toagent,
+                                from : data.from,
+                                visitoremail:data.visitoremail,
+                                datetime:data.datetime,
+                                uniqueid:data.uniqueid,
+                                msg: data.msg,
+                                time:data.time,
+                                request_id : data.request_id,
+                                type : data.type,
+                                messagechannel:data.messagechannel,
+                                companyid:data.companyid,
+                                is_seen:data.is_seen
+                              });
+                    
+                    
+           
+    }
+    else
+    {
+         console.log('broadcasting message');
+          socket.emit('send:message', {
+            to: data.to,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
+            msg: data.msg,
+            time:data.time,
+            uniqueid:data.uniqueid,
+            type : data.type,
+            request_id :data.request_id,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
+
+
+          });
+    }
+
+});
 
 socket.on('send:messageToAgent', function (data) {
     console.log('sending a hello message to all agents');
@@ -457,7 +539,7 @@ socket.on('getuserchats',function(room){
         badge: 0
       };
 
-      sendPushNotification(data.customerid._id,payload)
+      sendPushNotification(data.customerid.customerID,payload)
     }
     else{
     io2.to(data.socketid).emit('send:getAgent',{

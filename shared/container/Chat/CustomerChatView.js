@@ -59,6 +59,7 @@ class CustomerChatView extends Component {
         this.moveToChannel = this.moveToChannel.bind(this);
         this.resolveSession = this.resolveSession.bind(this)
         this.getSocketmessage = this.getSocketmessage.bind(this);
+        this.getSocketmessageFromServer = this.getSocketmessageFromServer.bind(this);
         this.connectToCall = this.connectToCall.bind(this);
         this.connectCall = this.connectCall.bind(this);
         this.getgroupmembers = this.getgroupmembers.bind(this);
@@ -142,13 +143,19 @@ else{
 }
 }
 
+  //function to forward message received from server to socket
+  getSocketmessageFromServer(message){
+     this.props.route.socket.emit('getmessagefromserver',message);
+  }
+
+
   getSocketmessage(message){
+      
    //  const usertoken = auth.getToken();
    //  this.props.getuserchats(usertoken);
     
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);   
-
     if(this.props.sessiondetails.platform == 'web'){
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      }
@@ -168,7 +175,7 @@ else{
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
     this.props.route.socket.on('send:groupmembers',this.getgroupmembers);
-    
+    this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
    
   }

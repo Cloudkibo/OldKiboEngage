@@ -571,11 +571,27 @@ export function updatereschedule(req, res) {
 /*************** This endpoint will be exposed to mobile clients ***************/
 // Endpoint will receive chat message from mobile client and then forward to agents thorugh socket ******/
 
-// Get list of things
+var agentSocket;
+exports.register = function(socket) {
+ agentSocket = socket;
+ console.log('registering agent socket');
+ agentSocket.on('send:messageToSocket',function(newsreel){
+
+        // as is proper, protocol logic like
+        // this belongs in a controller:
+
+        socket.broadcast.emit(newsreel);
+    });
+}
+
+
+
 export function getChatMessage(req, res) {
   
     var chat   = req.body;
     console.log(chat);
+
+    agentSocket.emit('send:messageToSocket',req.body);
     return res.json(200,{'status' : 'success'});
   
 };
