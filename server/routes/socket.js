@@ -125,7 +125,7 @@ function onConnect(io2, socket) {
         data: {
           uniqueid: data.uniqueid, // this is uniqueid of message
           request_id : data.request_id, //this is request id of session
-        
+          msg : data.msg,
         },
         badge: 0
       };

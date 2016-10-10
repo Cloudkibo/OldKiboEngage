@@ -145,6 +145,7 @@ else{
 
   //function to forward message received from server to socket
   getSocketmessageFromServer(message){
+     alert('message arrived.');
      this.props.route.socket.emit('getmessagefromserver',message);
   }
 
