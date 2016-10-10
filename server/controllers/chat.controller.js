@@ -575,13 +575,17 @@ var agentSocket;
 exports.register = function(socket) {
  agentSocket = socket;
  console.log('registering agent socket');
- agentSocket.on('send:messageToSocket',function(newsreel){
+/* agentSocket.on('send:messageToSocket',function(newsreel,callba){
 
         // as is proper, protocol logic like
         // this belongs in a controller:
         console.log('emitting agent socket...');
-        agentSocket.broadcast.emit(newsreel);
+        agentSocket.broadcast.emit(newsreel,function(message){
+          return res.json(200,{'status' : 'success'});
+  
+        });
     });
+    */
 }
 
 
@@ -591,7 +595,9 @@ export function getChatMessage(req, res) {
     var chat   = req.body;
     console.log(chat);
 
-    agentSocket.emit('send:messageToSocket',req.body);
+    agentSocket.emit('send:messageToSocket',req.body,function(message){
     return res.json(200,{'status' : 'success'});
   
+    });
+    
 };

@@ -147,6 +147,7 @@ else{
   getSocketmessageFromServer(message){
      alert('message arrived.');
      this.props.route.socket.emit('getmessagefromserver',message);
+    
   }
 
 
@@ -172,13 +173,19 @@ else{
     this.forceUpdate()
   }
   componentDidMount() {
-    
+    const { socket,dispatch } = this.props;
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
     this.props.route.socket.on('send:groupmembers',this.getgroupmembers);
-    this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
+   // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
+   this.props.route.socket.on('send:messageToSocket',function(data, callback){
+      //getSocketmessageFromServer(data);
+     alert('message arrived.');
+     socket.emit('getmessagefromserver',data);
    
+    callback('message');
+});
   }
 
  
@@ -890,7 +897,7 @@ const { value, suggestions } = this.state;
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
-            <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}}  ref="messageList">
+            <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1',width:600+'px'}}  ref="messageList">
                           
                           {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
