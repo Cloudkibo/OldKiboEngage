@@ -533,7 +533,7 @@ socket.on('getuserchats',function(room){
           agentname: data.assignedagentname, // this is array field
           agentemail : data.assignedagentemail, //this is array field
           agentid : data.agentid, //this is array field
-
+          msg : data.msg ,
 
         },
         badge: 0
