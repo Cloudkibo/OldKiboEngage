@@ -394,7 +394,9 @@ else{
         }
         this.refs.groupmembers.value = "";
   
+        if(this.props.sessiondetails.platform == 'web'){
         socket.emit('send:message', saveChat);
+      }
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
 
         socket.emit('send:agentsocket' , saveChat);

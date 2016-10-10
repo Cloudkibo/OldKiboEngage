@@ -579,8 +579,8 @@ exports.register = function(socket) {
 
         // as is proper, protocol logic like
         // this belongs in a controller:
-
-        socket.broadcast.emit(newsreel);
+        console.log('emitting agent socket...');
+        agentSocket.broadcast.emit(newsreel);
     });
 }
 

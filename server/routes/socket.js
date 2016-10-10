@@ -9,7 +9,7 @@ var notificationHubService = azure.createNotificationHubService('KiboEngagePush'
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
-    alert : payload.msg,
+    alert : payload.data.msg,
     sound : 'UILocalNotificationDefaultSoundName',
     badge : payload.badge,
     payload : payload
@@ -534,6 +534,8 @@ socket.on('getuserchats',function(room){
           agentemail : data.assignedagentemail, //this is array field
           agentid : data.agentid, //this is array field
           msg : data.msg ,
+          uniqueid: data.uniqueid, // this is uniqueid of message
+          request_id : data.request_id, //this is request id of session
 
         },
         badge: 0
