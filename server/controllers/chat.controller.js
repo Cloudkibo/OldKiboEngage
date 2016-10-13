@@ -2,9 +2,10 @@ import cuid from 'cuid';
 import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
+
 var Enumerable = require('linq');
 var baseURL = `https://api.kibosupport.com`
-
+var ss = require('../routes/socket');
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
@@ -590,14 +591,13 @@ exports.register = function(socket) {
 
 
 
+
 export function getChatMessage(req, res) {
   
     var chat   = req.body;
     console.log(chat);
-
-    agentSocket.emit('send:messageToSocket',req.body,function(message){
+    //ss.getchat(req.body);
+    ss.hello();
     return res.json(200,{'status' : 'success'});
   
-    });
-    
 };

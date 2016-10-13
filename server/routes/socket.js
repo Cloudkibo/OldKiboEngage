@@ -44,6 +44,13 @@ var onlineWebClientsSession = []; //array to hold customer sessions who are onli
 
 var userchats = [];//array to hold all  chat msgs
 
+var onlineSockets=[];
+exports.getchat = function(userchat){
+   console.log(userchat);
+   console.log('socket fucntion is called');
+  };
+
+ 
 // When the user disconnects.. perform this
 function onDisconnect(io2, socket) {
   console.log('calling onDisconnect  :' + socket.id);
@@ -103,7 +110,7 @@ function onDisconnect(io2, socket) {
 function onConnect(io2, socket) {
  console.log(socket.id + ' connected');
  // Insert sockets below
-  require('../controllers/chat.controller').register(socket);
+  //require('../controllers/chat.controller').register(socket,io2);
 
   socket.on('logClient', function(data){
     //logger.clientLog(data.level, "Client side log: "+ data.data);
@@ -900,6 +907,8 @@ socket.on('getOnlineAgentList',function() {
   
 }
 
+
+
 module.exports = function (socketio) {
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
@@ -917,6 +926,8 @@ module.exports = function (socketio) {
   // }));
 
   socketio.on('connection', function (socket) {
+    onlineSockets.push(socket);
+    console.log('onlineSockets length : ' + onlineSockets.length);
     socket.address = socket.handshake.address !== null ?
             socket.handshake.address.address + ':' + socket.handshake.address.port :
             process.env.DOMAIN;
@@ -928,6 +939,13 @@ module.exports = function (socketio) {
 
     // Call onDisconnect.
     socket.on('disconnect', function () {
+      for(var j = 0;j<onlineSockets.length ;j++){
+          if(onlineSockets[j].id == socket.id){
+            console.log('Removing socket ');
+            onlineSockets.splice(j,1);
+            break;
+          }
+        }
       onDisconnect(socketio, socket);
       console.info('[%s] DISCONNECTED', socket.address);
     });
@@ -939,4 +957,12 @@ module.exports = function (socketio) {
   });
 
 
+  
+  
 };
+
+
+/******** not exporting in controller file **********/
+module.exports = function hello(){
+  console.log('hello');
+} 
