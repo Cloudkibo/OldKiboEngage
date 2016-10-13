@@ -85,6 +85,36 @@ export function getnews(req, res) {
   }
 
 
+export function updatenews(req, res) {
+  console.log('get updatenews is called');
+  var token = req.headers.authorization;
+  var options = {
+      url: `${baseURL}/api/news/update`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      
+      json : req.body
+     
+    };
+    function callback(error, response, body) {
+      console.log(body);
+       console.log(error);
+      if(!error  && response.statusCode == 200) {
+       
+      return res.status(200).json(body);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error}); 
+    }
+    }
+    request.post(options, callback);
+  }
+
+
 /*export function destroyNotification(req, res) {
   console.log('destroyNotification is called.');
   var token = req.headers.authorization;

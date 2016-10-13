@@ -224,7 +224,7 @@ const server = app.listen(serverConfig.port, (error) => {
 });
 
 var io = require('socket.io').listen(server);
-require('./routes/socket.js')(io);
+require('./routes/socket.js').socketf(io);
 
 
 

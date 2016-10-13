@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Logout from '../../container/Auth/Logout';
 import moment from 'moment'
-import { getnews}  from '../../redux/actions/actions'
+import { getnews,updatenews}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 
 var handleDate = function(d){
@@ -18,10 +18,15 @@ class AuthorizedHeader extends Component
 
     super(props, context);
     
-    
   }
 
- 
+ onClickNews(news,e){
+ e.preventDefault();
+ const usertoken = auth.getToken();
+    
+ alert('news is clicked');
+ this.props.updatenews(news,usertoken);
+ }
   componentDidMount(){
 
        const usertoken = auth.getToken();
@@ -45,7 +50,7 @@ class AuthorizedHeader extends Component
             <ul  className ="nav navbar-nav pull-right">
                     {this.props.news &&
                         
-                  <li className="dropdown dropdown-extended dropdown-notification">
+                  <li className="dropdown dropdown-extended dropdown-notification" >
                       <a href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                       <i className="fa fa-bell-o"></i>
                           <span className="badge badge-default">{this.props.news.length} </span>
@@ -61,8 +66,8 @@ class AuthorizedHeader extends Component
                                   {
                                     this.props.news && this.props.news.map((news, i) => (
                       
-                                  <li>
-                                    <Link to={news.url}>
+                                  <li onClick={this.onClickNews.bind(this,news)}>
+                                    <Link to='#'>
                                           <span className="time">{handleDate(news.dateCreated)}</span>
                                           <span className="details">
                                           <span className="label label-sm label-icon label-success">
@@ -145,6 +150,6 @@ function mapStateToProps(state) {
     news : (state.dashboard.news)
   };
 }
-export default connect(mapStateToProps,{ getnews})(AuthorizedHeader);
+export default connect(mapStateToProps,{ getnews,updatenews})(AuthorizedHeader);
 
 

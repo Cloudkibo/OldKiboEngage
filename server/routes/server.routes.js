@@ -17,7 +17,7 @@ router.route('/getlogin').post(UserController.getlogin);
 router.route('/signupUser').post(UserController.signupUser);
 router.route('/getuser').get(UserController.getuser);
 router.route('/verifyaccount').get(UserController.verifyaccount);
-
+router.route('/updatenews').post(NewsController.updatenews);
 router.route('/forgotpassword').post(UserController.forgotpassword);
 router.route('/updateprofile').post(UserController.updateprofile);
 router.route('/updatesettings').post(UserController.updatesettings);

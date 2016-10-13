@@ -2723,3 +2723,28 @@ export function getnews(userid,usertoken) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showNews(res,userid)));
   };
 }
+
+
+export function updatenews(news,usertoken){
+   return (dispatch) => {
+    fetch(`${baseURL}/api/updatenews`, {
+      method: 'post',
+      body: JSON.stringify({
+        newsid : news._id,
+        unread : "false",
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+         browserHistory.push(news.url);
+        // dispatch(editteamError(res.message));
+
+
+        }
+    );
+  };
+}
+

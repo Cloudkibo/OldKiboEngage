@@ -596,8 +596,8 @@ export function getChatMessage(req, res) {
   
     var chat   = req.body;
     console.log(chat);
-    //ss.getchat(req.body);
-    ss.hello();
+    ss.getchat(req.body);
+    
     return res.json(200,{'status' : 'success'});
   
 };

@@ -5,7 +5,7 @@
 'use strict';
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
-
+var glob;
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
@@ -45,10 +45,6 @@ var onlineWebClientsSession = []; //array to hold customer sessions who are onli
 var userchats = [];//array to hold all  chat msgs
 
 var onlineSockets=[];
-exports.getchat = function(userchat){
-   console.log(userchat);
-   console.log('socket fucntion is called');
-  };
 
  
 // When the user disconnects.. perform this
@@ -909,7 +905,7 @@ socket.on('getOnlineAgentList',function() {
 
 
 
-module.exports = function (socketio) {
+exports.socketf = function (socketio) {
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
   //
@@ -924,7 +920,7 @@ module.exports = function (socketio) {
   //   secret: config.secrets.session,
   //   handshake: true
   // }));
-
+  glob = socketio;
   socketio.on('connection', function (socket) {
     onlineSockets.push(socket);
     console.log('onlineSockets length : ' + onlineSockets.length);
@@ -963,6 +959,22 @@ module.exports = function (socketio) {
 
 
 /******** not exporting in controller file **********/
-module.exports = function hello(){
-  console.log('hello');
+exports.getchat = function(data){
+  console.log('socket get chat is called');
+  onlineSockets[onlineSockets.length-1].emit('send:message',{
+                                to: data.to,
+                                toagent:data.toagent,
+                                from : data.from,
+                                visitoremail:data.visitoremail,
+                                datetime:data.datetime,
+                                uniqueid:data.uniqueid,
+                                msg: data.msg,
+                                time:data.time,
+                                request_id : data.request_id,
+                                type : data.type,
+                                messagechannel:data.messagechannel,
+                                companyid:data.companyid,
+                                is_seen:data.is_seen
+                              });
+
 } 
