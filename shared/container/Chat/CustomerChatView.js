@@ -231,7 +231,8 @@ else{
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        }              
+        }  
+         this.props.savechat(saveChat);
         socket.emit('send:message', saveChat);
 
         // for mobile customers
@@ -244,7 +245,7 @@ else{
         this.props.chatlist.push(saveChat);
         }
             
-        this.props.savechat(saveChat);               
+                     
         this.state.value ='';
         this.forceUpdate();
       }
