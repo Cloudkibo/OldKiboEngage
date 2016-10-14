@@ -31,6 +31,10 @@ class ClientChatView extends Component {
     console.log(data)
     console.log('agent socket id is : ' + data.data.agentsocket);
     // agentid,agentname and agentemail will now be array fields
+    this.refs.agentid.value='';
+    this.refs.agentname.value = '';
+    this.refs.agentemail.value = '';
+
     for(var i = 0;i< data.data.agentid.length;i++){
      this.refs.agentid.value = this.refs.agentid.value + ' ' + data.data.agentid[i];
     

@@ -157,7 +157,7 @@ else{
    //  this.props.getuserchats(usertoken);
     
    //get updated chat messages from socket
-   //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);   
+   //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid); 
     if(this.props.sessiondetails.platform == 'web'){
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      }

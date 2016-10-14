@@ -3,9 +3,9 @@
  */
 
 'use strict';
+var glob;
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
-var glob;
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
@@ -44,7 +44,6 @@ var onlineWebClientsSession = []; //array to hold customer sessions who are onli
 
 var userchats = [];//array to hold all  chat msgs
 
-var onlineSockets=[];
 
  
 // When the user disconnects.. perform this
@@ -449,10 +448,7 @@ socket.on('send:messageToAgent', function (data) {
           }
 
            for(var i=0;i<socketids.length;i++){
-            io2.sockets.connected[socketids[i]].join('grp');
-          }
-           //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
-           io2.to('grp').emit('send:message',{
+            io2.to(socketids[i]).emit('send:message',{
                                 to: data.to,
                                 toagent:data.toagent,
                                 from : data.from,
@@ -468,6 +464,9 @@ socket.on('send:messageToAgent', function (data) {
                                 is_seen:data.is_seen
                               });
                     
+          }
+           //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
+          
                     
            
     }
@@ -769,7 +768,7 @@ socket.on('getOnlineAgentList',function() {
     }
     }
     console.log("Agents online :");
-    console.log(onlineAgents);
+    //console.log(onlineAgents);
     //inform other agents that new agent is online now
 
     socket.broadcast.to(room.room).emit('updateOnlineAgentList', onlineAgents);
@@ -906,6 +905,7 @@ socket.on('getOnlineAgentList',function() {
 
 
 exports.socketf = function (socketio) {
+  glob = socketio;
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
   //
@@ -920,10 +920,7 @@ exports.socketf = function (socketio) {
   //   secret: config.secrets.session,
   //   handshake: true
   // }));
-  glob = socketio;
   socketio.on('connection', function (socket) {
-    onlineSockets.push(socket);
-    console.log('onlineSockets length : ' + onlineSockets.length);
     socket.address = socket.handshake.address !== null ?
             socket.handshake.address.address + ':' + socket.handshake.address.port :
             process.env.DOMAIN;
@@ -935,13 +932,7 @@ exports.socketf = function (socketio) {
 
     // Call onDisconnect.
     socket.on('disconnect', function () {
-      for(var j = 0;j<onlineSockets.length ;j++){
-          if(onlineSockets[j].id == socket.id){
-            console.log('Removing socket ');
-            onlineSockets.splice(j,1);
-            break;
-          }
-        }
+      
       onDisconnect(socketio, socket);
       console.info('[%s] DISCONNECTED', socket.address);
     });
@@ -961,7 +952,27 @@ exports.socketf = function (socketio) {
 /******** not exporting in controller file **********/
 exports.getchat = function(data){
   console.log('socket get chat is called');
-  onlineSockets[onlineSockets.length-1].emit('send:message',{
+
+  if(data.toagent){
+            console.log('sending point to point message to Agent');
+            //find the socket id
+            var socketids =[]
+           
+            for(var j=0;j< data.toagent.length;j++){
+                for(var i = 0;i < onlineAgents.length;i++)
+                {
+                  if(onlineAgents[i].email == data.toagent[j]){
+                     console.log('agent is online');
+                     
+                    socketids.push(onlineAgents[i].socketid);
+                    break;
+                  }
+
+            }
+            }
+
+           for(var i=0;i<socketids.length;i++){
+            glob.to(socketids[i]).emit('send:message',{
                                 to: data.to,
                                 toagent:data.toagent,
                                 from : data.from,
@@ -976,5 +987,32 @@ exports.getchat = function(data){
                                 companyid:data.companyid,
                                 is_seen:data.is_seen
                               });
+          }
+           
+    }
+    //broadcast message to all agents
+    else{
+            for(var i=0;i<onlineAgents.length;i++){
+              if(onlineAgents[i].room == data.companyid){
+                //send message on agent socket
+                glob.to(onlineAgents[i].socketid).emit('send:message',{
+                                          to: data.to,
+                                          toagent:data.toagent,
+                                          from : data.from,
+                                          visitoremail:data.visitoremail,
+                                          datetime:data.datetime,
+                                          uniqueid:data.uniqueid,
+                                          msg: data.msg,
+                                          time:data.time,
+                                          request_id : data.request_id,
+                                          type : data.type,
+                                          messagechannel:data.messagechannel,
+                                          companyid:data.companyid,
+                                          is_seen:data.is_seen
+                                        });
 
+              }
+            }
+    }
+ 
 } 
