@@ -179,13 +179,7 @@ else{
     this.props.route.socket.on('send:groupmembers',this.getgroupmembers);
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
-   this.props.route.socket.on('send:messageToSocket',function(data, callback){
-      //getSocketmessageFromServer(data);
-     alert('message arrived.');
-     socket.emit('getmessagefromserver',data);
-   
-    callback('message');
-});
+ 
   }
 
  
@@ -873,7 +867,14 @@ const { value, suggestions } = this.state;
                </td>
                 <td className="col-md-4">
                 <button className="btn btn-primary" onClick = {this.assignSessionToGroup}> Assigned To Group</button>
-                </td> 
+                </td>
+
+
+               <td className="col-md-4">
+                <label>Current Status - {this.props.sessiondetails.status}</label>
+                </td>
+                
+
             </tr>
               </tbody>
             </table>
