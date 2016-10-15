@@ -780,6 +780,40 @@ groupdetails :state.groupdetails,
             
             };
 
+
+            case ActionTypes.CHAT_SAVE_RESPONSE:
+           return {
+             userchats : state.userchats,
+             teamdetails: state.teamdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             responses : state.responses,
+             serverresponse : state.serverresponse,
+             chatlist : state.chatlist,
+             mobileuserchat : state.mobileuserchat,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,
+             news:state.news,
+             groupagents : state.groupagents,
+             groupdetails :state.groupdetails,
+             resolvedsessions : state.resolvedsessions,
+             assignedsessions : state.assignedsessions,
+            resolvedsocketsessions:state.resolvedsocketsessions,
+            groupagents : state.groupagents,
+            groupdetails :state.groupdetails,
+            tempMessage : action.tempMessage,
+            ismessageSaved : action.ismessageSaved,
+            
+            };
+
             case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
            return {
              userchats : state.userchats,

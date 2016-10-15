@@ -226,8 +226,8 @@ else{
         if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
         }  
-         this.props.savechat(saveChat);
-        socket.emit('send:message', saveChat);
+        this.props.savechat(saveChat);
+        //socket.emit('send:message', saveChat);
 
         // for mobile customers
         if(this.props.sessiondetails.platform == 'mobile'){
@@ -245,8 +245,21 @@ else{
       }
     }
 
+/***** emit message on socket once it is saved on server ***/
+ componentWillReceiveProps(props){
 
-
+  if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true"){
+      //alert('chat message saved on server');
+      if(props.tempMessage.assignedagentemail){
+         this.props.route.socket.emit('send:agentsocket' , props.tempMessage);
+        
+      }
+      else{
+      this.props.route.socket.emit('send:message',props.tempMessage);
+    }
+      //this.props.ismessageSaved = "false";
+  }
+ }
  resolveSession(e){
 
   // Only assigned agent can resolve session 
@@ -317,7 +330,7 @@ else{
         }
 
 
-      socket.emit('send:message', saveChat);
+      //socket.emit('send:message', saveChat);
         
       this.props.savechat(saveChat); 
       const usertoken = auth.getToken();
@@ -401,7 +414,7 @@ else{
       }
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
 
-        socket.emit('send:agentsocket' , saveChat);
+       // socket.emit('send:agentsocket' , saveChat);
         
         this.props.savechat(saveChat); 
 
@@ -558,13 +571,14 @@ else{
         //for web customers
         else{
         this.props.chatlist.push(saveChat);
+        socket.emit('send:message', saveChat);
         }
         
-        socket.emit('send:message', saveChat);
+        
 
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
 
-        socket.emit('send:agentsocket' , saveChat);
+        //socket.emit('send:agentsocket' , saveChat);
         
         this.props.savechat(saveChat); 
 
@@ -664,7 +678,7 @@ else{
      const usertoken = auth.getToken();
     
     alert('Are you sure,you want to move this session to another channel ?');
-   this.props.sessiondetails.messagechannel = this.refs.channellist.value;
+   this.props.sessiondetails.messagechannel.push(this.refs.channellist.value);
 
    // generatate unique id for the chat message
     var today = new Date();
@@ -705,7 +719,7 @@ else{
         this.props.chatlist.push(saveChat);
         }
         
-        socket.emit('send:message', saveChat);
+       // socket.emit('send:message', saveChat);
         
         this.props.savechat(saveChat); 
 
@@ -719,7 +733,7 @@ else{
             datetime : Date.now(),
 
     }
-
+    this.refs.channelid.value = this.refs.channellist.value;
     this.props.movedToMessageChannel(assignment,usertoken);
 
      //update session status on socket
@@ -1034,7 +1048,8 @@ function mapStateToProps(state) {
           responses :(state.dashboard.responses),  
           onlineAgents:(state.dashboard.onlineAgents),
           mobileuserchat : (state.dashboard.mobileuserchat),
-
+          ismessageSaved : (state.dashboard.ismessageSaved),
+          tempMessage :(state.dashboard.tempMessage),
           groupagents : (state.dashboard.groupagents),
           groupdetails :(state.dashboard.groupdetails),
           

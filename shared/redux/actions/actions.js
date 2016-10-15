@@ -1937,7 +1937,13 @@ export function  createsession(session) {
   };
 }
 
-
+export function savechatResponse(chat){
+  return {
+    type : ActionTypes.CHAT_SAVE_RESPONSE,
+    tempMessage : chat,
+    ismessageSaved : 'true',
+  }
+}
 export function  savechat(chat) {
   console.log(chat);  
   return (dispatch) => {
@@ -1955,7 +1961,8 @@ export function  savechat(chat) {
     }).then((res) => res.json()).then(res => {
         console.log(res.statusCode);
         if(res.statusCode == 201){
-        console.log('chat saved.');  
+        console.log('chat saved.'); 
+        dispatch(savechatResponse(chat)); 
        
       }
        else{
