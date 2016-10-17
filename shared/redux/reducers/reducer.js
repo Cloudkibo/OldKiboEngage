@@ -782,8 +782,16 @@ groupdetails :state.groupdetails,
 
 
             case ActionTypes.CHAT_SAVE_RESPONSE:
+           var cc = []
+           if(state.userchats){
+              cc = [...state.userchats,action.tempMessage]
+           }
+           else{
+            cc = [action.tempMessage]
+           }
            return {
-             userchats : state.userchats,
+
+             userchats : cc,
              teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
@@ -1271,10 +1279,18 @@ groupdetails :state.groupdetails,
           var chatlistt = []
             if(state.chatlist){
               chatlistt = [...state.chatlist,action.message]
+
             }
             else{
               chatlistt = [action.message]
             }
+            var cc = []
+           if(state.userchats){
+              cc = [...state.userchats,action.message]
+           }
+           else{
+            cc = [action.message]
+           }
            return {
              teamdetails: state.teamdetails,
              userdetails: state.userdetails,
@@ -1288,7 +1304,7 @@ groupdetails :state.groupdetails,
              customerchatold : state.customerchatold,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : action.ch, 
-             userchats : state.userchats,
+             userchats :cc,
               responses : state.responses,
        
              channels : state.channels,

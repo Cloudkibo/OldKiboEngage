@@ -33,7 +33,7 @@ class Chat extends Component {
        
        //but for mobile clients we will fetch list of sessions and customers from server
         props.getmobilesessions(usertoken);
-       // props.getuserchats(usertoken);
+        props.getuserchats(usertoken);
        
         props.getresponses(usertoken);
      

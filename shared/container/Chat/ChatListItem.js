@@ -123,6 +123,7 @@ var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
 return res;
 }    
   return (
+   (props.userchats.length > 0 ? 
    <div className="list-group" onClick={props.onClickSession} style={changec}>
    {
     (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
@@ -150,8 +151,7 @@ return res;
       </div>
       <br/>
 
-      <p className='list-group-item-text' style={clearStyle}>{userchatMsg[0]}</p>
-
+     
     </div> :
 
 
@@ -178,12 +178,12 @@ return res;
       </div>
       <br/>
 
-      <p className='list-group-item-text' style={clearStyle}>{userchatMsg[0]}</p>
-
+      
     </div> 
     )
   }
-   </div>
+   </div> :<div style={{'display' :'none'}}></div>
+ )
   );
 }
 

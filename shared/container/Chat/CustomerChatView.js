@@ -164,6 +164,7 @@ else{
 
      else{
       this.props.mobileuserchat.push(message);
+      this.props.userchats.push(message);
      }
      this.forceUpdate();
   }

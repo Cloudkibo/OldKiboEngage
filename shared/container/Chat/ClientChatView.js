@@ -139,9 +139,9 @@ class ClientChatView extends Component {
         
          socket.emit('send:messageToAgent', saveChat);
                    
-//         this.props.savechat(saveChat);           
-        this.refs.msg.value ='';
-        this.forceUpdate();
+       this.props.savechat(saveChat);           
+       this.refs.msg.value ='';
+       this.forceUpdate();
       }
     }
 
