@@ -14,6 +14,7 @@ import {savechat}  from '../../redux/actions/actions'
 
 
 import Autosuggest from 'react-autosuggest';
+var callonce = 'false'
  var handleDate = function(d){
 var c = new Date(d);
 return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
@@ -145,7 +146,6 @@ else{
 
   //function to forward message received from server to socket
   getSocketmessageFromServer(message){
-     alert('message arrived.');
      this.props.route.socket.emit('getmessagefromserver',message);
     
   }
@@ -194,6 +194,7 @@ else{
    handleMessageSubmit(e) {
     console.log('handleMessageSubmit' + e.which)
     console.log(this.state.value)
+    callonce = "false";
     var messageVal = this.state.value
     const { socket,dispatch } = this.props;
     
@@ -248,7 +249,7 @@ else{
 /***** emit message on socket once it is saved on server ***/
  componentWillReceiveProps(props){
 
-  if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true"){
+  if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true" && callonce == "false"){
       //alert('chat message saved on server');
       if(props.tempMessage.assignedagentemail){
          this.props.route.socket.emit('send:agentsocket' , props.tempMessage);
@@ -258,6 +259,7 @@ else{
       this.props.route.socket.emit('send:message',props.tempMessage);
     }
       //this.props.ismessageSaved = "false";
+      callonce = "true";
   }
  }
  resolveSession(e){
@@ -265,6 +267,7 @@ else{
   // Only assigned agent can resolve session 
     const { socket,dispatch } = this.props;
   var agentingroup = false
+
    // check that agent is in this group
 
    if(this.props.sessiondetails.agent_ids.type == "group")
@@ -331,7 +334,8 @@ else{
 
 
       //socket.emit('send:message', saveChat);
-        
+       callonce = "false";
+   
       this.props.savechat(saveChat); 
       const usertoken = auth.getToken();
     
@@ -344,7 +348,7 @@ else{
                                        });
 
       
-
+      
       this.forceUpdate();
   }
  }
@@ -417,7 +421,8 @@ else{
        // socket.emit('send:agentsocket' , saveChat);
         
         this.props.savechat(saveChat); 
-
+        callonce = "false";
+  
 
    
     // 3. update session status on server   
@@ -530,7 +535,8 @@ else{
     
     if(confirm("Are you sure you want to assign this session to " + this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text))
     {
-   
+   callonce = "false";
+  
     // 1. Broadcast a log message to all agents and customer that session is assigned to group
     
     //generate unique id of message - this change is for mobile clients
@@ -720,7 +726,8 @@ else{
         }
         
        // socket.emit('send:message', saveChat);
-        
+        callonce = "false";
+  
         this.props.savechat(saveChat); 
 
         //save new channel id on server
