@@ -908,7 +908,7 @@ const { value, suggestions } = this.state;
             this.props.sessiondetails &&
           <div>
           <label>Customer Name :</label>
-          <input value = {this.props.sessiondetails.customerid.name?this.props.sessiondetails.customerid.name:this.props.sessiondetails.customerid.customerID} ref="customername"/>
+          <input value = {this.props.sessiondetails.customerid.customerID} ref="customername"/>
           
            <label>Email :</label>
            <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
