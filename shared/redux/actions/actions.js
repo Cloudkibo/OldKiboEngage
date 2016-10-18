@@ -2755,3 +2755,27 @@ export function updatenews(news,usertoken){
   };
 }
 
+export function updatechatstatus(messages,customerid,usertoken) {
+    
+  return (dispatch) => {
+    fetch(`${baseURL}/api/updatechatstatus`, {
+      method: 'post',
+      body: JSON.stringify({
+          messages: messages,
+          customerid: customerid,
+
+
+      }),
+    
+      headers: new Headers({
+         'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+     
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+         
+        }
+    );
+  };
+}

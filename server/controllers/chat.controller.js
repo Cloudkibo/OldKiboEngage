@@ -6,6 +6,9 @@ import request from 'request';
 var Enumerable = require('linq');
 var baseURL = `https://api.kibosupport.com`
 var ss = require('../routes/socket');
+var azure = require('azure-sb');
+var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
+
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
@@ -601,3 +604,92 @@ export function getChatMessage(req, res) {
     return res.json(200,{'status' : 'success'});
   
 };
+
+
+//for mobile customers
+function sendPushNotification(tagname,obj){
+  
+   var payload = {
+        data: {
+          uniqueid:obj.uniqueid,
+          request_id : obj.request_id,
+          status : 'delivered',
+        },
+        badge: 0
+      };
+
+  //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
+  var iOSMessage = {
+    alert : 'status update',
+    sound : 'UILocalNotificationDefaultSoundName',
+    badge : payload.badge,
+    payload : payload
+  };
+  var androidMessage = {
+    to : tagname,
+    priority : "high",
+    data : {
+      message : payload
+    }
+  }
+  notificationHubService.gcm.send(tagname, androidMessage, function(error){
+    if(!error){
+      console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+    } else {
+      console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+  notificationHubService.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+    } else {
+      console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+}
+
+
+
+export function updatechatstatus(req, res) {
+  //console.log('resolvesession is called');
+  console.log(req.body);
+  var token = req.headers.authorization;
+  console.log(token);
+
+  var options = {
+      url: `${baseURL}/api/userchats/updateStatus`,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      rejectUnauthorized : false,
+      json: req.body
+      
+     
+    };
+
+    function callback(error, response, body) {
+        console.log(error);
+        console.log(response.statusCode);
+        console.log(body);
+        
+       if(!error && response.statusCode == 200)
+       {
+           //console.log(body)
+            // send push notification
+
+            for(var i = 0;i < req.body.messages.length;i++){
+              var obj = req.body.messages[i];
+              sendPushNotification(req.body.customerid,obj);
+            }
+            return res.status(200).json({statusCode : 201,message:'success'});
+       }
+       else
+       {
+           res.sendStatus(422);
+           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+   
+       }    
+       }    
+           request.post(options, callback);
+   
+  }

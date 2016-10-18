@@ -28,6 +28,7 @@ router.route('/getgroups').get(GroupController.getgroups);
 router.route('/getmyuserteams').get(TeamController.getmyuserteams);
 router.route('/getcustomerteams').get(TeamController.getcustomerteams);
 router.route('/getcustomersession').post(ChatController.getcustomersession);
+router.route('/updatechatstatus').post(ChatController.updatechatstatus);
 router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
 router.route('/updatereschedule').post(ChatController.updatereschedule);
 router.route('/createteam').post(TeamController.createteam);

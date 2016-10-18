@@ -9,7 +9,7 @@ import { getChatRequest,createnews,resolvesession,getuserchats,getcustomers,upda
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
-import {savechat}  from '../../redux/actions/actions'
+import {savechat,updatechatstatus}  from '../../redux/actions/actions'
 
 
 
@@ -165,6 +165,13 @@ else{
      else{
       this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
+      const usertoken = auth.getToken();
+      /*** call api to update status field of chat message received from mobile to 'delivered'
+      ***/
+      var messages = [];
+      messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
+      this.props.updatechatstatus(messages,message.customerid,usertoken);
+
      }
      this.forceUpdate();
   }
@@ -212,6 +219,7 @@ else{
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
+                          'status' : 'sent',
                           'type': 'message',
                           'uniqueid' : unique_id,
                           'msg' : messageVal,
@@ -306,6 +314,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'log',
+                          'status' : 'sent',
                           'uniqueid' : unique_id,
                            'msg' : 'Session is marked as Resolved',
                            'datetime' : Date.now(),
@@ -387,6 +396,7 @@ else{
                           'uniqueid' : unique_id,
                           'customerid' : this.props.sessiondetails.customerid,
                           'type': 'log',
+                          'status' : 'sent',
                            'msg' : 'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
@@ -551,6 +561,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'uniqueid' : unique_id,
+                          'status' : 'sent',
                           'customerid' : this.props.sessiondetails.customerid,
                           'type': 'log',
                            'msg' : 'Session is assigned to ' + this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
@@ -699,6 +710,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'uniqueid' : unique_id,
+                          'status' : 'sent',
                           'customerid' : this.props.sessiondetails.customerid,
                           'type': 'log',
                           'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
@@ -1064,4 +1076,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{updatechatstatus,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
