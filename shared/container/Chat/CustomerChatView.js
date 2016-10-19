@@ -15,7 +15,8 @@ import {savechat,updatechatstatus}  from '../../redux/actions/actions'
 
 import Autosuggest from 'react-autosuggest';
 var callonce = 'false'
- var handleDate = function(d){
+var newChatClicked = 'false'
+var handleDate = function(d){
 var c = new Date(d);
 return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 }
@@ -170,7 +171,7 @@ else{
       ***/
       var messages = [];
       messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
-      this.props.updatechatstatus(messages,message.customerid,usertoken);
+      this.props.updatechatstatus(messages,message.from,usertoken);
 
      }
      this.forceUpdate();
@@ -181,6 +182,7 @@ else{
     this.forceUpdate()
   }
   componentDidMount() {
+    alert('Component did mount is clled');
     const { socket,dispatch } = this.props;
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
@@ -193,6 +195,7 @@ else{
  
     
   componentDidUpdate() {
+
     const messageList = this.refs.messageList;
     messageList.scrollTop = messageList.scrollHeight;
   }
@@ -270,6 +273,8 @@ else{
       //this.props.ismessageSaved = "false";
       callonce = "true";
   }
+
+
  }
  resolveSession(e){
 
@@ -961,7 +966,7 @@ const { value, suggestions } = this.state;
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="primary-font">{chat.from}</strong> 
+                                            <strong className="primary-font">{chat.customername?chat.customername:chat.from}</strong> 
                                             <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}                                            </small>
                                         </div>

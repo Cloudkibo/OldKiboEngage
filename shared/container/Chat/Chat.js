@@ -337,11 +337,17 @@ componentDidMount(){
                           {this.refs.sessionid? 
                           <td className="col-md-6">
                           {
+                            this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
+                            (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
+			                    	<CustomerChatView newChatClicked = "true" socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat}/>
+                            ):
+                            (
+                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses &&  this.props.customerchat_selected.platform == 'web' &&
+                            <CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat}/>
+                            )
                             
-                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses &&
-			                    	<CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat}/>
-			                   }
-                          </td> : 
+                         }
+                          </td>:  
                          <td className="col-md-6">
                               <p>Click on session to view Chat messages</p>
                          </td>

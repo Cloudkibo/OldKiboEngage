@@ -1262,16 +1262,17 @@ groupdetails :state.groupdetails,
              chatlist : action.chatlist,
              customerchat : state.customerchat,
              customerchatold : state.customerchatold,
-              customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             channels : state.channels,
+             customerchat_selected : state.customerchat_selected,
+            new_message_arrived_rid : state.new_message_arrived_rid,
+            channels : state.channels,
             customers : state.customers, 
             userchats : state.userchats,
-             responses : state.responses,
+            responses : state.responses,
             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
+            groupdetails :state.groupdetails,
             groupdetails:state.groupdetails,
-            groupagents:state.groupagents
+            groupagents:state.groupagents,
+            mobileuserchat : state.mobileuserchat
        
             
             };

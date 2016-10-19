@@ -83,7 +83,7 @@ for(var i=0;i<emailArray.length;i++){
 }
 
 for(var i=0;i<pushNotificationArray.length;i++){
-  sendPushNotification(pushNotificationArray[i],emailBody);
+  sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
 }
 
 //sendPushNotification('sojharo',emailBody);
@@ -91,18 +91,19 @@ for(var i=0;i<pushNotificationArray.length;i++){
 
 
 //for mobile customers
-function sendPushNotification(tagname,notificationBody){
+function sendPushNotification(tagname,notificationBody,notificationTitle){
   
    var payload = {
         data: {
-          msg: notificationBody
+          msg: notificationBody,
+          title : notificationTitle 
         },
         badge: 0
       };
 
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
-    alert : payload.data.msg,
+    alert : payload.data.title,
     sound : 'UILocalNotificationDefaultSoundName',
     badge : payload.badge,
     payload : payload

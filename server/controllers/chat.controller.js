@@ -608,7 +608,8 @@ export function getChatMessage(req, res) {
 
 //for mobile customers
 function sendPushNotification(tagname,obj){
-  
+  console.log('sendPushNotification for message status update is called');
+  console.log(tagname);
    var payload = {
         data: {
           uniqueid:obj.uniqueid,
