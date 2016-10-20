@@ -2755,7 +2755,29 @@ export function updatenews(news,usertoken){
   };
 }
 
-export function updatechatstatus(messages,customerid,usertoken) {
+
+
+export function UpdateChatStatusUI(messages,mobileuserchat) {
+   //alert('called')
+  for(var i = 0;i<messages.length;i++){
+    var obj = messages[i];
+      
+    for(var j=0;j<mobileuserchat.length;j++){
+        if(obj.uniqueid == mobileuserchat[j].uniqueid){
+        //  alert('setting status')
+          mobileuserchat[j].status = obj.status;
+          break;
+        }
+    }
+  }
+  return {
+    type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
+    mobileuserchat : mobileuserchat,
+   
+
+  };
+}
+export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
     
   return (dispatch) => {
     fetch(`${baseURL}/api/updatechatstatus`, {
@@ -2774,7 +2796,9 @@ export function updatechatstatus(messages,customerid,usertoken) {
      
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-         
+        if(res.statusCode == 201){
+           dispatch(UpdateChatStatusUI(messages,mobileuserchat))
+        } 
         }
     );
   };

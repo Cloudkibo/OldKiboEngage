@@ -614,7 +614,7 @@ function sendPushNotification(tagname,obj){
         data: {
           uniqueid:obj.uniqueid,
           request_id : obj.request_id,
-          status : 'delivered',
+          status : obj.status,
         },
         badge: 0
       };
@@ -673,7 +673,7 @@ export function updatechatstatus(req, res) {
         console.log(response.statusCode);
         console.log(body);
         
-       if(!error && response.statusCode == 200)
+       if(!error && response.statusCode == 200 && body['status'] == 'statusUpdated')
        {
            //console.log(body)
             // send push notification

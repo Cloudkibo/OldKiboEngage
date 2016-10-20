@@ -14,6 +14,9 @@ import {savechat,updatechatstatus}  from '../../redux/actions/actions'
 
 
 import Autosuggest from 'react-autosuggest';
+
+
+
 var callonce = 'false'
 var newChatClicked = 'false'
 var handleDate = function(d){
@@ -171,8 +174,9 @@ else{
       ***/
       var messages = [];
       messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
-      this.props.updatechatstatus(messages,message.from,usertoken);
-
+       if(messages.length > 0){
+        this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
+      }
      }
      this.forceUpdate();
   }
@@ -182,7 +186,6 @@ else{
     this.forceUpdate()
   }
   componentDidMount() {
-    alert('Component did mount is clled');
     const { socket,dispatch } = this.props;
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
@@ -196,8 +199,32 @@ else{
     
   componentDidUpdate() {
 
-    const messageList = this.refs.messageList;
-    messageList.scrollTop = messageList.scrollHeight;
+    /*const messageList = this.refs.messageList;
+    messageList.scrollTop = messageList.scrollHeight;*/
+
+    if(this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || this.props.userdetails._id in this.props.sessiondetails.agent_ids)){
+     //  alert('update message status to seen' + this.props.mobileuserchat.length);
+   
+      // check messages send by customer and update status
+      const usertoken = auth.getToken();
+      /*** call api to update status field of chat message received from mobile to 'delivered'
+      ***/
+      var messages = [];
+
+      for(var i=0;i < this.props.mobileuserchat.length;i++){
+        if(this.props.mobileuserchat[i].from == this.props.sessiondetails.customerID  && this.props.mobileuserchat[i].status != 'seen'){
+                 messages.push({'uniqueid' : this.props.mobileuserchat[i].uniqueid,'request_id' : this.props.mobileuserchat[i].request_id,'status' :'seen'});
+            }
+        }
+
+      if(messages.length > 0){  
+      this.props.updatechatstatus(messages,this.props.sessiondetails.customerID,usertoken,this.props.mobileuserchat);
+    }
+
+    }
+
+   
+
   }
 
  
@@ -909,11 +936,13 @@ const { value, suggestions } = this.state;
                 </td>
 
 
-               <td className="col-md-4">
+                <td className="col-md-6">
                 <label>Current Status - {this.props.sessiondetails.status}</label>
+                <br/>
+                <label>{ this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+                
                 </td>
                 
-
             </tr>
               </tbody>
             </table>
@@ -932,7 +961,7 @@ const { value, suggestions } = this.state;
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
-          <input type="text" defaultValue = "" ref="groupmembers"/>
+          <input type="hidden" defaultValue = "" ref="groupmembers"/>
           
           <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="channelid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
