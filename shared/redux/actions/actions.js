@@ -2796,7 +2796,8 @@ export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
      
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-        if(res.statusCode == 201){
+
+        if(res.statusCode == 201 && mobileuserchat){
            dispatch(UpdateChatStatusUI(messages,mobileuserchat))
         } 
         }

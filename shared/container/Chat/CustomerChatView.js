@@ -172,11 +172,11 @@ else{
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
       ***/
-      var messages = [];
+     /* var messages = [];
       messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
        if(messages.length > 0){
         this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
-      }
+      }*/
      }
      this.forceUpdate();
   }
@@ -212,7 +212,7 @@ else{
       var messages = [];
 
       for(var i=0;i < this.props.mobileuserchat.length;i++){
-        if(this.props.mobileuserchat[i].from == this.props.sessiondetails.customerID  && this.props.mobileuserchat[i].status != 'seen'){
+        if(this.props.mobileuserchat[i].from == this.props.sessiondetails.customerID  && this.props.mobileuserchat[i].status != 'seen' && this.props.mobileuserchat[i].request_id == this.props.sessiondetails.request_id){
                  messages.push({'uniqueid' : this.props.mobileuserchat[i].uniqueid,'request_id' : this.props.mobileuserchat[i].request_id,'status' :'seen'});
             }
         }

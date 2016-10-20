@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessionsfromsocket,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {getsessionsfromsocket,updatechatstatus,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -68,6 +68,16 @@ updateOnlineAgents(data){
     if(!this.props.customerchat_selected){ 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
      this.forceUpdate();
+   }
+   if(message.fromMobile && message.fromMobile == 'yes'){
+      const usertoken = auth.getToken();
+      /*** call api to update status field of chat message received from mobile to 'delivered'
+      ***/
+      var messages = [];
+      messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
+       if(messages.length > 0){
+        this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
+      }
    }
   }
   
@@ -400,4 +410,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{updatechatstatus,getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
