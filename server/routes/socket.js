@@ -985,7 +985,8 @@ exports.getchat = function(data){
                                 type : data.type,
                                 messagechannel:data.messagechannel,
                                 companyid:data.companyid,
-                                is_seen:data.is_seen
+                                is_seen:data.is_seen,
+                                fromMobile : data.fromMobile,
                               });
           }
            
@@ -1008,7 +1009,8 @@ exports.getchat = function(data){
                                           type : data.type,
                                           messagechannel:data.messagechannel,
                                           companyid:data.companyid,
-                                          is_seen:data.is_seen
+                                          is_seen:data.is_seen,
+                                          fromMobile : data.fromMobile,
                                         });
 
               }

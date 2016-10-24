@@ -643,6 +643,7 @@ function sendPushNotification(tagname,obj){
   notificationHubService.apns.send(tagname, iOSMessage, function(error){
     if(!error){
       console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+      console.log(iOSMessage);
     } else {
       console.log('Azure push notification error : '+ JSON.stringify(error));
     }

@@ -18,6 +18,7 @@ import Autosuggest from 'react-autosuggest';
 
 
 var callonce = 'false'
+var callonceMessage = 'false'
 var newChatClicked = 'false'
 var handleDate = function(d){
 var c = new Date(d);
@@ -54,6 +55,7 @@ class CustomerChatView extends Component {
      {
         console.log(usertoken);
         console.log(props.sessiondetails.customerid);
+
         props.getChatRequest(props.sessiondetails.customerid,usertoken,props.chatlist);
       }
 
@@ -157,7 +159,7 @@ else{
 
   getSocketmessage(message){
       
-     
+
    //  const usertoken = auth.getToken();
    //  this.props.getuserchats(usertoken);
     
@@ -194,18 +196,35 @@ else{
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
  
-  }
 
- 
-    
-  componentDidUpdate() {
-
-    /*const messageList = this.refs.messageList;
-    messageList.scrollTop = messageList.scrollHeight;*/
-
-    if(this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || this.props.userdetails._id in this.props.sessiondetails.agent_ids)){
+    // call for first time when chat loaded from server
+    if(this.props.mobileuserchat && this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || this.props.userdetails._id in this.props.sessiondetails.agent_ids)){
      //  alert('update message status to seen' + this.props.mobileuserchat.length);
    
+          var userassigned = false;
+    if(this.props.sessiondetails.agent_ids.length > 0){
+        var obj = this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length - 1];
+        if(obj['type'] == 'agent'){
+        var current_Agent = obj['id'];
+        if(current_Agent == this.props.userdetails._id){
+          userassigned = true;
+        }
+
+      }
+      else if(obj['type'] == 'group'){
+          // if any agent in the group is the current user
+          var grpid = obj['id'];
+          if(this.props.groupagents){
+            for(var j = 0;j< this.props.groupagents.length;j++){
+              if(grpid == this.props.groupagents[j].groupid._id && this.props.userdetails._id == this.props.groupagents[j].agentid._id){
+                          userassigned = true;
+                          break;
+              }
+            }
+          }
+      }
+    }
+
       // check messages send by customer and update status
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
@@ -217,7 +236,58 @@ else{
                  messages.push({'uniqueid' : this.props.mobileuserchat[i].uniqueid,'request_id' : this.props.mobileuserchat[i].request_id,'status' :'seen'});
             }
         }
+        alert('messages length : ' + messages.length);
+      if(messages.length > 0){  
 
+      this.props.updatechatstatus(messages,this.props.sessiondetails.customerID,usertoken,this.props.mobileuserchat);
+    }
+
+    }
+
+  }
+
+ 
+    
+  componentDidUpdate() {
+    /*const messageList = this.refs.messageList;
+    messageList.scrollTop = messageList.scrollHeight;*/
+    var userassigned = false;
+    if(this.props.sessiondetails.agent_ids.length > 0){
+        var obj = this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length - 1];
+        if(obj['type'] == 'agent'){
+        var current_Agent = obj['id'];
+        if(current_Agent == this.props.userdetails._id){
+          userassigned = true;
+        }
+
+      }
+      else if(obj['type'] == 'group'){
+          // if any agent in the group is the current user
+          var grpid = obj['id'];
+          if(this.props.groupagents){
+            for(var j = 0;j< this.props.groupagents.length;j++){
+              if(grpid == this.props.groupagents[j].groupid._id && this.props.userdetails._id == this.props.groupagents[j].agentid._id){
+                          userassigned = true;
+                          break;
+              }
+            }
+          }
+      }
+    }
+    if(this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || userassigned == true)){
+     
+      // check messages send by customer and update status
+      const usertoken = auth.getToken();
+      /*** call api to update status field of chat message received from mobile to 'delivered'
+      ***/
+      var messages = [];
+
+      for(var i=0;i < this.props.mobileuserchat.length;i++){
+        if(this.props.mobileuserchat[i].from == this.props.sessiondetails.customerID  && this.props.mobileuserchat[i].status != 'seen' && this.props.mobileuserchat[i].request_id == this.props.sessiondetails.request_id){
+                 messages.push({'uniqueid' : this.props.mobileuserchat[i].uniqueid,'request_id' : this.props.mobileuserchat[i].request_id,'status' :'seen'});
+            }
+        }
+     
       if(messages.length > 0){  
       this.props.updatechatstatus(messages,this.props.sessiondetails.customerID,usertoken,this.props.mobileuserchat);
     }
@@ -289,7 +359,7 @@ else{
 /***** emit message on socket once it is saved on server ***/
  componentWillReceiveProps(props){
 
-  if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true" && callonce == "false"){
+  if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true" && callonceMessage == "false"){
       //alert('chat message saved on server');
       if(props.tempMessage.assignedagentemail){
          this.props.route.socket.emit('send:agentsocket' , props.tempMessage);
@@ -299,7 +369,7 @@ else{
       this.props.route.socket.emit('send:message',props.tempMessage);
     }
       //this.props.ismessageSaved = "false";
-      callonce = "true";
+      callonceMessage = "true";
   }
 
 

@@ -65,20 +65,35 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getSocketmessage(message){
-    if(!this.props.customerchat_selected){ 
-     this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     this.forceUpdate();
-   }
-   if((!this.props.customerchat_selected || this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile && message.fromMobile == 'yes'){
-      alert('New message arrived!');
-      const usertoken = auth.getToken();
+   if(this.props.customerchat_selected){
+   if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile && message.fromMobile == 'yes'){
+       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
       ***/
       var messages = [];
       messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
        if(messages.length > 0){
+         alert('New message arrived!');
         this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
       }
+   }
+ }
+ else if(!this.props.customerchat_selected && message.fromMobile == 'yes'){
+     const usertoken = auth.getToken();
+      /*** call api to update status field of chat message received from mobile to 'delivered'
+      ***/
+      var messages = [];
+      messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
+       if(messages.length > 0){
+         alert('New message arrived!');
+        this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
+      }
+ }
+
+    else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){ 
+   
+     this.props.updateChatList(message,this.props.new_message_arrived_rid);
+     this.forceUpdate();
    }
   }
   
