@@ -65,12 +65,12 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getSocketmessage(message){
-     alert('New message arrived!');
     if(!this.props.customerchat_selected){ 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
      this.forceUpdate();
    }
-   if(message.fromMobile && message.fromMobile == 'yes'){
+   if((!this.props.customerchat_selected || this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile && message.fromMobile == 'yes'){
+      alert('New message arrived!');
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
       ***/
