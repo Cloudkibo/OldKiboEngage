@@ -65,6 +65,7 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getSocketmessage(message){
+     alert('New message arrived!');
     if(!this.props.customerchat_selected){ 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
      this.forceUpdate();
