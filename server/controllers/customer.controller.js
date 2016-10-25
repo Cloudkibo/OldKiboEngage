@@ -70,8 +70,8 @@ export function getcustomers(req, res) {
      
     };
     function callback(error, response, body) {
-       console.log(body);
-       console.log(error);
+       //console.log(body);
+       //console.log(error);
 
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);

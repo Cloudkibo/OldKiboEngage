@@ -2,6 +2,7 @@ import cuid from 'cuid';
 import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
+var sizeof = require('object-sizeof');
 
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
@@ -19,10 +20,10 @@ var notificationHubService = azure.createNotificationHubService('KiboEngagePush'
 export function createNotification(req, res) {
   console.log('create Notification is called');
   var token = req.headers.authorization;
-  console.log(req.body);
-  console.log(req.body.notification);
+ // console.log(req.body);
+  //console.log(req.body.notification);
   var customers = req.body.customers;
-  console.log(customers);
+  //console.log(customers);
   var options = {
       url: `${baseURL}/api/notifications`,
       rejectUnauthorized : false,
@@ -45,6 +46,7 @@ export function createNotification(req, res) {
        if(!error && response.statusCode == 201)
        {
           sendemail(customers,body);
+        
           return res.status(200).json({statusCode : 201,message:'success'});
        }
        else
@@ -83,7 +85,8 @@ for(var i=0;i<emailArray.length;i++){
 }
 
 for(var i=0;i<pushNotificationArray.length;i++){
-  sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
+ // sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
+  sendPushNotification(pushNotificationArray[i],body);
 }
 
 //sendPushNotification('sojharo',emailBody);
@@ -91,15 +94,34 @@ for(var i=0;i<pushNotificationArray.length;i++){
 
 
 //for mobile customers
-function sendPushNotification(tagname,notificationBody,notificationTitle){
+function sendPushNotification(tagname,body){
   
-   var payload = {
+  console.log('size of notification');
+  console.log(sizeof(body));
+  var sizeofbody = sizeof(body); //returns bytes
+  var payload;
+ 
+  if(sizeofbody < 24000){
+    body['bool_fetch'] = 'false';
+    console.log(body)
+     var payload = {
+        data: body,
+        badge: 0
+      };
+  }
+
+  else{
+     payload = {
         data: {
-          msg: notificationBody,
-          title : notificationTitle 
+          uniqueid: body.uniqueid,
+          bool_fetch : "true",
+          title : body.title,
         },
         badge: 0
       };
+    }
+  
+  
 
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {

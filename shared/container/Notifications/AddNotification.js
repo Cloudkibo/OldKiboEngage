@@ -35,7 +35,11 @@ class AddNotification extends Component {
 
     if (title.value && desc.value && companyid)
      {
-      var notification = {'title' : title.value,'description':desc.value,'companyid' : companyid,'agent_id' : this.props.userdetails._id}
+      var today = new Date();
+      var uid = Math.random().toString(36).substring(7);
+      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+      var notification = {'uniqueid' : unique_id,'title' : title.value,'description':desc.value,'companyid' : companyid,'agent_id' : this.props.userdetails._id,'hasImage' : 'false'}
       var customers = this.props.customers;
       console.log(notification);
      //sending notification on socket
@@ -45,6 +49,8 @@ class AddNotification extends Component {
           title : title.value,
           msg : desc.value,
           time : moment.utc().format('lll'),
+          uniqueid : unique_id,
+
                           
         }
 

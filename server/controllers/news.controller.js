@@ -69,8 +69,8 @@ export function getnews(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(body);
-       console.log(error);
+     // console.log(body);
+      // console.log(error);
       if(!error  && response.statusCode == 200) {
        
       return res.status(200).json(body);
