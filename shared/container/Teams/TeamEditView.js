@@ -3,7 +3,7 @@ import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { getTeamRequest,getDeptAgents}  from '../../redux/actions/actions'
-import { editTeam}  from '../../redux/actions/actions'
+import { editTeam,getcustomers}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import TeamCreateView from './TeamCreateView';
@@ -22,8 +22,8 @@ class TeamEditView extends Component {
        
         console.log(usertoken);
         console.log(props.params.id);
+        props.getcustomers(usertoken);
         props.getDeptAgents(usertoken);
-       
         props.getTeamRequest(props.params.id,usertoken);
       }
 
@@ -42,9 +42,11 @@ class TeamEditView extends Component {
         const nameRef = this.refs.name;
         const descRef = this.refs.desc;
         const idRef = this.refs.id;
-    if (nameRef.value && descRef.value) {
+
+    if (nameRef.value && descRef.value && this.props.customers ) {
       //alert(nameRef.value);
-      this.props.editTeam({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents});
+      var mobilecustomers = this.props.customers.filter((c) => c.isMobileClient == "true")
+      this.props.editTeam({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents},mobilecustomers);
      
     }
   }
@@ -244,7 +246,8 @@ function mapStateToProps(state) {
     errorMessage:(state.dashboard.errorMessage),
     newagents:state.dashboard.newagents,
     channels :(state.dashboard.channels),
+    customers : (state.dashboard.customers),
   };
 }
 
-export default connect(mapStateToProps,{ getTeamRequest,getDeptAgents,editTeam})(TeamEditView);
+export default connect(mapStateToProps,{getcustomers, getTeamRequest,getDeptAgents,editTeam})(TeamEditView);

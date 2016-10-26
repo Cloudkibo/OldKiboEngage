@@ -101,7 +101,7 @@ function sendPushNotification(tagname,body){
   var sizeofbody = sizeof(body); //returns bytes
   var payload;
  
-  if(sizeofbody < 24000){
+  if(sizeofbody < 2048){
     body['bool_fetch'] = 'false';
     console.log(body)
      var payload = {

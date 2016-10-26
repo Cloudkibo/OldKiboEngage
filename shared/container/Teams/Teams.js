@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getuserteams} from '../../redux/actions/actions'
 import {createteam} from '../../redux/actions/actions'
-import {deleteteam} from '../../redux/actions/actions'
+import {deleteteam,getcustomers} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import TeamCreateView from './TeamCreateView';
@@ -28,7 +28,8 @@ class Teams extends Component {
     {
        
         console.log(usertoken);
-        props.getuserteams(usertoken)
+        props.getuserteams(usertoken);
+        props.getcustomers(usertoken);
       }
       
         super(props, context);
@@ -110,7 +111,7 @@ class Teams extends Component {
                      <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
                       }
               <TeamCreateView addTeam={this.add}  showAddTeam= {this.state.showAddTeam}/>      
-                { this.props.teamdetails &&
+                { this.props.teamdetails && this.props.customers &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -123,9 +124,10 @@ class Teams extends Component {
                     </thead>
                     <tbody>                    
                       {
+
                         this.props.teamdetails.map((team, i) => (
                           
-                          <TeamListItem team={team} key={team._id}   onDelete={() => this.props.deleteteam(team,token)} userdetails ={this.props.userdetails}/>
+                          <TeamListItem team={team} key={team._id}   onDelete={() => this.props.deleteteam(team,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails ={this.props.userdetails}/>
                                                       
                         ))
                       }
@@ -161,12 +163,13 @@ function mapStateToProps(state) {
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           channels :(state.dashboard.channels),
+          customers: (state.dashboard.customers),
            };
 }
 
 
 function mapDispatchToProps(dispatch) {
   
-  return bindActionCreators({ deleteteam:deleteteam,getuserteams:getuserteams,createteam:createteam }, dispatch);
+  return bindActionCreators({ deleteteam:deleteteam,getcustomers:getcustomers,getuserteams:getuserteams,createteam:createteam }, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Teams);

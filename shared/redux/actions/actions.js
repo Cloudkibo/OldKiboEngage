@@ -469,7 +469,7 @@ export function createteam(team) {
 }
 
 
-export function editTeam(team) {
+export function editTeam(team,customers) {
   console.log('editTeam action called');
   console.log(team.deptagents);
   //alert(team)
@@ -482,7 +482,8 @@ export function editTeam(team) {
           deptname: team.name,
           deptdescription: team.desc,
         },
-        deptagents: team.deptagents
+        deptagents: team.deptagents,
+        customers : customers
 
       })
       ,
@@ -595,7 +596,7 @@ export function deleteGROUP(group) {
  
 }
 
-export function deleteteam(team,usertoken) {
+export function deleteteam(team,usertoken,customers) {
   console.log('deleteteam Action is called '+ team._id + 'your token : '  + usertoken);
   if(confirm("Do you want to delete this team?"))
   {
@@ -606,6 +607,12 @@ export function deleteteam(team,usertoken) {
         'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
+      body: JSON.stringify({
+        team : team,
+        customers : customers,
+
+      }),
+
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteTeam(team)));
   };
 }
@@ -902,7 +909,7 @@ else{
 
 /*************************************************************************************************/
 
-export function createChannel(channel,usertoken){
+export function createChannel(channel,usertoken,customers){
   console.log(channel);
   console.log(usertoken);
   console.log('create message channel is called');
@@ -914,7 +921,8 @@ export function createChannel(channel,usertoken){
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      channel : channel
+      channel : channel,
+      customers:customers,
       }),
  }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
@@ -927,7 +935,7 @@ export function createChannel(channel,usertoken){
 
 
 
-export function editChannel(channel,usertoken){
+export function editChannel(channel,usertoken,customers){
   console.log(channel);
   console.log(usertoken);
   console.log('edit message channel is called');
@@ -939,7 +947,8 @@ export function editChannel(channel,usertoken){
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      channel : channel
+      channel : channel,
+      customers:customers,
       })       
       
       ,
@@ -1022,7 +1031,7 @@ export function deleteCHANNEL(channel) {
    channel,
   };
 }
-export function deletechannel(channel,usertoken) {
+export function deletechannel(channel,usertoken,customers) {
   console.log('deletechannel Action is called '+ channel._id + 'your token : '  + usertoken);
   if(confirm("Do you want to delete this message channel?"))
   {
@@ -1033,6 +1042,10 @@ export function deletechannel(channel,usertoken) {
         'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
+      body: JSON.stringify({
+      channel : channel,
+      customers:customers,
+      }) 
     }).then((res) => res).then(res => dispatch(deleteCHANNEL(channel)));
   };
 }

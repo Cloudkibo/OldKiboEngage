@@ -7,7 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import ChannelListItem from './ChannelListItem';
 import {getchannels} from '../../redux/actions/actions'
-import {deletechannel} from '../../redux/actions/actions'
+import {deletechannel,getcustomers} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
@@ -25,7 +25,8 @@ class Channels extends Component {
     {
        
         console.log(usertoken);
-        props.getchannels(usertoken)
+        props.getchannels(usertoken);
+        props.getcustomers(usertoken);
       }
     super(props, context);
   
@@ -87,7 +88,7 @@ class Channels extends Component {
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-                { this.props.channels &&
+                { this.props.channels && this.props.customers &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -106,7 +107,7 @@ class Channels extends Component {
                       {
                         this.props.teamdetails && this.props.channels.map((channel, i) => (
                           
-                          <ChannelListItem channel={channel} key={channel._id} team = {this.props.teamdetails.filter((team) => team._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token)} userdetails={this.props.userdetails}/>
+                          <ChannelListItem channel={channel} key={channel._id} team = {this.props.teamdetails.filter((team) => team._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails={this.props.userdetails}/>
                                                       
                         ))
                       }
@@ -138,11 +139,12 @@ function mapStateToProps(state) {
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
+          customers : (state.dashboard.customers),
            };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getchannels:getchannels,deletechannel:deletechannel}, dispatch);
+  return bindActionCreators({getchannels:getchannels,getcustomers : getcustomers,deletechannel:deletechannel}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Channels);
 

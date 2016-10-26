@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
-import { getChannelRequest}  from '../../redux/actions/actions'
+import { getChannelRequest,getcustomers}  from '../../redux/actions/actions'
 import { editChannel}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -21,6 +21,7 @@ class ChannelEditView extends Component {
         console.log(usertoken);
         console.log(props.params.id);
         props.getChannelRequest(props.params.id,usertoken);
+        props.getcustomers(usertoken);
       }
 
     super(props, context);
@@ -41,11 +42,11 @@ class ChannelEditView extends Component {
     const companyid = this.refs.companyid;
     const createdby = this.refs.createdby;
 
-    if (name.value && desc.value && teamid.value)
+    if (name.value && desc.value && teamid.value && this.props.customers)
      {
-      var channel = {'_id' : idRef.value,'msg_channel_name' : name.value,'msg_channel_description':desc.value,'companyid' : companyid.value,'teamid' : teamid.value,'createdby' : createdby.value,'activeStatus':status.value}
+      var channel = {'_id' : idRef.value,'msg_channel_name' : name.value,'msg_channel_description':desc.value,'companyid' : companyid.value,'groupid' : teamid.value,'createdby' : createdby.value,'activeStatus':status.value}
       console.log(channel);
-      this.props.editChannel(channel,usertoken);
+      this.props.editChannel(channel,usertoken,this.props.customers.filter((c) => c.isMobileClient == "true"));
      
     }
   }
@@ -108,7 +109,7 @@ class ChannelEditView extends Component {
                          <input className="form-control" type='text'     defaultValue={ag[0].msg_channel_name} ref = "name"/>
                          <input className="form-control" type='hidden'   value = {ag[0]._id} ref = "id"/>
                          <input className="form-control" type='hidden'   value = {ag[0].companyid} ref = "companyid"/>
-                         <input className="form-control" type='hidden'   value = {ag[0].teamid} ref = "teamid"/>
+                         <input className="form-control" type='hidden'   value = {ag[0].groupid} ref = "teamid"/>
                          <input className="form-control" type='hidden'   value = {ag[0].createdby} ref = "createdby"/>
             
 
@@ -188,8 +189,9 @@ function mapStateToProps(state) {
     channel :(state.dashboard.channel),
     teamdetails:(state.dashboard.teamdetails),
     errorMessage:(state.dashboard.errorMessage),
+    customers:(state.dashboard.customers),
   };
 }
-export default connect(mapStateToProps,{ getChannelRequest,editChannel})(ChannelEditView);
+export default connect(mapStateToProps,{ getChannelRequest,editChannel,getcustomers})(ChannelEditView);
 
 

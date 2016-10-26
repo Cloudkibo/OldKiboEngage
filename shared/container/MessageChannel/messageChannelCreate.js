@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
-import {createChannel}  from '../../redux/actions/actions'
+import {createChannel,getcustomers}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -14,6 +14,9 @@ class MessageChannelCreate extends Component {
        //call action to get user teams 
     const usertoken = auth.getToken();
     console.log('constructor is called');
+    if(!props.customers){
+          props.getcustomers(usertoken);
+      }
     super(props, context);
     
     this.createmessageChannel = this.createmessageChannel.bind(this);
@@ -27,23 +30,15 @@ class MessageChannelCreate extends Component {
     const nameRef = this.refs.name;
     const descRef = this.refs.desc;
     const teamid = this.refs.teamid;
+
     var companyid;
     var createdBy = this.props.userdetails._id;
 
-    for(var j = 0;j<this.props.teamdetails.length;j++)
-    {
-      if(this.props.teamdetails[j]._id == teamid.value)
-      {
-         companyid = this.props.teamdetails[j].companyid;
-          break;
-      }
-    }
-
-    if (nameRef.value && descRef.value && teamid.value)
+    if (nameRef.value && descRef.value && teamid.value && this.props.customers)
      {
-      var channel = {'msg_channel_name' : nameRef.value,'msg_channel_description':descRef.value,'companyid' : companyid,'teamid' : teamid.value,'createdby' : createdBy}
+      var channel = {'msg_channel_name' : nameRef.value,'msg_channel_description':descRef.value,'companyid' : this.props.userdetails.uniqueid,'groupid' : teamid.value,'createdby' : createdBy}
       console.log(channel);
-      this.props.createChannel(channel,usertoken);
+      this.props.createChannel(channel,usertoken,this.props.customers.filter((c) => c.isMobileClient == "true"));
      
     }
   }
@@ -177,8 +172,9 @@ function mapStateToProps(state) {
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
     channels :(state.dashboard.channels),
+    customers:(state.dashboard.customers),
 };
 }
-export default connect(mapStateToProps,{createChannel})(MessageChannelCreate);
+export default connect(mapStateToProps,{createChannel,getcustomers})(MessageChannelCreate);
 
 

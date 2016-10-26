@@ -40,6 +40,7 @@ const dashboard = (state =dashboardState, action) => {
        };
 
       return {
+
         team: action.team,
         userdetails: state.userdetails,
         teamdetails:state.teamdetails,
@@ -47,9 +48,8 @@ const dashboard = (state =dashboardState, action) => {
         deptagents :state.deptagents,
         newagents:agentid,
         channels : state.channels,
-
         chatlist: state.chatlist,
-         customerid : state.customerid,
+        customerid : state.customerid,
          customerchat : state.customerchat,
          customerchatold : state.customerchatold,
          customerchat_selected : state.customerchat_selected,
@@ -61,6 +61,7 @@ const dashboard = (state =dashboardState, action) => {
          groupagents : state.groupagents,
          groupdetails :state.groupdetails,
          responses : state.responses,
+         customers:state.customers,
              
       }; 
 
@@ -135,7 +136,7 @@ const dashboard = (state =dashboardState, action) => {
         channels : state.channels,
         deptagents :state.deptagents,
         channel: state.channels.filter((channel) => channel._id == action.id),
-      
+        customers : state.customers,
          responses : state.responses,
         chatlist: state.chatlist,
          customerid : state.customerid,
@@ -232,7 +233,7 @@ groupdetails :state.groupdetails,
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
               responses : state.responses,
-
+              customers:state.customers,
 
              team: state.team,
              newagents : state.newagents,
@@ -334,6 +335,7 @@ groupdetails :state.groupdetails,
              groupagents : state.groupagents,
              groupdetails :state.groupdetails,
               responses : state.responses,
+              customers:state.customers,
         
 
       };
@@ -384,6 +386,7 @@ groupdetails :state.groupdetails,
              new_message_arrived_rid : state.new_message_arrived_rid, 
              userchats : state.userchats,
               responses : state.responses,
+              customers:state.customers,
 
       };
 
@@ -485,6 +488,7 @@ groupdetails :state.groupdetails,
      case ActionTypes.DELETE_TEAM :
       return {
         teamdetails: state.teamdetails.filter((team) => team._id !== action.team._id),
+        customers:state.customers,
         userdetails: state.userdetails,
         errorMessage:'Team deleted successfully',
         agents : state.agents,
@@ -538,6 +542,7 @@ groupdetails :state.groupdetails,
         userdetails: state.userdetails,
         errorMessage:'Message channel deleted successfully',
         agents : state.agents,
+        customers:state.customers,
         deptagents :state.deptagents,
          responses : state.responses,
         chatlist: state.chatlist,
@@ -1415,6 +1420,8 @@ groupdetails :state.groupdetails,
             case ActionTypes.SHOW_CUSTOMERS:
              return {
              teamdetails: state.teamdetails,
+             team : state.team,
+             channel : state.channel,
              userdetails: state.userdetails,
              errorMessage:action.chat_error,
              agents : state.agents,
@@ -1433,11 +1440,12 @@ groupdetails :state.groupdetails,
              customerchat_selected : state.customerchat_selected,
              customerid : state.customerid,
              chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
+             mobileuserchat : state.mobileuserchat,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
+             groupdetails :state.groupdetails,
+             agents:state.agents,
             
             };
             
