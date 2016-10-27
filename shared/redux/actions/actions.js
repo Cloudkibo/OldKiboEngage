@@ -438,7 +438,7 @@ export function addTeam(team) {
 }
 
 
-export function createteam(team) {
+export function createteam(team,customers) {
     
   return (dispatch) => {
     fetch(`${baseURL}/api/createteam`, {
@@ -446,6 +446,7 @@ export function createteam(team) {
       body: JSON.stringify({
           deptname: team.name,
           deptdescription: team.description,
+          customers:customers,
 
       }),
     
@@ -1026,6 +1027,7 @@ export function getChannelRequest(id,usertoken) {
 }
 
 export function deleteCHANNEL(channel) {
+  alert('Channel deleted successfully');
   return {
     type: ActionTypes.DELETE_CHANNEL,
    channel,

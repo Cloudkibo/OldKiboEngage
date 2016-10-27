@@ -93,7 +93,11 @@ export function getteams(req, res) {
        if(info.status == 'success')
        {
             // send push notification to mobile client
-
+            var team = info.team;
+            var ch = info.channel;
+            sendPushNotification(req.body.customers,team,"Teams","CreateTeam");
+            sendPushNotification(req.body.customers,ch,"Channels","CreateChannel");
+           
             return res.status(200).json({statusCode : 200,message:info.msg});
        }
        else
@@ -152,7 +156,7 @@ export function destroyTeam(req, res) {
   //console.log(req.query.id);
   var id = req.query.id;
    var options = {
-      url: `${baseURL}/api/departments/${id}`,
+      url: `${baseURL}/api/departments/kiboengage/${id}`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`

@@ -299,6 +299,7 @@ groupdetails :state.groupdetails,
              customers:state.customers,
              resolvedsessions:state.resolvedsessions,
              newsessions:state.newsessions,
+             assignedsessions : state.assignedsessions,
              channelwisestats:state.channelwisestats,
              deptwisestats:state.deptwisestats,
 

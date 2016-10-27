@@ -54,7 +54,12 @@ class Teams extends Component {
 
   add(name,description) {
      const usertoken = auth.getToken();
-    this.props.createteam({ name,description,usertoken });
+     if(this.props.customers){
+        this.props.createteam({ name,description,usertoken },this.props.customers.filter((c) => c.isMobileClient == "true"));
+      }
+      else{
+        alert('Customers data not found!Please refresh this page');
+      }
      this.setState({
       showAddTeam: false,
     });
