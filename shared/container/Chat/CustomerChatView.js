@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
+import { getChatRequest,removeDuplicates,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -14,7 +14,6 @@ import {savechat,updatechatstatus}  from '../../redux/actions/actions'
 
 
 import Autosuggest from 'react-autosuggest';
-
 
 
 var callonce = 'false'
@@ -81,7 +80,7 @@ class CustomerChatView extends Component {
 
   }
 
- 
+
 
 connectCall(data){
    if(confirm("Other person is calling you to a call. Confirm to join."))
@@ -170,8 +169,11 @@ else{
      }
 
      else{
+     // alert('pushing')
       this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
+      this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
+     // alert(this.props.mobileuserchat.length);
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
       ***/
@@ -181,7 +183,7 @@ else{
         this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
       }*/
      }
-     this.forceUpdate();
+     //this.forceUpdate();
   }
   getgroupmembers(data){
     //alert(data.getmembers.join(" "));
@@ -236,7 +238,7 @@ else{
                  messages.push({'uniqueid' : this.props.mobileuserchat[i].uniqueid,'request_id' : this.props.mobileuserchat[i].request_id,'status' :'seen'});
             }
         }
-        alert('messages length : ' + messages.length);
+     //   alert('messages length : ' + messages.length);
       if(messages.length > 0){  
 
       this.props.updatechatstatus(messages,this.props.sessiondetails.customerID,usertoken,this.props.mobileuserchat);
@@ -1182,4 +1184,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{updatechatstatus,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{updatechatstatus,removeDuplicates,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

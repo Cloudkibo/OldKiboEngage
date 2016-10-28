@@ -2819,3 +2819,27 @@ export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
     );
   };
 }
+
+
+/***** function to remove duplicate chat messages from UI *******/
+ 
+export function removeDuplicates(originalArray, prop) {
+     var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
+  return {
+    type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
+    mobileuserchat : newArray,
+   
+
+  };
+ }
+
+

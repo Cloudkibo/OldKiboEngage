@@ -123,7 +123,7 @@ var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
 return res;
 }    
   return (
-   (props.userchats.length >= 0 ? 
+   (props.userchats.length > 0 ? 
    <div className="list-group" onClick={props.onClickSession} style={changec}>
    {
     (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?

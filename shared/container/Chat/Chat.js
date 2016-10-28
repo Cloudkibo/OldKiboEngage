@@ -73,8 +73,12 @@ updateOnlineAgents(data){
       var messages = [];
       messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
        if(messages.length > 0){
-         alert('New message arrived!');
+      //   alert('New message arrived chat!');
+        // highlight chat box
+
         this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
+        this.props.updateChatList(message,this.props.new_message_arrived_rid);
+        this.forceUpdate();
       }
    }
  }
@@ -85,8 +89,10 @@ updateOnlineAgents(data){
       var messages = [];
       messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
        if(messages.length > 0){
-         alert('New message arrived!');
-        this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
+      //   alert('New message arrived!');
+     this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
+     this.props.updateChatList(message,this.props.new_message_arrived_rid);
+     this.forceUpdate();
       }
  }
 
