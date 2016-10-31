@@ -5,12 +5,12 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,removeDuplicates,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
+import { getChatRequest,uploadChatfile,removeDuplicates,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
 import {savechat,updatechatstatus}  from '../../redux/actions/actions'
-
+import { FileUpload } from 'redux-file-upload'
 
 
 import Autosuggest from 'react-autosuggest';
@@ -69,17 +69,94 @@ class CustomerChatView extends Component {
         this.connectToCall = this.connectToCall.bind(this);
         this.connectCall = this.connectCall.bind(this);
         this.getgroupmembers = this.getgroupmembers.bind(this);
+        this.onFileSubmit = this.onFileSubmit.bind(this);
         this.state = {
           value: '',
-          suggestions: getSuggestions('',props.responses)
+          suggestions: getSuggestions('',props.responses),
+          src : '',
+          userfile:null,
+
         };
-     
+        this._onChange = this._onChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
 
   }
 
+_onChange(e) {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+
+    this.setState({ userfile:e.target.files[0]
+                       });
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({ src: reader.result,
+                       });
+    };
+    reader.readAsDataURL(files[0]);
+  }
+
+onFileSubmit(event)
+    {
+        const usertoken = auth.getToken();
+        var fileData = new FormData();
+
+        if ( this.state.userfile ) {
+              console.log(this.state.userfile)
+             
+
+              var today = new Date();
+              var uid = Math.random().toString(36).substring(7);
+              var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+      
+              var saveChat = { 
+                          'to' : this.refs.customername.value,
+                          'from' : this.props.userdetails.firstname,
+                          'visitoremail' : this.refs.customeremail.value,
+                          'status' : 'sent',
+                          'type': 'file',
+
+                          'uniqueid' : unique_id,
+                          'msg' : this.props.userdetails.firstname + ' has shared a file',
+                          'datetime' : Date.now(),
+                          'request_id' : this.props.sessiondetails.request_id,
+                          'messagechannel': this.refs.channelid.value,
+                          'companyid': this.props.userdetails.uniqueid,
+                          'is_seen':'no',
+                          'customerid' : this.props.sessiondetails.customerid,
+                          'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                          'sendersEmail' : this.props.userdetails.email,
+                      }
+        if(this.props.sessiondetails.platform == 'mobile'){
+          saveChat.fromMobile = 'yes'
+        }  
+              fileData.append('file', this.state.userfile);
+              fileData.append('request_id',this.props.sessiondetails.request_id);
+              fileData.append('to', this.refs.customername.value);
+              fileData.append('from', this.props.userdetails.firstname);
+              fileData.append('date', Date.now());
+              fileData.append('uniqueid',unique_id);
+              fileData.append('filename',  this.state.userfile.name);
+              fileData.append('filetype',  this.state.userfile.type);
+              fileData.append('filesize',  this.state.userfile.size);
+              fileData.append('chatmsg', JSON.stringify(saveChat));
+              
+
+
+
+        this.props.uploadChatfile(fileData,usertoken); 
+        } 
+        event.preventDefault();     
+        
+    }
 
 
 connectCall(data){
@@ -1135,7 +1212,7 @@ const { value, suggestions } = this.state;
 
              <div className="panel-footer">
                    
-                      <Autosuggest  ref = "msg" suggestions={suggestions}
+                  <Autosuggest  ref = "msg" suggestions={suggestions}
                       
                    onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
                    getSuggestionValue={getSuggestionValue}
@@ -1148,7 +1225,19 @@ const { value, suggestions } = this.state;
                    
                 </div>
                <br/> 
-              <button className="btn green" onClick ={this.connectToCall}> Start Call </button>  
+              <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
+
+              <br/>
+              <label> Share file </label>
+                    <input type="file" onChange={this._onChange} />
+                    <br />
+                    <button onClick={ this.onFileSubmit } ref="submitbtn" className="btn green" >
+                          Upload
+                    </button>
+
+
+
+                      
       </div> 
   )
   }
@@ -1184,4 +1273,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{updatechatstatus,removeDuplicates,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{updatechatstatus,uploadChatfile,removeDuplicates,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

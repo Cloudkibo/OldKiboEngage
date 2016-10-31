@@ -1641,6 +1641,28 @@ export function uploadpicture(data,fname,token,picture) {
 
 };
 
+export function showfilesuccess(res){
+  alert('file shared successfully');
+}
+
+export function uploadChatfile(fileData,usertoken) {
+  console.log(fileData);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/uploadchatfile`, {
+      method: 'post',
+        body : fileData,
+        headers: new Headers({
+        
+        'Authorization': usertoken,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfilesuccess(res))  
+      
+   
+      );
+  };
+
+};
+
 
 /*** get notifications ***/
 export function getnotifications(token) {

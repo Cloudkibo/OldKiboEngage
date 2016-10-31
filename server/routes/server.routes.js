@@ -8,6 +8,8 @@ import * as ChatController from '../controllers/chat.controller';
 import * as GroupController from '../controllers/group.controller';
 import * as NewsController from '../controllers/news.controller';
 
+var multiparty = require('connect-multiparty');
+var multipartyMiddleware = multiparty();
 
 const router = new Router();
 
@@ -103,5 +105,8 @@ router.route('/createnews').post(NewsController.createNews);
 router.route('/getnews').post(NewsController.getnews);
 
 router.route('/getchat').post(ChatController.getChatMessage);
+//router.route('/uploadchatfile').post(ChatController.uploadchatfile);
+
+router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfile);
 
 export default router;

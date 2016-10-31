@@ -2,13 +2,14 @@ import cuid from 'cuid';
 import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
+var crypto = require('crypto');
 
 var Enumerable = require('linq');
 var baseURL = `https://api.kibosupport.com`
 var ss = require('../routes/socket');
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
-
+var fs = require('fs');
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
@@ -607,21 +608,13 @@ export function getChatMessage(req, res) {
 
 
 //for mobile customers
-function sendPushNotification(tagname,obj){
+function sendPushNotification(tagname,payload,alertmessage){
   console.log('sendPushNotification for message status update is called');
   console.log(tagname);
-   var payload = {
-        data: {
-          uniqueid:obj.uniqueid,
-          request_id : obj.request_id,
-          status : obj.status,
-        },
-        badge: 0
-      };
-
+  console.log(payload);
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
-    alert : 'status update',
+    alert : alertmessage,
     sound : 'UILocalNotificationDefaultSoundName',
     badge : payload.badge,
     payload : payload
@@ -680,8 +673,17 @@ export function updatechatstatus(req, res) {
             // send push notification
 
             for(var i = 0;i < req.body.messages.length;i++){
-              var obj = req.body.messages[i];
-              sendPushNotification(req.body.customerid,obj);
+                    var obj = req.body.messages[i];
+                     var payload = {
+                              data: {
+                                uniqueid:obj.uniqueid,
+                                request_id : obj.request_id,
+                                status : obj.status,
+                              },
+                              badge: 0
+                            };
+
+              sendPushNotification(req.body.customerid,payload,'status update');
             }
             return res.status(200).json({statusCode : 201,message:'success'});
        }
@@ -695,3 +697,79 @@ export function updatechatstatus(req, res) {
            request.post(options, callback);
    
   }
+
+
+export function uploadchatfile(req, res) {
+  console.log(req.body.chatmsg);
+  var obj = JSON.parse(req.body.chatmsg)
+  console.log(obj.from);
+  var token = req.headers.authorization;
+ 
+  var today = new Date();
+  var uid = crypto.randomBytes(5).toString('hex');
+  var serverPath = '/' + 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate();
+  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+  serverPath += '.' + req.files.file.type.split('/')[1];
+  
+  console.log(__dirname);
+
+  var dir = "./userfiles";
+  var options = {
+                            url: `${baseURL}/api/filetransfers/upload`,
+                            headers :  {
+                                       'Authorization': `Bearer ${token}`
+                                       },
+                            rejectUnauthorized : false,
+                            json: req.body
+                            
+                           
+                          };
+  if(req.files.file.size == 0) return res.send('No file submitted');
+
+  fs.readFile(req.files.file.path, function (err, data) {
+        var pathNew = dir + "/" + serverPath;
+        req.body.path = pathNew;
+        console.log(req.body);
+
+        fs.writeFile(pathNew, data, function (err) {
+          if(!err){
+
+ 
+
+            function callback(error, response, body) {
+                  console.log(error);
+                  console.log(response.statusCode);
+                  console.log(body);
+                  
+                 if(!error && response.statusCode == 201)
+                 {
+                     //console.log(body)
+                      var payload = {
+                              data: {
+                                chat : body.chatmsg,
+                                filemeta:body.filedata,
+                                type : 'File'
+                              },
+                              badge: 0
+                            };
+                      var msg = 'You have received 1 new file from ' + req.body.from;
+                      sendPushNotification(req.body.to,payload,msg);
+                      return res.status(200).json({statusCode : 201,message:'success'});
+                 }
+                 else
+                 {
+                     return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+             
+                 }    
+                 }    
+                     request.post(options, callback);
+   
+          }
+   
+        });
+    });
+  
+        
+
+
+}
