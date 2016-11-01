@@ -9,8 +9,9 @@ import { getChatRequest,uploadChatfile,removeDuplicates,createnews,resolvesessio
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
-import {savechat,updatechatstatus}  from '../../redux/actions/actions'
+import {savechat,updatechatstatus,downloadfile}  from '../../redux/actions/actions'
 import { FileUpload } from 'redux-file-upload'
+//var DownloadButton = require('downloadbutton')
 
 
 import Autosuggest from 'react-autosuggest';
@@ -70,6 +71,7 @@ class CustomerChatView extends Component {
         this.connectCall = this.connectCall.bind(this);
         this.getgroupmembers = this.getgroupmembers.bind(this);
         this.onFileSubmit = this.onFileSubmit.bind(this);
+        this.onFileDownload = this.onFileDownload.bind(this);
         this.state = {
           value: '',
           suggestions: getSuggestions('',props.responses),
@@ -103,7 +105,13 @@ _onChange(e) {
     };
     reader.readAsDataURL(files[0]);
   }
+onFileDownload(event)
+    {
+        const usertoken = auth.getToken();
+        alert(event.target.dataset.fileid);
 
+        this.props.downloadfile({'uniqueid':event.target.dataset.fileid},usertoken);
+    }
 onFileSubmit(event)
     {
         const usertoken = auth.getToken();
@@ -313,6 +321,7 @@ else{
       for(var i=0;i < this.props.mobileuserchat.length;i++){
         if(this.props.mobileuserchat[i].from == this.props.sessiondetails.customerID  && this.props.mobileuserchat[i].status != 'seen' && this.props.mobileuserchat[i].request_id == this.props.sessiondetails.request_id){
                  messages.push({'uniqueid' : this.props.mobileuserchat[i].uniqueid,'request_id' : this.props.mobileuserchat[i].request_id,'status' :'seen'});
+                 this.props.mobileuserchat[i].status = 'seen';
             }
         }
      //   alert('messages length : ' + messages.length);
@@ -364,6 +373,7 @@ else{
       for(var i=0;i < this.props.mobileuserchat.length;i++){
         if(this.props.mobileuserchat[i].from == this.props.sessiondetails.customerID  && this.props.mobileuserchat[i].status != 'seen' && this.props.mobileuserchat[i].request_id == this.props.sessiondetails.request_id){
                  messages.push({'uniqueid' : this.props.mobileuserchat[i].uniqueid,'request_id' : this.props.mobileuserchat[i].request_id,'status' :'seen'});
+                 this.props.mobileuserchat[i].status = 'seen'
             }
         }
      
@@ -985,6 +995,10 @@ const { value, suggestions } = this.state;
       onKeyDown :this.handleMessageSubmit,
     };
 
+    var fileData = {
+                    filename: './userfiles/f800a793437201611123134.pdf',
+                    mime: 'application/pdf',
+                  };
 
  
      return (
@@ -1235,8 +1249,8 @@ const { value, suggestions } = this.state;
                           Upload
                     </button>
 
-
-
+                    <button onClick = {this.onFileDownload} data-fileid = "fzng3xjcnui6kyx6ov42t9201611123134" > Download </button>
+           
                       
       </div> 
   )
@@ -1273,4 +1287,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{updatechatstatus,uploadChatfile,removeDuplicates,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{updatechatstatus,downloadfile,uploadChatfile,removeDuplicates,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

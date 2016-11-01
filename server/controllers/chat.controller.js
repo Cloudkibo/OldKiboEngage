@@ -728,7 +728,7 @@ export function uploadchatfile(req, res) {
 
   fs.readFile(req.files.file.path, function (err, data) {
         var pathNew = dir + "/" + serverPath;
-        req.body.path = pathNew;
+        req.body.path = serverPath;
         console.log(req.body);
 
         fs.writeFile(pathNew, data, function (err) {
@@ -771,5 +771,42 @@ export function uploadchatfile(req, res) {
   
         
 
+
+}
+
+export function downloadchatfile(req, res) {
+  console.log(req.body);
+  var token = req.headers.authorization;
+  console.log(token);
+
+  var options = {
+      url: `${baseURL}/api/filetransfers/download`,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      rejectUnauthorized : false,
+      json: req.body
+      
+     
+    };
+
+    function callback(error, response, body) {
+        console.log(error);
+        console.log(response.statusCode);
+        console.log(body);
+        
+       if(!error && response.statusCode == 200)
+       {
+            console.log(body)
+            res.sendFile(body.path, {root: './userfiles'});
+       }
+       else
+       {
+           res.sendStatus(422);
+           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+   
+       }    
+       }    
+           request.post(options, callback);
 
 }

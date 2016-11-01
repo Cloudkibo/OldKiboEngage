@@ -66,7 +66,7 @@ updateOnlineAgents(data){
   }
    getSocketmessage(message){
    if(this.props.customerchat_selected){
-   if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile && message.fromMobile == 'yes'){
+   if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
        const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
       ***/
@@ -78,11 +78,12 @@ updateOnlineAgents(data){
 
         this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
         this.props.updateChatList(message,this.props.new_message_arrived_rid);
-        this.forceUpdate();
-      }
+         message.status = 'delivered';
+        
+    }
    }
  }
- else if(!this.props.customerchat_selected && message.fromMobile == 'yes'){
+ else if(!this.props.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent'){
      const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
       ***/
@@ -92,15 +93,17 @@ updateOnlineAgents(data){
       //   alert('New message arrived!');
      this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     this.forceUpdate();
+     message.status = 'delivered';
       }
  }
 
     else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){ 
    
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     this.forceUpdate();
    }
+
+   this.forceUpdate();
+
   }
   
 
@@ -356,9 +359,9 @@ componentDidMount(){
                                   
                                     (this.props.new_message_arrived_rid ?
                                   
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
+                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
                                     :  
-                                    <ChatListItem userchats = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
+                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
                                   )
                                   
 					                                                      

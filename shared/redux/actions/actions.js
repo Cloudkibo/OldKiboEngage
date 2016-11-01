@@ -2814,6 +2814,21 @@ export function UpdateChatStatusUI(messages,mobileuserchat) {
 
   };
 }
+export function downloadfile(body,usertoken){
+   fetch(`${baseURL}/api/downloadchatfile`, {
+      method: 'post',
+      body: JSON.stringify({
+          uniqueid : body.uniqueid,
+       
+      }),
+    
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+     
+    })
+}
 export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
     
   return (dispatch) => {
