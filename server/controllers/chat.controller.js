@@ -703,22 +703,25 @@ export function uploadchatfile(req, res) {
   console.log(req.body.chatmsg);
   var obj = JSON.parse(req.body.chatmsg)
   console.log(obj.from);
-  var token = req.headers.authorization;
+ // var token = req.headers.authorization;
  
-  var today = new Date();
-  var uid = crypto.randomBytes(5).toString('hex');
-  var serverPath = '/' + 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate();
-  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+  //var today = new Date();
+ // var uid = crypto.randomBytes(5).toString('hex');
+ // var serverPath = '/' + 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate();
+//  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+  var serverPath = obj.uniqueid;
   serverPath += '.' + req.files.file.type.split('/')[1];
   
   console.log(__dirname);
-
-  var dir = "./userfiles";
+  console.log(req.headers);
+  var dir = "./static/userfiles";
   var options = {
                             url: `${baseURL}/api/filetransfers/upload`,
-                            headers :  {
-                                       'Authorization': `Bearer ${token}`
-                                       },
+                            headers : {
+                               'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+                               'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+                               'kibo-client-id': 'cd89f71715f2014725163952',
+                            } ,
                             rejectUnauthorized : false,
                             json: req.body
                             
@@ -733,9 +736,6 @@ export function uploadchatfile(req, res) {
 
         fs.writeFile(pathNew, data, function (err) {
           if(!err){
-
- 
-
             function callback(error, response, body) {
                   console.log(error);
                   console.log(response.statusCode);
@@ -781,9 +781,11 @@ export function downloadchatfile(req, res) {
 
   var options = {
       url: `${baseURL}/api/filetransfers/download`,
-      headers :  {
-                 'Authorization': `Bearer ${token}`
-                 },
+      headers : {
+                               'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+                               'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+                               'kibo-client-id': 'cd89f71715f2014725163952',
+      },
       rejectUnauthorized : false,
       json: req.body
       
@@ -798,7 +800,7 @@ export function downloadchatfile(req, res) {
        if(!error && response.statusCode == 200)
        {
             console.log(body)
-            res.sendFile(body.path, {root: './userfiles'});
+            res.sendFile(body.path, {root: './static/userfiles'});
        }
        else
        {

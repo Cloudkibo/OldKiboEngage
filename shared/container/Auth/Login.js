@@ -10,6 +10,7 @@ export default class Login extends Component {
   constructor(props, context) {
     super(props, context);
     this.onSubmit = this.onSubmit.bind(this);
+    this.downloadfile = this.downloadfile.bind(this);
   }
   onSubmit(event)
   {
@@ -58,7 +59,9 @@ export default class Login extends Component {
                          <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
 
+                      
               </form>
+             
               </div>
               </div>
               </div>

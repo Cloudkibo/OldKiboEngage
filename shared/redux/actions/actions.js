@@ -1652,8 +1652,10 @@ export function uploadChatfile(fileData,usertoken) {
       method: 'post',
         body : fileData,
         headers: new Headers({
-        
-        'Authorization': usertoken,
+         'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+         'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+         'kibo-client-id': 'cd89f71715f2014725163952',
+      
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfilesuccess(res))  
       
@@ -2823,8 +2825,13 @@ export function downloadfile(body,usertoken){
       }),
     
       headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
+       'Authorization': usertoken,
+       'Content-Type': 'application/json',
+       'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+       'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+       'kibo-client-id': 'cd89f71715f2014725163952',
+       
+ 
       }),
      
     })

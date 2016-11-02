@@ -11,6 +11,7 @@ import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
 import {savechat,updatechatstatus,downloadfile}  from '../../redux/actions/actions'
 import { FileUpload } from 'redux-file-upload'
+
 //var DownloadButton = require('downloadbutton')
 
 
@@ -107,10 +108,12 @@ _onChange(e) {
   }
 onFileDownload(event)
     {
-        const usertoken = auth.getToken();
-        alert(event.target.dataset.fileid);
+        //const usertoken = auth.getToken();
+       // alert(event.target.dataset.fileid);
 
-        this.props.downloadfile({'uniqueid':event.target.dataset.fileid},usertoken);
+    //    this.props.downloadfile({'uniqueid':event.target.dataset.fileid},usertoken);
+    window.open('./userfiles/GOP_REL_ONLY.csv');
+ 
     }
 onFileSubmit(event)
     {
@@ -133,7 +136,7 @@ onFileSubmit(event)
                           'type': 'file',
 
                           'uniqueid' : unique_id,
-                          'msg' : this.props.userdetails.firstname + ' has shared a file',
+                          'msg' : this.state.userfile.name + ';'+this.props.userdetails.firstname + ' has shared a file',
                           'datetime' : Date.now(),
                           'request_id' : this.props.sessiondetails.request_id,
                           'messagechannel': this.refs.channelid.value,
@@ -1249,8 +1252,7 @@ const { value, suggestions } = this.state;
                           Upload
                     </button>
 
-                    <button onClick = {this.onFileDownload} data-fileid = "fzng3xjcnui6kyx6ov42t9201611123134" > Download </button>
-           
+                    <button  onClick = {this.onFileDownload}>Download!</button>
                       
       </div> 
   )
