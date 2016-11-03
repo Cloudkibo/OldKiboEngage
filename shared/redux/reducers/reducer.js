@@ -1070,6 +1070,14 @@ groupdetails :state.groupdetails,
 
             };
           case ActionTypes.ADD_USER_CHATS:
+          var usChat = []
+          if(action.userchats.length>0 ){
+            usChat = action.userchats;
+
+          }
+          else{
+             usChat = state.userchats
+          }
            return {
              teamdetails: state.teamdetails,
              userdetails: state.userdetails,
@@ -1086,7 +1094,8 @@ groupdetails :state.groupdetails,
              customers : state.customers,
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : action.userchats,
+
+            userchats : usChat,
             onlineAgents : state.onlineAgents,
             yoursocketid : state.yoursocketid,
             news:state.news,groupagents : state.groupagents,

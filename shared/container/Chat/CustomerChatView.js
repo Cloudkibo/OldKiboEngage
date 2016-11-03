@@ -138,7 +138,7 @@ onFileSubmit(event)
                           'type': 'file',
 
                           'uniqueid' : unique_id,
-                          'msg' : this.state.userfile.name + ';'+this.props.userdetails.firstname + ' has shared a file',
+                          'msg' : this.state.userfile.type + ';' +this.state.userfile.name + ';'+this.props.userdetails.firstname + ' has shared a file',
                           'datetime' : Date.now(),
                           'request_id' : this.props.sessiondetails.request_id,
                           'messagechannel': this.refs.channelid.value,

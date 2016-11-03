@@ -743,7 +743,7 @@ export function uploadchatfile(req, res) {
                   
                  if(!error && response.statusCode == 201)
                  {
-                      body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
+                     // body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
                       ss.getchat( body.chatmsg);
                       return res.status(200).json({statusCode : 201,message:'success'});
                  }
@@ -819,7 +819,7 @@ export function uploadchatfileAgent(req, res) {
                             };
                       var msg = 'You have received 1 new file from ' + req.body.from;
                       sendPushNotification(req.body.to,payload,msg);
-                      body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
+                    //  body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
                      
                       ss.getchat( body.chatmsg);
 

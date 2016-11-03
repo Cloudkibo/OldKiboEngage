@@ -167,7 +167,7 @@ componentDidMount(){
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-   // alert('getupdatedSessions is called');
+   // alert('getupdatedChats is called');
     this.props.getchatsfromsocket(data);
     this.forceUpdate();
   }
