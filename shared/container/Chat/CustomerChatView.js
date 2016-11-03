@@ -21,6 +21,7 @@ import Autosuggest from 'react-autosuggest';
 var callonce = 'false'
 var callonceMessage = 'false'
 var newChatClicked = 'false'
+
 var handleDate = function(d){
 var c = new Date(d);
 return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
@@ -108,11 +109,12 @@ _onChange(e) {
   }
 onFileDownload(event)
     {
+      event.preventDefault();
         //const usertoken = auth.getToken();
-       // alert(event.target.dataset.fileid);
-
+        alert(event.target.dataset.attrib);
+        var fname = event.target.dataset.attrib;
     //    this.props.downloadfile({'uniqueid':event.target.dataset.fileid},usertoken);
-    window.open('./userfiles/GOP_REL_ONLY.csv');
+    window.open('./userfiles/'+fname);
  
     }
 onFileSubmit(event)
@@ -1112,6 +1114,8 @@ const { value, suggestions } = this.state;
                 </td>
                 
             </tr>
+
+
               </tbody>
             </table>
          
@@ -1141,7 +1145,25 @@ const { value, suggestions } = this.state;
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
                              
                                (this.props.userdetails.firstname === chat.from?
+                                   (chat.type == 'file')?
                                    <li className="right clearfix agentChatBox">
+                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
+                                      </span>
+                                      <div className="chat-body clearfix">
+                                        <div>
+                                            <strong className="pull-right primary-font">{chat.from}</strong> 
+                                            <small className=" text-muted">
+                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
+                                            </small>
+                                        </div>
+                                       <p  className='pull-right chatmsg'>
+                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
+                                       </p>
+
+                                     </div>
+                                   </li> :
+                                    <li className="right clearfix agentChatBox">
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
@@ -1155,8 +1177,8 @@ const { value, suggestions } = this.state;
                                             {chat.msg}
                                        </p>
                                      </div>
-                                   </li> :
-
+                                   </li>
+                                   :
                                     <li className="left clearfix userChatBox">
                                       <span className="chat-img pull-left userChat">
                                       {chat.from.substr(0,1)}
@@ -1242,18 +1264,35 @@ const { value, suggestions } = this.state;
                    
                 </div>
                <br/> 
-              <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
+                    
+              <div className="row">
+                
+                     
+               
+               
+              </div>
 
-              <br/>
-              <label> Share file </label>
-                    <input type="file" onChange={this._onChange} />
-                    <br />
-                    <button onClick={ this.onFileSubmit } ref="submitbtn" className="btn green" >
-                          Upload
-                    </button>
+            <div className="table-responsive">
+               <table className="table table-colored">
+                 <tbody>
+                    <tr>
+                       <td className="col-md-6">
+                            <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
+              
+                       </td>
+                       <td className="col-md-6">
+                       <input type="file" onChange={this._onChange} className="pull-left"/>
+                 
+                         <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
+                            Upload
+                          </button>
+                       </td>
+                    </tr>
+                  </tbody>
+                  </table>
+                  </div>
 
-                    <button  onClick = {this.onFileDownload}>Download!</button>
-                      
+ 
       </div> 
   )
   }

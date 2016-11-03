@@ -698,7 +698,7 @@ export function updatechatstatus(req, res) {
    
   }
 
-
+/*** used by customer to send file to agent****/
 export function uploadchatfile(req, res) {
   console.log(req.body.chatmsg);
   var obj = JSON.parse(req.body.chatmsg)
@@ -743,17 +743,8 @@ export function uploadchatfile(req, res) {
                   
                  if(!error && response.statusCode == 201)
                  {
-                     //console.log(body)
-                      var payload = {
-                              data: {
-                                chat : body.chatmsg,
-                                filemeta:body.filedata,
-                                type : 'File'
-                              },
-                              badge: 0
-                            };
-                      var msg = 'You have received 1 new file from ' + req.body.from;
-                      sendPushNotification(req.body.to,payload,msg);
+                      body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
+                      ss.getchat( body.chatmsg);
                       return res.status(200).json({statusCode : 201,message:'success'});
                  }
                  else
@@ -773,6 +764,85 @@ export function uploadchatfile(req, res) {
 
 
 }
+
+/*** agent will call this end point ***/
+export function uploadchatfileAgent(req, res) {
+  console.log(req.body.chatmsg);
+  var obj = JSON.parse(req.body.chatmsg)
+  console.log(obj.from);
+  var token = req.headers.authorization;
+ 
+  //var today = new Date();
+ // var uid = crypto.randomBytes(5).toString('hex');
+ // var serverPath = '/' + 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate();
+//  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+  var serverPath = obj.uniqueid;
+  serverPath += '.' + req.files.file.type.split('/')[1];
+  
+  console.log(__dirname);
+  console.log(req.headers);
+  var dir = "./static/userfiles";
+  var options = {
+                            url: `${baseURL}/api/filetransfers/upload`,
+                             headers :  {
+                                 'Authorization': `Bearer ${token}`
+                                 },
+                            rejectUnauthorized : false,
+                            json: req.body
+                            
+                           
+                          };
+  if(req.files.file.size == 0) return res.send('No file submitted');
+
+  fs.readFile(req.files.file.path, function (err, data) {
+        var pathNew = dir + "/" + serverPath;
+        req.body.path = serverPath;
+        console.log(req.body);
+
+        fs.writeFile(pathNew, data, function (err) {
+          if(!err){
+            function callback(error, response, body) {
+                  console.log(error);
+                  console.log(response.statusCode);
+                  console.log(body);
+                  
+                 if(!error && response.statusCode == 201)
+                 {
+                     //console.log(body)
+                      var payload = {
+                              data: {
+                                chat : body.chatmsg,
+                                filemeta:body.filedata,
+                                type : 'File'
+                              },
+                              badge: 0
+                            };
+                      var msg = 'You have received 1 new file from ' + req.body.from;
+                      sendPushNotification(req.body.to,payload,msg);
+                      body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
+                     
+                      ss.getchat( body.chatmsg);
+
+                      return res.status(200).json({statusCode : 201,message:'success'});
+                 }
+                 else
+                 {
+                     return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+             
+                 }    
+                 }    
+                     request.post(options, callback);
+   
+          }
+   
+        });
+    });
+  
+        
+
+
+}
+
 
 export function downloadchatfile(req, res) {
   console.log(req.body);

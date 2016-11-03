@@ -108,5 +108,6 @@ router.route('/getchat').post(ChatController.getChatMessage);
 router.route('/downloadchatfile').post(ChatController.downloadchatfile);
 
 router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfile);
+router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadchatfileAgent);
 
 export default router;
