@@ -700,7 +700,11 @@ export function updatechatstatus(req, res) {
 
 /*** used by customer to send file to agent****/
 export function uploadchatfile(req, res) {
+  console.log('uploadchatfile called');
+  console.log('req body');
   console.log(req.body.chatmsg);
+  console.log(req.files);
+  
   var obj = JSON.parse(req.body.chatmsg)
   console.log(obj.from);
  // var token = req.headers.authorization;
