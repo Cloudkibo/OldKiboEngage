@@ -1145,7 +1145,6 @@ const { value, suggestions } = this.state;
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
                              
                                (this.props.userdetails.firstname === chat.from?
-                                   (chat.type == 'file')?
                                    <li className="right clearfix agentChatBox">
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
@@ -1156,28 +1155,20 @@ const { value, suggestions } = this.state;
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
                                         </div>
+                                       {
+                                        (chat.type == 'file')?
+                                  
                                        <p  className='pull-right chatmsg'>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
-                                       </p>
-
-                                     </div>
-                                   </li> :
-                                    <li className="right clearfix agentChatBox">
-                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
-                                      </span>
-                                      <div className="chat-body clearfix">
-                                        <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong> 
-                                            <small className=" text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
-                                            </small>
-                                        </div>
-                                       <p  className='pull-right chatmsg'>
+                                       </p> :
+                                       <p className="chatmsg">
                                             {chat.msg}
                                        </p>
+                                     }
                                      </div>
-                                   </li>
+                                   </li> 
+                                  
                                    :
                                     <li className="left clearfix userChatBox">
                                       <span className="chat-img pull-left userChat">
@@ -1189,9 +1180,17 @@ const { value, suggestions } = this.state;
                                             <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}                                            </small>
                                         </div>
+                                        {
+                                        (chat.type == 'file')?
+                                         <p  className='pull-right chatmsg'>
+                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
+                                       </p> :
+                                      
                                        <p className="chatmsg">
                                             {chat.msg}
                                        </p>
+                                     }
                                      </div>
                                    </li>
 
@@ -1214,9 +1213,17 @@ const { value, suggestions } = this.state;
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
                                         </div>
+                                        {
+                                        (chat.type == 'file')?
+                                         <p  className='pull-right chatmsg'>
+                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
+                                       </p> :
+                                      
                                        <p  className='pull-right chatmsg'>
                                             {chat.msg}
                                        </p>
+                                     }
                                      </div>
                                    </li> :
 
@@ -1231,9 +1238,17 @@ const { value, suggestions } = this.state;
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
                                         </div>
+                                        {
+                                        (chat.type == 'file')?
+                                         <p  className='pull-right chatmsg'>
+                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
+                                       </p> :
+                                      
                                        <p className="chatmsg">
                                             {chat.msg}
                                        </p>
+                                     }
                                      </div>
                                    </li>
 
