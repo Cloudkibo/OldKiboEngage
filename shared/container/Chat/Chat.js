@@ -65,6 +65,7 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getSocketmessage(message){
+    console.log(message);
    if(this.props.customerchat_selected){
    if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
        const usertoken = auth.getToken();
@@ -98,9 +99,13 @@ updateOnlineAgents(data){
  }
 
     else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){ 
-   
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
    }
+
+
+
+
+
 
    this.forceUpdate();
 
@@ -155,8 +160,7 @@ componentDidMount(){
     //this.props.getuserchats(usertoken);
    
      this.props.getsessionsfromsocket(data);
-    
-    this.forceUpdate();
+     this.forceUpdate();
   }
  
    getupdatedChats(data)

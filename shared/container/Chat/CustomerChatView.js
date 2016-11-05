@@ -136,7 +136,6 @@ onFileSubmit(event)
                           'visitoremail' : this.refs.customeremail.value,
                           'status' : 'sent',
                           'type': 'file',
-
                           'uniqueid' : unique_id,
                           'msg' : this.state.userfile.type + ';' +this.state.userfile.name + ';'+this.props.userdetails.firstname + ' has shared a file',
                           'datetime' : Date.now(),
@@ -259,7 +258,6 @@ else{
      }
 
      else{
-     // alert('pushing')
       this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
       this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');

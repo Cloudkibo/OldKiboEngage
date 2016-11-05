@@ -104,7 +104,6 @@ var userchatMsg = [];
                         ))
 
 }
-
 var thisChat ='';
 var unreadCount = 0;
 for(var i = 0;i< unread.length;i++){

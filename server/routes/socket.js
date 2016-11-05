@@ -395,7 +395,8 @@ socket.on('getmessagefromserver',function(data){
                                 type : data.type,
                                 messagechannel:data.messagechannel,
                                 companyid:data.companyid,
-                                is_seen:data.is_seen
+                                is_seen:data.is_seen,
+                                fromMobile : data.fromMobile,
                               });
                     
                     
@@ -416,7 +417,8 @@ socket.on('getmessagefromserver',function(data){
             request_id :data.request_id,
             messagechannel:data.messagechannel,
             companyid:data.companyid,
-            is_seen:data.is_seen
+            is_seen:data.is_seen,
+            fromMobile : data.fromMobile,
 
 
           });
@@ -461,7 +463,8 @@ socket.on('send:messageToAgent', function (data) {
                                 type : data.type,
                                 messagechannel:data.messagechannel,
                                 companyid:data.companyid,
-                                is_seen:data.is_seen
+                                is_seen:data.is_seen,
+                                fromMobile : data.fromMobile,
                               });
                     
           }
@@ -484,7 +487,8 @@ socket.on('send:messageToAgent', function (data) {
             request_id :data.request_id,
             messagechannel:data.messagechannel,
             companyid:data.companyid,
-            is_seen:data.is_seen
+            is_seen:data.is_seen,
+            fromMobile : data.fromMobile,
 
 
           });
