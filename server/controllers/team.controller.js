@@ -15,6 +15,16 @@ var notificationHubService = azure.createNotificationHubService('KiboEngagePush'
 var baseURL = `https://api.kibosupport.com`
 
 export function getcustomerteams(req,res){
+  console.log('get  customer team is called');
+  console.log(req.body);
+  
+  var  headers =  {
+             'kibo-app-id' : req.body.appid,
+             'kibo-app-secret': req.body.appsecret,
+             'kibo-client-id': req.body.clientid,
+             
+      }
+
   //console.log('get customer team');
       var options = {
       url: `${baseURL}/api/departments`,

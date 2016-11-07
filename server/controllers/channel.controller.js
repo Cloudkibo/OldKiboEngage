@@ -87,9 +87,18 @@ export function getchannels(req, res) {
 
 
 export function getcustomerchannels(req, res) {
-  ////console.log('get  customer channels is called');
+  console.log('get  customer channels is called');
+  console.log(req.body);
+   var  headers =  {
+             'kibo-app-id' : req.body.appid,
+             'kibo-app-secret': req.body.appsecret,
+             'kibo-client-id': req.body.clientid,
+             
+      }
+
+  
    var options = {
-      url: `${baseURL}/api/messagechannels`,
+      url: `${baseURL}/api/messagechannels/`,
       rejectUnauthorized : false,
       headers
       

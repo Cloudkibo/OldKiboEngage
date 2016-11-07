@@ -33,8 +33,10 @@ function getParameterByName(name, url) {
 var call_customer_details;
 class AddCustomer extends Component {
    constructor(props, context) {
-    props.getcustomerteams();
-    props.getcustomerchannels();
+    var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59'
+    var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
+    props.getcustomerteams(appid,appsecret,props.params.id);
+    props.getcustomerchannels(appid,appsecret,props.params.id);
     super(props, context);
     call_customer_details = false;
    // var pathname = getParameterByName('pathname'); 

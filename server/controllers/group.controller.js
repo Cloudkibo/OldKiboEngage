@@ -3,37 +3,9 @@ import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
 
-var  headers =  {
- 'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
- 'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
- 'kibo-client-id': 'cd89f71715f2014725163952',
- 
- }
 
 var baseURL = `https://api.kibosupport.com`
 
-export function getcustomerteams(req,res){
-  //console.log('get customer team');
-      var options = {
-      url: `${baseURL}/api/departments`,
-      rejectUnauthorized : false,
-      headers
-    };
-    function callback(error, response, body) {
-      if(!error  && response.statusCode == 200) {
-        var info = JSON.parse(body);
-        ////console.log(info);
-      return res.status(200).json(info);
-    }
-
-    else
-    {
-     return res.status(422).json({message:error}); 
-    }
-    }
-    request.get(options, callback);
-    
-}
 export function getgroups(req, res) {
   //console.log('get getteams is called');
   var token = req.headers.authorization;

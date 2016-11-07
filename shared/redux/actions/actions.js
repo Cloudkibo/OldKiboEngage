@@ -332,11 +332,22 @@ export function getuserteams(token) {
 }
 
 //this is without-token version of getting teamlist for Chat widget
-export function getcustomerteams(){
+export function getcustomerteams(appid,appsecret,companyid){
  
   return (dispatch) => {
-    fetch(`${baseURL}/api/getcustomerteams`, {
-        method: 'get',
+    fetch(`${baseURL}/api/getcustomerteams/`, {
+        method: 'post',
+        body: JSON.stringify({
+          appid: appid,
+          appsecret : appsecret,
+          clientid:companyid,
+         
+
+      })
+        ,
+        headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
        
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerTeams(res)));
   };
@@ -989,10 +1000,21 @@ export function showCustomerChannels(channels) {
 }
 
 /*** get channels ***/
-export function getcustomerchannels(){
+export function getcustomerchannels(appid,appsecret,companyid){
   return (dispatch) => {
-    fetch(`${baseURL}/api/getcustomerchannels`, {
-        method: 'get',
+    fetch(`${baseURL}/api/getcustomerchannels/`, {
+        method: 'post',
+        body: JSON.stringify({
+          appid: appid,
+          appsecret : appsecret,
+          clientid:companyid,
+         
+
+      })
+        ,
+        headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
        
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerChannels(res)));
   };
@@ -2142,11 +2164,43 @@ export function showuserchatspecific(userchats) {
   };
 }
 
+var sortBy = (function () {
 
+  //cached privated objects
+  var _toString = Object.prototype.toString,
+      //the default parser function
+      _parser = function (x) { return x; },
+      //gets the item to be sorted
+      _getItem = function (x) {
+        return this.parser((x !== null && typeof x === "object" && x[this.prop]) || x);
+      };
+
+  // Creates a method for sorting the Array
+  // @array: the Array of elements
+  // @o.prop: property name (if it is an Array of objects)
+  // @o.desc: determines whether the sort is descending
+  // @o.parser: function to parse the items to expected type
+  return function (array, o) {
+    if (!(array instanceof Array) || !array.length)
+      return [];
+    if (_toString.call(o) !== "[object Object]")
+      o = {};
+    if (typeof o.parser !== "function")
+      o.parser = _parser;
+    o.desc = !!o.desc ? -1 : 1;
+    return array.sort(function (a, b) {
+      a = _getItem.call(o, a);
+      b = _getItem.call(o, b);
+      return o.desc * (a < b ? -1 : +(a > b));
+    });
+  };
+
+}());
 export function showuserchatspecific_mobile(userchats) {
+  var sort_us = sortBy(userchats, { desc: false, prop: "datetime" });//userchats.sort(sortFunction);​
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
-    mobileuserchat : userchats,
+    mobileuserchat : sort_us,
    
 
   };
