@@ -9,6 +9,8 @@ var baseURL = `https://api.kibosupport.com`
 var ss = require('../routes/socket');
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
+var notificationHubService2 = azure.createNotificationHubService('KiboEngageProductionHub','Endpoint=sb://kiboengageproductionhub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=Hc1qWqbkLk4oGYJ9dN9vexUsIKk8hOeja5sEte89n9s=');
+
 var fs = require('fs');
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
@@ -634,6 +636,15 @@ function sendPushNotification(tagname,payload,alertmessage){
     }
   });
   notificationHubService.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+      console.log(iOSMessage);
+    } else {
+      console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+
+   notificationHubService2.apns.send(tagname, iOSMessage, function(error){
     if(!error){
       console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
       console.log(iOSMessage);
