@@ -55,6 +55,9 @@ class Dashboard extends Component {
   //this.forceUpdate();
 }
 
+componentDidMount(){
+ dontCall = false;
+}
   componentWillUpdate(){
   //on component mount,join room
     if(this.props.userdetails.uniqueid && dontCall == false){
