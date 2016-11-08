@@ -9,8 +9,9 @@ return c.toDateString();
 function GroupListItem(props) {
 var useringroup = false
 for(var i=0;i<props.groupagents.length;i++){
-  if(props.groupagents[i].agentid == props.userdetails._id && props.groupagents[i].groupid == props.group.get('_id')){
+  if(props.groupagents[i].agentid._id == props.userdetails._id && props.groupagents[i].groupid._id == props.group.get('_id')){
     useringroup = true
+   
     break
   }
 }
@@ -26,7 +27,7 @@ for(var i=0;i<props.groupagents.length;i++){
      
       <td>
       {
-        props.userdetails._id == props.group.get('createdby').get('_id') ?
+        props.userdetails._id == props.group.get('createdby').get('_id')?
         <span>
         <Link to={`/group/${props.group.get('_id')}`} className="btn blue-madison" >
          View

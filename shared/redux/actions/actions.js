@@ -657,13 +657,14 @@ else{
 }
 
 export function joingroup(group,userid,usertoken) {
+
   if(confirm("Do you want to join this Group?"))
   {
   return (dispatch) => {
     return fetch(`${baseURL}/api/joinGroup`, {
       method: 'post',
       body: JSON.stringify({
-            groupid : group._id,
+            groupid : group.get('_id'),
             agentid : userid,
        
       }),

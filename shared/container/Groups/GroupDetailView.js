@@ -18,7 +18,7 @@ class GroupDetailView extends Component {
        
         console.log(usertoken);
         console.log(props.params.id);
-         props.getGroupAgents(usertoken);
+        props.getGroupAgents(usertoken);
         props.getGroupRequest(props.params.id,usertoken);
        
     
