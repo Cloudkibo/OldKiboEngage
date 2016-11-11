@@ -116,6 +116,7 @@ function onDisconnect(io2, socket) {
 // When the user connects.. perform this
 function onConnect(io2, socket) {
  console.log(socket.id + ' connected');
+ socket.emit('syncdata');
  // Insert sockets below
   //require('../controllers/chat.controller').register(socket,io2);
 

@@ -58,10 +58,13 @@ class Dashboard extends Component {
 componentDidMount(){
  dontCall = false;
 }
+
+
   componentWillUpdate(){
   //on component mount,join room
     if(this.props.userdetails.uniqueid && dontCall == false){
 
+    
       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
     //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
      

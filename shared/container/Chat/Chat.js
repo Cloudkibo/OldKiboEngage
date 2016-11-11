@@ -51,8 +51,17 @@ class Chat extends Component {
         this.getupdatedChats = this.getupdatedChats.bind(this);
         this.getSessionInfo = this.getSessionInfo.bind(this);
         this.getSocketmessage = this.getSocketmessage.bind(this);
+        this.syncdata = this.syncdata.bind(this);
        
   }
+syncdata(){
+  alert('You are connected to socket. Joining now!');
+  this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
+  this.props.route.socket.emit('getOnlineAgentList');
+  this.props.route.socket.emit('returnMySocketId');
+  this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+  
+}
 updateOnlineAgents(data){
   console.log('updating updateOnlineAgents');
   this.props.updateAgentList(data);
@@ -143,8 +152,8 @@ componentDidMount(){
         this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.props.route.socket.on('returnUserChat',this.getupdatedChats);
+        this.props.route.socket.on('syncdata',this.syncdata);
   
-
 }
 
 
