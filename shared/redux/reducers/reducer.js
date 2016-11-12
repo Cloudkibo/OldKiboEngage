@@ -1326,7 +1326,8 @@ groupdetails :state.groupdetails,
        
              channels : state.channels,
              customers : state.customers,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,
+             groupagents : state.groupagents,
              groupdetails :state.groupdetails,
              
             };

@@ -62,10 +62,11 @@ var userchats = [];//array to hold all  chat msgs
 function onDisconnect(io2, socket) {
   console.log('calling onDisconnect  :' + socket.id);
   //Remove agent from onlineAgents array
+  var room;
   for(var j = 0;j<onlineAgents.length ;j++){
     if(onlineAgents[j].socketid == socket.id){
       console.log('Remove agent with  email : ' + onlineAgents[j].email);
-      var room = onlineAgents[j].room;
+      room = onlineAgents[j].room;
       onlineAgents.splice(j,1);
       console.log(onlineAgents);
       socket.broadcast.to(room).emit('updateOnlineAgentList', onlineAgents);
@@ -112,10 +113,13 @@ function onDisconnect(io2, socket) {
    socket.broadcast.to(room).emit('returnCustomerSessionsList',customer_in_company_room);
    session_remove = false;
   }
+  socket.leave(room);
+
 }
 // When the user connects.. perform this
 function onConnect(io2, socket) {
  console.log(socket.id + ' connected');
+ console.log('client connected to socket...');
  socket.emit('syncdata');
  // Insert sockets below
   //require('../controllers/chat.controller').register(socket,io2);
