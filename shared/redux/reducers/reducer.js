@@ -1264,6 +1264,8 @@ groupdetails :state.groupdetails,
              onlineAgents : action.onlineAgents,
              yoursocketid : state.yoursocketid,
              news:state.news,
+             groupagents : state.groupagents,
+             groupdetails : state.groupdetails,
             
             };
 
