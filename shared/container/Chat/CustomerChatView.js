@@ -365,7 +365,7 @@ else{
           }
       }
     }
-    if(this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || userassigned == true)){
+    if(this.props.mobileuserchat && this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || userassigned == true)){
      
       // check messages send by customer and update status
       const usertoken = auth.getToken();
