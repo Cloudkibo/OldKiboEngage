@@ -57,9 +57,9 @@ class Chat extends Component {
 syncdata(){
   alert('You are connected to socket. Joining now!');
   this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
-  this.props.route.socket.emit('getOnlineAgentList');
+ /* this.props.route.socket.emit('getOnlineAgentList');
   this.props.route.socket.emit('returnMySocketId');
-  this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+  this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);*/
   
 }
 updateOnlineAgents(data){
