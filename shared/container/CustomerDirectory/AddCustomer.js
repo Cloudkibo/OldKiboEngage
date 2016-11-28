@@ -3,6 +3,7 @@ import auth from '../../services/auth';
 import {createcustomer}  from '../../redux/actions/actions'
 import {getcustomerteams}  from '../../redux/actions/actions'
 import {getcustomerchannels,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
+import {getCountryName} from '../../redux/actions/actions'
 import {updatechannellist}  from '../../redux/actions/actions'
 import {createsession}  from '../../redux/actions/actions'
 import {addRoom} from '../../redux/actions/actions'
@@ -33,15 +34,14 @@ function getParameterByName(name, url) {
 var call_customer_details;
 class AddCustomer extends Component {
    constructor(props, context) {
-    var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59'
-    var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
-    props.getcustomerteams(appid,appsecret,props.params.id);
-    props.getcustomerchannels(appid,appsecret,props.params.id);
+    props.getcustomerteams();
+    props.getcustomerchannels();
+    props.getCountryName();
     super(props, context);
     call_customer_details = false;
-   // var pathname = getParameterByName('pathname'); 
-    //var fullurl = getParameterByName('fullurl'); 
-   // var companyid = getParameterByName('id'); 
+   // var pathname = getParameterByName('pathname');
+    //var fullurl = getParameterByName('fullurl');
+   // var companyid = getParameterByName('id');
     var companyid = props.params.id;
     var pathname = props.params.pathname;
     console.log(pathname)
@@ -66,8 +66,8 @@ class AddCustomer extends Component {
       const email = this.refs.email;
       const country = this.refs.country;
       const phone = this.refs.phone;
-     // var companyid = getParameterByName('id'); 
-     // var pathname = getParameterByName('pathname'); 
+     // var companyid = getParameterByName('id');
+     // var pathname = getParameterByName('pathname');
      /* var fullurl = getParameterByName('fullurl'); */
 
     var companyid = this.props.params.id;
@@ -75,8 +75,8 @@ class AddCustomer extends Component {
   //    var pathname = "";
       var fullurl = "";
 
-     
-     var session = { 
+
+     var session = {
                         'email' : email.value,
                         'customerID' : email.value,
                         'departmentid': this.refs.teamlist.value,
@@ -99,7 +99,7 @@ class AddCustomer extends Component {
 
                          }
 
-       
+
     this.props.createsession(session); //added to create abandoned session
     browserHistory.push('/');
   }
@@ -108,8 +108,8 @@ create_session(data){
       const email = this.refs.email;
       const country = this.refs.country;
       const phone = this.refs.phone;
-     // var companyid = getParameterByName('id'); 
-     // var pathname = getParameterByName('pathname'); 
+     // var companyid = getParameterByName('id');
+     // var pathname = getParameterByName('pathname');
      /* var fullurl = getParameterByName('fullurl'); */
 
     var companyid = this.props.params.id;
@@ -117,8 +117,8 @@ create_session(data){
   //    var pathname = "";
       var fullurl = "";
 
-     
-      var session = { 
+
+      var session = {
                       'email' : email.value,
                       'departmentid': this.refs.teamlist.value,
                       'messagechannel' : this.refs.channellist.value,
@@ -141,15 +141,15 @@ create_session(data){
 
                          }
 
- 
+
 
         this.props.createsession(session);
         this.props.addRoom(data);
-      
-      
-  }  
-  
- 
+
+
+  }
+
+
    componentWillReceiveProps(props) {
 
     // bind the channel list of first team on load
@@ -170,10 +170,10 @@ create_session(data){
       this.refs.teamlist.value = props.specificsession.departmentid;
       this.props.updatechannellist(props.specificsession.departmentid);
       this.props.getspecificcustomer(props.specificsession.customerid);
-      
+
       call_customer_details = true;
      // this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
-      
+
      // this.forceUpdate();
     }
     if(props.specificcustomer){
@@ -182,30 +182,32 @@ create_session(data){
       //alert(this.refs.channellist.value)
       this.refs.name.value = props.specificcustomer.name;
       this.refs.email.value = props.specificcustomer.email;
-      this.refs.country.value = props.specificcustomer.country;
+      this.refs.country.value = this.props.country;
       this.refs.phone.value = props.specificcustomer.phone;
       this.forceUpdate()
     }
 
     }
    componentDidMount() {
+
+     this.props.getCountryName();
   // socket.on('joined',this.create_session)
     this.props.route.socket.on('empty',this.noagent);
-   
+
    this.props.route.socket.on('joined',this.create_session)
-   
+
    if(this.props.specificsession){
      //  this.props.getspecificcustomer(this.props.specificsession.customerid);
-      
+
     }
 
       }
-     
+
   addCustomers(e) {
     e.preventDefault();
    // var companyid = getParameterByName('id');
 
-   // var pathname = getParameterByName('pathname'); 
+   // var pathname = getParameterByName('pathname');
     /*var fullurl = getParameterByName('fullurl');
        */
 //    var companyid = this.props.params.id;
@@ -267,30 +269,30 @@ create_session(data){
              };
         //    socket.emit('join meeting',socketsession);
            this.props.route.socket.emit('join meeting',socketsession);
-         
-         //  this.props.route.socket.on('customer_joined',data => create_session(data));
-  
 
-                   
+         //  this.props.route.socket.on('customer_joined',data => create_session(data));
+
+
+
         }
 
 
     //code for actual customers joining live help
   }
-  
+
 
   handleChange(e){
     //alert(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text);
      this.props.updatechannellist(e.target.value);
       this.forceUpdate();
 
-    }  
+    }
     handleChannelChange(e){
      //alert(e.target.value);
-   
-    }  
+
+    }
   render() {
-   
+
    {this.props.roomdetails &&
     browserHistory.push('/clientchat')}
     return (
@@ -299,23 +301,23 @@ create_session(data){
 
        <div className="page-container">
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">KiboEngage Chat Widget </h3>
-           
+
                 {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-         
-            
+
+
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
                   Welcome to Live Help
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body form">
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
@@ -336,7 +338,7 @@ create_session(data){
                   <div className="form-group">
                   <label className="control-label col-md-3"> Country </label>
                    <div className="col-md-9">
-                            <input className="form-control input-medium" type='text'  ref = "country" />
+                            <input className="form-control input-medium" type='text' value = {this.props.country} ref = "country" />
                 </div>
                 </div>
                   <div className="form-group">
@@ -356,11 +358,11 @@ create_session(data){
 
                             )
                          }
-                         
+
                       </select>
                   </div>
-                 </div>     
-                
+                 </div>
+
                 <div className="form-group">
                    <label className="control-label col-md-3"> Choose Channel</label>
                    <div className="col-md-9">
@@ -371,11 +373,11 @@ create_session(data){
 
                             )
                          }
-                         
+
                    </select>
                   </div>
                  </div>
-                   
+
               <div className="form-actions fluid">
               <div className="row">
                 <div className="col-md-3">
@@ -386,25 +388,25 @@ create_session(data){
                     </button>
 
                     </div>
-               </div> 
-               
-               </div>                 
+               </div>
+
+               </div>
               </div>
-              </div>  
-              
+              </div>
+
           </form>
 
-                  
-          
+
+
           </div>
           </div>
-        
+
 
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
-      )                   
+      </div>
+      )
      }
 }
 
@@ -412,9 +414,9 @@ create_session(data){
 
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
-  
+
    return {
-    
+    country : (state.country),
     teamdetails :(state.widget.teamdetails),
     channels :(state.widget.channels),
     filterlist :(state.widget.filterlist),
@@ -424,6 +426,4 @@ function mapStateToProps(state) {
     specificcustomer : (state.widget.specificcustomer),
   };
 }
-export default connect(mapStateToProps,{getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
-
-
+export default connect(mapStateToProps,{getcustomerteams,getCountryName,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);

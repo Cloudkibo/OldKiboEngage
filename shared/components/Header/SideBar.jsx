@@ -2,7 +2,7 @@ import React, { Component,PropTypes } from 'react';
 
 import { Link } from 'react-router';
 
-export default class SideBar extends Component
+class SideBar extends Component
 {
 
   render()
@@ -14,33 +14,33 @@ export default class SideBar extends Component
               <li className="start">
                <Link to='/dashboard'>
                   <i className="fa fa-dashboard">
-                  </i>      
+                  </i>
                   <span className="title">
                     Dashboard
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
               </li>
-             
+
               <li className="">
                 <Link to='/notifications'>
                   <i className="fa fa-envelope">
-                  </i>      
+                  </i>
                   <span className="title">
                    Notifications
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
-              </li> 
+              </li>
               <li className="">
                 <Link to='/assignedchatsessions'>
                   <i className="fa fa-chain">
-                  </i>      
+                  </i>
                   <span className="title">
                     Assigned Chat Sessions
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -49,10 +49,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to='/newchatsessions'>
                   <i className="fa fa-chain-broken">
-                  </i>      
+                  </i>
                   <span className="title">
                      Abandoned Chat Sessions
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -61,24 +61,24 @@ export default class SideBar extends Component
                <li className="">
                 <Link to="/resolvedchatsessions">
                   <i className="fa fa-check">
-                  </i>      
+                  </i>
                   <span className="title">
                      Resolved Chat Sessions
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
               </li>
 
 
-               
+
               <li className="">
                 <Link to="/summarychatsessions">
                   <i className="fa fa-phone-square">
-                  </i>      
+                  </i>
                   <span className="title">
                      Summary of Chat Sessions
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -87,10 +87,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to= '/agents'>
                   <i className="fa fa-user">
-                  </i>      
+                  </i>
                   <span className="title">
                      Agents
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -100,10 +100,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to='/teams'>
                   <i className="fa fa-group">
-                  </i>      
+                  </i>
                   <span className="title">
                      Teams
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -112,22 +112,22 @@ export default class SideBar extends Component
               <li className="">
                 <Link to='/groups'>
                   <i className="fa fa-group">
-                  </i>      
+                  </i>
                   <span className="title">
                      Groups
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
               </li>
-             
+
               <li className="">
                 <Link to="/reports">
                   <i className="fa fa-bar-chart-o">
-                  </i>      
+                  </i>
                   <span className="title">
                      Reports
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -135,10 +135,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to="/customers">
                   <i className="fa fa-user">
-                  </i>      
+                  </i>
                   <span className="title">
                      Customer Directory
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -146,10 +146,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to="/messagechannels">
                   <i className="fa fa-envelope-square">
-                  </i>      
+                  </i>
                   <span className="title">
                      Message Channels
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -157,10 +157,10 @@ export default class SideBar extends Component
                <li className="">
                 <Link to="/cannedresponses">
                   <i className="fa fa-envelope-square">
-                  </i>      
+                  </i>
                   <span className="title">
                      Canned Response
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -168,10 +168,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to="/completedcalls">
                   <i className="fa fa-question-circle">
-                  </i>      
+                  </i>
                   <span className="title">
                      FAQs
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -180,10 +180,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to="/chat">
                   <i className="fa fa-comments-o">
-                  </i>      
+                  </i>
                   <span className="title">
                      Chat
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>
@@ -191,10 +191,10 @@ export default class SideBar extends Component
               <li className="">
                 <Link to="/companyprofile">
                   <i className="fa fa-cogs">
-                  </i>      
+                  </i>
                   <span className="title">
                     Company Settings
-                  </span>      
+                  </span>
                   <span className="selected">
                   </span>
                 </Link>

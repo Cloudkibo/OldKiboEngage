@@ -5,7 +5,7 @@ import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 
-export default class JoinCompanyFailure extends React.Component {
+class JoinCompanyFailure extends React.Component {
 
 
   render() {
@@ -55,5 +55,3 @@ export default class JoinCompanyFailure extends React.Component {
 
 
 export default JoinCompanyFailure;
-
-

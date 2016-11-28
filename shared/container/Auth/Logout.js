@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import io from 'socket.io-client';
 const socket = io('');
 
-export default class Logout extends Component {
+class Logout extends Component {
 
 constructor(props, context) {
     super(props, context);
@@ -18,7 +18,7 @@ constructor(props, context) {
     this.props.logoutUser();
   }
   render() {
-    
+
     return (
       <div onClick={this.onClick}>
       <i className="fa fa-key"/>
@@ -29,8 +29,7 @@ constructor(props, context) {
 
 }
 function mapStateToProps(state) {
-  
+
   return {};
 }
 export default connect(mapStateToProps,{logoutUser})(Logout);
-

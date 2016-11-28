@@ -7,7 +7,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 import { browserHistory } from 'react-router'
 
-export default class Signup extends React.Component {
+class Signup extends React.Component {
 
 
   constructor(props, context) {
@@ -125,10 +125,10 @@ export default class Signup extends React.Component {
                                                   )
                                                 }
 
-                                                
+
                                               )
 
-                                              
+
 
                                             }
 
@@ -175,5 +175,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { signupuser })(Signup);
-
-
