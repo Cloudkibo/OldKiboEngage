@@ -1008,7 +1008,7 @@ exports.getchat = function(data){
                                 companyid:data.companyid,
                                 is_seen:data.is_seen,
                                 fromMobile : data.fromMobile,
-                                status : data.status,
+                                status : 'sent',
                               });
           }
            
@@ -1033,7 +1033,7 @@ exports.getchat = function(data){
                                           companyid:data.companyid,
                                           is_seen:data.is_seen,
                                           fromMobile : data.fromMobile,
-                                          status : data.status,
+                                          status : 'sent',
                                         });
 
               }
