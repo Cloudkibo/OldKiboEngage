@@ -50,9 +50,10 @@ function renderSuggestion(suggestion) {
 class CustomerChatView extends Component {
   constructor(props, context) {
     // alert('calling constructor')
-      //call action to get user teams 
+    //call action to get user teams 
      const usertoken = auth.getToken();
      console.log('constructor is called');
+    alert(props.sessiondetails.departmentid);
     if(usertoken != null)
      {
         console.log(usertoken);
@@ -1107,7 +1108,7 @@ const { value, suggestions } = this.state;
                 <td className="col-md-6">
                 <label>Current Status - {this.props.sessiondetails.status}</label>
                 <br/>
-                <label>{ this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+                <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
                 
                 </td>
                 

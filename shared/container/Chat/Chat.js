@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getsessionsfromsocket,updatechatstatus,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {removeDuplicates,getsessionsfromsocket,updatechatstatus,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -74,7 +74,7 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
    getSocketmessage(message){
-    console.log(message);
+   console.log(message);
    if(this.props.customerchat_selected){
    if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
        const usertoken = auth.getToken();
@@ -105,6 +105,12 @@ updateOnlineAgents(data){
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
      message.status = 'delivered';
       }
+
+      //this.props.mobileuserchat.push(message);
+      this.props.userchats.push(message);
+      this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
+     
+
  }
 
     else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){ 
@@ -130,10 +136,13 @@ getSessionInfo(message){
 
 componentWillReceiveProps(props) {
   // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
-  if(props.customerchat && callMobileChatSessions == false && props.serverresponse && props.serverresponse == 'received'){
+  const usertoken = auth.getToken();
+  if(props.customerchat  && callMobileChatSessions == false && props.serverresponse && props.serverresponse == 'received'){
    // alert('calling')
      this.props.route.socket.emit('getCustomerSessionsListFirst',props.customerchat,props.userdetails.uniqueid);
-     callMobileChatSessions = true  
+    
+      callMobileChatSessions = true
+      this.forceUpdate();  
   }
     
 }    
@@ -346,11 +355,8 @@ componentDidMount(){
                 </div>
              	
              	<div className="table-responsive">
-              {
-                this.props.customerchat &&
                 <input type="hidden" ref = "sessionid" />
-             		}
-
+             	
                 {this.props.customerchatold && this.props.customerchatold.length == 0?
                   <p>No Customer is online currently.</p>
                 
@@ -448,4 +454,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{updatechatstatus,getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{removeDuplicates,updatechatstatus,getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
