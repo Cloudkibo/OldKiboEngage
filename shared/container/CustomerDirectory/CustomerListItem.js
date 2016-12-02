@@ -9,14 +9,14 @@ function CustomerListItem(props) {
   return (
    
     <tr className = "odd">
-      <td>{props.customer.name && props.customer.name != ""?props.customer.name:props.customer.customerID} </td>
-      <td>{props.customer.email?props.customer.email :"N/A" }</td>
-      <td>{props.customer.country?props.customer.country : "N/A"}</td>
-      <td>{props.customer.phone?props.customer.phone : "N/A"}</td>
+      <td>{props.customer.get('name') && props.customer.get('name') != ""?props.customer.get('name'):props.customer.get('customerID')} </td>
+      <td>{props.customer.get('email')?props.customer.get('email') :"N/A" }</td>
+      <td>{props.customer.get('country')?props.customer.get('country') : "N/A"}</td>
+      <td>{props.customer.get('phone')?props.customer.get('phone') : "N/A"}</td>
        <td>
        {
-        props.customer.email && props.customer.email != "" &&
-        <Link to={`/sendemail/${props.customer._id}`} className="btn blue-madison" >
+        props.customer.get('email') && props.customer.get('email') != "" &&
+        <Link to={`/sendemail/${props.customer.get('_id')}`} className="btn blue-madison" >
         Send Email
         </Link>
         }

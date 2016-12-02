@@ -8,6 +8,8 @@ import auth from '../../services/auth';
 import CustomerListItem from './CustomerListItem';
 import {getcustomers} from '../../redux/actions/actions'
 import { browserHistory } from 'react-router'
+const PureRenderMixin = require('react-addons-pure-render-mixin');  
+import Immutable from 'immutable';
 
 import { bindActionCreators } from 'redux';
 
@@ -27,6 +29,11 @@ class Customers extends Component {
         props.getcustomers(usertoken)
       }
     super(props, context);
+    this.state = { 
+      data: Immutable.List(),
+      filteredData: Immutable.List(),
+    };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   
   
 
@@ -34,11 +41,31 @@ class Customers extends Component {
   }
 
  
+filterData(event) {
+    event.preventDefault();
+    const regex = new RegExp(event.target.value, 'i');
+    const filtered = this.state.data.filter(function(datum) {
+      return (datum.get('customerID').search(regex) > -1);
+    });
 
+    this.setState({
+      filteredData: filtered,
+    });
+  }
+ componentWillReceiveProps(props){
+    if(props.customers){
+       this.setState({ 
+      data: Immutable.fromJS(props.customers).toList(),
+      filteredData: Immutable.fromJS(props.customers).toList() 
+    });
+    }
+  }
   render() {
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
+    const { filteredData } = this.state;
+   
     console.log(this.props.notifications);
     return (
       <div>
@@ -72,9 +99,11 @@ class Customers extends Component {
              <div className="table-toolbar">
                  <div className="btn-team">
                    <label> Search </label>
-                   <input type="text" placeholder = "Search Customer " /> 
+                   <input type="text" placeholder = "Search Customer By Customer ID" className="form-control" 
+                              onChange={ this.filterData.bind(this)}  /> 
                  </div>
               </div>
+             
                {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
@@ -95,7 +124,7 @@ class Customers extends Component {
 
                     <tbody>                    
                       {
-                        this.props.customers.map((customer, i) => (
+                        this.props.customers && filteredData && filteredData.map((customer, i) => (
                           
                           <CustomerListItem customer={customer} />
                                                       

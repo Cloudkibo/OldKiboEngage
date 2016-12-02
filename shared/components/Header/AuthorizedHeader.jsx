@@ -98,12 +98,7 @@ class AuthorizedHeader extends Component
                                     My Profile
                                   </Link>
                                 </li> 
-                                <li>
-                                  <a href="/mymsg">
-                                    <i className="fa fa-envelope-o"/>
-                                    My Messages
-                                  </a>
-                                </li> 
+                                
                                 
                                 <li>
 
@@ -112,13 +107,8 @@ class AuthorizedHeader extends Component
                                      My Picked Sessions
                                   </Link>
                                 </li> 
+                                
                                 <li>
-                                  <a href="/myscheduledcalls">
-                                    <i className="fa fa-phone-square"/>
-                                    My Scheduled Calls
-                                  </a>
-                                </li>
-                                 <li>
                                  <Logout roomid = {this.props.roomid}/>
                                 </li>
                               
