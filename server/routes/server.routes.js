@@ -107,6 +107,9 @@ router.route('/getnews').post(NewsController.getnews);
 router.route('/getchat').post(ChatController.getChatMessage);
 router.route('/downloadchatfile').post(ChatController.downloadchatfile);
 
+/***** Route for Country Name ******/
+router.route('/getCountryName').get(CustomerController.getCountryName);
+
 router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfile);
 router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadchatfileAgent);
 

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, ValidatedInput } from 'react-bootstrap-validation';
+//import { Form, ValidatedInput } from 'react-bootstrap-validation';
 
 class InviteAgent extends Component {
   constructor(props, context) {
@@ -12,7 +12,7 @@ cancelInvite()
 {
   this.props.cancelInvite();
 }
-  
+
   onSubmit() {
    const email = this.refs.emailinp;
    alert(email.value)
@@ -27,10 +27,10 @@ cancelInvite()
     }
 
 
-   
+
     }
 
-  
+
   render() {
     const cls = `form ${(this.props.showInviteAgent ? 'appear' : 'hide')}`;
 
@@ -42,7 +42,7 @@ cancelInvite()
               <i className="fa fa-user"/>
                 Invite an Agent
             </div>
-          </div>     
+          </div>
       <div className="portlet-body ">
       <div className="form">
         <div className="form-body">
@@ -51,25 +51,25 @@ cancelInvite()
                   <b>https://kiboengage.cloudapp.net/joincompany</b>
                   <br/>
                   They will have to register with us to join your company.DON'T FORGET to give them your company's unique
-                  <br/> 
+                  <br/>
                   <b>{this.props.companyid}</b>
                   <br/>
                   <br/>
                   Or invite them using email
-          </div> 
+          </div>
           <div className="form-group">
-                 
+
                   <div className="input-group">
-                    <label>Email Address</label>        
-                    <input type='text' name='email'ref ="emailinp"                  
-                   
+                    <label>Email Address</label>
+                    <input type='text' name='email'ref ="emailinp"
+
                    />
                     </div>
           </div>
-                
+
           <div className="form-actions">
-              <button className="btn blue"  type ="submit" onClick={this.onSubmit}> Submit </button> 
-              <button className="btn default"  onClick={this.cancelInvite}> Cancel </button> 
+              <button className="btn blue"  type ="submit" onClick={this.onSubmit}> Submit </button>
+              <button className="btn default"  onClick={this.cancelInvite}> Cancel </button>
          </div>
         </div>
       </div>

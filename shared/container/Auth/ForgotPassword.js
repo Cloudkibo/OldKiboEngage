@@ -5,7 +5,7 @@ import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 
-export default class ForgotPassword extends Component {
+class ForgotPassword extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -21,7 +21,7 @@ export default class ForgotPassword extends Component {
   }
 
   render() {
-  
+
     return (
       <div>
         <div  className="pageContainer">

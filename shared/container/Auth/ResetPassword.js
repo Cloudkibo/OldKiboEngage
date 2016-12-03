@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 import { browserHistory } from 'react-router'
 
-export default class ResetPassword extends Component {
+class ResetPassword extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -32,7 +32,7 @@ export default class ResetPassword extends Component {
   {this.props.errorMessage && this.props.errorMessage == "fail" &&
          browserHistory.push('/resetpasswordfailure')
   }
-  
+
     return (
       <div>
         <div  className="pageContainer">
@@ -50,7 +50,7 @@ export default class ResetPassword extends Component {
                       <label htmlFor="domain">Password *</label>
                       <input type='password' ref='password' className="form-control input-medium" placeholder='Password' required = 'required'/>
                       </div>
-                      
+
                       <button type = "submit"  className="btn btn-primary">
                       Reset Password
                       </button>

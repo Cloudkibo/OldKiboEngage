@@ -36,11 +36,11 @@ function getSuggestions(value,cr) {
     lang.shortcode.toLowerCase().slice(0, inputLength) === inputValue
   );
 }
- 
-function getSuggestionValue(suggestion) { // when suggestion selected, this function tells 
-  return suggestion.message;                 // what should be the value of the input 
+
+function getSuggestionValue(suggestion) { // when suggestion selected, this function tells
+  return suggestion.message;                 // what should be the value of the input
 }
- 
+
 function renderSuggestion(suggestion) {
   return (
     <span>{suggestion.shortcode}</span>
@@ -50,7 +50,7 @@ function renderSuggestion(suggestion) {
 class CustomerChatView extends Component {
   constructor(props, context) {
     // alert('calling constructor')
-      //call action to get user teams 
+      //call action to get user teams
      const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
@@ -115,7 +115,7 @@ onFileDownload(event)
         var fname = event.target.dataset.attrib;
     //    this.props.downloadfile({'uniqueid':event.target.dataset.fileid},usertoken);
     window.open('./userfiles/'+fname);
- 
+
     }
 onFileSubmit(event)
     {
@@ -124,13 +124,13 @@ onFileSubmit(event)
 
         if ( this.state.userfile ) {
               console.log(this.state.userfile)
-             
+
 
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
               var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-      
-              var saveChat = { 
+
+              var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -149,7 +149,7 @@ onFileSubmit(event)
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        }  
+        }
               fileData.append('file', this.state.userfile);
               fileData.append('request_id',this.props.sessiondetails.request_id);
               fileData.append('to', this.refs.customername.value);
@@ -160,14 +160,14 @@ onFileSubmit(event)
               fileData.append('filetype',  this.state.userfile.type);
               fileData.append('filesize',  this.state.userfile.size);
               fileData.append('chatmsg', JSON.stringify(saveChat));
-              
 
 
 
-        this.props.uploadChatfile(fileData,usertoken); 
-        } 
-        event.preventDefault();     
-        
+
+        this.props.uploadChatfile(fileData,usertoken);
+        }
+        event.preventDefault();
+
     }
 
 
@@ -182,7 +182,7 @@ connectToCall(e){
       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
-      
+
       call.from = this.props.userdetails.firstname;
       call.to = this.refs.customername.value;
       call.to_id = this.refs.socketid_customer.value;
@@ -200,16 +200,16 @@ connectToCall(e){
 
 }
 onChange(event, { newValue }) {
-  
+
     this.setState({
       value: newValue
     });
   }
- 
+
   onSuggestionsUpdateRequested({ value }) {
      var v = value.split(" ");
      console.log(v)
- 
+
     this.setState({
       suggestions: getSuggestions(v[v.length-1],this.props.responses)
     });
@@ -218,7 +218,7 @@ onChange(event, { newValue }) {
 onSuggestionSelected({suggestionValue,method = 'click'})
 {
   console.log("current value of input is  :" + this.state.value)
-   var v = this.state.value.split(" "); 
+   var v = this.state.value.split(" ");
    var prevVal = "";
    for(var i = 0;i< v.length - 1;i++)
    {
@@ -231,7 +231,7 @@ onSuggestionSelected({suggestionValue,method = 'click'})
     });}
 
 else{
-  
+
    this.setState({
       value: prevVal + " " + suggestionValue
     });
@@ -241,18 +241,18 @@ else{
   //function to forward message received from server to socket
   getSocketmessageFromServer(message){
      this.props.route.socket.emit('getmessagefromserver',message);
-    
+
   }
 
 
   getSocketmessage(message){
-      
+
 
    //  const usertoken = auth.getToken();
    //  this.props.getuserchats(usertoken);
-    
+
    //get updated chat messages from socket
-   //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid); 
+   //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
     if(this.props.sessiondetails.platform == 'web'){
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      }
@@ -285,12 +285,12 @@ else{
     this.props.route.socket.on('send:groupmembers',this.getgroupmembers);
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
- 
+
 
     // call for first time when chat loaded from server
     if(this.props.mobileuserchat && this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || this.props.userdetails._id in this.props.sessiondetails.agent_ids)){
      //  alert('update message status to seen' + this.props.mobileuserchat.length);
-   
+
           var userassigned = false;
     if(this.props.sessiondetails.agent_ids.length > 0){
         var obj = this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length - 1];
@@ -328,7 +328,7 @@ else{
             }
         }
      //   alert('messages length : ' + messages.length);
-      if(messages.length > 0){  
+      if(messages.length > 0){
 
       this.props.updatechatstatus(messages,this.props.sessiondetails.customerID,usertoken,this.props.mobileuserchat);
     }
@@ -337,8 +337,8 @@ else{
 
   }
 
- 
-    
+
+
   componentDidUpdate() {
     /*const messageList = this.refs.messageList;
     messageList.scrollTop = messageList.scrollHeight;*/
@@ -366,7 +366,7 @@ else{
       }
     }
     if(this.props.mobileuserchat && this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || userassigned == true)){
-     
+
       // check messages send by customer and update status
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
@@ -379,35 +379,35 @@ else{
                  this.props.mobileuserchat[i].status = 'seen'
             }
         }
-     
-      if(messages.length > 0){  
+
+      if(messages.length > 0){
       this.props.updatechatstatus(messages,this.props.sessiondetails.customerID,usertoken,this.props.mobileuserchat);
     }
 
     }
 
-   
+
 
   }
 
- 
- 
+
+
    handleMessageSubmit(e) {
     console.log('handleMessageSubmit' + e.which)
     console.log(this.state.value)
     callonce = "false";
     var messageVal = this.state.value
     const { socket,dispatch } = this.props;
-    
+
      if (e.which === 13 && messageVal !="") {
-          
+
         e.preventDefault();
             //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-       
-         var saveChat = { 
+
+         var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -428,7 +428,7 @@ else{
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        }  
+        }
         this.props.savechat(saveChat);
         //socket.emit('send:message', saveChat);
 
@@ -441,8 +441,8 @@ else{
         else{
         this.props.chatlist.push(saveChat);
         }
-            
-                     
+
+
         this.state.value ='';
         this.forceUpdate();
       }
@@ -455,7 +455,7 @@ else{
       //alert('chat message saved on server');
       if(props.tempMessage.assignedagentemail){
          this.props.route.socket.emit('send:agentsocket' , props.tempMessage);
-        
+
       }
       else{
       this.props.route.socket.emit('send:message',props.tempMessage);
@@ -468,7 +468,7 @@ else{
  }
  resolveSession(e){
 
-  // Only assigned agent can resolve session 
+  // Only assigned agent can resolve session
     const { socket,dispatch } = this.props;
   var agentingroup = false
 
@@ -486,10 +486,11 @@ else{
 
   if(this.props.sessiondetails.status == "new"){
       alert('You cannot resolve this session.Only assigned sessions can be resolved')
- 
-  } 
+
+  }
   else if(this.props.userdetails._id != this.props.sessiondetails.agent_ids.id && this.props.sessiondetails.agent_ids.type == "agent"){
-    alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
+    alert('You cannot resolve this session.Only agent assigned to this session can resolve this session' + this.props.userdetails._id +
+  '=' + this.props.sessiondetails.agent_ids.id + ' AND ' + this.props.sessiondetails.agent_ids.type)
   }
 
   else if(agentingroup == false){
@@ -502,8 +503,8 @@ else{
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-   
-        var saveChat = { 
+
+        var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -526,7 +527,7 @@ else{
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        } 
+        }
          // for mobile customers
         if(this.props.sessiondetails.platform == 'mobile'){
              this.props.mobileuserchat.push(saveChat);
@@ -540,10 +541,10 @@ else{
 
       //socket.emit('send:message', saveChat);
        callonce = "false";
-   
-      this.props.savechat(saveChat); 
+
+      this.props.savechat(saveChat);
       const usertoken = auth.getToken();
-    
+
       this.props.resolvesession(this.props.sessiondetails.request_id,usertoken);//call action to mark session resolve;
       //update session status on socket
       socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
@@ -552,12 +553,12 @@ else{
                                         'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
                                        });
 
-      
-      
+
+
       this.forceUpdate();
   }
  }
-  
+
 
 
 
@@ -567,23 +568,23 @@ else{
      const { socket,dispatch } = this.props;
 
      // local changes
-  this.props.sessiondetails.status = "assigned"; 
+  this.props.sessiondetails.status = "assigned";
   this.props.sessiondetails.agent_ids =  {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'};
-  
+
 
      const usertoken = auth.getToken();
-    
+
     if(confirm("Are you sure you want to assign this session to " + this.refs.agentList.options[this.refs.agentList.selectedIndex].text))
     {
-   
+
     // 1. Broadcast a log message to all agents and customer that session is assigned to agent
-    
+
     //generate unique id of message - this change is for mobile clients
     var today = new Date();
     var uid = Math.random().toString(36).substring(7);
     var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-         
- var saveChat = { 
+
+ var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -602,12 +603,12 @@ else{
                            'assignedagentname': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name],
                            'agentid' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
-                           
+
                            'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        } 
+        }
          // for mobile customers
         if(this.props.sessiondetails.platform == 'mobile'){
              this.props.mobileuserchat.push(saveChat);
@@ -618,7 +619,7 @@ else{
         this.props.chatlist.push(saveChat);
         }
         this.refs.groupmembers.value = "";
-  
+
         if(this.props.sessiondetails.platform == 'web'){
         socket.emit('send:message', saveChat);
         socket.emit('send:agentsocket' , saveChat);
@@ -626,18 +627,18 @@ else{
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
 
        // socket.emit('send:agentsocket' , saveChat);
-        
-        this.props.savechat(saveChat); 
-        callonce = "false";
-  
 
-   
-    // 3. update session status on server   
+        this.props.savechat(saveChat);
+        callonce = "false";
+
+
+
+    // 3. update session status on server
      var session = {
       request_id : this.refs.requestid.value,
       status : 'assigned',
       usertoken :usertoken,
-    
+
     }
     this.props.updatestatus(session);
 
@@ -655,20 +656,20 @@ else{
     }
 
     this.props.assignToAgent(assignment,usertoken);
-   
+
     //update session status on socket
     socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
                                         'status' : 'assigned',
                                         'room' : this.props.userdetails.uniqueid,
                                         'agentid' : {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'},
-                                      
+
                                        });
 
-    
-   
+
+
     // inform assignee that he has been assigned a Chat Session
 
-     var informMsg = { 
+     var informMsg = {
                           'to' : this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -683,12 +684,12 @@ else{
                            'is_seen':'no',
                             'agentemail' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].value],
                             'agentid' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
-         
+
                       }
 
     socket.emit('informAgent',informMsg);
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
-    
+
 
     // create a news to inform agent that this session is assigned to him/her,if the assigned agent is not the user himself
     if(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib != this.props.userdetails._id){
@@ -703,14 +704,14 @@ else{
         }
 
         this.props.createnews(news,usertoken);
-    }     
+    }
 
     this.forceUpdate();
   }
 
 
   }
- 
+
 
 
 // Assign chat to group
@@ -719,9 +720,9 @@ else{
 
      // local changes
 
-  this.props.sessiondetails.status = "assigned"; 
+  this.props.sessiondetails.status = "assigned";
   this.props.sessiondetails.agent_ids =  {'id' : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].dataset.attrib,'type' : 'group'};
-  
+
 
   // find the agent ids of the members with in a selected group
 
@@ -739,19 +740,19 @@ else{
   }
 
      const usertoken = auth.getToken();
-    
+
     if(confirm("Are you sure you want to assign this session to " + this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text))
     {
    callonce = "false";
-  
+
     // 1. Broadcast a log message to all agents and customer that session is assigned to group
-    
+
     //generate unique id of message - this change is for mobile clients
     var today = new Date();
     var uid = Math.random().toString(36).substring(7);
     var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-         
- var saveChat = { 
+
+ var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -771,12 +772,12 @@ else{
                            'assignedagentname': agentnames,
                            'agentid' : agentids,
                            'assignedagentemail': agentemail,
-                           
+
                       }
-         this.refs.groupmembers.value =  agentemail.join(" ");             
+         this.refs.groupmembers.value =  agentemail.join(" ");
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        } 
+        }
          // for mobile customers
         if(this.props.sessiondetails.platform == 'mobile'){
              this.props.mobileuserchat.push(saveChat);
@@ -787,23 +788,23 @@ else{
         this.props.chatlist.push(saveChat);
         socket.emit('send:message', saveChat);
         }
-        
-        
+
+
 
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
 
         //socket.emit('send:agentsocket' , saveChat);
-        
-        this.props.savechat(saveChat); 
+
+        this.props.savechat(saveChat);
 
 
-   
-    // 3. update session status on server   
+
+    // 3. update session status on server
      var session = {
       request_id : this.refs.requestid.value,
       status : 'assigned',
       usertoken :usertoken,
-    
+
     }
     this.props.updatestatus(session);
 
@@ -821,20 +822,20 @@ else{
     }
 
     this.props.assignToAgent(assignment,usertoken);
-   
+
     //update session status on socket
     socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
                                         'status' : 'assigned',
                                         'room' : this.props.userdetails.uniqueid,
                                         'agentid' : {'id' : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].dataset.attrib,'type' : 'group'},
-                                      
+
                                        });
 
-    
-   
+
+
     // inform all group members about each others' email
 
-    /* var informMsg = { 
+    /* var informMsg = {
                           'to' : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text ,//group name
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -849,12 +850,12 @@ else{
                            'is_seen':'no',
                            'agentemail' : agentemail,
                            'agentid' : agentids,
-         
+
                       }*/
 
     socket.emit('informGroupMembers',agentemail);
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
-    
+
 
 
    // create a news to inform all agents in the group that this session is assigned to him/her,if the assigned agent is not the user himself
@@ -880,7 +881,7 @@ else{
         this.props.createnews(news_array,usertoken);
     }
     this.forceUpdate();
-  
+
    }
  }
 
@@ -890,7 +891,7 @@ else{
  moveToChannel(e){
      const { socket,dispatch } = this.props;
      const usertoken = auth.getToken();
-    
+
     alert('Are you sure,you want to move this session to another channel ?');
    this.props.sessiondetails.messagechannel.push(this.refs.channellist.value);
 
@@ -898,9 +899,9 @@ else{
     var today = new Date();
     var uid = Math.random().toString(36).substring(7);
     var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-           
+
     // 1. Broadcast a log message to all agents and customer that session is moved
-        var saveChat = { 
+        var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -918,12 +919,12 @@ else{
                            'is_seen':'no',
                            'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                            'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-                           'groupmembers' : this.refs.groupmembers.value.trim().split(" "), 
-                            'sendersEmail' : this.props.userdetails.email,    
+                           'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                            'sendersEmail' : this.props.userdetails.email,
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        } 
+        }
          // for mobile customers
         if(this.props.sessiondetails.platform == 'mobile'){
              this.props.mobileuserchat.push(saveChat);
@@ -933,11 +934,11 @@ else{
         else{
         this.props.chatlist.push(saveChat);
         }
-        
+
        // socket.emit('send:message', saveChat);
         callonce = "false";
-  
-        this.props.savechat(saveChat); 
+
+        this.props.savechat(saveChat);
 
         //save new channel id on server
         var assignment = {
@@ -956,36 +957,36 @@ else{
     socket.emit('updatesessionchannel',{'request_id':this.refs.requestid.value,
                                         'room' : this.props.userdetails.uniqueid,
                                         'channelid' : this.refs.channellist.value
-                                                                              
+
                                         });
 
-  
+
     this.forceUpdate();
 
 }
 
    handleChange(e){
      alert(e.target.data-attrib);
-   
+
     }
 
   render() {
-   
+
     var leftStyle = {
           float: 'left',
           width:'100%',
           background:'#ddd',
- 
+
     };
         var rightStyle = {
           float: 'right',
           width:'100%',
           background:'#cceeff',
- 
+
     };
     var clearStyle = {
              clear:'both',
- 
+
       };
 
 
@@ -1003,7 +1004,7 @@ const { value, suggestions } = this.state;
                     mime: 'application/pdf',
                   };
 
- 
+
      return (
 
       <div>
@@ -1020,19 +1021,19 @@ const { value, suggestions } = this.state;
                  <label className="control-label text-right">Move To</label>
                  </td>
              </tr>
-             <tr>    
+             <tr>
              <td className="col-md-4">
-                
-                  
+
+
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
                         {this.props.sessiondetails.platform == "web"?
-                         
+
                          (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
                             agent.agentId == this.props.userdetails._id?
                             <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
                             <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
-                              
+
                             ))
                          :
 
@@ -1040,22 +1041,22 @@ const { value, suggestions } = this.state;
                             agent._id == this.props.userdetails._id?
                             <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
                             <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname +' '+ agent.lastname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
-                              
-                            ) 
-                                                 
+
+                            )
+
                         }
 
                       </select>
 
-                    
-                 </div>     
+
+                 </div>
               </td>
 
               <td className="col-md-4">
                 <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
-              </td> 
-             
-             
+              </td>
+
+
 
               <td className="col-md-4">
                  <div className="input-group">
@@ -1066,9 +1067,9 @@ const { value, suggestions } = this.state;
 
                             )
                          }
-                         
+
                       </select>
-                   </div>   
+                   </div>
                 </td>
              {/*
               <td className="col-md-1">
@@ -1077,12 +1078,12 @@ const { value, suggestions } = this.state;
 
               <td className="col-md-4">
                 <button className="btn btn-primary" onClick = {this.moveToChannel}> Move </button>
-              </td> 
-                
+              </td>
+
               <td className="col-md-1">
                 <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
-              </td> 
-              
+              </td>
+
               </tr>
 
               <tr>
@@ -1095,9 +1096,9 @@ const { value, suggestions } = this.state;
 
                             )
                          }
-                         
+
                       </select>
-                   </div>   
+                   </div>
                </td>
                 <td className="col-md-4">
                 <button className="btn btn-primary" onClick = {this.assignSessionToGroup}> Assigned To Group</button>
@@ -1108,15 +1109,15 @@ const { value, suggestions } = this.state;
                 <label>Current Status - {this.props.sessiondetails.status}</label>
                 <br/>
                 <label>{ this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
-                
+
                 </td>
-                
+
             </tr>
 
 
               </tbody>
             </table>
-         
+
           </div>
 
           <div className="panel-body">
@@ -1125,37 +1126,37 @@ const { value, suggestions } = this.state;
           <div>
           <label>Customer Name :</label>
           <input value = {this.props.sessiondetails.customerid.customerID} ref="customername"/>
-          
+
            <label>Email :</label>
            <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
           <input type="hidden" defaultValue = "" ref="groupmembers"/>
-          
+
           <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="channelid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
             <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1',width:600+'px'}}  ref="messageList">
-                          
+
                           {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
-                             
+
                                (this.props.userdetails.firstname === chat.from?
                                    <li className="right clearfix agentChatBox">
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong> 
+                                            <strong className="pull-right primary-font">{chat.from}</strong>
                                             <small className=" text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
                                         </div>
                                        {
                                         (chat.type == 'file')?
-                                  
+
                                        <p  className='pull-right chatmsg'>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
@@ -1165,8 +1166,8 @@ const { value, suggestions } = this.state;
                                        </p>
                                      }
                                      </div>
-                                   </li> 
-                                  
+                                   </li>
+
                                    :
                                     <li className="left clearfix userChatBox">
                                       <span className="chat-img pull-left userChat">
@@ -1174,7 +1175,7 @@ const { value, suggestions } = this.state;
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="primary-font">{chat.customername?chat.customername:chat.from}</strong> 
+                                            <strong className="primary-font">{chat.customername?chat.customername:chat.from}</strong>
                                             <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}                                            </small>
                                         </div>
@@ -1184,7 +1185,7 @@ const { value, suggestions } = this.state;
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
-                                      
+
                                        <p className="chatmsg">
                                             {chat.msg}
                                        </p>
@@ -1193,20 +1194,20 @@ const { value, suggestions } = this.state;
                                    </li>
 
                                )
-                               
-                                                          
+
+
                             ))
                           }
                            {this.props.sessiondetails.platform == "web" && this.props.chatlist &&
                             this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
-                             
+
                                (this.props.userdetails.firstname === chat.from?
                                    <li className="right clearfix agentChatBox">
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong> 
+                                            <strong className="pull-right primary-font">{chat.from}</strong>
                                             <small className=" text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
@@ -1217,7 +1218,7 @@ const { value, suggestions } = this.state;
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
-                                      
+
                                        <p  className='pull-right chatmsg'>
                                             {chat.msg}
                                        </p>
@@ -1231,7 +1232,7 @@ const { value, suggestions } = this.state;
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="primary-font">{chat.from}</strong> 
+                                            <strong className="primary-font">{chat.from}</strong>
                                             <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                             </small>
@@ -1242,7 +1243,7 @@ const { value, suggestions } = this.state;
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
-                                      
+
                                        <p className="chatmsg">
                                             {chat.msg}
                                        </p>
@@ -1251,38 +1252,38 @@ const { value, suggestions } = this.state;
                                    </li>
 
                                )
-                               
-                                                          
+
+
                             ))
                           }
 
-                         
+
             </ul>
             </div>
 
-             
+
 
              <div className="panel-footer">
-                   
+
                   <Autosuggest  ref = "msg" suggestions={suggestions}
-                      
+
                    onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
                    getSuggestionValue={getSuggestionValue}
                    renderSuggestion={renderSuggestion}
 
-                  
+
 
                    inputProps={inputProps} />
 
-                   
+
                 </div>
-               <br/> 
-                    
+               <br/>
+
               <div className="row">
-                
-                     
-               
-               
+
+
+
+
               </div>
 
             <div className="table-responsive">
@@ -1291,11 +1292,11 @@ const { value, suggestions } = this.state;
                     <tr>
                        <td className="col-md-6">
                             <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
-              
+
                        </td>
                        <td className="col-md-6">
                        <input type="file" onChange={this._onChange} className="pull-left"/>
-                 
+
                          <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
                             Upload
                           </button>
@@ -1305,8 +1306,8 @@ const { value, suggestions } = this.state;
                   </table>
                   </div>
 
- 
-      </div> 
+
+      </div>
   )
   }
 }
@@ -1318,7 +1319,7 @@ const { value, suggestions } = this.state;
 function mapStateToProps(state) {
   console.log(state.dashboard.team);
   return {
-    
+
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
           errorMessage:(state.dashboard.errorMessage),
@@ -1328,16 +1329,16 @@ function mapStateToProps(state) {
           chatlist :(state.dashboard.chatlist),
           channels :(state.dashboard.channels),
           customers:(state.dashboard.customers),
-          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),        
-          userchats :(state.dashboard.userchats),  
-          responses :(state.dashboard.responses),  
+          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
+          userchats :(state.dashboard.userchats),
+          responses :(state.dashboard.responses),
           onlineAgents:(state.dashboard.onlineAgents),
           mobileuserchat : (state.dashboard.mobileuserchat),
           ismessageSaved : (state.dashboard.ismessageSaved),
           tempMessage :(state.dashboard.tempMessage),
           groupagents : (state.dashboard.groupagents),
           groupdetails :(state.dashboard.groupdetails),
-          
+
   };
 }
 
