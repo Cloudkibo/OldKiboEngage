@@ -718,11 +718,6 @@ socket.on('getOnlineAgentList',function() {
       socket.broadcast.to(room.room).emit('customer_joined',customer_in_company_room);
 
       
-
-     
-
-     
-
     }
 
    

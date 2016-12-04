@@ -82,6 +82,8 @@ router.route('/deleteResponse').delete(UserController.destroyResponse);
 
 
 router.route('/createNotification').post(NotificationController.createNotification);
+router.route('/resendNotification').post(NotificationController.resendNotification);
+
 router.route('/getnotifications').get(NotificationController.getnotifications);
 router.route('/deleteNotification').delete(NotificationController.destroyNotification);
 router.route('/createCustomer').post(CustomerController.createCustomer);

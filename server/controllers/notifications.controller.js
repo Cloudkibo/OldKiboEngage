@@ -64,6 +64,21 @@ export function createNotification(req, res) {
   }
 
 
+
+
+
+export function resendNotification(req, res) {
+  console.log('resend Notification is called');
+  var token = req.headers.authorization;
+ // console.log(req.body);
+  console.log(req.body.notification);
+  var customers = req.body.customers;
+  //console.log(customers);
+  sendemail(customers,req.body.notification);
+  return res.status(200).json({status:'success'});
+  
+  }
+
 function sendemail(customers,body){
 console.log(customers);  
 console.log('Length of customers : ' + customers.length);

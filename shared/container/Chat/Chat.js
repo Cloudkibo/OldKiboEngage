@@ -15,12 +15,14 @@ import { browserHistory } from 'react-router'
 import io from 'socket.io-client';
 var callMobileChatSessions
 var callOnce
+var callSocketChat
 class Chat extends Component {
 
  constructor(props, context) {
       //call action to get user teams 
     callMobileChatSessions =  false;
     callOnce = false;
+    callSocketChat = false
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -114,6 +116,8 @@ updateOnlineAgents(data){
  }
 
     else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){ 
+     this.props.userchats.push(message);
+     
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
    }
 
@@ -138,22 +142,29 @@ componentWillReceiveProps(props) {
   // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
   const usertoken = auth.getToken();
   if(props.customerchat  && callMobileChatSessions == false && props.serverresponse && props.serverresponse == 'received'){
-   // alert('calling')
      this.props.route.socket.emit('getCustomerSessionsListFirst',props.customerchat,props.userdetails.uniqueid);
     
       callMobileChatSessions = true
       this.forceUpdate();  
+  }
+  if(props.userchats && callSocketChat == false){
+     this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+     callSocketChat = true  
   }
     
 }    
   
 componentDidMount(){
        //get online agents list
-      // alert('componentDidMount is called');
+       callMobileChatSessions = false
+       callSocketChat = false;
+    
+       //alert('componentDidMount is called');
        const usertoken = auth.getToken();
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
-        this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+       // this.props.route.socket.emit('getCustomerSessionsList');
+        
         this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.on('informAgent',this.getSessionInfo);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
@@ -189,10 +200,21 @@ componentDidMount(){
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-   // alert('getupdatedChats is called');
-    this.props.getchatsfromsocket(data);
-    this.forceUpdate();
+    //alert('getupdatedChats is called' + data.length);
+/*    if(this.props.userchats){
+    this.props.getchatsfromsocket(this.props.userchats,data);
   }
+  else{
+    this.props.getchatsfromsocket([],data);
+  }*/
+        //this.props.mobileuserchat.push(message);
+    /*  alert(this.props.userchats.length);  
+      this.props.userchats.push(data);*/
+      //this.props.getchatsfromsocket(this.props.userchats,'uniqueid');
+     // alert(this.props.userchats.length);
+  //  this.forceUpdate();
+  }
+  
    
   
    handleChange(e){

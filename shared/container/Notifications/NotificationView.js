@@ -1,7 +1,7 @@
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getNotificationRequest}  from '../../redux/actions/actions'
+import { getNotificationRequest,resendNotification}  from '../../redux/actions/actions'
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
@@ -14,11 +14,9 @@ class NotificationView extends Component {
    
       
         super(props, context);
+        this.addNotifications = this.addNotifications.bind(this);
   
   
-    
-  
-
   }
 
   componentWillMount(){
@@ -30,6 +28,23 @@ class NotificationView extends Component {
         console.log(this.props.params.id);
         this.props.getNotificationRequest(this.props.params.id,usertoken);
       }
+  }
+
+  addNotifications(e) {  
+    // we will send notification via email.
+    //Also mobile client will receive notifications on socket.
+
+    e.preventDefault();
+    const usertoken = auth.getToken();
+    var companyid = this.props.userdetails.uniqueid;
+
+    var customers = this.props.customers;
+    var notification = this.props.notification[0]
+    this.props.resendNotification({notification,usertoken,customers});
+     
+
+    
+
   }
   render() {
      var ag = []
@@ -86,16 +101,27 @@ class NotificationView extends Component {
                    </div>
                 </div>
 
-
-              <div className="form-actions fluid">
+            <div className="form-actions fluid">
+              <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
+                    <button className="btn green" onClick={this.addNotifications}>
+                      <i className="fa fa-pencil"/>
+                       Resend
+                    </button>
+
+                    </div>
+               </div> 
+                <div className="col-md-9">
+                  <div className="col-md-9">
                     <Link to="/notifications" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
+                    
                     </div>
-               </div>                
+               </div>
+               </div>                 
               </div>
               </div>  
               
@@ -131,7 +157,8 @@ function mapStateToProps(state) {
     userdetails:(state.dashboard.userdetails),
     channels :(state.dashboard.channels),
     notifications:(state.dashboard.notifications),
+    customers : (state.dashboard.customers),
     };
 }
 
-export default connect(mapStateToProps,{ getNotificationRequest})(NotificationView);
+export default connect(mapStateToProps,{resendNotification, getNotificationRequest})(NotificationView);

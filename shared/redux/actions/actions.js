@@ -1734,6 +1734,28 @@ export function createNotification(notification) {
 
 
 
+export function resendNotification(notification) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/resendNotification`, {
+      method: 'post',
+      body: JSON.stringify({
+        notification: notification.notification,
+        customers : notification.customers
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': notification.usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => {
+        alert('Notification resent!')
+       // browserHistory.push('/notifications'); 
+    });
+  };
+}
+
+
+
 
 export function deleteNOTIFICATION(notification) {
   return {
@@ -2138,10 +2160,20 @@ export function setsocketid(yoursocketid){
   };
 }
 
-export function getchatsfromsocket(data){
+export function getchatsfromsocket(originalArray,prop){
+     var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
    return {
     type: ActionTypes.ADD_USER_CHATS,
-    userchats : data,
+    userchats : newArray,
    
 
   };
