@@ -122,7 +122,7 @@ var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
 return res;
 }    
   return (
-   (props.userchat.length > 0 ? 
+   (props.userchat.length > 0 || props.customer.platform == 'web' ? 
    <div className="list-group" onClick={props.onClickSession} style={changec}>
    {
     (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?

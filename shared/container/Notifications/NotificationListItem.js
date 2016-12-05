@@ -29,9 +29,9 @@ function NotificationListItem(props) {
          <Link to={`/notification/${props.notification._id}`} className="btn blue-madison" >
          View
         </Link>
-         <Link to={`/editnotification/${props.notification._id}`} className="btn blue-madison" >
+        {/*<Link to={`/editnotification/${props.notification._id}`} className="btn blue-madison" >
         Edit
-        </Link>
+        </Link>*/}
        
        
 
