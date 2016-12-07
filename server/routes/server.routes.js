@@ -28,7 +28,7 @@ router.route('/getteams').get(TeamController.getteams);
 router.route('/getgroups').get(GroupController.getgroups);
 
 router.route('/getmyuserteams').get(TeamController.getmyuserteams);
-router.route('/getcustomerteams').post(TeamController.getcustomerteams);
+router.route('/getcustomerteams').get(TeamController.getcustomerteams);
 router.route('/getcustomersession').post(ChatController.getcustomersession);
 router.route('/updatechatstatus').post(ChatController.updatechatstatus);
 router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
@@ -58,7 +58,7 @@ router.route('/changepassword').post(UserController.changepassword);
 router.route('/createChannel').post(ChannelController.createChannel);
 router.route('/editChannel').post(ChannelController.editChannel);
 router.route('/getchannels').get(ChannelController.getchannels);
-router.route('/getcustomerchannels').post(ChannelController.getcustomerchannels);
+router.route('/getcustomerchannels').get(ChannelController.getcustomerchannels);
 
 router.route('/getchannelwisecalls').post(ChannelController.getchannelwisecalls);
 router.route('/getplatformwisecalls').get(ChannelController.getplatformwisecalls);

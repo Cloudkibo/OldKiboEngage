@@ -1270,8 +1270,11 @@ groupdetails :state.groupdetails,
              onlineAgents : action.onlineAgents,
              yoursocketid : state.yoursocketid,
              news:state.news,
+<<<<<<< HEAD
              groupagents : state.groupagents,
              groupdetails : state.groupdetails,
+=======
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
 
             };
 
@@ -1334,8 +1337,7 @@ groupdetails :state.groupdetails,
 
              channels : state.channels,
              customers : state.customers,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,
-             groupagents : state.groupagents,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
              groupdetails :state.groupdetails,
 
             };
@@ -1468,6 +1470,15 @@ groupdetails :state.groupdetails,
 
             };
 
+<<<<<<< HEAD
+=======
+            case ActionTypes.SHOW_COUNTRY_NAME:
+            return {
+              country: state.country,
+              
+            }
+
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
             case ActionTypes.CHANNEL_STATS:
               return {
              teamdetails: state.teamdetails,

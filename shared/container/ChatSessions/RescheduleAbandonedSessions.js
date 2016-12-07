@@ -13,24 +13,24 @@ import { browserHistory } from 'react-router'
 class RescheduleAbandonedSessions extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
-   
+
     const usertoken = auth.getToken();
     console.log('constructor is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getcompanysettings(usertoken,props.userdetails.uniqueid);
-       
+
       }
     super(props, context);
-    this.handleSubmit = this.handleSubmit.bind(this);   
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {emailtemp : '',url : ''}
-    
+
   }
  componentWillReceiveProps(props) {
     if(props.companysettings){
@@ -42,7 +42,7 @@ class RescheduleAbandonedSessions extends Component {
   }
   handleSubmit(e){
     const usertoken = auth.getToken();
-    
+
    var emailMsg = {'to':this.props.params.name,'emailAdd':this.props.params.email,'subject' : 'Rescheduling Chat Session','body':this.state.emailtemp,'from' : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,'url' : this.state.url }
       this.props.updatereschedule({'is_rescheduled' : 'true','rescheduled_by' : this.props.userdetails._id,'companyid' : this.props.userdetails.uniqueid,'request_id':this.props.params.id,'usertoken' : usertoken},{emailMsg,usertoken})
    //   this.props.submitemail({emailMsg,usertoken});
@@ -55,31 +55,31 @@ class RescheduleAbandonedSessions extends Component {
     console.log(token)
     return (
       <div>
-       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
+       
        <div className="page-container">
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Reschedule Abandoned Chat Sessions </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/newchatsessions">Abandoned Chat Sessions </Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
                   Reschedule Abandoned Chat Sessions
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body">
            {
             this.props.companysettings &&
@@ -88,15 +88,15 @@ class RescheduleAbandonedSessions extends Component {
               <h3>Edit Email Template </h3>
               <textarea className ="form-control" rows="5" ref = "emailtemp" onChange={this.onChange.bind(this)} defaultValue= {this.props.companysettings.abandonedscheduleemail1}>
 
-               
+
             </textarea>
-              
+
 
 
            <div className="portlet">
               <div className="portlet-title">
                 <div className="caption"><i className="fa fa-gift"></i>Perview Email</div>
-               
+
               </div>
             <div class="portlet-body">
               Hello {this.props.params.name},<br/><br/>{this.state.emailtemp}<br/><br/>
@@ -106,23 +106,23 @@ class RescheduleAbandonedSessions extends Component {
               Regards
               <br/>{this.props.userdetails.firstname}
               <br/>{this.props.userdetails.companyName}</div>
-          </div>  
+          </div>
           <div className="form-actions">
-              <button className="btn blue"  type ="submit" onClick={this.handleSubmit}> Submit </button> 
-               
+              <button className="btn blue"  type ="submit" onClick={this.handleSubmit}> Submit </button>
+
          </div>
-           
+
           </div>
 
 
         }
         </div>
-            
+
           </div>
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -151,6 +151,3 @@ function mapStateToProps(state) {
 
 
 export default connect(mapStateToProps,{getcompanysettings,submitemail,updatereschedule})(RescheduleAbandonedSessions);
-
-
-

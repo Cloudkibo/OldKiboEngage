@@ -118,6 +118,37 @@ export function getcustomers(req, res) {
     request.get(options, callback);
   }
 
+  /***** Country Info *****/
+export function getCountryName(req, res) {
+  console.log('get getCountryName is called.');
+
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  console.log(ip);
+
+  var ip2number = (parseInt(ip.split('.')[0]) * 256 * 256 * 256) + (parseInt(ip.split('.')[1]) * 256 * 256) + (parseInt(ip.split('.')[2]) * 256) + (parseInt(ip.split('.')[3]));
+  console.log(ip2number);
+
+  var needle = require('needle');
+
+  var options = {
+    headers: {
+      'X-Custom-Header': 'CloudKibo Web Application',
+      'kibo-app-id': '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+      'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+      'kibo-client-id': 'cd89f71715f2014725163952'
+    }
+  }
+
+  needle.get('https://api.kibosupport.com/api/ipcountry/' + ip2number, options, function(err, resp) {
+
+    if (err) {
+      res.status(500).send(err);
+    }
+
+    console.log(resp.body);
+    res.json(resp.body.country);
+  });
+}
 
 /***** email customer***/
 export function emailCustomer(req, res) {

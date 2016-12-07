@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
+<<<<<<< HEAD
 import {createcustomer}  from '../../redux/actions/actions';
 import {getcustomerteams}  from '../../redux/actions/actions';
 import {getcustomerchannels,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions';
@@ -7,6 +8,15 @@ import {getCountryName} from '../../redux/actions/actions';
 import {updatechannellist}  from '../../redux/actions/actions';
 import {createsession}  from '../../redux/actions/actions';
 import {addRoom} from '../../redux/actions/actions';
+=======
+import {createcustomer}  from '../../redux/actions/actions'
+import {getcustomerteams}  from '../../redux/actions/actions'
+import {getcustomerchannels,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
+import {getCountryName} from '../../redux/actions/actions'
+import {updatechannellist}  from '../../redux/actions/actions'
+import {createsession}  from '../../redux/actions/actions'
+import {addRoom} from '../../redux/actions/actions'
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -34,10 +44,15 @@ function getParameterByName(name, url) {
 var call_customer_details;
 class AddCustomer extends Component {
    constructor(props, context) {
+<<<<<<< HEAD
     var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59'
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
     props.getcustomerteams(appid,appsecret,props.params.id);
     props.getcustomerchannels(appid,appsecret,props.params.id);
+=======
+    props.getcustomerteams();
+    props.getcustomerchannels();
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
     props.getCountryName();
     super(props, context);
     call_customer_details = false;
@@ -147,6 +162,15 @@ create_session(data){
 
         this.props.createsession(session);
         this.props.addRoom(data);
+<<<<<<< HEAD
+=======
+
+
+  }
+
+
+   componentWillReceiveProps(props) {
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
 
 
   }
@@ -184,13 +208,15 @@ create_session(data){
       //alert(this.refs.channellist.value)
       this.refs.name.value = props.specificcustomer.name;
       this.refs.email.value = props.specificcustomer.email;
-      this.refs.country.value = props.specificcustomer.country;
+      this.refs.country.value = this.props.country;
       this.refs.phone.value = props.specificcustomer.phone;
       this.forceUpdate()
     }
 
     }
    componentDidMount() {
+
+     this.props.getCountryName();
   // socket.on('joined',this.create_session)
   alert(props.countryName);
     this.props.route.socket.on('empty',this.noagent);
@@ -339,7 +365,11 @@ create_session(data){
                   <div className="form-group">
                   <label className="control-label col-md-3"> Country </label>
                    <div className="col-md-9">
+<<<<<<< HEAD
                             <input className="form-control input-medium" type='text' value = {this.props.countryName}  ref = "country" />
+=======
+                            <input className="form-control input-medium" type='text' value = {this.props.country} ref = "country" />
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
                 </div>
                 </div>
                   <div className="form-group">
@@ -417,7 +447,11 @@ function mapStateToProps(state) {
   console.log("mapStateToProps is called");
 
    return {
+<<<<<<< HEAD
     countryName :(state.country),
+=======
+    country : (state.country),
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
     teamdetails :(state.widget.teamdetails),
     channels :(state.widget.channels),
     filterlist :(state.widget.filterlist),
@@ -427,4 +461,8 @@ function mapStateToProps(state) {
     specificcustomer : (state.widget.specificcustomer),
   };
 }
+<<<<<<< HEAD
 export default connect(mapStateToProps,{getCountryName,getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
+=======
+export default connect(mapStateToProps,{getcustomerteams,getCountryName,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538

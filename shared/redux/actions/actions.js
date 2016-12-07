@@ -351,6 +351,7 @@ export function getuserteams(token) {
 }
 
 //this is without-token version of getting teamlist for Chat widget
+<<<<<<< HEAD
 export function getcustomerteams(appid,appsecret,companyid){
 
   return (dispatch) => {
@@ -368,6 +369,14 @@ export function getcustomerteams(appid,appsecret,companyid){
         'Content-Type': 'application/json',
       }),
 
+=======
+export function getcustomerteams(){
+
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcustomerteams`, {
+        method: 'get',
+
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerTeams(res)));
   };
 }
@@ -676,14 +685,13 @@ else{
 }
 
 export function joingroup(group,userid,usertoken) {
-
   if(confirm("Do you want to join this Group?"))
   {
   return (dispatch) => {
     return fetch(`${baseURL}/api/joinGroup`, {
       method: 'post',
       body: JSON.stringify({
-            groupid : group.get('_id'),
+            groupid : group._id,
             agentid : userid,
 
       }),
@@ -1020,8 +1028,9 @@ export function showCustomerChannels(channels) {
 }
 
 /*** get channels ***/
-export function getcustomerchannels(appid,appsecret,companyid){
+export function getcustomerchannels(){
   return (dispatch) => {
+<<<<<<< HEAD
     fetch(`${baseURL}/api/getcustomerchannels/`, {
         method: 'post',
         body: JSON.stringify({
@@ -1036,6 +1045,11 @@ export function getcustomerchannels(appid,appsecret,companyid){
         'Content-Type': 'application/json',
       }),
 
+=======
+    fetch(`${baseURL}/api/getcustomerchannels`, {
+        method: 'get',
+
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerChannels(res)));
   };
 }
@@ -1833,6 +1847,13 @@ export function showcustomers(customers) {
   };
 }
 
+export function showCountryName(country) {
+  return {
+    type: ActionTypes.SHOW_COUNTRY_NAME,
+    country,
+  };
+}
+
 export function getcustomers(token) {
   console.log(token);
   return (dispatch) => {
@@ -1846,7 +1867,17 @@ export function getcustomers(token) {
   };
 }
 
-
+export function getCountryName() {
+  alert('function is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getCountryName`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCountryName(res)));
+  };
+}
 
 export function confirmCustomer(customer) {
   return {
@@ -1875,7 +1906,11 @@ export function createcustomer(customer) {
 
 
 export function  emailCustomer(customer) {
+<<<<<<< HEAD
   alert(customer);
+=======
+  console.log(customer);
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
   return (dispatch) => {
     fetch(`${baseURL}/api/emailCustomer`, {
       method: 'post',
@@ -2184,43 +2219,15 @@ export function showuserchatspecific(userchats) {
   };
 }
 
-var sortBy = (function () {
 
-  //cached privated objects
-  var _toString = Object.prototype.toString,
-      //the default parser function
-      _parser = function (x) { return x; },
-      //gets the item to be sorted
-      _getItem = function (x) {
-        return this.parser((x !== null && typeof x === "object" && x[this.prop]) || x);
-      };
-
-  // Creates a method for sorting the Array
-  // @array: the Array of elements
-  // @o.prop: property name (if it is an Array of objects)
-  // @o.desc: determines whether the sort is descending
-  // @o.parser: function to parse the items to expected type
-  return function (array, o) {
-    if (!(array instanceof Array) || !array.length)
-      return [];
-    if (_toString.call(o) !== "[object Object]")
-      o = {};
-    if (typeof o.parser !== "function")
-      o.parser = _parser;
-    o.desc = !!o.desc ? -1 : 1;
-    return array.sort(function (a, b) {
-      a = _getItem.call(o, a);
-      b = _getItem.call(o, b);
-      return o.desc * (a < b ? -1 : +(a > b));
-    });
-  };
-
-}());
 export function showuserchatspecific_mobile(userchats) {
-  var sort_us = sortBy(userchats, { desc: false, prop: "datetime" });//userchats.sort(sortFunction);​
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
+<<<<<<< HEAD
     mobileuserchat : sort_us,
+=======
+    mobileuserchat : userchats,
+>>>>>>> d59b0f9938cdec38523210c45d7d9765e5dc7538
 
 
   };
