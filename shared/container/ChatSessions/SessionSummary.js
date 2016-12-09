@@ -6,14 +6,14 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
-import {getsessions,getcustomers,filterbysessionDept,filterbysessionChannel,filterbysessionAgent,filterbysessionstatus} from '../../redux/actions/actions'
+import {getsessions,getcustomers,filterbysessionMedium,filterbysessionDept,filterbysessionChannel,filterbysessionAgent,filterbysessionstatus} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
 class SessionSummary extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -21,7 +21,7 @@ class SessionSummary extends Component {
     console.log('constructor is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
       //  props.getsessions(usertoken);
         props.getsessions(usertoken);
@@ -32,11 +32,11 @@ class SessionSummary extends Component {
       }
     super(props, context);
     this.getupdatedSessions = this.getupdatedSessions.bind(this);
-       
 
-    
+
+
   }
- 
+
   getupdatedSessions(data)
   {
     const usertoken = auth.getToken();
@@ -53,32 +53,37 @@ class SessionSummary extends Component {
      alert(e.target.value);
      this.props.filterbysessionstatus(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
-   
-   
+
+
     }
 
+    handleChangeMedium(e){
+      alert(e.target.value);
+      this.props.filterbysessionMedium(e.target.value,this.props.sessionsummary);
+      this.forceUpdate();
+    }
 
     handleChangeDepartment(e){
      alert(e.target.value);
      this.props.filterbysessionDept(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
-   
-   
+
+
     }
      handleChangeChannel(e){
      alert(e.target.value);
      this.props.filterbysessionChannel(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
-   
-   
+
+
     }
 
     handleChangeAgents(e){
      alert(e.target.value);
      this.props.filterbysessionAgent(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
-   
-   
+
+
     }
 
 
@@ -89,29 +94,29 @@ class SessionSummary extends Component {
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
        <div className="page-container">
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Summary of Chat Sessions </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/summarychatsessions">Summary of Chat Sessions </Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
                    Summary of Chat Sessions
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body">
                       <div className="table-responsive">
                                <table className="table">
@@ -125,7 +130,7 @@ class SessionSummary extends Component {
                                 </tr>
                                 <tr>
                                   <td className="col-md-1">
-                                  
+
                                     <select  ref = "status" onChange={this.handleChange.bind(this)}   >
                                             <option value="all">All</option>
                                             <option value="new">New</option>
@@ -135,31 +140,31 @@ class SessionSummary extends Component {
                                         </select>
                                   </td>
                                   <td className="col-md-1">
-                                  
-                                    <select  ref = "client" onChange={this.handleChange.bind(this)}   >
+
+                                    <select  ref = "client" onChange={this.handleChangeMedium.bind(this)}   >
                                             <option value="all">All</option>
                                             <option value="mobile">Mobile</option>
                                             <option value="web">Web</option>
-                                            
+
                                         </select>
                                   </td>
                                   <td className="col-md-1">
-                                  
+
                                     <select  ref = "agentList" onChange={this.handleChangeAgents.bind(this)}   >
                                           <option value="all">All</option>
-                                
+
                                            {
                                             this.props.agents && this.props.agents.map((agent,i) =>
                                               <option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
 
                                               )
                                            }
-                                            
-                                           
+
+
                                         </select>
                                   </td>
                                   <td className="col-md-1">
-                                    
+
                                     <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
                                              <option value="all">All</option>
                                             {
@@ -168,11 +173,11 @@ class SessionSummary extends Component {
 
                                               )
                                            }
-                                           
 
-                                           
+
+
                                         </select>
-                               
+
                                   </td>
                                   <td className="col-md-1">
                                     <select  ref = "channellist" onChange={this.handleChangeChannel.bind(this)}   >
@@ -183,9 +188,9 @@ class SessionSummary extends Component {
 
                                               )
                                            }
-                                         
+
                                         </select>
-                               
+
                                   </td>
                                 </tr>
                                 </tbody>
@@ -201,36 +206,37 @@ class SessionSummary extends Component {
                      <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Medium</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
-                        
-                   
+
+
                     </tr>
                     </thead>
 
-                    <tbody>                    
+                    <tbody>
                       {
                         this.props.sessionsummaryfiltered && this.props.customers && this.props.channels && this.props.teamdetails && this.props.agents &&
                         this.props.sessionsummaryfiltered.map((session, i) => (
-                          
+
                            <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
-                                                     
+
                         ))
                       }
 
 
-                     
-                     </tbody> 
+
+                     </tbody>
                     </table>
                 }
-        
-                
+
+
             </div>
           </div>
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -260,9 +266,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,filterbysessionDept:filterbysessionDept,filterbysessionChannel:filterbysessionChannel,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus}, dispatch);
+  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,filterbysessionMedium:filterbysessionMedium,filterbysessionDept:filterbysessionDept,filterbysessionChannel:filterbysessionChannel,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(SessionSummary);
-
-
-

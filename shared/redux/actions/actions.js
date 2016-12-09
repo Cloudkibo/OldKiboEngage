@@ -2517,6 +2517,24 @@ export function filterbysessionDept(id,sessionsummary) {
   };
 }
 
+export function filterbysessionMedium(medium, sessionsummary) {
+  alert(medium)
+  var sessionsummaryfiltered;
+  if(medium == "all")
+  {
+    sessionsummaryfiltered = sessionsummary
+  }
+  else{
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium)
+  }
+
+  return {
+    type: ActionTypes.FILTER_BY_SESSION,
+    sessionsummaryfiltered,
+    sessionsummary,
+
+  };
+}
 export function filterbysessionChannel(id,sessionsummary) {
   
   var sessionsummaryfiltered;
