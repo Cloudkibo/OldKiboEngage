@@ -12,42 +12,42 @@ class CannedResponseCreate extends Component {
   constructor(props, context) {
     console.log('constructor is called');
     super(props, context);
-    
+
      //this.createcannedResponse = this.createcannedResponse.bind(this);
       this.addResponse = this.addResponse.bind(this);
   }
 
- 
+
 
   addResponse(e) {
      e.preventDefault();
    // const usertoken = auth.getToken();
     const shortcode = this.refs.shortcode;
     const msg = this.refs.msg;
-    
+
     if (shortcode.value && msg.value)
      {
        this.props.addResponse("/" + shortcode.value,msg.value);
        shortcode.value = msg.value = '';
-     // this.props.createResponse(response,usertoken);
-     
+       //this.props.createResponse(response,usertoken);
+
     }
   }
-    
+
   render() {
     const cls = `form ${(this.props.showCR ? 'appear' : 'hide')}`;
 
     return (
       <div className={cls}>
-    
+
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
                    Create Canned Response
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body form">
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
@@ -58,7 +58,7 @@ class CannedResponseCreate extends Component {
                     <span className="input-group-addon">
                     /
                     </span>
-                  
+
                          <input className="form-control input-medium" type='text'  ref = "shortcode" placeholder ="Short Code e.g Hey!"/>
                    </div>
                    </div>
@@ -80,27 +80,27 @@ class CannedResponseCreate extends Component {
                     </button>
 
                     </div>
-               </div> 
+               </div>
                 <div className="col-md-9">
                   <div className="col-md-9">
                     <Link to="/cannedresponses" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
-                    
+
                     </div>
                </div>
-               </div>                 
+               </div>
               </div>
-              </div>  
-              
+              </div>
+
           </form>
           </div>
           </div>
           </div>
 
-        
-      )                   
+
+      )
      }
 }
 
@@ -111,5 +111,3 @@ CannedResponseCreate.propTypes = {
 
 
 export default CannedResponseCreate;
-
-

@@ -144,8 +144,8 @@ export function getuser(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       if(response.statusCode == 200) {
@@ -156,7 +156,7 @@ export function getuser(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -176,8 +176,8 @@ export function getcompanyprofile(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
      console.log(body);
@@ -189,7 +189,7 @@ export function getcompanyprofile(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -208,8 +208,8 @@ export function getagents(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
@@ -222,7 +222,7 @@ export function getagents(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -238,21 +238,21 @@ export function deptagents(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
        // //console.log(info)
-       
+
         ////console.log(info);
       return res.status(200).json(info);
     }
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -273,27 +273,27 @@ export function deleteAgent(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
     //console.log(response.statusCode);
     //console.log(error);
       var info = JSON.parse(body);
 
       //  //console.log(info.status);
-        
+
       if(!error  && response.statusCode == 200) {
-        res.status(200).json({info}); 
-    
+        res.status(200).json({info});
+
    }
    else{
    // //console.log(error);
-    res.status(422).json(info); 
+    res.status(422).json(info);
    }
  }
     request.post(options, callback);
-    
+
 }
 
 
@@ -314,15 +314,15 @@ export function editagent(req, res) {
            role : req.body.role
 
           }
-      
-     
+
+
     };
     function callback(error, response, body) {
         //console.log(error);
         var info = JSON.parse(body);
         //console.log(info.msg);
        //console.log(info.status);
-    
+
       if(!error  && response.statusCode == 200) {
        if(info.status == 'success')
        {
@@ -330,15 +330,15 @@ export function editagent(req, res) {
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,message:info.status}); 
-   
+            return res.status(422).json({statusCode : 422 ,message:info.status});
+
        }
     }
-   
+
 
    }
         request.post(options, callback);
-   
+
   }
 
 
@@ -358,15 +358,15 @@ export function inviteAgent(req, res) {
           email : req.body.email
 
           }
-      
-     
+
+
     };
     function callback(error, response, body) {
         //console.log(error);
         var info = JSON.parse(body);
         //console.log(info.msg);
        //console.log(info.status);
-    
+
       if(!error  && response.statusCode == 200) {
        if(info.status == 'success')
        {
@@ -374,15 +374,15 @@ export function inviteAgent(req, res) {
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,message:info.msg}); 
-   
+            return res.status(422).json({statusCode : 422 ,message:info.msg});
+
        }
     }
-   
+
 
    }
         request.post(options, callback);
-   
+
   }
 /************************* Canned Response APIs *********************************/
 export function createResponse(req, res) {
@@ -395,7 +395,7 @@ export function createResponse(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       form: {
            'shortcode' : req.body.shortcode,
@@ -403,10 +403,10 @@ export function createResponse(req, res) {
            'companyid' : req.body.companyid
 
           }
-      
-     
+
+
     };
-    
+
     function callback(error, response, body) {
         //console.log(body);
         //console.log(error)
@@ -415,13 +415,13 @@ export function createResponse(req, res) {
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,data:error}); 
+      return res.status(422).json({statusCode : 422 ,data:error});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
 
 
@@ -435,8 +435,8 @@ export function getresponses(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       //console.log(body);
@@ -449,7 +449,7 @@ export function getresponses(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -467,23 +467,23 @@ export function destroyResponse(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
     //console.log(response.statusCode);
     //console.log(error);
       if(!error  && response.statusCode == 204) {
-        res.sendStatus(200); 
-    
+        res.sendStatus(200);
+
    }
    else{
     //console.log(error);
-     res.sendStatus(422);  
+     res.sendStatus(422);
    }
  }
     request.delete(options, callback);
-    
+
 }
 
 export function editResponse(req, res) {
@@ -498,29 +498,29 @@ export function editResponse(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       json: req.body.response
-      
-     
+
+
     };
-    
+
     function callback(error, response, body) {
         //console.log(body);
         //console.log(error)
-      if(!error  && response.statusCode == 200) {
-      
+      if(!error  && response.statusCode == 201) {
+
             return res.status(200).json({statusCode : 200,body});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.put(options, callback);
-   
+
   }
 
 
@@ -532,9 +532,9 @@ export function invitetoken(req,res){
    var options = {
       url: `${baseURL}/api/inviteagenttokens?id=${id}`,
       rejectUnauthorized : false,
-          
+
     };
-    
+
     function callback(error, response, body) {
         //console.log(body);
         //console.log(response.statusCode);
@@ -545,19 +545,19 @@ export function invitetoken(req,res){
        for (var i=0;i<parsedJSON.length;i++) {
             //console.log(parsedJSON[i].email);
          }
-        
+
       if(!error && body.length == 0)
       {
          return res.status(200).json({statusCode : 422 ,error});
-      }  
+      }
       else if(!error && body.length != 0) {
-            
+
 
             return res.status(200).json({statusCode : 200 ,body:parsedJSON[0]});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,error}); 
+      return res.status(422).json({statusCode : 422 ,error});
 
     }
 
@@ -575,20 +575,20 @@ export function verifytoken(req,res){
    var options = {
       url: `${baseURL}/api/verificationtokens/kiboengage/${id}`,
       rejectUnauthorized : false,
-          
+
     };
-    
+
     function callback(error, response, body) {
       //console.log(body);
 
       if(!error && response.status == 'success')
       {
          return res.status(200).json({statusCode:200,status : 'success'});
-      }  
-    
+      }
+
     else
     {
-      return res.status(422).json({statusCode:422,status : 'failed'}); 
+      return res.status(422).json({statusCode:422,status : 'failed'});
 
     }
 
@@ -645,22 +645,22 @@ export function verifypasswordResettoken(req,res){
    var options = {
       url: `${baseURL}/api/passwordresettokens/${id}`,
       rejectUnauthorized : false,
-          
+
     };
-    
+
     function callback(error, response, body) {
       console.log(body);
       console.log(response.statusCode);
       if(!error && response.statusCode == 200)
       {
          return res.status(200).json({statusCode:200,status : 'success'});
-      }  
-    
+      }
+
     else
     {
       console.log(error);
 
-      return res.status(200).json({statusCode:422,status : 'failed'}); 
+      return res.status(200).json({statusCode:422,status : 'failed'});
 
     }
 
@@ -710,16 +710,16 @@ export function changepassword (req,res) {
 
 //update profile
 export function updateprofile (req,res) {
-  
+
     var user = req.body;
     var token = req.headers.authorization;
- 
+
     var options = {
       url: `${baseURL}/api/users/updateprofile`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       form: {
         'firstname' :user.firstname,
@@ -749,13 +749,13 @@ export function updateprofile (req,res) {
     }
 
     request.post(options, callback);
-  
+
 };
 
 
 // verify account
 export function verifyaccount (req,res) {
-  
+
 var token = req.headers.authorization;
     console.log('verify account is called');
     var options = {
@@ -763,9 +763,9 @@ var token = req.headers.authorization;
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
     function callback(error, response, body) {
       //console.log(response.statusCode);
@@ -786,7 +786,7 @@ var token = req.headers.authorization;
     }
 
     request.get(options, callback);
-  
+
 };
 
 
@@ -794,21 +794,21 @@ var token = req.headers.authorization;
 //change password
 
 export function changenewpassword(req,res) {
-  
+
     var user = req.body;
     var token = req.headers.authorization;
- 
+
     var options = {
       url: `${baseURL}/api/users/resetpassword`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       form: {
        'email' : user.email,
        'password' : user.password,
-       'newpassword' :user.newpassword 
+       'newpassword' :user.newpassword
       }
     };
     function callback(error, response, body) {
@@ -819,7 +819,7 @@ export function changenewpassword(req,res) {
       }
       else if(!error && response.statusCode == 403)
       {
-      
+
         res.status(403).send({status:'danger',message:"Authentication failed."});
       }
       else
@@ -831,7 +831,7 @@ export function changenewpassword(req,res) {
     }
 
     request.post(options, callback);
-  
+
 };
 
 
@@ -839,25 +839,25 @@ export function changenewpassword(req,res) {
 //update company settings
 
 export function updatesettings (req,res) {
-  
+
     console.log('update settings is called');
     var company = req.body;
     console.log(company);
     var token = req.headers.authorization;
- 
+
     var options = {
       url: `${baseURL}/api/companyprofiles/updatecompanyprofile`,
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       json:company
     };
     function callback(error, response, body) {
       console.log(body);
       if (!error && response.statusCode == 200) {
-       
+
         //console.log('api calling succeed')
         return res.status(200).send({status:'success',message:'Information has been updated successfully.'});
 
@@ -872,7 +872,7 @@ export function updatesettings (req,res) {
     }
 
     request.post(options, callback);
-  
+
 };
 
 
@@ -912,7 +912,7 @@ function getRandomSalt() {
 }
 
 export function uploadpicture (req,res)
-{  
+{
   console.log('file upload is called');
   var token = req.headers.authorization;
  /* first delete previous profile picture*/
@@ -921,20 +921,20 @@ export function uploadpicture (req,res)
   fs.unlink(foldfile,function(err){
         if(err) return console.log(err);
         console.log('file deleted successfully');
-   });  
+   });
 }
-  
+
   var imageBuffer = decodeBase64Image(req.body.file);
   var file_ext = req.body.fileName.substr((Math.max(0, req.body.fileName.lastIndexOf(".")) || Infinity) + 1);
   var newFileName = getRandomSalt() + '.' + file_ext;
   var saveTo = path.join(path.resolve(__dirname, '../../static'),'profileImages',newFileName);
-  console.log(saveTo);  
+  console.log(saveTo);
   //var f=fs.createWriteStream(saveTo);
   fs.writeFile(saveTo, imageBuffer.data, function (err) {
    if(err){
           console.log('error occured in writing file');
           res.status(501).send({status:'danger',message:"Something went wrong, please try again."});
-          
+
    }
 
 
@@ -945,19 +945,19 @@ export function uploadpicture (req,res)
             rejectUnauthorized : false,
             headers :  {
                        'Authorization': `Bearer ${token}`,
-                      
+
                        },
             form: {
               'picture' :newFileName,
-             
+
             }
           };
           function callback(error, response, body) {
             console.log(response.statusCode);
             console.log(body);
             if (!error && response.statusCode == 200) {
-              
-             
+
+
               return res.status(200).send({status:'success',message:'Profile picture uploaded successfully.'});
 
             }
@@ -971,11 +971,11 @@ export function uploadpicture (req,res)
           }
 
           request.post(options, callback);
-    
+
       }
 });
-  
+
 
   //fs.end();
-  
+
 };

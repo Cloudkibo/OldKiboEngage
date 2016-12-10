@@ -219,7 +219,7 @@ class SessionSummary extends Component {
                         this.props.sessionsummaryfiltered && this.props.customers && this.props.channels && this.props.teamdetails && this.props.agents &&
                         this.props.sessionsummaryfiltered.map((session, i) => (
 
-                           <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
+                           <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
 
                         ))
                       }

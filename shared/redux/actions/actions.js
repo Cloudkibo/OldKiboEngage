@@ -111,7 +111,7 @@ export function showForgotPassword(msg){
     type: ActionTypes.ADD_FORGOTPASSWORD_WARNINGS,
     errormessage : msg,
 
-  }; 
+  };
 }
 
 
@@ -173,7 +173,7 @@ export function showTokenResponse(status){
     type: ActionTypes.SHOW_TOKEN_RESPONSE,
     errormessage : s,
 
-  }; 
+  };
 
 
 }
@@ -183,10 +183,10 @@ export function verifyPasswordResettoken(token) {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
-      }), 
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showTokenResponse(res.statusCode))  
-      
-   
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showTokenResponse(res.statusCode))
+
+
       );
   };
 }
@@ -289,9 +289,9 @@ export function signupuser(user) {
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res.signup).then((res) => dispatch(showSignupResponse(res))  
-      
-   
+    }).then((res) => res.json()).then((res) => res.signup).then((res) => dispatch(showSignupResponse(res))
+
+
       );
   };
 }
@@ -333,7 +333,7 @@ export function getuserteams(token) {
 
 //this is without-token version of getting teamlist for Chat widget
 export function getcustomerteams(appid,appsecret,companyid){
- 
+
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomerteams/`, {
         method: 'post',
@@ -341,14 +341,14 @@ export function getcustomerteams(appid,appsecret,companyid){
           appid: appid,
           appsecret : appsecret,
           clientid:companyid,
-         
+
 
       })
         ,
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-       
+
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerTeams(res)));
   };
 }
@@ -360,14 +360,14 @@ export function getspecificsession(requestid) {
         method: 'post',
         body: JSON.stringify({
           request_id: requestid,
-         
+
 
       })
         ,
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-      
+
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerSession(res)));
   };
 }
@@ -377,14 +377,14 @@ export function getspecificcustomer(customerid) {
         method: 'post',
         body: JSON.stringify({
           customerid: customerid,
-         
+
 
       })
         ,
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-      
+
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerDetails(res)));
   };
 }
@@ -425,7 +425,7 @@ export function showCustomerSession(specificsession){
   return {
     type: ActionTypes.ADD_CUSTOMER_SESSION,
     specificsession,
-    
+
 
   };
 }
@@ -434,7 +434,7 @@ export function showCustomerDetails(specificcustomer){
   return {
     type: ActionTypes.ADD_CUSTOMER_DETAILS,
     specificcustomer,
-    
+
 
   };
 }
@@ -450,7 +450,7 @@ export function addTeam(team) {
 
 
 export function createteam(team,customers) {
-    
+
   return (dispatch) => {
     fetch(`${baseURL}/api/createteam`, {
       method: 'post',
@@ -460,12 +460,12 @@ export function createteam(team,customers) {
           customers:customers,
 
       }),
-    
+
       headers: new Headers({
          'Authorization': team.usertoken,
         'Content-Type': 'application/json',
       }),
-     
+
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
           if(res.statusCode != 200){
@@ -541,7 +541,7 @@ export function editGroup(group) {
          console.log(res.statusCode);
          alert(res.message);
          browserHistory.push('/groups');
-    
+
         }
     );
   };
@@ -605,7 +605,7 @@ export function deleteGROUP(group) {
     group,
   };
 
- 
+
 }
 
 export function deleteteam(team,usertoken,customers) {
@@ -666,9 +666,9 @@ export function joingroup(group,userid,usertoken) {
       body: JSON.stringify({
             groupid : group.get('_id'),
             agentid : userid,
-       
+
       }),
-      
+
       headers: new Headers({
         'Authorization': usertoken,
         'Content-Type': 'application/json',
@@ -677,7 +677,7 @@ export function joingroup(group,userid,usertoken) {
          console.log(res.statusCode);
          alert(res.message);
          browserHistory.push('/dashboard');
-    
+
         }
     );
   };
@@ -790,11 +790,11 @@ export function editAgent(id,role,token) {
     fetch(`${baseURL}/api/editagent`, {
       method: 'post',
       body: JSON.stringify({
-        
+
           personid:id,
-          role: role       
-        
-      })     
+          role: role
+
+      })
       ,
       headers: new Headers({
          'Authorization': token,
@@ -803,8 +803,8 @@ export function editAgent(id,role,token) {
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
          dispatch(editagentError(res.message));
-        
-           
+
+
         }
     );
   };
@@ -817,8 +817,8 @@ export function inviteagent(email,token) {
       method: 'post',
       body: JSON.stringify({
         email : email
-        
-      })     
+
+      })
       ,
       headers: new Headers({
         'Authorization': token,
@@ -827,8 +827,8 @@ export function inviteagent(email,token) {
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
          dispatch(inviteAgentResponse(res.message));
-        
-           
+
+
         }
     );
   };
@@ -841,7 +841,7 @@ export function joinCompanyResponse(inviteDetails) {
   };
 }
 
- 
+
 export function getInviteEmail(token) {
  console.log('getInviteEmail is called '+ token);
   return (dispatch) => {
@@ -849,7 +849,7 @@ export function getInviteEmail(token) {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
-      }), 
+      }),
     }).then((res) => res.json()).then((res) => res).then((res) =>{
       console.log(res.statusCode);
           if(res.statusCode == 200){
@@ -860,7 +860,7 @@ export function getInviteEmail(token) {
           else{
             browserHistory.push('/joincompanyfailure')
           }
-    }) 
+    })
 
       };
 }
@@ -872,14 +872,14 @@ export function verifyEmail(token) {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
-      }), 
+      }),
     }).then((res) => res.json()).then((res) => res).then((res) =>{
       console.log(res.statusCode);
           if(res.statusCode != 200){
 
             browserHistory.push('/verificationfailure')
           }
-    }) 
+    })
 
       };
 }
@@ -918,7 +918,7 @@ else{
 
 
 /*************************************************************************************************/
-/*                      Channel Related Actions                                                  */ 
+/*                      Channel Related Actions                                                  */
 
 /*************************************************************************************************/
 
@@ -939,8 +939,8 @@ export function createChannel(channel,usertoken,customers){
       }),
  }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-        browserHistory.push('/messagechannels'); 
-        
+        browserHistory.push('/messagechannels');
+
         }
     );
   };
@@ -962,13 +962,13 @@ export function editChannel(channel,usertoken,customers){
       body: JSON.stringify({
       channel : channel,
       customers:customers,
-      })       
-      
+      })
+
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
-      
+
         browserHistory.push('/messagechannels');
-           
+
         }
     );
   };
@@ -1009,14 +1009,14 @@ export function getcustomerchannels(appid,appsecret,companyid){
           appid: appid,
           appsecret : appsecret,
           clientid:companyid,
-         
+
 
       })
         ,
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-       
+
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerChannels(res)));
   };
 }
@@ -1070,7 +1070,7 @@ export function deletechannel(channel,usertoken,customers) {
       body: JSON.stringify({
       channel : channel,
       customers:customers,
-      }) 
+      })
     }).then((res) => res).then(res => dispatch(deleteCHANNEL(channel)));
   };
 }
@@ -1139,13 +1139,13 @@ export function editResponse(response,usertoken){
       }),
       body: JSON.stringify({
       response : response
-      })       
-      
+      })
+
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
         browserHistory.push('/cannedresponses');
-           
+
         }
     );
   };
@@ -1219,7 +1219,7 @@ export function getsessionsfromsocket(customerchat){
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
-   
+
   };
 }
 
@@ -1231,7 +1231,7 @@ customerchat = customerchat.filter((c) => c.platform == "mobile")
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
     serverresponse : 'received',
-   
+
   };
 }
 
@@ -1239,20 +1239,20 @@ export function showChatSummary(sessions){
   return {
     type: ActionTypes.SHOW_CHAT_SUMMARY,
     sessionsummary : sessions,
-   
+
   };
 }
 export function showAllChat(customerchat) {
 /* var customerchat = [{'id': '1','username' : 'John','team' :'IT','msg' :'I need help in software installation' },
                   {'id': '2','username' : 'Alice','team' :'Sales','msg' :'I didnt get my order yet' },
                   {'id': '3','username' : 'Joe','team' :'Payment','msg' :'Please confirm Payment status' }]
- 
+
 */
 
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
-   
+
   };
 }
 
@@ -1261,7 +1261,7 @@ export function showMyPickChatSessions(sessions,userid){
   return {
     type: ActionTypes.SHOW_MY_PICKED_SESSIONS,
     mypickedsessions : mypickedsessions,
-   
+
   };
 }
 
@@ -1271,7 +1271,7 @@ export function showNewChatSessions(sessions){
   return {
     type: ActionTypes.SHOW_NEW_SESSIONS,
     newsessions : newsessions,
-   
+
   };
 }
 
@@ -1280,7 +1280,7 @@ export function showAssignedChatSessions(sessions){
   return {
     type: ActionTypes.SHOW_ASSIGNED_SESSIONS,
     assignedsessions : assignedsessions,
-   
+
   };
 }
 
@@ -1289,7 +1289,7 @@ export function showResolvedChatSessions(sessions){
   return {
     type: ActionTypes.SHOW_RESOLVED_SESSIONS,
     resolvedsessions : resolvedsessions,
-   
+
   };
 }
 
@@ -1299,7 +1299,7 @@ export function getresolvedsessionsfromsocket(sessions,serversessions){
   var resolvedsocketsessions = sessions.filter((c) => c.status == "resolved")
   for(var j=0;j<resolvedsocketsessions.length-1;j++){
      for(var i=0;i<serversessions.length-1;i++){
-  
+
       if(serversessions[i].request_id == resolvedsocketsessions[j].request_id){
         serversessions.splice(i,1);
         break;
@@ -1310,14 +1310,14 @@ export function getresolvedsessionsfromsocket(sessions,serversessions){
     type: ActionTypes.SHOW_RESOLVED_SOCKET_SESSIONS,
     resolvedsocketsessions : resolvedsocketsessions,
     resolvedsessions : serversessions,
-  }; 
+  };
 }
 
 export function getnewsessionsfromsocket(sessions,serversessions){
   var newsocketsessions = sessions.filter((c) => c.status == "new")
   for(var j=0;j<newsocketsessions.length-1;j++){
      for(var i=0;i<serversessions.length-1;i++){
-  
+
       if(serversessions[i].request_id == newsocketsessions[j].request_id){
         serversessions.splice(i,1);
         break;
@@ -1328,14 +1328,14 @@ export function getnewsessionsfromsocket(sessions,serversessions){
     type: ActionTypes.SHOW_NEW_SOCKET_SESSIONS,
     newsocketsessions : newsocketsessions,
     newsessions : serversessions,
-  }; 
+  };
 }
 
 export function getassignedsessionsfromsocket(sessions,serversessions){
   var assignedsocketsessions = sessions.filter((c) => c.status == "assigned")
   for(var j=0;j<assignedsocketsessions.length-1;j++){
      for(var i=0;i<serversessions.length-1;i++){
-  
+
       if(serversessions[i].request_id == assignedsocketsessions[j].request_id){
         serversessions.splice(i,1);
         break;
@@ -1346,7 +1346,7 @@ export function getassignedsessionsfromsocket(sessions,serversessions){
     type: ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS,
     assignedsocketsessions : assignedsocketsessions,
     assignedsessions : serversessions,
-  }; 
+  };
 }
 export function filterbystatus(status,customerchat) {
 
@@ -1354,20 +1354,20 @@ export function filterbystatus(status,customerchat) {
   if(status == "all")
   {
     filtered = customerchat
-  } 
+  }
  else{
    filtered = customerchat.filter((c) => c.status == status)
-  
+
  }
- 
+
   console.log(filtered);
-                 
+
   console.log(customerchat);
   return {
     type: ActionTypes.FILTER_BY_STATUS,
     filtered,
     customerchat,
-   
+
   };
 }
 
@@ -1377,65 +1377,65 @@ export function filterbyDept(id,customerchat) {
   if(id == "all")
   {
     filtered = customerchat
-  } 
+  }
  else{
   filtered = customerchat.filter((c) => c.departmentid == id)
-  
+
  }
   console.log(filtered);
-                 
+
   console.log(customerchat);
   return {
     type: ActionTypes.FILTER_BY_DEPT,
     filtered,
     customerchat,
-   
+
   };
 }
 
 export function filterbyChannel(id,customerchat) {
-  
+
   var filtered;
   if(id == "all")
   {
     filtered = customerchat
-  } 
+  }
   else{
 
     filtered = customerchat.filter((c) => c.messagechannel == id)
 
-  } 
+  }
     console.log(filtered);
-                 
+
   console.log(customerchat);
   return {
     type: ActionTypes.FILTER_BY_CHANNEL,
     filtered,
     customerchat,
-   
+
   };
 }
 
 export function filterbyAgent(id,customerchat) {
-  
+
   var filtered;
   if(id == "all")
   {
     filtered = customerchat
-  } 
+  }
   else{
 
     filtered = customerchat.filter((c) => c.agent_ids == id)
 
-  } 
+  }
     console.log(filtered);
-                 
+
   console.log(customerchat);
   return {
     type: ActionTypes.FILTER_BY_AGENT,
     filtered,
     customerchat,
-   
+
   };
 }
 
@@ -1459,7 +1459,7 @@ export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
     type: ActionTypes.SELECT_CUSTOMERCHAT,
     customerchat_selected,
     new_message_arrived_rid,
-  }; 
+  };
 }
 
 
@@ -1568,7 +1568,7 @@ export function previousChat(chatlist){
 
 export function getChatRequest(customerid,token,chlist){
   var chatlist =[];
-  
+
   if(chlist){
       chatlist = chlist;
   }
@@ -1585,7 +1585,7 @@ export function getChatRequest(customerid,token,chlist){
 
 export function updateChatList(message,ch,id_not_added)
 {
-  
+
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
   if(!id_not_added){
@@ -1596,7 +1596,7 @@ export function updateChatList(message,ch,id_not_added)
     ch =[];
     ch.push(new_message_arrived_rid);
   }
-    
+
   }
   else
     {
@@ -1610,7 +1610,7 @@ export function updateChatList(message,ch,id_not_added)
     if(new_message_arrived_rid != id_not_added){
     ch.push(new_message_arrived_rid);
       }
-   
+
    }
  }
    return {
@@ -1646,7 +1646,7 @@ export function uploadpicture(data,fname,token,picture) {
        file: data,
        fileName:fname,
        oldprofile : picture
-     
+
      };
   return (dispatch) => {
     fetch(`${baseURL}/api/uploadpicture`, {
@@ -1656,9 +1656,9 @@ export function uploadpicture(data,fname,token,picture) {
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
-      
-   
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
+
+
       );
   };
 
@@ -1676,11 +1676,11 @@ export function uploadChatfile(fileData,usertoken) {
         body : fileData,
         headers: new Headers({
         'Authorization': usertoken,
-      
+
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfilesuccess(res))  
-      
-   
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfilesuccess(res))
+
+
       );
   };
 
@@ -1727,7 +1727,7 @@ export function createNotification(notification) {
       }),
     }).then((res) => res.json()).then(res => {
 
-        browserHistory.push('/notifications'); 
+        browserHistory.push('/notifications');
     });
   };
 }
@@ -1749,7 +1749,7 @@ export function resendNotification(notification) {
       }),
     }).then((res) => res.json()).then(res => {
         alert('Notification resent!')
-       // browserHistory.push('/notifications'); 
+       // browserHistory.push('/notifications');
     });
   };
 }
@@ -1798,13 +1798,13 @@ export function editNotification(notification,usertoken){
       }),
       body: JSON.stringify({
       notification : notification
-      })       
-      
+      })
+
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
         browserHistory.push('/notifications');
-           
+
         }
     );
   };
@@ -1829,7 +1829,7 @@ export function getCustomerRequest(id) {
   };
 }
 export function showcustomers(customers) {
-  
+
   return {
     type: ActionTypes.SHOW_CUSTOMERS,
     customers,
@@ -1870,7 +1870,7 @@ export function createcustomer(customer) {
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
-       
+
       }),
     }).then((res) => res.json()).then(res => dispatch(confirmCustomer(res.customer)));
   };
@@ -1878,7 +1878,7 @@ export function createcustomer(customer) {
 
 
 export function  emailCustomer(customer) {
-  console.log(customer);  
+  console.log(customer);
   return (dispatch) => {
     fetch(`${baseURL}/api/emailCustomer`, {
       method: 'post',
@@ -1897,12 +1897,12 @@ export function  emailCustomer(customer) {
     }).then((res) => res.json()).then(res => {
       console.log(res.statusCode);
         if(res.statusCode == 200){
-        alert('Email sent successfully.');  
-        browserHistory.push('/customers'); 
+        alert('Email sent successfully.');
+        browserHistory.push('/customers');
       }
        else{
-        alert('Email not sent to customer.There might be some errors.');  
-        browserHistory.push('/customers'); 
+        alert('Email not sent to customer.There might be some errors.');
+        browserHistory.push('/customers');
       }
     });
   };
@@ -1912,7 +1912,7 @@ export function  emailCustomer(customer) {
 
 
 export function  submitemail(customer) {
-  console.log(customer);  
+  console.log(customer);
  return (dispatch) => {
     fetch(`${baseURL}/api/rescheduleEmail`, {
       method: 'post',
@@ -1932,12 +1932,12 @@ export function  submitemail(customer) {
     }).then((res) => res.json()).then(res => {
       console.log(res.statusCode);
         if(res.statusCode == 200){
-        alert('Email sent successfully.');  
-        browserHistory.push('/dashboard'); 
+        alert('Email sent successfully.');
+        browserHistory.push('/dashboard');
       }
        else{
-        alert('Email not sent to customer.There might be some errors.');  
-        browserHistory.push('/dashboard'); 
+        alert('Email not sent to customer.There might be some errors.');
+        browserHistory.push('/dashboard');
       }
     });
   };
@@ -1954,7 +1954,7 @@ export function  updatereschedule(session,customer) {
         rescheduled_by : session.rescheduled_by,
         request_id : session.request_id,
         companyid : session.companyid,
-       
+
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -1978,7 +1978,7 @@ export function addRoom(room) {
   return {
     type: ActionTypes.ADD_ROOM_DETAILS,
     room,
-   
+
 
   };
 }
@@ -1992,28 +1992,28 @@ export function updateAgentList(onlineAgents){
 
 /***** session create ****/
 export function  createsession(session) {
-  console.log(session);  
+  console.log(session);
   return (dispatch) => {
     fetch(`${baseURL}/api/createsession`, {
       method: 'post',
        headers: new Headers({
         'Content-Type': 'application/json',
-      
+
       }),
       body: JSON.stringify({
           session : session
-      }),       
-      
-     
+      }),
+
+
     }).then((res) => res.json()).then(res => {
         console.log(res.statusCode);
         if(res.statusCode == 201){
-       // alert('session created successfully.');  
+       // alert('session created successfully.');
         dispatch(confirmSession(session));
       }
        else{
-        alert('Session not created');  
-        
+        alert('Session not created');
+
       }
     });
   };
@@ -2027,29 +2027,29 @@ export function savechatResponse(chat){
   }
 }
 export function  savechat(chat) {
-  console.log(chat);  
+  console.log(chat);
   return (dispatch) => {
     fetch(`${baseURL}/api/savechat`, {
       method: 'post',
        headers: new Headers({
         'Content-Type': 'application/json',
-      
+
       }),
       body: JSON.stringify({
           chat:chat
-      }),       
-      
-     
+      }),
+
+
     }).then((res) => res.json()).then(res => {
         console.log(res.statusCode);
         if(res.statusCode == 201){
-        console.log('chat saved.'); 
-        dispatch(savechatResponse(chat)); 
-       
+        console.log('chat saved.');
+        dispatch(savechatResponse(chat));
+
       }
        else{
-         console.log('chat not saved.'); 
-        
+         console.log('chat not saved.');
+
       }
     });
   };
@@ -2082,7 +2082,7 @@ export function resolvesessionResponse(){
   console.log('resolvesession called');
    return {
     type : ActionTypes.RESOLVE_SESSION,
-    
+
   }
 }
 
@@ -2100,7 +2100,7 @@ export function updatestatus(session) {
       method: 'post',
       body: JSON.stringify({
         request_id : session.request_id,
-        
+
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2125,7 +2125,7 @@ export function assignToAgent(session,usertoken) {
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
-       
+
       }),
     }).then((res) => res.json()).then(res => dispatch(assignToAgentResponse(session)));
   };
@@ -2144,7 +2144,7 @@ export function movedToMessageChannel(session,usertoken) {
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
-       
+
       }),
     }).then((res) => res.json()).then(res => dispatch(movedToMessageChannelResponse(session)));
   };
@@ -2155,7 +2155,7 @@ export function setsocketid(yoursocketid){
   return {
     type: ActionTypes.SET_SOCKET_ID,
     yoursocketid,
-   
+
 
   };
 }
@@ -2174,7 +2174,7 @@ export function getchatsfromsocket(originalArray,prop){
    return {
     type: ActionTypes.ADD_USER_CHATS,
     userchats : newArray,
-   
+
 
   };
 }
@@ -2182,7 +2182,7 @@ export function showuserchat(userchats) {
   return {
     type: ActionTypes.ADD_USER_CHATS,
     userchats,
-   
+
 
   };
 }
@@ -2192,7 +2192,7 @@ export function showuserchatspecific(userchats) {
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC,
     userchathistory : userchats,
-   
+
 
   };
 }
@@ -2234,7 +2234,7 @@ export function showuserchatspecific_mobile(userchats) {
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
     mobileuserchat : sort_us,
-   
+
 
   };
 }
@@ -2264,7 +2264,7 @@ export function resolvesession(request_id,usertoken) {
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
-       
+
       }),
     }).then((res) => res.json()).then(res => dispatch(resolvesessionResponse()));
   };
@@ -2285,7 +2285,7 @@ export function getspecificuserchats_mobile(request_id,companyid,usertoken) {
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
-       
+
       }),
     }).then((res) => res.json()).then(res => dispatch(showuserchatspecific_mobile(res.userchats)));
   };
@@ -2308,7 +2308,7 @@ export function getspecificuserchats(request_id,companyid,usertoken) {
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
-       
+
       }),
     }).then((res) => res.json()).then(res => dispatch(showuserchatspecific(res.userchats)));
   };
@@ -2348,7 +2348,7 @@ export function showUpdateProfile(msg){
     type: ActionTypes.ADD_UPDATE_PROFILE_WARNINGS,
     errormessage : msg,
 
-  }; 
+  };
 }
 export function updateprofile(user,token) {
   console.log(user);
@@ -2362,16 +2362,16 @@ export function updateprofile(user,token) {
         'country'     :user.country,
         'state'     :user.state,
         'city'     :user.city,
-       
+
 
       }),
         headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
-      
-   
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
+
+
       );
   };
 }
@@ -2384,9 +2384,9 @@ export function verifyaccount(token) {
       headers: new Headers({
         'Authorization': token,
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
-      
-   
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
+
+
       );
   };
 }
@@ -2402,7 +2402,7 @@ export function changepassword(user,token) {
        body: JSON.stringify({
        'email' : user.email,
        'password' : user.password,
-       'newpassword' :user.newpassword        
+       'newpassword' :user.newpassword
 
     })
 
@@ -2436,16 +2436,16 @@ export function updatesettings(company,token) {
                     'allowsmsnotification':company.allowsmsnotification,
                     'isdomainemail':company.isdomainemail,
                     'allowChat':company.allowChat,
-       
+
 
       }),
         headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))  
-      
-   
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
+
+
       );
   };
 }
@@ -2483,17 +2483,17 @@ export function filterbysessionstatus(status,sessionsummary) {
   if(status == "all")
   {
     sessionsummaryfiltered = sessionsummary
-  } 
+  }
  else{
    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status)
-  
+
  }
- 
+
   return {
     type: ActionTypes.FILTER_BY_SESSION,
     sessionsummaryfiltered,
     sessionsummary,
-   
+
   };
 }
 
@@ -2503,17 +2503,17 @@ export function filterbysessionDept(id,sessionsummary) {
   if(id == "all")
   {
     sessionsummaryfiltered = sessionsummary
-  } 
+  }
  else{
   sessionsummaryfiltered = sessionsummary.filter((c) => c.departmentid == id)
-  
+
  }
-                 
+
   return {
     type: ActionTypes.FILTER_BY_SESSION,
     sessionsummaryfiltered,
     sessionsummary,
-   
+
   };
 }
 
@@ -2536,42 +2536,42 @@ export function filterbysessionMedium(medium, sessionsummary) {
   };
 }
 export function filterbysessionChannel(id,sessionsummary) {
-  
+
   var sessionsummaryfiltered;
   if(id == "all")
   {
     sessionsummaryfiltered = sessionsummary
-  } 
+  }
   else{
 
     sessionsummaryfiltered = sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length-1] == id)
 
-  } 
+  }
    return {
     type: ActionTypes.FILTER_BY_SESSION,
     sessionsummaryfiltered,
     sessionsummary,
-   
+
   };
 }
 
 export function filterbysessionAgent(id,sessionsummary) {
-  
+
   var sessionsummaryfiltered;
   if(id == "all")
   {
     sessionsummaryfiltered = sessionsummary
-  } 
+  }
   else{
 
     sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids[c.agent_ids.length-1] == id)
 
-  } 
+  }
    return {
     type: ActionTypes.FILTER_BY_SESSION,
     sessionsummaryfiltered,
    sessionsummary,
-   
+
   };
 }
 
@@ -2584,7 +2584,7 @@ export function channelwisestats(channelwisestats){
   return {
     type: ActionTypes.CHANNEL_STATS,
     channelwisestats,
-   
+
   };
 }
 
@@ -2592,7 +2592,7 @@ export function platformwisestats(platformwisestats){
   return {
     type: ActionTypes.PLATFORM_STATS,
    platformwisestats,
-   
+
   };
 }
 
@@ -2600,7 +2600,7 @@ export function deptwisestats(deptwisestats){
   return {
   type: ActionTypes.DEPT_STATS,
    deptwisestats,
-   
+
   };
 }
 
@@ -2609,7 +2609,7 @@ export function pagewisestats(pagewisestats){
   return {
   type: ActionTypes.PAGE_STATS,
    pagewisestats,
-   
+
   };
 }
 
@@ -2617,7 +2617,7 @@ export function countrywisestats(countrywisestats){
   return {
   type: ActionTypes.COUNTRY_STATS,
   countrywisestats,
-   
+
   };
 }
 
@@ -2626,7 +2626,7 @@ export function mobilewisestats(mobilewisestats){
   return {
   type: ActionTypes.MOBILE_STATS,
   mobilewisestats,
-   
+
   };
 }
 
@@ -2635,7 +2635,7 @@ export function agentwisestats(agentwisestats){
   return {
   type: ActionTypes.AGENT_STATS,
   agentwisestats,
-   
+
   };
 }
 
@@ -2644,7 +2644,7 @@ export function agentwisenotifications(agentwisenotifications){
   return {
   type: ActionTypes.AGENT_NOTIFICATIONS,
   agentwisenotifications,
-   
+
   };
 }
 
@@ -2652,7 +2652,7 @@ export function customerstats(customerwisestats){
   return {
   type: ActionTypes.CUSTOMER_STATS,
   customerwisestats,
-   
+
   };
 }
 
@@ -2666,7 +2666,7 @@ export function getchannelwisestats(departmentid,token) {
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': token,
-       
+
       }),
     }).then((res) => res.json()).then(res => dispatch(channelwisestats(res.body)));
   };
@@ -2785,11 +2785,11 @@ export function creategroupError(message) {
   }
 }
 export function createGroup(group,usertoken) {
-    
+
   return (dispatch) => {
     fetch(`${baseURL}/api/creategroup`, {
       method: 'post',
-      
+
       body: JSON.stringify({
           groupname: group.groupname,
           groupdescription: group.groupdescription,
@@ -2797,12 +2797,12 @@ export function createGroup(group,usertoken) {
 
 
       }),
-    
+
       headers: new Headers({
          'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
-     
+
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(creategroupError(res)));
   };
 }
@@ -2903,7 +2903,7 @@ export function UpdateChatStatusUI(messages,mobileuserchat) {
    //alert('called')
   for(var i = 0;i<messages.length;i++){
     var obj = messages[i];
-      
+
     for(var j=0;j<mobileuserchat.length;j++){
         if(obj.uniqueid == mobileuserchat[j].uniqueid){
         //  alert('setting status')
@@ -2915,7 +2915,7 @@ export function UpdateChatStatusUI(messages,mobileuserchat) {
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
     mobileuserchat : mobileuserchat,
-   
+
 
   };
 }
@@ -2924,23 +2924,23 @@ export function downloadfile(body,usertoken){
       method: 'post',
       body: JSON.stringify({
           uniqueid : body.uniqueid,
-       
+
       }),
-    
+
       headers: new Headers({
        'Authorization': usertoken,
        'Content-Type': 'application/json',
        'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
        'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
        'kibo-client-id': 'cd89f71715f2014725163952',
-       
- 
+
+
       }),
-     
+
     })
 }
 export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
-    
+
   return (dispatch) => {
     fetch(`${baseURL}/api/updatechatstatus`, {
       method: 'post',
@@ -2950,18 +2950,18 @@ export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
 
 
       }),
-    
+
       headers: new Headers({
          'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
-     
+
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
 
         if(res.statusCode == 201 && mobileuserchat){
            dispatch(UpdateChatStatusUI(messages,mobileuserchat))
-        } 
+        }
         }
     );
   };
@@ -2969,7 +2969,7 @@ export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
 
 
 /***** function to remove duplicate chat messages from UI *******/
- 
+
 export function removeDuplicates(originalArray, prop) {
      var newArray = [];
      var lookupObject  = {};
@@ -2984,9 +2984,7 @@ export function removeDuplicates(originalArray, prop) {
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
     mobileuserchat : newArray,
-   
+
 
   };
  }
-
-
