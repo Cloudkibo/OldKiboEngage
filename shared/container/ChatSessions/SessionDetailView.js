@@ -35,6 +35,7 @@ var getagentname = function(agents,id){
  for(var c=0;c<=agents.length - 1;c++){
   if(agents[c]._id == id){
     cname = agents[c].firstname + ' ' + agents[c].lastname;
+ 
     break;
   }
  }
@@ -212,7 +213,7 @@ var grpp = []
                           {
                             sessionsummarydetail[0] && sessionsummarydetail[0].agent_ids &&
                            sessionsummarydetail[0].agent_ids.map((ch, i) => (
-                               <li>{getagentname(this.props.agents,ch)}</li>                            
+                               <li>{getagentname(this.props.agents,ch.id)}</li>                            
                             )) 
                           }
                           </ul>
