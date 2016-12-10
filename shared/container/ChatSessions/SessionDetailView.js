@@ -46,34 +46,34 @@ var getagentname = function(agents,id){
 class SessionDetailView extends Component {
 
   constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
      {
-       
+
         console.log(usertoken);
         console.log(props.params.id);
         props.getSessionDetailsRequest(props.params.id);
         props.getspecificuserchats(props.params.id,props.userdetails.uniqueid,usertoken)
       }
-      
+
         super(props, context);
         //this.handleDate = this.handleDate.bind(this);
            this.emailcustomer = this.emailcustomer.bind(this);
- 
-  
-    
-  
+
+
+
+
 
   }
 
- emailcustomer(e) {  
+ emailcustomer(e) {
     e.preventDefault();
     const usertoken = auth.getToken();
     const name= this.refs.name;
     const emailAdd= this.refs.emailAdd;
-    
+
     const subject= this.refs.subject;
     const body = this.refs.body;
     var companyid = this.props.userdetails.uniqueid;
@@ -82,56 +82,56 @@ class SessionDetailView extends Component {
      {
       var emailMsg = {'to':name.value,'emailAdd':emailAdd.value,'subject' : subject.value,'body':body.value,'from' : this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname }
       this.props.emailCustomer({emailMsg,usertoken});
-     
+
     }
 
   }
-  
+
   render() {
 var sessionsummarydetail = []
      {
          this.props.sessionsummarydetail &&
                         this.props.sessionsummarydetail.map((ch, i) => (
-                           sessionsummarydetail.push(ch)                            
+                           sessionsummarydetail.push(ch)
                         ))
 
       }
-    
+
 var grpp = []
  {
          this.props.teamdetails && sessionsummarydetail && sessionsummarydetail.length > 0 &&
                         this.props.teamdetails.filter((c) => c._id == sessionsummarydetail[0].departmentid).map((grp, i) => (
-                           grpp.push(grp)                            
+                           grpp.push(grp)
                         ))
 
-      }     
+      }
 
 
 
-   
+
 
      return (
       <div>
        <div className="page-container">
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">View Chat Session Details </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/summarychatsessions">Summary of Chat Sessions </Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
              {
               this.props.sessionsummarydetail &&
             <div className="portlet box ">
-          
+
            <div className="portlet-body">
                <div className="pull-left  form">
                 <form className="form-horizontal form-row-seperated">
@@ -154,7 +154,7 @@ var grpp = []
                       <label className="control-label col-md-3"> Status </label>
                        <div className="col-md-9">
                             <input className="form-control" type='text' value = {sessionsummarydetail[0].status}/>
-                 
+
                        </div>
                     </div>
 
@@ -162,7 +162,7 @@ var grpp = []
                       <label className="control-label col-md-3"> Team </label>
                        <div className="col-md-9">
                             <input className="form-control" type='text' value = {grpp[0].deptname}/>
-                 
+
                        </div>
                     </div>
 
@@ -170,7 +170,7 @@ var grpp = []
                       <label className="control-label col-md-3"> Request Time </label>
                        <div className="col-md-9">
                             <input className="form-control" type='text' value = {handleDate(sessionsummarydetail[0].requesttime)}/>
-                 
+
                        </div>
                     </div>
 
@@ -178,7 +178,7 @@ var grpp = []
                       <label className="control-label col-md-3"> Pick Time </label>
                        <div className="col-md-9">
                             <input className="form-control" type='text' value = {handleDate(sessionsummarydetail[0].picktime)}/>
-                 
+
                        </div>
                     </div>
 
@@ -186,7 +186,7 @@ var grpp = []
                       <label className="control-label col-md-3"> Resolve Time </label>
                        <div className="col-md-9">
                             <input className="form-control" type='text' value = {handleDate(sessionsummarydetail[0].endtime)}/>
-                 
+
                        </div>
                     </div>
 
@@ -197,8 +197,8 @@ var grpp = []
                           {
                             sessionsummarydetail[0] && sessionsummarydetail[0].messagechannel &&
                            sessionsummarydetail[0].messagechannel.map((ch, i) => (
-                               <li>{getchannelname(this.props.channels,ch)}</li>                            
-                            )) 
+                               <li>{getchannelname(this.props.channels,ch)}</li>
+                            ))
                           }
                           </ul>
                        </div>
@@ -212,15 +212,15 @@ var grpp = []
                           {
                             sessionsummarydetail[0] && sessionsummarydetail[0].agent_ids &&
                            sessionsummarydetail[0].agent_ids.map((ch, i) => (
-                               <li>{getagentname(this.props.agents,ch)}</li>                            
-                            )) 
+                               <li>{getagentname(this.props.agents,ch.id)}</li>
+                            ))
                           }
                           </ul>
                        </div>
                     </div>
-                  
-                  </div>  
-                  
+
+                  </div>
+
               </form>
               </div>
             <div>
@@ -234,7 +234,7 @@ var grpp = []
                                         </span>
                                         <div className="chat-body clearfix">
                                           <div>
-                                              <strong className="primary-font">{chat.from}</strong> 
+                                              <strong className="primary-font">{chat.from}</strong>
                                               <small className="pull-right text-muted">
                                                   <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
                                               </small>
@@ -250,7 +250,7 @@ var grpp = []
             </div>
 
             {
-              sessionsummarydetail[0].customerid.email && sessionsummarydetail[0].customerid.email != "N/A" && 
+              sessionsummarydetail[0].customerid.email && sessionsummarydetail[0].customerid.email != "N/A" &&
             <div style={{clear:'both'}}>
 
                 <div className="portlet box grey-cascade">
@@ -258,7 +258,7 @@ var grpp = []
                 <div className="caption">
                     <i className="fa fa-email"/>
                    Send Email
-                </div> 
+                </div>
                 </div>
                 <div className="portlet-body">
                 <form className="form-horizontal form-row-seperated">
@@ -289,7 +289,7 @@ var grpp = []
                    </div>
                 </div>
 
-              
+
               <div className="form-actions fluid">
               <div className="row">
                 <div className="col-md-3">
@@ -300,44 +300,44 @@ var grpp = []
                     </button>
 
                     </div>
-               </div> 
+               </div>
                 <div className="col-md-9">
                   <div className="col-md-9">
                     <Link to="/summarychatsessions" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
-                    
+
                     </div>
                </div>
-               </div>                 
+               </div>
               </div>
-              </div>  
-              
+              </div>
+
           </form>
           </div>
           </div>
 
             </div>
           }
-          
+
 
           </div>
 
-          
-          
+
+
 
           </div>
         }
 
 
-         
+
        </div>
-       
-       </div> 
+
+       </div>
       </div>
 
-      </div> 
+      </div>
   )
   }
 }
@@ -363,7 +363,7 @@ function mapStateToProps(state) {
           customerchat : (state.dashboard.customerchat),
           sessionsummary : (state.dashboard.sessionsummary),
           sessionsummarydetail :(state.dashboard.sessionsummarydetail),
-          userchathistory :(state.dashboard.userchathistory),      
+          userchathistory :(state.dashboard.userchathistory),
   };
 }
 

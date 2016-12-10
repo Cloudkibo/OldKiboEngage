@@ -5,7 +5,7 @@ import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 
-export default class Login extends Component {
+class Login extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -58,9 +58,9 @@ export default class Login extends Component {
                          <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
 
-                      
+
               </form>
-             
+
               </div>
               </div>
               </div>

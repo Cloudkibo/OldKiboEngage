@@ -39,9 +39,9 @@ class AddCustomer extends Component {
     props.getcustomerchannels(appid,appsecret,props.params.id);
     super(props, context);
     call_customer_details = false;
-   // var pathname = getParameterByName('pathname'); 
-    //var fullurl = getParameterByName('fullurl'); 
-   // var companyid = getParameterByName('id'); 
+   // var pathname = getParameterByName('pathname');
+    //var fullurl = getParameterByName('fullurl');
+   // var companyid = getParameterByName('id');
     var companyid = props.params.id;
     var pathname = props.params.pathname;
     console.log(pathname)
@@ -66,8 +66,8 @@ class AddCustomer extends Component {
       const email = this.refs.email;
       const country = this.refs.country;
       const phone = this.refs.phone;
-     // var companyid = getParameterByName('id'); 
-     // var pathname = getParameterByName('pathname'); 
+     // var companyid = getParameterByName('id');
+     // var pathname = getParameterByName('pathname');
      /* var fullurl = getParameterByName('fullurl'); */
 
     var companyid = this.props.params.id;
@@ -75,8 +75,8 @@ class AddCustomer extends Component {
   //    var pathname = "";
       var fullurl = "";
 
-     
-     var session = { 
+
+     var session = {
                         'email' : email.value,
                         'customerID' : email.value,
                         'departmentid': this.refs.teamlist.value,
@@ -99,7 +99,7 @@ class AddCustomer extends Component {
 
                          }
 
-       
+
     this.props.createsession(session); //added to create abandoned session
     browserHistory.push('/');
   }
@@ -108,8 +108,8 @@ create_session(data){
       const email = this.refs.email;
       const country = this.refs.country;
       const phone = this.refs.phone;
-     // var companyid = getParameterByName('id'); 
-     // var pathname = getParameterByName('pathname'); 
+     // var companyid = getParameterByName('id');
+     // var pathname = getParameterByName('pathname');
      /* var fullurl = getParameterByName('fullurl'); */
 
     var companyid = this.props.params.id;
@@ -117,8 +117,8 @@ create_session(data){
   //    var pathname = "";
       var fullurl = "";
 
-     
-      var session = { 
+
+      var session = {
                       'email' : email.value,
                       'departmentid': this.refs.teamlist.value,
                       'messagechannel' : this.refs.channellist.value,
@@ -141,15 +141,15 @@ create_session(data){
 
                          }
 
- 
+
 
         this.props.createsession(session);
         this.props.addRoom(data);
-      
-      
-  }  
-  
- 
+
+
+  }
+
+
    componentWillReceiveProps(props) {
 
     // bind the channel list of first team on load
@@ -170,10 +170,10 @@ create_session(data){
       this.refs.teamlist.value = props.specificsession.departmentid;
       this.props.updatechannellist(props.specificsession.departmentid);
       this.props.getspecificcustomer(props.specificsession.customerid);
-      
+
       call_customer_details = true;
      // this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
-      
+
      // this.forceUpdate();
     }
     if(props.specificcustomer){
@@ -191,21 +191,21 @@ create_session(data){
    componentDidMount() {
   // socket.on('joined',this.create_session)
     this.props.route.socket.on('empty',this.noagent);
-   
+
    this.props.route.socket.on('joined',this.create_session)
-   
+
    if(this.props.specificsession){
      //  this.props.getspecificcustomer(this.props.specificsession.customerid);
-      
+
     }
 
       }
-     
+
   addCustomers(e) {
     e.preventDefault();
    // var companyid = getParameterByName('id');
 
-   // var pathname = getParameterByName('pathname'); 
+   // var pathname = getParameterByName('pathname');
     /*var fullurl = getParameterByName('fullurl');
        */
 //    var companyid = this.props.params.id;
@@ -267,30 +267,30 @@ create_session(data){
              };
         //    socket.emit('join meeting',socketsession);
            this.props.route.socket.emit('join meeting',socketsession);
-         
-         //  this.props.route.socket.on('customer_joined',data => create_session(data));
-  
 
-                   
+         //  this.props.route.socket.on('customer_joined',data => create_session(data));
+
+
+
         }
 
 
     //code for actual customers joining live help
   }
-  
+
 
   handleChange(e){
     //alert(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text);
      this.props.updatechannellist(e.target.value);
       this.forceUpdate();
 
-    }  
+    }
     handleChannelChange(e){
      //alert(e.target.value);
-   
-    }  
+
+    }
   render() {
-   
+
    {this.props.roomdetails &&
     browserHistory.push('/clientchat')}
     return (
@@ -299,23 +299,23 @@ create_session(data){
 
        <div className="page-container">
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">KiboEngage Chat Widget </h3>
-           
+
                 {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-         
-            
+
+
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
                   Welcome to Live Help
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body form">
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
@@ -336,7 +336,7 @@ create_session(data){
                   <div className="form-group">
                   <label className="control-label col-md-3"> Country </label>
                    <div className="col-md-9">
-                            <input className="form-control input-medium" type='text'  ref = "country" />
+                            <input className="form-control input-medium" type='text' value='Pakistan'  ref = "country" />
                 </div>
                 </div>
                   <div className="form-group">
@@ -356,11 +356,11 @@ create_session(data){
 
                             )
                          }
-                         
+
                       </select>
                   </div>
-                 </div>     
-                
+                 </div>
+
                 <div className="form-group">
                    <label className="control-label col-md-3"> Choose Channel</label>
                    <div className="col-md-9">
@@ -371,11 +371,11 @@ create_session(data){
 
                             )
                          }
-                         
+
                    </select>
                   </div>
                  </div>
-                   
+
               <div className="form-actions fluid">
               <div className="row">
                 <div className="col-md-3">
@@ -386,25 +386,25 @@ create_session(data){
                     </button>
 
                     </div>
-               </div> 
-               
-               </div>                 
+               </div>
+
+               </div>
               </div>
-              </div>  
-              
+              </div>
+
           </form>
 
-                  
-          
+
+
           </div>
           </div>
-        
+
 
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
-      )                   
+      </div>
+      )
      }
 }
 
@@ -412,9 +412,9 @@ create_session(data){
 
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
-  
+
    return {
-    
+
     teamdetails :(state.widget.teamdetails),
     channels :(state.widget.channels),
     filterlist :(state.widget.filterlist),
@@ -425,5 +425,3 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps,{getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
-
-

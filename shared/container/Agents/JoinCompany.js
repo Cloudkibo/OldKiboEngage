@@ -8,15 +8,15 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 
 
-export default class JoinCompany extends React.Component {
+class JoinCompany extends React.Component {
 
 
   constructor(props, context) {
     super(props, context);
     this.onSubmit = this.onSubmit.bind(this);
-    
-  
-    
+
+
+
   }
   componentWillMount(){
     this.props.getInviteEmail(this.props.params.id);
@@ -78,7 +78,7 @@ export default class JoinCompany extends React.Component {
                                               <div className="form-group">
                                                 <label htmlFor="username">First Name *</label>
                                                 <input type="text"  className="form-control input-medium" ref = "fname" required placeholder="First Name"/>
-                                            
+
                                               </div>
                                               <div className="form-group">
                                                 <label>Last Name *</label>
@@ -87,15 +87,15 @@ export default class JoinCompany extends React.Component {
                                               <div className="form-group">
                                               <label>Email *</label>
                                               {
-                                                this.props.inviteDetails && 
+                                                this.props.inviteDetails &&
                                                 <input type="email"  className="form-control input-medium"  value = {this.props.inviteDetails.email} ref = "email" required placeholder="Email Address"/>
-                                              
+
                                               }
                                                {
-                                                this.props.inviteDetails && 
+                                                this.props.inviteDetails &&
                                                 <input type="hidden"  className="form-control input-medium" ref = "token" value = {this.props.inviteDetails.token}/>
                                                }
-                                            
+
                                               </div>
                                               <div className="form-group">
                                                 <label>Password *</label>
@@ -188,5 +188,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { signupuser,getInviteEmail })(JoinCompany);
-
-
