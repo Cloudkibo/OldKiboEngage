@@ -75,7 +75,7 @@ updateOnlineAgents(data){
     //this.refs.agentsocketfield.value = socketid;
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
-   getSocketmessage(message){
+  getSocketmessage(message){
    console.log(message);
    if(this.props.customerchat_selected){
    if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
@@ -94,6 +94,15 @@ updateOnlineAgents(data){
         
     }
    }
+
+    else if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no'){
+     // alert(' i m called2')
+     this.props.userchats.push(message);
+     
+     this.props.updateChatList(message,this.props.new_message_arrived_rid);
+  }
+
+   
  }
  else if(!this.props.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent'){
      const usertoken = auth.getToken();
@@ -116,17 +125,18 @@ updateOnlineAgents(data){
  }
 
     else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){ 
+  //   alert(' i m called')
      this.props.userchats.push(message);
      
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
    }
 
+    
 
 
 
 
-
-   this.forceUpdate();
+   //this.forceUpdate();
 
   }
   
@@ -256,7 +266,7 @@ componentDidMount(){
       const usertoken = auth.getToken();
    
       this.refs.sessionid.value = id;
-      alert(this.refs.sessionid.value);
+     // alert(this.refs.sessionid.value);
       
       //retrieve chat history for mobile clients Only
         if(platform == "mobile"){

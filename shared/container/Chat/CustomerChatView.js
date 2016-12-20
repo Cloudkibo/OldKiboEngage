@@ -53,7 +53,7 @@ class CustomerChatView extends Component {
     //call action to get user teams 
      const usertoken = auth.getToken();
      console.log('constructor is called');
-    alert(props.sessiondetails.departmentid);
+    //alert(props.sessiondetails.departmentid);
     if(usertoken != null)
      {
         console.log(usertoken);
@@ -292,7 +292,7 @@ else{
     if(this.props.mobileuserchat && this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || this.props.userdetails._id in this.props.sessiondetails.agent_ids)){
      //  alert('update message status to seen' + this.props.mobileuserchat.length);
    
-          var userassigned = false;
+    var userassigned = false;
     if(this.props.sessiondetails.agent_ids.length > 0){
         var obj = this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length - 1];
         if(obj['type'] == 'agent'){
@@ -966,7 +966,7 @@ else{
 }
 
    handleChange(e){
-     alert(e.target.data-attrib);
+    // alert(e.target.data-attrib);
    
     }
 

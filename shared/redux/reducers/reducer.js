@@ -271,6 +271,7 @@ groupdetails :state.groupdetails,
 
     case ActionTypes.ADD_NEWS:
           return{
+            news : action.news,
             userdetails:state.userdetails,
             agents:state.agents,
             deptagents : state.deptagents,
@@ -313,6 +314,7 @@ groupdetails :state.groupdetails,
             agentwisestats : state.agentwisestats,  
             agentwisenotifications : state.agentwisenotifications,
             responses : state.responses,
+            companysettings : state.companysettings,
 
              }
    case ActionTypes.ADD_TEAMS:
