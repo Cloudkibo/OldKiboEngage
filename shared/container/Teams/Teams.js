@@ -17,31 +17,31 @@ import { browserHistory } from 'react-router'
 class Teams extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
-   
+
     const usertoken = auth.getToken();
      console.log('componentWillMount is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getuserteams(usertoken);
         props.getcustomers(usertoken);
       }
-      
+
         super(props, context);
-  
+
     this.state = {
       showAddTeam: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
-  
-    
+
+
   }
 
    handleClick(e) {
@@ -64,47 +64,47 @@ class Teams extends Component {
       showAddTeam: false,
     });
  }
- 
+
 
   render() {
     const token = auth.getToken()
     console.log(token)
-    
+
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container">
 
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Team Management </h3>
                  <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/teams">Team Management </Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
                     Teams
-                </div> 
-              </div>    
+                </div>
+              </div>
           <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-team">
                  { this.props.userdetails.isAdmin == "Yes" ?
-         
+
                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Team
-                   
+
                     <i className="fa fa-plus"/>
                     </button>
                  :<br/>
@@ -115,7 +115,7 @@ class Teams extends Component {
 
                      <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
                       }
-              <TeamCreateView addTeam={this.add}  showAddTeam= {this.state.showAddTeam}/>      
+              <TeamCreateView addTeam={this.add}  showAddTeam= {this.state.showAddTeam}/>
                 { this.props.teamdetails && this.props.customers &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
@@ -127,26 +127,26 @@ class Teams extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
                     </tr>
                     </thead>
-                    <tbody>                    
+                    <tbody>
                       {
 
                         this.props.teamdetails.map((team, i) => (
-                          
+
                           <TeamListItem team={team} key={team._id}   onDelete={() => this.props.deleteteam(team,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails ={this.props.userdetails}/>
-                                                      
+
                         ))
                       }
-                     </tbody> 
+                     </tbody>
                     </table>
                 }
-        
-                
+
+
             </div>
           </div>
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -174,7 +174,7 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  
+
   return bindActionCreators({ deleteteam:deleteteam,getcustomers:getcustomers,getuserteams:getuserteams,createteam:createteam }, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Teams);

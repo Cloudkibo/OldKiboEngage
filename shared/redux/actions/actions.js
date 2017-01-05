@@ -1097,6 +1097,8 @@ export function showResponse(response) {
 
 
 export function createResponse(cr){
+  console.log(cr);
+  console.log('create canned response is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/createResponse`, {
       method: 'post',
@@ -1183,6 +1185,8 @@ export function getResponseRequest(id,usertoken) {
 }
 
 export function deleteRESPONSE(response) {
+  alert('Canned Response deleted successfully');
+  alert(response._id);
   return {
     type: ActionTypes.DELETE_RESPONSE,
    response,

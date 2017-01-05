@@ -6,12 +6,12 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import ResponseListItem from './ResponseListItem';
-import {getresponses} from '../../redux/actions/actions'
-import {deleteresponse} from '../../redux/actions/actions'
-import {createResponse}  from '../../redux/actions/actions'
-import CannedResponseCreate from './CannedResponseCreate'
+import {getresponses} from '../../redux/actions/actions';
+import {deleteresponse} from '../../redux/actions/actions';
+import {createResponse}  from '../../redux/actions/actions';
+import CannedResponseCreate from './CannedResponseCreate';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 
 class CannedResponses extends Component {
 
@@ -99,9 +99,9 @@ class CannedResponses extends Component {
                  <div className="btn-team">
                    { this.props.userdetails.isAgent == "Yes"?
                     <br/> :
-                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Add Canned Response
-                    <i className="fa fa-plus"/>
-                    </button>
+                      <Link id="sample_editable_1_new" className="btn green" to='/createcannedresponse'> Add Canned Response
+                      <i className="fa fa-plus"/>
+                      </Link>
 
 
 
@@ -113,7 +113,6 @@ class CannedResponses extends Component {
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-              <CannedResponseCreate addResponse={this.add}  showCR= {this.state.showCR}/>
                 { this.props.responses &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
