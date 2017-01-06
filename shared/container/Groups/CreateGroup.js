@@ -11,14 +11,14 @@ import { Link } from 'react-router';
 
 class CreateGroup extends Component {
   constructor(props, context) {
-       //call action to get user teams 
+       //call action to get user teams
     const usertoken = auth.getToken();
     super(props, context);
-    
+
     this.createGroup= this.createGroup.bind(this);
   }
 
- 
+
 
   createGroup(e) {
      e.preventDefault();
@@ -34,49 +34,49 @@ class CreateGroup extends Component {
      {
       var group = {'groupname' : nameRef.value,'groupdescription':descRef.value,'companyid' : companyid,'status' : status,'createdby' : createdBy}
       this.props.createGroup(group,usertoken);
-     
+
     }
   }
-    
+
   render() {
     return (
       <div>
 
        <div className="page-container">
-         <SideBar/> 
+         <SideBar/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Groups Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/groups"> Groups Management</Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
                 {this.props.errorMessage && this.props.errorMessage.status == 'danger' &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage.message}</span></div>
                 }
-         
+
                 {this.props.errorMessage && this.props.errorMessage.status == 'success' &&
 
                      <div className = "alert alert-success"><span>Group created successfully</span></div>
                 }
-         
-            
+
+
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
                    Create Group
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body form">
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
@@ -84,7 +84,7 @@ class CreateGroup extends Component {
                   <label className="control-label col-md-3"> Group Name </label>
                    <div className="col-md-9">
                          <input className="form-control input-medium" type='text'  ref = "name"/>
-                
+
 
                    </div>
                 </div>
@@ -97,7 +97,7 @@ class CreateGroup extends Component {
                 </div>
                  <div className="form-group">
                   <label className="control-label col-md-3"> Status </label>
-                  <div className="col-md-9">   
+                  <div className="col-md-9">
                         <select  ref = "statuslist" >
                           <option value="public"> public  </option>
                           <option value="private"> private </option>
@@ -107,7 +107,7 @@ class CreateGroup extends Component {
                         <b> Note : Making a group 'public' will allow anyone to join this group</b>
                   </div>
                 </div>
-            
+
               <div className="form-actions fluid">
               <div className="row">
                 <div className="col-md-3">
@@ -118,33 +118,33 @@ class CreateGroup extends Component {
                     </button>
 
                     </div>
-               </div> 
+               </div>
                 <div className="col-md-9">
                   <div className="col-md-9">
-                    <Link to="/dashboard" className="btn green">
+                    <Link to="/groups" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
-                    
+
                     </div>
                </div>
-               </div>                 
+               </div>
               </div>
-              </div>  
-              
+              </div>
+
           </form>
 
-                  
-          
+
+
           </div>
           </div>
-        
+
 
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
-      )                   
+      </div>
+      )
      }
 }
 
@@ -152,7 +152,7 @@ class CreateGroup extends Component {
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   console.log(state.dashboard.agent);
-  
+
    return {
     teamdetails:(state.dashboard.teamdetails),
     userdetails:(state.dashboard.userdetails),
@@ -163,5 +163,3 @@ function mapStateToProps(state) {
 };
 }
 export default connect(mapStateToProps,{createGroup})(CreateGroup);
-
-

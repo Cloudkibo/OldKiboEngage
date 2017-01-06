@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import { Link } from 'react-router';
-
+import {createResponse}  from '../../redux/actions/actions';
 
 
 class CannedResponseCreate extends Component {
@@ -21,93 +21,122 @@ class CannedResponseCreate extends Component {
 
   addResponse(e) {
      e.preventDefault();
-   // const usertoken = auth.getToken();
-    const shortcode = this.refs.shortcode;
-    const msg = this.refs.msg;
+    const usertoken = auth.getToken();
+    const shortcode = "/" + this.refs.shortcode.value;
+    const message = this.refs.msg.value;
+    var companyid = this.props.userdetails.uniqueid;
 
-    if (shortcode.value && msg.value)
+    if (shortcode && message)
      {
-       this.props.addResponse("/" + shortcode.value,msg.value);
-       shortcode.value = msg.value = '';
-       //this.props.createResponse(response,usertoken);
+       //this.props.addResponse("/" + shortcode.value,msg.value);
+       this.props.createResponse({shortcode,message,companyid,usertoken});
+       //shortcode.value = message.value = '';
 
     }
   }
 
   render() {
-    const cls = `form ${(this.props.showCR ? 'appear' : 'hide')}`;
+    //const cls = `form ${(this.props.showCR ? 'appear' : 'hide')}`;
 
     return (
-      <div className={cls}>
+      <div>
+        <div className="page-container">
+          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
+          <div className="page-content-wrapper">
+             <div className="page-content">
+               <h3 className ="page-title">Canned Response Management </h3>
+               <ul className="page-breadcrumb breadcrumb">
+                   <li>
+                     <i className="fa fa-home"/>
+                     <Link to="/dashboard"> Dashboard </Link>
+                     <i className="fa fa-angle-right"/>
+                   </li>
+                   <li>
+                      <Link to="/cannedresponses">Canned Response Management</Link>
+                   </li>
+                </ul>
+                {this.props.errorMessage &&
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
-                   Create Canned Response
-                </div>
-              </div>
+                   <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
+                    }
 
-           <div className="portlet-body form">
-            <form className="form-horizontal form-row-seperated">
-              <div className="form-body">
-                <div className="form-group">
-                  <label className="control-label col-md-3"> Short Code </label>
-                   <div className="col-md-9">
-                  <div className="input-group">
-                    <span className="input-group-addon">
-                    /
-                    </span>
-
-                         <input className="form-control input-medium" type='text'  ref = "shortcode" placeholder ="Short Code e.g Hey!"/>
-                   </div>
-                   </div>
-                </div>
-
-                 <div className="form-group">
-                  <label className="control-label col-md-3"> Response text</label>
-                   <div className="col-md-9">
-                         <textarea className="form-control" type='text' rows='4' ref="msg" placeholder="Hi,how can we help you?"/>
-                   </div>
-                </div>
-              <div className="form-actions fluid">
-              <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green"  onClick={this.addResponse}>
-                      <i className="fa fa-pencil"/>
-                       Submit
-                    </button>
-
+                <div className="portlet box grey-cascade">
+                  <div className="portlet-title">
+                    <div className="caption">
+                      <i className="fa fa-group"/>
+                      Create Canned Response
                     </div>
-               </div>
-                <div className="col-md-9">
-                  <div className="col-md-9">
-                    <Link to="/cannedresponses" className="btn green">
-                      <i className="fa fa-times"/>
-                       Back
-                    </Link>
+                  </div>
 
-                    </div>
-               </div>
-               </div>
+                  <div className="portlet-body form">
+                    <form className="form-horizontal form-row-seperated">
+                      <div className="form-body">
+                        <div className="form-group">
+                          <label className="control-label col-md-3"> Short Code </label>
+                          <div className="col-md-9">
+                            <div className="input-group">
+                              <span className="input-group-addon">
+                                /
+                              </span>
+
+                              <input className="form-control input-medium" type='text'  ref = "shortcode" placeholder ="Short Code e.g Hey!"/>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="form-group">
+                          <label className="control-label col-md-3"> Response text</label>
+                          <div className="col-md-9">
+                            <textarea className="form-control" type='text' rows='4' ref="msg" placeholder="Hi,how can we help you?"/>
+                          </div>
+                        </div>
+                        <div className="form-actions fluid">
+                          <div className="row">
+                            <div className="col-md-3">
+                              <div className="col-md-offset-9 col-md-9">
+                                <button className="btn green"  onClick={this.addResponse}>
+                                  <i className="fa fa-pencil"/>
+                                  Submit
+                                </button>
+
+                              </div>
+                            </div>
+                            <div className="col-md-9">
+                              <div className="col-md-9">
+                                <Link to="/cannedresponses" className="btn green">
+                                  <i className="fa fa-times"/>
+                                  Back
+                                </Link>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
               </div>
-              </div>
-
-          </form>
+            </div>
           </div>
-          </div>
-          </div>
-
-
+        </div>
       )
      }
 }
 
-CannedResponseCreate.propTypes = {
-  addResponse : PropTypes.func.isRequired,
-  showCR      : PropTypes.bool.isRequired,
-};
+function mapStateToProps(state) {
+  console.log("mapStateToProps is called.");
 
+  return {
+    channels:(state.dashboard.channels),
+    userdetails:(state.dashboard.userdetails),
+    teamdetails:(state.dashboard.teamdetails),
+    errorMessage:(state.dashboard.errorMessage),
+    reponses:(state.dashboard.responses),
+    agents:(state.dashboard.agents),
+    deptagents:(state.dashboard.deptagents),
+  };
+}
 
-export default CannedResponseCreate;
+export default connect(mapStateToProps, {createResponse})(CannedResponseCreate);

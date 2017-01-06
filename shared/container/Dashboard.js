@@ -6,7 +6,7 @@ import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents,getnews} from '../redux/actions/actions'
 import {getuserteams} from '../redux/actions/actions'
 import {getchannels,updateAgentList} from '../redux/actions/actions'
-
+import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
 import SideBar from '../components/Header/SideBar';
@@ -24,8 +24,8 @@ class Dashboard extends Component {
 
     super(props, context);
      this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
-  
-    
+
+
   }
   componentWillMount(){
     const usertoken = auth.getToken();
@@ -34,21 +34,21 @@ class Dashboard extends Component {
     this.props.getDeptAgents(usertoken);
     this.props.getuserteams(usertoken);
     this.props.getchannels(usertoken);
+    this.props.getresponses(usertoken);
 
-    
-   
+
   }
  componentWillReceiveProps(props){
    if(props.userdetails && props.userdetails.accountVerified == "No" && is_routed == false){
     is_routed = true;
     browserHistory.push('/notverified');
-    
+
 
    }
-   
-  
+
+
  }
- 
+
   updateOnlineAgents(data){
   console.log('updating updateOnlineAgents');
   this.props.updateAgentList(data);
@@ -64,21 +64,21 @@ componentDidMount(){
   //on component mount,join room
     if(this.props.userdetails.uniqueid && dontCall == false){
 
-    
+
       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
     //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
-     
 
-      dontCall = true;  
+
+      dontCall = true;
 
      // this.props.setTimeout(() => { alert('I do not leak!' + this.props.userdetails.uniqueid); }, 1000);
-    } 
+    }
    // this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
 
   }
- 
 
- 
+
+
 
 
   render() {
@@ -90,22 +90,22 @@ componentDidMount(){
        <div>
        {
         this.props.userdetails &&
-  
+
        <AuthorizedHeader name = {this.props.userdetails.firstname} isAdmin ={this.props.userdetails.isAdmin} user ={this.props.userdetails} roomid = {this.props.userdetails.uniqueid} />
        }
        <div className="page-container">
-          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
                 <h1>Dashboard</h1>
                 <p>Hi  {this.props.userdetails.firstname} ! Welcome to Dashboard</p>
-               
+
             </div>
           </div>
        </div>
        </div>
-       
-    
+
+
   )
   }
 }
@@ -113,17 +113,17 @@ componentDidMount(){
 
 
 function mapStateToProps(state) {
-  
+
   return {
   userdetails:(state.dashboard.userdetails),
   agents:(state.dashboard.agents),
   deptagents:(state.dashboard.deptagents),
   teamdetails:(state.dashboard.teamdetails),
   channels :(state.dashboard.channels),
-  onlineAgents:(state.dashboard.onlineAgents), 
-  news : (state.dashboard.news),      
-       
+  onlineAgents:(state.dashboard.onlineAgents),
+  news : (state.dashboard.news),
+
    }
 }
 
-export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));
+export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,getresponses,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));
