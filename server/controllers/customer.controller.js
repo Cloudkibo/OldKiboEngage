@@ -7,34 +7,69 @@ var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
  'kibo-client-id': 'cd89f71715f2014725163952',
- 
+
  }
 
 var baseURL = `https://api.kibosupport.com`
 
 
+/************************ Get Country Name **********************************/
+export function getCountryName(req, res) {
+  console.log('get getCountryName is called');
+  var token = req.headers.authorization;
+  console.log('token received is  : ' + token);
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  console.log('ip address= ' + ip);
+  var ip2number = (parseInt(ip.split('.')[0]) * 256 * 256 * 256) + (parseInt(ip.split('.')[1]) * 256 * 256) + (parseInt(ip.split('.')[2]) * 256) + (parseInt(ip.split('.')[3]));
+  console.log('ip number= ' + ip2number);
+  var options = {
+      url: `${baseURL}/api/ipcountry/` + ip2number,
+      rejectUnauthorized : false,
+      headers :  headers
+
+
+    };
+    function callback(error, response, body) {
+       console.log(body);
+       console.log(error);
+       //console.log(response);
+
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info);
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error});
+    }
+    }
+    request.get(options, callback);
+}
+
 /************************* Customer APIS ************************************/
 export function createCustomer(req, res) {
   console.log('create Customer is called');
-  
+
   console.log(req.body);
   console.log(req.body.customer);
   var options = {
       url: `${baseURL}/api/customers`,
       rejectUnauthorized : false,
-      headers, 
+      headers,
       json: req.body.customer
-      
-     
+
+
     };
     console.log(options.json);
-    
+
     function callback(error, response, body) {
         console.log(error);
         console.log(response.statusCode);
 
         var customer = body;
-        
+
        if(!error && response.statusCode == 201)
        {
           console.log(customer);
@@ -45,14 +80,14 @@ export function createCustomer(req, res) {
        else
        {
          res.sendStatus(422);
-         //   return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }        
-     
+         //   return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+
 
    }
         request.post(options, callback);
-   
+
   }
 
 
@@ -66,8 +101,8 @@ export function getcustomers(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
        //console.log(body);
@@ -81,7 +116,7 @@ export function getcustomers(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -124,8 +159,8 @@ export function emailCustomer(req, res) {
                       if (err) { return res.status(422).json({statusCode : 422}); }
                       return res.status(200).json({statusCode : 200});
             });
-  
-    
+
+
   }
   else
   {
@@ -170,11 +205,10 @@ export function rescheduleEmail(req, res) {
               return res.status(200).json({statusCode : 200});
             });
 
-    
+
   }
   else
   {
          return res.status(422).json({statusCode : 422});
   }
   }
-

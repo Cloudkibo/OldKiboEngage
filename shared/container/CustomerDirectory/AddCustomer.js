@@ -3,6 +3,7 @@ import auth from '../../services/auth';
 import {createcustomer}  from '../../redux/actions/actions'
 import {getcustomerteams}  from '../../redux/actions/actions'
 import {getcustomerchannels,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
+import {getcountryname} from '../../redux/actions/actions';
 import {updatechannellist}  from '../../redux/actions/actions'
 import {createsession}  from '../../redux/actions/actions'
 import {addRoom} from '../../redux/actions/actions'
@@ -33,10 +34,12 @@ function getParameterByName(name, url) {
 var call_customer_details;
 class AddCustomer extends Component {
    constructor(props, context) {
+    var usertoken = auth.getToken();
     var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59'
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
     props.getcustomerteams(appid,appsecret,props.params.id);
     props.getcustomerchannels(appid,appsecret,props.params.id);
+    props.getcountryname(usertoken);
     super(props, context);
     call_customer_details = false;
    // var pathname = getParameterByName('pathname');
@@ -336,7 +339,7 @@ create_session(data){
                   <div className="form-group">
                   <label className="control-label col-md-3"> Country </label>
                    <div className="col-md-9">
-                            <input className="form-control input-medium" type='text' value='Pakistan'  ref = "country" />
+                            <input className="form-control input-medium" type='text' value={this.props.countryname}  ref = "country" />
                 </div>
                 </div>
                   <div className="form-group">
@@ -422,6 +425,7 @@ function mapStateToProps(state) {
     specificsession : (state.widget.specificsession),
     roomdetails :(state.widget.roomdetails),
     specificcustomer : (state.widget.specificcustomer),
+    countryname : (state.widget.countryname),
   };
 }
-export default connect(mapStateToProps,{getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom})(AddCustomer);
+export default connect(mapStateToProps,{getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom,getcountryname})(AddCustomer);

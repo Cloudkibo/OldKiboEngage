@@ -1464,6 +1464,40 @@ groupdetails :state.groupdetails,
 
             };
 
+            case ActionTypes.SHOW_COUNTRY_NAME:
+             return {
+             teamdetails: state.teamdetails,
+             team : state.team,
+             channel : state.channel,
+             userdetails: state.userdetails,
+             errorMessage:action.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             channels : state.channels,
+             responses : state.responses,
+             assignedsessions : state.assignedsessions,
+             newsessions : state.newsessions,
+             resolvedsessions : state.resolvedsessions,
+             notifications:state.notifications,
+             notification: state.notification,
+             customers : state.customers,
+             mypickedsessions : state.mypickedsessions,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             customerid : state.customerid,
+             chatlist : state.chatlist,
+             mobileuserchat : state.mobileuserchat,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
+             groupdetails :state.groupdetails,
+             agents:state.agents,
+             countryname:action.countryinfo.country,
+
+            };
+
+
             case ActionTypes.CHANNEL_STATS:
               return {
              teamdetails: state.teamdetails,
@@ -2094,7 +2128,7 @@ function widget(state = widgetState, action){
             specificcustomer : state.specificcustomer,
             specificsession : state.specificsession,
             filterlist : state.filterlist,
-
+            countryname : state.countryname,
 
       };
 

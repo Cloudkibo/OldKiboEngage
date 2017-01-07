@@ -493,7 +493,7 @@ else{
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
   }
 
-  else if(agentingroup == false){
+  else if(agentingroup == false && this.props.sessiondetails.agent_ids.type == "group"){
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
   }
 
