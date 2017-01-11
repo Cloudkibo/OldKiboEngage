@@ -1840,6 +1840,27 @@ export function showcustomers(customers) {
   };
 }
 
+export function showcountryname(countryinfo) {
+  console.log(countryinfo);
+  return {
+    type: ActionTypes.SHOW_COUNTRY_NAME,
+    countryinfo,
+  };
+}
+
+export function getcountryname(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getCountryName`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showcountryname(res)));
+  };
+}
+
 export function getcustomers(token) {
   console.log(token);
   return (dispatch) => {

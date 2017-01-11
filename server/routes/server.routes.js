@@ -88,6 +88,9 @@ router.route('/getnotifications').get(NotificationController.getnotifications);
 router.route('/deleteNotification').delete(NotificationController.destroyNotification);
 router.route('/createCustomer').post(CustomerController.createCustomer);
 router.route('/getCustomers').get(CustomerController.getcustomers);
+
+router.route('/getCountryName').get(CustomerController.getCountryName);
+
 router.route('/emailCustomer').post(CustomerController.emailCustomer);
 router.route('/rescheduleEmail').post(CustomerController.rescheduleEmail);
 
