@@ -169,6 +169,7 @@ function mapStateToProps(state) {
           deptagents:(state.dashboard.deptagents),
           channels :(state.dashboard.channels),
           customers: (state.dashboard.customers),
+          newagents: (state.dashboard.newagents),
            };
 }
 

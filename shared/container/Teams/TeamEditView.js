@@ -14,12 +14,12 @@ import auth from '../../services/auth';
 class TeamEditView extends Component {
 
   constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     const usertoken = auth.getToken();
      console.log('constructor is called');
     if(usertoken != null)
      {
-       
+
         console.log(usertoken);
         console.log(props.params.id);
         props.getcustomers(usertoken);
@@ -27,14 +27,14 @@ class TeamEditView extends Component {
         props.getTeamRequest(props.params.id,usertoken);
       }
 
-      
+
         super(props, context);
         this.editTeamDetail = this.editTeamDetail.bind(this);
-       
+
 
   }
- 
- 
+
+
 
   editTeamDetail(e) {
      e.preventDefault();
@@ -47,7 +47,7 @@ class TeamEditView extends Component {
       //alert(nameRef.value);
       var mobilecustomers = this.props.customers.filter((c) => c.isMobileClient == "true")
       this.props.editTeam({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents},mobilecustomers);
-     
+
     }
   }
 
@@ -67,15 +67,15 @@ class TeamEditView extends Component {
         this.props.newagents.push({"_id" :id});
     }
     else{
-      alert('Agent Already added in the team');  
+      alert('Agent Already added in the team');
     }
      e.preventDefault();
      this.forceUpdate();
   }
-  
+
    removeAgent(id,e){
     //alert(id);
-    
+
     for(var j = 0;j<this.props.newagents.length;j++)
     {
       if(this.props.newagents[j]._id == id)
@@ -84,46 +84,46 @@ class TeamEditView extends Component {
           break;
       }
     }
-   
+
   //  alert(this.props.newagents.length);
     e.preventDefault();
     this.forceUpdate();
   }
 
   render() {
-   
+
      return (
       <div>
        <div className="page-container">
-         <SideBar/> 
+         <SideBar/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Team Management  </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/teams">Team Management </Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
                 {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-         
+
              {this.props.team &&
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
                     {this.props.team.deptname} Team
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body form">
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
@@ -132,7 +132,7 @@ class TeamEditView extends Component {
                    <div className="col-md-9">
                          <input className="form-control" type='text'  defaultValue={this.props.team.deptname} ref = "name"/>
                          <input className="form-control" type='hidden'   defaultValue = {this.props.team._id} ref = "id"/>
-            
+
                    </div>
                 </div>
 
@@ -148,7 +148,7 @@ class TeamEditView extends Component {
                    <div className="col-md-9">
                    <div className="select2-container select2-container-multi">
                    <ul className="select2-choices">
-                 
+
                    {
                     this.props.newagents &&
                           this.props.newagents.map((agent, i)=> (
@@ -157,10 +157,10 @@ class TeamEditView extends Component {
                           <li key ={i}  onClick = {this.removeAgent.bind(this,ag._id)}>{ag.firstname + ' ' + ag.lastname}</li>
                           ))
 
-                          
-                   ))                         
 
-                    
+                   ))
+
+
                    }
                    </ul>
                    </div>
@@ -182,7 +182,7 @@ class TeamEditView extends Component {
                         ))
                   }
 
-                        
+
                    </ul>
                    </div>
                    </div>
@@ -198,32 +198,32 @@ class TeamEditView extends Component {
                     </button>
 
                     </div>
-               </div> 
+               </div>
                 <div className="col-md-9">
                   <div className="col-md-9">
                     <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
-                    
+
                     </div>
                </div>
-               </div>                 
+               </div>
               </div>
-              </div>  
-              
+              </div>
+
           </form>
 
-                  
-          
+
+
           </div>
           </div>
         }
 
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -236,10 +236,11 @@ TeamEditView.contextTypes = {
 
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps of TeamDetailView is called');
+  console.log('mapStateToProps of TeamEditView is called');
   console.log(state.dashboard.team);
+  console.log(state.dashboard.newagents);
   return {
-    
+
     team: (state.dashboard.team),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),

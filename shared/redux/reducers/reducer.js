@@ -236,7 +236,7 @@ groupdetails :state.groupdetails,
               customers:state.customers,
 
              team: state.team,
-             newagents : state.newagents,
+             newagents : [],
 
 
           };
@@ -323,6 +323,7 @@ groupdetails :state.groupdetails,
             teamdetails:action.teams,
             userdetails: state.userdetails,
             agents : state.agents,
+            newagents: [],
             deptagents :state.deptagents,
             channels : state.channels,
             chatlist: state.chatlist,
