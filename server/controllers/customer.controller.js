@@ -18,8 +18,10 @@ export function getCountryName(req, res) {
   console.log('get getCountryName is called');
   var token = req.headers.authorization;
   console.log('token received is  : ' + token);
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-  console.log('ip address= ' + ip);
+  var ipv6 = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  console.log('ipv6 address= ' + ipv6);
+  var ip = ipv6.substr(7);
+  console.log('ipv4 address= ' + ip);
   var ip2number = (parseInt(ip.split('.')[0]) * 256 * 256 * 256) + (parseInt(ip.split('.')[1]) * 256 * 256) + (parseInt(ip.split('.')[2]) * 256) + (parseInt(ip.split('.')[3]));
   console.log('ip number= ' + ip2number);
   var options = {

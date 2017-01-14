@@ -22,6 +22,7 @@ class TeamCreateView extends Component {
   appendAgent(id,e){
    // alert(id);
     var flag = 0;
+    console.log(this.props.newagents);
     for(var j = 0;j<this.props.newagents.length;j++)
     {
       if(this.props.newagents[j]._id == id)
@@ -41,6 +42,23 @@ class TeamCreateView extends Component {
      this.forceUpdate();
   }
 
+  removeAgent(id,e){
+   //alert(id);
+
+   for(var j = 0;j<this.props.newagents.length;j++)
+   {
+     if(this.props.newagents[j]._id == id)
+     {
+         this.props.newagents.splice(j,1);
+         break;
+     }
+   }
+
+ //  alert(this.props.newagents.length);
+   e.preventDefault();
+   this.forceUpdate();
+ }
+
   render() {
     const cls = `form ${(this.props.showAddTeam ? 'appear' : 'hide')}`;
 
@@ -57,7 +75,7 @@ class TeamCreateView extends Component {
       <div className="form">
         <div className="form-body">
           <div className="form-group">
-                 <label> Team Name</label>
+                 <label className="control-label col-md-3"> Team Name</label>
                   <div className="input-group">
                     <span className="input-group-addon">
                       <i className="fa fa-chevron-right"/>
@@ -66,7 +84,7 @@ class TeamCreateView extends Component {
                   </div>
           </div>
           <div className="form-group">
-                 <label> Description</label>
+                 <label className="control-label col-md-3"> Description</label>
                   <div className="input-group">
                     <span className="input-group-addon">
                       <i className="fa fa-chevron-right"/>
@@ -86,7 +104,7 @@ class TeamCreateView extends Component {
                    this.props.newagents.map((agent, i)=> (
                    this.props.agents.filter((ag) => ag._id == agent._id).map((ag,j) =>
                    (
-                   <li key ={i}>{ag.firstname + ' ' + ag.lastname}</li>
+                   <li key ={i} onClick = {this.removeAgent.bind(this,ag._id)}>{ag.firstname + ' ' + ag.lastname}</li>
                    ))
 
 
