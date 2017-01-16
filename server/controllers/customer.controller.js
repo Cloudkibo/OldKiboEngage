@@ -22,7 +22,8 @@ export function getCountryName(req, res) {
   console.log('ipv6 address= ' + ipv6);
   var ip = ipv6.substr(7);
   console.log('ipv4 address= ' + ip);
-  var ip2number = (parseInt(ip.split('.')[0]) * 256 * 256 * 256) + (parseInt(ip.split('.')[1]) * 256 * 256) + (parseInt(ip.split('.')[2]) * 256) + (parseInt(ip.split('.')[3]));
+  //var ip2number = (parseInt(ip.split('.')[0]) * 256 * 256 * 256) + (parseInt(ip.split('.')[1]) * 256 * 256) + (parseInt(ip.split('.')[2]) * 256) + (parseInt(ip.split('.')[3]));
+  var ip2number = 16779264;
   console.log('ip number= ' + ip2number);
   var options = {
       url: `${baseURL}/api/ipcountry/` + ip2number,

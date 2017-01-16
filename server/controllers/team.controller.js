@@ -79,7 +79,8 @@ export function getteams(req, res) {
  export function createteam(req, res) {
   //console.log('create team is called');
   var token = req.headers.authorization;
-  //console.log('token received is  : ' + token);
+  console.log('create team');
+  console.log(req.body);
   
    var options = {
       url: `${baseURL}/api/departments/kiboengage`,
@@ -87,9 +88,10 @@ export function getteams(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  },
-      form: {
+      json: {
            'deptname' : req.body.deptname,
-           'deptdescription': req.body.deptdescription
+           'deptdescription': req.body.deptdescription,
+           'deptagents' : req.body.deptagents,
 
           }
       
@@ -97,8 +99,8 @@ export function getteams(req, res) {
     };
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
-        var info = JSON.parse(body);
-        //console.log(body);
+        var info = body;
+        console.log(body);
         //console.log(info.msg);
        //console.log(info.status);
        if(info.status == 'success')
@@ -219,6 +221,11 @@ export function editteam(req, res) {
       
      
     };
+
+    console.log('json body of edit team');
+    console.log(options.json);
+    console.log(options.headers);
+    console.log(options.url);
     //console.log(options.json.dept);
     function callback(error, response, body) {
         //console.log(body);

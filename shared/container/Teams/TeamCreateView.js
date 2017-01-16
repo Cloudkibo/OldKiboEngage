@@ -14,7 +14,7 @@ class TeamCreateView extends Component {
     const nameRef = this.refs.name;
    const descRef = this.refs.desc;
     if (nameRef.value && descRef.value) {
-      this.props.addTeam(nameRef.value,descRef.value);
+      this.props.addTeam(nameRef.value,descRef.value,this.props.newagents);
       nameRef.value = descRef.value = '';
     }
   }

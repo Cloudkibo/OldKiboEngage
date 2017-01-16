@@ -52,10 +52,10 @@ class Teams extends Component {
       e.preventDefault();
   }
 
-  add(name,description) {
+  add(name,description,deptagents) {
      const usertoken = auth.getToken();
      if(this.props.customers){
-        this.props.createteam({ name,description,usertoken },this.props.customers.filter((c) => c.isMobileClient == "true"));
+        this.props.createteam({ name,description,usertoken,deptagents },this.props.customers.filter((c) => c.isMobileClient == "true"));
       }
       else{
         alert('Customers data not found!Please refresh this page');

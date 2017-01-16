@@ -457,6 +457,7 @@ export function createteam(team,customers) {
       body: JSON.stringify({
           deptname: team.name,
           deptdescription: team.description,
+          deptagents:team.deptagents,
           customers:customers,
 
       }),
@@ -484,6 +485,7 @@ export function createteam(team,customers) {
 export function editTeam(team,customers) {
   console.log('editTeam action called');
   console.log(team.deptagents);
+  console.log(team);
   //alert(team)
   return (dispatch) => {
     fetch(`${baseURL}/api/editteam`, {
