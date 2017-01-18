@@ -20,6 +20,7 @@ var notificationHubService2 = azure.createNotificationHubService('KiboEngageProd
 /************************* Channel APIS ************************************/
 export function createNotification(req, res) {
   console.log('create Notification is called');
+  console.log(req.body);
   var token = req.headers.authorization;
  // console.log(req.body);
   //console.log(req.body.notification);
@@ -69,6 +70,8 @@ export function createNotification(req, res) {
 
 export function resendNotification(req, res) {
   console.log('resend Notification is called');
+  console.log(req.body);
+ 
   var token = req.headers.authorization;
  // console.log(req.body);
   console.log(req.body.notification);
