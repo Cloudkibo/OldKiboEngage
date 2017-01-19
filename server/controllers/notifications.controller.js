@@ -48,11 +48,21 @@ export function createNotification(req, res) {
 
         var info = body;
         console.log(info);
+        var isSuccessful = false;
        if(!error && response.statusCode == 201)
        {
-          sendemail(customers,body);
-        
-          return res.status(200).json({statusCode : 201,message:'success'});
+          isSuccessful = sendemail(customers,body);
+         
+          if(isSuccessful){
+             return res.status(200).json({statusCode : 201,message:'success'});
+          }
+           else
+           {
+             res.sendStatus(422);
+              return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+       
+           }   
+         
        }
        else
        {
@@ -94,6 +104,8 @@ var emailArray = []; // for holding web customers
 var pushNotificationArray = [] ;//for holding mobile customers
 var emailBody = body.description;
 var emailSub = body.title;
+var emailSend = 0;
+var pushSend = 0;
 for(var i = 0;i<customers.length;i++){
       if(customers[i].isMobileClient == 'false')
           emailArray.push(customers[i].email);
@@ -105,12 +117,22 @@ for(var i = 0;i<customers.length;i++){
 }
 
 for(var i=0;i<emailArray.length;i++){
-  sendemailNotification(emailArray[i],emailSub,emailBody);
+  emailSend = sendemailNotification(emailArray[i],emailSub,emailBody);
 }
 
 for(var i=0;i<pushNotificationArray.length;i++){
  // sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
-  sendPushNotification(pushNotificationArray[i],body);
+  pushSend = sendPushNotification(pushNotificationArray[i],body);
+}
+
+
+// Either email sending is failed or push send is failed
+if(emailSend == 1 || pushSend == 1){
+    return false;
+}
+
+else{
+  return true;
 }
 
 //sendPushNotification('sojharo',emailBody);
@@ -184,6 +206,8 @@ function sendPushNotification(tagname,body){
       console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
+
+   return 0;
 }
 
 //for web customers
@@ -214,6 +238,8 @@ sendgrid.send(email, function(err, json) {
               if (err) { return console.log(err); }
               //console.log(json);
             });
+
+return 0;
 }
 export function getnotifications(req, res) {
   console.log('get getnotifications is called');
