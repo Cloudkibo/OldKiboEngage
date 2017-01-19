@@ -2,6 +2,7 @@ import cuid from 'cuid';
 import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
+var logger = require('../logger/logger');
 var sizeof = require('object-sizeof');
 
 var  headers =  {
@@ -21,6 +22,8 @@ var notificationHubService2 = azure.createNotificationHubService('KiboEngageProd
 export function createNotification(req, res) {
   console.log('create Notification is called');
   console.log(req.body);
+  logger.serverLog('info', 'This is body in createNotification '+ JSON.stringify(req.body) );
+
   var token = req.headers.authorization;
  // console.log(req.body);
   //console.log(req.body.notification);
@@ -71,7 +74,9 @@ export function createNotification(req, res) {
 export function resendNotification(req, res) {
   console.log('resend Notification is called');
   console.log(req.body);
- 
+  logger.serverLog('info', 'This is body in resendNotification '+ JSON.stringify(req.body) );
+
+  
   var token = req.headers.authorization;
  // console.log(req.body);
   console.log(req.body.notification);

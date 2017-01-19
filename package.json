@@ -78,7 +78,9 @@
     "socket.io-client": "^1.0.6",
     "socketio-jwt": "^2.0.2",
     "superagent": "^2.1.0",
-    "validator": "^5.4.0"
+    "validator": "^5.4.0",
+    "winston": "^1.0.1",
+    "winston-papertrail": "1.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0-beta6",

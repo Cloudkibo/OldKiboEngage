@@ -6,6 +6,7 @@ import Buffer from 'Buffer';
 import path from 'path';
 import fs from 'fs';
 
+var logger = require('../logger/logger');
 
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',

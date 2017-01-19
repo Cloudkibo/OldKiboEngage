@@ -2,6 +2,7 @@ import cuid from 'cuid';
 import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
+var logger = require('../logger/logger');
 
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
@@ -81,7 +82,8 @@ export function getteams(req, res) {
   var token = req.headers.authorization;
   console.log('create team');
   console.log(req.body);
-  
+  logger.serverLog('info', 'This is body in createteam '+ JSON.stringify(req.body) );
+
    var options = {
       url: `${baseURL}/api/departments/kiboengage`,
       rejectUnauthorized : false,
