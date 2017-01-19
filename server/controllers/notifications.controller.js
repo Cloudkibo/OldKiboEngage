@@ -48,26 +48,17 @@ export function createNotification(req, res) {
 
         var info = body;
         console.log(info);
-        var isSuccessful = false;
        if(!error && response.statusCode == 201)
        {
-          isSuccessful = sendemail(customers,body);
+          
+           res.status(200).json({statusCode : 201,message:'success'});
+           sendemail(customers,body);
          
-          if(isSuccessful){
-             return res.status(200).json({statusCode : 201,message:'success'});
-          }
-           else
-           {
-             res.sendStatus(422);
-              return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-       
-           }   
-         
+          
        }
        else
        {
-         res.sendStatus(422);
-          return res.status(422).json({statusCode : 422 ,message:'failed'}); 
+          res.status(422).json({statusCode : 422 ,message:'failed'}); 
    
        }        
      
@@ -92,8 +83,9 @@ export function resendNotification(req, res) {
   console.log(req.body.notification);
   var customers = req.body.customers;
   //console.log(customers);
+  
+  res.status(200).json({status:'success'});
   sendemail(customers,req.body.notification);
-  return res.status(200).json({status:'success'});
   
   }
 
@@ -117,23 +109,16 @@ for(var i = 0;i<customers.length;i++){
 }
 
 for(var i=0;i<emailArray.length;i++){
-  emailSend = sendemailNotification(emailArray[i],emailSub,emailBody);
+  sendemailNotification(emailArray[i],emailSub,emailBody);
 }
 
 for(var i=0;i<pushNotificationArray.length;i++){
  // sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
-  pushSend = sendPushNotification(pushNotificationArray[i],body);
+  sendPushNotification(pushNotificationArray[i],body);
 }
 
 
-// Either email sending is failed or push send is failed
-if(emailSend == 1 || pushSend == 1){
-    return false;
-}
 
-else{
-  return true;
-}
 
 //sendPushNotification('sojharo',emailBody);
 }
@@ -207,7 +192,7 @@ function sendPushNotification(tagname,body){
     }
   });
 
-   return 0;
+  
 }
 
 //for web customers
@@ -239,7 +224,7 @@ sendgrid.send(email, function(err, json) {
               //console.log(json);
             });
 
-return 0;
+
 }
 export function getnotifications(req, res) {
   console.log('get getnotifications is called');
