@@ -27,7 +27,7 @@ export function createNotification(req, res) {
   var token = req.headers.authorization;
  // console.log(req.body);
   //console.log(req.body.notification);
-  var customers = req.body.customers;
+  //var customers = req.body.customers;
   //console.log(customers);
   var options = {
       url: `${baseURL}/api/notifications`,
@@ -52,7 +52,7 @@ export function createNotification(req, res) {
        {
           
            res.status(200).json({statusCode : 201,message:'success'});
-           sendemail(customers,body);
+           sendemail(body,token);
          
           
        }
@@ -81,43 +81,63 @@ export function resendNotification(req, res) {
   var token = req.headers.authorization;
  // console.log(req.body);
   console.log(req.body.notification);
-  var customers = req.body.customers;
+  
   //console.log(customers);
   
   res.status(200).json({status:'success'});
-  sendemail(customers,req.body.notification);
+  sendemail(req.body.notification,token);
   
   }
 
-function sendemail(customers,body){
-console.log(customers);  
-console.log('Length of customers : ' + customers.length);
-var emailArray = []; // for holding web customers
-var pushNotificationArray = [] ;//for holding mobile customers
-var emailBody = body.description;
-var emailSub = body.title;
-var emailSend = 0;
-var pushSend = 0;
-for(var i = 0;i<customers.length;i++){
-      if(customers[i].isMobileClient == 'false')
-          emailArray.push(customers[i].email);
+function sendemail(body,token){
 
-      else{
-        pushNotificationArray.push(customers[i].customerID);//we are using _id as a tagname
-      }
-
-}
-
-for(var i=0;i<emailArray.length;i++){
-  sendemailNotification(emailArray[i],emailSub,emailBody);
-}
-
-for(var i=0;i<pushNotificationArray.length;i++){
- // sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
-  sendPushNotification(pushNotificationArray[i],body);
-}
+          var options = {
+                url: `${baseURL}/api/customers/`,
+                rejectUnauthorized : false,
+                headers :  {
+                           'Authorization': `Bearer ${token}`
+                           }
 
 
+              };
+              function callback(error, response, body1) {
+                 //console.log(body);
+                 //console.log(error);
+
+                if(!error  && response.statusCode == 200) {
+                  var customers = JSON.parse(body1);
+                  console.log(customers);  
+                  console.log('Length of customers : ' + customers.length);
+                  var emailArray = []; // for holding web customers
+                  var pushNotificationArray = [] ;//for holding mobile customers
+                  var emailBody = body.description;
+                  var emailSub = body.title;
+                  var emailSend = 0;
+                  var pushSend = 0;
+                  for(var i = 0;i<customers.length;i++){
+                        if(customers[i].isMobileClient == 'false')
+                            emailArray.push(customers[i].email);
+
+                        else{
+                          pushNotificationArray.push(customers[i].customerID);//we are using _id as a tagname
+                        }
+
+                  }
+
+                  for(var i=0;i<emailArray.length;i++){
+                    sendemailNotification(emailArray[i],emailSub,emailBody);
+                  }
+
+                  for(var i=0;i<pushNotificationArray.length;i++){
+                   // sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
+                    sendPushNotification(pushNotificationArray[i],body);
+                  }
+                  
+              }
+
+           
+            }
+    request.get(options, callback);
 
 
 //sendPushNotification('sojharo',emailBody);
