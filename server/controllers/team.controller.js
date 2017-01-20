@@ -84,7 +84,9 @@ export function getteams(req, res) {
   console.log(req.body);
   logger.serverLog('info', 'This is body in createteam '+ JSON.stringify(req.body) );
 
-   var options = {
+  var options;
+  if(req.body.deptagents){  
+   options = {
       url: `${baseURL}/api/departments/kiboengage`,
       rejectUnauthorized : false,
       headers :  {
@@ -99,7 +101,29 @@ export function getteams(req, res) {
       
      
     };
+  }
+  else{
+   options = {
+      url: `${baseURL}/api/departments/kiboengage`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      json: {
+           'deptname' : req.body.deptname,
+           'deptdescription': req.body.deptdescription,
+          
+
+          }
+      
+     
+    };
+ 
+  }
     function callback(error, response, body) {
+      console.log(error);
+      console.log(response);
+      console.log(body);
       if(!error  && response.statusCode == 200) {
         var info = body;
         console.log(body);
@@ -123,7 +147,7 @@ export function getteams(req, res) {
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,message:info.msg}); 
+      return res.status(422).json({statusCode : 422 ,message:'Failed'}); 
 
     }
 

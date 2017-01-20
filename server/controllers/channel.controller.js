@@ -20,6 +20,8 @@ var notificationHubService2 = azure.createNotificationHubService('KiboEngageProd
 export function createChannel(req, res) {
   ////console.log('create Channel is called');
   var token = req.headers.authorization;
+  logger.serverLog('info', 'This is body in createChannel '+ JSON.stringify(req.body) );
+
   ////console.log(req.body);
   ////console.log(req.body.channel);
    var options = {
@@ -123,9 +125,11 @@ export function getcustomerchannels(req, res) {
   }
 
 export function destroyChannel(req, res) {
-  ////console.log('destroyChannel is called.');
+  console.log('destroyChannel is called.');
+  console.log(req.headers);
   var token = req.headers.authorization;
-  ////console.log(req.query.id);
+  console.log(token);
+  console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/messagechannels/${id}`,
@@ -137,8 +141,9 @@ export function destroyChannel(req, res) {
     };
     function callback(error, response, body) {
     
-    ////console.log(response.statusCode);
-    ////console.log(error);
+    console.log(response.statusCode);
+    console.log(error);
+    console.log(body);
       if(!error  && response.statusCode == 204) {
           //send push notification to mobile clients
         sendPushNotification(req.body.channel,"Channels","DeleteChannel",token);
@@ -158,7 +163,7 @@ export function destroyChannel(req, res) {
 export function editChannel(req, res) {
   ////console.log('edit Channel is called');
   var token = req.headers.authorization;
-  ////console.log(req.body);
+  console.log(token);
   ////console.log(req.body.channel);
   var id = req.body.channel._id;
   ////console.log(id);
