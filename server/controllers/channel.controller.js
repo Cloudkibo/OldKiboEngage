@@ -40,7 +40,7 @@ export function createChannel(req, res) {
       if(!error  && response.statusCode == 201) {
       
             //send push notification to mobile clients
-            sendPushNotification(req.body.customers,body,"Channels","CreateChannel");
+            sendPushNotification(body,"Channels","CreateChannel",token);
            
             return res.status(200).json({statusCode : 200,body});
       
@@ -141,7 +141,7 @@ export function destroyChannel(req, res) {
     ////console.log(error);
       if(!error  && response.statusCode == 204) {
           //send push notification to mobile clients
-        sendPushNotification(req.body.customers,req.body.channel,"Channels","DeleteChannel");
+        sendPushNotification(req.body.channel,"Channels","DeleteChannel",token);
           
         res.sendStatus(200); 
     
@@ -177,7 +177,7 @@ export function editChannel(req, res) {
         ////console.log(error)
       if(!error  && response.statusCode == 200) {
       
-            sendPushNotification(req.body.customers,req.body.channel,"Channels","EditChannel");
+            sendPushNotification(req.body.channel,"Channels","EditChannel",token);
             return res.status(200).json({statusCode : 200,body});
       }
     else
@@ -511,60 +511,80 @@ export function getagentnotifications(req, res) {
   }
 
 //for mobile customers
-function sendPushNotification(customers,data,tablename,operation){
+function sendPushNotification(data,tablename,operation,token){
   console.log('sendPushNotification for channels is called');
-  
-   var payload = {
-        data: {
-          obj:data,
-          tablename : tablename,
-          operation : operation,
-        },
-        badge: 0
-      };
-
-  //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
-  for(var i=0;i<customers.length;i++){
-
-    var tagname = customers[i].customerID;
-    var iOSMessage = {
-      alert : operation,
-      sound : 'UILocalNotificationDefaultSoundName',
-      badge : payload.badge,
-      payload : payload,
-      'content-available' : true
-    };
-    var androidMessage = {
-      to : tagname,
-      priority : "high",
-      data : {
-        message : payload
-      }
-    }
-    notificationHubService.gcm.send(tagname, androidMessage, function(error){
-      if(!error){
-        console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
-      } else {
-        console.log('Azure push notification error : '+ JSON.stringify(error));
-      }
-    });
-    notificationHubService.apns.send(tagname, iOSMessage, function(error){
-      if(!error){
-        console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-        console.log(iOSMessage);
-      } else {
-        console.log('Azure push notification error : '+ JSON.stringify(error));
-      }
-    });
+   var options = {
+                url: `${baseURL}/api/customers/`,
+                rejectUnauthorized : false,
+                headers :  {
+                           'Authorization': `Bearer ${token}`
+                           }
 
 
-     notificationHubService2.apns.send(tagname, iOSMessage, function(error){
-      if(!error){
-        console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-        console.log(iOSMessage);
-      } else {
-        console.log('Azure push notification error : '+ JSON.stringify(error));
-      }
-    });
-  }
+              };
+              function callback(error1, response, body1) {
+                 //console.log(body);
+                 //console.log(error);
+                var customers = JSON.parse(body1);
+                if(!error1  && response.statusCode == 200) {
+                             var payload = {
+                                  data: {
+                                    obj:data,
+                                    tablename : tablename,
+                                    operation : operation,
+                                  },
+                                  badge: 0
+                                };
+
+                            //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
+                            for(var i=0;i<customers.length;i++){
+
+                              var tagname = customers[i].customerID;
+                              var iOSMessage = {
+                                alert : operation,
+                                sound : 'UILocalNotificationDefaultSoundName',
+                                badge : payload.badge,
+                                payload : payload,
+                                'content-available' : true
+                              };
+                              var androidMessage = {
+                                to : tagname,
+                                priority : "high",
+                                data : {
+                                  message : payload
+                                }
+                              }
+                              notificationHubService.gcm.send(tagname, androidMessage, function(error){
+                                if(!error){
+                                  console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+                                } else {
+                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                }
+                              });
+                              notificationHubService.apns.send(tagname, iOSMessage, function(error){
+                                if(!error){
+                                  console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+                                  console.log(iOSMessage);
+                                } else {
+                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                }
+                              });
+
+
+                               notificationHubService2.apns.send(tagname, iOSMessage, function(error){
+                                if(!error){
+                                  console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+                                  console.log(iOSMessage);
+                                } else {
+                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                }
+                              });
+                            }
+
+                          }
+                        }
+                        request.get(options, callback);
+
+
+
 }
