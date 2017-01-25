@@ -39,7 +39,7 @@ class AddCustomer extends Component {
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
     props.getcustomerteams(appid,appsecret,props.params.id);
     props.getcustomerchannels(appid,appsecret,props.params.id);
-    props.getcountryname(usertoken);
+   // props.getcountryname(usertoken);
     super(props, context);
     call_customer_details = false;
    // var pathname = getParameterByName('pathname');

@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest}  from '../../redux/actions/actions'
+import { getChatRequest,sendmessageToAgent}  from '../../redux/actions/actions'
 import {savechat}  from '../../redux/actions/actions'
 
 import { updateChatList}  from '../../redux/actions/actions'
@@ -137,8 +137,8 @@ class ClientChatView extends Component {
                     }
          this.props.chatlist.push(saveChat);
         
-         socket.emit('send:messageToAgent', saveChat);
-                   
+         //socket.emit('send:messageToAgent', saveChat);
+       this.props.sendmessageToAgent(saveChat);            
        this.props.savechat(saveChat);           
        this.refs.msg.value ='';
        this.forceUpdate();
@@ -295,4 +295,4 @@ function mapStateToProps(state) {
      };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,updateChatList,savechat})(ClientChatView);
+export default connect(mapStateToProps,{ getChatRequest,sendmessageToAgent,updateChatList,savechat})(ClientChatView);

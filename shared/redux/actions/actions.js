@@ -1501,7 +1501,29 @@ export function getnewsessions(token){
   };
 }
 
+export function chatmessageSent(res){
+    return {
+    type: ActionTypes.CHAT_SENT_TO_AGENT,
+    status : res.status,
+  //  customerid,
 
+  };
+}
+//send messsage to agent
+export function sendmessageToAgent(chat){
+ console.log('sendmessageToAgent');
+ console.log(chat);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getchat`, {
+        method:'post',
+        body: JSON.stringify(chat),
+        headers: new Headers({
+        'Content-Type': 'application/json',
+        
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatmessageSent(res)));
+  };
+}
 export function getresolvedsessions(token){
   console.log(token);
 

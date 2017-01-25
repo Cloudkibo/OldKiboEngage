@@ -163,8 +163,8 @@ const dashboard = (state =dashboardState, action) => {
          customerchat_selected : state.customerchat_selected,
          new_message_arrived_rid : state.new_message_arrived_rid,
          userchats : state.userchats,
-           onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
+         groupdetails :state.groupdetails,
 
       };
    case ActionTypes.ADD_USER_DETAILS:
@@ -1337,6 +1337,33 @@ groupdetails :state.groupdetails,
 
             };
 
+          case ActionTypes.CHAT_SENT_TO_AGENT:
+         
+           return {
+             teamdetails: state.teamdetails,
+             userdetails: state.userdetails,
+             errorMessage:action.status,
+             agents : state.agents,
+             deptagents :state.deptagents,
+
+             chatlist: state.chatlist,
+             customerid : state.customerid,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats :state.userchats,
+             responses : state.responses,
+
+             channels : state.channels,
+             customers : state.customers,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,
+             news:state.news,
+             groupagents : state.groupagents,
+             groupdetails :state.groupdetails,
+
+            };
           case ActionTypes.SHOW_NOTIFICATIONS:
              return {
              teamdetails: state.teamdetails,

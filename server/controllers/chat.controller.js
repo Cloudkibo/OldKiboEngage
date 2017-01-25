@@ -598,13 +598,12 @@ exports.register = function(socket) {
 
 
 
-
+// endpoint called by customer (web or mobile)
 export function getChatMessage(req, res) {
-  
+    console.log('getChatMessage is called');
     var chat   = req.body;
     console.log(chat);
     ss.getchat(req.body);
-    
     return res.json(200,{'status' : 'success'});
   
 };
