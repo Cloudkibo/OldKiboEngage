@@ -1036,3 +1036,137 @@ exports.getchat = function(data){
     }
  
 } 
+
+
+
+/****** Endpoint used for sending message to customers received by agent(web or mobile)
+
+/******** not exporting in controller file **********/
+exports.getchatfromAgent = function(data){
+  console.log('socket get chat from agent is called');
+  console.log(data);
+    // don't push messages in userchats that come from mobile
+    //add logic here for sending push notification to desired customer
+    if(data.fromMobile && data.fromMobile == 'yes'){
+        console.log('data from mobile.Not pushed in userchats');
+        var payload = {
+        data: {
+          uniqueid: data.uniqueid, // this is uniqueid of message
+          request_id : data.request_id, //this is request id of session
+          msg : data.msg,
+        },
+        badge: 0
+      };
+
+      sendPushNotification(data.customerid.customerID,payload)
+    }
+
+    // for web customer
+    else     {
+          userchats.push(data);
+         }
+       
+    if(data.socketid){
+            console.log('sending point to point message');
+
+            glob.to(data.socketid).emit('send:message',{
+            to: data.to,
+            socketid:data.socketid,
+            from : data.from,
+            visitoremail:data.visitoremail,
+            datetime:data.datetime,
+            msg: data.msg,
+            time:data.time,
+            uniqueid : data.uniqueid,
+            type : data.type,
+            request_id :data.request_id,
+            messagechannel:data.messagechannel,
+            companyid:data.companyid,
+            is_seen:data.is_seen
+
+
+
+          
+          });
+    }
+
+// Logic for sending message to all group members
+    if(data.groupmembers && data.groupmembers.length > 1 && data.sendersEmail){
+      var socketids =[]
+
+           for(var j=0;j< data.groupmembers.length;j++){
+                for(var i = 0;i < onlineAgents.length;i++)
+                {
+                  if(onlineAgents[i].email == data.groupmembers[j] && onlineAgents[i].email != data.sendersEmail){
+                     console.log('agent is online');
+                     
+                    socketids.push(onlineAgents[i].socketid);
+                    break;
+                  }
+
+              }
+            }
+
+           for(var i=0;i<socketids.length;i++){
+                     //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
+                  glob.to(socketids[i]).emit('send:message',{
+                                to: data.to,
+                                socketid:data.socketid,
+                                from : data.from,
+                                visitoremail:data.visitoremail,
+                                datetime:data.datetime,
+                                msg: data.msg,
+                                time:data.time,
+                                uniqueid : data.uniqueid,
+                                type : data.type,
+                                request_id :data.request_id,
+                                messagechannel:data.messagechannel,
+                                companyid:data.companyid,
+                                is_seen:data.is_seen
+
+                              });
+                } 
+    }
+
+    if(data.assignedagentemail && data.assignedagentemail.length > 1){
+      //this means that the message is sent on a group,we will inform all the members of the group that the chat session is assigned to the group
+           var socketids =[]
+           for(var j=0;j< data.assignedagentemail.length;j++){
+                for(var i = 0;i < onlineAgents.length;i++)
+                {
+                  if(onlineAgents[i].email == data.assignedagentemail[j]){
+                     console.log('agent is online');
+                     
+                    socketids.push(onlineAgents[i].socketid);
+                    break;
+                  }
+
+            }
+          }
+
+           for(var i=0;i<socketids.length;i++){
+                     //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
+                  glob.to(socketids[i]).emit('send:message',{
+                                to: data.to,
+                                socketid:data.socketid,
+                                from : data.from,
+                                visitoremail:data.visitoremail,
+                                datetime:data.datetime,
+                                msg: data.msg,
+                                time:data.time,
+                                uniqueid : data.uniqueid,
+                                type : data.type,
+                                request_id :data.request_id,
+                                messagechannel:data.messagechannel,
+                                companyid:data.companyid,
+                                is_seen:data.is_seen
+
+                              });
+                }
+                    
+
+    }
+
+
+ 
+} 

@@ -110,6 +110,7 @@ router.route('/createnews').post(NewsController.createNews);
 router.route('/getnews').post(NewsController.getnews);
 
 router.route('/getchat').post(ChatController.getChatMessage);
+router.route('/getchatfromagent').post(ChatController.getchatfromagent);
 router.route('/downloadchatfile').post(ChatController.downloadchatfile);
 
 router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfile);

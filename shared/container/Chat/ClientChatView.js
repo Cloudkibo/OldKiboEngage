@@ -69,8 +69,8 @@ class ClientChatView extends Component {
 
 
           }
-   socket.emit('send:messageToAgent',hellomsg);
-
+   //socket.emit('send:messageToAgent',hellomsg);
+   this.props.sendmessageToAgent(hellomsg);    
    socket.on('send:message',message => this.props.updateChatList(message));
    socket.on('send:getAgent',this.getAgentSocket);
    socket.on('connecttocall',this.connectCall);

@@ -608,6 +608,16 @@ export function getChatMessage(req, res) {
   
 };
 
+// endpoint called by customer (web or mobile)
+export function getchatfromagent(req, res) {
+    console.log('getchatfromagent is called');
+    var chat   = req.body;
+    console.log(chat);
+    ss.getchatfromAgent(req.body);
+    return res.json(200,{'status' : 'success'});
+  
+};
+
 
 //for mobile customers
 function sendPushNotification(tagname,payload,alertmessage){

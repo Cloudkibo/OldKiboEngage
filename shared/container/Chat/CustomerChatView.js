@@ -9,7 +9,7 @@ import { getChatRequest,uploadChatfile,removeDuplicates,createnews,resolvesessio
 import { updateChatList}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
-import {savechat,updatechatstatus,downloadfile}  from '../../redux/actions/actions'
+import {savechat,updatechatstatus,downloadfile,getchatfromAgent}  from '../../redux/actions/actions'
 import { FileUpload } from 'redux-file-upload'
 
 //var DownloadButton = require('downloadbutton')
@@ -21,7 +21,7 @@ import Autosuggest from 'react-autosuggest';
 var callonce = 'false'
 var callonceMessage = 'false'
 var newChatClicked = 'false'
-
+var previous_message_id = 0
 var handleDate = function(d){
 var c = new Date(d);
 return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
@@ -452,17 +452,24 @@ else{
 /***** emit message on socket once it is saved on server ***/
  componentWillReceiveProps(props){
 
-  if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true" && callonceMessage == "false"){
-      //alert('chat message saved on server');
-      if(props.tempMessage.assignedagentemail){
-         this.props.route.socket.emit('send:agentsocket' , props.tempMessage);
+  //logic to avoid duplicate message sending
+  
+  if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true"){
+      alert('chat message saved on server');
+      if(previous_message_id != props.tempMessage.uniqueid){
+            if(props.tempMessage.assignedagentemail){
 
-      }
-      else{
-      this.props.route.socket.emit('send:message',props.tempMessage);
-    }
+               this.props.route.socket.emit('send:agentsocket' , props.tempMessage);
+
+            }
+            else{
+           // this.props.route.socket.emit('send:message',props.tempMessage);
+            this.props.getchatfromAgent(props.tempMessage);
+          }
+        }
       //this.props.ismessageSaved = "false";
-      callonceMessage = "true";
+      //callonceMessage = "true";
+      previous_message_id = props.tempMessage.uniqueid;
   }
 
 
@@ -621,7 +628,8 @@ else{
         this.refs.groupmembers.value = "";
 
         if(this.props.sessiondetails.platform == 'web'){
-        socket.emit('send:message', saveChat);
+        //socket.emit('send:message', saveChat);
+        this.props.getchatfromAgent(saveChat);
         socket.emit('send:agentsocket' , saveChat);
       }
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
@@ -786,7 +794,8 @@ else{
         //for web customers
         else{
         this.props.chatlist.push(saveChat);
-        socket.emit('send:message', saveChat);
+      //  socket.emit('send:message', saveChat);
+        this.props.getchatfromAgent(saveChat);
         }
 
 
@@ -1342,4 +1351,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{updatechatstatus,downloadfile,uploadChatfile,removeDuplicates,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{updatechatstatus,downloadfile,uploadChatfile,removeDuplicates,getchatfromAgent,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

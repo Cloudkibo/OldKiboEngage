@@ -1509,6 +1509,20 @@ export function chatmessageSent(res){
 
   };
 }
+
+//send message to customer
+export function getchatfromAgent(chat){
+ return (dispatch) => {
+    fetch(`${baseURL}/api/getchatfromagent`, {
+        method:'post',
+        body: JSON.stringify(chat),
+        headers: new Headers({
+        'Content-Type': 'application/json',
+        
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatmessageSent(res)));
+  };
+}
 //send messsage to agent
 export function sendmessageToAgent(chat){
  console.log('sendmessageToAgent');
