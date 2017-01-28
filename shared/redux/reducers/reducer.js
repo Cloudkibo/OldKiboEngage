@@ -1338,7 +1338,7 @@ groupdetails :state.groupdetails,
             };
 
           case ActionTypes.CHAT_SENT_TO_AGENT:
-         
+
            return {
              teamdetails: state.teamdetails,
              userdetails: state.userdetails,
@@ -1521,7 +1521,7 @@ groupdetails :state.groupdetails,
              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
              groupdetails :state.groupdetails,
              agents:state.agents,
-             countryname:action.countryinfo.country,
+             countryname:action.countryinfo.country_name,
 
             };
 

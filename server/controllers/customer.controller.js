@@ -23,14 +23,11 @@ export function getCountryName(req, res) {
   var ip = ipv6.substr(7);
   console.log('ipv4 address= ' + ip);
   //var ip2number = (parseInt(ip.split('.')[0]) * 256 * 256 * 256) + (parseInt(ip.split('.')[1]) * 256 * 256) + (parseInt(ip.split('.')[2]) * 256) + (parseInt(ip.split('.')[3]));
-  var ip2number = 16779264;
-  console.log('ip number= ' + ip2number);
+  //var ip2number = 16779264;
+  //console.log('ip number= ' + ip2number);
   var options = {
-      url: `${baseURL}/api/ipcountry/` + ip2number,
+      url: `http://freegeoip.net/json/${ip}`,
       rejectUnauthorized : false,
-      headers :  headers
-
-
     };
     function callback(error, response, body) {
        console.log(body);
