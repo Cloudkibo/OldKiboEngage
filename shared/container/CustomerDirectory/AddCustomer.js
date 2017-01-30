@@ -39,7 +39,6 @@ class AddCustomer extends Component {
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
     props.getcustomerteams(appid,appsecret,props.params.id);
     props.getcustomerchannels(appid,appsecret,props.params.id);
-   // props.getcountryname(usertoken);
     super(props, context);
     call_customer_details = false;
    // var pathname = getParameterByName('pathname');
@@ -193,6 +192,8 @@ create_session(data){
     }
    componentDidMount() {
   // socket.on('joined',this.create_session)
+    var usertoken = auth.getToken();
+    this.props.getcountryname(usertoken);
     this.props.route.socket.on('empty',this.noagent);
 
    this.props.route.socket.on('joined',this.create_session)
@@ -425,7 +426,7 @@ function mapStateToProps(state) {
     specificsession : (state.widget.specificsession),
     roomdetails :(state.widget.roomdetails),
     specificcustomer : (state.widget.specificcustomer),
-    countryname : (state.widget.countryname),
+    countryname : (state.dashboard.countryname),
   };
 }
 export default connect(mapStateToProps,{getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom,getcountryname})(AddCustomer);
