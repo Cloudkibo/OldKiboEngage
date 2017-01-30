@@ -20,7 +20,7 @@ handleClick(e){
  
   render() {
     return (
-      <div classNameNameName="corporate">
+      <div className="corporate">
      <div className="pre-header">
         <div className="container">
             <div className="row">
@@ -46,7 +46,7 @@ handleClick(e){
             </div>
         </div>        
     </div>
-      <div classNameName="header">
+      <div className="header">
           <div classNameName="container">
                  <Link to="/" className ="site-logo"> KiboEngage</Link>
                  <div className="header-navigation pull-right font-transform-inherit">

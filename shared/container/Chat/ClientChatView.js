@@ -61,6 +61,7 @@ class ClientChatView extends Component {
             msg: 'User joined a chat session',
             time : moment.utc().format('lll'),
             type : 'message',
+            departmentid : this.props.roomdetails.departmentid,
             request_id :this.props.roomdetails.request_id,
             messagechannel:this.props.roomdetails.messagechannel[this.props.roomdetails.messagechannel.length-1],
             companyid:this.props.roomdetails.room,
@@ -110,7 +111,9 @@ class ClientChatView extends Component {
                            'companyid': this.props.sessiondetails.companyid,
                            'is_seen':'no',
                            'time' : moment.utc().format('lll'),
-                           'fromMobile' : 'no'
+                           'fromMobile' : 'no',
+                           'departmentid' : this.props.sessiondetails.departmentid,
+           
                            
                       }
                     }
@@ -132,7 +135,8 @@ class ClientChatView extends Component {
                            'companyid': this.props.sessiondetails.companyid,
                            'is_seen':'no',
                            'fromMobile' : 'no',
-                           'socketid' : this.props.roomdetails.socketid
+                           'socketid' : this.props.roomdetails.socketid,
+                           'departmentid' : this.props.sessiondetails.departmentid,
                       }
                     }
          this.props.chatlist.push(saveChat);

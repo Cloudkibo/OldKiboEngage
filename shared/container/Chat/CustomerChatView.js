@@ -112,7 +112,7 @@ onFileDownload(event)
     {
       event.preventDefault();
         //const usertoken = auth.getToken();
-        alert(event.target.dataset.attrib);
+     //   alert(event.target.dataset.attrib);
         var fname = event.target.dataset.attrib;
     //    this.props.downloadfile({'uniqueid':event.target.dataset.fileid},usertoken);
     window.open('./userfiles/'+fname);
@@ -455,7 +455,7 @@ else{
   //logic to avoid duplicate message sending
   
   if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true"){
-      alert('chat message saved on server');
+      //alert('chat message saved on server');
       if(previous_message_id != props.tempMessage.uniqueid){
             if(props.tempMessage.assignedagentemail){
 
@@ -591,7 +591,7 @@ else{
     var uid = Math.random().toString(36).substring(7);
     var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
- var saveChat = {
+    var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -885,7 +885,7 @@ else{
         news_array.push(news);
       }
     }
-    alert('Creating news ' + news_array.length);
+   // alert('Creating news ' + news_array.length);
     if(news_array.length > 0){
         this.props.createnews(news_array,usertoken);
     }

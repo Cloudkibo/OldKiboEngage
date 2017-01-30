@@ -155,8 +155,8 @@ create_session(data){
    componentWillReceiveProps(props) {
 
     // bind the channel list of first team on load
-    if(props.teamdetails  && props.channels.length > 0 && !props.params.requestid && call_customer_details == false ){
-      //alert(props.channels.length);
+    if(props.teamdetails  && props.teamdetails.length > 0 && props.channels.length > 0 && !props.params.requestid && call_customer_details == false ){
+      //alert(props.teamdetails[0]._id);
       this.props.updatechannellist(props.teamdetails[0]._id);
        call_customer_details = true;
       this.forceUpdate();

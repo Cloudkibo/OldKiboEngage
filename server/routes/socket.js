@@ -172,7 +172,8 @@ function onConnect(io2, socket) {
             request_id :data.request_id,
             messagechannel:data.messagechannel,
             companyid:data.companyid,
-            is_seen:data.is_seen
+            is_seen:data.is_seen,
+            departmentid : data.departmentid,
 
 
 
@@ -211,7 +212,8 @@ function onConnect(io2, socket) {
                                 request_id :data.request_id,
                                 messagechannel:data.messagechannel,
                                 companyid:data.companyid,
-                                is_seen:data.is_seen
+                                is_seen:data.is_seen,
+                                 departmentid:data.departmentid,
 
                               });
                 } 
@@ -248,7 +250,8 @@ function onConnect(io2, socket) {
                                 request_id :data.request_id,
                                 messagechannel:data.messagechannel,
                                 companyid:data.companyid,
-                                is_seen:data.is_seen
+                                is_seen:data.is_seen,
+                                 departmentid:data.departmentid,
 
                               });
                 }
@@ -414,6 +417,7 @@ socket.on('getmessagefromserver',function(data){
                                 companyid:data.companyid,
                                 is_seen:data.is_seen,
                                 fromMobile : data.fromMobile,
+                                 departmentid:data.departmentid,
                               });
                     
                     
@@ -436,6 +440,7 @@ socket.on('getmessagefromserver',function(data){
             companyid:data.companyid,
             is_seen:data.is_seen,
             fromMobile : data.fromMobile,
+             departmentid:data.departmentid,
 
 
           });
@@ -482,6 +487,7 @@ socket.on('send:messageToAgent', function (data) {
                                 companyid:data.companyid,
                                 is_seen:data.is_seen,
                                 fromMobile : data.fromMobile,
+                                departmentid:data.departmentid,
                               });
                     
           }
@@ -506,7 +512,7 @@ socket.on('send:messageToAgent', function (data) {
             companyid:data.companyid,
             is_seen:data.is_seen,
             fromMobile : data.fromMobile,
-
+            departmentid:data.departmentid,
 
           });
     }
@@ -1004,6 +1010,7 @@ exports.getchat = function(data){
                                 is_seen:data.is_seen,
                                 fromMobile : data.fromMobile,
                                 status : 'sent',
+                                departmentid:data.departmentid,
                               });
           }
            
@@ -1029,6 +1036,7 @@ exports.getchat = function(data){
                                           is_seen:data.is_seen,
                                           fromMobile : data.fromMobile,
                                           status : 'sent',
+                                          departmentid:data.departmentid,
                                         });
 
               }
@@ -1082,7 +1090,8 @@ exports.getchatfromAgent = function(data){
             request_id :data.request_id,
             messagechannel:data.messagechannel,
             companyid:data.companyid,
-            is_seen:data.is_seen
+            is_seen:data.is_seen,
+            departmentid:data.departmentid,
 
 
 
@@ -1122,7 +1131,8 @@ exports.getchatfromAgent = function(data){
                                 request_id :data.request_id,
                                 messagechannel:data.messagechannel,
                                 companyid:data.companyid,
-                                is_seen:data.is_seen
+                                is_seen:data.is_seen,
+                                departmentid:data.departmentid,
 
                               });
                 } 
@@ -1159,7 +1169,8 @@ exports.getchatfromAgent = function(data){
                                 request_id :data.request_id,
                                 messagechannel:data.messagechannel,
                                 companyid:data.companyid,
-                                is_seen:data.is_seen
+                                is_seen:data.is_seen,
+                                departmentid:data.departmentid,
 
                               });
                 }
