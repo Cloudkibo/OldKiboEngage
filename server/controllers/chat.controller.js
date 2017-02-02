@@ -283,7 +283,10 @@ export function movedToMessageChannel(req, res) {
        if(!error && response.statusCode == 200)
        {
           // //console.log(body)
+             sendpushToAllAgents(req.body.request_id,'Chat Session Moved To Another Channel');
             return res.status(200).json({statusCode : 201,message:'success'});
+             //send push notification to all agents
+           
        }
        else
        {
@@ -419,8 +422,12 @@ export function resolvechatsession(req, res) {
        if(!error && response.statusCode == 200)
        {
            //console.log(body)
+           // inform mobile agents through push notification
+           //send push notification to all agents
+            sendpushToAllAgents(req.body.request_id,'Resolve Chat Session');
+
             return res.status(200).json({statusCode : 201,message:'success'});
-       }
+                   }
        else
        {
            res.sendStatus(422);
@@ -965,4 +972,53 @@ export function downloadchatfile(req, res) {
        }    
            request.post(options, callback);
 
+}
+
+
+
+
+// send push to all agents
+
+function sendpushToAllAgents(sessionid,pushTitle){
+  console.log('send push to all agents');
+  var payload = {
+                              data: {
+                                request_id : sessionid,
+                                status : pushTitle,
+                              },
+                              badge: 0
+                            };
+ 
+ var  headers =  {
+   'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+   'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+   'kibo-client-id': 'cd89f71715f2014725163952',
+   
+   }
+  var options = {
+                    url: `${baseURL}/api/users/allagents/`,
+                    rejectUnauthorized : false,
+                    headers,
+                    
+            };
+              function callback(error, response, body) {
+                if(!error  && response.statusCode == 200) {
+                   var info = JSON.parse(body);
+                   var agentlist = info.agents;
+                   for(var i=0;i< agentlist.length;i++){
+                            var obj = agentlist[i];
+                            console.log('----- obj is');
+                            console.log(obj);
+                            console.log(obj.email);
+                            sendPushNotification(obj.email,payload,pushTitle);
+                   }
+
+              }
+
+              else
+              {
+             //  return res.status(422).json({message:error}); 
+              }
+     }
+       request.get(options, callback);
 }
