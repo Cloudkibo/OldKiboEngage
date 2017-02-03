@@ -573,7 +573,7 @@ else{
 // Assign chat to other agent
   assignSessionToAgent(e){
      const { socket,dispatch } = this.props;
-
+     var agentemail = []
      // local changes
   this.props.sessiondetails.status = "assigned";
   this.props.sessiondetails.agent_ids =  {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'};
@@ -611,8 +611,13 @@ else{
                            'agentid' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
 
+                       
                            'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
                       }
+         //pushing agent email to array for sending push notifications
+
+         agentemail.push(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email);
+        
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
         }
@@ -663,7 +668,7 @@ else{
 
     }
 
-    this.props.assignToAgent(assignment,usertoken);
+    this.props.assignToAgent(assignment,usertoken,agentemail,'agent');
 
     //update session status on socket
     socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
@@ -830,7 +835,7 @@ else{
 
     }
 
-    this.props.assignToAgent(assignment,usertoken);
+    this.props.assignToAgent(assignment,usertoken,agentemail,'group');
 
     //update session status on socket
     socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,

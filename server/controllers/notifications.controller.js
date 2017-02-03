@@ -16,7 +16,7 @@ var baseURL = `https://api.kibosupport.com`
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
 var notificationHubService2 = azure.createNotificationHubService('KiboEngageProductionHub','Endpoint=sb://kiboengageproductionhub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=Hc1qWqbkLk4oGYJ9dN9vexUsIKk8hOeja5sEte89n9s=');
-var notificationHubService3 = azure.createNotificationHubService('KiboEngageTestHub','Endpoint=sb://kiboengagetest.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=12mu5jrcNfUlKSG5k8Uy19WMDJCxZQmhGCpa9SozHm8=');
+//var notificationHubService3 = azure.createNotificationHubService('KiboEngageTestHub','Endpoint=sb://kiboengagetest.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=12mu5jrcNfUlKSG5k8Uy19WMDJCxZQmhGCpa9SozHm8=');
 
 /************************* Channel APIS ************************************/
 export function createNotification(req, res) {
@@ -125,12 +125,12 @@ function sendemail(body,token){
                   }
 
                   for(var i=0;i<emailArray.length;i++){
-                  //  sendemailNotification(emailArray[i],emailSub,emailBody);
+                    sendemailNotification(emailArray[i],emailSub,emailBody);
                   }
 
                   for(var i=0;i<pushNotificationArray.length;i++){
-                   // sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
-                   // sendPushNotification(pushNotificationArray[i],body);
+                    sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
+                    sendPushNotification(pushNotificationArray[i],body);
                   }
                   
               }
@@ -140,7 +140,7 @@ function sendemail(body,token){
     request.get(options, callback);
 
 
-sendPushNotification('customerA',body);
+//sendPushNotification('customerA',body);
 }
 
 

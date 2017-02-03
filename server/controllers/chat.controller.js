@@ -243,6 +243,22 @@ export function assignToAgent(req, res) {
        if(!error && response.statusCode == 200)
        {
            //console.log(body)
+            //send push notification to assigned agents
+            var agentlist = req.body.agentemail;
+            var payload = {
+                              data: {
+                                
+                                request_id : req.body.sessionid,
+                                
+                              },
+                              badge: 0
+                            };
+            for(var i=0;i< agentlist.length;i++){
+                    console.log('----- obj is');
+                    console.log(agentlist[i]);
+                   
+                    sendPushNotification(agentlist[i],payload,'You are assigned a new session');
+                   }
             return res.status(200).json({statusCode : 201,message:'success'});
        }
        else

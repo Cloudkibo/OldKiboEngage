@@ -2175,7 +2175,7 @@ export function updatestatus(session) {
 
 /**** update agent assignment table when the session is assigned to agent ***/
 
-export function assignToAgent(session,usertoken) {
+export function assignToAgent(session,usertoken,agentemail,assignmentType) {
   return (dispatch) => {
     fetch(`${baseURL}/api/assignToAgent`, {
       method: 'post',
@@ -2184,6 +2184,8 @@ export function assignToAgent(session,usertoken) {
         sessionid : session.sessionid,
         agentAssignment : session,
         type : session.type,
+        agentemail:agentemail,
+        assignmentType:assignmentType,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
