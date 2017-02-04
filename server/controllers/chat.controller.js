@@ -10,6 +10,11 @@ var ss = require('../routes/socket');
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
 var notificationHubService2 = azure.createNotificationHubService('KiboEngageProductionHub','Endpoint=sb://kiboengageproductionhub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=Hc1qWqbkLk4oGYJ9dN9vexUsIKk8hOeja5sEte89n9s=');
+
+
+
+// notification hub for Agents
+var notificationHubService3 = azure.createNotificationHubService('KiboEngageTestHub','Endpoint=sb://kiboengagetest.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=12mu5jrcNfUlKSG5k8Uy19WMDJCxZQmhGCpa9SozHm8=');
 var logger = require('../logger/logger');
 
 var fs = require('fs');
@@ -744,6 +749,26 @@ function sendPushNotification(tagname,payload,alertmessage){
       console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
+
+
+   //for agents
+
+   notificationHubService3.gcm.send(tagname, androidMessage, function(error){
+    if(!error){
+      console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+    } else {
+      console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+  notificationHubService3.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+      console.log(iOSMessage);
+    } else {
+      console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
+
 }
 
 
