@@ -453,7 +453,7 @@ else{
  componentWillReceiveProps(props){
 
   //logic to avoid duplicate message sending
-  
+
   if(props.ismessageSaved && props.tempMessage && props.ismessageSaved == "true"){
       //alert('chat message saved on server');
       if(previous_message_id != props.tempMessage.uniqueid){
@@ -574,24 +574,24 @@ else{
   assignSessionToAgent(e){
      const { socket,dispatch } = this.props;
      var agentemail = []
-     // local changes
-  this.props.sessiondetails.status = "assigned";
-  this.props.sessiondetails.agent_ids =  {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'};
 
+     if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0]._id).length() !== 0){
+       // local changes
+       this.props.sessiondetails.status = "assigned";
+       this.props.sessiondetails.agent_ids =  {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'};
 
-     const usertoken = auth.getToken();
+       const usertoken = auth.getToken();
 
-    if(confirm("Are you sure you want to assign this session to " + this.refs.agentList.options[this.refs.agentList.selectedIndex].text))
-    {
+       if(confirm("Are you sure you want to assign this session to " + this.refs.agentList.options[this.refs.agentList.selectedIndex].text))
+       {
+         // 1. Broadcast a log message to all agents and customer that session is assigned to agent
 
-    // 1. Broadcast a log message to all agents and customer that session is assigned to agent
+         //generate unique id of message - this change is for mobile clients
+         var today = new Date();
+         var uid = Math.random().toString(36).substring(7);
+         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
-    //generate unique id of message - this change is for mobile clients
-    var today = new Date();
-    var uid = Math.random().toString(36).substring(7);
-    var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-
-    var saveChat = {
+         var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -611,16 +611,16 @@ else{
                            'agentid' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
 
-                       
+
                            'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
-                      }
+         }
          //pushing agent email to array for sending push notifications
 
          agentemail.push(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email);
-        
+
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
-        }
+         }
          // for mobile customers
         if(this.props.sessiondetails.platform == 'mobile'){
              this.props.mobileuserchat.push(saveChat);
@@ -636,7 +636,7 @@ else{
         //socket.emit('send:message', saveChat);
         this.props.getchatfromAgent(saveChat);
         socket.emit('send:agentsocket' , saveChat);
-      }
+        }
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
 
        // socket.emit('send:agentsocket' , saveChat);
@@ -644,31 +644,27 @@ else{
         this.props.savechat(saveChat);
         callonce = "false";
 
+        // 3. update session status on server
+        var session = {
+          request_id : this.refs.requestid.value,
+          status : 'assigned',
+          usertoken :usertoken,
+        }
+        this.props.updatestatus(session);
 
+        //4. update agent assignment table on server
 
-    // 3. update session status on server
-     var session = {
-      request_id : this.refs.requestid.value,
-      status : 'assigned',
-      usertoken :usertoken,
+        // considering the use case of self assigning
+        var assignment = {
+          assignedto : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+          assignedby : this.props.userdetails._id,
+          sessionid : this.refs.requestid.value,
+          companyid : this.props.userdetails.uniqueid,
+          datetime : Date.now(),
+          type : 'agent',
+        }
 
-    }
-    this.props.updatestatus(session);
-
-    //4. update agent assignment table on server
-
-    // considering the use case of self assigning
-    var assignment = {
-      assignedto : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-      assignedby : this.props.userdetails._id,
-      sessionid : this.refs.requestid.value,
-      companyid : this.props.userdetails.uniqueid,
-      datetime : Date.now(),
-      type : 'agent',
-
-    }
-
-    this.props.assignToAgent(assignment,usertoken,agentemail,'agent');
+        this.props.assignToAgent(assignment,usertoken,agentemail,'agent');
 
     //update session status on socket
     socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
@@ -720,10 +716,13 @@ else{
     }
 
     this.forceUpdate();
+    }
+  }
+  else {
+    alert("Select agent is not in the team. You cannot assign session to this agent.")
   }
 
-
-  }
+}
 
 
 
