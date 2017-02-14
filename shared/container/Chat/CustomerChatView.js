@@ -575,7 +575,7 @@ else{
      const { socket,dispatch } = this.props;
      var agentemail = []
 
-     if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0]._id).length() !== 0){
+     if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.sessiondetails.departmentid).length !== 0){
        // local changes
        this.props.sessiondetails.status = "assigned";
        this.props.sessiondetails.agent_ids =  {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'};

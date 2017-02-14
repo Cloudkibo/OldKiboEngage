@@ -7,7 +7,7 @@ import * as CustomerController from '../controllers/customer.controller';
 import * as ChatController from '../controllers/chat.controller';
 import * as GroupController from '../controllers/group.controller';
 import * as NewsController from '../controllers/news.controller';
-
+import * as FbController from '../controllers/fbPages.controller';
 var multiparty = require('connect-multiparty');
 var multipartyMiddleware = multiparty();
 
@@ -26,6 +26,7 @@ router.route('/updatesettings').post(UserController.updatesettings);
 router.route('/changenewpassword').post(UserController.changenewpassword);
 router.route('/getteams').get(TeamController.getteams);
 router.route('/getgroups').get(GroupController.getgroups);
+router.route('/createfbPage').post(FbController.createfbPage);
 
 router.route('/getmyuserteams').get(TeamController.getmyuserteams);
 router.route('/getcustomerteams').post(TeamController.getcustomerteams);

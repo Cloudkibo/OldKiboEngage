@@ -67,6 +67,7 @@ class CompanySettings extends Component {
                     'allowsmsnotification':this.refs.allowsmsnotification.options[this.refs.allowemailnotification.selectedIndex].value,
                     'isdomainemail':this.refs.isdomainemail.options[this.refs.isdomainemail.selectedIndex].value,
                     'allowChat':this.refs.allowChat.options[this.refs.allowChat.selectedIndex].value,
+                    'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value
                   }
                   console.log(companyprofile);
 
@@ -203,6 +204,20 @@ class CompanySettings extends Component {
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
                                                 <select  className="form-control"  ref = "allowsmsnotification" defaultValue={this.props.companysettings.allowsmsnotification}>
+                                                  <option value="Yes">Yes</option>
+                                                  <option value="No">No</option>
+                                                </select>
+                                                </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+
+                                               <div className="form-group">
+                                                <label className="control-label col-md-3">Enable Facebook Messenger</label>
+                                                <div id="spinner1">
+                                                <div className="col-md-9">
+                                                <div className="input-group input-small">
+                                                <select  className="form-control"  ref = "allowFacebook" defaultValue={this.props.companysettings.enableFacebook?this.props.companysettings.enableFacebook:"Yes"}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>

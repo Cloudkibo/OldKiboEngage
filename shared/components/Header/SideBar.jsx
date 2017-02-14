@@ -189,6 +189,17 @@ class SideBar extends Component
                 </Link>
               </li>
               <li className="">
+                <Link to="/fbpages">
+                  <i className="fa fa-facebook">
+                  </i>
+                  <span className="title">
+                    Facebook Pages
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+              <li className="">
                 <Link to="/companyprofile">
                   <i className="fa fa-cogs">
                   </i>

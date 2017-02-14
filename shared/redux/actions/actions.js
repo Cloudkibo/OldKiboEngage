@@ -2418,6 +2418,14 @@ export function showUpdateProfile(msg){
 
   };
 }
+export function showCreatePage(msg){
+  console.log(msg);
+  return {
+    type: ActionTypes.ADD_UPDATE_PROFILE_WARNINGS,
+    errormessage : msg,
+
+  };
+}
 export function updateprofile(user,token) {
   console.log(user);
   return (dispatch) => {
@@ -2479,6 +2487,25 @@ export function changepassword(user,token) {
 
 }
 
+export function createPage(fbpage,token) {
+  console.log(fbpage);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createfbPage`, {
+      method: 'post',
+      body: JSON.stringify({
+        fbpage:fbpage,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showCreatePage(res))
+
+
+      );
+  };
+}
+
 export function updatesettings(company,token) {
   console.log(company);
   return (dispatch) => {
@@ -2504,6 +2531,7 @@ export function updatesettings(company,token) {
                     'allowsmsnotification':company.allowsmsnotification,
                     'isdomainemail':company.isdomainemail,
                     'allowChat':company.allowChat,
+                    'enableFacebook':company.enableFacebook,
 
 
       }),
