@@ -8,25 +8,25 @@ function ChatListItem(props) {
   var leftStyle = {
   float: 'left',
   color:'blue',
- 
+
 };
  var rightStyle = {
   float: 'right',
   background:'red',
- 
+
 };
 var clearStyle = {
   clear:'both',
- 
+
 };
 var rightAgent = {
  float:'right',
- 
+
 };
 var hleft = {
  float:'left',
  display:'inline',
- 
+
 };
 var divMargin = {
 	'margin-top': '10px',
@@ -44,10 +44,10 @@ var changecc ={
 }
 
 {
-  
+
 }
 
-  
+
 var ag = []
 
 var agentname = []
@@ -55,7 +55,7 @@ if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.custome
 
 {
   props.agents.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1].id).map((c,i) =>(
-                           agentname.push(c.firstname + ' ' + c.lastname)                          
+                           agentname.push(c.firstname + ' ' + c.lastname)
                         ))
 
 }
@@ -65,7 +65,7 @@ if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.custome
 
 {
   props.group.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1].id).map((c,i) =>(
-                           agentname.push(c.groupname + ' Group')                          
+                           agentname.push(c.groupname + ' Group')
                         ))
 
 }
@@ -74,24 +74,24 @@ var ch=[]
      {
          props.team &&
                         props.team.map((grp, i) => (
-                           ag.push(grp)                            
+                           ag.push(grp)
                         ))
 
-      }  
-    
+      }
 
-  
+
+
   {
          props.channel &&
                         props.channel.map((cha, i) => (
-                           ch.push(cha)                            
+                           ch.push(cha)
                         ))
 
-      } 
+      }
 var unread = []
 {
   props.new_message_arrived_rid &&   props.new_message_arrived_rid.map((unre, i) => (
-                           unread.push(unre)                            
+                           unread.push(unre)
                         ))
 
 }
@@ -99,8 +99,8 @@ var unread = []
 var userchatMsg = [];
 {
   props.userchat &&   props.userchat.map((unre, i) => (
-                           //userchatMsg.push(unre.Value.msg) 
-                           userchatMsg.push(unre.msg) 
+                           //userchatMsg.push(unre.Value.msg)
+                           userchatMsg.push(unre.msg)
                         ))
 
 }
@@ -120,21 +120,20 @@ var handleDate = function(d){
 var c = new Date(d);
 var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
 return res;
-}    
+}
   return (
-   (props.userchat.length > 0 || props.customer.platform == 'web' ? 
+   (props.userchat.length > 0 || props.customer.platform == 'web' ?
    <div className="list-group" onClick={props.onClickSession} style={changec}>
    {
     (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
-  
+
    	<div className="list-group-item" style={changecc}>
 
       <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
-        {(unreadCount == 0?
+
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
-       
-       )}
-     
+
+
       <div style={divMargin}>
       <span style={leftStyle}>{ag[0].deptname}</span>
       <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
@@ -150,7 +149,7 @@ return res;
       </div>
       <br/>
 
-     
+
     </div> :
 
 
@@ -159,7 +158,7 @@ return res;
       <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
        {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
-       
+
        )}
       <div style={divMargin}>
       <span style={leftStyle}>{ag[0].deptname}</span>
@@ -177,8 +176,8 @@ return res;
       </div>
       <br/>
 
-      
-    </div> 
+
+    </div>
     )
   }
    </div> :<div style={{'display' :'none'}}></div>

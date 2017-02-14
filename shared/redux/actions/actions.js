@@ -1518,7 +1518,7 @@ export function getchatfromAgent(chat){
         body: JSON.stringify(chat),
         headers: new Headers({
         'Content-Type': 'application/json',
-        
+
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatmessageSent(res)));
   };
@@ -1533,7 +1533,7 @@ export function sendmessageToAgent(chat){
         body: JSON.stringify(chat),
         headers: new Headers({
         'Content-Type': 'application/json',
-        
+
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatmessageSent(res)));
   };
@@ -1627,7 +1627,10 @@ export function getChatRequest(customerid,token,chlist){
 
 export function updateChatList(message,ch,id_not_added)
 {
-
+  console.log("update chat list is called.");
+  console.log(message);
+  console.log(ch);
+  console.log(id_not_added);
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
   if(!id_not_added){

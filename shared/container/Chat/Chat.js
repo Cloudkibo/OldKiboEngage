@@ -19,7 +19,7 @@ var callSocketChat
 class Chat extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     callMobileChatSessions =  false;
     callOnce = false;
     callSocketChat = false
@@ -29,23 +29,23 @@ class Chat extends Component {
     const usertoken = auth.getToken();
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
        //for webclients no need to fetch sessions and customer list from server
-       
+
        //but for mobile clients we will fetch list of sessions and customers from server
         props.getmobilesessions(usertoken);
         props.getuserchats(usertoken);
-       
+
         props.getresponses(usertoken);
-     
+
       // get groups list and agents
         props.getgroups(usertoken);
         props.getGroupAgents(usertoken);
 
 
       }
-      
+
         super(props, context);
         this.create_agentsession = this.create_agentsession.bind(this);
         this.getupdatedSessions = this.getupdatedSessions.bind(this);
@@ -54,7 +54,7 @@ class Chat extends Component {
         this.getSessionInfo = this.getSessionInfo.bind(this);
         this.getSocketmessage = this.getSocketmessage.bind(this);
         this.syncdata = this.syncdata.bind(this);
-       
+
   }
 syncdata(){
  // alert('You are connected to socket. Joining now!');
@@ -62,7 +62,7 @@ syncdata(){
   this.props.route.socket.emit('getOnlineAgentList');
   //this.props.route.socket.emit('returnMySocketId');
   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-  
+
 }
 updateOnlineAgents(data){
   console.log('updating updateOnlineAgents');
@@ -91,18 +91,18 @@ updateOnlineAgents(data){
         this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
         this.props.updateChatList(message,this.props.new_message_arrived_rid);
          message.status = 'delivered';
-        
+
     }
    }
 
     else if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no'){
      // alert(' i m called2')
      this.props.userchats.push(message);
-     
+
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
   }
 
-   
+
  }
  else if(!this.props.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent'){
      const usertoken = auth.getToken();
@@ -120,18 +120,18 @@ updateOnlineAgents(data){
       //this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
       this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
-     
+
 
  }
 
-    else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){ 
+    else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){
   //   alert(' i m called')
      this.props.userchats.push(message);
-     
+
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
    }
 
-    
+
 
 
 
@@ -139,7 +139,7 @@ updateOnlineAgents(data){
    //this.forceUpdate();
 
   }
-  
+
 
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
@@ -153,28 +153,28 @@ componentWillReceiveProps(props) {
   const usertoken = auth.getToken();
   if(props.customerchat  && callMobileChatSessions == false && props.serverresponse && props.serverresponse == 'received'){
      this.props.route.socket.emit('getCustomerSessionsListFirst',props.customerchat,props.userdetails.uniqueid);
-    
+
       callMobileChatSessions = true
-      this.forceUpdate();  
+      this.forceUpdate();
   }
   if(props.userchats && callSocketChat == false){
      this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-     callSocketChat = true  
+     callSocketChat = true
   }
-    
-}    
-  
+
+}
+
 componentDidMount(){
        //get online agents list
        callMobileChatSessions = false
        callSocketChat = false;
-    
+
        //alert('componentDidMount is called');
        const usertoken = auth.getToken();
         this.props.route.socket.emit('getOnlineAgentList');
         this.props.route.socket.emit('returnMySocketId');
        // this.props.route.socket.emit('getCustomerSessionsList');
-        
+
         this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.on('informAgent',this.getSessionInfo);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
@@ -183,12 +183,12 @@ componentDidMount(){
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.props.route.socket.on('returnUserChat',this.getupdatedChats);
         this.props.route.socket.on('syncdata',this.syncdata);
-  
+
 }
 
 
 
- 
+
    getupdatedSessions(data)
   {
     const usertoken = auth.getToken();
@@ -197,11 +197,11 @@ componentDidMount(){
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-   
+
      this.props.getsessionsfromsocket(data);
      this.forceUpdate();
   }
- 
+
    getupdatedChats(data)
   {
     //const usertoken = auth.getToken();
@@ -218,21 +218,21 @@ componentDidMount(){
     this.props.getchatsfromsocket([],data);
   }*/
         //this.props.mobileuserchat.push(message);
-    /*  alert(this.props.userchats.length);  
+    /*  alert(this.props.userchats.length);
       this.props.userchats.push(data);*/
       //this.props.getchatsfromsocket(this.props.userchats,'uniqueid');
      // alert(this.props.userchats.length);
   //  this.forceUpdate();
   }
-  
-   
-  
+
+
+
    handleChange(e){
      alert(e.target.value);
      this.props.filterbystatus(e.target.value,this.props.customerchatold);
      this.forceUpdate();
-   
-   
+
+
     }
 
 
@@ -240,23 +240,23 @@ componentDidMount(){
      alert(e.target.value);
      this.props.filterbyDept(e.target.value,this.props.customerchatold);
      this.forceUpdate();
-   
-   
+
+
     }
      handleChangeChannel(e){
      alert(e.target.value);
      this.props.filterbyChannel(e.target.value,this.props.customerchatold);
      this.forceUpdate();
-   
-   
+
+
     }
 
     handleChangeAgents(e){
      alert(e.target.value);
      this.props.filterbyAgent(e.target.value,this.props.customerchatold);
      this.forceUpdate();
-   
-   
+
+
     }
 
      handleSession(id,platform,e){
@@ -264,10 +264,10 @@ componentDidMount(){
       console.log(id);
       e.preventDefault();
       const usertoken = auth.getToken();
-   
+
       this.refs.sessionid.value = id;
      // alert(this.refs.sessionid.value);
-      
+
       //retrieve chat history for mobile clients Only
         if(platform == "mobile"){
 
@@ -277,35 +277,35 @@ componentDidMount(){
 
       // when the user clicks on session,reset unread message Count to zero and also remove Red Background Color from Chatlist item
      // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
-      
+
       this.props.selectCustomerChat(id,this.props.customerchat,this.props.new_message_arrived_rid);
       this.forceUpdate();
-   
+
     }
- 
+
 
   render() {
     const token = auth.getToken()
     console.log(token)
-    
+
     return (
       <div>
-                
+
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container">
 
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
                    Chat
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body">
        		<div className="table-responsive">
              <table className="table">
@@ -319,7 +319,7 @@ componentDidMount(){
              	</tr>
              	<tr>
              		<td className="col-md-1">
-             		
+
              		  <select  ref = "status" onChange={this.handleChange.bind(this)}   >
                           <option value="all">All</option>
                           <option value="new">New</option>
@@ -329,31 +329,31 @@ componentDidMount(){
                       </select>
              		</td>
              		<td className="col-md-1">
-             		
+
              		  <select  ref = "client" onChange={this.handleChange.bind(this)}   >
                           <option value="all">All</option>
                           <option value="mobile">Mobile</option>
                           <option value="web">Web</option>
-                          
+
                       </select>
              		</td>
              		<td className="col-md-1">
-             		
+
              		  <select  ref = "agentList" onChange={this.handleChangeAgents.bind(this)}   >
                         <option value="all">All</option>
-              
+
                          {
                          	this.props.agents && this.props.agents.map((agent,i) =>
                          		<option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
 
                          		)
                          }
-                          
-                         
+
+
                       </select>
              		</td>
              		<td className="col-md-1">
-             		  
+
              		  <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
                            <option value="all">All</option>
                           {
@@ -362,11 +362,11 @@ componentDidMount(){
 
                          		)
                          }
-                         
 
-                         
+
+
                       </select>
-             
+
              		</td>
              		<td className="col-md-1">
              		  <select  ref = "channellist" onChange={this.handleChangeChannel.bind(this)}   >
@@ -377,81 +377,81 @@ componentDidMount(){
 
                          		)
                          }
-                       
+
                       </select>
-             
+
              		</td>
              	</tr>
              	</tbody>
                 </table>
                 </div>
-             	
+
              	<div className="table-responsive">
                 <input type="hidden" ref = "sessionid" />
-             	
+
                 {this.props.customerchatold && this.props.customerchatold.length == 0?
                   <p>No Customer is online currently.</p>
-                
+
                   :
                 <table className="table">
 
              			<tbody>
                   <tr>
                   {
-                  this.props.yoursocketid &&  
+                  this.props.yoursocketid &&
                   <input  type = "hidden" ref = "agentsocketfield" name="agentsocketfield" value={this.props.yoursocketid}/>
                   }
                   </tr>
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.customerchat && this.props.customerchat.length > 0  &&  
+					                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.customerchat && this.props.customerchat.length > 0  &&
 					                        this.props.customerchat.map((customer, i) => (
-                                  
+
                                     (this.props.new_message_arrived_rid ?
-                                  
+
                                     <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
-                                    :  
+                                    :
                                     <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
                                   )
-                                  
-					                                                      
+
+
 					                        ))
 					                      }
 			                     	</div>
 			                    </td>
-                          {this.refs.sessionid? 
+                          {this.refs.sessionid?
                           <td className="col-md-6">
                           {
                             this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
                             (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
-			                    	<CustomerChatView newChatClicked = "true" socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat}/>
+			                    	<CustomerChatView newChatClicked = "true" socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
                             ):
                             (
                             this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses &&  this.props.customerchat_selected.platform == 'web' &&
-                            <CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat}/>
+                            <CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
                             )
-                            
+
                          }
-                          </td>:  
+                          </td>:
                          <td className="col-md-6">
                               <p>Click on session to view Chat messages</p>
                          </td>
 
-                          
-                          }	
+
+                          }
 			                </tr>
 			            </tbody>
                 </table>
               }
         		</div>
-                
+
             </div>
           </div>
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -476,13 +476,13 @@ function mapStateToProps(state) {
           customerchat_selected :(state.dashboard.customerchat_selected),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
           userchats :(state.dashboard.userchats),
-          responses :(state.dashboard.responses), 
+          responses :(state.dashboard.responses),
           onlineAgents:(state.dashboard.onlineAgents),
-          yoursocketid :(state.dashboard.yoursocketid), 
-          mobileuserchat : (state.dashboard.mobileuserchat),      
+          yoursocketid :(state.dashboard.yoursocketid),
+          mobileuserchat : (state.dashboard.mobileuserchat),
           serverresponse : (state.dashboard.serverresponse) ,
           groupagents : (state.dashboard.groupagents),
-          groupdetails :(state.dashboard.groupdetails),                 
+          groupdetails :(state.dashboard.groupdetails),
                     };
 }
 
