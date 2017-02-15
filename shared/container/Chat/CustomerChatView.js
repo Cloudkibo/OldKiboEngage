@@ -318,6 +318,7 @@ else{
 
       // check messages send by customer and update status
       const usertoken = auth.getToken();
+
       /*** call api to update status field of chat message received from mobile to 'delivered'
       ***/
       var messages = [];
@@ -1331,6 +1332,7 @@ const { value, suggestions } = this.state;
 
 function mapStateToProps(state) {
   console.log(state.dashboard.team);
+  console.log(state.dashboard.chatlist);
   return {
 
           teamdetails:(state.dashboard.teamdetails),

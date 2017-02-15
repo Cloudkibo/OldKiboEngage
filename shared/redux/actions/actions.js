@@ -1658,6 +1658,12 @@ export function updateChatList(message,ch,id_not_added)
 
    }
  }
+  var temp = ch[0];
+  for(var i=1;i<ch.length; i++){
+    if(ch[i] === temp){
+      ch.splice(i, 1);
+    }
+  }
    return {
     type: ActionTypes.ADD_CHAT_MESSAGE,
     message,
