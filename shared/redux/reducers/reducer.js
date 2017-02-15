@@ -102,6 +102,33 @@ const dashboard = (state =dashboardState, action) => {
 
       };
 
+      case ActionTypes.ADD_SELECTED_PAGE :
+      return {
+        group: state.group,
+        userdetails: state.userdetails,
+        teamdetails:state.teamdetails,
+        agents : state.agents,
+        groupagents : state.groupagents,
+        deptagents :state.deptagents,
+         responses : state.responses,
+        newagents:agentid,
+        channels : state.channels,
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid,
+         userchats : state.userchats,
+         onlineAgents : state.onlineAgents,
+         yoursocketid : state.yoursocketid,
+         news:state.news,
+         groupagents : state.groupagents,
+         groupdetails :state.groupdetails,
+         fbpage:action.fbpage,
+
+      };
+
 
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
@@ -290,6 +317,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : state.new_message_arrived_rid,
              userchats : state.userchats,
+             fbpages:state.fbpages,
              team: state.team,
              group : state.group,
              newagents : state.newagents,
@@ -315,6 +343,56 @@ const dashboard = (state =dashboardState, action) => {
             agentwisenotifications : state.agentwisenotifications,
             responses : state.responses,
             companysettings : state.companysettings,
+
+             }
+
+    case ActionTypes.ADD_FB_PAGES:
+          return{
+            news : state.news,
+            userdetails:state.userdetails,
+            agents:state.agents,
+            deptagents : state.deptagents,
+            groupagents : state.groupagents,
+            groupdetails : state.groupdetails,
+            teamdetails:state.teamdetails,
+            sessionsummary : state.sessionsummary,
+            channels : state.channels,
+            onlineAgents : state.onlineAgents,
+            yoursocketid : state.yoursocketid,
+            groupdetails :state.groupdetails,
+            chatlist: state.chatlist,
+           customerid : state.customerid,
+           customerchat : state.customerchat,
+           customerchatold : state.customerchatold,
+           customerchat_selected : state.customerchat_selected,
+           new_message_arrived_rid : state.new_message_arrived_rid,
+           userchats : state.userchats,
+           team: state.team,
+           group : state.group,
+           newagents : state.newagents,
+           news : action.news,
+           notifications:state.notifications,
+           sessionsummaryfiltered : state.sessionsummaryfiltered,
+           sessionsummarydetail:state.sessionsummarydetail,
+           customers:state.customers,
+           resolvedsessions:state.resolvedsessions,
+           newsessions:state.newsessions,
+           assignedsessions : state.assignedsessions,
+           channelwisestats:state.channelwisestats,
+           deptwisestats:state.deptwisestats,
+
+           channelwisestats : state.channelwisestats,
+          platformwisestats : state.platformwisestats,
+          pagewisestats : state.pagewisestats,
+          mobilewisestats : state.mobilewisestats,
+          countrywisestats : state.countrywisestats,
+          channels:(state.channels),
+          customerwisestats : state.customerwisestats,
+          agentwisestats : state.agentwisestats,
+          agentwisenotifications : state.agentwisenotifications,
+          responses : state.responses,
+          companysettings : state.companysettings,
+          fbpages : action.fbpages,
 
              }
    case ActionTypes.ADD_TEAMS:
@@ -587,6 +665,34 @@ groupdetails :state.groupdetails,
 
 
       };
+
+
+       case ActionTypes.DELETE_SELECTED_PAGE :
+      return {
+        teamdetails: state.teamdetails,
+        channels : state.channels,
+        fbpages:state.fbpages.filter((fbpage)=> fbpage.pageid != action.fbpage.pageid),
+        responses : state.responses,
+        userdetails: state.userdetails,
+        errorMessage:'Facebook Page Info deleted successfully',
+        agents : state.agents,
+        deptagents :state.deptagents,
+         responses : state.responses,
+
+        chatlist: state.chatlist,
+         customerid : state.customerid,
+         customerchat : state.customerchat,
+         customerchatold : state.customerchatold,
+         customerchat_selected : state.customerchat_selected,
+         new_message_arrived_rid : state.new_message_arrived_rid,
+         userchats : state.userchats,
+         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
+         groupdetails :state.groupdetails,
+
+
+
+
+      };
       case ActionTypes.DELETE_AGENT :
       return {
         teamdetails: state.teamdetails,
@@ -733,7 +839,7 @@ groupdetails :state.groupdetails,
            new_message_arrived_rid : state.new_message_arrived_rid,
            userchats : state.userchats,
            errorMessageProfile : action.errormessage,
-
+           fbpage:state.fbpage,
 
 
           };

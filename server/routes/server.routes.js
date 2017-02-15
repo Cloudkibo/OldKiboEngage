@@ -27,7 +27,9 @@ router.route('/changenewpassword').post(UserController.changenewpassword);
 router.route('/getteams').get(TeamController.getteams);
 router.route('/getgroups').get(GroupController.getgroups);
 router.route('/createfbPage').post(FbController.createfbPage);
-
+router.route('/editfbPage').post(FbController.editfbPage);
+router.route('/getfbpages').get(FbController.getfbpages);
+router.route('/getfbpage').get(FbController.getfbpage);
 router.route('/getmyuserteams').get(TeamController.getmyuserteams);
 router.route('/getcustomerteams').post(TeamController.getcustomerteams);
 router.route('/getcustomersession').post(ChatController.getcustomersession);
@@ -36,7 +38,7 @@ router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
 router.route('/updatereschedule').post(ChatController.updatereschedule);
 router.route('/createteam').post(TeamController.createteam);
 router.route('/creategroup').post(GroupController.creategroup);
-
+router.route('/deletefbpage').delete(FbController.deletefbpage);
 router.route('/getTeam').get(TeamController.getTeam);
 router.route('/getGroup').get(GroupController.getGroup);
 router.route('/joinGroup').post(GroupController.joinGroup);

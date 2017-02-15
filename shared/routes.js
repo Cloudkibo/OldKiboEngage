@@ -21,6 +21,8 @@ import CompanySettings from './container/CompanySettings/CompanySettings';
 import TeamDetailView from './container/Teams/TeamDetailView';
 import TeamEditView from './container/Teams/TeamEditView';
 import CreateFbPage from './container/facebookPages/CreateFbPage';
+import EditFbPage from './container/facebookPages/EditFbPage';
+import FbPages from './container/facebookPages/FbPages';
 import GroupEditView from './container/Groups/GroupEditView';
 import GroupDetailView from './container/Groups/GroupDetailView';
 
@@ -149,7 +151,10 @@ const routes = (
      <Route path="/resolvedchatsessions"  component={ResolvedSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/summarychatsessions"  component={SessionSummary}  socket={socket} onEnter={requireAuth}/>
      <Route path="/reports"  component={Reports}  onEnter={requireAuth}/>
-     <Route path="/fbpages"  component={CreateFbPage}  onEnter={requireAuth}/>
+     <Route path="/fbpagescreate"  component={CreateFbPage}  onEnter={requireAuth}/>
+    <Route path="/fbpages"  component={FbPages}  onEnter={requireAuth}/>
+    <Route path="/editfbpage/:id" component={EditFbPage}  onEnter={requireAuth}/>
+
 
      <Route path="/chatsessionview/:id"  component={SessionDetailView} onEnter={requireAuth}/>
      <Route path="/rescheduleresolvedsession/:id/:name/:email"  component={RescheduleResolvedSessions} onEnter={requireAuth}/>

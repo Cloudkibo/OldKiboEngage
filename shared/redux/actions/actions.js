@@ -558,12 +558,6 @@ export function addSelectedTeam(team) {
   };
 }
 
-export function addSelectedGroup(group) {
-  return {
-    type: ActionTypes.ADD_SELECTED_GROUP,
-    group,
-  };
-}
 
 
 
@@ -577,6 +571,12 @@ export function getTeamRequest(team,usertoken) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedTeam(res.team)));
+  };
+}
+export function addSelectedGroup(group) {
+  return {
+    type: ActionTypes.ADD_SELECTED_GROUP,
+    group,
   };
 }
 
@@ -1177,6 +1177,7 @@ export function getresponses(token) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showResponses(res)));
   };
 }
+
 
 export function getResponseRequest(id,usertoken) {
   console.log(id)
@@ -3084,3 +3085,99 @@ export function removeDuplicates(originalArray, prop) {
 
   };
  }
+
+
+ /***** Facebook actions ***/
+export function showFbPages(fbpages) {
+  console.log('showFbpages');
+  console.log(fbpages);
+  return {
+    type: ActionTypes.ADD_FB_PAGES,
+    fbpages,
+
+  };
+}
+
+export function getfbpages(token) {
+  console.log('getfbpages is called');
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getfbpages`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showFbPages(res)));
+  };
+}
+
+
+export function addSelectedPage(fbpage) {
+  alert(fbpage.pageid);
+  return {
+    type: ActionTypes.ADD_SELECTED_PAGE,
+    fbpage,
+  };
+}
+
+
+export function getfbpage(usertoken,pageid) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/getfbpage?id=${pageid}`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedPage(res)));
+  };
+}
+export function editPage(fbpage,token) {
+  console.log(fbpage);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/editfbPage`, {
+      method: 'post',
+      body: JSON.stringify({
+        fbpage:fbpage,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showCreatePage(res))
+
+
+      );
+  };
+}
+
+
+
+export function deletePage(fbpage) {
+  alert('Facebook Page deleted successfully');
+  return {
+    type: ActionTypes.DELETE_SELECTED_PAGE,
+    fbpage,
+  };
+}
+export function deletefbpage(fbpage,usertoken) {
+  if(confirm("Are you sure you want to remove this page?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deletefbpage?id=${fbpage.pageid}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res).then(res => dispatch(deletePage(fbpage)));
+  };
+}
+else{
+  browserHistory.push('/cannedresponses');
+
+}
+
+}
+

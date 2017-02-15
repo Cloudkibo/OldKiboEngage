@@ -54,7 +54,7 @@ class CreateFbPage extends Component {
                      <i className="fa fa-angle-right"/>
                    </li>
                    <li>
-                      <Link to="/cannedresponses">Facebook Pages Management</Link>
+                      <Link to="/fbpages">Facebook Pages Management</Link>
                    </li>
                 </ul>
                 {this.props.errorMessageProfile && this.props.errorMessageProfile.data.status == "danger" &&
@@ -64,7 +64,7 @@ class CreateFbPage extends Component {
 
                 {this.props.errorMessageProfile && this.props.errorMessageProfile.data.status == "success" &&
 
-                   <div className = "alert alert-success"><span>{this.props.errorMessageProfile.data.msg}</span></div>
+                   <div className = "alert alert-success"><span>Facebook Page created successfully</span></div>
                     }    
 
                 <div className="portlet box grey-cascade">
@@ -135,7 +135,7 @@ class CreateFbPage extends Component {
                             </div>
                             <div className="col-md-9">
                               <div className="col-md-9">
-                                <Link to="/dashboard" className="btn green">
+                                <Link to="/fbpages" className="btn green">
                                   <i className="fa fa-times"/>
                                   Back
                                 </Link>
