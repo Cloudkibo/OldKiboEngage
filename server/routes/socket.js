@@ -56,7 +56,8 @@ var onlineWebClientsSession = []; //array to hold customer sessions who are onli
 
 var userchats = [];//array to hold all  chat msgs
 
-
+var fbchats = [];
+var fbusers =[];
  
 // When the user disconnects.. perform this
 function onDisconnect(io2, socket) {
@@ -1181,3 +1182,47 @@ exports.getchatfromAgent = function(data){
 
  
 } 
+
+
+
+
+// handling Facebook Chat Messages
+/******** not exporting in controller file **********/
+exports.getfbchat = function(data){
+  console.log('socket get Fb chat is called');
+  console.log(data);
+  var flag=0;
+  for(var i=0;i< fbusers.length;i++){
+    if(fbusers[i].user_id == data.customerobj.user_id){
+      flag = 1;
+      break;
+    }
+  }
+  if(flag == 0){
+     fbusers.push(data.customerobj); 
+     //inform agents that a new customer arrives on fbmessenger
+    //broadcast message to all agents
+  for(var i=0;i<onlineAgents.length;i++){
+              if(onlineAgents[i].room == data.chatobj.companyid){
+                //send message on agent socket
+                glob.to(onlineAgents[i].socketid).emit('send:fbcustomer',data.customerobj);
+
+              }
+            }
+    
+  }
+ 
+  fbchats.push(data.chatobj);
+        
+    //broadcast message to all agents
+  for(var i=0;i<onlineAgents.length;i++){
+              if(onlineAgents[i].room == data.chatobj.companyid){
+                //send message on agent socket
+                glob.to(onlineAgents[i].socketid).emit('send:fbmessage',data.chatobj);
+
+              }
+            }
+    
+ 
+} 
+

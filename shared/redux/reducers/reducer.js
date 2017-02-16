@@ -1468,6 +1468,7 @@ groupdetails :state.groupdetails,
              news:state.news,
              groupagents : state.groupagents,
              groupdetails :state.groupdetails,
+             mobileuserchat:state.mobileuserchat,
 
             };
           case ActionTypes.SHOW_NOTIFICATIONS:

@@ -55,7 +55,20 @@ class Chat extends Component {
         this.getSocketmessage = this.getSocketmessage.bind(this);
         this.syncdata = this.syncdata.bind(this);
 
+
+        //fb related
+        this.getfbCustomer = this.getfbCustomer.bind(this);
+        this.getfbMessage = this.getfbMessage.bind(this);
+
   }
+
+getfbCustomer(data){
+  alert('New fb customer '+ data.first_name);
+}
+
+getfbMessage(data){
+    alert('New fb message '+ data.message.text);
+}
 syncdata(){
  // alert('You are connected to socket. Joining now!');
   this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
@@ -183,6 +196,11 @@ componentDidMount(){
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.props.route.socket.on('returnUserChat',this.getupdatedChats);
         this.props.route.socket.on('syncdata',this.syncdata);
+
+
+        //fb related
+        this.props.route.socket.on('send:fbcustomer',this.getfbCustomer);
+        this.props.route.socket.on('send:fbmessage',this.getfbMessage);
 
 }
 

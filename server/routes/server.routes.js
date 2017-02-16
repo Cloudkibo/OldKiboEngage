@@ -8,6 +8,7 @@ import * as ChatController from '../controllers/chat.controller';
 import * as GroupController from '../controllers/group.controller';
 import * as NewsController from '../controllers/news.controller';
 import * as FbController from '../controllers/fbPages.controller';
+import * as FbChatController from '../controllers/fbChat.controller';
 var multiparty = require('connect-multiparty');
 var multipartyMiddleware = multiparty();
 
@@ -45,7 +46,8 @@ router.route('/joinGroup').post(GroupController.joinGroup);
 router.route('/deleteTeam').delete(TeamController.destroyTeam);
 router.route('/deleteAgent').delete(UserController.deleteAgent);
 router.route('/deleteGroup').delete(GroupController.destroyGroup);
-
+router.route('/webhook').post(FbChatController.chatwebhook);
+router.route('/webhook').get(FbChatController.verifyhook);
 router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
 router.route('/groupagents').get(GroupController.groupagents);
