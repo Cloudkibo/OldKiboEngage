@@ -136,7 +136,7 @@ updateOnlineAgents(data){
 
 
 
-   //this.forceUpdate();
+   this.forceUpdate();
 
   }
 
@@ -175,7 +175,7 @@ componentDidMount(){
         this.props.route.socket.emit('returnMySocketId');
        // this.props.route.socket.emit('getCustomerSessionsList');
 
-        this.props.route.socket.on('send:message',this.getSocketmessage);
+        //this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.on('informAgent',this.getSessionInfo);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
         this.props.route.socket.on('customer_joined',this.getupdatedSessions);

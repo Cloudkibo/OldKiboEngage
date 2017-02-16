@@ -133,7 +133,6 @@ return res;
 
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
-
       <div style={divMargin}>
       <span style={leftStyle}>{ag[0].deptname}</span>
       <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
