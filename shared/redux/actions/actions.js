@@ -3186,4 +3186,54 @@ else{
 }
 
 }
+/***** Facebook actions ***/
+export function showFbCustomers(fbcustomers) {
+  
+  return {
+    type: ActionTypes.ADD_FB_CUSTOMERS,
+    fbcustomers,
 
+  };
+}
+
+export function showFbChats(fbchats) {
+  
+  return {
+    type: ActionTypes.ADD_FB_CHATS,
+    fbchats,
+
+  };
+}
+
+export function getfbCustomers(usertoken){
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getfbCustomers`, {
+      method: 'get',
+      
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showFbCustomers(res))
+
+
+      );
+  };
+}
+
+
+export function getfbChats(usertoken){
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getfbChats`, {
+      method: 'get',
+      
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showFbChats(res))
+
+
+      );
+  };
+}

@@ -48,6 +48,11 @@ router.route('/deleteAgent').delete(UserController.deleteAgent);
 router.route('/deleteGroup').delete(GroupController.destroyGroup);
 router.route('/webhook').post(FbChatController.chatwebhook);
 router.route('/webhook').get(FbChatController.verifyhook);
+
+
+router.route('/getfbCustomers').get(FbChatController.getfbCustomers);
+router.route('/getfbChats').get(FbChatController.getfbChats);
+
 router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
 router.route('/groupagents').get(GroupController.groupagents);

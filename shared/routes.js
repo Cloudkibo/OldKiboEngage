@@ -69,6 +69,7 @@ import NotVerified from './container/NotVerified'
 import RescheduleResolvedSessions from './container/ChatSessions/RescheduleResolvedSessions'
 import RescheduleAbandonedSessions from './container/ChatSessions/RescheduleAbandonedSessions'
 import io from 'socket.io-client'
+import FbChat from './container/facebookChat/FbChat'
 let socket = io('')
 
 function requireAuth(nextState, replace) {
@@ -132,6 +133,7 @@ const routes = (
     <Route path="/resetpasswordfailure" component={ResetPasswordFailure}/>
     <Route path="/changepassword" component={ChangePassword} onEnter={requireAuth}/>
     <Route path="/chat" component={Chat} onEnter={requireAuth}  socket = {socket}/>
+    <Route path="/fbchat" component={FbChat} onEnter={requireAuth}  socket = {socket}/>
     <Route path="/clientchat" component={ClientChat}  socket = {socket}/>
 
     <Route path="/notifications" component={Notifications} onEnter={requireAuth} />

@@ -281,3 +281,75 @@ function sendPushNotification(tagname,payload,alertmessage){
 }
 
 
+
+
+export function getfbCustomers(req, res) {
+  //console.log('create Response is called');
+  var token = req.headers.authorization;
+
+   var options = {
+      url: `${baseURL}/api/fbCustomers/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+
+                 },
+    
+
+
+    };
+
+    function callback(error, response, body) {
+
+        console.log(body);
+        console.log(error)
+      if(!error) {
+            return res.status(201).json(JSON.parse(body));
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,data:error});
+
+    }
+
+   }
+        request.get(options, callback);
+
+  }
+
+
+
+  export function getfbChats(req, res) {
+  //console.log('create Response is called');
+  var token = req.headers.authorization;
+
+   var options = {
+      url: `${baseURL}/api/fbmessages/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+
+                 },
+    
+
+
+    };
+
+    function callback(error, response, body) {
+
+        console.log(body);
+        console.log(error)
+      if(!error) {
+            return res.status(201).json(JSON.parse(body));
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,data:error});
+
+    }
+
+   }
+        request.get(options, callback);
+
+  }
+

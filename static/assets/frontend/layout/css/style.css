@@ -3339,3 +3339,7 @@ text-align: left;
   color: #393939;
   font-family:sans-serif
 }
+
+.user-avatar{
+	border-radius: 50% !important;
+}

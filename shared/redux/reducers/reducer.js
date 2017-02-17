@@ -319,6 +319,8 @@ const dashboard = (state =dashboardState, action) => {
              userchats : state.userchats,
              fbpages:state.fbpages,
              team: state.team,
+            fbcustomers:state.fbcustomers,
+            fbchats:state.fbchats,
              group : state.group,
              newagents : state.newagents,
              news : action.news,
@@ -495,6 +497,8 @@ const dashboard = (state =dashboardState, action) => {
             news:state.news,
             groupagents : state.groupagents,
             groupdetails :state.groupdetails,
+            fbcustomers:state.fbcustomers,
+            fbchats:state.fbchats,
 
 
       };
@@ -2179,8 +2183,68 @@ groupdetails :state.groupdetails,
             companysettings : action.companysettings,
 
 
+
             };
 
+             case ActionTypes.ADD_FB_CUSTOMERS:
+         
+             return {
+               teamdetails: state.teamdetails,
+               userdetails: state.userdetails,
+               errorMessage:state.errorMessage,
+               agents : state.agents,
+               deptagents :state.deptagents,
+
+               chatlist: state.chatlist,
+               customerid : state.customerid,
+               customerchat : state.customerchat,
+               customerchatold : state.customerchatold,
+               customerchat_selected : state.customerchat_selected,
+               new_message_arrived_rid : state.new_message_arrived_rid,
+               userchats :state.userchats,
+               responses : state.responses,
+
+               channels : state.channels,
+               customers : state.customers,
+               onlineAgents : state.onlineAgents,
+               yoursocketid : state.yoursocketid,
+               news:state.news,
+               groupagents : state.groupagents,
+               groupdetails :state.groupdetails,
+               fbcustomers:action.fbcustomers,
+               fbchats:state.fbchats,
+
+              };
+
+               case ActionTypes.ADD_FB_CHATS:
+         
+             return {
+               teamdetails: state.teamdetails,
+               userdetails: state.userdetails,
+               errorMessage:state.errorMessage,
+               agents : state.agents,
+               deptagents :state.deptagents,
+
+               chatlist: state.chatlist,
+               customerid : state.customerid,
+               customerchat : state.customerchat,
+               customerchatold : state.customerchatold,
+               customerchat_selected : state.customerchat_selected,
+               new_message_arrived_rid : state.new_message_arrived_rid,
+               userchats :state.userchats,
+               responses : state.responses,
+
+               channels : state.channels,
+               customers : state.customers,
+               onlineAgents : state.onlineAgents,
+               yoursocketid : state.yoursocketid,
+               news:state.news,
+               groupagents : state.groupagents,
+               groupdetails :state.groupdetails,
+               fbcustomers:state.fbcustomers,
+               fbchats:action.fbchats,
+
+              };
     default:
       return state;
   }
