@@ -25,10 +25,13 @@ var ch=[]
       }
 var agentname = []
 {
-   props.agent &&
-                        props.agent.map((cha, i) => (
+  if(props.agent.agent_ids && props.agent.agent_ids.length > 0){
+    var agents = props.agent.filter((c) => c._id == props.session.agent_ids[props.session.agent_ids.length-1].id);
+    agents &&
+                        agents.map((cha, i) => (
                            agentname.push(cha)
                         ))
+  }
 
 }
   return (
