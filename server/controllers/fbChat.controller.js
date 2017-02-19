@@ -31,7 +31,9 @@ export function verifyhook(req,res) {
     if (req.query['hub.verify_token'] === 'VERIFY_ME') {
         res.send(req.query['hub.challenge'])
     }
+    else{
     res.send('Error, wrong token')
+  }
 }
 
 export function chatwebhook(req, res) {

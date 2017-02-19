@@ -48,10 +48,12 @@ var c = new Date(d);
 var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
 return res;
 }
+
 var pathname="https://graph.facebook.com/"+props.customer.user_id+"/picture?width=100&height=100"
   return (
      <div className="list-group-item" style={{'width':'250px','height':'70px'}}>
      <img src={pathname} width="50" height="50" className="user-avatar" style={hleft}/>
+
      <h4 className = 'list-group-item-heading' style={hright}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
       
 

@@ -10,7 +10,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
-
+import Avatar from 'react-avatar';
 import io from 'socket.io-client';
 
 class FbChat extends Component {
