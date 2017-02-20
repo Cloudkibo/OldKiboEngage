@@ -3343,3 +3343,65 @@ text-align: left;
 .user-avatar{
 	border-radius: 50% !important;
 }
+
+
+.myleftborder{
+    border-right:3px solid #b4c5c7 !important;
+}
+
+.profile-image{
+	border-radius: 50% !important;
+	float: left;
+}
+
+
+// container for individual message
+.message {
+  width: 100%;
+  display: block;
+}
+#messages-container {
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  height:450px;
+  overflow-y: scroll;
+  margin-bottom: 100px;
+}
+// left column
+div#messages-container img {
+    border-radius: 50% !important;
+}
+.message-header{
+	clear:both;
+}
+// right column
+.message-content {
+  display: block;
+  padding-left: 50px;
+  margin: 5px;
+  background-color:rgba(236, 236, 236, 0.1);
+}
+
+span.time {
+ color: #9e9ea6;
+ font-size: 1rem;
+ white-space: nowrap;
+}
+
+.username {
+  text-decoration: none;
+  color: #2c2d30;
+  font-weight: 900;
+  padding-right: .5em;
+  float: right,
+
+
+  font-family: Slack-Lato,appleLogo,sans-serif;
+  font-size: 12px;
+}
+
+.message-body {
+  line-height: 2.375rem;
+  margin-top: 1rem;
+}

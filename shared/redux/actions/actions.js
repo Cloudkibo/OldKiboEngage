@@ -1446,6 +1446,31 @@ export function filterbyAgent(id,customerchat) {
   };
 }
 
+
+export function selectFbCustomerChat(id,fbchat){
+  var newfbChat = []
+  var temp = fbchat.filter((c)=>c.senderid == id);
+  for(var i=0;i<temp.length;i++){
+    if(temp[i].message){
+    newfbChat.push( 
+      {
+        message: temp[i].message.text,
+        inbound: true,
+        backColor: '#3d83fa',
+        textColor: "white",
+        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+        duration: 0,
+        timestamp:temp[i].timestamp,
+        senderid:temp[i].senderid,
+        recipientid:temp[i].recipientid,
+      })
+  }
+  }
+  return{
+    fbchatSelected: newfbChat,
+    type: ActionTypes.FB_CHAT_SELECTED,
+  }
+}
 export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
   if(new_message_arrived_rid && new_message_arrived_rid.length > 0)
   {

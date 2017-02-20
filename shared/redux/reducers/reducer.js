@@ -301,6 +301,7 @@ const dashboard = (state =dashboardState, action) => {
             news : action.news,
             userdetails:state.userdetails,
             agents:state.agents,
+             fbchatSelected:state.fbchatSelected,
             deptagents : state.deptagents,
             groupagents : state.groupagents,
             groupdetails : state.groupdetails,
@@ -499,6 +500,7 @@ const dashboard = (state =dashboardState, action) => {
             groupdetails :state.groupdetails,
             fbcustomers:state.fbcustomers,
             fbchats:state.fbchats,
+            fbchatSelected:state.fbchatSelected,
 
 
       };
@@ -1317,7 +1319,7 @@ groupdetails :state.groupdetails,
              customerchat : state.customerchat,
              customerchatold : state.customerchatold,
              chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
+             mobileuserchat : state.mobileuserchat,
              channels : state.channels,
              customers : state.customers,
              customerchat_selected : action.customerchat_selected[0],
@@ -1326,7 +1328,36 @@ mobileuserchat : state.mobileuserchat,
              responses : state.responses,
              onlineAgents : state.onlineAgents,
              yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
+             groupdetails :state.groupdetails,
+
+
+
+            };
+
+
+          case ActionTypes.FB_CHAT_SELECTED:
+             return {
+             teamdetails: state.teamdetails,
+             userdetails: state.userdetails,
+             errorMessage: state.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             chatlist : state.chatlist,
+             mobileuserchat : state.mobileuserchat,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             responses : state.responses,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
+             groupdetails :state.groupdetails,
+             fbcustomers:state.fbcustomers,
+             fbchats:state.fbchats,
+             fbchatSelected:action.fbchatSelected,
 
 
 

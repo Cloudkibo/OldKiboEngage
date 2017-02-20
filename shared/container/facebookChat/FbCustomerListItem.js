@@ -51,7 +51,7 @@ return res;
 
 var pathname="https://graph.facebook.com/"+props.customer.user_id+"/picture?width=100&height=100"
   return (
-     <div className="list-group-item" style={{'width':'250px','height':'70px'}}>
+     <div className="list-group-item" style={{'width':'300px','height':'70px'}} onClick={props.onClickSession}>
      <img src={pathname} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hright}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
