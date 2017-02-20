@@ -22,13 +22,13 @@ var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
  'kibo-client-id': 'cd89f71715f2014725163952',
- 
+
  }
 
 /************************* Customer APIS ************************************/
 export function createsession(req, res) {
   //console.log('create session is called');
-  
+
   //console.log(req.body.session);
   //console.log(req.body.session.length)
  if(req.body.session)
@@ -38,7 +38,7 @@ export function createsession(req, res) {
       rejectUnauthorized : false,
       json: req.body.session,
       headers
-     
+
     };
 
     function callback(error, response, body) {
@@ -46,7 +46,7 @@ export function createsession(req, res) {
         //console.log(response.statusCode);
 
        // //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
           // //console.log(body)
@@ -55,18 +55,18 @@ export function createsession(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }        
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
    }
         request.post(options, callback);
       }
 
       else{
-          return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
+          return res.status(422).json({statusCode : 422 ,message:'failed'});
+
       }
-   
+
   }
 
 function sortByKey(array, key) {
@@ -78,7 +78,7 @@ function sortByKey(array, key) {
 }
 export function getsessions(req, res) {
   //console.log('get session is called');
-  
+
    var token = req.headers.authorization;
    var chat = [];
   var options = {
@@ -86,10 +86,10 @@ export function getsessions(req, res) {
       rejectUnauthorized : false,
        headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-      
-     
+
+
     };
 
     function callback(error, response, body) {
@@ -97,7 +97,7 @@ export function getsessions(req, res) {
         //console.log(response.statusCode);
 
        // //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
           var info = JSON.parse(body);
@@ -108,14 +108,14 @@ export function getsessions(req, res) {
        }
        else
        {
-           res.sendStatus(422);
-           return res.status(422).json(error); 
-   
-       }        
+           //res.sendStatus(422);
+           return res.status(422).json(error);
+
+       }
    }
         request.get(options, callback);
-     
-   
+
+
   }
 
 
@@ -127,14 +127,14 @@ export function savechat(req, res) {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
  'kibo-client-id': 'cd89f71715f2014725163952',
- 
+
  }
 
 
   //console.log('create session is called');
-  
+
   //console.log(req.body.chat);
- 
+
  if(req.body.chat)
  {
   var options = {
@@ -142,8 +142,8 @@ export function savechat(req, res) {
       rejectUnauthorized : false,
       headers,
       json: req.body.chat,
-      
-     
+
+
     };
 
     function callback(error, response, body) {
@@ -151,7 +151,7 @@ export function savechat(req, res) {
         //console.log(response.statusCode);
 
         //console.log(body);
-        
+
        if(!error && response.statusCode == 201)
        {
          //  //console.log(body)
@@ -160,18 +160,18 @@ export function savechat(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }        
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
    }
         request.post(options, callback);
       }
 
       else{
-          return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
+          return res.status(422).json({statusCode : 422 ,message:'failed'});
+
       }
-   
+
   }
 
 
@@ -179,10 +179,10 @@ export function savechat(req, res) {
 
 export function updateStatus(req, res) {
   //console.log('update status is called');
-  
+
   //console.log(req.body);
   var token = req.headers.authorization;
- 
+
 
   var options = {
       url: `${baseURL}/api/visitorcalls/updateStatus`,
@@ -191,8 +191,8 @@ export function updateStatus(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
@@ -200,7 +200,7 @@ export function updateStatus(req, res) {
         //console.log(response.statusCode);
 
         //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
            //console.log(body)
@@ -209,15 +209,15 @@ export function updateStatus(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }        
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
    }
         request.post(options, callback);
-      
 
-     
-   
+
+
+
   }
 
 
@@ -226,7 +226,7 @@ export function assignToAgent(req, res) {
   //console.log('assignToAgent is called');
   //console.log(req.body);
   var token = req.headers.authorization;
- 
+
 
   var options = {
       url: `${baseURL}/api/visitorcalls/assignToAgent`,
@@ -235,8 +235,8 @@ export function assignToAgent(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
@@ -244,7 +244,7 @@ export function assignToAgent(req, res) {
         //console.log(response.statusCode);
 
         //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
            //console.log(body)
@@ -252,16 +252,16 @@ export function assignToAgent(req, res) {
             var agentlist = req.body.agentemail;
             var payload = {
                               data: {
-                                
+
                                 request_id : req.body.sessionid,
-                                
+
                               },
                               badge: 0
                             };
             for(var i=0;i< agentlist.length;i++){
                     console.log('----- obj is');
                     console.log(agentlist[i]);
-                   
+
                     sendPushNotification(agentlist[i],payload,'You are assigned a new session');
                    }
             return res.status(200).json({statusCode : 201,message:'success'});
@@ -269,12 +269,12 @@ export function assignToAgent(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
-   
+
   }
 
 
@@ -282,7 +282,7 @@ export function movedToMessageChannel(req, res) {
   //console.log('movedToMessageChannel is called');
   //console.log(req.body);
   var token = req.headers.authorization;
- 
+
 
   var options = {
       url: `${baseURL}/api/visitorcalls/assignToChannel`,
@@ -291,8 +291,8 @@ export function movedToMessageChannel(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
@@ -300,24 +300,24 @@ export function movedToMessageChannel(req, res) {
         //console.log(response.statusCode);
 
         //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
           // //console.log(body)
              sendpushToAllAgents(req.body.request_id,'Chat Session Moved To Another Channel');
             return res.status(200).json({statusCode : 201,message:'success'});
              //send push notification to all agents
-           
+
        }
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
-   
+
   }
 
 
@@ -328,7 +328,7 @@ export function getuserchats(req, res) {
   //console.log('getuserchat');
   ////console.log(req.body);
   var token = req.headers.authorization;
- 
+
 
   var options = {
       url: `${baseURL}/api/userchats/`,
@@ -337,8 +337,8 @@ export function getuserchats(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
@@ -346,7 +346,7 @@ export function getuserchats(req, res) {
         //console.log(response.statusCode);
 
         //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
 
@@ -363,12 +363,12 @@ export function getuserchats(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.get(options, callback);
-   
+
   }
 
 
@@ -382,8 +382,8 @@ export function getspecificuserchats(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
@@ -391,7 +391,7 @@ export function getspecificuserchats(req, res) {
         console.log(response.statusCode);
 
         //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
 
@@ -408,12 +408,12 @@ export function getspecificuserchats(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
-   
+
   }
 
 // resolve session
@@ -422,7 +422,7 @@ export function resolvechatsession(req, res) {
   //console.log('resolvesession is called');
   //console.log(req.body);
   var token = req.headers.authorization;
- 
+
 
   var options = {
       url: `${baseURL}/api/visitorcalls/resolveSession`,
@@ -431,15 +431,15 @@ export function resolvechatsession(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
         //console.log(error);
         //console.log(response.statusCode);
         //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
            //console.log(body)
@@ -452,12 +452,12 @@ export function resolvechatsession(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
-   
+
   }
 
 // pick session
@@ -466,7 +466,7 @@ export function pickchatsession(req, res) {
   //console.log('picksession is called');
   //console.log(req.body);
   var token = req.headers.authorization;
- 
+
 
   var options = {
       url: `${baseURL}/api/visitorcalls/pickSession`,
@@ -474,15 +474,15 @@ export function pickchatsession(req, res) {
                  'Authorization': `Bearer ${token}`
                  },
       rejectUnauthorized : false,
-     json : req.body    
-     
+     json : req.body
+
     };
 
     function callback(error, response, body) {
         //console.log(error);
         //console.log(response.statusCode);
         //console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
           // //console.log(body)
@@ -491,12 +491,12 @@ export function pickchatsession(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
-   
+
   }
 
 
@@ -506,7 +506,7 @@ export function getcustomersession(req,res){
        'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
        'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
        'kibo-client-id': 'cd89f71715f2014725163952',
-       
+
        }
       var options = {
       url: `${baseURL}/api/visitorcalls/getSession`,
@@ -523,12 +523,12 @@ export function getcustomersession(req,res){
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
-    
+
     }
     request.post(options, callback);
-    
+
 }
 
 
@@ -538,7 +538,7 @@ export function getcustomerdetails(req,res){
        'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
        'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
        'kibo-client-id': 'cd89f71715f2014725163952',
-       
+
        }
       var options = {
       url: `${baseURL}/api/customers/getcustomer`,
@@ -555,12 +555,12 @@ export function getcustomerdetails(req,res){
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
-    
+
     }
     request.post(options, callback);
-    
+
 }
 
 
@@ -578,15 +578,15 @@ export function updatereschedule(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
         console.log(error);
         console.log(response.statusCode);
         console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
            //console.log(body)
@@ -595,12 +595,12 @@ export function updatereschedule(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
-   
+
   }
 
 
@@ -618,7 +618,7 @@ exports.register = function(socket) {
         console.log('emitting agent socket...');
         agentSocket.broadcast.emit(newsreel,function(message){
           return res.json(200,{'status' : 'success'});
-  
+
         });
     });
     */
@@ -644,7 +644,7 @@ function sendpushToAgents(chatmessage){
 
   }
 
-  
+
 }
     //if the session is not assigned to any agent then we will send notifications to all agents who are in the team on which user has sent a message
      else{
@@ -653,13 +653,13 @@ function sendpushToAgents(chatmessage){
                'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
                'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
                'kibo-client-id': 'cd89f71715f2014725163952',
-               
+
                }
               var options = {
                             url: `${baseURL}/api/deptagents/${chatmessage.departmentid}`,
                             rejectUnauthorized : false,
                             headers,
-                            
+
                     };
               function callback(error, response, body) {
                 if(!error  && response.statusCode == 200) {
@@ -677,7 +677,7 @@ function sendpushToAgents(chatmessage){
 
               else
               {
-             //  return res.status(422).json({message:error}); 
+             //  return res.status(422).json({message:error});
               }
      }
        request.get(options, callback);
@@ -692,7 +692,7 @@ export function getChatMessage(req, res) {
     ss.getchat(req.body);
     sendpushToAgents(req.body); // this will send customer message to mobile agents through push notification
     return res.json(200,{'status' : 'success'});
-  
+
 };
 
 // endpoint called by customer (web or mobile)
@@ -702,7 +702,7 @@ export function getchatfromagent(req, res) {
     console.log(chat);
     ss.getchatfromAgent(req.body);
     return res.json(200,{'status' : 'success'});
-  
+
 };
 
 
@@ -786,15 +786,15 @@ export function updatechatstatus(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
         console.log(error);
         console.log(response.statusCode);
         console.log(body);
-        
+
        if(!error && response.statusCode == 200 && body['status'] == 'statusUpdated')
        {
            //console.log(body)
@@ -818,12 +818,12 @@ export function updatechatstatus(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
-   
+
   }
 
 /*** used by customer to send file to agent****/
@@ -832,18 +832,18 @@ export function uploadchatfile(req, res) {
   console.log('req body');
   console.log(req.body.chatmsg);
   console.log(req.files);
-  
+
   var obj = JSON.parse(req.body.chatmsg)
   console.log(obj.from);
  // var token = req.headers.authorization;
- 
+
   //var today = new Date();
  // var uid = crypto.randomBytes(5).toString('hex');
  // var serverPath = '/' + 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate();
 //  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
   var serverPath = obj.uniqueid;
   serverPath += '.' + req.files.file.type.split('/')[1];
-  
+
   console.log(__dirname);
   console.log(req.headers);
   var dir = "./static/userfiles";
@@ -856,8 +856,8 @@ export function uploadchatfile(req, res) {
                             } ,
                             rejectUnauthorized : false,
                             json: req.body
-                            
-                           
+
+
                           };
   if(req.files.file.size == 0) return res.send('No file submitted');
 
@@ -872,27 +872,27 @@ export function uploadchatfile(req, res) {
                   console.log(error);
                   console.log(response.statusCode);
                   console.log(body);
-                  
+
                  if(!error && response.statusCode == 201)
                  {
-                     // body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
+                     // body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg;
                       ss.getchat( body.chatmsg);
                       return res.status(200).json({statusCode : 201,message:'success'});
                  }
                  else
                  {
-                     return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-             
-                 }    
-                 }    
+                     return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+                 }
+                 }
                      request.post(options, callback);
-   
+
           }
-   
+
         });
     });
-  
-        
+
+
 
 
 }
@@ -903,14 +903,14 @@ export function uploadchatfileAgent(req, res) {
   var obj = JSON.parse(req.body.chatmsg)
   console.log(obj.from);
   var token = req.headers.authorization;
- 
+
   //var today = new Date();
  // var uid = crypto.randomBytes(5).toString('hex');
  // var serverPath = '/' + 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate();
 //  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
   var serverPath = obj.uniqueid;
   serverPath += '.' + req.files.file.type.split('/')[1];
-  
+
   console.log(__dirname);
   console.log(req.headers);
   var dir = "./static/userfiles";
@@ -921,8 +921,8 @@ export function uploadchatfileAgent(req, res) {
                                  },
                             rejectUnauthorized : false,
                             json: req.body
-                            
-                           
+
+
                           };
   if(req.files.file.size == 0) return res.send('No file submitted');
 
@@ -937,7 +937,7 @@ export function uploadchatfileAgent(req, res) {
                   console.log(error);
                   console.log(response.statusCode);
                   console.log(body);
-                  
+
                  if(!error && response.statusCode == 201)
                  {
                      //console.log(body)
@@ -951,26 +951,26 @@ export function uploadchatfileAgent(req, res) {
                             };
                       var msg = 'You have received 1 new file from ' + req.body.from;
                       sendPushNotification(req.body.to,payload,msg);
-                    //  body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg; 
-                     
+                    //  body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg;
+
                       ss.getchat( body.chatmsg);
 
                       return res.status(200).json({statusCode : 201,message:'success'});
                  }
                  else
                  {
-                     return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-             
-                 }    
-                 }    
+                     return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+                 }
+                 }
                      request.post(options, callback);
-   
+
           }
-   
+
         });
     });
-  
-        
+
+
 
 
 }
@@ -990,15 +990,15 @@ export function downloadchatfile(req, res) {
       },
       rejectUnauthorized : false,
       json: req.body
-      
-     
+
+
     };
 
     function callback(error, response, body) {
         console.log(error);
         console.log(response.statusCode);
         console.log(body);
-        
+
        if(!error && response.statusCode == 200)
        {
             console.log(body)
@@ -1007,10 +1007,10 @@ export function downloadchatfile(req, res) {
        else
        {
            res.sendStatus(422);
-           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
-   
-       }    
-       }    
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
            request.post(options, callback);
 
 }
@@ -1029,18 +1029,18 @@ function sendpushToAllAgents(sessionid,pushTitle){
                               },
                               badge: 0
                             };
- 
+
  var  headers =  {
    'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
    'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
    'kibo-client-id': 'cd89f71715f2014725163952',
-   
+
    }
   var options = {
                     url: `${baseURL}/api/users/allagents/`,
                     rejectUnauthorized : false,
                     headers,
-                    
+
             };
               function callback(error, response, body) {
                 if(!error  && response.statusCode == 200) {
@@ -1058,7 +1058,7 @@ function sendpushToAllAgents(sessionid,pushTitle){
 
               else
               {
-             //  return res.status(422).json({message:error}); 
+             //  return res.status(422).json({message:error});
               }
      }
        request.get(options, callback);

@@ -15,7 +15,7 @@ import { bindActionCreators } from 'redux';
 class MyTeams extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -23,35 +23,35 @@ class MyTeams extends Component {
     console.log('componentWillMount is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getmyuserteams(usertoken);
       }
-      
-        super(props, context);
-  
-   
 
-   
-    
+        super(props, context);
+
+
+
+
+
   }
 
-   
- 
+
+
 
   render() {
     const token = auth.getToken()
     console.log(token)
-    
+
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container">
 
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-           
+
             <div className="page-content">
               <div className="row">
                 <div className="col-md-12">
@@ -60,22 +60,22 @@ class MyTeams extends Component {
                       <li>
                         <i className="fa fa-home"/>
                         <Link to="/dashboard"> Dashboard </Link>
-                       
-                      </li>                  
+
+                      </li>
                       <li>
                         <Link to="/myprofile"> Profile </Link>
-                      </li>               
-      
+                      </li>
+
                     </ul>
                 </div>
-              </div>      
+              </div>
           <div className="row profile-account">
                 <ProfileSideBar iscurrent="myteams"/>
           <div className="col-md-9">
             <div className="portlet box">
             <div className="portlet body">
-             
-              
+
+
                 { this.props.myteamdetails &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
@@ -86,26 +86,26 @@ class MyTeams extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' > Options</th>
                     </tr>
                     </thead>
-                    <tbody>                    
+                    <tbody>
                       {
                         this.props.myteamdetails.map((team, i) => (
-                          
+
                           <MyTeamListItem team={team.deptid?team.deptid:team} key={team._id} />
-                                                      
+
                         ))
                       }
-                     </tbody> 
+                     </tbody>
                     </table>
                 }
-        
+
                 </div>
             </div>
           </div>
        </div>
 
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
       </div>
   )
   }
@@ -113,7 +113,7 @@ class MyTeams extends Component {
 
 
 function mapStateToProps(state) {
-  
+
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
@@ -127,7 +127,7 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  
+
   return bindActionCreators({ getmyuserteams:getmyuserteams}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(MyTeams);
