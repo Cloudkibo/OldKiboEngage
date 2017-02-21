@@ -49,6 +49,7 @@ router.route('/deleteGroup').delete(GroupController.destroyGroup);
 router.route('/webhook').post(FbChatController.chatwebhook);
 router.route('/webhook').get(FbChatController.verifyhook);
 
+router.route('/sendfbchat').post(FbChatController.sendTextMessage);
 
 router.route('/getfbCustomers').get(FbChatController.getfbCustomers);
 router.route('/getfbChats').get(FbChatController.getfbChats);
@@ -125,5 +126,4 @@ router.route('/downloadchatfile').post(ChatController.downloadchatfile);
 
 router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfile);
 router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadchatfileAgent);
-
 export default router;

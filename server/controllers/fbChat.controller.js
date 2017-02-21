@@ -47,7 +47,7 @@ export function chatwebhook(req, res) {
         let sender = event.sender.id;
         let page = event.recipient.id;
         console.log('page id is' + page);
-         var options = {
+        var options = {
 				 	  url: `${baseURL}/api/fbpages/getpage`,
 				      headers : headers,
 				    
@@ -60,11 +60,11 @@ export function chatwebhook(req, res) {
 	     function callback(error, response, body) {
 	     		  console.log(body);
 	     		  console.log(error);
-			      var fbpage = JSON.parse(body);
-			      let token = fbpage.pageToken;
-			      let companyid = fbpage.companyid;
-			      console.log('token is ' + token);
-			      if(!error) {
+			      if(!error && body != 'Not Found') {
+            var fbpage = JSON.parse(body);
+            let token = fbpage.pageToken;
+            let companyid = fbpage.companyid;
+
 			      		// fetch customer details
 			      		    var optionsG = {
 								        url: 'https://graph.facebook.com/v2.6/'+sender+'?access_token='+token,
@@ -107,7 +107,7 @@ export function chatwebhook(req, res) {
 			   							 		console.log('saving chat message');
 			   							 		//call api to save chat message
 			   							 		var chatobj = {
-			   							 			  senderid : sender, // this is the user_id or page_id
+			   							 			senderid : sender, // this is the user_id or page_id
 													  recipientid : page,
 													  timestamp : event.timestamp,
 													  message: event.message,
@@ -159,7 +159,7 @@ export function chatwebhook(req, res) {
 			      }
 			    else
 			    {
-			      return res.status(422).json({statusCode : 422 ,data:error});
+			//      return res.status(422).json({statusCode : 422 ,data:error});
 
 			    }
 
@@ -355,3 +355,96 @@ export function getfbCustomers(req, res) {
 
   }
 
+
+export function sendTextMessage(req,res) {
+    console.log('send text to customer is called');
+    console.log(req.body);
+
+    /*
+    senderid: this.props.userdetails._id,
+              recipientid:this.props.senderid,
+              companyid:this.props.userdetails.uniqueid,
+              timestamp:Date.now(),
+              message:{
+                mid:uniqueid,
+                seq:1,
+                text:this.state.value,
+              }
+              pageid:
+    */   
+
+    // get page token first
+
+    var options = {
+            url: `${baseURL}/api/fbpages/getpage`,
+              headers : headers,
+            
+              form:{
+                'pageid':req.body.pageid,
+              }
+
+          };
+
+       function callback(error, response, body) {
+            console.log(body);
+            console.log(error);
+            if(!error) 
+            {
+
+              var fbpage = JSON.parse(body);
+              let token = fbpage.pageToken;
+              let companyid = fbpage.companyid;
+              console.log('token is ' + token);
+              
+              let messageData = { text:req.body.message.text }
+              var chatobj = req.body;
+                                console.log(chatobj);
+                                
+              var optionsChat = {
+                                    url: `${baseURL}/api/fbmessages/`,
+                                      rejectUnauthorized : false,
+                                      headers : headers,
+                                      json:chatobj,
+
+                                  };
+
+              function callbackChat(error, response, body) {
+                                console.log(body);
+                                console.log(error);
+                                request({
+                                    url: 'https://graph.facebook.com/v2.6/me/messages',
+                                    qs: {access_token:token},
+                                    method: 'POST',
+                                    json: {
+                                        recipient: {id:req.body.recipientid},
+                                        message: messageData,
+                                    }
+                                }, function(error, response, body) {
+                                                
+                                                  if(!error){
+                                                    res.json({status:'success'});
+                                                  }
+                                                  else{
+                                                     res.json({status:'failure'});
+                                                  }
+
+                                            }
+                                            )
+                              }
+                          request.post(optionsChat,callbackChat);
+
+
+                  }
+
+                else{
+                      console.log('Error: ', error)
+                  }
+           
+            }
+
+             request.post(options, callback);
+
+
+
+    
+}

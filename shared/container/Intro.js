@@ -47,7 +47,7 @@ handleClick(e){
         </div>        
     </div>
       <div className="header">
-          <div classNameName="container">
+          <div className="container">
                  <Link to="/" className ="site-logo"> KiboEngage</Link>
                  <div className="header-navigation pull-right font-transform-inherit">
                  <ul>

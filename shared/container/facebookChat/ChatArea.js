@@ -1,18 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
-//import { fetchMessages } from '../Actions/messages'
+import { getfbchatfromAgent,add_socket_fb_message } from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
- var messages = [{
-  message:'How do I use this messaging app?',
-  user:{
-    name:'Zarmeen',
-    imageURL: "https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512",
-
-  },
-  time : Date.now(),
-
-}];
+ 
 
 var handleDate = function(d){
 if(d){
@@ -108,19 +99,60 @@ onChange(event, { newValue }) {
     });
   }
 handleMessageSubmit(e) {
-    
+
     console.log('handleMessageSubmit' + e.which)
     if (e.which === 13 && this.state.value !="") {
+    var today = new Date();  
+    var uid = Math.random().toString(36).substring(7);
+            
+    var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
-    this.props.messages.push({
-              message:this.state.value,
+    var pageid=''
+    for(var i=0;i<this.props.messages.length;i++){
+      if(this.props.messages[i].senderid == this.props.senderid){
+        pageid = this.props.messages[i].recipientid;
+        alert(pageid)
+        break;
+      }
+    }
+    var saveMsg = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.senderid,
+              companyid:this.props.userdetails.uniqueid,
+              timestamp:Date.now(),
+              message:{
+                mid:unique_id,
+                seq:1,
+                text:this.state.value,
+              },
+
+             pageid:pageid
+              
+    }
+
+    this.props.getfbchatfromAgent(saveMsg);
+
+    var data = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.senderid,
+              companyid:this.props.userdetails.uniqueid,
+              
+              seen:false,
+              message:{
+                text:this.state.value,
+                mid: unique_id,
+              },
               inbound:true,
               backColor: '#3d83fa',
               textColor: "white",
               avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
               duration: 0,
               timestamp:Date.now(),
-            })
+
+
+            }
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+    
         this.forceUpdate();
       }
     }
@@ -164,18 +196,19 @@ else{
         data.senderid == this.props.senderid?
         <div className='message clearfix' key={index}>
         <div className='message-header'>
-          <img className='profile-image' src={data.avatar} width="36px" height="36px"/>
+          <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512' width="36px" height="36px"/>
           <span className='username'>{this.props.username}</span>
           </div>
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
               
               <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
+
             </div>
         </div> :
         <div className='message clearfix' key={index}>
         <div className='message-header'>
-          <img className='profile-image' src={data.avatar} width="36px" height="36px"/>
+          <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
           <span className='username'>KiboEngage</span>
           </div>
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
@@ -241,5 +274,35 @@ else{
 }
 
 
-export default ChatArea
-// inject dispatch and listen to store
+function mapStateToProps(state) {
+ 
+  return {
+          teamdetails:(state.dashboard.teamdetails),
+          userdetails:(state.dashboard.userdetails),
+          errorMessage:(state.dashboard.errorMessage),
+          agents:(state.dashboard.agents),
+          deptagents:(state.dashboard.deptagents),
+          customerchat :(state.dashboard.customerchat),
+          customerchatold :(state.dashboard.customerchatold),
+          chatlist :(state.dashboard.chatlist),
+          channels :(state.dashboard.channels),
+          customers:(state.dashboard.customers),
+          customerchat_selected :(state.dashboard.customerchat_selected),
+          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
+          userchats :(state.dashboard.userchats),
+          responses :(state.dashboard.responses),
+          onlineAgents:(state.dashboard.onlineAgents),
+          yoursocketid :(state.dashboard.yoursocketid),
+          mobileuserchat : (state.dashboard.mobileuserchat),
+          serverresponse : (state.dashboard.serverresponse) ,
+          groupagents : (state.dashboard.groupagents),
+          groupdetails :(state.dashboard.groupdetails),
+
+          fbcustomers:state.dashboard.fbcustomers,
+          fbchats:state.dashboard.fbchats,
+          fbchatSelected:state.dashboard.fbchatSelected,
+          status:state.dashboard.status,
+                    };
+}
+
+export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message})(ChatArea);

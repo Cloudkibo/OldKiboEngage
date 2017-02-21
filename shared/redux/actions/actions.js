@@ -1460,7 +1460,7 @@ export function updatefbstatus(id,fbchats){
 }
 export function selectFbCustomerChat(id,fbchat){
   var newfbChat = []
-  var temp = fbchat.filter((c)=>c.senderid == id);
+  var temp = fbchat.filter((c)=>c.senderid == id || c.recipientid == id);
   for(var i=0;i<temp.length;i++){
     if(temp[i].message){
     newfbChat.push( 
@@ -1491,7 +1491,7 @@ export function add_socket_fb_message(data,fbchats,id){
 fbchats.push(data);
 
 var newfbChat = []
-var temp = fbchats.filter((c)=>c.senderid == id);
+var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
   for(var i=0;i<temp.length;i++){
     if(temp[i].message){
     newfbChat.push( 
@@ -3308,5 +3308,32 @@ export function getfbChats(usertoken){
 
 
       );
+  };
+}
+
+
+//send chat to facebook customer
+
+//send message to customer
+export function getfbchatfromAgent(chat){
+ return (dispatch) => {
+    fetch(`${baseURL}/api/sendfbchat`, {
+        method:'post',
+        body: JSON.stringify(chat),
+        headers: new Headers({
+        'Content-Type': 'application/json',
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(fbchatmessageSent(res)));
+  };
+}
+
+
+export function fbchatmessageSent(res){
+    return {
+    type: ActionTypes.FBCHAT_SENT_TO_AGENT,
+    status : res.status,
+  //  customerid,
+
   };
 }

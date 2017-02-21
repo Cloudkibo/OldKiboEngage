@@ -178,7 +178,7 @@ componentWillReceiveProps(props){
                            </div>
                          }
                            {this.props.fbchatSelected && this.props.fbcustomers && this.refs.sessionid && this.refs.customername &&
-                            <ChatArea messages={this.props.fbchatSelected} responses={this.props.responses} username={this.refs.customername.value} senderid={this.refs.sessionid.value}/>
+                            <ChatArea messages={this.props.fbchatSelected} responses={this.props.responses} username={this.refs.customername.value} senderid={this.refs.sessionid.value} userdetails={this.props.userdetails}/>
                           }
                       </div>
                        </td>
