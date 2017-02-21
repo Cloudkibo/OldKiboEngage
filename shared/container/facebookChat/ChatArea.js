@@ -108,6 +108,7 @@ onChange(event, { newValue }) {
     });
   }
 handleMessageSubmit(e) {
+    
     console.log('handleMessageSubmit' + e.which)
     if (e.which === 13 && this.state.value !="") {
 

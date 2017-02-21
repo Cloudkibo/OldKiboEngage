@@ -1392,6 +1392,34 @@ groupdetails :state.groupdetails,
 
             };
 
+          case ActionTypes.FB_CHAT_STATUS:
+             return {
+             teamdetails: state.teamdetails,
+             userdetails: state.userdetails,
+             errorMessage: state.chat_error,
+             agents : state.agents,
+             deptagents :state.deptagents,
+             customerchat : state.customerchat,
+             customerchatold : state.customerchatold,
+             chatlist : state.chatlist,
+             mobileuserchat : state.mobileuserchat,
+             channels : state.channels,
+             customers : state.customers,
+             customerchat_selected : state.customerchat_selected,
+             new_message_arrived_rid : state.new_message_arrived_rid,
+             userchats : state.userchats,
+             responses : state.responses,
+             onlineAgents : state.onlineAgents,
+             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
+             groupdetails :state.groupdetails,
+             fbcustomers:state.fbcustomers,
+             fbchats:action.fbchats,
+             fbchatSelected:state.fbchatSelected,
+
+
+
+            };
+
           case ActionTypes.ADD_SESSION:
            return {
              teamdetails: state.teamdetails,

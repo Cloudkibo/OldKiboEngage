@@ -37,8 +37,19 @@ var divMargin = {
 	'margin-top': '10px',
   'clear': 'both',
 }
+var changecc ={
+  'cursor': 'pointer',
+  'background' : 'rgba(243, 86, 93, 0.18)',
+}
 
 
+var unreadCount = 0;
+for(var i = 0;i< props.userchat.length;i++){
+  if(props.userchat[i].seen == false)
+  {
+      unreadCount = unreadCount+1;
+  }
+}
 
 //console.log('thisChat' + thisChat)
 
@@ -51,14 +62,30 @@ return res;
 
 var pathname="https://graph.facebook.com/"+props.customer.user_id+"/picture?width=100&height=100"
   return (
+
+    (unreadCount > 0 ?
+     <div className="list-group-item" style={{'width':'300px','height':'70px','backgroundColor' : 'rgba(243, 86, 93, 0.18)'}} onClick={props.onClickSession}>
+     <img src={pathname} width="50" height="50" className="user-avatar" style={hleft}/>
+
+     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
+      {(unreadCount == 0?
+       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
+
+       )}
+
+    </div>
+    :
      <div className="list-group-item" style={{'width':'300px','height':'70px'}} onClick={props.onClickSession}>
      <img src={pathname} width="50" height="50" className="user-avatar" style={hleft}/>
 
-     <h4 className = 'list-group-item-heading' style={hright}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
-      
+     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
+      {(unreadCount == 0?
+       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
+
+       )}
 
     </div>
-    
+    )
  
   );
 }

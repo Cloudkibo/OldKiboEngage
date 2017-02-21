@@ -1446,7 +1446,18 @@ export function filterbyAgent(id,customerchat) {
   };
 }
 
+export function updatefbstatus(id,fbchats){
+  for(var i=0;i<fbchats.length;i++){
+    if(fbchats[i].senderid == id){
+      fbchats[i].seen = true;
+    }
+  }
 
+  return{
+    fbchats: fbchats,
+    type: ActionTypes.FB_CHAT_STATUS,
+  }
+}
 export function selectFbCustomerChat(id,fbchat){
   var newfbChat = []
   var temp = fbchat.filter((c)=>c.senderid == id);
@@ -1464,6 +1475,7 @@ export function selectFbCustomerChat(id,fbchat){
         senderid:temp[i].senderid,
         recipientid:temp[i].recipientid,
         mid:temp[i].message.mid,
+        seen:false
       })
   }
   }
@@ -1475,7 +1487,9 @@ export function selectFbCustomerChat(id,fbchat){
 
 
 export function add_socket_fb_message(data,fbchats,id){
+
 fbchats.push(data);
+
 var newfbChat = []
 var temp = fbchats.filter((c)=>c.senderid == id);
   for(var i=0;i<temp.length;i++){
@@ -1492,6 +1506,7 @@ var temp = fbchats.filter((c)=>c.senderid == id);
         senderid:temp[i].senderid,
         recipientid:temp[i].recipientid,
         mid:temp[i].message.mid,
+        seen:false,
       })
   }
   }
