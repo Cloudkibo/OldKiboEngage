@@ -1463,6 +1463,7 @@ export function selectFbCustomerChat(id,fbchat){
         timestamp:temp[i].timestamp,
         senderid:temp[i].senderid,
         recipientid:temp[i].recipientid,
+        mid:temp[i].message.mid,
       })
   }
   }
@@ -1470,6 +1471,38 @@ export function selectFbCustomerChat(id,fbchat){
     fbchatSelected: newfbChat,
     type: ActionTypes.FB_CHAT_SELECTED,
   }
+}
+
+
+export function add_socket_fb_message(data,fbchats,id){
+fbchats.push(data);
+var newfbChat = []
+var temp = fbchats.filter((c)=>c.senderid == id);
+  for(var i=0;i<temp.length;i++){
+    if(temp[i].message){
+    newfbChat.push( 
+      {
+        message: temp[i].message.text,
+        inbound: true,
+        backColor: '#3d83fa',
+        textColor: "white",
+        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+        duration: 0,
+        timestamp:temp[i].timestamp,
+        senderid:temp[i].senderid,
+        recipientid:temp[i].recipientid,
+        mid:temp[i].message.mid,
+      })
+  }
+  }
+
+   return{
+    fbchatSelected: newfbChat,
+    fbchats:fbchats,
+    type: ActionTypes.FB_CHAT_ADDED,
+  }
+
+
 }
 export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
   if(new_message_arrived_rid && new_message_arrived_rid.length > 0)

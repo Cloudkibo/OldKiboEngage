@@ -3,7 +3,7 @@ import ChatArea from './ChatArea';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getfbCustomers,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
+import {getfbCustomers,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
 import Conversation from 'chat-template/dist/Conversation';
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -51,7 +51,24 @@ getfbCustomer(data){
 }
 
 getfbMessage(data){
-    alert('New fb message '+ data.message.text);
+    if(this.props.fbchatSelected && this.props.fbchats)
+    {
+     
+      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbchatSelected[0].senderid);
+    }
+   /* this.props.fbchatSelected.push({
+        message: data.message.text,
+        inbound: true,
+        backColor: '#3d83fa',
+        textColor: "white",
+        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+        duration: 0,
+        timestamp:data.timestamp,
+        senderid:data.senderid,
+        recipientid:data.recipientid,
+        mid : data.message.mid,
+    })*/
+    this.forceUpdate();
 }
 syncdata(){
 
@@ -68,7 +85,7 @@ componentDidMount(){
 }
 
 componentWillReceiveProps(props){
-  if(props.fbcustomers && props.fbchats && callonce == true){
+  if(props.fbcustomers && props.fbchats && callonce == true && this.refs.sessionid){
    // alert(props.fbcustomers.length);
    // alert(props.fbcustomers[0].first_name)
 
@@ -146,7 +163,7 @@ componentWillReceiveProps(props){
                             <div>
                                 <label>Customer Name :</label>
                                 <input defaultValue = {this.props.fbcustomers[0].first_name+ ' '+this.props.fbcustomers[0].last_name} ref="customername"/>
-                                 <input type="hidden" ref = "sessionid" defaultValue = {this.props.fbcustomers[0].user_id} />
+                                 <input type="text" ref = "sessionid" defaultValue = {this.props.fbcustomers[0].user_id} />
       
                            </div>
                          }
@@ -201,4 +218,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getfbCustomers,getfbChats,getresponses,selectFbCustomerChat})(FbChat);
+export default connect(mapStateToProps,{getfbCustomers,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat})(FbChat);
