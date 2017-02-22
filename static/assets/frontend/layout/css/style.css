@@ -3405,3 +3405,8 @@ span.time {
   line-height: 2.375rem;
   margin-top: 1rem;
 }
+
+.file-preview{
+	width: 200px;
+    height: 170px;
+}

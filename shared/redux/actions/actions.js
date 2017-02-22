@@ -3316,9 +3316,19 @@ export function getfbChats(usertoken){
 // update customer list
 export function updateCustomerList(data,customerlist){
   customerlist.push(data);
+   var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in customerlist) {
+        lookupObject[customerlist[i]['user_id']] = customerlist[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
   return{
     type:ActionTypes.ADD_NEW_FB_CUSTOMER,
-    fbcustomers:customerlist,
+    fbcustomers:newArray,
   }
 }
 //send chat to facebook customer
@@ -3346,3 +3356,53 @@ export function fbchatmessageSent(res){
 
   };
 }
+
+export function showfbfilesuccess(chat,fbchats,id){
+  fbchats.push(chat.chatmsg);
+  var newfbChat = []
+  var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
+    for(var i=0;i<temp.length;i++){
+      if(temp[i].message){
+      newfbChat.push( 
+        {
+          message: temp[i].message.text,
+          inbound: true,
+          backColor: '#3d83fa',
+          textColor: "white",
+          avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+          duration: 0,
+          timestamp:temp[i].timestamp,
+          senderid:temp[i].senderid,
+          recipientid:temp[i].recipientid,
+          mid:temp[i].message.mid,
+          attachments:temp[i].message.attachments,
+          seen:false,
+        })
+    }
+    }
+
+     return{
+      fbchatSelected: newfbChat,
+      fbchats:fbchats,
+      type: ActionTypes.FB_CHAT_ADDED,
+    }
+
+}
+
+export function uploadFbChatfile(fileData,usertoken,fbchats,id) {
+  console.log(fileData);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/uploadchatfilefb`, {
+      method: 'post',
+        body : fileData,
+        headers: new Headers({
+        'Authorization': usertoken,
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfbfilesuccess(res,fbchats,id))
+
+
+      );
+  };
+
+};

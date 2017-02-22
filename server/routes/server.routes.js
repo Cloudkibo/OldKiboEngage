@@ -126,4 +126,5 @@ router.route('/downloadchatfile').post(ChatController.downloadchatfile);
 
 router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfile);
 router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadchatfileAgent);
+router.post('/uploadchatfilefb',multipartyMiddleware, FbChatController.uploadchatfilefb);
 export default router;

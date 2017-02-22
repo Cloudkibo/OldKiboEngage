@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
-import { getfbchatfromAgent,add_socket_fb_message } from '../../redux/actions/actions'
+import { getfbchatfromAgent,add_socket_fb_message ,uploadFbChatfile} from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
+import auth from '../../services/auth';
 
+import { FileUpload } from 'redux-file-upload'
 
 var handleDate = function(d){
 if(d){
@@ -52,6 +54,8 @@ export class ChatArea extends Component {
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+        this.onFileSubmit = this.onFileSubmit.bind(this);
+        this._onChange = this._onChange.bind(this);
 
   }
   
@@ -84,6 +88,25 @@ connectToCall(e){
       window.location.href = meetingURLString;
 
 }
+_onChange(e) {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+
+    this.setState({ userfile:e.target.files[0]
+                       });
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({ src: reader.result,
+                       });
+    };
+    reader.readAsDataURL(files[0]);
+  }
 onChange(event, { newValue }) {
 
     this.setState({
@@ -157,6 +180,62 @@ handleMessageSubmit(e) {
         this.forceUpdate();
       }
     }
+
+
+onFileSubmit(event)
+    {
+        const usertoken = auth.getToken();
+        var fileData = new FormData();
+
+        if ( this.state.userfile ) {
+              console.log(this.state.userfile)
+
+
+              var today = new Date();
+              var uid = Math.random().toString(36).substring(7);
+              var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+              var pageid=''
+              for(var i=0;i<this.props.messages.length;i++){
+                if(this.props.messages[i].senderid == this.props.senderid){
+                  pageid = this.props.messages[i].recipientid;
+                  alert(pageid)
+                  break;
+                }
+              }
+              var saveMsg = {
+                              senderid: this.props.userdetails._id,
+                              recipientid:this.props.senderid,
+                              companyid:this.props.userdetails.uniqueid,
+                              timestamp:Date.now(),
+                              message:{
+                                mid:unique_id,
+                                seq:1,
+                                attachments:[{
+                                  type:this.state.userfile.type.split('/')[0],
+                                  payload:{
+                                    url:'',
+                                  }
+
+                                }]
+                              },
+
+                             pageid:pageid
+              
+           }
+       
+        
+              fileData.append('file', this.state.userfile);
+              fileData.append('filename',  this.state.userfile.name);
+              fileData.append('filetype',  this.state.userfile.type);
+              fileData.append('filesize',  this.state.userfile.size);
+              fileData.append('chatmsg', JSON.stringify(saveMsg));
+              this.props.uploadFbChatfile(fileData,usertoken,this.props.fbchats,this.props.senderid);
+        }
+        this.forceUpdate();
+        event.preventDefault();
+
+    }
+
 onSuggestionSelected({suggestionValue,method = 'click'})
 {
   console.log("current value of input is  :" + this.state.value)
@@ -208,7 +287,7 @@ else{
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
-                       <img src={da.payload.url}/>:
+                       <img src={da.payload.url} className='file-preview'/>:
                        <a href={da.payload.url} target="_blank">{da.payload.url}  </a>
                        )
                 )) 
@@ -225,6 +304,14 @@ else{
               
               <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
+              {data.attachments && data.attachments.length >0  &&
+                 data.attachments.map((da,index) => (
+                       (da.type == "image"?
+                       <img src={da.payload.url} className='file-preview'/>:
+                       <a href={da.payload.url} target="_blank">{da.payload.url}  </a>
+                       )
+                )) 
+              }
             </div>
         </div>
       
@@ -315,4 +402,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message})(ChatArea);
+export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message,uploadFbChatfile})(ChatArea);
