@@ -3,7 +3,7 @@ import ChatArea from './ChatArea';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getfbCustomers,updatefbstatus,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
+import {getfbCustomers,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
 import Conversation from 'chat-template/dist/Conversation';
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -48,10 +48,16 @@ class FbChat extends Component {
 
 getfbCustomer(data){
   alert('New fb customer '+ data.first_name);
+  if(this.props.fbcustomers){
+    this.props.updateCustomerList(data,this.props.fbcustomers);
+    this.forceUpdate();
+
+  }
+  
 }
 
 getfbMessage(data){
-    if(this.props.fbchatSelected && this.props.fbchats)
+    if(this.props.fbchatSelected && this.props.fbchats && this.refs.sessionid)
     {
       if(data.senderid != this.props.fbchatSelected[0].senderid)
       {
@@ -61,7 +67,7 @@ getfbMessage(data){
     else{
       data.seen=true;
     }
-      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbchatSelected[0].senderid);
+      this.props.add_socket_fb_message(data,this.props.fbchats,this.refs.sessionid.value);
     
     }
    /* this.props.fbchatSelected.push({
@@ -228,4 +234,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getfbCustomers,add_socket_fb_message,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);
+export default connect(mapStateToProps,{getfbCustomers,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);

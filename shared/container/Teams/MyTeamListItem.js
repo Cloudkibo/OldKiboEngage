@@ -17,7 +17,7 @@ function MyTeamListItem(props) {
       <td>{handleDate(props.team.creationdate)}</td>
      
       <td>
-        <Link to={`/team/${props.team._id}`} className="btn blue-madison" >
+        <Link to={`/team/${props.team._id}/'profile'`} className="btn blue-madison"  >
          View
         </Link>
        

@@ -299,6 +299,7 @@ const dashboard = (state =dashboardState, action) => {
     case ActionTypes.ADD_NEWS:
           return{
             news : action.news,
+            myteamdetails:state.myteamdetails,
             userdetails:state.userdetails,
             agents:state.agents,
              fbchatSelected:state.fbchatSelected,
@@ -2360,6 +2361,38 @@ groupdetails :state.groupdetails,
                fbcustomers:state.fbcustomers,
                fbchats:action.fbchats,
 
+              };
+
+
+          case ActionTypes.ADD_NEW_FB_CUSTOMER:
+         
+             return {
+               teamdetails: state.teamdetails,
+               userdetails: state.userdetails,
+               errorMessage:state.errorMessage,
+               agents : state.agents,
+               deptagents :state.deptagents,
+
+               chatlist: state.chatlist,
+               customerid : state.customerid,
+               customerchat : state.customerchat,
+               customerchatold : state.customerchatold,
+               customerchat_selected : state.customerchat_selected,
+               new_message_arrived_rid : state.new_message_arrived_rid,
+               userchats :state.userchats,
+               responses : state.responses,
+
+               channels : state.channels,
+               customers : state.customers,
+               onlineAgents : state.onlineAgents,
+               yoursocketid : state.yoursocketid,
+               news:state.news,
+               groupagents : state.groupagents,
+               groupdetails :state.groupdetails,
+               fbcustomers:action.fbcustomers,
+               fbchats:state.fbchats,
+
+               fbchatSelected:state.fbchatSelected,
               };
     default:
       return state;

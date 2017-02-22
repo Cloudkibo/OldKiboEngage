@@ -107,7 +107,7 @@ const routes = (
     <Route path="/teams" component={Teams} onEnter={requireAuth} />
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
 
-    <Route path="/team/:id" component={TeamDetailView}  onEnter={requireAuth}/>
+    <Route path="/team/:id(/:fromprofile)" component={TeamDetailView}  onEnter={requireAuth}/>
     <Route path="/group/:id" component={GroupDetailView}  onEnter={requireAuth}/>
 
     <Route path="/editteam/:id" component={TeamEditView}  onEnter={requireAuth}/>

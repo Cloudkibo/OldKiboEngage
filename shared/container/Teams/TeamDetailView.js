@@ -106,10 +106,16 @@ class TeamDetailView extends Component {
               <div className="form-actions fluid">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
+                  {this.props.params.fromprofile?
+                    <Link to="/myprofile" className="btn green">
+                      <i className="fa fa-times"/>
+                       Back
+                    </Link>:
                     <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
+                  }
                     </div>
                </div>                
               </div>

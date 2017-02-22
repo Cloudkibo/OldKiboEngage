@@ -1475,6 +1475,7 @@ export function selectFbCustomerChat(id,fbchat){
         senderid:temp[i].senderid,
         recipientid:temp[i].recipientid,
         mid:temp[i].message.mid,
+        attachments:temp[i].message.attachments,
         seen:false
       })
   }
@@ -1506,6 +1507,7 @@ var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
         senderid:temp[i].senderid,
         recipientid:temp[i].recipientid,
         mid:temp[i].message.mid,
+        attachments:temp[i].message.attachments,
         seen:false,
       })
   }
@@ -3311,7 +3313,14 @@ export function getfbChats(usertoken){
   };
 }
 
-
+// update customer list
+export function updateCustomerList(data,customerlist){
+  customerlist.push(data);
+  return{
+    type:ActionTypes.ADD_NEW_FB_CUSTOMER,
+    fbcustomers:customerlist,
+  }
+}
 //send chat to facebook customer
 
 //send message to customer

@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
 import { getfbchatfromAgent,add_socket_fb_message } from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
- 
+import { Link } from 'react-router';
+
 
 var handleDate = function(d){
 if(d){
@@ -203,6 +204,15 @@ else{
               
               <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
+
+              {data.attachments && data.attachments.length >0  &&
+                 data.attachments.map((da,index) => (
+                       (da.type == "image"?
+                       <img src={da.payload.url}/>:
+                       <a href={da.payload.url} target="_blank">{da.payload.url}  </a>
+                       )
+                )) 
+              }
 
             </div>
         </div> :
