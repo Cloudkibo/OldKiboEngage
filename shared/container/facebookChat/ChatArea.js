@@ -10,9 +10,10 @@ import { FileUpload } from 'redux-file-upload'
 
 var handleDate = function(d){
 if(d){
-var c = new Date(d);
+
+var c = new Date(Number(d));
 //alert(c)
-return c.toDateString();
+return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 }
 }
 
