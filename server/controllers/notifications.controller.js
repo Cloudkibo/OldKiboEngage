@@ -16,6 +16,8 @@ var baseURL = `https://api.kibosupport.com`
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
 var notificationHubService2 = azure.createNotificationHubService('KiboEngageProductionHub','Endpoint=sb://kiboengageproductionhub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=Hc1qWqbkLk4oGYJ9dN9vexUsIKk8hOeja5sEte89n9s=');
+// notification hub for Agents
+var notificationHubService3 = azure.createNotificationHubService('KiboEngageTestHub','Endpoint=sb://kiboengagetest.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=12mu5jrcNfUlKSG5k8Uy19WMDJCxZQmhGCpa9SozHm8=');
 
 /************************* Channel APIS ************************************/
 export function createNotification(req, res) {
@@ -128,7 +130,7 @@ function sendemail(body,token){
                   }
 
                   for(var i=0;i<pushNotificationArray.length;i++){
-                    sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
+                    //sendPushNotification(pushNotificationArray[i],emailBody,emailSub);
                     sendPushNotification(pushNotificationArray[i],body);
                   }
                   
@@ -145,7 +147,7 @@ function sendemail(body,token){
 
 //for mobile customers
 function sendPushNotification(tagname,body){
-  
+  console.log(body)
   console.log('size of notification');
   console.log(sizeof(body));
   var sizeofbody = sizeof(body); //returns bytes
@@ -212,6 +214,13 @@ function sendPushNotification(tagname,body){
   });
 
 
+  notificationHubService3.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+    } else {
+      console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
   
   
 }
