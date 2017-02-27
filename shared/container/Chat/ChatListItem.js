@@ -72,11 +72,11 @@ if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.custome
 
 var ch=[]
      {
-         props.team &&
+         props.team && props.team.length > 0 &&
                         props.team.map((grp, i) => (
                            ag.push(grp)
                         ))
-
+      console.log(ag);
       }
 
 
@@ -160,10 +160,14 @@ return res;
 
        )}
       <div style={divMargin}>
-      <span style={leftStyle}>{ag[0].deptname}</span>
+      {
+        ag.length > 0 ? <span style={leftStyle}>{ag[0].deptname}</span> : <span style={leftStyle}>Customer</span>
+      }
       <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
       <br/>
-      <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
+      {
+       ch.length > 0 ? <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span> : <span  style={rightAgent}><i className="fa fa-headphones"/>Message Channel</span>
+      }
       <br/>
       <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
        <br/>
