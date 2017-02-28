@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {removeDuplicates,getsessionsfromsocket,updatechatstatus,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {removeDuplicates,getsessionsfromsocket,removeDuplicatesWebChat,updatechatstatus,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -56,19 +56,9 @@ class Chat extends Component {
         this.syncdata = this.syncdata.bind(this);
 
 
-        //fb related
-        this.getfbCustomer = this.getfbCustomer.bind(this);
-        this.getfbMessage = this.getfbMessage.bind(this);
 
   }
 
-getfbCustomer(data){
-  alert('New fb customer '+ data.first_name);
-}
-
-getfbMessage(data){
-    alert('New fb message '+ data.message.text);
-}
 syncdata(){
  // alert('You are connected to socket. Joining now!');
   this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
@@ -113,6 +103,8 @@ updateOnlineAgents(data){
      this.props.userchats.push(message);
 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
+     this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+     this.forceUpdate();
   }
 
 
@@ -142,6 +134,8 @@ updateOnlineAgents(data){
      this.props.userchats.push(message);
 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
+    this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+
    }
 
 
@@ -188,7 +182,7 @@ componentDidMount(){
         this.props.route.socket.emit('returnMySocketId');
        // this.props.route.socket.emit('getCustomerSessionsList');
 
-        //this.props.route.socket.on('send:message',this.getSocketmessage);
+        this.props.route.socket.on('send:message',this.getSocketmessage);
         this.props.route.socket.on('informAgent',this.getSessionInfo);
         this.props.route.socket.on('getmysocketid',this.create_agentsession);
         this.props.route.socket.on('customer_joined',this.getupdatedSessions);
@@ -196,11 +190,6 @@ componentDidMount(){
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.props.route.socket.on('returnUserChat',this.getupdatedChats);
         this.props.route.socket.on('syncdata',this.syncdata);
-
-
-        //fb related
-        this.props.route.socket.on('send:fbcustomer',this.getfbCustomer);
-        this.props.route.socket.on('send:fbmessage',this.getfbMessage);
 
 }
 
@@ -504,4 +493,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{removeDuplicates,updatechatstatus,getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{removeDuplicates,removeDuplicatesWebChat,updatechatstatus,getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);

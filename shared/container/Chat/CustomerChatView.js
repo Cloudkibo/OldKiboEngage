@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { getChatRequest,uploadChatfile,removeDuplicates,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
-import { updateChatList}  from '../../redux/actions/actions'
+import { updateChatList,removeDuplicatesWebChat}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
 import {savechat,updatechatstatus,downloadfile,getchatfromAgent}  from '../../redux/actions/actions'
@@ -256,12 +256,16 @@ else{
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
     if(this.props.sessiondetails.platform == 'web'){
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
+     this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+      this.forceUpdate();
+
      }
 
      else{
       this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
       this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
+      this.forceUpdate();
      // alert(this.props.mobileuserchat.length);
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
@@ -1357,4 +1361,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{updatechatstatus,downloadfile,uploadChatfile,removeDuplicates,getchatfromAgent,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{updatechatstatus,removeDuplicatesWebChat,downloadfile,uploadChatfile,removeDuplicates,getchatfromAgent,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

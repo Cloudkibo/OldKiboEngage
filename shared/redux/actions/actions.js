@@ -3167,6 +3167,25 @@ export function removeDuplicates(originalArray, prop) {
   };
  }
 
+ export function removeDuplicatesWebChat(originalArray, prop) {
+     var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
+  return {
+    type: ActionTypes.ADD_USER_CHATS_SPECIFIC_WEB,
+    userchats : newArray,
+
+
+  };
+ }
+
 
  /***** Facebook actions ***/
 export function showFbPages(fbpages) {
