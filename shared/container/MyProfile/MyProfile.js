@@ -15,7 +15,7 @@ import { browserHistory } from 'react-router'
 class MyProfile extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -23,24 +23,25 @@ class MyProfile extends Component {
     console.log('componentWillMount is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getuser(usertoken);
       }
-      
+
         super(props, context);
         this.onSubmit = this.onSubmit.bind(this);
-  
-   
 
-   
-    
+
+
+
+
   }
 
   onSubmit(event)
     {
+      console.log("onSubmit is called");
        const usertoken = auth.getToken();
-   
+
       event.preventDefault();
                 const fnameRef = this.refs.fname;
                 const lnameRef = this.refs.lname;
@@ -48,7 +49,7 @@ class MyProfile extends Component {
                 const country = this.refs.country;
                 const city = this.refs.city;
                 const stateRef = this.refs.state;
-               
+
                 if (fnameRef.value && lnameRef.value && phoneRef.value) {
                   var user = {
                     'firstname': fnameRef.value,
@@ -57,7 +58,7 @@ class MyProfile extends Component {
                     'city':city.value,
                     'state':stateRef.value,
                     'country':country.value,
-                    
+
                   }
                   console.log(user);
 
@@ -66,22 +67,22 @@ class MyProfile extends Component {
     }
 
 
-   
- 
+
+
 
   render() {
     const token = auth.getToken()
     console.log(token)
-    
+
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container">
 
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-           
+
             <div className="page-content">
               <div className="row">
                 <div className="col-md-12">
@@ -90,15 +91,15 @@ class MyProfile extends Component {
                       <li>
                         <i className="fa fa-home"/>
                         <Link to="/dashboard"> Dashboard </Link>
-                       
-                      </li>                  
+
+                      </li>
                       <li>
                         <Link to="/myprofile"> Profile </Link>
-                      </li>               
-      
+                      </li>
+
                     </ul>
                 </div>
-              </div>      
+              </div>
           <div className="row profile-account">
                 <ProfileSideBar iscurrent="myprofile"/>
           <div className="col-md-9">
@@ -117,12 +118,12 @@ class MyProfile extends Component {
                                                 <label>Email</label>
                                                 <input type="email"  className="form-control "  ref = "email" required placeholder="Email Address" value={this.props.userdetails.email} disabled/>
                                               </div>
-                                             
+
                                              <div className="form-group">
                                                 <label>Role</label>
                                                 <input type="email"  className="form-control"  ref = "role" required  value={this.props.userdetails.role} disabled/>
                                               </div>
-                                             
+
                                               <div className="form-group">
                                               <label>Phone</label>
                                               <input type="number" className="form-control" ref="phone" required placeholder="Phone" defaultValue={this.props.userdetails.phone}/>
@@ -149,8 +150,8 @@ class MyProfile extends Component {
                                               <input type="text" className="form-control" ref="cname" value={this.props.userdetails.companyName} disabled/>
                                               </div>
                                               <div className="form-actions">
-                                                      <button type="submit" className="btn green btn-send">Save</button>
-                                                      <Link to='/dashboard' className="btn default"> Cancel </Link> 
+                                                      <button type="submit" className="btn green btn-send" onClick = {this.onSubmit}>Save</button>
+                                                      <Link to='/dashboard' className="btn default"> Cancel </Link>
                                               </div>
 
 
@@ -164,16 +165,16 @@ class MyProfile extends Component {
 
 
                                   </form>
-             
-              
+
+
             </div>
             </div>
           </div>
        </div>
 
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
       </div>
   )
   }
@@ -181,7 +182,7 @@ class MyProfile extends Component {
 
 
 function mapStateToProps(state) {
-  
+
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
@@ -195,7 +196,7 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  
+
   return bindActionCreators({ getuser:getuser,updateprofile:updateprofile}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(MyProfile);
