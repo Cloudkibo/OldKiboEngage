@@ -656,8 +656,7 @@ groupdetails :state.groupdetails,
         errorMessage:'Canned Response deleted successfully',
         agents : state.agents,
         deptagents :state.deptagents,
-         responses : state.responses,
-
+    
         chatlist: state.chatlist,
          customerid : state.customerid,
          customerchat : state.customerchat,

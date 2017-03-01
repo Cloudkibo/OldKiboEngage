@@ -223,8 +223,8 @@ export function updateStatus(req, res) {
 
 
 export function assignToAgent(req, res) {
-  //console.log('assignToAgent is called');
-  //console.log(req.body);
+  console.log('assignToAgent is called');
+  console.log(req.body);
   var token = req.headers.authorization;
 
 
@@ -241,9 +241,9 @@ export function assignToAgent(req, res) {
 
     function callback(error, response, body) {
         //console.log(error);
-        //console.log(response.statusCode);
+        console.log(response.statusCode);
 
-        //console.log(body);
+        console.log(body);
 
        if(!error && response.statusCode == 200)
        {
@@ -268,7 +268,7 @@ export function assignToAgent(req, res) {
        }
        else
        {
-           res.sendStatus(422);
+           //res.sendStatus(422);
            return res.status(422).json({statusCode : 422 ,message:'failed'});
 
        }
