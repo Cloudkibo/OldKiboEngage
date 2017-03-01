@@ -124,7 +124,7 @@ class CompanySettings extends Component {
             <div className="portlet-body form">
 
             {this.props.companysettings &&
-                <form onSubmit={this.onSubmit} className ="form-horizontal form-bordered css-form">
+                <form  className ="form-horizontal form-bordered css-form">
                   <div className="form-body">
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Max number of Teams</label>
