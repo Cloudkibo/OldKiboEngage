@@ -13,37 +13,38 @@ import { bindActionCreators } from 'redux';
 
 var style1 = {
   'marginLeft': '-1.75px',
-  'width': '782px', 
+  'width': '782px',
   'height': '94px',
 }
 class CompanySettings extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
-   
+
     const usertoken = auth.getToken();
     console.log('componentWillMount is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getcompanysettings(usertoken,props.userdetails.uniqueid);
       }
-      
+
         super(props, context);
         this.onSubmit = this.onSubmit.bind(this);
-  
-   
 
-   
-    
+
+
+
+
   }
 
   onSubmit(event)
     {
+      if(this.props.userdetails.isAdmin === "Yes"){
        const usertoken = auth.getToken();
        event.preventDefault();
        if(confirm("Are you sure you want to update company settings?")){
@@ -73,25 +74,29 @@ class CompanySettings extends Component {
 
                   this.props.updatesettings(companyprofile,usertoken);
                 }
+              }
+              else {
+                alert("You can not update company settings. Only admin has the access to do it.")
+              }
     }
 
 
-   
- 
+
+
 
   render() {
     const token = auth.getToken()
     console.log(token)
-    
+
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container">
 
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-           
+
             <div className="page-content">
               <div className="row">
                 <div className="col-md-12">
@@ -100,22 +105,22 @@ class CompanySettings extends Component {
                       <li>
                         <i className="fa fa-home"/>
                         <Link to="/dashboard"> Dashboard </Link>
-                       
-                      </li>                  
+
+                      </li>
                       <li>
                         <Link to="/companysettings"> Company Settings </Link>
-                      </li>               
-      
+                      </li>
+
                     </ul>
-                 
-         
+
+
             <div className="portlet box green-meadow">
             <div className="portlet-title">
               <div className="caption">
                 <i className="fa fa-cogs"/>
                    Company settings
               </div>
-            </div>       
+            </div>
             <div className="portlet-body form">
 
             {this.props.companysettings &&
@@ -123,7 +128,7 @@ class CompanySettings extends Component {
                   <div className="form-body">
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Max number of Teams</label>
-                                                
+
                                                 <div className="col-md-9">
                                                   <div id="spinner1">
                                                     <div className="input-group input-small">
@@ -132,12 +137,12 @@ class CompanySettings extends Component {
                                                   </div>
                                                 </div>
                                               </div>
-                                              
+
 
 
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Max number of Channels per team</label>
-                                                
+
                                                 <div className="col-md-9">
                                                   <div id="spinner1">
                                                     <div className="input-group input-small">
@@ -283,9 +288,9 @@ class CompanySettings extends Component {
                                                   <textarea id="maxlength_textarea" ref= "abandonedscheduleemail1" defaultValue={this.props.companysettings.abandonedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea>
                                                 </div>
                                               </div>
-                                              
+
                                               <div className="hide">
-                                             
+
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Email Template 2 (Reschedule Abandoned Call)</label>
                                                 <div className="col-md-9">
@@ -298,7 +303,7 @@ class CompanySettings extends Component {
                                                   <textarea id="maxlength_textarea" ref="abandonedscheduleemail3" defaultValue={this.props.companysettings.abandonedscheduleemail3} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
                                                 </div>
                                               </div>
-                                             
+
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Email Template 2 (Reschedule Resolved Call)</label>
                                                 <div className="col-md-9">
@@ -330,7 +335,7 @@ class CompanySettings extends Component {
                                                 </div>
                                               </div>
                                               </div>
-                                           
+
                                                {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "danger" &&
                                                  <div className = "alert alert-danger"><span>{this.props.errorMessageProfile.message}</span></div>
                                               }
@@ -338,16 +343,16 @@ class CompanySettings extends Component {
                                               {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "success" &&
                                                  <div className = "alert alert-success"><span>{this.props.errorMessageProfile.message}</span></div>
                                               }
-                                           
+
                                               <div className="form-actions">
-                                                      <button type="submit" className="btn green btn-send">Save</button>
-                                                      <Link to='/dashboard' className="btn default"> Back </Link> 
+                                                      <button type="submit" className="btn green btn-send" onClick={this.onSubmit}>Save</button>
+                                                      <Link to='/dashboard' className="btn default"> Back </Link>
                                               </div>
 
-                                            
-                                            
+
+
                                               <br/>
-                                             </div> 
+                                             </div>
                                   </form>
                                 }
                      </div>
@@ -357,15 +362,15 @@ class CompanySettings extends Component {
         </div>
       </div>
       </div>
-      </div> 
-      
+      </div>
+
   )
   }
 }
 
 
 function mapStateToProps(state) {
-  
+
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
@@ -380,7 +385,7 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  
+
   return bindActionCreators({getcompanysettings:getcompanysettings,updatesettings:updatesettings}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(CompanySettings);
