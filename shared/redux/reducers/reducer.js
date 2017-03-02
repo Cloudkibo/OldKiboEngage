@@ -40,28 +40,10 @@ const dashboard = (state =dashboardState, action) => {
        };
 
       return {
-
+        ...state,
         team: action.team,
-        userdetails: state.userdetails,
-        teamdetails:state.teamdetails,
-        agents : state.agents,
-        deptagents :state.deptagents,
         newagents:agentid,
-        channels : state.channels,
-        chatlist: state.chatlist,
-        customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,
-         yoursocketid : state.yoursocketid,
-         news:state.news,
-         groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
-         responses : state.responses,
-         customers:state.customers,
+       
 
       };
 
@@ -78,827 +60,266 @@ const dashboard = (state =dashboardState, action) => {
        };
 
       return {
+        ...state,
         group: action.group,
-        userdetails: state.userdetails,
-        teamdetails:state.teamdetails,
-        agents : state.agents,
-        groupagents : state.groupagents,
-        deptagents :state.deptagents,
-         responses : state.responses,
         newagents:agentid,
-        channels : state.channels,
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,
-         yoursocketid : state.yoursocketid,
-         news:state.news,
-         groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
+        
 
       };
 
       case ActionTypes.ADD_SELECTED_PAGE :
       return {
-        group: state.group,
-        userdetails: state.userdetails,
-        teamdetails:state.teamdetails,
-        agents : state.agents,
-        groupagents : state.groupagents,
-        deptagents :state.deptagents,
-         responses : state.responses,
-        newagents:agentid,
-        channels : state.channels,
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,
-         yoursocketid : state.yoursocketid,
-         news:state.news,
-         groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
-         fbpage:action.fbpage,
+      
+
+        ...state,
+        fbpage:action.fbpage,
 
       };
 
 
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
-        userdetails: state.userdetails,
-        teamdetails:state.teamdetails,
-        agents : state.agents,
-        deptagents :state.deptagents,
+        ...state,
         agent: state.agents.filter((agent) => agent._id == action.id),
-        channels : state.channels,
-        onlineAgents : state.onlineAgents,
-        yoursocketid : state.yoursocketid,
-        news:state.news,
-        groupagents : state.groupagents,
-        groupdetails :state.groupdetails,
-         responses : state.responses,
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-
+        
       };
 
     case ActionTypes.ADD_SELECTED_CHANNEL :
       return {
-        userdetails: state.userdetails,
-        teamdetails:state.teamdetails,
-        agents : state.agents,
-        channels : state.channels,
-        deptagents :state.deptagents,
+       ...state,
         channel: state.channels.filter((channel) => channel._id == action.id),
-        customers : state.customers,
-         responses : state.responses,
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-
+       
       };
     case ActionTypes.ADD_SELECTED_RESPONSE :
       return {
-        userdetails: state.userdetails,
-        teamdetails:state.teamdetails,
-        agents : state.agents,
-        deptagents :state.deptagents,
-        channels : state.channels,
-        responses : state.responses,
+       ...state,
         response: state.responses.filter((response) => response._id == action.id),
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
-
+      
       };
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
           return{
-            userdetails:action.user,
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
+            ...state,
+             userdetails:action.user,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : action.customerchat,
-             customerchatold : action.customerchat,
-              responses : state.responses,
-             chatlist : state.chatlist,
-              mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
+            
 
-
-};
+    };
    case ActionTypes.ADD_AGENTS:
           console.log(action.agents)
           return{
-            userdetails:state.userdetails,
+            
+            ...state,
             agents:action.agents,
-            deptagents :state.deptagents,
-            teamdetails:state.teamdetails,
-            channels : state.channels,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
-            news:state.news,
-            groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-           customerid : state.customerid,
-           customerchat : state.customerchat,
-           customerchatold : state.customerchatold,
-           customerchat_selected : state.customerchat_selected,
-           new_message_arrived_rid : state.new_message_arrived_rid,
-           userchats : state.userchats,
-            responses : state.responses,
             };
 
 
   case ActionTypes.ADD_DEPTAGENTS:
           console.log(action.agents)
           return{
-            userdetails:state.userdetails,
-            agents:state.agents,
+            ...state,
             deptagents :action.agents,
-            teamdetails:state.teamdetails,
-            channels : state.channels,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-              responses : state.responses,
-              customers:state.customers,
-
-             team: state.team,
+           
              newagents : [],
 
 
           };
           case ActionTypes.ADD_GROUPAGENTS:
           return{
-            userdetails:state.userdetails,
-            agents:state.agents,
-            deptagents : state.deptagents,
+            
+            ...state,
             groupagents : action.agents,
-            groupdetails : state.groupdetails,
-            teamdetails:state.teamdetails,
-            channels : state.channels,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
-            news:state.news,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             team: state.team,
-             group : state.group,
-             newagents : action.agents,
-             responses : state.responses,
-
-
-
+            newagents : action.agents,
+            
           };
 
     case ActionTypes.ADD_NEWS:
           return{
+            ...state,
             news : action.news,
-            myteamdetails:state.myteamdetails,
-            userdetails:state.userdetails,
-            agents:state.agents,
-             fbchatSelected:state.fbchatSelected,
-            deptagents : state.deptagents,
-            groupagents : state.groupagents,
-            groupdetails : state.groupdetails,
-            teamdetails:state.teamdetails,
-            sessionsummary : state.sessionsummary,
-            channels : state.channels,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             fbpages:state.fbpages,
-             team: state.team,
-            fbcustomers:state.fbcustomers,
-            fbchats:state.fbchats,
-             group : state.group,
-             newagents : state.newagents,
-             news : action.news,
-             notifications:state.notifications,
-             sessionsummaryfiltered : state.sessionsummaryfiltered,
-             sessionsummarydetail:state.sessionsummarydetail,
-             customers:state.customers,
-             resolvedsessions:state.resolvedsessions,
-             newsessions:state.newsessions,
-             assignedsessions : state.assignedsessions,
-             channelwisestats:state.channelwisestats,
-             deptwisestats:state.deptwisestats,
-
-             channelwisestats : state.channelwisestats,
-            platformwisestats : state.platformwisestats,
-            pagewisestats : state.pagewisestats,
-            mobilewisestats : state.mobilewisestats,
-            countrywisestats : state.countrywisestats,
-            channels:(state.channels),
-            customerwisestats : state.customerwisestats,
-            agentwisestats : state.agentwisestats,
-            agentwisenotifications : state.agentwisenotifications,
-            responses : state.responses,
-            companysettings : state.companysettings,
-
+           
              }
 
     case ActionTypes.ADD_FB_PAGES:
           return{
-            news : state.news,
-            userdetails:state.userdetails,
-            agents:state.agents,
-            deptagents : state.deptagents,
-            groupagents : state.groupagents,
-            groupdetails : state.groupdetails,
-            teamdetails:state.teamdetails,
-            sessionsummary : state.sessionsummary,
-            channels : state.channels,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-           customerid : state.customerid,
-           customerchat : state.customerchat,
-           customerchatold : state.customerchatold,
-           customerchat_selected : state.customerchat_selected,
-           new_message_arrived_rid : state.new_message_arrived_rid,
-           userchats : state.userchats,
-           team: state.team,
-           group : state.group,
-           newagents : state.newagents,
-           news : action.news,
-           notifications:state.notifications,
-           sessionsummaryfiltered : state.sessionsummaryfiltered,
-           sessionsummarydetail:state.sessionsummarydetail,
-           customers:state.customers,
-           resolvedsessions:state.resolvedsessions,
-           newsessions:state.newsessions,
-           assignedsessions : state.assignedsessions,
-           channelwisestats:state.channelwisestats,
-           deptwisestats:state.deptwisestats,
-
-           channelwisestats : state.channelwisestats,
-          platformwisestats : state.platformwisestats,
-          pagewisestats : state.pagewisestats,
-          mobilewisestats : state.mobilewisestats,
-          countrywisestats : state.countrywisestats,
-          channels:(state.channels),
-          customerwisestats : state.customerwisestats,
-          agentwisestats : state.agentwisestats,
-          agentwisenotifications : state.agentwisenotifications,
-          responses : state.responses,
-          companysettings : state.companysettings,
+          ...state, 
           fbpages : action.fbpages,
 
              }
    case ActionTypes.ADD_TEAMS:
           console.log(action.teams)
           return{
+            ...state,
             teamdetails:action.teams,
-            userdetails: state.userdetails,
-            agents : state.agents,
             newagents: [],
-            deptagents :state.deptagents,
-            channels : state.channels,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
-             news:state.news,
-             groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-              responses : state.responses,
-              customers:state.customers,
-
+            
 
       };
 
 
     case ActionTypes.ADD_GROUPS:
           return{
-            teamdetails:state.teamdetails,
+            ...state,
             groupdetails : action.groups,
-            userdetails: state.userdetails,
-            agents : state.agents,
-            deptagents :state.deptagents,
-            channels : state.channels,
-            groupagents : state.groupagents,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
-             news:state.news,
-             responses:state.responses,
-
-
+    
       };
 
    case ActionTypes.ADD_CHANNELS:
-          console.log(action.channels)
           return{
-            teamdetails:state.teamdetails,
-            userdetails: state.userdetails,
-            agents : state.agents,
-            deptagents :state.deptagents,
+            ...state,
             channels : action.channels,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
-            news:state.news,
-            groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-              responses : state.responses,
-              customers:state.customers,
+       
 
       };
 
     case ActionTypes.ADD_RESPONSES:
-         console.log(action.responses)
           return{
-            teamdetails:state.teamdetails,
-            userdetails: state.userdetails,
-            agents : state.agents,
-            deptagents :state.deptagents,
-            channels : state.channels,
+            ...state,
             responses : action.responses,
-            customers : state.customers,
-            serverresponse : state.serverresponse,
-            chatlist: state.chatlist,
-           customerid : state.customerid,
-           customerchat : state.customerchat,
-           customerchatold : state.customerchatold,
-           customerchat_selected : state.customerchat_selected,
-           new_message_arrived_rid : state.new_message_arrived_rid,
-           userchats : state.userchats,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
-            news:state.news,
-            groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-            fbcustomers:state.fbcustomers,
-            fbchats:state.fbchats,
-            fbchatSelected:state.fbchatSelected,
+           
 
 
       };
 
     case ActionTypes.ADD_NEW_RESPONSE:
-         console.log(action.response)
+        // console.log(action.response)
           return{
-            teamdetails:state.teamdetails,
-            userdetails: state.userdetails,
-            agents : state.agents,
-            deptagents :state.deptagents,
-            channels : state.channels,
+            ...state,
             responses : [action.response,...state.responses],
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-
+            
       };
     case ActionTypes.ADD_MY_TEAMS:
           return{
-            teamdetails:state.teamdetails,
+            ...state,
             myteamdetails:action.myteams,
-            userdetails: state.userdetails,
-            agents : state.agents,
-            deptagents :state.deptagents,
-            channels : state.channels,
-            responses : state.responses,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-
+          
       };
     case ActionTypes.ADD_TEAM:
     console.log(action.deptname);
       return {
+        ...state,
         teamdetails: [{
           deptname: action.deptname,
           deptdescription: action.deptdescription,
 
         }, ...state.teamdetails],
-         userdetails: state.userdetails,
+        
          errorMessage:'Team created successfully',
-         agents : state.agents,
-         deptagents :state.deptagents,
-         channels : state.channels,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-          chatlist: state.chatlist,
-           customerid : state.customerid,
-           customerchat : state.customerchat,
-           customerchatold : state.customerchatold,
-           customerchat_selected : state.customerchat_selected,
-           new_message_arrived_rid : state.new_message_arrived_rid,
-           userchats : state.userchats,
-            responses : state.responses,
-
+        
         };
 
 
      case ActionTypes.DELETE_TEAM :
       return {
+        ...state,
         teamdetails: state.teamdetails.filter((team) => team._id !== action.team._id),
-        customers:state.customers,
-        userdetails: state.userdetails,
+       
         errorMessage:'Team deleted successfully',
-        agents : state.agents,
-        channels : state.channels,
-        deptagents :state.deptagents,
-
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-          groupdetails :state.groupdetails,
-           responses : state.responses,
-
-
+        
       };
 
        case ActionTypes.DELETE_GROUP :
       return {
-        teamdetails: state.teamdetails,
-        groupdetails : state.groupdetails.filter((group) => group._id !== action.group._id),
-        userdetails: state.userdetails,
+        ...state,
+         groupdetails : state.groupdetails.filter((group) => group._id !== action.group._id),
         errorMessage:'Group deleted successfully',
-        agents : state.agents,
-        channels : state.channels,
-        deptagents :state.deptagents,
-        groupagents : state.groupagents,
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
-         responses : state.responses,
-
+       
       };
 
 
       case ActionTypes.DELETE_CHANNEL :
       return {
-        teamdetails: state.teamdetails,
+        ...state,
         channels : state.channels.filter((channel) => channel._id !== action.channel._id),
-        userdetails: state.userdetails,
         errorMessage:'Message channel deleted successfully',
-        agents : state.agents,
-        customers:state.customers,
-        deptagents :state.deptagents,
-         responses : state.responses,
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
-
-
+        
       };
 
       case ActionTypes.DELETE_RESPONSE :
       return {
-        teamdetails: state.teamdetails,
-        channels : state.channels,
+        ...state,
+        
         responses : state.responses.filter((response) => response._id != action.response._id),
-        userdetails: state.userdetails,
         errorMessage:'Canned Response deleted successfully',
-        agents : state.agents,
-        deptagents :state.deptagents,
-    
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
-
-
-
-
+        
       };
 
 
        case ActionTypes.DELETE_SELECTED_PAGE :
       return {
-        teamdetails: state.teamdetails,
-        channels : state.channels,
+        ...state,
+        
         fbpages:state.fbpages.filter((fbpage)=> fbpage.pageid != action.fbpage.pageid),
-        responses : state.responses,
-        userdetails: state.userdetails,
         errorMessage:'Facebook Page Info deleted successfully',
-        agents : state.agents,
-        deptagents :state.deptagents,
-         responses : state.responses,
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-         onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-         groupdetails :state.groupdetails,
-
-
-
-
+        
       };
       case ActionTypes.DELETE_AGENT :
       return {
-        teamdetails: state.teamdetails,
-        userdetails: state.userdetails,
+        ...state,
         errorMessage:'Agent deleted successfully',
         agents : state.agents.filter((agent) => agent._id !== action.agent._id),
-        deptagents :state.deptagents,
-        channels : state.channels,
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
+        
       };
 
       case ActionTypes.CREATEGROUP_FAILURE:
       return {
-         teamdetails: state.teamdetails,
-         userdetails: state.userdetails,
+         ...state,
+         
          errorMessage:action.message,
-         agents : state.agents,
-         channels : state.channels,
-         deptagents :state.deptagents,
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-
-
+         
         };
 
       case ActionTypes.EDITGROUP_RESPONSE:
       return {
-         teamdetails: state.teamdetails,
-         userdetails: state.userdetails,
+         ...state,
          errorMessage:action.message,
-         agents : state.agents,
-         deptagents :state.deptagents,
-         channels : state.channels,
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-
+        
         };
 
       case ActionTypes.EDITAGENT_RESPONSE:
       return {
-         teamdetails: state.teamdetails,
-         userdetails: state.userdetails,
+        ...state,
          errorMessage:action.message,
-         agents : state.agents,
-         deptagents :state.deptagents,
-         agent: state.agent,
-         channels : state.channels,
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-
+       
         };
 
 
 
       case ActionTypes.INVITE_AGENT_RESPONSE:
       return {
-         teamdetails: state.teamdetails,
-         userdetails: state.userdetails,
+        ...state,
          errorMessage:action.message,
-         agents : state.agents,
-         deptagents :state.deptagents,
-         agent: state.agent,
-         channels : state.channels,
-
-
-        chatlist: state.chatlist,
-         customerid : state.customerid,
-         customerchat : state.customerchat,
-         customerchatold : state.customerchatold,
-         customerchat_selected : state.customerchat_selected,
-         new_message_arrived_rid : state.new_message_arrived_rid,
-         userchats : state.userchats,
-
+         
         };
 
         case ActionTypes.SHOW_SPECIFIC_CHAT:
         return {
-           teamdetails: state.teamdetails,
-           userdetails: state.userdetails,
+          ...state,
            chat:action.chat,
-           agents : state.agents,
-           deptagents :state.deptagents,
-           channels : state.channels,
-           responses : state.responses,
-           chatlist: state.chatlist,
-           customerid : state.customerid,
-           customerchat : state.customerchat,
-           customerchatold : state.customerchatold,
-           customerchat_selected : state.customerchat_selected,
-           new_message_arrived_rid : state.new_message_arrived_rid,
-           userchats : state.userchats,
-
-
+           
           };
 
         case ActionTypes.ADD_UPDATE_PROFILE_WARNINGS:
         return {
-           teamdetails: state.teamdetails,
-           companysettings:state.companysettings,
-           userdetails: state.userdetails,
-           chat:state.chat,
-           agents : state.agents,
-           deptagents :state.deptagents,
-           channels : state.channels,
-           responses : state.responses,
-           chatlist: state.chatlist,
-           customerid : state.customerid,
-           customerchat : state.customerchat,
-           customerchatold : state.customerchatold,
-           customerchat_selected : state.customerchat_selected,
-           new_message_arrived_rid : state.new_message_arrived_rid,
-           userchats : state.userchats,
+          ...state,
            errorMessageProfile : action.errormessage,
-           fbpage:state.fbpage,
-
+           
 
           };
           case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
+
           return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+            ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             userchats : state.userchats,
-             responses : state.responses,
-             chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
-
+             
             };
           case ActionTypes.SHOW_ALL_CHAT:
            return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+            ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              customerchat : action.customerchat,
              customerchatold : action.customerchat,
-             responses : state.responses,
              serverresponse : action.serverresponse,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             resolvedsessions : state.resolvedsessions,
-             assignedsessions : state.assignedsessions,
-            resolvedsocketsessions:state.resolvedsocketsessions,
-            groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-
             };
 
 
@@ -911,33 +332,9 @@ groupdetails :state.groupdetails,
             cc = [action.tempMessage]
            }
            return {
-
+            ...state,
              userchats : cc,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             responses : state.responses,
-             serverresponse : state.serverresponse,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
-             news:state.news,
-             groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             resolvedsessions : state.resolvedsessions,
-             assignedsessions : state.assignedsessions,
-            resolvedsocketsessions:state.resolvedsocketsessions,
-            groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
             tempMessage : action.tempMessage,
             ismessageSaved : action.ismessageSaved,
 
@@ -945,26 +342,8 @@ groupdetails :state.groupdetails,
 
             case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
            return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+            ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
-             chatlist : state.chatlist,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             resolvedsessions : state.resolvedsessions,
-             assignedsessions : state.assignedsessions,
-            resolvedsocketsessions:state.resolvedsocketsessions,
             mobileuserchat : action.mobileuserchat,
 
             };
@@ -972,216 +351,65 @@ groupdetails :state.groupdetails,
 
             case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
            return {
+            ...state,
              userchats : action.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
-             chatlist : state.chatlist,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             resolvedsessions : state.resolvedsessions,
-             assignedsessions : state.assignedsessions,
-            resolvedsocketsessions:state.resolvedsocketsessions,
-            mobileuserchat : state.mobileuserchat,
-
+             
             };
 
            case ActionTypes.SHOW_MY_PICKED_SESSIONS:
            return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
+            ...state,
              customerchatold : action.customerchat,
-             responses : state.responses,
              mypickedsessions : action.mypickedsessions,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-
+             
             };
 
           case ActionTypes.SHOW_ASSIGNED_SESSIONS:
              return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
+              ...state,
              assignedsessions : action.assignedsessions,
-             chatlist : state.chatlist,
-            mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-
             };
 
             case ActionTypes.SHOW_RESOLVED_SESSIONS:
             return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
+             ...state, 
              resolvedsessions : action.resolvedsessions,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : state.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
-             pagewisestats : state.pagewisestats,
-             countrywisestats : state.countrywisestats,
-             mobilewisestats : state.mobilewisestats,
-             customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
-
-
+           
             };
 
             case ActionTypes.SHOW_NEW_SESSIONS:
              return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
+              ...state,
              newsessions : action.newsessions,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
+             
             };
 
 
              case ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS:
              return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
+              ...state,
              assignedsessions : action.assignedsessions,
              assignedsocketsessions : action.assignedsocketsessions,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
+             
             };
 
 
              case ActionTypes.SHOW_NEW_SOCKET_SESSIONS:
              return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
+              ...state,
              newsessions : action.newsessions,
              newsocketsessions : action.newsocketsessions,
-
-             assignedsessions : state.assignedsessions,
-             assignedsocketsessions : state.assignedsocketsessions,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
 
             };
 
 
             case ActionTypes.SHOW_RESOLVED_SOCKET_SESSIONS:
              return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             responses : state.responses,
+              ...state,
              resolvedsessions : action.resolvedsessions,
              resolvedsocketsessions : action.resolvedsocketsessions,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
+             
             };
 
 
@@ -1189,24 +417,10 @@ groupdetails :state.groupdetails,
 
           case ActionTypes.SET_SOCKET_ID:
           return {
-             userchats : state.userchats,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             groupdetails : state.groupdetails,
+            ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              customerchat : action.customerchat,
              customerchatold : action.customerchat,
-             responses : state.responses,
-             news : state.news,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             onlineAgents : state.onlineAgents,
              yoursocketid : action.yoursocketid
 
 
@@ -1221,169 +435,52 @@ groupdetails :state.groupdetails,
              usChat = state.userchats
           }
            return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             responses : state.responses,
-
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-
+            ...state,
             userchats : usChat,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,
-            news:state.news,groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-
-
+            
             };
 
             case ActionTypes.FILTER_BY_STATUS:
             return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+              ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              customerchat : action.filtered,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-              responses : state.responses,
-
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-            new_message_arrived_rid : state.new_message_arrived_rid,
-            userchats : state.userchats,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-
+           
             };
              case ActionTypes.FILTER_BY_DEPT:
             return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+              ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              customerchat : action.filtered,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-              responses : state.responses,
-
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-
-
+            
             };
 
               case ActionTypes.FILTER_BY_CHANNEL:
             return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+              ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              customerchat : action.filtered,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             responses : state.responses,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
+            
             };
             case ActionTypes.FILTER_BY_AGENT:
             return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+              ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              customerchat : action.filtered,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             responses : state.responses,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
+            
             };
             case ActionTypes.SELECT_CUSTOMERCHAT:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
+              ...state,
              customerchat_selected : action.customerchat_selected[0],
              new_message_arrived_rid : action.new_message_arrived_rid,
-             userchats : state.userchats,
-             responses : state.responses,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-
-
-
+           
             };
 
 
           case ActionTypes.FB_CHAT_SELECTED:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             responses : state.responses,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             fbcustomers:state.fbcustomers,
-             fbchats:state.fbchats,
+              ...state,
              fbchatSelected:action.fbchatSelected,
 
 
@@ -1393,25 +490,7 @@ groupdetails :state.groupdetails,
 
           case ActionTypes.FB_CHAT_ADDED:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             responses : state.responses,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             fbcustomers:state.fbcustomers,
+              ...state,
              fbchats:action.fbchats,
              fbchatSelected:action.fbchatSelected,
 
@@ -1421,55 +500,13 @@ groupdetails :state.groupdetails,
 
           case ActionTypes.FB_CHAT_STATUS:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             responses : state.responses,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             fbcustomers:state.fbcustomers,
+              ...state,
              fbchats:action.fbchats,
-             fbchatSelected:state.fbchatSelected,
-
-
-
             };
 
           case ActionTypes.FBCHAT_SENT_TO_AGENT:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage: state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             responses : state.responses,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             fbcustomers:state.fbcustomers,
-             fbchats:state.fbchats,
-             fbchatSelected:state.fbchatSelected,
+             ...state,
              status:action.status
 
 
@@ -1477,77 +514,25 @@ groupdetails :state.groupdetails,
             };
           case ActionTypes.ADD_SESSION:
            return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+            ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              customerchat : action.customerchat,
              customerchatold : [action.customerchat,...state.customerchatold],
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers:state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             responses : state.responses,
-              onlineAgents : state.onlineAgents,
-              yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-              groupdetails :state.groupdetails,
-
-
-
+           
             };
 
           case ActionTypes.ONLINE_AGENTS:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             customers: state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             responses : state.responses,
+              ...state,
              onlineAgents : action.onlineAgents,
-             yoursocketid : state.yoursocketid,
-             news:state.news,
-             groupagents : state.groupagents,
-             groupdetails : state.groupdetails,
-
             };
 
           case ActionTypes.SHOW_CHAT_HISTORY:
            return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+            ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
              chatlist : action.chatlist,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-            new_message_arrived_rid : state.new_message_arrived_rid,
-            channels : state.channels,
-            customers : state.customers,
-            userchats : state.userchats,
-            responses : state.responses,
-            onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
-            groupdetails:state.groupdetails,
-            groupagents:state.groupagents,
-            mobileuserchat : state.mobileuserchat
-
-
+          
             };
 
           case ActionTypes.ADD_CHAT_MESSAGE:
@@ -1566,215 +551,69 @@ groupdetails :state.groupdetails,
            else{
             cc = [action.message]
            }
-           return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
 
+           return {
+            ...state,
+             errorMessage:action.chat_error,
              chatlist: chatlistt,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
              new_message_arrived_rid : action.ch,
              userchats :cc,
-              responses : state.responses,
-
-             channels : state.channels,
-             customers : state.customers,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,
-             groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-
+           
             };
 
           case ActionTypes.CHAT_SENT_TO_AGENT:
 
            return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+            ...state,
              errorMessage:action.status,
-             agents : state.agents,
-             deptagents :state.deptagents,
-
-             chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats :state.userchats,
-             responses : state.responses,
-
-             channels : state.channels,
-             customers : state.customers,
-             onlineAgents : state.onlineAgents,
-             yoursocketid : state.yoursocketid,
-             news:state.news,
-             groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             mobileuserchat:state.mobileuserchat,
-
+            
             };
           case ActionTypes.SHOW_NOTIFICATIONS:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+              ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
              notifications:action.notifications,
-             customers:state.customers,
-               onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-            chatlist: state.chatlist,
-             customerid : state.customerid,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-
+            
             };
              case ActionTypes.CONFIRM_NOTIFICATION:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             notifications:state.notifications,
+             ...state, 
              addednotification : action.msg,
              errorMessage :action.msg,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-              groupdetails :state.groupdetails,
-              chatlist: state.chatlist,
-               customerid : state.customerid,
-               customerchat : state.customerchat,
-               customerchatold : state.customerchatold,
-               customerchat_selected : state.customerchat_selected,
-               new_message_arrived_rid : state.new_message_arrived_rid,
-               userchats : state.userchats,
-
-
+             
             };
              case ActionTypes.DELETE_NOTIFICATION :
               return {
-                teamdetails: state.teamdetails,
-                channels : state.channels,
-                responses : state.responses,
-                userdetails: state.userdetails,
+                ...state,
                 errorMessage:'Notification deleted successfully',
-                agents : state.agents,
-                deptagents :state.deptagents,
                 notifications : state.notifications.filter((notification) => notification._id !== action.notification._id),
-
-
-                chatlist: state.chatlist,
-                 customerid : state.customerid,
-                 customerchat : state.customerchat,
-                 customerchatold : state.customerchatold,
-                 customerchat_selected : state.customerchat_selected,
-                 new_message_arrived_rid : state.new_message_arrived_rid,
-                 userchats : state.userchats,
-                   onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
 
               };
               case ActionTypes.ADD_CUSTOMER :
               return {
-
+                ...state,
                 errorMessage:'Customer created successfully',
 
 
               };
             case ActionTypes.ADD_SELECTED_NOTIFICATION :
             return {
-              userdetails: state.userdetails,
-              teamdetails:state.teamdetails,
-              agents : state.agents,
-              channels : state.channels,
-              deptagents :state.deptagents,
-              notifications : state.notifications,
+              ...state,
               notification: state.notifications.filter((notification) => notification._id == action.id),
-              customers:state.customers,
-
-              chatlist: state.chatlist,
-               customerid : state.customerid,
-               customerchat : state.customerchat,
-               customerchatold : state.customerchatold,
-               customerchat_selected : state.customerchat_selected,
-               new_message_arrived_rid : state.new_message_arrived_rid,
-               userchats : state.userchats,
-                 onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
 
 
             };
             case ActionTypes.SHOW_CUSTOMERS:
              return {
-             teamdetails: state.teamdetails,
-             team : state.team,
-             channel : state.channel,
-             userdetails: state.userdetails,
+              ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
              customers : action.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             agents:state.agents,
-
             };
 
             case ActionTypes.SHOW_COUNTRY_NAME:
              return {
-             teamdetails: state.teamdetails,
-             team : state.team,
-             channel : state.channel,
-             userdetails: state.userdetails,
+              ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-             groupdetails :state.groupdetails,
-             agents:state.agents,
              countryname:action.countryinfo.country_name,
 
             };
@@ -1782,405 +621,90 @@ groupdetails :state.groupdetails,
 
             case ActionTypes.CHANNEL_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+               ...state, 
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-              responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-              customerchatold : state.customerchatold,
-
-              customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
              channelwisestats : action.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
-             countrywisestats : state.countrywisestats,
-             pagewisestats : state.pagewisestats,
-             mobilewisestats : state.mobilewisestats,
-
-             customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
-
-
-
+             
             };
 
 
             case ActionTypes.CUSTOMER_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+                ...state,
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-              responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-              customerchatold : state.customerchatold,
-
-              customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : state.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
-             countrywisestats : state.countrywisestats,
-             pagewisestats : state.pagewisestats,
-             mobilewisestats : state.mobilewisestats,
              customerwisestats : action.customerwisestats,
-
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
 
             };
 
 
             case ActionTypes.AGENT_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-              responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : state.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
-             countrywisestats : state.countrywisestats,
-             pagewisestats : state.pagewisestats,
-             mobilewisestats : state.mobilewisestats,
-             customerwisestats : state.customerwisestats,
+                ...state,
+            
              agentwisestats : action.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
-
             };
 
 
              case ActionTypes.AGENT_NOTIFICATIONS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-              responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : state.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
-             countrywisestats : state.countrywisestats,
-             pagewisestats : state.pagewisestats,
-             mobilewisestats : state.mobilewisestats,
-
-             customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
+                ...state,
+           
              agentwisenotifications : action.agentwisenotifications,
 
             };
             case ActionTypes.MOBILE_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-              responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-              customerchatold : state.customerchatold,
-
-              customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : action.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
-             countrywisestats : state.countrywisestats,
-             pagewisestats : state.pagewisestats,
+                ...state,
+          
              mobilewisestats : action.mobilewisestats,
-
-             customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
 
             };
 
 
             case ActionTypes.PAGE_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : state.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
+                ...state,
+           
              pagewisestats : action.pagewisestats,
-             countrywisestats : state.countrywisestats,
-              mobilewisestats : state.mobilewisestats,
-
-
-            customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
             };
 
             case ActionTypes.DEPT_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : state.channelwisestats,
+                ...state,
+          
              deptwisestats : action.deptwisestats,
-             platformwisestats : state.platformwisestats,
-              pagewisestats : state.pagewisestats,
-              countrywisestats : state.countrywisestats,
-                mobilewisestats : state.mobilewisestats,
-
-             customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
             };
 
 
 
             case ActionTypes.PLATFORM_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-             channelwisestats : state.channelwisestats,
-             deptwisestats : state.deptwisestats,
+                ...state,
+          
              platformwisestats : action.platformwisestats,
-             pagewisestats : state.pagewisestats,
-             countrywisestats : state.countrywisestats,
-             mobilewisestats : state.mobilewisestats,
-
-             customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
             };
 
             case ActionTypes.COUNTRY_STATS:
               return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
+                ...state,
+         
              errorMessage:action.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-             channelwisestats : state.channelwisestats,
-             deptwisestats : state.deptwisestats,
-             platformwisestats : state.platformwisestats,
-             pagewisestats : state.pagewisestats,
              countrywisestats : action.countrywisestats,
-             mobilewisestats : state.mobilewisestats,
-
-             customerwisestats : state.customerwisestats,
-             agentwisestats : state.agentwisestats,
-             agentwisenotifications : state.agentwisenotifications,
-
-
-
+            
             };
 
             case ActionTypes.SHOW_CHAT_SUMMARY:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-              responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-              customerchatold : state.customerchatold,
+              ...state,
+         
               sessionsummary : action.sessionsummary,
               sessionsummaryfiltered : action.sessionsummary,
-              customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
+         
             };
 
             case ActionTypes.ADD_SELECTED_SESSIONSUMMARY:
              return {
+              ...state,
              teamdetails: state.teamdetails,
              userdetails: state.userdetails,
              agents : state.agents,
