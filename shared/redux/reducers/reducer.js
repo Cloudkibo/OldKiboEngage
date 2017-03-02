@@ -40,7 +40,7 @@ const dashboard = (state =dashboardState, action) => {
        };
 
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         team: action.team,
         newagents:agentid,
        
@@ -60,7 +60,7 @@ const dashboard = (state =dashboardState, action) => {
        };
 
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         group: action.group,
         newagents:agentid,
         
@@ -71,7 +71,7 @@ const dashboard = (state =dashboardState, action) => {
       return {
       
 
-        ...state,
+        ...state,errorMessageProfile:'',
         fbpage:action.fbpage,
 
       };
@@ -79,27 +79,27 @@ const dashboard = (state =dashboardState, action) => {
 
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         agent: state.agents.filter((agent) => agent._id == action.id),
         
       };
 
     case ActionTypes.ADD_SELECTED_CHANNEL :
       return {
-       ...state,
+       ...state,errorMessageProfile:'',
         channel: state.channels.filter((channel) => channel._id == action.id),
        
       };
     case ActionTypes.ADD_SELECTED_RESPONSE :
       return {
-       ...state,
+       ...state,errorMessageProfile:'',
         response: state.responses.filter((response) => response._id == action.id),
       
       };
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
              userdetails:action.user,
              errorMessage:action.chat_error,
             
@@ -109,7 +109,7 @@ const dashboard = (state =dashboardState, action) => {
           console.log(action.agents)
           return{
             
-            ...state,
+            ...state,errorMessageProfile:'',
             agents:action.agents,
             };
 
@@ -117,7 +117,7 @@ const dashboard = (state =dashboardState, action) => {
   case ActionTypes.ADD_DEPTAGENTS:
           console.log(action.agents)
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             deptagents :action.agents,
            
              newagents : [],
@@ -127,7 +127,7 @@ const dashboard = (state =dashboardState, action) => {
           case ActionTypes.ADD_GROUPAGENTS:
           return{
             
-            ...state,
+            ...state,errorMessageProfile:'',
             groupagents : action.agents,
             newagents : action.agents,
             
@@ -135,21 +135,21 @@ const dashboard = (state =dashboardState, action) => {
 
     case ActionTypes.ADD_NEWS:
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             news : action.news,
            
              }
 
     case ActionTypes.ADD_FB_PAGES:
           return{
-          ...state, 
+          ...state,errorMessageProfile:'', 
           fbpages : action.fbpages,
 
              }
    case ActionTypes.ADD_TEAMS:
           console.log(action.teams)
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             teamdetails:action.teams,
             newagents: [],
             
@@ -159,14 +159,14 @@ const dashboard = (state =dashboardState, action) => {
 
     case ActionTypes.ADD_GROUPS:
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             groupdetails : action.groups,
     
       };
 
    case ActionTypes.ADD_CHANNELS:
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             channels : action.channels,
        
 
@@ -174,7 +174,7 @@ const dashboard = (state =dashboardState, action) => {
 
     case ActionTypes.ADD_RESPONSES:
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             responses : action.responses,
            
 
@@ -184,20 +184,20 @@ const dashboard = (state =dashboardState, action) => {
     case ActionTypes.ADD_NEW_RESPONSE:
         // console.log(action.response)
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             responses : [action.response,...state.responses],
             
       };
     case ActionTypes.ADD_MY_TEAMS:
           return{
-            ...state,
+            ...state,errorMessageProfile:'',
             myteamdetails:action.myteams,
           
       };
     case ActionTypes.ADD_TEAM:
     console.log(action.deptname);
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         teamdetails: [{
           deptname: action.deptname,
           deptdescription: action.deptdescription,
@@ -211,7 +211,7 @@ const dashboard = (state =dashboardState, action) => {
 
      case ActionTypes.DELETE_TEAM :
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         teamdetails: state.teamdetails.filter((team) => team._id !== action.team._id),
        
         errorMessage:'Team deleted successfully',
@@ -220,7 +220,7 @@ const dashboard = (state =dashboardState, action) => {
 
        case ActionTypes.DELETE_GROUP :
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
          groupdetails : state.groupdetails.filter((group) => group._id !== action.group._id),
         errorMessage:'Group deleted successfully',
        
@@ -229,7 +229,7 @@ const dashboard = (state =dashboardState, action) => {
 
       case ActionTypes.DELETE_CHANNEL :
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         channels : state.channels.filter((channel) => channel._id !== action.channel._id),
         errorMessage:'Message channel deleted successfully',
         
@@ -237,7 +237,7 @@ const dashboard = (state =dashboardState, action) => {
 
       case ActionTypes.DELETE_RESPONSE :
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         
         responses : state.responses.filter((response) => response._id != action.response._id),
         errorMessage:'Canned Response deleted successfully',
@@ -247,7 +247,7 @@ const dashboard = (state =dashboardState, action) => {
 
        case ActionTypes.DELETE_SELECTED_PAGE :
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         
         fbpages:state.fbpages.filter((fbpage)=> fbpage.pageid != action.fbpage.pageid),
         errorMessage:'Facebook Page Info deleted successfully',
@@ -255,7 +255,7 @@ const dashboard = (state =dashboardState, action) => {
       };
       case ActionTypes.DELETE_AGENT :
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
         errorMessage:'Agent deleted successfully',
         agents : state.agents.filter((agent) => agent._id !== action.agent._id),
         
@@ -263,7 +263,7 @@ const dashboard = (state =dashboardState, action) => {
 
       case ActionTypes.CREATEGROUP_FAILURE:
       return {
-         ...state,
+         ...state,errorMessageProfile:'',
          
          errorMessage:action.message,
          
@@ -271,14 +271,14 @@ const dashboard = (state =dashboardState, action) => {
 
       case ActionTypes.EDITGROUP_RESPONSE:
       return {
-         ...state,
+         ...state,errorMessageProfile:'',
          errorMessage:action.message,
         
         };
 
       case ActionTypes.EDITAGENT_RESPONSE:
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
          errorMessage:action.message,
        
         };
@@ -287,14 +287,14 @@ const dashboard = (state =dashboardState, action) => {
 
       case ActionTypes.INVITE_AGENT_RESPONSE:
       return {
-        ...state,
+        ...state,errorMessageProfile:'',
          errorMessage:action.message,
          
         };
 
         case ActionTypes.SHOW_SPECIFIC_CHAT:
         return {
-          ...state,
+          ...state,errorMessageProfile:'',
            chat:action.chat,
            
           };
@@ -309,13 +309,13 @@ const dashboard = (state =dashboardState, action) => {
           case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
 
           return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              
             };
           case ActionTypes.SHOW_ALL_CHAT:
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.customerchat,
              customerchatold : action.customerchat,
@@ -332,7 +332,7 @@ const dashboard = (state =dashboardState, action) => {
             cc = [action.tempMessage]
            }
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              userchats : cc,
              errorMessage:action.chat_error,
             tempMessage : action.tempMessage,
@@ -342,7 +342,7 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
             mobileuserchat : action.mobileuserchat,
 
@@ -351,7 +351,7 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE:
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              userchats : action.userchats,
              errorMessage:action.chat_error,
              
@@ -359,7 +359,7 @@ const dashboard = (state =dashboardState, action) => {
 
            case ActionTypes.SHOW_MY_PICKED_SESSIONS:
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              customerchatold : action.customerchat,
              mypickedsessions : action.mypickedsessions,
              
@@ -367,20 +367,20 @@ const dashboard = (state =dashboardState, action) => {
 
           case ActionTypes.SHOW_ASSIGNED_SESSIONS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              assignedsessions : action.assignedsessions,
             };
 
             case ActionTypes.SHOW_RESOLVED_SESSIONS:
             return {
-             ...state, 
+             ...state,errorMessageProfile:'', 
              resolvedsessions : action.resolvedsessions,
            
             };
 
             case ActionTypes.SHOW_NEW_SESSIONS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              newsessions : action.newsessions,
              
             };
@@ -388,7 +388,7 @@ const dashboard = (state =dashboardState, action) => {
 
              case ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              assignedsessions : action.assignedsessions,
              assignedsocketsessions : action.assignedsocketsessions,
              
@@ -397,7 +397,7 @@ const dashboard = (state =dashboardState, action) => {
 
              case ActionTypes.SHOW_NEW_SOCKET_SESSIONS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              newsessions : action.newsessions,
              newsocketsessions : action.newsocketsessions,
 
@@ -406,7 +406,7 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.SHOW_RESOLVED_SOCKET_SESSIONS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              resolvedsessions : action.resolvedsessions,
              resolvedsocketsessions : action.resolvedsocketsessions,
              
@@ -417,7 +417,7 @@ const dashboard = (state =dashboardState, action) => {
 
           case ActionTypes.SET_SOCKET_ID:
           return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.customerchat,
              customerchatold : action.customerchat,
@@ -435,21 +435,21 @@ const dashboard = (state =dashboardState, action) => {
              usChat = state.userchats
           }
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
             userchats : usChat,
             
             };
 
             case ActionTypes.FILTER_BY_STATUS:
             return {
-              ...state,
+              ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
            
             };
              case ActionTypes.FILTER_BY_DEPT:
             return {
-              ...state,
+              ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
             
@@ -457,21 +457,21 @@ const dashboard = (state =dashboardState, action) => {
 
               case ActionTypes.FILTER_BY_CHANNEL:
             return {
-              ...state,
+              ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
             
             };
             case ActionTypes.FILTER_BY_AGENT:
             return {
-              ...state,
+              ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
             
             };
             case ActionTypes.SELECT_CUSTOMERCHAT:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              customerchat_selected : action.customerchat_selected[0],
              new_message_arrived_rid : action.new_message_arrived_rid,
            
@@ -480,7 +480,7 @@ const dashboard = (state =dashboardState, action) => {
 
           case ActionTypes.FB_CHAT_SELECTED:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              fbchatSelected:action.fbchatSelected,
 
 
@@ -490,7 +490,7 @@ const dashboard = (state =dashboardState, action) => {
 
           case ActionTypes.FB_CHAT_ADDED:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              fbchats:action.fbchats,
              fbchatSelected:action.fbchatSelected,
 
@@ -500,13 +500,13 @@ const dashboard = (state =dashboardState, action) => {
 
           case ActionTypes.FB_CHAT_STATUS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              fbchats:action.fbchats,
             };
 
           case ActionTypes.FBCHAT_SENT_TO_AGENT:
               return {
-             ...state,
+             ...state,errorMessageProfile:'',
              status:action.status
 
 
@@ -514,7 +514,7 @@ const dashboard = (state =dashboardState, action) => {
             };
           case ActionTypes.ADD_SESSION:
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.customerchat,
              customerchatold : [action.customerchat,...state.customerchatold],
@@ -523,13 +523,13 @@ const dashboard = (state =dashboardState, action) => {
 
           case ActionTypes.ONLINE_AGENTS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              onlineAgents : action.onlineAgents,
             };
 
           case ActionTypes.SHOW_CHAT_HISTORY:
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              chatlist : action.chatlist,
           
@@ -553,7 +553,7 @@ const dashboard = (state =dashboardState, action) => {
            }
 
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              chatlist: chatlistt,
              new_message_arrived_rid : action.ch,
@@ -564,55 +564,55 @@ const dashboard = (state =dashboardState, action) => {
           case ActionTypes.CHAT_SENT_TO_AGENT:
 
            return {
-            ...state,
+            ...state,errorMessageProfile:'',
              errorMessage:action.status,
             
             };
           case ActionTypes.SHOW_NOTIFICATIONS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              notifications:action.notifications,
             
             };
              case ActionTypes.CONFIRM_NOTIFICATION:
              return {
-             ...state, 
+             ...state,errorMessageProfile:'', 
              addednotification : action.msg,
              errorMessage :action.msg,
              
             };
              case ActionTypes.DELETE_NOTIFICATION :
               return {
-                ...state,
+                ...state,errorMessageProfile:'',
                 errorMessage:'Notification deleted successfully',
                 notifications : state.notifications.filter((notification) => notification._id !== action.notification._id),
 
               };
               case ActionTypes.ADD_CUSTOMER :
               return {
-                ...state,
+                ...state,errorMessageProfile:'',
                 errorMessage:'Customer created successfully',
 
 
               };
             case ActionTypes.ADD_SELECTED_NOTIFICATION :
             return {
-              ...state,
+              ...state,errorMessageProfile:'',
               notification: state.notifications.filter((notification) => notification._id == action.id),
 
 
             };
             case ActionTypes.SHOW_CUSTOMERS:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customers : action.customers,
             };
 
             case ActionTypes.SHOW_COUNTRY_NAME:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              countryname:action.countryinfo.country_name,
 
@@ -621,7 +621,7 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.CHANNEL_STATS:
               return {
-               ...state, 
+               ...state,errorMessageProfile:'', 
              errorMessage:action.chat_error,
              channelwisestats : action.channelwisestats,
              
@@ -630,7 +630,7 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.CUSTOMER_STATS:
               return {
-                ...state,
+                ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerwisestats : action.customerwisestats,
 
@@ -639,7 +639,7 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.AGENT_STATS:
               return {
-                ...state,
+                ...state,errorMessageProfile:'',
             
              agentwisestats : action.agentwisestats,
             };
@@ -647,14 +647,14 @@ const dashboard = (state =dashboardState, action) => {
 
              case ActionTypes.AGENT_NOTIFICATIONS:
               return {
-                ...state,
+                ...state,errorMessageProfile:'',
            
              agentwisenotifications : action.agentwisenotifications,
 
             };
             case ActionTypes.MOBILE_STATS:
               return {
-                ...state,
+                ...state,errorMessageProfile:'',
           
              mobilewisestats : action.mobilewisestats,
 
@@ -663,14 +663,14 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.PAGE_STATS:
               return {
-                ...state,
+              ...state,errorMessageProfile:'',
            
              pagewisestats : action.pagewisestats,
             };
 
             case ActionTypes.DEPT_STATS:
               return {
-                ...state,
+              ...state,errorMessageProfile:'',
           
              deptwisestats : action.deptwisestats,
             };
@@ -679,14 +679,14 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.PLATFORM_STATS:
               return {
-                ...state,
+              ...state,errorMessageProfile:'',
           
              platformwisestats : action.platformwisestats,
             };
 
             case ActionTypes.COUNTRY_STATS:
               return {
-                ...state,
+              ...state,errorMessageProfile:'',
          
              errorMessage:action.chat_error,
              countrywisestats : action.countrywisestats,
@@ -695,7 +695,7 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.SHOW_CHAT_SUMMARY:
              return {
-              ...state,
+              ...state,errorMessageProfile:'',
          
               sessionsummary : action.sessionsummary,
               sessionsummaryfiltered : action.sessionsummary,
@@ -704,212 +704,52 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.ADD_SELECTED_SESSIONSUMMARY:
              return {
-              ...state,
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             sessionsummary : state.sessionsummary,
-             sessionsummaryfiltered : state.sessionsummaryfiltered,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
+              ...state,errorMessageProfile:'',
              sessionsummarydetail : state.sessionsummary.filter((c) => c.request_id == action.id),
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
-            };
+             };
 
 
              case ActionTypes.ADD_USER_CHATS_SPECIFIC:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             sessionsummary : state.sessionsummary,
-             sessionsummary:state.sessionsummaryfiltered,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             sessionsummarydetail : state.sessionsummarydetail,
+              ...state,errorMessageProfile:'',
              userchathistory : action.userchathistory,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
+             
             };
 
 
              case ActionTypes.FILTER_BY_SESSION:
              return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             channels : state.channels,
-             responses : state.responses,
-             assignedsessions : state.assignedsessions,
-             newsessions : state.newsessions,
-             resolvedsessions : state.resolvedsessions,
-             notifications:state.notifications,
-             notification: state.notification,
-             customers : state.customers,
-             mypickedsessions : state.mypickedsessions,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchatold,
-             sessionsummary : state.sessionsummary,
+              ...state,errorMessageProfile:'',
              sessionsummaryfiltered:action.sessionsummaryfiltered,
-             customerchat_selected : state.customerchat_selected,
-             customerid : state.customerid,
-             chatlist : state.chatlist,
-mobileuserchat : state.mobileuserchat,
-             sessionsummarydetail : state.sessionsummarydetail,
-             userchathistory : state.userchathistory,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-             onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-groupdetails :state.groupdetails,
-
-
             };
 
 
             case ActionTypes.ADD_SELECTED_CUSTOMER :
             return {
-              userdetails: state.userdetails,
-              teamdetails:state.teamdetails,
-              agents : state.agents,
-              channels : state.channels,
-              deptagents :state.deptagents,
-              notifications : state.notifications,
-              customers:state.customers,
+              ...state,errorMessageProfile:'',
               customer: state.customers.filter((customer) => customer._id == action.id),
-              onlineAgents : state.onlineAgents,yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-              groupdetails :state.groupdetails,
-              responses : state.responses,
-              chatlist: state.chatlist,
-              customerid : state.customerid,
-              customerchat : state.customerchat,
-              customerchatold : state.customerchatold,
-               customerchat_selected : state.customerchat_selected,
-               new_message_arrived_rid : state.new_message_arrived_rid,
-               userchats : state.userchats,
-
+              
             };
 
           case ActionTypes.COMPANY_PROFILE:
            return {
-             teamdetails: state.teamdetails,
-             userdetails: state.userdetails,
-             errorMessage:state.chat_error,
-             agents : state.agents,
-             deptagents :state.deptagents,
-             customerchat : state.customerchat,
-             customerchatold : state.customerchat,
-             chatlist : state.chatlist,
-             mobileuserchat : state.mobileuserchat,
-             channels : state.channels,
-             responses : state.responses,
-             customers : state.customers,
-             customerchat_selected : state.customerchat_selected,
-             new_message_arrived_rid : state.new_message_arrived_rid,
-             userchats : state.userchats,
-            onlineAgents : state.onlineAgents,
-            yoursocketid : state.yoursocketid,news:state.news,groupagents : state.groupagents,
-            groupdetails :state.groupdetails,
+            ...state,errorMessageProfile:'',
             companysettings : action.companysettings,
-
-
-
             };
 
              case ActionTypes.ADD_FB_CUSTOMERS:
          
              return {
-               teamdetails: state.teamdetails,
-               userdetails: state.userdetails,
-               errorMessage:state.errorMessage,
-               agents : state.agents,
-               deptagents :state.deptagents,
-
-               chatlist: state.chatlist,
-               customerid : state.customerid,
-               customerchat : state.customerchat,
-               customerchatold : state.customerchatold,
-               customerchat_selected : state.customerchat_selected,
-               new_message_arrived_rid : state.new_message_arrived_rid,
-               userchats :state.userchats,
-               responses : state.responses,
-
-               channels : state.channels,
-               customers : state.customers,
-               onlineAgents : state.onlineAgents,
-               yoursocketid : state.yoursocketid,
-               news:state.news,
-               groupagents : state.groupagents,
-               groupdetails :state.groupdetails,
+              ...state,errorMessageProfile:'',
                fbcustomers:action.fbcustomers,
-               fbchats:state.fbchats,
-
+             
               };
 
                case ActionTypes.ADD_FB_CHATS:
          
              return {
-               teamdetails: state.teamdetails,
-               userdetails: state.userdetails,
-               errorMessage:state.errorMessage,
-               agents : state.agents,
-               deptagents :state.deptagents,
-
-               chatlist: state.chatlist,
-               customerid : state.customerid,
-               customerchat : state.customerchat,
-               customerchatold : state.customerchatold,
-               customerchat_selected : state.customerchat_selected,
-               new_message_arrived_rid : state.new_message_arrived_rid,
-               userchats :state.userchats,
-               responses : state.responses,
-
-               channels : state.channels,
-               customers : state.customers,
-               onlineAgents : state.onlineAgents,
-               yoursocketid : state.yoursocketid,
-               news:state.news,
-               groupagents : state.groupagents,
-               groupdetails :state.groupdetails,
-               fbcustomers:state.fbcustomers,
-               fbchats:action.fbchats,
+              ...state,errorMessageProfile:'',
+              fbchats:action.fbchats,
 
               };
 
@@ -917,33 +757,9 @@ groupdetails :state.groupdetails,
           case ActionTypes.ADD_NEW_FB_CUSTOMER:
          
              return {
-               teamdetails: state.teamdetails,
-               userdetails: state.userdetails,
-               errorMessage:state.errorMessage,
-               agents : state.agents,
-               deptagents :state.deptagents,
-
-               chatlist: state.chatlist,
-               customerid : state.customerid,
-               customerchat : state.customerchat,
-               customerchatold : state.customerchatold,
-               customerchat_selected : state.customerchat_selected,
-               new_message_arrived_rid : state.new_message_arrived_rid,
-               userchats :state.userchats,
-               responses : state.responses,
-
-               channels : state.channels,
-               customers : state.customers,
-               onlineAgents : state.onlineAgents,
-               yoursocketid : state.yoursocketid,
-               news:state.news,
-               groupagents : state.groupagents,
-               groupdetails :state.groupdetails,
-               fbcustomers:action.fbcustomers,
-               fbchats:state.fbchats,
-
-               fbchatSelected:state.fbchatSelected,
-              };
+              ...state,errorMessageProfile:'',
+                fbcustomers:action.fbcustomers,
+               };
     default:
       return state;
   }
