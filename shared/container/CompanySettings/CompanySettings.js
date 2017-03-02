@@ -44,6 +44,7 @@ class CompanySettings extends Component {
 
   onSubmit(event)
     {
+      event.preventDefault();
       if(this.props.userdetails.isAdmin === "Yes"){
        const usertoken = auth.getToken();
        event.preventDefault();
@@ -75,7 +76,7 @@ class CompanySettings extends Component {
                   this.props.updatesettings(companyprofile,usertoken);
                 }
               }
-              else {
+      else {
                 alert("You can not update company settings. Only admin has the access to do it.")
               }
     }
