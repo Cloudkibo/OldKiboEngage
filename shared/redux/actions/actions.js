@@ -1463,7 +1463,7 @@ export function selectFbCustomerChat(id,fbchat){
   var temp = fbchat.filter((c)=>c.senderid == id || c.recipientid == id);
   for(var i=0;i<temp.length;i++){
     if(temp[i].message){
-    newfbChat.push( 
+    newfbChat.push(
       {
         message: temp[i].message.text,
         inbound: true,
@@ -1495,7 +1495,7 @@ var newfbChat = []
 var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
   for(var i=0;i<temp.length;i++){
     if(temp[i].message){
-    newfbChat.push( 
+    newfbChat.push(
       {
         message: temp[i].message.text,
         inbound: true,
@@ -2590,6 +2590,7 @@ export function createPage(fbpage,token) {
 
 export function updatesettings(company,token) {
   console.log(company);
+
   return (dispatch) => {
     fetch(`${baseURL}/api/updatesettings`, {
       method: 'post',
@@ -2622,8 +2623,6 @@ export function updatesettings(company,token) {
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
-
-
       );
   };
 }
@@ -3282,7 +3281,7 @@ else{
 }
 /***** Facebook actions ***/
 export function showFbCustomers(fbcustomers) {
-  
+
   return {
     type: ActionTypes.ADD_FB_CUSTOMERS,
     fbcustomers,
@@ -3291,7 +3290,7 @@ export function showFbCustomers(fbcustomers) {
 }
 
 export function showFbChats(fbchats) {
-  
+
   return {
     type: ActionTypes.ADD_FB_CHATS,
     fbchats,
@@ -3303,7 +3302,7 @@ export function getfbCustomers(usertoken){
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbCustomers`, {
       method: 'get',
-      
+
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
@@ -3320,7 +3319,7 @@ export function getfbChats(usertoken){
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbChats`, {
       method: 'get',
-      
+
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
@@ -3382,7 +3381,7 @@ export function showfbfilesuccess(chat,fbchats,id){
   var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
     for(var i=0;i<temp.length;i++){
       if(temp[i].message){
-      newfbChat.push( 
+      newfbChat.push(
         {
           message: temp[i].message.text,
           inbound: true,
