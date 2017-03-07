@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import slug from 'slug';
+//import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
 import Buffer from 'Buffer';
@@ -80,13 +80,13 @@ export function chatwebhook(req, res) {
 								           // call kiboengage api to save customer
 								           var customerobj = {
 								           	  'first_name' : customer.first_name,
-											  'last_name' : customer.last_name,
-											  'user_id':sender, //this is the facebook id of a customer
-											   'email' : '',
-											  'timestamp' : customer.locale,
-											  'timezone' : customer.timezone,
-											  'companyid' : companyid,
-											  'gender' : customer.gender, 
+      											  'last_name' : customer.last_name,
+      											  'user_id':sender, //this is the facebook id of a customer
+      											   'email' : '',
+      											  'timestamp' : customer.locale,
+      											  'timezone' : customer.timezone,
+      											  'companyid' : companyid,
+      											  'gender' : customer.gender, 
 								           }
 
 								           console.log('customerobj obj is ');
@@ -131,7 +131,7 @@ export function chatwebhook(req, res) {
 			   							 		// emit the chat message on socket
 			   							 		 socket.getfbchat({chatobj,customerobj});
 			   							 		//send push notification to all agents
-            									sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id},'New message from Facebook Customer');
+            							 sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat'},'New message from Facebook Customer');
 
 			   							 		//return res.status(201).json({status:"success"});
 			   							 	}
@@ -177,6 +177,7 @@ function sendpushToAllAgents(body,pushTitle){
                               data: {
                                 customerid : body.customerid,
                                 msgid:body.msgid,
+                                type:body.type,
                                 status : pushTitle,
                               },
                               badge: 0

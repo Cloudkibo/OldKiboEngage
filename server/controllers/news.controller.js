@@ -1,5 +1,5 @@
 import cuid from 'cuid';
-import slug from 'slug';
+//import slug from 'slug';
 import sanitizeHtml from 'sanitize-html';
 import request from 'request';
 

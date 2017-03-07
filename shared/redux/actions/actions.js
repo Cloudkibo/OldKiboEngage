@@ -2591,8 +2591,9 @@ export function createPage(fbpage,token) {
 export function updatesettings(company,token) {
   console.log(company);
 
-  return (dispatch) => {
+  return (dispatch) =>
     fetch(`${baseURL}/api/updatesettings`, {
+
       method: 'post',
         body:JSON.stringify({
                    'abandonedscheduleemail1':company.abandonedscheduleemail1,
@@ -2625,7 +2626,7 @@ export function updatesettings(company,token) {
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
       );
   };
-}
+
 
 export function showcompanyprofile(companysettings) {
   console.log(companysettings);
