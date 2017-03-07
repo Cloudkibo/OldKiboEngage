@@ -53,7 +53,7 @@ app.use('/api', serverroutes);
 var options = {
   ca: fs.readFileSync('server/security/gd_bundle-g2-g1.crt'),
   key: fs.readFileSync('server/security/server.key'),
-  cert: fs.readFileSync('server/security/42389550a00c3669.crt')
+  cert: fs.readFileSync('server/security/56d01c37201707d0.crt')
 };
 
 
