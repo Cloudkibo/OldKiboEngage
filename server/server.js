@@ -21,6 +21,10 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
   app.use(webpackHotMiddleware(compiler));
   app.use(logger('dev'));
+  // unsecure_app settings
+  httpapp.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
+  httpapp.use(webpackHotMiddleware(compiler));
+  httpapp.use(logger('dev'));
 }
 
 // React And Redux Setup
@@ -45,6 +49,11 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
 app.use('/api', serverroutes);
+// unsecure_app settings
+httpapp.use(bodyParser.json({ limit: '20mb' }));
+httpapp.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
+httpapp.use(Express.static(path.resolve(__dirname, '../static')));
+httpapp.use('/api', serverroutes);
 
 
 
@@ -221,6 +230,39 @@ app.use((req, res, next) => {
   });
 });
 
+// unsecure_app settings
+httpapp.use((req, res, next) => {
+  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+    if (err) {
+      return res.status(500).end(renderError(err));
+    }
+
+    if (redirectLocation) {
+      return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    }
+
+    if (!renderProps) {
+      return next();
+    }
+
+    const initialState = {};
+
+    const store = configureStore(initialState);
+
+    return fetchComponentData(store, renderProps.components, renderProps.params)
+      .then(() => {
+        const initialView = renderToString(
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>
+        );
+        const finalState = store.getState();
+
+        res.status(200).end(renderFullPage(initialView, finalState));
+      });
+  });
+});
+
 import https from 'https';
 import http from 'http';
 // start app using secure server HTTPS
@@ -236,9 +278,11 @@ const serverhttp = http.createServer(httpapp).listen(serverConfig.port, (error) 
   }
 });
 
+if(process.env.NODE_ENV !== 'production'){
 httpapp.get('*',function(req,res){
   res.redirect('https://kiboengage.kibosupport.com' + req.url);
 });
+}
 
 var io = require('socket.io').listen(server);
 require('./routes/socket.js').socketf(io);
