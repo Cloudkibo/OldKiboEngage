@@ -485,7 +485,7 @@ export function uploadchatfilefb(req, res) {
           if(!err){
           console.log(obj);
           console.log(obj.message.attachments);
-           obj.message.attachments[0].payload.url = 'https://d6665330.ngrok.io/userfiles/'+serverPath;
+           obj.message.attachments[0].payload.url = 'https://kiboengage.kibosupport.com/userfiles/'+serverPath;
            console.log(obj);
            var options = {
             url: `${baseURL}/api/fbpages/getpage`,
