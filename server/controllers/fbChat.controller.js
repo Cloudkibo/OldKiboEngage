@@ -456,6 +456,7 @@ export function sendTextMessage(req,res) {
 export function uploadchatfilefb(req, res) {
   console.log('uploadchatfile called');
   console.log('req body');
+  console.log(req.body)
   if(req.body)
   {
             console.log(req.body.chatmsg);
