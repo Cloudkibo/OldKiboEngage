@@ -830,6 +830,7 @@ export function updatechatstatus(req, res) {
 export function uploadchatfile(req, res) {
   console.log('uploadchatfile called');
   console.log('req body');
+  
   console.log(req.body.chatmsg);
   console.log(req.files);
 

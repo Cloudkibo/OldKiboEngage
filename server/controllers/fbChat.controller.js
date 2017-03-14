@@ -455,6 +455,7 @@ export function sendTextMessage(req,res) {
 /*** used by customer to send file to agent****/
 export function uploadchatfilefb(req, res) {
   console.log('uploadchatfile called');
+  console.log(req);
   console.log('req body');
   console.log(req.body)
   if(req.body)
