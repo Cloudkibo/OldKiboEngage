@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
 import { getfbchatfromAgent,add_socket_fb_message ,uploadFbChatfile} from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
+import Picker from 'react-giphy-picker'
 var EmojiPicker = require('react-emoji-picker');
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload'
@@ -52,6 +54,8 @@ export class ChatArea extends Component {
           userfile:null,
           emoji: null,
           showEmojiPicker: false,
+          enteredGif: '',
+          visible: false,
         };
        this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
@@ -62,6 +66,9 @@ export class ChatArea extends Component {
         this.toggleEmojiPicker = this.toggleEmojiPicker.bind(this);
         this.emojiPicker = this.emojiPicker.bind(this);
         this.setEmoji = this.setEmoji.bind(this);
+        this.sendThumbsUp = this.sendThumbsUp.bind(this);
+        this.log = this.log.bind(this);
+        this.toggleVisible = this.toggleVisible.bind(this);
   }
 
 
@@ -102,6 +109,8 @@ _onChange(e) {
       files = e.target.files;
     }
 
+    console.log(e.target.files[0]);
+
     this.setState({ userfile:e.target.files[0]
                        });
 
@@ -110,6 +119,7 @@ _onChange(e) {
       this.setState({ src: reader.result,
                        });
     };
+    console.log(reader.result);
     reader.readAsDataURL(files[0]);
   }
 onChange(event, { newValue }) {
@@ -241,6 +251,81 @@ onFileSubmit(event)
 
     }
 
+    sendThumbsUp()
+        {
+            const usertoken = auth.getToken();
+            var fileData = new FormData();
+
+            var f = new File([""], "thumbsUp", {type: "image/png"})
+
+            var thumbsUp = {
+              lastModified: 1489595926641,
+              lastModifiedDate: 'Wed Mar 15 2017 21:38:46 GMT+0500 (PKT)',
+              name: 'thumbsUp',
+              size: 3810,
+              type: 'image/png',
+            };
+
+            this.setState({ userfile: f });
+
+            console.log(this.state.userfile);
+
+                  var today = new Date();
+                  var uid = Math.random().toString(36).substring(7);
+                  var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+                  var pageid=''
+                  for(var i=0;i<this.props.messages.length;i++){
+                    if(this.props.messages[i].senderid == this.props.senderid){
+                      pageid = this.props.messages[i].recipientid;
+                      alert(pageid)
+                      break;
+                    }
+                  }
+
+                  var thumbsUp = {
+                    lastModified: 1489595926641,
+                    lastModifiedDate: 'Wed Mar 15 2017 21:38:46 GMT+0500 (PKT)',
+                    name: 'thumbsUp',
+                    size: 3810,
+                    type: 'image/png',
+                  };
+
+                  this.setState({ userfile: thumbsUp });
+
+                  var saveMsg = {
+                                  senderid: this.props.userdetails._id,
+                                  recipientid:this.props.senderid,
+                                  companyid:this.props.userdetails.uniqueid,
+                                  timestamp:Date.now(),
+                                  message:{
+                                    mid:unique_id,
+                                    seq:1,
+                                    attachments:[{
+                                      type:'image',
+                                      payload:{
+                                        url:'https://kiboengage.kibosupport.com/userfiles/thumbsUp.png',
+                                      }
+
+                                    }]
+                                  },
+
+                                 pageid:pageid
+
+               }
+
+
+                  fileData.append('file', this.state.userfile);
+                  fileData.append('filename',  this.state.userfile.name);
+                  fileData.append('filetype',  this.state.userfile.type);
+                  fileData.append('filesize',  this.state.userfile.size);
+                  fileData.append('chatmsg', JSON.stringify(saveMsg));
+                  this.props.uploadFbChatfile(fileData,usertoken,this.props.fbchats,this.props.senderid);
+
+            this.forceUpdate();
+            event.preventDefault();
+
+        }
+
 onSuggestionSelected({suggestionValue,method = 'click'})
 {
   console.log("current value of input is  :" + this.state.value)
@@ -265,11 +350,10 @@ else{
 }
 
 toggleEmojiPicker() {
-  if(this.state.showEmojiPicker === false) {
-    this.setState({showEmojiPicker: true});
-  } else {
-    this.setState({showEmojiPicker: false});
-  }
+  this.setState({
+    showEmojiPicker: !this.state.showEmojiPicker,
+    visible: false,
+  });
 }
 
 validateEmoji() {
@@ -299,6 +383,18 @@ emojiPicker() {
       />
     );
   }
+}
+
+log (gif) {
+  console.log(gif)
+  this.setState({enteredGif: gif})
+}
+
+toggleVisible () {
+  this.setState({
+    visible: !this.state.visible,
+    showEmojiPicker: false,
+  })
 }
 
   render () {
@@ -369,6 +465,7 @@ emojiPicker() {
 
          <div className="panel-footer">
 
+          <div style={{display: 'inline-block', width: '94%'}}>
                   <Autosuggest  ref = "msg" suggestions={suggestions}
 
                    onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
@@ -378,10 +475,45 @@ emojiPicker() {
 
 
                    inputProps={inputProps} />
+            </div>
+            <div className="pull-right" style={{display: 'inline-block'}}>
+            <img onClick={this.sendThumbsUp} src="./userfiles/thumbsUp.png" height="30" width="30" ></img>
+            </div>
+            <br />
+            <br />
+            <div>
+              <div style={{display: 'inline-block'}}>
+                <img onClick = {this.toggleEmojiPicker} src="./userfiles/Smile.png" height="25" width="25" ></img>
+              </div>
+              <div onClick = {this.toggleVisible} style={{display: 'inline-block'}}>
+                <img src="./userfiles/gif.png" height="25" width="25" ></img>
+              </div>
+              <div style={{display: 'inline-block'}}>
+                <img src="./userfiles/sticker.png" height="25" width="25" ></img>
+              </div>
+            </div>
 
+
+
+            {
+                this.state.showEmojiPicker &&
+                <EmojiPicker
+                  onSelect={this.setEmoji}
+                  query={this.state.emoji}
+                />
+
+            }
+
+            {
+              this.state.visible &&
+              <Picker
+                onSelected={this.log}
+              />
+
+            }
 
                 </div>
-               <br/>
+
 
               <div className="row">
               </div>
@@ -394,9 +526,7 @@ emojiPicker() {
                             <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
 
                        </td>
-                       <td className="col-md-6">
-                       <button className="btn white" onClick = {this.toggleEmojiPicker} ><i  className="fa fa-smile-o fa-fw fa-lg" /><b> Emoji </b></button>
-                       </td>
+
                        <td className="col-md-6">
                        <input type="file" onChange={this._onChange} className="pull-left"/>
 
@@ -409,16 +539,8 @@ emojiPicker() {
                   </table>
                   </div>
 
-                  {
-                      this.state.showEmojiPicker &&
-                      <EmojiPicker
-                        onSelect={this.setEmoji}
-                        query={this.state.emoji}
-                      />
-
-                  }
-
        </div>
+
       )
 
   }
