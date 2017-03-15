@@ -70,6 +70,7 @@ import RescheduleResolvedSessions from './container/ChatSessions/RescheduleResol
 import RescheduleAbandonedSessions from './container/ChatSessions/RescheduleAbandonedSessions'
 import io from 'socket.io-client'
 import FbChat from './container/facebookChat/FbChat'
+import Widget from './container/Widget/widget'
 let socket = io('')
 
 function requireAuth(nextState, replace) {
@@ -156,7 +157,7 @@ const routes = (
      <Route path="/fbpagescreate"  component={CreateFbPage}  onEnter={requireAuth}/>
     <Route path="/fbpages"  component={FbPages}  onEnter={requireAuth}/>
     <Route path="/editfbpage/:id" component={EditFbPage}  onEnter={requireAuth}/>
-
+    <Route path="/widgetcode" component={Widget}  onEnter={requireAuth}/>
 
      <Route path="/chatsessionview/:id"  component={SessionDetailView} onEnter={requireAuth}/>
      <Route path="/rescheduleresolvedsession/:id/:name/:email"  component={RescheduleResolvedSessions} onEnter={requireAuth}/>
