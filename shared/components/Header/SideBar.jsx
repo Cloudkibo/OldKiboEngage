@@ -34,6 +34,18 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
+
+              <li className="">
+                <Link to='/widgetcode'>
+                  <i className="fa fa-chain">
+                  </i>
+                  <span className="title">
+                    Widget
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
               <li className="">
                 <Link to='/assignedchatsessions'>
                   <i className="fa fa-chain">

@@ -13,7 +13,7 @@ class Intro extends Component {
   }
 
 handleClick(e){
-  alert('i am clicked');
+  //alert('i am clicked');
   e.preventDefault();
   loadKiboEngageWidget('cd89f71715f2014725163952')
 }

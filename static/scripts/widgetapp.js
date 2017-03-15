@@ -9,7 +9,7 @@ function loadKiboEngageWidget(id_client){
     console.log('changed url: '+ fullURL)
   }
  // window.open('http://localhost:8000/signup')
- window.open('http://kiboengage.cloudapp.net/livehelp/'+id_client+'/'+ document.title,'KiboEngage','width=475,height=595,resizable=yes');
+ window.open('https://kiboengage.kibosupport.com/livehelp/'+id_client+'/'+ document.title,'Client Widget','width=475,height=595,resizable=yes');
  /* if(OPEN_AS_WINDOW_OR_TAB_PLACEHOLDER)
     window.open('localhost:8000/livehelp?pathname='+ document.title+'&fullurl='+fullURL+'&id='+id_client+'&role=visitor','KiboEngage','width=475,height=595,resizable=yes');
   else

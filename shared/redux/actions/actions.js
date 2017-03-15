@@ -289,12 +289,26 @@ export function signupuser(user) {
         headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res.signup).then((res) => dispatch(showSignupResponse(res))
+    }).then((res) => res.json()).then((res) => res.signup).then((res) => {
+          if (res.token == '') {
+          // If there was a problem, we want to
+          // dispatch the error condition
+          dispatch(showSignupResponse(res));
+          
+        }
+      else {
+              // If signup was successful, set the token in local storage
+            cookie.save('token', res.token, { path: '/' });
+            console.log(cookie.load('token'));
+            browserHistory.push('/dashboard');
+          }
+        }
+          );
 
 
-      );
-  };
+  }
 }
+
 
 
 /****** get user details ***/

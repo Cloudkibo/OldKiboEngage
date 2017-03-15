@@ -99,10 +99,10 @@ export function signupUser(req, res) {
       var validationErr =[];
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
-        //console.log('api calling succeed')
-       // //console.log(info)
+        console.log('signup api calling succeed')
+        console.log(info)
         validationErr.push('Your account is created successfully')
-        return res.json({signup:{ validationErrs :validationErr ,token : info,statusCode : response.statusCode}});
+        return res.json({signup:{ validationErrs :validationErr ,token : info.token,statusCode : response.statusCode}});
 
       }
        else if (response.statusCode == 422) {
@@ -115,13 +115,13 @@ export function signupUser(req, res) {
        validationErr.push(errs[err].message);
        }
        //console.log(validationErr);
-       return res.json({signup:{ validationErrs : validationErr ,token : null,statusCode : response.statusCode}});
+       return res.json({signup:{ validationErrs : validationErr ,token : '',statusCode : response.statusCode}});
       }
       else
       {
         //console.log(error);
         validationErr.push(error)
-        return res.json({signup:{ validationErrs :validationErr ,token : null,statusCode : response.statusCode}});
+        return res.json({signup:{ validationErrs :validationErr ,token : '',statusCode : response.statusCode}});
 
       }
     }
