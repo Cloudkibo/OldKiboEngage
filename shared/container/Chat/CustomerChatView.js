@@ -254,7 +254,8 @@ else{
 
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-    if(this.props.sessiondetails.platform == 'web'){
+    if(this.props.sessiondetails.platform == 'web' && this.props.sessiondetails.request_id == message.request_id){
+     //alert('message arrived');
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
       this.forceUpdate();
@@ -633,7 +634,7 @@ else{
 
         //for web customers
         else{
-        this.props.chatlist.push(saveChat);
+        //this.props.chatlist.push(saveChat);
         }
         this.refs.groupmembers.value = "";
 
@@ -683,7 +684,7 @@ else{
 
     // inform assignee that he has been assigned a Chat Session
 
-     var informMsg = {
+   /*  var informMsg = {
                           'to' : this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -701,7 +702,8 @@ else{
 
                       }
 
-    socket.emit('informAgent',informMsg);
+  //  socket.emit('informAgent',informMsg);
+  */
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
 
 
@@ -724,7 +726,7 @@ else{
     }
   }
   else {
-    alert("Select agent is not in the team. You cannot assign session to this agent.")
+    alert("Selected agent is not in the team. You cannot assign session to this agent.")
   }
 
 }
@@ -802,7 +804,7 @@ else{
 
         //for web customers
         else{
-        this.props.chatlist.push(saveChat);
+       // this.props.chatlist.push(saveChat);
       //  socket.emit('send:message', saveChat);
         this.props.getchatfromAgent(saveChat);
         }
@@ -910,76 +912,82 @@ else{
      const { socket,dispatch } = this.props;
      const usertoken = auth.getToken();
 
-    alert('Are you sure,you want to move this session to another channel ?');
-   this.props.sessiondetails.messagechannel.push(this.refs.channellist.value);
+   if(this.refs.channellist.value != this.refs.channelid.value)
+   {
+             alert('Are you sure,you want to move this session to another channel ?');
+             this.props.sessiondetails.messagechannel.push(this.refs.channellist.value);
 
-   // generatate unique id for the chat message
-    var today = new Date();
-    var uid = Math.random().toString(36).substring(7);
-    var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+             // generatate unique id for the chat message
+              var today = new Date();
+              var uid = Math.random().toString(36).substring(7);
+              var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
-    // 1. Broadcast a log message to all agents and customer that session is moved
-        var saveChat = {
-                          'to' : this.refs.customername.value,
-                          'from' : this.props.userdetails.firstname,
-                          'visitoremail' : this.refs.customeremail.value,
-                          'socketid' : this.refs.socketid_customer.value,
-                          'uniqueid' : unique_id,
-                          'status' : 'sent',
-                          'customerid' : this.props.sessiondetails.customerid,
-                          'type': 'log',
-                          'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
-                           'datetime' : Date.now(),
-                           'time' : moment.utc().format('lll'),
-                           'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channellist.value,
-                           'companyid': this.props.userdetails.uniqueid,
-                           'is_seen':'no',
-                           'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
-                           'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-                           'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
-                            'sendersEmail' : this.props.userdetails.email,
-                      }
-         if(this.props.sessiondetails.platform == 'mobile'){
-          saveChat.fromMobile = 'yes'
-        }
-         // for mobile customers
-        if(this.props.sessiondetails.platform == 'mobile'){
-             this.props.mobileuserchat.push(saveChat);
-        }
+              // 1. Broadcast a log message to all agents and customer that session is moved
+                  var saveChat = {
+                                    'to' : this.refs.customername.value,
+                                    'from' : this.props.userdetails.firstname,
+                                    'visitoremail' : this.refs.customeremail.value,
+                                    'socketid' : this.refs.socketid_customer.value,
+                                    'uniqueid' : unique_id,
+                                    'status' : 'sent',
+                                    'customerid' : this.props.sessiondetails.customerid,
+                                    'type': 'log',
+                                    'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
+                                     'datetime' : Date.now(),
+                                     'time' : moment.utc().format('lll'),
+                                     'request_id' : this.props.sessiondetails.request_id,
+                                     'messagechannel': this.refs.channellist.value,
+                                     'companyid': this.props.userdetails.uniqueid,
+                                     'is_seen':'no',
+                                     'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
+                                     'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+                                     'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                                      'sendersEmail' : this.props.userdetails.email,
+                                }
+                   if(this.props.sessiondetails.platform == 'mobile'){
+                    saveChat.fromMobile = 'yes'
+                  }
+                   // for mobile customers
+                  if(this.props.sessiondetails.platform == 'mobile'){
+                       this.props.mobileuserchat.push(saveChat);
+                  }
 
-        //for web customers
-        else{
-        this.props.chatlist.push(saveChat);
-        }
+                  //for web customers
+                  else{
+                  this.props.chatlist.push(saveChat);
+                  }
 
-       // socket.emit('send:message', saveChat);
-        callonce = "false";
+                 // socket.emit('send:message', saveChat);
+                  callonce = "false";
 
-        this.props.savechat(saveChat);
+                  this.props.savechat(saveChat);
 
-        //save new channel id on server
-        var assignment = {
-            movedto : this.refs.channellist.value,
-            movedfrom : this.refs.channelid.value,
-            movedby : this.props.userdetails._id,
-            sessionid : this.refs.requestid.value,
-            companyid : this.props.userdetails.uniqueid,
-            datetime : Date.now(),
+                  //save new channel id on server
+                  var assignment = {
+                      movedto : this.refs.channellist.value,
+                      movedfrom : this.refs.channelid.value,
+                      movedby : this.props.userdetails._id,
+                      sessionid : this.refs.requestid.value,
+                      companyid : this.props.userdetails.uniqueid,
+                      datetime : Date.now(),
 
+              }
+              this.refs.channelid.value = this.refs.channellist.value;
+              this.props.movedToMessageChannel(assignment,usertoken);
+
+               //update session status on socket
+              socket.emit('updatesessionchannel',{'request_id':this.refs.requestid.value,
+                                                  'room' : this.props.userdetails.uniqueid,
+                                                  'channelid' : this.refs.channellist.value
+
+                                                  });
+
+
+              this.forceUpdate();
     }
-    this.refs.channelid.value = this.refs.channellist.value;
-    this.props.movedToMessageChannel(assignment,usertoken);
-
-     //update session status on socket
-    socket.emit('updatesessionchannel',{'request_id':this.refs.requestid.value,
-                                        'room' : this.props.userdetails.uniqueid,
-                                        'channelid' : this.refs.channellist.value
-
-                                        });
-
-
-    this.forceUpdate();
+    else{
+      alert('Session is already assigned to this channel');
+    }
 
 }
 
@@ -1313,11 +1321,16 @@ const { value, suggestions } = this.state;
 
                        </td>
                        <td className="col-md-6">
-                       <input type="file" onChange={this._onChange} className="pull-left"/>
+                       {this.props.sessiondetails.platform != "web"?
+                            <div>
+                                   <input type="file" onChange={this._onChange} className="pull-left"/>
 
-                         <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
-                            Upload
-                          </button>
+                                   <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
+                                      Upload
+                                    </button>
+                            </div>:
+                            <br/>
+                        }
                        </td>
                     </tr>
                   </tbody>

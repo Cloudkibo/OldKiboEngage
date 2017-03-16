@@ -54,8 +54,7 @@ class Chat extends Component {
         this.getSessionInfo = this.getSessionInfo.bind(this);
         this.getSocketmessage = this.getSocketmessage.bind(this);
         this.syncdata = this.syncdata.bind(this);
-
-
+      
 
   }
 
@@ -99,7 +98,7 @@ updateOnlineAgents(data){
    }
 
     else if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no'){
-     // alert(' i m called2')
+      alert(' i m called2')
      this.props.userchats.push(message);
 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
@@ -130,11 +129,10 @@ updateOnlineAgents(data){
  }
 
     else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){
-  //   alert(' i m called')
+     alert(' i m called')
      this.props.userchats.push(message);
-
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
-    this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+     this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
 
    }
 
@@ -151,7 +149,7 @@ updateOnlineAgents(data){
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
 getSessionInfo(message){
-   this.props.previousChat(message);
+   this.props.previousChat(message,this.props.chatlist);
    this.forceUpdate();
   }
 
@@ -235,7 +233,7 @@ componentDidMount(){
 
 
    handleChange(e){
-     alert(e.target.value);
+     //alert(e.target.value);
      this.props.filterbystatus(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
@@ -244,14 +242,14 @@ componentDidMount(){
 
 
     handleChangeDepartment(e){
-     alert(e.target.value);
+     //alert(e.target.value);
      this.props.filterbyDept(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
 
     }
      handleChangeChannel(e){
-     alert(e.target.value);
+     //lert(e.target.value);
      this.props.filterbyChannel(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
@@ -259,7 +257,7 @@ componentDidMount(){
     }
 
     handleChangeAgents(e){
-     alert(e.target.value);
+    // alert(e.target.value);
      this.props.filterbyAgent(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
@@ -267,7 +265,7 @@ componentDidMount(){
     }
 
      handleSession(id,platform,e){
-      console.log(platform);
+     // console.log(platform);
       console.log(id);
       e.preventDefault();
       const usertoken = auth.getToken();
@@ -395,7 +393,10 @@ componentDidMount(){
 
              	<div className="table-responsive">
                 <input type="hidden" ref = "sessionid" />
-
+                {!this.props.customerchat?
+                  <p>Loading Chat Sessions...</p>:
+                  <br/>
+                }
                 {this.props.customerchatold && this.props.customerchatold.length == 0?
                   <p>No Customer is online currently.</p>
 

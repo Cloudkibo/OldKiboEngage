@@ -975,7 +975,9 @@ exports.socketf = function (socketio) {
 /******** not exporting in controller file **********/
 exports.getchat = function(data){
   console.log('socket get chat is called');
-
+  if(data.fromMobile == 'no'){
+     userchats.push(data);
+  }
   if(data.toagent){
             console.log('sending point to point message to Agent');
             //find the socket id

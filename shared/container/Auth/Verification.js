@@ -12,7 +12,7 @@ class Verification extends Component {
     
     
   }
-  componentWillMount(){
+  componentDidMount(){
     this.props.verifyEmail(this.props.params.id);
   }
   render() {

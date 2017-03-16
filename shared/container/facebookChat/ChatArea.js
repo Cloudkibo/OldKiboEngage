@@ -7,6 +7,7 @@ import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Picker from 'react-giphy-picker'
+
 var EmojiPicker = require('react-emoji-picker');
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload'
@@ -54,8 +55,10 @@ export class ChatArea extends Component {
           userfile:null,
           emoji: null,
           showEmojiPicker: false,
+
           enteredGif: '',
           visible: false,
+
         };
        this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
@@ -69,6 +72,7 @@ export class ChatArea extends Component {
         this.sendThumbsUp = this.sendThumbsUp.bind(this);
         this.log = this.log.bind(this);
         this.toggleVisible = this.toggleVisible.bind(this);
+
   }
 
 
@@ -350,10 +354,18 @@ else{
 }
 
 toggleEmojiPicker() {
+
   this.setState({
     showEmojiPicker: !this.state.showEmojiPicker,
     visible: false,
   });
+
+  if(this.state.showEmojiPicker === false) {
+    this.setState({showEmojiPicker: true});
+  } else {
+    this.setState({showEmojiPicker: false});
+  }
+
 }
 
 validateEmoji() {
@@ -385,6 +397,7 @@ emojiPicker() {
   }
 }
 
+
 log (gif) {
   console.log(gif)
   this.setState({enteredGif: gif})
@@ -396,6 +409,7 @@ toggleVisible () {
     showEmojiPicker: false,
   })
 }
+
 
   render () {
     // only show previous messages if they exist.
@@ -528,6 +542,9 @@ toggleVisible () {
                        </td>
 
                        <td className="col-md-6">
+                       <button className="btn white" onClick = {this.toggleEmojiPicker} ><i  className="fa fa-smile-o fa-fw fa-lg" /><b> Emoji </b></button>
+                       </td>
+                       <td className="col-md-6">
                        <input type="file" onChange={this._onChange} className="pull-left"/>
 
                          <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
@@ -538,6 +555,15 @@ toggleVisible () {
                   </tbody>
                   </table>
                   </div>
+
+                  {
+                      this.state.showEmojiPicker &&
+                      <EmojiPicker
+                        onSelect={this.setEmoji}
+                        query={this.state.emoji}
+                      />
+
+                  }
 
        </div>
 

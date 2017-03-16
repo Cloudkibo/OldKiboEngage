@@ -48,7 +48,7 @@ cancelInvite()
         <div className="form-body">
           <div className="form-group">
                   You can also invite the agent by sharing the following link with them.
-                  <b>https://kiboengage.cloudapp.net/joincompany</b>
+                  <b>https://kiboengage.kibosupport.com/joincompany</b>
                   <br/>
                   They will have to register with us to join your company.DON'T FORGET to give them your company's unique
                   <br/>
