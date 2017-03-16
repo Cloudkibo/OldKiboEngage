@@ -1689,10 +1689,23 @@ export function getmobilesessions(token) {
   };
 }
 
-export function previousChat(chatlist){
+export function previousChat(previouschat,chatlist){
+    var newchatlist = [...previouschat,...chatlist];
+
+    //removing duplicates
+    var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in newchatlist) {
+        lookupObject[newchatlist[i]['uniqueid']] = newchatlist[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
     return {
     type: ActionTypes.SHOW_CHAT_HISTORY,
-    chatlist,
+    chatlist: newArray,
   //  customerid,
 
   };
