@@ -63,6 +63,8 @@
     "react-cropper": "^0.8.0",
     "react-dom": "^15.0.1",
     "react-emoji": "^0.4.4",
+    "react-emoji-picker": "^1.0.13",
+    "react-giphy-picker": "^1.0.0",
     "react-highcharts": "^10.0.0",
     "react-redux": "^4.1.2",
     "react-router": "^2.6.0",
