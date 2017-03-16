@@ -255,7 +255,7 @@ else{
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
     if(this.props.sessiondetails.platform == 'web' && this.props.sessiondetails.request_id == message.request_id){
-     alert('message arrived');
+     //alert('message arrived');
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
       this.forceUpdate();
@@ -684,7 +684,7 @@ else{
 
     // inform assignee that he has been assigned a Chat Session
 
-     var informMsg = {
+   /*  var informMsg = {
                           'to' : this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -702,7 +702,8 @@ else{
 
                       }
 
-    socket.emit('informAgent',informMsg);
+  //  socket.emit('informAgent',informMsg);
+  */
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
 
 
@@ -803,7 +804,7 @@ else{
 
         //for web customers
         else{
-        this.props.chatlist.push(saveChat);
+       // this.props.chatlist.push(saveChat);
       //  socket.emit('send:message', saveChat);
         this.props.getchatfromAgent(saveChat);
         }

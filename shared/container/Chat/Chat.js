@@ -233,7 +233,7 @@ componentDidMount(){
 
 
    handleChange(e){
-     alert(e.target.value);
+     //alert(e.target.value);
      this.props.filterbystatus(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
@@ -242,14 +242,14 @@ componentDidMount(){
 
 
     handleChangeDepartment(e){
-     alert(e.target.value);
+     //alert(e.target.value);
      this.props.filterbyDept(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
 
     }
      handleChangeChannel(e){
-     alert(e.target.value);
+     //lert(e.target.value);
      this.props.filterbyChannel(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
@@ -257,7 +257,7 @@ componentDidMount(){
     }
 
     handleChangeAgents(e){
-     alert(e.target.value);
+    // alert(e.target.value);
      this.props.filterbyAgent(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
@@ -265,7 +265,7 @@ componentDidMount(){
     }
 
      handleSession(id,platform,e){
-      console.log(platform);
+     // console.log(platform);
       console.log(id);
       e.preventDefault();
       const usertoken = auth.getToken();

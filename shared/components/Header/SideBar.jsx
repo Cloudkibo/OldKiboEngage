@@ -46,6 +46,19 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
+
+              <li className="">
+                <Link to="/chat">
+                  <i className="fa fa-comments-o">
+                  </i>
+                  <span className="title">
+                     Chat
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+              
               <li className="">
                 <Link to='/assignedchatsessions'>
                   <i className="fa fa-chain">
@@ -189,17 +202,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
-                <Link to="/chat">
-                  <i className="fa fa-comments-o">
-                  </i>
-                  <span className="title">
-                     Chat
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
+              
               <li className="">
                 <Link to="/fbpages">
                   <i className="fa fa-facebook">
