@@ -5,7 +5,8 @@ import { getfbchatfromAgent,add_socket_fb_message ,uploadFbChatfile} from '../..
 import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
-
+var EmojiPicker = require('react-emoji-picker');
+var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload'
 
 var handleDate = function(d){
@@ -41,7 +42,7 @@ var renderSuggestion = function(suggestion) {
 
 
 export class ChatArea extends Component {
- 
+
   constructor(props, context) {
       super(props, context);
         this.state = {
@@ -49,7 +50,8 @@ export class ChatArea extends Component {
           suggestions: getSuggestions('',props.responses),
           src : '',
           userfile:null,
-
+          emoji: null,
+          showEmojiPicker: false,
         };
        this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
@@ -57,9 +59,11 @@ export class ChatArea extends Component {
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.onFileSubmit = this.onFileSubmit.bind(this);
         this._onChange = this._onChange.bind(this);
-
+        this.toggleEmojiPicker = this.toggleEmojiPicker.bind(this);
+        this.emojiPicker = this.emojiPicker.bind(this);
+        this.setEmoji = this.setEmoji.bind(this);
   }
-  
+
 
 connectCall(data){
    if(confirm("Other person is calling you to a call. Confirm to join."))
@@ -127,9 +131,9 @@ handleMessageSubmit(e) {
 
     console.log('handleMessageSubmit' + e.which)
     if (e.which === 13 && this.state.value !="") {
-    var today = new Date();  
+    var today = new Date();
     var uid = Math.random().toString(36).substring(7);
-            
+
     var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
     var pageid=''
@@ -152,7 +156,7 @@ handleMessageSubmit(e) {
               },
 
              pageid:pageid
-              
+
     }
 
     this.props.getfbchatfromAgent(saveMsg);
@@ -161,7 +165,7 @@ handleMessageSubmit(e) {
               senderid: this.props.userdetails._id,
               recipientid:this.props.senderid,
               companyid:this.props.userdetails.uniqueid,
-              
+
               seen:false,
               message:{
                 text:this.state.value,
@@ -177,7 +181,7 @@ handleMessageSubmit(e) {
 
             }
     this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
-    
+
         this.forceUpdate();
       }
     }
@@ -221,10 +225,10 @@ onFileSubmit(event)
                               },
 
                              pageid:pageid
-              
+
            }
-       
-        
+
+
               fileData.append('file', this.state.userfile);
               fileData.append('filename',  this.state.userfile.name);
               fileData.append('filetype',  this.state.userfile.type);
@@ -260,6 +264,43 @@ else{
 }
 }
 
+toggleEmojiPicker() {
+  if(this.state.showEmojiPicker === false) {
+    this.setState({showEmojiPicker: true});
+  } else {
+    this.setState({showEmojiPicker: false});
+  }
+}
+
+validateEmoji() {
+  var matched = emojiMap.filter(function(emoji) {
+    return `:${emoji.name}:` === this.state.emoji
+  })
+
+  if(matched.length === 0) {
+    this.setState({emoji: null})
+  }
+}
+
+updateState(e) {
+  this.setState({emoji: e.target.value})
+}
+
+setEmoji(emoji) {
+  this.setState({emoji: emoji})
+}
+
+emojiPicker() {
+  if(this.state.showEmojiPicker) {
+    return (
+      <EmojiPicker
+        onSelect={this.setEmoji}
+        query={this.state.emoji}
+      />
+    );
+  }
+}
+
   render () {
     // only show previous messages if they exist.
     // display messages of active channel
@@ -281,7 +322,7 @@ else{
           <span className='username'>{this.props.username}</span>
           </div>
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
-              
+
               <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
 
@@ -291,7 +332,7 @@ else{
                        <img src={da.payload.url} className='file-preview'/>:
                        <a href={da.payload.url} target="_blank">{da.payload.url}  </a>
                        )
-                )) 
+                ))
               }
 
             </div>
@@ -302,7 +343,7 @@ else{
           <span className='username'>KiboEngage</span>
           </div>
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
-              
+
               <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
@@ -311,15 +352,15 @@ else{
                        <img src={da.payload.url} className='file-preview'/>:
                        <a href={da.payload.url} target="_blank">{da.payload.url}  </a>
                        )
-                )) 
+                ))
               }
             </div>
         </div>
-      
+
       )
     })
 
-    
+
       return (
         <div>
         <div id='messages-container'>
@@ -354,6 +395,9 @@ else{
 
                        </td>
                        <td className="col-md-6">
+                       <button className="btn white" onClick = {this.toggleEmojiPicker} ><i  className="fa fa-smile-o fa-fw fa-lg" /><b> Emoji </b></button>
+                       </td>
+                       <td className="col-md-6">
                        <input type="file" onChange={this._onChange} className="pull-left"/>
 
                          <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
@@ -365,15 +409,24 @@ else{
                   </table>
                   </div>
 
+                  {
+                      this.state.showEmojiPicker &&
+                      <EmojiPicker
+                        onSelect={this.setEmoji}
+                        query={this.state.emoji}
+                      />
+
+                  }
+
        </div>
       )
-   
+
   }
 }
 
 
 function mapStateToProps(state) {
- 
+
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
