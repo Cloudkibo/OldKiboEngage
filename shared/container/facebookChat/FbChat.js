@@ -21,7 +21,7 @@ var callonce=false;
 
 class FbChat extends Component {
  constructor(props, context) {
-    
+
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -42,7 +42,7 @@ class FbChat extends Component {
         //fb related
         this.getfbCustomer = this.getfbCustomer.bind(this);
         this.getfbMessage = this.getfbMessage.bind(this);
-             
+
 
   }
 
@@ -53,7 +53,7 @@ getfbCustomer(data){
     this.forceUpdate();
 
   }
-  
+
 }
 
 getfbMessage(data){
@@ -61,14 +61,14 @@ getfbMessage(data){
     {
       if(data.senderid != this.props.fbchatSelected[0].senderid)
       {
-     
+
           data.seen = false;
        }
     else{
       data.seen=true;
     }
       this.props.add_socket_fb_message(data,this.props.fbchats,this.refs.sessionid.value);
-    
+
     }
    /* this.props.fbchatSelected.push({
         message: data.message.text,
@@ -91,7 +91,7 @@ syncdata(){
 
 componentDidMount(){
        const usertoken = auth.getToken();
-       
+
         //fb related
         this.props.route.socket.on('send:fbcustomer',this.getfbCustomer);
         this.props.route.socket.on('send:fbmessage',this.getfbMessage);
@@ -106,12 +106,12 @@ componentWillReceiveProps(props){
     this.refs.sessionid.value = props.fbcustomers[0].user_id;
     this.props.selectFbCustomerChat(props.fbcustomers[0].user_id,props.fbchats);
     callonce=false;
-   
+
   }
 
 }
  handleSession(customer,e){
-     
+
       alert(customer.user_id);
       e.preventDefault();
       const usertoken = auth.getToken();
@@ -127,7 +127,7 @@ componentWillReceiveProps(props){
 
   render() {
     const token = auth.getToken()
-    
+
     console.log(token)
 
     return (
@@ -148,9 +148,9 @@ componentWillReceiveProps(props){
               </div>
 
            <div className="portlet-body">
-       		
+
              	<div className="table-responsive">
-              
+
                 {this.props.fbcustomers && this.props.fbcustomers.length == 0?
                   <p>No Customer is online currently.</p>
 
@@ -165,12 +165,12 @@ componentWillReceiveProps(props){
 					                        this.props.fbcustomers.map((customer, i) => (
 
                                     <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id)}  customer={customer} key={i} />
-                                  
+
                                   )
                                   )
 					                      }
 
-                                
+
 			                   </div>
 			                 </td>
                        <td  className="col-md-6">
@@ -180,7 +180,7 @@ componentWillReceiveProps(props){
                                 <label>Customer Name :</label>
                                 <input defaultValue = {this.props.fbcustomers[0].first_name+ ' '+this.props.fbcustomers[0].last_name} ref="customername"/>
                                  <input type="text" ref = "sessionid" defaultValue = {this.props.fbcustomers[0].user_id} />
-      
+
                            </div>
                          }
                            {this.props.fbchatSelected && this.props.fbcustomers && this.refs.sessionid && this.refs.customername &&
@@ -205,7 +205,7 @@ componentWillReceiveProps(props){
 }
 
 function mapStateToProps(state) {
- 
+
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
