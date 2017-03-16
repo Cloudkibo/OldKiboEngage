@@ -278,8 +278,8 @@ httpapp.get('*',function(req,res){
 });
 }
 
-//var io = require('socket.io').listen(server);
-var io = require('socket.io').listen(serverhttp);
+var io = require('socket.io').listen(server);
+//var io = require('socket.io').listen(serverhttp);
 
 require('./routes/socket.js').socketf(io);
 
