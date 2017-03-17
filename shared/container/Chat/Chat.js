@@ -78,6 +78,7 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
   getSocketmessage(message){
+   alert('socket called for message');
    console.log(message);
    if(this.props.customerchat_selected){
    if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
@@ -102,7 +103,7 @@ updateOnlineAgents(data){
      this.props.userchats.push(message);
 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+     //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
      this.forceUpdate();
   }
 
@@ -128,11 +129,12 @@ updateOnlineAgents(data){
 
  }
 
-    else if(!this.props.customerchat_selected && message.fromMobile == 'no' ){
-     alert(' i m called')
+    else if(!this.props.customerchat_selected  && message.fromMobile == 'no' ){
+     alert(' i m called');
+
      this.props.userchats.push(message);
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+    // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
 
    }
 

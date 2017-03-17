@@ -161,7 +161,7 @@ class ClientChatView extends Component {
       
       call.from = this.props.sessiondetails.customerName;
       call.to = this.refs.agentname.value;
-      call.agentemail = this.refs.agentemail.value;
+      call.agentemail = this.refs.agentemail.value.trim();
       call.visitoremail = this.props.sessiondetails.email;
       call.request_id = this.props.sessiondetails.session_id;
       call.url = meetingURLString;

@@ -82,17 +82,23 @@ function onDisconnect(io2, socket) {
   var room
   var req_id;
   for(var j = 0;j< onlineWebClientsSession.length;j++){
+
     if(onlineWebClientsSession[j].socketid == socket.id){
        console.log('Remove session,customer went offline');
       room = onlineWebClientsSession[j].companyid;
       req_id = onlineWebClientsSession[j].request_id;
+      console.log(req_id);
       //we will remove all the user chat from socket.io with this request id
+      console.log('length of userchats before: '+ userchats.length)
       for(var k=0;k<userchats.length;k++){
         if(userchats[k].request_id == req_id){
+           console.log('Remove chat message,customer went offline');
+      
           userchats.splice(k,1);
         }
       }
-     
+      console.log('length of userchats after: '+ userchats.length)
+      console.log(userchats);
       onlineWebClientsSession.splice(j,1);
       console.log(onlineWebClientsSession);
       session_remove = true
@@ -857,11 +863,14 @@ socket.on('getOnlineAgentList',function() {
   socket.on('connecttocall', function(call){
 
   if(!call.stanza.to_id){
+    console.log('customer calling to agent');
     //this call is from customer to agent
     //check if agent is online
-
+    console.log(call.stanza);
       for(var i = 0;i < onlineAgents.length;i++)
             {
+              console.log('online agent');
+              console.log(onlineAgents[i]);
               if(onlineAgents[i].email == call.stanza.agentemail){
                 console.log('agent is online');
 
@@ -1022,7 +1031,7 @@ exports.getchat = function(data){
     else{
             for(var i=0;i<onlineAgents.length;i++){
               if(onlineAgents[i].room == data.companyid){
-                //send message on agent socket
+                console.log('send message on agent socket');
                 glob.to(onlineAgents[i].socketid).emit('send:message',{
                                           to: data.to,
                                           toagent:data.toagent,

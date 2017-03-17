@@ -173,6 +173,7 @@ onFileSubmit(event)
 
 
 connectCall(data){
+ 
    if(confirm("Other person is calling you to a call. Confirm to join."))
         window.location.href = data.url;
  }
@@ -255,7 +256,7 @@ else{
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
     if(this.props.sessiondetails.platform == 'web' && this.props.sessiondetails.request_id == message.request_id){
-     //alert('message arrived');
+     alert('message arrived');
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
       this.forceUpdate();
@@ -640,7 +641,7 @@ else{
 
         if(this.props.sessiondetails.platform == 'web'){
         //socket.emit('send:message', saveChat);
-        this.props.getchatfromAgent(saveChat);
+        //this.props.getchatfromAgent(saveChat);
         socket.emit('send:agentsocket' , saveChat);
         }
         // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
@@ -684,7 +685,7 @@ else{
 
     // inform assignee that he has been assigned a Chat Session
 
-   /*  var informMsg = {
+     var informMsg = {
                           'to' : this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
@@ -702,8 +703,8 @@ else{
 
                       }
 
-  //  socket.emit('informAgent',informMsg);
-  */
+    socket.emit('informAgent',informMsg);
+  
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
 
 
@@ -1112,35 +1113,51 @@ const { value, suggestions } = this.state;
 
               </tr>
 
-              <tr>
-               <td className="col-md-4">
-                 <div className="input-group">
-                   <select  ref = "grouplist" className="form-control" onChange={this.handleChange.bind(this)}   >
-                          {
-                          this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                            <option value={group._id} data-attrib = {group._id}>{group.groupname}</option>
+              {this.props.groupdetails && this.props.groupdetails.length >0?
+                     <tr>
+                    
+                         <td className="col-md-4">
+                           <div className="input-group">
+                             <select  ref = "grouplist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                                    {
+                                    this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                                      <option value={group._id} data-attrib = {group._id}>{group.groupname}</option>
 
-                            )
-                         }
+                                      )
+                                   }
 
-                      </select>
-                   </div>
-               </td>
-                <td className="col-md-4">
-                <button className="btn btn-primary" onClick = {this.assignSessionToGroup}> Assigned To Group</button>
-                </td>
+                                </select>
+                             </div>
+                         </td>
 
-
-                <td className="col-md-6">
-                <label>Current Status - {this.props.sessiondetails.status}</label>
-                <br/>
-                <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
-
-                </td>
-
-            </tr>
+                          <td className="col-md-4">
+                          <button className="btn btn-primary" onClick = {this.assignSessionToGroup}> Assigned To Group</button>
+                          </td>
 
 
+                          <td className="col-md-6">
+                          <label>Current Status - {this.props.sessiondetails.status}</label>
+                          <br/>
+                          <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+
+                          </td>
+
+                     </tr>:
+
+                     <tr>
+                      <td className="col-md-4">
+                        <label>Chat Group List is empty</label>
+                     
+                      </td>
+                      <td className="col-md-6">
+                        <label>Current Status - {this.props.sessiondetails.status}</label>
+                        <br/>
+                        <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+
+                      </td>
+                     </tr>
+
+             }
               </tbody>
             </table>
 
@@ -1370,6 +1387,13 @@ function mapStateToProps(state) {
           tempMessage :(state.dashboard.tempMessage),
           groupagents : (state.dashboard.groupagents),
           groupdetails :(state.dashboard.groupdetails),
+          customerchatold :(state.dashboard.customerchatold),
+          chatlist :(state.dashboard.chatlist),
+          channels :(state.dashboard.channels),
+          customers:(state.dashboard.customers),
+          customerchat_selected :(state.dashboard.customerchat_selected),
+          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
+
 
   };
 }

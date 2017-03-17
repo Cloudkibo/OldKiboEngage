@@ -2,6 +2,24 @@ import { combineReducers } from 'redux'
 import * as ActionTypes from '../constants/constants';
 import { push } from 'react-router-redux';
 import store from '../store/configureStore'
+
+
+function removeDuplicates(originalArray, prop) {
+     var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
+  return newArray;
+ }
+
+
+
 const initialState = { signupwarnings: {},userdetails : {}};
 const dashboardState = { userdetails : {},teamdetails:[]};
 const widgetState ={teamdetails:[],channels:[]}
@@ -538,7 +556,7 @@ const dashboard = (state =dashboardState, action) => {
           case ActionTypes.ADD_CHAT_MESSAGE:
           var chatlistt = []
             if(state.chatlist){
-              chatlistt = [...state.chatlist,action.message]
+              chatlistt = removeDuplicates([...state.chatlist,action.message],'uniqueid')
 
             }
             else{
@@ -546,7 +564,7 @@ const dashboard = (state =dashboardState, action) => {
             }
             var cc = []
            if(state.userchats){
-              cc = [...state.userchats,action.message]
+              cc = removeDuplicates([...state.userchats,action.message],'uniqueid')
            }
            else{
             cc = [action.message]
