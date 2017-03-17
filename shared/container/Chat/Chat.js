@@ -78,7 +78,7 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
   getSocketmessage(message){
-   alert('socket called for message');
+  // alert('socket called for message');
    console.log(message);
    if(this.props.customerchat_selected){
    if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
@@ -99,7 +99,7 @@ updateOnlineAgents(data){
    }
 
     else if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no'){
-      alert(' i m called2')
+     // alert(' i m called2')
      this.props.userchats.push(message);
 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
@@ -130,7 +130,7 @@ updateOnlineAgents(data){
  }
 
     else if(!this.props.customerchat_selected  && message.fromMobile == 'no' ){
-     alert(' i m called');
+    // alert(' i m called');
 
      this.props.userchats.push(message);
      this.props.updateChatList(message,this.props.new_message_arrived_rid);

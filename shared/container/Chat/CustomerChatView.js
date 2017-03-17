@@ -256,7 +256,7 @@ else{
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
     if(this.props.sessiondetails.platform == 'web' && this.props.sessiondetails.request_id == message.request_id){
-     alert('message arrived');
+   //  alert('message arrived');
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
       this.forceUpdate();
