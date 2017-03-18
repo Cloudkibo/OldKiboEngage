@@ -42,8 +42,6 @@ import serverConfig from './config';
 import os from 'os';
 import fs from 'fs';
 
-
-
 // Apply body Parser and server public assets and routes
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
@@ -55,9 +53,21 @@ httpapp.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 httpapp.use(Express.static(path.resolve(__dirname, '../static')));
 httpapp.use('/api', serverroutes);
 
+// https redirect
+import { Router } from 'express';
+if(process.env.NODE_ENV === 'production'){
+  const router = new Router();
+  router.route('*').get( function(req,res){
+    res.redirect('https://kiboengage.kibosupport.com' + req.url);
+  });
+  httpapp.use('*', router);
+}
 
-
-
+//if(process.env.NODE_ENV === 'production'){
+// httpapp.get('*', function(req,res){
+//   res.redirect('https://kiboengage.kibosupport.com' + req.url);
+// });
+//}
 
 var options = {
   ca: fs.readFileSync('server/security/gd_bundle-g2-g1.crt'),
@@ -271,12 +281,6 @@ const serverhttp = http.createServer(httpapp).listen(serverConfig.port, (error) 
     console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
   }
 });
-
-if(process.env.NODE_ENV === 'production'){
-httpapp.get('*',function(req,res){
-  res.redirect('https://kiboengage.kibosupport.com' + req.url);
-});
-}
 
 var io = require('socket.io').listen(server);
 //var io = require('socket.io').listen(serverhttp);
