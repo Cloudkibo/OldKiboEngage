@@ -272,7 +272,7 @@ const serverhttp = http.createServer(httpapp).listen(serverConfig.port, (error) 
   }
 });
 
-if(process.env.NODE_ENV !== 'production'){
+if(process.env.NODE_ENV === 'production'){
 httpapp.get('*',function(req,res){
   res.redirect('https://kiboengage.kibosupport.com' + req.url);
 });
