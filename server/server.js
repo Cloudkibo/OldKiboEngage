@@ -55,13 +55,13 @@ httpapp.use('/api', serverroutes);
 
 // https redirect
 import { Router } from 'express';
-if(process.env.NODE_ENV === 'production'){
-  const router = new Router();
-  router.route('*').get( function(req,res){
-    res.redirect('https://kiboengage.kibosupport.com' + req.url);
-  });
-  httpapp.use('*', router);
-}
+// if(process.env.NODE_ENV === 'production'){
+//   const router = new Router();
+//   router.route('*').get( function(req,res){
+//     res.redirect('https://kiboengage.kibosupport.com' + req.url);
+//   });
+//   httpapp.use('*', router);
+// }
 
 //if(process.env.NODE_ENV === 'production'){
 // httpapp.get('*', function(req,res){
