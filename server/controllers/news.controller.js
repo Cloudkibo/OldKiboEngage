@@ -17,8 +17,8 @@ var azure = require('azure-sb');
 export function createNews(req, res) {
   console.log('create News is called');
   var token = req.headers.authorization;
-  console.log(req.body);
-  console.log(req.body.news);
+  //console.log(req.body);
+  //console.log(req.body.news);
   var options = {
       url: `${baseURL}/api/news`,
       rejectUnauthorized : false,
@@ -43,6 +43,8 @@ export function createNews(req, res) {
        }
        else
        {
+    
+
          res.sendStatus(422);
           return res.status(422).json({statusCode : 422 ,message:'failed'}); 
    

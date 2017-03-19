@@ -25,7 +25,9 @@ class ClientChatView extends Component {
 
  connectCall(data){
    if(confirm("Other person is calling you to a call. Confirm to join."))
-        window.location.href = data.url;
+       // window.location.href = data.url;
+        var win = window.open(data.url, '_blank');
+        win.focus();
  }
   getAgentSocket(data){
     console.log(data)
@@ -171,7 +173,9 @@ class ClientChatView extends Component {
 
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value+'&agentname='+this.refs.agentname.value+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
 
-      window.location.href = meetingURLString;
+//      window.location.href = meetingURLString;
+      var win = window.open(meetingURLString, '_blank');
+      win.focus();
   }
   render() {
    

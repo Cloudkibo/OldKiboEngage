@@ -797,7 +797,7 @@ socket.on('getOnlineAgentList',function() {
     }
     }
     console.log("Agents online :");
-    //console.log(onlineAgents);
+    console.log(onlineAgents);
     //inform other agents that new agent is online now
 
     socket.broadcast.to(room.room).emit('updateOnlineAgentList', onlineAgents);
@@ -1006,6 +1006,8 @@ exports.getchat = function(data){
             }
 
            for(var i=0;i<socketids.length;i++){
+            console.log('socketids');
+            console.log(socketids);
             glob.to(socketids[i]).emit('send:message',{
                                 to: data.to,
                                 toagent:data.toagent,

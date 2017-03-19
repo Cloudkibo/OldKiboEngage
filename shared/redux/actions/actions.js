@@ -1685,7 +1685,7 @@ export function getmobilesessions(token) {
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver([])));
   };
 }
 

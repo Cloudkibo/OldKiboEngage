@@ -175,7 +175,9 @@ onFileSubmit(event)
 connectCall(data){
  
    if(confirm("Other person is calling you to a call. Confirm to join."))
-        window.location.href = data.url;
+        //window.location.href = data.url;
+        var win = window.open(data.url, '_blank');
+        win.focus();
  }
 connectToCall(e){
       var call= {};
@@ -198,7 +200,9 @@ connectToCall(e){
 
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
 
-      window.location.href = meetingURLString;
+     // window.location.href = meetingURLString;
+      var win = window.open(meetingURLString, '_blank');
+      win.focus();
 
 }
 onChange(event, { newValue }) {
@@ -249,7 +253,7 @@ else{
 
   getSocketmessage(message){
 
-
+  //alert('message received');
    //  const usertoken = auth.getToken();
    //  this.props.getuserchats(usertoken);
 
