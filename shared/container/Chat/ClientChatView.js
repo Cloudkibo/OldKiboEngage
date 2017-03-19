@@ -200,11 +200,11 @@ class ClientChatView extends Component {
       <div>
           <div>
             <label>Agent Name : </label>
-            <input ref ="agentname" type = "text" disabled/>
+            <input ref ="agentname" type = "text"  disabled/>
             <br/>
             <input ref ="agentid" type = "hidden" />
             <label>Agent Email: </label>
-            <input ref ="agentemail" type = "text"  disabled/>
+            <input ref ="agentemail" type = "text"   disabled/>
            {this.props.sessiondetails &&
             <div>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
