@@ -43,7 +43,7 @@
 .panel-body
 {
     overflow-y: scroll;
-    height: 250px;
+    height: 350px;
 }
 
 /*
@@ -108,9 +108,27 @@
     margin-bottom: 10px;
     border-bottom: 1px dotted #B3A9A9;
     margin-right: 270px;
+    
     border-radius: 10px !important;
     padding: 5px;
     background: #f5f5f5;
+}
+
+.userChatBoxTemp{
+    margin-bottom: 10px;
+    border-bottom: 1px dotted #B3A9A9;
+    width: 100%;
+    border-radius: 10px !important;
+    padding: 5px;
+    background: #f5f5f5;
+}
+.agentChatBoxTemp{
+    margin-bottom: 10px;
+    border-bottom: 1px dotted #B3A9A9;
+    background: rgba(51, 122, 183, 0.13);
+    width: 100%;
+    border-radius: 10px !important;
+    padding: 5px;
 }
 .table .table-colored{
     background-color: rgba(119, 119, 119, 0.11);

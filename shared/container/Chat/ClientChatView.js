@@ -98,7 +98,7 @@ class ClientChatView extends Component {
         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
        
         var saveChat={}
-        if(this.refs.agentemail.value == ''){
+        if(this.refs.agentemail.value == 'No Agent assigned'){
 
         saveChat = { 
                           'to' : 'All Agents',
@@ -200,16 +200,17 @@ class ClientChatView extends Component {
       <div>
           <div>
             <label>Agent Name : </label>
-            <input ref ="agentname" type = "text"/>
-            <label>Agent ID : </label>
-            <input ref ="agentid" type = "text"/>
+            <input ref ="agentname" type = "text" value="No Agent assigned" disabled/>
+            <br/>
+            <input ref ="agentid" type = "hidden" />
             <label>Agent Email: </label>
-            <input ref ="agentemail" type = "text"/>
+            <input ref ="agentemail" type = "text" value="No Agent assigned" disabled/>
            {this.props.sessiondetails &&
             <div>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
             <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
-            <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  />
+            <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  type="hidden"/>
+            <label> Customer Email: </label>
             <input ref="email" value = {this.props.sessiondetails.email} type="text" />
            </div>
            }
@@ -220,24 +221,25 @@ class ClientChatView extends Component {
                           {this.props.chatlist &&
                             this.props.chatlist.filter((chat) => chat.request_id == this.refs.reqId.value).map((chat, i) => (
                                      (this.refs.name.value === chat.from?
-                                   <li className="right clearfix agentChatBox">
-                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
+                                   <li className="left clearfix userChatBoxTemp">
+                                       <span className="chat-img pull-left userChat"> {chat.from.substr(0,1)}
                                       </span>
-                                      <div className="chat-body clearfix">
+                                     <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong> 
-                                            <small className=" text-muted">
+                                            <strong className="primary-font">{chat.from}</strong> 
+                                            <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
                                         </div>
-                                       <p  className='pull-right chatmsg'>
+                                        <br/>
+                                       <p className="chatmsg">
                                             {chat.msg}
                                        </p>
                                      </div>
                                    </li> :
 
-                                    <li className="left clearfix userChatBox">
-                                      <span className="chat-img pull-left userChat">
+                                    <li className="left clearfix agentChatBoxTemp">
+                                      <span className="chat-img pull-left agentChat">
                                       {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
@@ -247,6 +249,7 @@ class ClientChatView extends Component {
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
                                         </div>
+                                        <br/>
                                        <p className="chatmsg">
                                             {chat.msg}
                                        </p>
