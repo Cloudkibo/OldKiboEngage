@@ -113,7 +113,7 @@ for(var i = 0;i< unread.length;i++){
     unreadCount = unreadCount+1;
   }
 }
-//console.log('thisChat' + thisChat)
+
 
 //console.log(unread);
 var handleDate = function(d){
@@ -122,69 +122,74 @@ var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
 return res;
 }
   return (
+   (ag.length > 0?
+   
    (props.userchat.length > 0 || props.customer.platform == 'web' ?
-   <div className="list-group" onClick={props.onClickSession} style={changec}>
-   {
-    (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
-
-   	<div className="list-group-item" style={changecc}>
-
-      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
-
-       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
-
-      <div style={divMargin}>
-      <span style={leftStyle}>{ag[0].deptname}</span>
-      <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
-      <br/>
-      <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
-      <br/>
-      <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-     <br/>
-     {
-      (agentname.length > 0?
-      <span  style={rightAgent}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
-     )}
-      </div>
-      <br/>
-
-
-    </div> :
-
-
-     <div className="list-group-item" >
-
-      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
-       {(unreadCount == 0?
-       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
-
-       )}
-      <div style={divMargin}>
-      {
-        ag.length > 0 ? <span style={leftStyle}>{ag[0].deptname}</span> : <span style={leftStyle}>Customer</span>
-      }
-      <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
-      <br/>
-      {
-       ch.length > 0 ? <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span> : <span  style={rightAgent}><i className="fa fa-headphones"/>Message Channel</span>
-      }
-      <br/>
-      <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-       <br/>
+         <div className="list-group" onClick={props.onClickSession} style={changec}>
          {
-      (agentname.length > 0?
-      <span  style={rightAgent}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
-     )}
+          (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
 
-      </div>
-      <br/>
+         	<div className="list-group-item" style={changecc}>
+
+            <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
+
+             <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
+
+            <div style={divMargin}>
+            <span style={leftStyle}>{ag[0].deptname}</span>
+            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
+            <br/>
+            <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
+            <br/>
+            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+           <br/>
+           {
+            (agentname.length > 0?
+            <span  style={rightAgent}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
+           )}
+            </div>
+            <br/>
 
 
-    </div>
-    )
-  }
-   </div> :<div style={{'display' :'none'}}></div>
+          </div> :
+
+
+           <div className="list-group-item" >
+
+            <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</h4>
+             {(unreadCount == 0?
+             <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
+
+             )}
+            <div style={divMargin}>
+            {
+              ag.length > 0 ? <span style={leftStyle}>{ag[0].deptname}</span> : <span style={leftStyle}>Customer</span>
+            }
+            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
+            <br/>
+            {
+             ch.length > 0 ? <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span> : <span  style={rightAgent}><i className="fa fa-headphones"/>Message Channel</span>
+            }
+            <br/>
+            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+             <br/>
+               {
+            (agentname.length > 0?
+            <span  style={rightAgent}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
+           )}
+
+            </div>
+            <br/>
+
+
+          </div>
+          )
+        }
+         </div> :<div style={{'display' :'none'}}></div>
  )
+:
+<div style={{'display' :'none'}}></div>
+)
   );
 }
 

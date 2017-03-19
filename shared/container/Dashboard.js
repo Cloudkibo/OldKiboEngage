@@ -24,7 +24,13 @@ class Dashboard extends Component {
 
     super(props, context);
      this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
+     this.create_agentsession = this.create_agentsession.bind(this);
 
+
+  }
+  create_agentsession(){
+   // alert('joined socket');
+     dontCall = true;
 
   }
   componentWillMount(){
@@ -63,6 +69,9 @@ class Dashboard extends Component {
 
 componentDidMount(){
  dontCall = false;
+ //this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
+ this.props.route.socket.on('agentjoined',this.create_agentsession)
+
 }
 
 
@@ -75,7 +84,7 @@ componentDidMount(){
     //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
 
 
-      dontCall = true;
+     
 
      // this.props.setTimeout(() => { alert('I do not leak!' + this.props.userdetails.uniqueid); }, 1000);
     }

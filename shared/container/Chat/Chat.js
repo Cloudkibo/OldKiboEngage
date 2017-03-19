@@ -395,6 +395,7 @@ componentDidMount(){
 
              	<div className="table-responsive">
                 <input type="hidden" ref = "sessionid" />
+                <p>Chat Sessions assigned to your Team will be listed here.</p>
                 {!this.props.customerchat?
                   <p>Loading Chat Sessions...</p>:
                   <br/>
@@ -415,7 +416,7 @@ componentDidMount(){
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.customerchat && this.props.customerchat.length > 0  &&
+					                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchat && this.props.customerchat.length > 0  &&
 					                        this.props.customerchat.map((customer, i) => (
 
                                     (this.props.new_message_arrived_rid ?
