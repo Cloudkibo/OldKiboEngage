@@ -98,7 +98,7 @@ class ClientChatView extends Component {
         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
        
         var saveChat={}
-        if(this.refs.agentemail.value == 'No Agent assigned'){
+        if(this.refs.agentemail.value == ''){
 
         saveChat = { 
                           'to' : 'All Agents',
@@ -200,11 +200,11 @@ class ClientChatView extends Component {
       <div>
           <div>
             <label>Agent Name : </label>
-            <input ref ="agentname" type = "text" value="No Agent assigned" disabled/>
+            <input ref ="agentname" type = "text" disabled/>
             <br/>
             <input ref ="agentid" type = "hidden" />
             <label>Agent Email: </label>
-            <input ref ="agentemail" type = "text" value="No Agent assigned" disabled/>
+            <input ref ="agentemail" type = "text"  disabled/>
            {this.props.sessiondetails &&
             <div>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
