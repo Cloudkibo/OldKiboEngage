@@ -89,7 +89,7 @@ class ClientChatView extends Component {
 
    handleMessageSubmit(e) {
     const { socket,dispatch } = this.props;
-     if (e.which === 13) {
+     if (e.which === 13 && this.refs.msg.value!='') {
         var message;  
         e.preventDefault();
            //generate unique id of message - this change is for mobile clients
