@@ -2162,9 +2162,19 @@ export function addRoom(room) {
 }
 
 export function updateAgentList(onlineAgents){
+     var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in onlineAgents) {
+        lookupObject[onlineAgents[i]['email']] = onlineAgents[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
   return {
     type : ActionTypes.ONLINE_AGENTS,
-    onlineAgents,
+    onlineAgents:newArray,
   }
 }
 
