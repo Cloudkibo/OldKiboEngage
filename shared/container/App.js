@@ -28,7 +28,7 @@ function notifyMe(message) {
       }
       // If the user is okay, let's create a notification
       if (permission === "granted") {
-       
+
         var notification = new Notification("KiboEngage", {
         dir: "auto",
         lang: "",
@@ -52,7 +52,7 @@ class App extends Component {
     this.alertme = this.alertme.bind(this);
 
   }
-  
+
   alertme(data){
     notifyMe('customer joined a session');
 
@@ -60,7 +60,6 @@ class App extends Component {
   componentDidMount(){
 
         this.props.route.socket.on('customer_joined',this.alertme);
-        
 
 }
 
@@ -69,7 +68,7 @@ class App extends Component {
 
       <div>
         { this.props.children }
-      
+
       </div>
 
     );
