@@ -282,9 +282,15 @@ const serverhttp = http.createServer(httpapp).listen(serverConfig.port, (error) 
   }
 });
 
-var io = require('socket.io').listen(server);
-//var io = require('socket.io').listen(serverhttp);
+if(process.env.NODE_ENV === 'production'){
+  var io = require('socket.io').listen(server);
+  //var io = require('socket.io').listen(serverhttp);
 
-require('./routes/socket.js').socketf(io);
+  require('./routes/socket.js').socketf(io);
+} else {
+  var io = require('socket.io').listen(serverhttp);
+
+  require('./routes/socket.js').socketf(io);
+}
 
 export default app;
