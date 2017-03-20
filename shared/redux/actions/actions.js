@@ -1446,7 +1446,7 @@ export function filterbyAgent(id,customerchat) {
   }
   else{
 
-    filtered = customerchat.filter((c) => c.agent_ids == id)
+    filtered = customerchat.filter((c) => c.agent_ids[c.agent_ids.length-1].id == id)
 
   }
     console.log(filtered);
@@ -3465,3 +3465,12 @@ export function uploadFbChatfile(fileData,usertoken,fbchats,id) {
   };
 
 };
+
+
+/*** reseting joined state ***/
+export function setjoinedState(stateVar){
+   return{
+      userjoinedroom:stateVar,
+      type: ActionTypes.JOINED_MEETING,
+    }
+}

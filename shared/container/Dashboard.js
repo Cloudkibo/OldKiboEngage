@@ -5,7 +5,7 @@ import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents,getnews} from '../redux/actions/actions'
 import {getuserteams} from '../redux/actions/actions'
-import {getchannels,updateAgentList} from '../redux/actions/actions'
+import {getchannels,updateAgentList,setjoinedState} from '../redux/actions/actions'
 import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
@@ -25,12 +25,14 @@ class Dashboard extends Component {
     super(props, context);
      this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
      this.create_agentsession = this.create_agentsession.bind(this);
+     this.callSocket= this.callSocket.bind(this);
 
 
   }
   create_agentsession(){
     //alert('joined socket');
      dontCall = true;
+     this.props.setjoinedState('joined');
 
   }
   componentWillMount(){
@@ -46,6 +48,7 @@ class Dashboard extends Component {
         this.props.getuserteams(usertoken);
         this.props.getchannels(usertoken);
         this.props.getresponses(usertoken);
+
    }
 
 
@@ -58,6 +61,9 @@ class Dashboard extends Component {
 
    }
 
+   
+  
+
 
  }
 
@@ -68,27 +74,38 @@ class Dashboard extends Component {
 }
 
 componentDidMount(){
- dontCall = false;
+ //dontCall = false;
  //this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
  this.props.route.socket.on('agentjoined',this.create_agentsession)
 
+  
+
 }
 
+callSocket(){ 
+    if(this.props.userdetails.uniqueid && this.props.userjoinedroom == 'notjoined'){
+      this.props.setjoinedState('joining');
+     
+//      alert('calling meeting')
 
-  componentWillUpdate(){
-  //on component mount,join room
-    if(this.props.userdetails.uniqueid && dontCall == false){
+     
+              this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
+  
 
-
-      this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
+     
     //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
-
-
+      this.forceUpdate();
      
 
      // this.props.setTimeout(() => { alert('I do not leak!' + this.props.userdetails.uniqueid); }, 1000);
     }
+     }
+
+  componentWillUpdate(){
+  //on component mount,join room
+  
    // this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
+    setTimeout(this.callSocket, 1500);
 
   }
 
@@ -137,8 +154,9 @@ function mapStateToProps(state) {
   channels :(state.dashboard.channels),
   onlineAgents:(state.dashboard.onlineAgents),
   news : (state.dashboard.news),
+  userjoinedroom:(state.dashboard.userjoinedroom)
 
    }
 }
 
-export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,getresponses,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));
+export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,setjoinedState,getresponses,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));

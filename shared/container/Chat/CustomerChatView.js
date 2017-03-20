@@ -1117,7 +1117,8 @@ const { value, suggestions } = this.state;
 
               </tr>
 
-              {this.props.groupdetails && this.props.groupdetails.length >0?
+              {/*
+                this.props.groupdetails && this.props.groupdetails.length >0?
                      <tr>
                     
                          <td className="col-md-4">
@@ -1161,7 +1162,17 @@ const { value, suggestions } = this.state;
                       </td>
                      </tr>
 
-             }
+             */}
+
+                    <tr>
+                     
+                      <td className="col-md-6">
+                        <label>Current Status - {this.props.sessiondetails.status}</label>
+                        <br/>
+                        <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+
+                      </td>
+                     </tr>
               </tbody>
             </table>
 

@@ -21,7 +21,7 @@ function removeDuplicates(originalArray, prop) {
 
 
 const initialState = { signupwarnings: {},userdetails : {}};
-const dashboardState = { userdetails : {},teamdetails:[]};
+const dashboardState = { userdetails : {},teamdetails:[],userjoinedroom:'notjoined'};
 const widgetState ={teamdetails:[],channels:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
@@ -778,6 +778,13 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
                 fbcustomers:action.fbcustomers,
                };
+
+        case ActionTypes.JOINED_MEETING:
+             return {
+              ...state,errorMessageProfile:'',
+                userjoinedroom:action.userjoinedroom,
+               };
+
     default:
       return state;
   }
@@ -863,6 +870,7 @@ function widget(state = widgetState, action){
             countryname : state.countryname,
 
       };
+
 
   default:
       return state;
