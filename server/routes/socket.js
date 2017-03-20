@@ -984,7 +984,7 @@ exports.socketf = function (socketio) {
 /******** not exporting in controller file **********/
 exports.getchat = function(data){
   console.log('socket get chat is called');
-  console.log(glob);
+  //console.log(glob);
   if(data.fromMobile == 'no'){
      userchats.push(data);
   }
