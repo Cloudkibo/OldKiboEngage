@@ -29,7 +29,7 @@ class Dashboard extends Component {
 
   }
   create_agentsession(){
-   // alert('joined socket');
+    alert('joined socket');
      dontCall = true;
 
   }

@@ -1034,6 +1034,8 @@ exports.getchat = function(data){
             for(var i=0;i<onlineAgents.length;i++){
               if(onlineAgents[i].room == data.companyid){
                 console.log('send message on agent socket');
+                console.log('online agents');
+                console.log(onlineAgents[i]);
                 glob.to(onlineAgents[i].socketid).emit('send:message',{
                                           to: data.to,
                                           toagent:data.toagent,
