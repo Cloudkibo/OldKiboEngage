@@ -253,7 +253,7 @@ else{
 
   getSocketmessage(message){
 
-  //alert('message received');
+  alert('message received');
    //  const usertoken = auth.getToken();
    //  this.props.getuserchats(usertoken);
 

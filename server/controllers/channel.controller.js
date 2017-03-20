@@ -37,7 +37,7 @@ export function createChannel(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
+        //console.log(body);
         ////console.log(error);
       if(!error  && response.statusCode == 201) {
       
@@ -73,11 +73,11 @@ export function getchannels(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        ////console.log(info);
+        //////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -112,7 +112,7 @@ export function getcustomerchannels(req, res) {
        ////console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        ////console.log(info);
+        //////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -143,7 +143,7 @@ export function destroyChannel(req, res) {
     
     console.log(response.statusCode);
     console.log(error);
-    console.log(body);
+    //console.log(body);
       if(!error  && response.statusCode == 204) {
           //send push notification to mobile clients
         sendPushNotification(req.body.channel,"Channels","DeleteChannel",token);
@@ -178,7 +178,7 @@ export function editChannel(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
+        //console.log(body);
         ////console.log(error)
       if(!error  && response.statusCode == 200) {
       
@@ -217,7 +217,7 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
+        //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             return res.status(200).json({statusCode : 200,body});
@@ -249,11 +249,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
+        //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -287,11 +287,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -321,11 +321,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -356,11 +356,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -391,11 +391,11 @@ export function getmobilecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -426,11 +426,11 @@ export function gettopcustomers(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -461,11 +461,11 @@ export function getagentwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -497,11 +497,11 @@ export function getagentnotifications(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            //console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -528,7 +528,7 @@ function sendPushNotification(data,tablename,operation,token){
 
               };
               function callback(error1, response, body1) {
-                 //console.log(body);
+                 ////console.log(body);
                  //console.log(error);
                 var customers = JSON.parse(body1);
                 if(!error1  && response.statusCode == 200) {
