@@ -52,8 +52,8 @@ export function getCountryName(req, res) {
 export function createCustomer(req, res) {
   console.log('create Customer is called');
 
-  console.log(req.body);
-  console.log(req.body.customer);
+  //console.log(req.body);
+  //console.log(req.body.customer);
   var options = {
       url: `${baseURL}/api/customers`,
       rejectUnauthorized : false,
@@ -110,7 +110,7 @@ export function getcustomers(req, res) {
 
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        console.log(info);
+        //console.log(info);
       return res.status(200).json(info);
     }
 

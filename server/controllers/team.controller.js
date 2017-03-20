@@ -123,10 +123,11 @@ export function getteams(req, res) {
     function callback(error, response, body) {
       console.log(error);
       console.log(response);
-      console.log(body);
+
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
         var info = body;
-        console.log(body);
+        ////console.log(body);
         //console.log(info.msg);
        //console.log(info.status);
        if(info.status == 'success')
@@ -254,7 +255,7 @@ export function editteam(req, res) {
     console.log(options.url);
     //console.log(options.json.dept);
     function callback(error, response, body) {
-        //console.log(body);
+        ////console.log(body);
     
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')
@@ -294,7 +295,7 @@ export function editteam(req, res) {
     };
     function callback(error, response, body) {
       console.log(error);
-      console.log(body);
+      //console.log(body);
         if(!error  && response.statusCode == 200) {
        var info = JSON.parse(body);
        var totalDept = [];
@@ -344,7 +345,7 @@ function sendPushNotification(data,tablename,operation,token){
 
               };
               function callback(error1, response, body1) {
-                 //console.log(body);
+                 ////console.log(body);
                  //console.log(error);
                 var customers = JSON.parse(body1);
                 if(!error1  && response.statusCode == 200) {
