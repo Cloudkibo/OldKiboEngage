@@ -1679,14 +1679,17 @@ export function getsessions(token) {
 export function getmobilesessions(token) {
   console.log(token);
   return (dispatch) => {
-    fetch(`${baseURL}/api/getsessions`, {
+    /*fetch(`${baseURL}/api/getsessions`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token
 
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver([])));
-  };
+  };*/
+    dispatch(getsessionsfromserver([]))
+
+};
 }
 
 export function previousChat(previouschat,chatlist){
