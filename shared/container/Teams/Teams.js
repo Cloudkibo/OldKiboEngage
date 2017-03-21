@@ -44,6 +44,17 @@ class Teams extends Component {
 
   }
 
+componentDidMount(){
+     const usertoken = auth.getToken();
+     console.log('componentWillMount is called');
+    if(usertoken != null)
+    {
+
+        console.log(usertoken);
+        this.props.getuserteams(usertoken);
+        this.props.getcustomers(usertoken);
+      }
+}
    handleClick(e) {
 
       this.setState({

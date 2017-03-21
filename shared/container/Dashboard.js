@@ -30,7 +30,7 @@ class Dashboard extends Component {
 
   }
   create_agentsession(){
-    //alert('joined socket');
+   // alert('joined socket');
      dontCall = true;
      this.props.setjoinedState('joined');
 
@@ -61,6 +61,22 @@ class Dashboard extends Component {
 
    }
 
+    if(props.userdetails.uniqueid && props.userjoinedroom == 'notjoined'){
+      this.props.setjoinedState('joining');
+     
+   
+     
+      //alert('calling meeting')
+      this.props.route.socket.emit('create or join meeting for agent', {room: props.userdetails.uniqueid,agentEmail : props.userdetails.email,agentName : props.userdetails.firstname+' ' + props.userdetails.lastname,agentId:props.userdetails._id});
+  
+
+     
+    //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
+      //this.forceUpdate();
+     }
+   
+
+
    
   
 
@@ -86,7 +102,7 @@ callSocket(){
     if(this.props.userdetails.uniqueid && this.props.userjoinedroom == 'notjoined'){
       this.props.setjoinedState('joining');
      
-      //alert('calling meeting')
+      alert('calling meeting')
       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
   
 
@@ -103,8 +119,11 @@ callSocket(){
   //on component mount,join room
   
    // this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
-    setTimeout(this.callSocket, 3000);
-
+    //setTimeout(this.callSocket, 3000);
+    /*if(this.props.userjoinedroom == 'notjoined'){
+      this.callSocket();
+    }*/
+    
   }
 
 
