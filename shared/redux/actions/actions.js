@@ -2628,39 +2628,22 @@ export function createPage(fbpage,token) {
   };
 }
 
-export function updatesettings(company,token) {
-  console.log(company);
-
+export function updatesettings(file,companyprofile,token) {
+  console.log(token);
+  var fileData = new FormData();
+  fileData.append('file', file);
+  fileData.append('filename', file.name);
+  fileData.append('filetype', file.type);
+  fileData.append('filesize', file.size);
+  fileData.append('companyprofile',JSON.stringify(companyprofile));
+  console.log(fileData);
+ 
   return (dispatch) =>
     fetch(`${baseURL}/api/updatesettings`, {
 
       method: 'post',
-        body:JSON.stringify({
-                   'abandonedscheduleemail1':company.abandonedscheduleemail1,
-                    'abandonedscheduleemail2':company.abandonedscheduleemail2,
-                    'abandonedscheduleemail3':company.abandonedscheduleemail3,
-                    'completedscheduleemail1': company.completedscheduleemail1,
-                    'completedscheduleemail2':company.completedscheduleemail2,
-                    'completedscheduleemail3':company.completedscheduleemail3,
-                    'invitedscheduleemail1':company.invitedscheduleemail1,
-                    'invitedscheduleemail2':company.invitedscheduleemail2,
-                    'invitedscheduleemail3':company.invitedscheduleemail3,
-                    'maxnumberofdepartment':company.maxnumberofdepartment,
-                    'maxnumberofchannels':company.maxnumberofchannels,
-                    'notificationemailaddress':company.notificationemailaddress,
-                    'widgetwindowtab':company.widgetwindowtab,
-                    'showsummary':company.showsummary,
-                    'smsphonenumber':company.smsphonenumber,
-                    'allowemailnotification':company.allowemailnotification,
-                    'allowsmsnotification':company.allowsmsnotification,
-                    'isdomainemail':company.isdomainemail,
-                    'allowChat':company.allowChat,
-                    'enableFacebook':company.enableFacebook,
-
-
-      }),
+      body:fileData,
         headers: new Headers({
-        'Content-Type': 'application/json',
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
@@ -3473,4 +3456,33 @@ export function setjoinedState(stateVar){
       userjoinedroom:stateVar,
       type: ActionTypes.JOINED_MEETING,
     }
+}
+
+
+export function showCompanylogo(res){
+   return{
+      companylogo:res.logourl,
+      type: ActionTypes.COMPANY_LOGO,
+    }
+}
+//this is without-token version of getting teamlist for Chat widget
+export function getcompanylogo(appid,appsecret,companyid){
+
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcompanylogo/`, {
+        method: 'post',
+        body: JSON.stringify({
+          appid: appid,
+          appsecret : appsecret,
+          clientid:companyid,
+
+
+      })
+        ,
+        headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCompanylogo(res)));
+  };
 }

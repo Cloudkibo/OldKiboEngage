@@ -73,8 +73,7 @@ class CustomerChatView extends Component {
         this.connectToCall = this.connectToCall.bind(this);
         this.connectCall = this.connectCall.bind(this);
         this.getgroupmembers = this.getgroupmembers.bind(this);
-        this.onFileSubmit = this.onFileSubmit.bind(this);
-        this.onFileDownload = this.onFileDownload.bind(this);
+       this.onFileDownload = this.onFileDownload.bind(this);
         this.state = {
           value: '',
           suggestions: getSuggestions('',props.responses),
@@ -83,6 +82,8 @@ class CustomerChatView extends Component {
 
         };
         this._onChange = this._onChange.bind(this);
+        this.onFileSubmit = this.onFileSubmit.bind(this);
+        
         this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);

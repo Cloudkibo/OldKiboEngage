@@ -778,6 +778,7 @@ socket.on('getOnlineAgentList',function() {
     console.log(room.room);
     socket.join(room.room);
     
+    //add lines to add company id and email in socket object
     var flag = 0;
     // append in online agents array
     if(room.agentEmail){

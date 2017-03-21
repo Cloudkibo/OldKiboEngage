@@ -794,81 +794,58 @@ const dashboard = (state =dashboardState, action) => {
 
 function widget(state = widgetState, action){
   switch(action.type){
+    case ActionTypes.COMPANY_LOGO:
+       return {
+        ...state,
+        companylogo:action.companylogo,
+       }
     case ActionTypes.ADD_CUSTOMER_TEAMS:
           return {
+            ...state,
             teamdetails:action.teams,
-            channels : state.channels,
-            roomdetails : state.roomdetails,
-            specificsession : state.specificsession,
-             specificcustomer : state.specificcustomer,
-             filterlist : state.filterlist,
+           
 
             };
     case ActionTypes.ADD_CUSTOMER_CHANNELS:
           return{
-            teamdetails:state.teamdetails,
+            ...state,
             channels : action.channels,
-            roomdetails : state.roomdetails,
-            specificsession : state.specificsession,
-            specificcustomer : state.specificcustomer,
-            filterlist : state.filterlist,
-
+            
       };
 
      case ActionTypes.ADD_CUSTOMER_SESSION:
           return{
-            teamdetails:state.teamdetails,
-            channels : state.channels,
-            roomdetails : state.roomdetails,
+            ...state,
             specificsession : action.specificsession,
-            specificcustomer : state.specificcustomer,
-            filterlist : state.filterlist,
-
+           
       };
 
       case ActionTypes.ADD_CUSTOMER_DETAILS:
           return{
-            teamdetails:state.teamdetails,
-            channels : state.channels,
-            roomdetails : state.roomdetails,
-            specificsession : state.specificsession,
-            specificcustomer : action.specificcustomer,
-            filterlist : state.filterlist,
-
+            ...state,
+           specificcustomer : action.specificcustomer,
+            
       };
     case ActionTypes.ADD_ROOM_DETAILS :
          return{
-            teamdetails:state.teamdetails,
-            channels : state.channels,
-            sessiondetails :state.session ,
+            ...state,
+          
             roomdetails : action.room,
-            specificsession : state.specificsession,
-            specificcustomer : state.specificcustomer,
-            filterlist : state.filterlist,
-
+        
 
       };
     case ActionTypes.FILTER_CHANNELS:
           return{
-            teamdetails:state.teamdetails,
-            channels : state.channels,
+            ...state,
             filterlist : state.channels.filter((channel) => channel.groupid == action.id),
-            roomdetails : state.room,
-            specificcustomer : state.specificcustomer,
-            specificsession : state.specificsession,
+          
 
       };
     case ActionTypes.CREATE_SESSION:
          return{
-            teamdetails:state.teamdetails,
-            channels : state.channels,
+          ...state,
             sessiondetails :action.session ,
-            roomdetails : state.roomdetails,
-            specificcustomer : state.specificcustomer,
-            specificsession : state.specificsession,
-            filterlist : state.filterlist,
-            countryname : state.countryname,
-
+           
       };
 
 

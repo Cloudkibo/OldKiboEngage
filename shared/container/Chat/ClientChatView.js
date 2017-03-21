@@ -303,6 +303,7 @@ function mapStateToProps(state) {
     chatlist :(state.dashboard.chatlist),
     channels :(state.dashboard.channels),
     customers:(state.dashboard.customers),
+   
      };
 }
 

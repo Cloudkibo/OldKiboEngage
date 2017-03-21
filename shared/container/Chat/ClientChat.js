@@ -38,7 +38,8 @@ class ClientChat extends Component {
       <div>
       
        <div className="page-container">
-
+         <img ref="logo" src={this.props.companylogo.substr(0,this.props.companylogo.length)} style={{'width':'100px','height':'100px'}} />
+              
           <div className="page-content-wrapper">
             <div className="page-content"> 
             <div className="portlet box grey-cascade">
@@ -79,7 +80,8 @@ function mapStateToProps(state) {
           customerchat :(state.dashboard.customerchat),
           customerid :(state.dashboard.customerid),
           chatlist :(state.dashboard.chatlist),
-          sessiondetails :(state.widget.sessiondetails)
+          sessiondetails :(state.widget.sessiondetails),
+          companylogo:(state.widget.companylogo),
  	      };
 }
 
