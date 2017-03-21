@@ -537,7 +537,7 @@ toggleStickerPicker() {
 
             {
               this.state.showSticker &&
-              <div style={{overflow: 'scroll'}}>
+              <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px'}}>
               <StickerMenu
                 apiKey={'80b32d82b0c7dc5c39d2aafaa00ba2bf'}
                 userId={'imran.shoukat@khi.iba.edu.pk'}
