@@ -39,10 +39,10 @@ class ClientChatView extends Component {
 
     for(var i = 0;i< data.data.agentid.length;i++){
      this.refs.agentid.value = this.refs.agentid.value + ' ' + data.data.agentid[i];
-    
+
     this.refs.agentname.value = this.refs.agentname.value + ' ' + data.data.assignedagentname[i];
     this.refs.agentemail.value = this.refs.agentemail.value + ' ' + data.data.assignedagentemail[i];
-     }          
+     }
 
 
   }
@@ -53,7 +53,7 @@ class ClientChatView extends Component {
     var today = new Date();
     var uid = Math.random().toString(36).substring(7);
     var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-   
+
      var hellomsg = {
             to: 'All Agents',
             from : this.props.roomdetails.customerid.name,
@@ -73,14 +73,14 @@ class ClientChatView extends Component {
 
           }
    //socket.emit('send:messageToAgent',hellomsg);
-   this.props.sendmessageToAgent(hellomsg);    
+   this.props.sendmessageToAgent(hellomsg);
    socket.on('send:message',message => this.props.updateChatList(message));
    socket.on('send:getAgent',this.getAgentSocket);
    socket.on('connecttocall',this.connectCall);
-  
-   
+
+
       }
- 
+
 
  componentDidUpdate() {
     const messageList = this.refs.messageList;
@@ -90,17 +90,17 @@ class ClientChatView extends Component {
    handleMessageSubmit(e) {
     const { socket,dispatch } = this.props;
      if (e.which === 13) {
-        var message;  
+        var message;
         e.preventDefault();
            //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-       
+
         var saveChat={}
         if(this.refs.agentemail.value == ''){
 
-        saveChat = { 
+        saveChat = {
                           'to' : 'All Agents',
                           'from' : this.refs.name.value,
                            'visitoremail' : this.refs.email.value,
@@ -115,12 +115,12 @@ class ClientChatView extends Component {
                            'time' : moment.utc().format('lll'),
                            'fromMobile' : 'no',
                            'departmentid' : this.props.sessiondetails.departmentid,
-           
-                           
+
+
                       }
                     }
             else{
-                       saveChat = { 
+                       saveChat = {
                           'to' : this.refs.agentname.value,
                           'from' : this.refs.name.value,
                           'visitoremail' : this.refs.email.value,
@@ -142,10 +142,10 @@ class ClientChatView extends Component {
                       }
                     }
          this.props.chatlist.push(saveChat);
-        
+
          //socket.emit('send:messageToAgent', saveChat);
-       this.props.sendmessageToAgent(saveChat);            
-       this.props.savechat(saveChat);           
+       this.props.sendmessageToAgent(saveChat);
+       this.props.savechat(saveChat);
        this.refs.msg.value ='';
        this.forceUpdate();
       }
@@ -153,14 +153,14 @@ class ClientChatView extends Component {
 
   connectToCall(e){
     const { socket,dispatch } = this.props;
-    
+
     var call= {};
       var today = new Date();
       var uid = Math.random().toString(36).substring(7);
       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value+'&agentname='+this.refs.agentname.value+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
-      
+
       call.from = this.props.sessiondetails.customerName;
       call.to = this.refs.agentname.value;
       call.agentemail = this.refs.agentemail.value.trim();
@@ -178,22 +178,22 @@ class ClientChatView extends Component {
       win.focus();
   }
   render() {
-   
+
     var leftStyle = {
           float: 'left',
           width:'100%',
           background:'#ddd',
- 
+
     };
         var rightStyle = {
           float: 'right',
           width:'100%',
           background:'#cceeff',
- 
+
     };
     var clearStyle = {
              clear:'both',
- 
+
       };
      return (
 
@@ -225,7 +225,7 @@ class ClientChatView extends Component {
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong> 
+                                            <strong className="pull-right primary-font">{chat.from}</strong>
                                             <small className=" text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
@@ -242,7 +242,7 @@ class ClientChatView extends Component {
                                       </span>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="primary-font">{chat.from}</strong> 
+                                            <strong className="primary-font">{chat.from}</strong>
                                             <small className="pull-right text-muted">
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
@@ -254,8 +254,8 @@ class ClientChatView extends Component {
                                    </li>
 
                                )
-                               
-                                                          
+
+
                             ))
                            }
             </ul>
@@ -271,12 +271,12 @@ class ClientChatView extends Component {
                     </div>
                 </div>
 
-             <br/> 
-             {this.refs.agentname && this.refs.agentname.value && this.refs.agentname.value != '' ? 
+             <br/>
+             {this.refs.agentname && this.refs.agentname.value && this.refs.agentname.value != '' ?
               <button className="btn green" onClick ={this.connectToCall}> Start Call </button> :
-              <button className="btn green hide" onClick ={this.connectToCall}> Start Call </button> 
-              }  
-      </div> 
+              <button className="btn green hide" onClick ={this.connectToCall}> Start Call </button>
+              }
+      </div>
   )
   }
 }
@@ -288,7 +288,7 @@ class ClientChatView extends Component {
 function mapStateToProps(state) {
   return {
     sessiondetails :(state.widget.sessiondetails),
-    roomdetails :(state.widget.roomdetails), 
+    roomdetails :(state.widget.roomdetails),
 
 
     teamdetails:(state.dashboard.teamdetails),

@@ -294,7 +294,7 @@ export function signupuser(user) {
           // If there was a problem, we want to
           // dispatch the error condition
           dispatch(showSignupResponse(res));
-          
+
         }
       else {
               // If signup was successful, set the token in local storage
@@ -884,7 +884,7 @@ export function getInviteEmail(token) {
 export function verifyEmail(token) {
  console.log('verifyEmail is called '+ token);
   return (dispatch) => {
-    return fetch(`${baseURL}/api/verifytoken?id=${token}`, {
+    return fetch(`${baseURL}/verifytoken?id=${token}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
