@@ -301,6 +301,7 @@ export function signupuser(user) {
             cookie.save('token', res.token, { path: '/' });
             console.log(cookie.load('token'));
             browserHistory.push('/dashboard');
+            window.location.reload();
           }
         }
           );

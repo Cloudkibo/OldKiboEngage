@@ -57,7 +57,7 @@ class Dashboard extends Component {
    if(props.userdetails && props.userdetails.accountVerified == "No" && is_routed == false){
     is_routed = true;
     browserHistory.push('/notverified');
-
+    
 
    }
 
