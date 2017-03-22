@@ -74,6 +74,7 @@ class JoinCompany extends React.Component {
                                 <div className ="row">
                                   <div className ="col-md-7 col-sm-7">
                                       <span> * required to fill these field </span><br/>
+                                      {this.props.inviteDetails &&
                                       <form onSubmit={this.onSubmit} className ="css-form">
                                               <div className="form-group">
                                                 <label htmlFor="username">First Name *</label>
@@ -86,16 +87,11 @@ class JoinCompany extends React.Component {
                                               </div>
                                               <div className="form-group">
                                               <label>Email *</label>
-                                              {
-                                                this.props.inviteDetails &&
+                                                
                                                 <input type="email"  className="form-control input-medium"  value = {this.props.inviteDetails.email} ref = "email" required placeholder="Email Address"/>
 
-                                              }
-                                               {
-                                                this.props.inviteDetails &&
                                                 <input type="hidden"  className="form-control input-medium" ref = "token" value = {this.props.inviteDetails.token}/>
-                                               }
-
+                                            
                                               </div>
                                               <div className="form-group">
                                                 <label>Password *</label>
@@ -111,11 +107,11 @@ class JoinCompany extends React.Component {
                                               </div>
                                               <div className="form-group">
                                               <label>Company Name *</label>
-                                              <input type="text" className="form-control input-medium" ref="cname" required placeholder="Company Name"/>
+                                              <input type="text" className="form-control input-medium" ref="cname" required placeholder="Company Name" value = {this.props.inviteDetails.companyName}/>
                                               </div>
                                               <div className="form-group">
                                               <label>Company Domain Name *</label>
-                                              <input type="text" className="form-control" ref="cdname" required placeholder="Domain Name"/>
+                                              <input type="text" className="form-control" ref="cdname" required placeholder="Domain Name" value = {this.props.inviteDetails.website}/>
                                               <small>e.g. www.company.com or www.company.org or www.company.net</small>
                                               </div>
                                               <button type="submit" className="btn btn-primary btn-send">Submit</button>
@@ -141,7 +137,7 @@ class JoinCompany extends React.Component {
                                             }
 
                                   </form>
-
+                                    }
 
                                   </div>
                                   </div>
