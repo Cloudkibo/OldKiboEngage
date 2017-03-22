@@ -38,7 +38,15 @@ class ClientChat extends Component {
       <div>
       
        <div className="page-container">
-         <img ref="logo" src={this.props.companylogo.substr(0,this.props.companylogo.length)} style={{'width':'100px','height':'100px'}} />
+       <div className="widgetheader">
+          <div style={{'paddingTop':'2em'}}>
+        
+              <h3 className ="page-title widgettitle">KiboEngage Chat Widget </h3>
+              
+               <img ref="logo" src={this.props.companylogo.substr(0,this.props.companylogo.length)}  style={{'width':'50px','height':'50px'}} className="pull-left"/>
+              
+            </div>
+        </div>
               
           <div className="page-content-wrapper">
             <div className="page-content"> 

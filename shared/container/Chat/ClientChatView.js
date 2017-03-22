@@ -199,19 +199,18 @@ class ClientChatView extends Component {
 
       <div>
           <div>
-            <label>Agent Name : </label>
-            <input ref ="agentname" type = "text"  disabled/>
-            <br/>
+            {/*<label>Agent Name : </label>*/}
+            <input ref ="agentname" type = "hidden" />
             <input ref ="agentid" type = "hidden" />
-            <label>Agent Email: </label>
-            <input ref ="agentemail" type = "text"   disabled/>
+            {/*<label>Agent Email: </label>*/}
+            <input ref ="agentemail" type = "hidden" />
            {this.props.sessiondetails &&
             <div>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
             <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
             <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  type="hidden"/>
-            <label> Customer Email: </label>
-            <input ref="email" value = {this.props.sessiondetails.email} type="text" />
+            {/*<label> Customer Email: </label>*/}
+            <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
            </div>
            }
             </div>

@@ -376,7 +376,7 @@ handleClick(e){
         <div className="row">
        
           <div className="col-md-6 col-sm-6 padding-top-10">
-            2014 © KiboEngage. ALL Rights Reserved.
+            2014-2017 © KiboEngage. ALL Rights Reserved.
           </div>
         </div>
        </div>

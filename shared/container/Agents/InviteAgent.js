@@ -15,16 +15,19 @@ cancelInvite()
 
   onSubmit() {
    const email = this.refs.emailinp;
-   alert(email.value)
-  if(email.value.split('@')[1].split('.')[0] !== this.props.website)
+  // alert(email.value)
+  /*if(email.value.split('@')[1].split('.')[0] !== this.props.website)
   {
       alert('Email address must be of company domain');
-  }
+  }*/
 
-  else if (email.value) {
+  if (email.value != '') {
        this.props.inviteAgent(email.value);
        email.value = '';
     }
+  else{
+    alert('Please enter an email address');
+  }
 
 
 

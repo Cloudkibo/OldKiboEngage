@@ -309,10 +309,18 @@ create_session(data){
       <div>
 
        <div className="page-container">
-          <div className="page-content-wrapper">
+       <div className="widgetheader">
+          <div style={{'paddingTop':'2em'}}>
+        
+              <h3 className ="page-title widgettitle">KiboEngage Chat Widget </h3>
+              
+               <img ref="logo" src="" style={{'width':'50px','height':'50px'}} className="pull-left"/>
+              
+            </div>
+        </div>
+          <div className="page-content-wrapper clear-fix">
             <div className="page-content">
-              <h3 className ="page-title">KiboEngage Chat Widget </h3>
-               <img ref="logo" src="" style={{'width':'100px','height':'100px'}} />
+              
                 {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>

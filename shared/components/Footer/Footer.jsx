@@ -5,7 +5,7 @@ function Footer() {
    <div className="footer">
     <div className ="container">
       <div className="col-md-6 col-sm-6 padding-top-10">
-          2016 © KiboEngage(Beta). ALL Rights Reserved.
+           2014-2017 © KiboEngage. ALL Rights Reserved.
       </div>
       <div className="col-md-6 col-sm-6">
          <ul className="social-footer list-unstyled list-inline pull-right">
