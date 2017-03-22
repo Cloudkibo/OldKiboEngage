@@ -18,7 +18,7 @@ class JoinCompany extends React.Component {
 
 
   }
-  componentWillMount(){
+  componentDidMount(){
     this.props.getInviteEmail(this.props.params.id);
   }
     onSubmit(event)

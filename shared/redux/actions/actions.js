@@ -746,11 +746,12 @@ export function editagentError(message) {
     message,
   }
 }
-export function inviteAgentResponse(message) {
-  alert(message);
+export function inviteAgentResponse(res) {
+  alert(res.message);
   return {
     type: ActionTypes.INVITE_AGENT_RESPONSE,
-    message,
+    message:res.message,
+    inviteurl:res.url,
   }
 }
 
@@ -842,7 +843,7 @@ export function inviteagent(email,token) {
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-         dispatch(inviteAgentResponse(res.message));
+         dispatch(inviteAgentResponse(res));
 
 
         }

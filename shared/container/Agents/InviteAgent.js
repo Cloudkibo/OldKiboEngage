@@ -70,6 +70,7 @@ cancelInvite()
                     </div>
           </div>
 
+    
           <div className="form-actions">
               <button className="btn blue"  type ="submit" onClick={this.onSubmit}> Submit </button>
               <button className="btn default"  onClick={this.cancelInvite}> Cancel </button>

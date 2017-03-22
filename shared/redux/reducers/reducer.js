@@ -307,6 +307,7 @@ const dashboard = (state =dashboardState, action) => {
       return {
         ...state,errorMessageProfile:'',
          errorMessage:action.message,
+         inviteurl:action.inviteurl,
          
         };
 

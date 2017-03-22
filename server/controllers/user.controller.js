@@ -370,7 +370,7 @@ export function inviteAgent(req, res) {
       if(!error  && response.statusCode == 200) {
        if(info.status == 'success')
        {
-            return res.status(200).json({statusCode : 200,message:info.msg});
+            return res.status(200).json({statusCode : 200,message:info.msg,url:info.url});
        }
        else
        {
@@ -541,8 +541,14 @@ export function invitetoken(req,res){
         ////console.log(error);
         ////console.log(body.length);
         var parsedJSON = JSON.parse(body);
-        ////console.log(parsedJSON);
+        console.log(parsedJSON);
+        var email=''
        for (var i=0;i<parsedJSON.length;i++) {
+        if(parsedJSON[i].token == id){
+          email = parsedJSON[i];
+          break;
+
+        }
             ////console.log(parsedJSON[i].email);
          }
 
@@ -553,7 +559,7 @@ export function invitetoken(req,res){
       else if(!error && body.length != 0) {
 
 
-            return res.status(200).json({statusCode : 200 ,body:parsedJSON[0]});
+            return res.status(200).json({statusCode : 200 ,body:email});
       }
     else
     {
