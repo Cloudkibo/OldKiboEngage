@@ -12,8 +12,10 @@ import auth from '../services/auth';
 class NotVerified extends Component {
 
  constructor(props, context) {
+
     super(props, context);
     this.verifyaccount = this.verifyaccount.bind(this);
+    
     
   }
 

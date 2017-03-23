@@ -94,8 +94,7 @@ const renderFullPage = (html, initialState) => {
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
         <!--<link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>-->
-         <link href="assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
-
+         
          <link rel="stylesheet" href='/css/bootstrap/css/bootstrap.min.css' />
          <link rel="stylesheet" href='/css/style.css' />
 
@@ -113,7 +112,7 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.css" rel="stylesheet">
         <link href="assets/global/plugins/slider-revolution-slider/rs-plugin/css/settings.css" rel="stylesheet">
         <!-- Page level plugin styles END -->
-
+         <link href="assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
         <!-- Theme styles START -->
         <link href="assets/global/css/components.css" rel="stylesheet">
         <link href="assets/frontend/layout/css/style.css" rel="stylesheet">
@@ -123,6 +122,8 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
 
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
+       
+
   </head>
       <body>
 
@@ -282,9 +283,14 @@ const serverhttp = http.createServer(httpapp).listen(serverConfig.port, (error) 
   }
 });
 
-var io = require('socket.io').listen(server);
-//var io = require('socket.io').listen(serverhttp);
+if(process.env.NODE_ENV === 'production'){
+  var io = require('socket.io').listen(server);
 
-require('./routes/socket.js').socketf(io);
+  require('./routes/socket.js').socketf(io);
+} else {
+  var io = require('socket.io').listen(serverhttp);
+
+  require('./routes/socket.js').socketf(io);
+}
 
 export default app;

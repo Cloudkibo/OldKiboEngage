@@ -23,7 +23,6 @@ router.route('/verifyaccount').get(UserController.verifyaccount);
 router.route('/updatenews').post(NewsController.updatenews);
 router.route('/forgotpassword').post(UserController.forgotpassword);
 router.route('/updateprofile').post(UserController.updateprofile);
-router.route('/updatesettings').post(UserController.updatesettings);
 router.route('/changenewpassword').post(UserController.changenewpassword);
 router.route('/getteams').get(TeamController.getteams);
 router.route('/getgroups').get(GroupController.getgroups);
@@ -123,8 +122,10 @@ router.route('/getnews').post(NewsController.getnews);
 router.route('/getchat').post(ChatController.getChatMessage);
 router.route('/getchatfromagent').post(ChatController.getchatfromagent);
 router.route('/downloadchatfile').post(ChatController.downloadchatfile);
-
+router.route('/getcompanylogo').post(UserController.getcompanylogo);
 router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfile);
 router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadchatfileAgent);
 router.post('/uploadchatfilefb',multipartyMiddleware, FbChatController.uploadchatfilefb);
+router.post('/updatesettings',multipartyMiddleware, UserController.updatesettings);
+
 export default router;

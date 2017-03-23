@@ -18,12 +18,12 @@ var notificationHubService2 = azure.createNotificationHubService('KiboEngageProd
 
 /************************* Channel APIS ************************************/
 export function createChannel(req, res) {
-  ////console.log('create Channel is called');
+  //////console.log('create Channel is called');
   var token = req.headers.authorization;
   logger.serverLog('info', 'This is body in createChannel '+ JSON.stringify(req.body) );
 
-  ////console.log(req.body);
-  ////console.log(req.body.channel);
+  ////////console.log(req.body);
+  //////console.log(req.body.channel);
    var options = {
       url: `${baseURL}/api/messagechannels/`,
       rejectUnauthorized : false,
@@ -37,8 +37,8 @@ export function createChannel(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
-        ////console.log(error);
+        ////console.log(body);
+        //////console.log(error);
       if(!error  && response.statusCode == 201) {
       
             //send push notification to mobile clients
@@ -60,9 +60,9 @@ export function createChannel(req, res) {
 
 
 export function getchannels(req, res) {
-  ////console.log('get getchannels is called');
+  //////console.log('get getchannels is called');
   var token = req.headers.authorization;
-  ////console.log('token received is  : ' + token);
+  //////console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/messagechannels`,
       rejectUnauthorized : false,
@@ -73,11 +73,11 @@ export function getchannels(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(body);
-      console.log(error);
+      ////console.log(body);
+      //console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        ////console.log(info);
+        ////////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -91,8 +91,8 @@ export function getchannels(req, res) {
 
 
 export function getcustomerchannels(req, res) {
-  console.log('get  customer channels is called');
-  console.log(req.body);
+  //console.log('get  customer channels is called');
+  ////console.log(req.body);
    var  headers =  {
              'kibo-app-id' : req.body.appid,
              'kibo-app-secret': req.body.appsecret,
@@ -109,10 +109,10 @@ export function getcustomerchannels(req, res) {
      
     };
     function callback(error, response, body) {
-       ////console.log(error);
+       //////console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        ////console.log(info);
+        ////////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -125,11 +125,11 @@ export function getcustomerchannels(req, res) {
   }
 
 export function destroyChannel(req, res) {
-  console.log('destroyChannel is called.');
-  console.log(req.headers);
+  //console.log('destroyChannel is called.');
+  //console.log(req.headers);
   var token = req.headers.authorization;
-  console.log(token);
-  console.log(req.query.id);
+  //console.log(token);
+  //console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/messagechannels/${id}`,
@@ -141,9 +141,9 @@ export function destroyChannel(req, res) {
     };
     function callback(error, response, body) {
     
-    console.log(response.statusCode);
-    console.log(error);
-    console.log(body);
+    //console.log(response.statusCode);
+    //console.log(error);
+    ////console.log(body);
       if(!error  && response.statusCode == 204) {
           //send push notification to mobile clients
         sendPushNotification(req.body.channel,"Channels","DeleteChannel",token);
@@ -152,7 +152,7 @@ export function destroyChannel(req, res) {
     
    }
    else{
-    ////console.log(error);
+    //////console.log(error);
      res.sendStatus(422);  
    }
  }
@@ -161,12 +161,12 @@ export function destroyChannel(req, res) {
 }
 
 export function editChannel(req, res) {
-  ////console.log('edit Channel is called');
+  //////console.log('edit Channel is called');
   var token = req.headers.authorization;
-  console.log(token);
-  ////console.log(req.body.channel);
+  //console.log(token);
+  //////console.log(req.body.channel);
   var id = req.body.channel._id;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/messagechannels/${id}`,
       rejectUnauthorized : false,
@@ -178,8 +178,8 @@ export function editChannel(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
-        ////console.log(error)
+        ////console.log(body);
+        //////console.log(error)
       if(!error  && response.statusCode == 200) {
       
             sendPushNotification(req.body.channel,"Channels","EditChannel",token);
@@ -202,10 +202,10 @@ export function editChannel(req, res) {
 **/
 
 export function getchannelwisecalls(req, res) {
-  ////console.log('edit Channel is called');
+  //////console.log('edit Channel is called');
   var token = req.headers.authorization;
-  console.log(req.body.departmentid);
-  ////console.log(id);
+  //console.log(req.body.departmentid);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/visitorcalls/reportsv2/statsbymessagechannel`,
       rejectUnauthorized : false,
@@ -217,7 +217,7 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
+        ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             return res.status(200).json({statusCode : 200,body});
@@ -235,9 +235,9 @@ export function getchannelwisecalls(req, res) {
 
 
   export function getplatformwisecalls(req, res) {
-  ////console.log('edit Channel is called');
+  //////console.log('edit Channel is called');
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/visitorcalls/reportsv2/statsbyplatform`,
       rejectUnauthorized : false,
@@ -249,11 +249,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
+        ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -273,9 +273,9 @@ export function getchannelwisecalls(req, res) {
 
 
   export function getdeptwisecalls(req, res) {
-  ////console.log('edit Channel is called');
+  //////console.log('edit Channel is called');
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/visitorcalls/reportsv2/deptcallstats`,
       rejectUnauthorized : false,
@@ -287,11 +287,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -309,7 +309,7 @@ export function getchannelwisecalls(req, res) {
 
   export function getpagewisecalls(req, res) {
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/visitorcalls/reportsv2/pagestats`,
       rejectUnauthorized : false,
@@ -321,11 +321,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -344,7 +344,7 @@ export function getchannelwisecalls(req, res) {
   // get customer stats
   export function getcountrywisecalls(req, res) {
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/customers/reportsv2/statsbycountry`,
       rejectUnauthorized : false,
@@ -356,11 +356,11 @@ export function getchannelwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -379,7 +379,7 @@ export function getchannelwisecalls(req, res) {
 
 export function getmobilecalls(req, res) {
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/customers/reportsv2/statsbymobile`,
       rejectUnauthorized : false,
@@ -391,11 +391,11 @@ export function getmobilecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -414,7 +414,7 @@ export function getmobilecalls(req, res) {
 
 export function gettopcustomers(req, res) {
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/visitorcalls/reportsv2/topcustomers`,
       rejectUnauthorized : false,
@@ -426,11 +426,11 @@ export function gettopcustomers(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -449,7 +449,7 @@ export function gettopcustomers(req, res) {
 
 export function getagentwisecalls(req, res) {
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/visitorcalls/reportsv2/statsbyagents`,
       rejectUnauthorized : false,
@@ -461,11 +461,11 @@ export function getagentwisecalls(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -485,7 +485,7 @@ export function getagentwisecalls(req, res) {
 
 export function getagentnotifications(req, res) {
   var token = req.headers.authorization;
-  ////console.log(id);
+  //////console.log(id);
    var options = {
       url: `${baseURL}/api/notifications/statsbyagent`,
       rejectUnauthorized : false,
@@ -497,11 +497,11 @@ export function getagentnotifications(req, res) {
     };
     
     function callback(error, response, body) {
-      console.log(body);
+      ////console.log(body);
       if(!error  && response.statusCode == 200) {
       
             var info = JSON.parse(body)
-            console.log(info)
+            ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
@@ -517,7 +517,7 @@ export function getagentnotifications(req, res) {
 
 //for mobile customers
 function sendPushNotification(data,tablename,operation,token){
-  console.log('sendPushNotification for channels is called');
+  //console.log('sendPushNotification for channels is called');
    var options = {
                 url: `${baseURL}/api/customers/`,
                 rejectUnauthorized : false,
@@ -528,8 +528,8 @@ function sendPushNotification(data,tablename,operation,token){
 
               };
               function callback(error1, response, body1) {
-                 //console.log(body);
-                 //console.log(error);
+                 //////console.log(body);
+                 ////console.log(error);
                 var customers = JSON.parse(body1);
                 if(!error1  && response.statusCode == 200) {
                              var payload = {
@@ -561,27 +561,27 @@ function sendPushNotification(data,tablename,operation,token){
                               }
                               notificationHubService.gcm.send(tagname, androidMessage, function(error){
                                 if(!error){
-                                  console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+                                  //console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
                                 } else {
-                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                  //console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
                               });
                               notificationHubService.apns.send(tagname, iOSMessage, function(error){
                                 if(!error){
-                                  console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-                                  console.log(iOSMessage);
+                                  //console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+                                  //console.log(iOSMessage);
                                 } else {
-                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                  //console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
                               });
 
 
                                notificationHubService2.apns.send(tagname, iOSMessage, function(error){
                                 if(!error){
-                                  console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-                                  console.log(iOSMessage);
+                                  //console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+                                  //console.log(iOSMessage);
                                 } else {
-                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                  //console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
                               });
                             }

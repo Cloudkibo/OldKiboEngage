@@ -101,8 +101,17 @@ class Agents extends Component {
               </div>
                {this.props.errorMessage &&
 
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
+                     <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
                       }
+
+               {this.props.inviteurl &&
+                      <div>
+                     
+                        <p> Here is URL sent to the Invitee </p>
+                        <p>{this.props.inviteurl} </p>
+                        
+                      </div>
+                }
                <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid} website = {this.props.userdetails.website}/>      
                    
                 { this.props.agents &&
@@ -167,7 +176,8 @@ function mapStateToProps(state) {
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
           userchats :(state.dashboard.userchats),
           responses :(state.dashboard.responses), 
-          onlineAgents:(state.dashboard.onlineAgents),      
+          onlineAgents:(state.dashboard.onlineAgents), 
+          inviteurl:(state.dashboard.inviteurl),     
 
            };
 }

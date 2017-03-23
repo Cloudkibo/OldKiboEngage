@@ -32,7 +32,9 @@ class SessionSummary extends Component {
       }
     super(props, context);
     this.getupdatedSessions = this.getupdatedSessions.bind(this);
-
+    this.state ={
+      loading:true
+    };
 
 
   }
@@ -49,10 +51,13 @@ class SessionSummary extends Component {
     //const usertoken = auth.getToken();
     //this.props.getsessions();
    //    this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
+     if(this.props.sessionsummaryfiltered){
+        this.setState({loading:false});
+      }
   }
 
   handleChange(e){
-     alert(e.target.value);
+     //alert(e.target.value);
      this.props.filterbysessionstatus(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
 
@@ -60,20 +65,20 @@ class SessionSummary extends Component {
     }
 
     handleChangeMedium(e){
-      alert(e.target.value);
+    //  alert(e.target.value);
       this.props.filterbysessionMedium(e.target.value,this.props.sessionsummary);
       this.forceUpdate();
     }
 
     handleChangeDepartment(e){
-     alert(e.target.value);
+     //alert(e.target.value);
      this.props.filterbysessionDept(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
 
 
     }
      handleChangeChannel(e){
-     alert(e.target.value);
+     //alert(e.target.value);
      this.props.filterbysessionChannel(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
 
@@ -81,13 +86,17 @@ class SessionSummary extends Component {
     }
 
     handleChangeAgents(e){
-     alert(e.target.value);
+    // alert(e.target.value);
      this.props.filterbysessionAgent(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
 
 
     }
-
+    componentWillReceiveProps(nextprops){
+      if(nextprops.sessionsummaryfiltered){
+        this.setState({loading:false});
+      }
+    }
 
   render() {
     const token = auth.getToken()
@@ -198,7 +207,11 @@ class SessionSummary extends Component {
                                 </tbody>
                                   </table>
                          </div>
-
+              {
+                this.state.loading == true?
+                  <p> Loading Session Summary... </p>:
+                  <br/>
+              }
              { this.props.sessionsummaryfiltered &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
@@ -207,7 +220,7 @@ class SessionSummary extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
                      <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
+                    {/* <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th> */}
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Medium</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>

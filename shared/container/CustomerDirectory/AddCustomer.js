@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
 import {createcustomer}  from '../../redux/actions/actions'
 import {getcustomerteams}  from '../../redux/actions/actions'
-import {getcustomerchannels,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
+import {getcustomerchannels,getcompanylogo,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
 import {getcountryname} from '../../redux/actions/actions';
 import {updatechannellist}  from '../../redux/actions/actions'
 import {createsession}  from '../../redux/actions/actions'
@@ -39,6 +39,7 @@ class AddCustomer extends Component {
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
     props.getcustomerteams(appid,appsecret,props.params.id);
     props.getcustomerchannels(appid,appsecret,props.params.id);
+    props.getcompanylogo(appid,appsecret,props.params.id);
     super(props, context);
     call_customer_details = false;
    // var pathname = getParameterByName('pathname');
@@ -189,6 +190,12 @@ create_session(data){
       this.forceUpdate()
     }
 
+    if(props.companylogo){
+     // alert(props.companylogo);
+      this.refs.logo.src = props.companylogo.substr(1,props.companylogo.length);
+     // this.forceUpdate();
+    }
+
     }
    componentDidMount() {
   // socket.on('joined',this.create_session)
@@ -302,10 +309,18 @@ create_session(data){
       <div>
 
        <div className="page-container">
-          <div className="page-content-wrapper">
+       <div className="widgetheader">
+          <div style={{'paddingTop':'2em'}}>
+        
+              <h3 className ="page-title widgettitle">KiboEngage Chat Widget </h3>
+              
+               <img ref="logo" src="" style={{'width':'50px','height':'50px'}} className="pull-left"/>
+              
+            </div>
+        </div>
+          <div className="page-content-wrapper clear-fix">
             <div className="page-content">
-              <h3 className ="page-title">KiboEngage Chat Widget </h3>
-
+              
                 {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
@@ -427,6 +442,7 @@ function mapStateToProps(state) {
     roomdetails :(state.widget.roomdetails),
     specificcustomer : (state.widget.specificcustomer),
     countryname : (state.dashboard.countryname),
+    companylogo:(state.widget.companylogo),
   };
 }
-export default connect(mapStateToProps,{getcustomerteams,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom,getcountryname})(AddCustomer);
+export default connect(mapStateToProps,{getcustomerteams,getcompanylogo,getspecificcustomer,getspecificsession,getcustomerchannels,updatechannellist,createsession,addRoom,getcountryname})(AddCustomer);

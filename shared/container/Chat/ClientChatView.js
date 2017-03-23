@@ -89,7 +89,9 @@ class ClientChatView extends Component {
 
    handleMessageSubmit(e) {
     const { socket,dispatch } = this.props;
-     if (e.which === 13) {
+
+     if (e.which === 13 && this.refs.msg.value!='') {
+
         var message;
         e.preventDefault();
            //generate unique id of message - this change is for mobile clients
@@ -158,20 +160,18 @@ class ClientChatView extends Component {
       var today = new Date();
       var uid = Math.random().toString(36).substring(7);
       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-
-      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value+'&agentname='+this.refs.agentname.value+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
-
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value.trim()+'&agentname='+this.refs.agentname.value.trim()+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
       call.from = this.props.sessiondetails.customerName;
-      call.to = this.refs.agentname.value;
+      call.to = this.refs.agentname.value.trim();
       call.agentemail = this.refs.agentemail.value.trim();
-      call.visitoremail = this.props.sessiondetails.email;
+      call.visitoremail = this.props.sessiondetails.email.trim();
       call.request_id = this.props.sessiondetails.session_id;
       call.url = meetingURLString;
       console.log(call);
       console.log(meetingURLString);
       socket.emit('connecttocall', {room: this.props.sessiondetails.companyid, stanza: call});
 
-      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value+'&agentname='+this.refs.agentname.value+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value.trim()+'&agentname='+this.refs.agentname.value.trim()+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
 
 //      window.location.href = meetingURLString;
       var win = window.open(meetingURLString, '_blank');
@@ -199,18 +199,18 @@ class ClientChatView extends Component {
 
       <div>
           <div>
-            <label>Agent Name : </label>
-            <input ref ="agentname" type = "text"/>
-            <label>Agent ID : </label>
-            <input ref ="agentid" type = "text"/>
-            <label>Agent Email: </label>
-            <input ref ="agentemail" type = "text"/>
+            {/*<label>Agent Name : </label>*/}
+            <input ref ="agentname" type = "hidden" />
+            <input ref ="agentid" type = "hidden" />
+            {/*<label>Agent Email: </label>*/}
+            <input ref ="agentemail" type = "hidden" />
            {this.props.sessiondetails &&
             <div>
             <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
             <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
-            <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  />
-            <input ref="email" value = {this.props.sessiondetails.email} type="text" />
+            <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  type="hidden"/>
+            {/*<label> Customer Email: </label>*/}
+            <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
            </div>
            }
             </div>
@@ -220,24 +220,27 @@ class ClientChatView extends Component {
                           {this.props.chatlist &&
                             this.props.chatlist.filter((chat) => chat.request_id == this.refs.reqId.value).map((chat, i) => (
                                      (this.refs.name.value === chat.from?
-                                   <li className="right clearfix agentChatBox">
-                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
+                                   <li className="left clearfix userChatBoxTemp">
+                                       <span className="chat-img pull-left userChat"> {chat.from.substr(0,1)}
                                       </span>
-                                      <div className="chat-body clearfix">
+                                     <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong>
-                                            <small className=" text-muted">
+
+                                            <strong className="primary-font">{chat.from}</strong>
+                                            <small className="pull-right text-muted">
+
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
                                         </div>
-                                       <p  className='pull-right chatmsg'>
+                                        <br/>
+                                       <p className="chatmsg">
                                             {chat.msg}
                                        </p>
                                      </div>
                                    </li> :
 
-                                    <li className="left clearfix userChatBox">
-                                      <span className="chat-img pull-left userChat">
+                                    <li className="left clearfix agentChatBoxTemp">
+                                      <span className="chat-img pull-left agentChat">
                                       {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
@@ -247,6 +250,7 @@ class ClientChatView extends Component {
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
                                         </div>
+                                        <br/>
                                        <p className="chatmsg">
                                             {chat.msg}
                                        </p>
@@ -300,6 +304,7 @@ function mapStateToProps(state) {
     chatlist :(state.dashboard.chatlist),
     channels :(state.dashboard.channels),
     customers:(state.dashboard.customers),
+   
      };
 }
 

@@ -90,6 +90,7 @@ function redirectAuthUsers(nextState, replace) {
       pathname: '/dashboard',
       state: { nextPathname: nextState.location.pathname }
     })
+     
   }
 }
 

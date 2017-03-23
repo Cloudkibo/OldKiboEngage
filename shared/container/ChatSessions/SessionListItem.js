@@ -45,11 +45,11 @@ var agentname = []
         ch[0] &&
       <td>{ch[0].msg_channel_name}</td>
       }
-      {
+      {/*
         props.agent && agentname[0] ?
          <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td> :
           <td>-</td>
-
+      */
       }
       {
         props.session.platform == "mobile"? <td>Mobile</td>:<td>Web</td>

@@ -102,7 +102,7 @@ function sendemail(body,token){
 
               };
               function callback(error, response, body1) {
-                 //console.log(body);
+                 ////console.log(body);
                  //console.log(error);
 
                 if(!error  && response.statusCode == 200) {
@@ -147,7 +147,7 @@ function sendemail(body,token){
 
 //for mobile customers
 function sendPushNotification(tagname,body){
-  console.log(body)
+  //console.log(body)
   console.log('size of notification');
   console.log(sizeof(body));
   var sizeofbody = sizeof(body); //returns bytes
@@ -155,7 +155,7 @@ function sendPushNotification(tagname,body){
  
   if(sizeofbody < 2048){
     body['bool_fetch'] = 'false';
-    console.log(body)
+    //console.log(body)
      var payload = {
         data: body,
         badge: 0
@@ -270,7 +270,7 @@ export function getnotifications(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(body);
+      //console.log(body);
        console.log(error);
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
@@ -337,7 +337,7 @@ export function destroyNotification(req, res) {
     };
     
     function callback(error, response, body) {
-        console.log(body);
+        //console.log(body);
         console.log(error)
       if(!error  && response.statusCode == 200) {
       

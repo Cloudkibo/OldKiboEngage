@@ -301,6 +301,7 @@ export function signupuser(user) {
             cookie.save('token', res.token, { path: '/' });
             console.log(cookie.load('token'));
             browserHistory.push('/dashboard');
+            window.location.reload();
           }
         }
           );
@@ -497,9 +498,9 @@ export function createteam(team,customers) {
 
 
 export function editTeam(team,customers) {
-  console.log('editTeam action called');
-  console.log(team.deptagents);
-  console.log(team);
+//  console.log('editTeam action called');
+ // console.log(team.deptagents);
+//  console.log(team);
   //alert(team)
   return (dispatch) => {
     fetch(`${baseURL}/api/editteam`, {
@@ -746,11 +747,12 @@ export function editagentError(message) {
     message,
   }
 }
-export function inviteAgentResponse(message) {
-  alert(message);
+export function inviteAgentResponse(res) {
+  alert(res.message);
   return {
     type: ActionTypes.INVITE_AGENT_RESPONSE,
-    message,
+    message:res.message,
+    inviteurl:res.url,
   }
 }
 
@@ -842,7 +844,7 @@ export function inviteagent(email,token) {
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-         dispatch(inviteAgentResponse(res.message));
+         dispatch(inviteAgentResponse(res));
 
 
         }
@@ -1446,7 +1448,7 @@ export function filterbyAgent(id,customerchat) {
   }
   else{
 
-    filtered = customerchat.filter((c) => c.agent_ids == id)
+    filtered = customerchat.filter((c) => c.agent_ids[c.agent_ids.length-1].id == id)
 
   }
     console.log(filtered);
@@ -1679,14 +1681,17 @@ export function getsessions(token) {
 export function getmobilesessions(token) {
   console.log(token);
   return (dispatch) => {
-    fetch(`${baseURL}/api/getsessions`, {
+    /*fetch(`${baseURL}/api/getsessions`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token
 
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver([])));
-  };
+  };*/
+    dispatch(getsessionsfromserver([]))
+
+};
 }
 
 export function previousChat(previouschat,chatlist){
@@ -2159,9 +2164,19 @@ export function addRoom(room) {
 }
 
 export function updateAgentList(onlineAgents){
+     var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in onlineAgents) {
+        lookupObject[onlineAgents[i]['email']] = onlineAgents[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
   return {
     type : ActionTypes.ONLINE_AGENTS,
-    onlineAgents,
+    onlineAgents:newArray,
   }
 }
 
@@ -2615,39 +2630,22 @@ export function createPage(fbpage,token) {
   };
 }
 
-export function updatesettings(company,token) {
-  console.log(company);
-
+export function updatesettings(file,companyprofile,token) {
+  console.log(token);
+  var fileData = new FormData();
+  fileData.append('file', file);
+  fileData.append('filename', file.name);
+  fileData.append('filetype', file.type);
+  fileData.append('filesize', file.size);
+  fileData.append('companyprofile',JSON.stringify(companyprofile));
+  console.log(fileData);
+ 
   return (dispatch) =>
     fetch(`${baseURL}/api/updatesettings`, {
 
       method: 'post',
-        body:JSON.stringify({
-                   'abandonedscheduleemail1':company.abandonedscheduleemail1,
-                    'abandonedscheduleemail2':company.abandonedscheduleemail2,
-                    'abandonedscheduleemail3':company.abandonedscheduleemail3,
-                    'completedscheduleemail1': company.completedscheduleemail1,
-                    'completedscheduleemail2':company.completedscheduleemail2,
-                    'completedscheduleemail3':company.completedscheduleemail3,
-                    'invitedscheduleemail1':company.invitedscheduleemail1,
-                    'invitedscheduleemail2':company.invitedscheduleemail2,
-                    'invitedscheduleemail3':company.invitedscheduleemail3,
-                    'maxnumberofdepartment':company.maxnumberofdepartment,
-                    'maxnumberofchannels':company.maxnumberofchannels,
-                    'notificationemailaddress':company.notificationemailaddress,
-                    'widgetwindowtab':company.widgetwindowtab,
-                    'showsummary':company.showsummary,
-                    'smsphonenumber':company.smsphonenumber,
-                    'allowemailnotification':company.allowemailnotification,
-                    'allowsmsnotification':company.allowsmsnotification,
-                    'isdomainemail':company.isdomainemail,
-                    'allowChat':company.allowChat,
-                    'enableFacebook':company.enableFacebook,
-
-
-      }),
+      body:fileData,
         headers: new Headers({
-        'Content-Type': 'application/json',
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
@@ -3452,3 +3450,41 @@ export function uploadFbChatfile(fileData,usertoken,fbchats,id) {
   };
 
 };
+
+
+/*** reseting joined state ***/
+export function setjoinedState(stateVar){
+   return{
+      userjoinedroom:stateVar,
+      type: ActionTypes.JOINED_MEETING,
+    }
+}
+
+
+export function showCompanylogo(res){
+   return{
+      companylogo:res.logourl,
+      type: ActionTypes.COMPANY_LOGO,
+    }
+}
+//this is without-token version of getting teamlist for Chat widget
+export function getcompanylogo(appid,appsecret,companyid){
+
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getcompanylogo/`, {
+        method: 'post',
+        body: JSON.stringify({
+          appid: appid,
+          appsecret : appsecret,
+          clientid:companyid,
+
+
+      })
+        ,
+        headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCompanylogo(res)));
+  };
+}

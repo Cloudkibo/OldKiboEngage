@@ -73,8 +73,7 @@ class CustomerChatView extends Component {
         this.connectToCall = this.connectToCall.bind(this);
         this.connectCall = this.connectCall.bind(this);
         this.getgroupmembers = this.getgroupmembers.bind(this);
-        this.onFileSubmit = this.onFileSubmit.bind(this);
-        this.onFileDownload = this.onFileDownload.bind(this);
+       this.onFileDownload = this.onFileDownload.bind(this);
         this.state = {
           value: '',
           suggestions: getSuggestions('',props.responses),
@@ -83,6 +82,8 @@ class CustomerChatView extends Component {
 
         };
         this._onChange = this._onChange.bind(this);
+        this.onFileSubmit = this.onFileSubmit.bind(this);
+        
         this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
@@ -1062,7 +1063,7 @@ const { value, suggestions } = this.state;
 
                          (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
                             agent.agentId == this.props.userdetails._id?
-                            <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
                             <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
 
                             ))
@@ -1070,8 +1071,8 @@ const { value, suggestions } = this.state;
 
                           this.props.agents && this.props.agents.map((agent,i) =>
                             agent._id == this.props.userdetails._id?
-                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname +' '+ this.props.userdetails.lastname} data-email={this.props.userdetails.email}>Myself</option>:
-                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname +' '+ agent.lastname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
+                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
 
                             )
 
@@ -1117,7 +1118,8 @@ const { value, suggestions } = this.state;
 
               </tr>
 
-              {this.props.groupdetails && this.props.groupdetails.length >0?
+              {/*
+                this.props.groupdetails && this.props.groupdetails.length >0?
                      <tr>
                     
                          <td className="col-md-4">
@@ -1161,7 +1163,17 @@ const { value, suggestions } = this.state;
                       </td>
                      </tr>
 
-             }
+             */}
+
+                    <tr>
+                     
+                      <td className="col-md-6">
+                        <label>Current Status - {this.props.sessiondetails.status}</label>
+                        <br/>
+                        <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+
+                      </td>
+                     </tr>
               </tbody>
             </table>
 

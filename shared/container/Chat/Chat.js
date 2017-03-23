@@ -233,7 +233,6 @@ componentDidMount(){
   }
 
 
-
    handleChange(e){
      //alert(e.target.value);
      this.props.filterbystatus(e.target.value,this.props.customerchatold);
@@ -319,7 +318,7 @@ componentDidMount(){
              	<tbody>
              	<tr>
              		<th className="col-md-1">Status</th>
-             		<th className="col-md-1">Medium</th>
+             		{/*<th className="col-md-1">Medium</th>*/}
              		<th className="col-md-1">Agents</th>
              		<th className="col-md-1">Team</th>
              		<th className="col-md-1">Message Channel</th>
@@ -335,15 +334,17 @@ componentDidMount(){
                           <option value="archived">Archived</option>
                       </select>
              		</td>
-             		<td className="col-md-1">
+             		{
+                  /*<td className="col-md-1">
 
-             		  <select  ref = "client" onChange={this.handleChange.bind(this)}   >
+             		  <select  ref = "client" onChange={this.handleChangeMedium.bind(this)}   >
                           <option value="all">All</option>
                           <option value="mobile">Mobile</option>
                           <option value="web">Web</option>
 
                       </select>
              		</td>
+              */}
              		<td className="col-md-1">
 
              		  <select  ref = "agentList" onChange={this.handleChangeAgents.bind(this)}   >

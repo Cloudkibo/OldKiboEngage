@@ -198,7 +198,7 @@ function onConnect(io2, socket) {
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                    //break;
                   }
 
               }
@@ -236,7 +236,7 @@ function onConnect(io2, socket) {
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                    //break;
                   }
 
             }
@@ -316,7 +316,7 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                    //break;
                   }
                 }
 
@@ -369,7 +369,7 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
                 {
                   console.log('agent is online');
                   io2.to(onlineAgents[i].socketid).emit('informAgent',previous_chat);
-                  break;
+                 // break;
                 }
               }
         }
@@ -399,7 +399,7 @@ socket.on('getmessagefromserver',function(data){
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                   // break;
                   }
 
             }
@@ -472,7 +472,7 @@ socket.on('send:messageToAgent', function (data) {
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                    //break;
                   }
 
             }
@@ -778,11 +778,12 @@ socket.on('getOnlineAgentList',function() {
     console.log(room.room);
     socket.join(room.room);
     
+    //add lines to add company id and email in socket object
     var flag = 0;
     // append in online agents array
     if(room.agentEmail){
     //only push if not already pushed
-    for(var i = 0;i< onlineAgents.length;i++)
+    /*for(var i = 0;i< onlineAgents.length;i++)
     {
           if(onlineAgents[i].email == room.agentEmail){
             //set flag to true
@@ -791,10 +792,10 @@ socket.on('getOnlineAgentList',function() {
           } 
     }
     if(flag == 0)
-    {
+    {*/
        onlineAgents.push({email:room.agentEmail,socketid:socket.id,room:room.room,agentName : room.agentName,agentId : room.agentId});
  
-    }
+    //}
     }
     console.log("Agents online :");
     console.log(onlineAgents);
@@ -984,6 +985,7 @@ exports.socketf = function (socketio) {
 /******** not exporting in controller file **********/
 exports.getchat = function(data){
   console.log('socket get chat is called');
+  //console.log(glob);
   if(data.fromMobile == 'no'){
      userchats.push(data);
   }
@@ -999,7 +1001,7 @@ exports.getchat = function(data){
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                   // break;
                   }
 
             }
@@ -1034,6 +1036,8 @@ exports.getchat = function(data){
             for(var i=0;i<onlineAgents.length;i++){
               if(onlineAgents[i].room == data.companyid){
                 console.log('send message on agent socket');
+                console.log('online agents');
+                console.log(onlineAgents[i]);
                 glob.to(onlineAgents[i].socketid).emit('send:message',{
                                           to: data.to,
                                           toagent:data.toagent,
@@ -1124,7 +1128,7 @@ exports.getchatfromAgent = function(data){
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                  //  break;
                   }
 
               }
@@ -1162,7 +1166,7 @@ exports.getchatfromAgent = function(data){
                      console.log('agent is online');
                      
                     socketids.push(onlineAgents[i].socketid);
-                    break;
+                    //break;
                   }
 
             }

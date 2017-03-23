@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router'
 
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
-
+import { FileUpload } from 'redux-file-upload'
 var style1 = {
   'marginLeft': '-1.75px',
   'width': '782px',
@@ -35,20 +35,47 @@ class CompanySettings extends Component {
 
         super(props, context);
         this.onSubmit = this.onSubmit.bind(this);
+        this.state = {
+         
+          src : '',
+          userfile:null,
 
+        };
+        this._onChange = this._onChange.bind(this);
+      //  this.onFileSubmit = this.onFileSubmit.bind(this);
 
 
 
 
   }
+  _onChange(e) {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+
+    this.setState({ userfile:e.target.files[0]
+                       });
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({ src: reader.result,
+                       });
+    };
+    reader.readAsDataURL(files[0]);
+  }
 
   onSubmit(event)
     {
-      event.preventDefault();
+     const usertoken = auth.getToken();
+
+      var fileData = new FormData();
+      
       if(this.props.userdetails.isAdmin === "Yes"){
-       const usertoken = auth.getToken();
-       event.preventDefault();
-       if(confirm("Are you sure you want to update company settings?")){
+       console.log(this.state.userfile)
        var companyprofile = {
                     'abandonedscheduleemail1':this.refs.abandonedscheduleemail1.value,
                     'abandonedscheduleemail2':this.refs.abandonedscheduleemail2.value,
@@ -72,13 +99,15 @@ class CompanySettings extends Component {
                     'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value
                   }
                   console.log(companyprofile);
-
-                  this.props.updatesettings(companyprofile,usertoken);
-                }
+                  this.props.updatesettings(this.state.userfile,companyprofile,usertoken);
+                
               }
       else {
                 alert("You can not update company settings. Only admin has the access to do it.")
               }
+
+               event.preventDefault();
+      
     }
 
 
@@ -289,6 +318,22 @@ class CompanySettings extends Component {
                                                   <textarea id="maxlength_textarea" ref= "abandonedscheduleemail1" defaultValue={this.props.companysettings.abandonedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea>
                                                 </div>
                                               </div>
+                                             
+                                              <div className="form-group">
+                                                <label className="control-label col-md-3">Logo for Client Widget</label>
+                                                 {
+                                                this.props.companysettings.widgetlogoURL?
+                                              
+                                                <div className="col-md-9">
+                                                  <img ref="widgetlogo"  src={this.props.companysettings.widgetlogoURL} style={{'width':'200px','height':'200px'}} />
+                                                </div>:<div className="hide"></div>
+                                              }
+                                                <div>
+                                                       <input type="file" onChange={this._onChange} className="pull-left"/>
+
+                                                       
+                                                </div>
+                                              </div>
 
                                               <div className="hide">
 
@@ -335,6 +380,8 @@ class CompanySettings extends Component {
                                                   <textarea id="maxlength_textarea" ref="invitedscheduleemail3"  defaultValue={this.props.companysettings.invitedscheduleemail3} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea><span className="help-block"></span>
                                                 </div>
                                               </div>
+
+                                              
                                               </div>
 
                                                {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "danger" &&

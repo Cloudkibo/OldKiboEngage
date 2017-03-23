@@ -17,8 +17,8 @@ var notificationHubService2 = azure.createNotificationHubService('KiboEngageProd
 var baseURL = `https://api.kibosupport.com`
 
 export function getcustomerteams(req,res){
-  console.log('get  customer team is called');
-  console.log(req.body);
+  //console.log('get  customer team is called');
+  ////console.log(req.body);
   
   var  headers =  {
              'kibo-app-id' : req.body.appid,
@@ -27,7 +27,7 @@ export function getcustomerteams(req,res){
              
       }
 
-  //console.log('get customer team');
+  ////console.log('get customer team');
       var options = {
       url: `${baseURL}/api/departments`,
       rejectUnauthorized : false,
@@ -36,7 +36,7 @@ export function getcustomerteams(req,res){
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        ////console.log(info);
+        //////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -49,9 +49,9 @@ export function getcustomerteams(req,res){
     
 }
 export function getteams(req, res) {
-  //console.log('get getteams is called');
+  ////console.log('get getteams is called');
   var token = req.headers.authorization;
-  //console.log('token received is  : ' + token);
+  ////console.log('token received is  : ' + token);
   var options = {
       url: `${baseURL}/api/departments`,
       rejectUnauthorized : false,
@@ -64,7 +64,7 @@ export function getteams(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-        ////console.log(info);
+        //////console.log(info);
       return res.status(200).json(info);
     }
 
@@ -78,10 +78,10 @@ export function getteams(req, res) {
 
 
  export function createteam(req, res) {
-  //console.log('create team is called');
+  ////console.log('create team is called');
   var token = req.headers.authorization;
-  console.log('create team');
-  console.log(req.body);
+  //console.log('create team');
+  //console.log(req.body);
   logger.serverLog('info', 'This is body in createteam '+ JSON.stringify(req.body) );
 
   var options;
@@ -121,14 +121,15 @@ export function getteams(req, res) {
  
   }
     function callback(error, response, body) {
-      console.log(error);
-      console.log(response);
-      console.log(body);
+      //console.log(error);
+      //console.log(response);
+
+      //////console.log(body);
       if(!error  && response.statusCode == 200) {
         var info = body;
-        console.log(body);
-        //console.log(info.msg);
-       //console.log(info.status);
+        //////console.log(body);
+        ////console.log(info.msg);
+       ////console.log(info.status);
        if(info.status == 'success')
        {
             // send push notification to mobile client
@@ -157,10 +158,10 @@ export function getteams(req, res) {
   }
 
 export function getTeam(req, res) {
-  //console.log('getTeam is called.');
+  ////console.log('getTeam is called.');
   var token = req.headers.authorization;
-  //console.log('token received is  : ' + token);
-  //console.log(req.query.id);
+  ////console.log('token received is  : ' + token);
+  ////console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/departments/${id}`,
@@ -173,14 +174,14 @@ export function getTeam(req, res) {
     function callback(error, response, body) {
     
       var info = JSON.parse(body);
-      //  //console.log(info);
+      //  ////console.log(info);
         
       if(!error  && response.statusCode == 200) {
         res.status(200).json({team:info}); 
     
    }
    else{
-    //console.log(error);
+    ////console.log(error);
     res.status(422).json(info); 
    }
  }
@@ -190,9 +191,9 @@ export function getTeam(req, res) {
 
 
 export function destroyTeam(req, res) {
-  //console.log('destroyTeam is called.');
+  ////console.log('destroyTeam is called.');
   var token = req.headers.authorization;
-  //console.log(req.query.id);
+  ////console.log(req.query.id);
   var id = req.query.id;
    var options = {
       url: `${baseURL}/api/departments/kiboengage/${id}`,
@@ -204,11 +205,11 @@ export function destroyTeam(req, res) {
     };
     function callback(error, response, body) {
     
-    //console.log(response.statusCode);
-    //console.log(error);
+    ////console.log(response.statusCode);
+    ////console.log(error);
       var info = JSON.parse(body);
 
-      //  //console.log(info.status);
+      //  ////console.log(info.status);
         
       if(!error  && response.statusCode == 200) {
         var obj = {  
@@ -220,7 +221,7 @@ export function destroyTeam(req, res) {
     
    }
    else{
-   // //console.log(error);
+   // ////console.log(error);
     res.status(422).json(info); 
    }
  }
@@ -229,10 +230,10 @@ export function destroyTeam(req, res) {
 }
 
 export function editteam(req, res) {
-  //console.log('edit team is called');
+  ////console.log('edit team is called');
   var token = req.headers.authorization;
-  //console.log(req.body.dept);
-  //console.log(req.body.deptagents);
+  ////console.log(req.body.dept);
+  ////console.log(req.body.deptagents);
    var options = {
       url: `${baseURL}/api/departments/update/`,
       rejectUnauthorized : false,
@@ -248,13 +249,13 @@ export function editteam(req, res) {
      
     };
 
-    console.log('json body of edit team');
-    console.log(options.json);
-    console.log(options.headers);
-    console.log(options.url);
-    //console.log(options.json.dept);
+    //console.log('json body of edit team');
+    //console.log(options.json);
+    //console.log(options.headers);
+    //console.log(options.url);
+    ////console.log(options.json.dept);
     function callback(error, response, body) {
-        //console.log(body);
+        //////console.log(body);
     
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')
@@ -293,8 +294,8 @@ export function editteam(req, res) {
      
     };
     function callback(error, response, body) {
-      console.log(error);
-      console.log(body);
+      //console.log(error);
+      ////console.log(body);
         if(!error  && response.statusCode == 200) {
        var info = JSON.parse(body);
        var totalDept = [];
@@ -333,7 +334,7 @@ export function editteam(req, res) {
 
 //for mobile customers
 function sendPushNotification(data,tablename,operation,token){
-  console.log('sendPushNotification for channels is called');
+  //console.log('sendPushNotification for channels is called');
    var options = {
                 url: `${baseURL}/api/customers/`,
                 rejectUnauthorized : false,
@@ -344,8 +345,8 @@ function sendPushNotification(data,tablename,operation,token){
 
               };
               function callback(error1, response, body1) {
-                 //console.log(body);
-                 //console.log(error);
+                 //////console.log(body);
+                 ////console.log(error);
                 var customers = JSON.parse(body1);
                 if(!error1  && response.statusCode == 200) {
                              var payload = {
@@ -377,27 +378,27 @@ function sendPushNotification(data,tablename,operation,token){
                               }
                               notificationHubService.gcm.send(tagname, androidMessage, function(error){
                                 if(!error){
-                                  console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+                                  //console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
                                 } else {
-                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                  //console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
                               });
                               notificationHubService.apns.send(tagname, iOSMessage, function(error){
                                 if(!error){
-                                  console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-                                  console.log(iOSMessage);
+                                  //console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+                                  //console.log(iOSMessage);
                                 } else {
-                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                  //console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
                               });
 
 
                                notificationHubService2.apns.send(tagname, iOSMessage, function(error){
                                 if(!error){
-                                  console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-                                  console.log(iOSMessage);
+                                  //console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+                                  //console.log(iOSMessage);
                                 } else {
-                                  console.log('Azure push notification error : '+ JSON.stringify(error));
+                                  //console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
                               });
                             }
