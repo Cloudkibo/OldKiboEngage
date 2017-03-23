@@ -13,7 +13,7 @@ function loadKiboEngageWidget(id_client){
  /* if(OPEN_AS_WINDOW_OR_TAB_PLACEHOLDER)
     window.open('localhost:8000/livehelp?pathname='+ document.title+'&fullurl='+fullURL+'&id='+id_client+'&role=visitor','KiboEngage','width=475,height=595,resizable=yes');
   else
-    
+
     window.open('localhost:8000/livehelp?pathname='+ document.title+'&fullurl='+fullURL+'&id='+id_client+'&role=visitor','width=475,height=595,resizable=yes');
 */
 }

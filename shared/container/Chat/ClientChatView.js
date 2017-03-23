@@ -89,7 +89,9 @@ class ClientChatView extends Component {
 
    handleMessageSubmit(e) {
     const { socket,dispatch } = this.props;
+
      if (e.which === 13 && this.refs.msg.value!='') {
+
         var message;
         e.preventDefault();
            //generate unique id of message - this change is for mobile clients
@@ -158,9 +160,7 @@ class ClientChatView extends Component {
       var today = new Date();
       var uid = Math.random().toString(36).substring(7);
       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value.trim()+'&agentname='+this.refs.agentname.value.trim()+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
-
       call.from = this.props.sessiondetails.customerName;
       call.to = this.refs.agentname.value.trim();
       call.agentemail = this.refs.agentemail.value.trim();
@@ -225,8 +225,10 @@ class ClientChatView extends Component {
                                       </span>
                                      <div className="chat-body clearfix">
                                         <div>
+
                                             <strong className="primary-font">{chat.from}</strong>
                                             <small className="pull-right text-muted">
+
                                                 <span className="glyphicon glyphicon-time"></span>{chat.time}
                                             </small>
                                         </div>

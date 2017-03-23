@@ -6,7 +6,8 @@ import { getfbchatfromAgent,add_socket_fb_message ,uploadFbChatfile} from '../..
 import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
-import Picker from 'react-giphy-picker'
+import Picker from 'react-giphy-picker';
+import StickerMenu from 'react-stickerpipe';
 
 var EmojiPicker = require('react-emoji-picker');
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
@@ -55,7 +56,7 @@ export class ChatArea extends Component {
           userfile:null,
           emoji: null,
           showEmojiPicker: false,
-
+          showSticker: false,
           enteredGif: '',
           visible: false,
 
@@ -72,7 +73,8 @@ export class ChatArea extends Component {
         this.sendThumbsUp = this.sendThumbsUp.bind(this);
         this.log = this.log.bind(this);
         this.toggleVisible = this.toggleVisible.bind(this);
-
+        this.toggleStickerPicker = this.toggleStickerPicker.bind(this);
+        this.sendSticker = this.sendSticker.bind(this);
   }
 
 
@@ -356,16 +358,10 @@ else{
 toggleEmojiPicker() {
 
   this.setState({
-    showEmojiPicker: !this.state.showEmojiPicker,
     visible: false,
+    showEmojiPicker: !this.state.showEmojiPicker,
+    showSticker: false,
   });
-
-  if(this.state.showEmojiPicker === false) {
-    this.setState({showEmojiPicker: true});
-  } else {
-    this.setState({showEmojiPicker: false});
-  }
-
 }
 
 validateEmoji() {
@@ -407,7 +403,20 @@ toggleVisible () {
   this.setState({
     visible: !this.state.visible,
     showEmojiPicker: false,
-  })
+    showSticker: false,
+  });
+}
+
+sendSticker(sticker) {
+  console.log(sticker);
+}
+
+toggleStickerPicker() {
+  this.setState({
+    visible: false,
+    showEmojiPicker: false,
+    showSticker: !this.state.showSticker,
+  });
 }
 
 
@@ -490,20 +499,28 @@ toggleVisible () {
 
                    inputProps={inputProps} />
             </div>
-            <div className="pull-right" style={{display: 'inline-block'}}>
-            <img onClick={this.sendThumbsUp} src="./userfiles/thumbsUp.png" height="30" width="30" ></img>
+            <div className="pull-right" style={{display: 'inline-block', paddingTop: '4px'}}>
+              <i style={{fontSize: '30px', color: '#0099e6', cursor: 'pointer'}} className="fa fa-thumbs-up" onClick = {this.sendThumbsUp} ></i>
             </div>
             <br />
             <br />
             <div>
+            <div style={{display: 'inline-block'}}>
+              <i style={{position: 'relative', display: 'inline-block', width: '2em', height: '2.5em', cursor: 'pointer'}} onClick = {this.toggleEmojiPicker}>
+                <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-smile-o"></i>
+              </i>
+            </div>
               <div style={{display: 'inline-block'}}>
-                <img onClick = {this.toggleEmojiPicker} src="./userfiles/Smile.png" height="25" width="25" ></img>
-              </div>
-              <div onClick = {this.toggleVisible} style={{display: 'inline-block'}}>
-                <img src="./userfiles/gif.png" height="25" width="25" ></img>
+                <i style={{position: 'relative', display: 'inline-block', width: '2em', height: '2.5em', cursor: 'pointer'}} onClick = {this.toggleStickerPicker}>
+                  <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
+                  <i style={{position: 'absolute', left: '0', width: '100%', textAlign: 'center', fontSize: '15px'}} className="fa fa-smile-o"></i>
+                </i>
               </div>
               <div style={{display: 'inline-block'}}>
-                <img src="./userfiles/sticker.png" height="25" width="25" ></img>
+                <i style={{position: 'relative', display: 'inline-block', width: '2em', height: '2.5em', cursor: 'pointer'}} onClick = {this.toggleVisible}>
+                  <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
+                  <p style={{position: 'absolute', text: 'GIF', left: '0', width: '100%', textAlign: 'center', fontSize: '10px'}}>GIF</p>
+                </i>
               </div>
             </div>
 
@@ -516,6 +533,17 @@ toggleVisible () {
                   query={this.state.emoji}
                 />
 
+            }
+
+            {
+              this.state.showSticker &&
+              <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px'}}>
+              <StickerMenu
+                apiKey={'80b32d82b0c7dc5c39d2aafaa00ba2bf'}
+                userId={'imran.shoukat@khi.iba.edu.pk'}
+                sendSticker={this.sendSticker}
+              />
+              </div>
             }
 
             {
@@ -540,10 +568,6 @@ toggleVisible () {
                             <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
 
                        </td>
-
-                       <td className="col-md-6">
-                       <button className="btn white" onClick = {this.toggleEmojiPicker} ><i  className="fa fa-smile-o fa-fw fa-lg" /><b> Emoji </b></button>
-                       </td>
                        <td className="col-md-6">
                        <input type="file" onChange={this._onChange} className="pull-left"/>
 
@@ -555,16 +579,6 @@ toggleVisible () {
                   </tbody>
                   </table>
                   </div>
-
-                  {
-                      this.state.showEmojiPicker &&
-                      <EmojiPicker
-                        onSelect={this.setEmoji}
-                        query={this.state.emoji}
-                      />
-
-                  }
-
        </div>
 
       )
