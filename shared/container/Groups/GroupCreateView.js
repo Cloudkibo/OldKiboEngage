@@ -1,20 +1,21 @@
 /***** Renamed as Teams **********/
+/***** Renamed back as Groups **********/
 
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-class TeamCreateView extends Component {
+class GroupCreateView extends Component {
   constructor(props, context) {
     super(props, context);
-    this.addTeam = this.addTeam.bind(this);
+    this.addGroup= this.addGroup.bind(this);
   }
 
-  addTeam() {
+  addGroup() {
     const nameRef = this.refs.name;
    const descRef = this.refs.desc;
     if (nameRef.value && descRef.value) {
-      this.props.addTeam(nameRef.value,descRef.value,this.props.newagents);
+      this.props.addGroup(nameRef.value,descRef.value,this.props.newagents);
       nameRef.value = descRef.value = '';
     }
   }
@@ -60,7 +61,7 @@ class TeamCreateView extends Component {
  }
 
   render() {
-    const cls = `form ${(this.props.showAddTeam ? 'appear' : 'hide')}`;
+    const cls = `form ${(this.props.showAddGroup ? 'appear' : 'hide')}`;
 
     return (
       <div className={cls}>
@@ -68,14 +69,14 @@ class TeamCreateView extends Component {
           <div className="portlet-title">
             <div className="caption">
               <i className="fa fa-group"/>
-               Create a Team
+               Create a Group
             </div>
           </div>
       <div className="portlet-body ">
       <div className="form">
         <div className="form-body">
           <div className="form-group">
-                 <label className="control-label col-md-3"> Team Name</label>
+                 <label className="control-label col-md-3"> Group Name</label>
                   <div className="input-group">
                     <span className="input-group-addon">
                       <i className="fa fa-chevron-right"/>
@@ -92,7 +93,7 @@ class TeamCreateView extends Component {
                     <textarea placeholder="Enter short description" className="form-control" ref="desc" rows='4' required></textarea>
                     </div>
           </div>
-
+          <br/>
           <div className="form-group">
            <label className="control-label col-md-3"> Fellow Agents </label>
             <div className="col-md-9">
@@ -116,7 +117,7 @@ class TeamCreateView extends Component {
             </div>
             </div>
          </div>
-
+         <br/>
 
          <div className="form-group">
            <label className="control-label col-md-3"> All Agents </label>
@@ -137,14 +138,14 @@ class TeamCreateView extends Component {
             </div>
             </div>
          </div>
-
+         <br/>
           <div className="form-group">
                   <b> Note:
-                   Please, add at least one agent to the team to make it operational. Click on the name in the list to add agents.
+                   Please, add at least one agent to the group to make it operational. Click on the name in the list to add agents.
                   </b>
           </div>
           <div className="form-actions">
-              <button className="btn blue"  onClick={this.addTeam}> Submit </button>
+              <button className="btn blue"  onClick={this.addGroup}> Submit </button>
          </div>
         </div>
       </div>
@@ -155,14 +156,12 @@ class TeamCreateView extends Component {
   }
 }
 
-TeamCreateView.propTypes = {
-  addTeam: PropTypes.func.isRequired,
-  showAddTeam: PropTypes.bool.isRequired,
+GroupCreateView.propTypes = {
+  addGroup: PropTypes.func.isRequired,
+  showAddGroup: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps of TeamDetailView is called');
-  console.log(state.dashboard.team);
   return {
 
     team: (state.dashboard.team),
@@ -175,4 +174,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(TeamCreateView);
+export default connect(mapStateToProps)(GroupCreateView);

@@ -54,17 +54,17 @@ export default class ProfileSideBar extends Component
                 </Link>
             </li>
         }
-         {this.props.iscurrent && this.props.iscurrent == "myteams"?
+         {this.props.iscurrent && this.props.iscurrent == "mygroups"?
              <li className="active">
-                <Link to='/myteams'>
+                <Link to='/mygroups'>
                   <i className ="fa fa-eye"/>
-                   My Teams
+                   My Groups
                 </Link>
             </li>:
              <li>
-                <Link to='/myteams'>
+                <Link to='/mygroups'>
                   <i className ="fa fa-eye"/>
-                   My Teams
+                   My Groups
                 </Link>
             </li>
           }  

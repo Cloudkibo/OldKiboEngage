@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {removeDuplicates,getsessionsfromsocket,removeDuplicatesWebChat,updatechatstatus,previousChat,getgroups,getGroupAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbyChannel,filterbyAgent}  from '../../redux/actions/actions'
+import {removeDuplicates,getsessionsfromsocket,removeDuplicatesWebChat,updatechatstatus,previousChat,getteams,getTeamAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbySubgroup,filterbyAgent}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -40,8 +40,8 @@ class Chat extends Component {
         props.getresponses(usertoken);
 
       // get groups list and agents
-        props.getgroups(usertoken);
-        props.getGroupAgents(usertoken);
+        props.getteams(usertoken);
+        props.getTeamAgents(usertoken);
 
 
       }
@@ -249,9 +249,9 @@ componentDidMount(){
 
 
     }
-     handleChangeChannel(e){
+     handleChangeSubgroup(e){
      //lert(e.target.value);
-     this.props.filterbyChannel(e.target.value,this.props.customerchatold);
+     this.props.filterbySubgroup(e.target.value,this.props.customerchatold);
      this.forceUpdate();
 
 
@@ -320,8 +320,8 @@ componentDidMount(){
              		<th className="col-md-1">Status</th>
              		{/*<th className="col-md-1">Medium</th>*/}
              		<th className="col-md-1">Agents</th>
-             		<th className="col-md-1">Team</th>
-             		<th className="col-md-1">Message Channel</th>
+             		<th className="col-md-1">Group</th>
+             		<th className="col-md-1">Sub Group</th>
              	</tr>
              	<tr>
              		<td className="col-md-1">
@@ -362,11 +362,11 @@ componentDidMount(){
              		</td>
              		<td className="col-md-1">
 
-             		  <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
+             		  <select  ref = "grouplist" onChange={this.handleChangeDepartment.bind(this)}   >
                            <option value="all">All</option>
                           {
-                         	this.props.teamdetails && this.props.teamdetails.map((team,i) =>
-                         		<option value={team._id}>{team.deptname}</option>
+                         	this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                         		<option value={group._id}>{group.deptname}</option>
 
                          		)
                          }
@@ -377,11 +377,11 @@ componentDidMount(){
 
              		</td>
              		<td className="col-md-1">
-             		  <select  ref = "channellist" onChange={this.handleChangeChannel.bind(this)}   >
+             		  <select  ref = "subgrouplist" onChange={this.handleChangeSubgroup.bind(this)}   >
                              <option value="all">All</option>
                            {
-                         	this.props.channels && this.props.channels.map((channel,i) =>
-                         		<option value={channel._id}>{this.props.teamdetails.filter((d) => d._id == channel.groupid)[0].deptname + ' : ' +channel.msg_channel_name}</option>
+                         	this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
+                         		<option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
 
                          		)
                          }
@@ -396,7 +396,7 @@ componentDidMount(){
 
              	<div className="table-responsive">
                 <input type="hidden" ref = "sessionid" />
-                <p>Chat Sessions assigned to your Team will be listed here.</p>
+                <p>Chat Sessions assigned to your Group will be listed here.</p>
                 {!this.props.customerchat?
                   <p>Loading Chat Sessions...</p>:
                   <br/>
@@ -422,9 +422,9 @@ componentDidMount(){
 
                                     (this.props.new_message_arrived_rid ?
 
-                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
+                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
                                     :
-                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} team = {this.props.teamdetails.filter((grp) => grp._id == customer.departmentid)}  channel= {this.props.channels.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} group = {this.props.groupdetails}/>
+                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
                                   )
 
 
@@ -469,11 +469,7 @@ componentDidMount(){
 }
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.teamdetails);
-  console.log(state.dashboard.errorMessage);
-
+ 
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
@@ -483,7 +479,7 @@ function mapStateToProps(state) {
           customerchat :(state.dashboard.customerchat),
           customerchatold :(state.dashboard.customerchatold),
           chatlist :(state.dashboard.chatlist),
- 		      channels :(state.dashboard.channels),
+ 		      subgroups :(state.dashboard.subgroups),
           customers:(state.dashboard.customers),
           customerchat_selected :(state.dashboard.customerchat_selected),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
@@ -493,9 +489,9 @@ function mapStateToProps(state) {
           yoursocketid :(state.dashboard.yoursocketid),
           mobileuserchat : (state.dashboard.mobileuserchat),
           serverresponse : (state.dashboard.serverresponse) ,
-          groupagents : (state.dashboard.groupagents),
+          teamagents : (state.dashboard.teamagents),
           groupdetails :(state.dashboard.groupdetails),
                     };
 }
 
-export default connect(mapStateToProps,{removeDuplicates,removeDuplicatesWebChat,updatechatstatus,getmobilesessions,getgroups,getGroupAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbyChannel})(Chat);
+export default connect(mapStateToProps,{removeDuplicates,removeDuplicatesWebChat,updatechatstatus,getmobilesessions,getteams,getTeamAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbySubgroup})(Chat);

@@ -11,27 +11,28 @@ import VerificationFailure from './container/Auth/VerificationFailure';
 import Intro from './container/Intro';
 import Dashboard from './container/Dashboard';
 import Reports from './container/HighCharts/HighCharts'
-import Teams from './container/Teams/Teams';
 import Groups from './container/Groups/Groups';
+
+import Teams from './container/Teams/Teams';
+import TeamEditView from './container/Teams/TeamEditView';
+import TeamDetailView from './container/Teams/TeamDetailView';
+import CreateTeam from './container/Teams/CreateTeam';
 
 import Agents from './container/Agents/Agents';
 import Chat from './container/Chat/Chat';
 import ClientChat from './container/Chat/ClientChat';
 import CompanySettings from './container/CompanySettings/CompanySettings';
-import TeamDetailView from './container/Teams/TeamDetailView';
-import TeamEditView from './container/Teams/TeamEditView';
+import GroupDetailView from './container/Groups/GroupDetailView';
+import GroupEditView from './container/Groups/GroupEditView';
 import CreateFbPage from './container/facebookPages/CreateFbPage';
 import EditFbPage from './container/facebookPages/EditFbPage';
 import FbPages from './container/facebookPages/FbPages';
-import GroupEditView from './container/Groups/GroupEditView';
-import GroupDetailView from './container/Groups/GroupDetailView';
 
 import AgentEditView from './container/Agents/AgentEditView';
-import MessageChannelCreate from './container/MessageChannel/messageChannelCreate'
-import CreateGroup from './container/Groups/CreateGroup'
-import TeamCreateView from './container/Teams/TeamCreateView';
-import Channel from './container/MessageChannel/Channels'
-import ChannelEditView from './container/MessageChannel/ChannelEditView'
+import SubgroupCreate from './container/Subgroup/SubGroupCreate'
+import GroupCreateView from './container/Groups/GroupCreateView';
+import SubGroup from './container/Subgroup/SubGroups';
+import SubGroupEditView from './container/Subgroup/SubGroupEditView';
 import JoinCompany from './container/Agents/JoinCompany'
 import JoinCompanyFailure from './container/Agents/JoinCompanyFailure'
 import ResetPassword from './container/Auth/ResetPassword'
@@ -47,7 +48,7 @@ import AddNotification from './container/Notifications/AddNotification'
 import Notifications from './container/Notifications/Notifications'
 import NotificationView from './container/Notifications/NotificationView'
 import EditNotification from './container/Notifications/EditNotification'
-import MyTeams from './container/MyProfile/MyTeams'
+import MyGroups from './container/MyProfile/MyGroups'
 import MyProfile from './container/MyProfile/MyProfile'
 import MyPickedSessions from './container/MyProfile/MyPickedSessions'
 import AssignedSessions from './container/ChatSessions/AssignedSessions'
@@ -106,23 +107,26 @@ const routes = (
     <Route path="/join" component={JoinPage}/>
     <Route path="/joincompanyfailure" component={JoinCompanyFailure} />
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} socket = {socket}/>
-    <Route path="/teams" component={Teams} onEnter={requireAuth} />
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
-
-    <Route path="/team/:id(/:fromprofile)" component={TeamDetailView}  onEnter={requireAuth}/>
-    <Route path="/group/:id" component={GroupDetailView}  onEnter={requireAuth}/>
-
-    <Route path="/editteam/:id" component={TeamEditView}  onEnter={requireAuth}/>
+    
+    <Route path="/creategroup" component={GroupCreateView} onEnter={requireAuth}/>
+    <Route path="/groups" component={Groups} onEnter={requireAuth} />
+    <Route path="/group/:id(/:fromprofile)" component={GroupDetailView}  onEnter={requireAuth}/>
     <Route path="/editgroup/:id" component={GroupEditView}  onEnter={requireAuth}/>
+    
+    
+    <Route path="/editteam/:id" component={TeamEditView}  onEnter={requireAuth}/>
+    <Route path="/createteam" component={CreateTeam}  onEnter={requireAuth}/>
+    <Route path="/teams" component={Teams}  onEnter={requireAuth}/>
+    <Route path="/team/:id" component={TeamDetailView}  onEnter={requireAuth}/>
+    
+
 
     <Route path="/editagent/:id" component={AgentEditView}  onEnter={requireAuth}/>
-    <Route path="/createmessagechannel" component={MessageChannelCreate}  onEnter={requireAuth}/>
-    <Route path="/creategroup" component={CreateGroup}  onEnter={requireAuth}/>
-    <Route path="/createteam" component={TeamCreateView} onEnter={requireAuth}/>
-    <Route path="/groups" component={Groups}  onEnter={requireAuth}/>
-
-    <Route path="/messagechannels" component={Channel}  onEnter={requireAuth}/>
-    <Route path="/editchannel/:id" component={ChannelEditView}  onEnter={requireAuth}/>
+    <Route path="/createsubgroup" component={SubgroupCreate}  onEnter={requireAuth}/>
+    
+    <Route path="/subgroups" component={SubGroup}  onEnter={requireAuth}/>
+    <Route path="/editsubgroup/:id" component={SubGroupEditView}  onEnter={requireAuth}/>
 
 
     <Route path="/createcannedresponse" component={CannedResponseCreate}  onEnter={requireAuth}/>
@@ -145,7 +149,7 @@ const routes = (
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
      <Route path="/livehelp/:id/:pathname(/:requestid)" component={AddCustomer} socket={socket}/>
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
-     <Route path="/myteams" component={MyTeams}  onEnter={requireAuth}/>
+     <Route path="/mygroups" component={MyGroups}  onEnter={requireAuth}/>
      <Route path="/myprofile" component={MyProfile}  onEnter={requireAuth}/>
      <Route path="/companyprofile" component={CompanySettings}  onEnter={requireAuth}/>
      <Route path="/changeavatar" component={ChangeAvatar}  onEnter={requireAuth}/>

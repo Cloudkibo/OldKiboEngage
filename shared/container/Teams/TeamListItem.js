@@ -7,28 +7,59 @@ var c = new Date(d);
 return c.toDateString();
 }
 function TeamListItem(props) {
-
+var useringroup = false
+for(var i=0;i<props.teamagents.length;i++){
+  if(props.teamagents[i].agentid._id == props.userdetails._id && props.teamagents[i].groupid._id == props.team.get('_id')){
+    useringroup = true
+   
+    break
+  }
+}
   
   return (
   
     <tr className = "odd">
-      <td>{props.team.deptname}</td>
-      <td>{props.team.deptdescription}</td>
-      <td>{props.team.createdby.firstname}</td>
-      <td>{handleDate(props.team.creationdate)}</td>
+      <td>{props.team.get('groupname')}</td>
+      <td>{props.team.get('groupdescription')}</td>
+      <td>{props.team.get('createdby').get('firstname')}</td>
+      <td>{handleDate(props.team.get('creationdate'))}</td>
+       <td>{props.team.get('status')}</td>
      
       <td>
-        <Link to={`/team/${props.team._id}`} className="btn blue-madison" >
+      {
+        props.userdetails._id == props.team.get('createdby').get('_id')?
+        <span>
+        <Link to={`/team/${props.team.get('_id')}`} className="btn blue-madison" >
          View
         </Link>
-         {
-        props.userdetails.isAdmin == "Yes" ?
-        <span>
-        <Link to={`/editteam/${props.team._id}`} className="btn blue-madison" >
+       
+        <Link to={`/editteam/${props.team.get('_id')}`} className="btn blue-madison" >
          Edit
         </Link>
         <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
-        </span> : <span></span>
+        </span> :
+         <span>
+         {
+          props.team.get('status') == "public" && useringroup == false?
+          <button className="btn blue-madison" onClick={props.onJoin}> Join Team </button>
+        
+        :
+        <span></span>
+
+
+         }
+
+          {
+          props.userdetails._id != props.team.get('createdby').get('_id') && useringroup == true?
+          <Link to={`/team/${props.team.get('_id')}`} className="btn blue-madison" >
+         View
+        </Link>
+        :
+        <span></span>
+
+
+         }
+         </span>
 
         }
       </td>

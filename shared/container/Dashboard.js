@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents,getnews} from '../redux/actions/actions'
-import {getuserteams} from '../redux/actions/actions'
-import {getchannels,updateAgentList,setjoinedState} from '../redux/actions/actions'
+import {getusergroups} from '../redux/actions/actions'
+import {getsubgroups,updateAgentList,setjoinedState} from '../redux/actions/actions'
 import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
@@ -45,8 +45,8 @@ class Dashboard extends Component {
         this.props.getuser(usertoken);
         this.props.getAgents(usertoken);
         this.props.getDeptAgents(usertoken);
-        this.props.getuserteams(usertoken);
-        this.props.getchannels(usertoken);
+        this.props.getusergroups(usertoken);
+        this.props.getsubgroups(usertoken);
         this.props.getresponses(usertoken);
 
    }
@@ -167,8 +167,8 @@ function mapStateToProps(state) {
   userdetails:(state.dashboard.userdetails),
   agents:(state.dashboard.agents),
   deptagents:(state.dashboard.deptagents),
-  teamdetails:(state.dashboard.teamdetails),
-  channels :(state.dashboard.channels),
+  groupdetails:(state.dashboard.groupdetails),
+  subgroups :(state.dashboard.subgroups),
   onlineAgents:(state.dashboard.onlineAgents),
   news : (state.dashboard.news),
   userjoinedroom:(state.dashboard.userjoinedroom)
@@ -176,4 +176,4 @@ function mapStateToProps(state) {
    }
 }
 
-export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,setjoinedState,getresponses,getchannels,getDeptAgents,getuserteams})(ReactTimeout(Dashboard));
+export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,setjoinedState,getresponses,getsubgroups,getDeptAgents,getusergroups})(ReactTimeout(Dashboard));

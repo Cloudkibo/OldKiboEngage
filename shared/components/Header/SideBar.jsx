@@ -123,11 +123,11 @@ class SideBar extends Component
                 :<li></li>
                 }
               <li className="">
-                <Link to='/teams'>
+                <Link to='/groups'>
                   <i className="fa fa-group">
                   </i>
                   <span className="title">
-                     Teams
+                     Groups
                   </span>
                   <span className="selected">
                   </span>
@@ -135,11 +135,11 @@ class SideBar extends Component
               </li>
 
               <li className="">
-                <Link to='/groups'>
+                <Link to='/teams'>
                   <i className="fa fa-group">
                   </i>
                   <span className="title">
-                     Groups
+                     Teams
                   </span>
                   <span className="selected">
                   </span>
@@ -169,11 +169,11 @@ class SideBar extends Component
                 </Link>
               </li>
               <li className="">
-                <Link to="/messagechannels">
+                <Link to="/subgroups">
                   <i className="fa fa-envelope-square">
                   </i>
                   <span className="title">
-                     Message Channels
+                     Sub Groups
                   </span>
                   <span className="selected">
                   </span>

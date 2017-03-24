@@ -239,8 +239,8 @@ export function fetchSpecificChat(data) {
     fetch(`${baseURL}/api/userchats/getSpecificChat`, {
       method: 'post',
       body: JSON.stringify({
-          request_id: team.request_id,
-          companyid: team.companyid,
+          request_id: group.request_id,
+          companyid: group.companyid,
 
       }),
       headers: new Headers({
@@ -328,29 +328,29 @@ export function getuser(token) {
 
 
 /********************************************************************************************/
-/*              Team RELATED actions                                                       */
+/*              Group RELATED actions - Old (TEAMS)                                                     */
 
 /********************************************************************************************/
 
 /****** get user details ***/
-export function getuserteams(token) {
+export function getusergroups(token) {
   console.log(token);
   return (dispatch) => {
-    fetch(`${baseURL}/api/getteams`, {
+    fetch(`${baseURL}/api/getgroups`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showTeams(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroups(res)));
   };
 }
 
-//this is without-token version of getting teamlist for Chat widget
-export function getcustomerteams(appid,appsecret,companyid){
+//this is without-token version of getting grouplist for Chat widget
+export function getcustomergroups(appid,appsecret,companyid){
 
   return (dispatch) => {
-    fetch(`${baseURL}/api/getcustomerteams/`, {
+    fetch(`${baseURL}/api/getcustomergroups/`, {
         method: 'post',
         body: JSON.stringify({
           appid: appid,
@@ -364,7 +364,7 @@ export function getcustomerteams(appid,appsecret,companyid){
         'Content-Type': 'application/json',
       }),
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerTeams(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerGroups(res)));
   };
 }
 
@@ -403,7 +403,7 @@ export function getspecificcustomer(customerid) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerDetails(res)));
   };
 }
-export function createteamError(message) {
+export function creategroupError(message) {
   console.log(message);
   return {
     type: ActionTypes.CREATEGROUP_FAILURE,
@@ -411,7 +411,7 @@ export function createteamError(message) {
   }
 }
 
-export function editteamError(message) {
+export function editgroupError(message) {
   console.log(message);
   return {
     type: ActionTypes.EDITGROUP_RESPONSE,
@@ -419,19 +419,19 @@ export function editteamError(message) {
   }
 }
 
-export function showTeams(teams) {
-  console.log(teams);
+export function showGroups(groups) {
+  console.log(groups);
   return {
-    type: ActionTypes.ADD_TEAMS,
-    teams,
+    type: ActionTypes.ADD_GROUPS,
+    groups,
 
   };
 }
 
-export function showCustomerTeams(teams){
+export function showCustomerGroups(groups){
   return {
-    type: ActionTypes.ADD_CUSTOMER_TEAMS,
-    teams,
+    type: ActionTypes.ADD_CUSTOMER_GROUPS,
+    groups,
 
   };
 }
@@ -453,32 +453,32 @@ export function showCustomerDetails(specificcustomer){
 
   };
 }
-export function addTeam(team) {
-  console.log(team);
+export function addGroup(group) {
+ // console.log(group);
   return {
-    type: ActionTypes.ADD_TEAM,
-    deptname: team.deptname,
-    deptdescription: team.deptdescription,
+    type: ActionTypes.ADD_GROUP,
+    deptname: group.deptname,
+    deptdescription: group.deptdescription,
 
   };
 }
 
 
-export function createteam(team,customers) {
+export function creategroup(group,customers) {
 
   return (dispatch) => {
-    fetch(`${baseURL}/api/createteam`, {
+    fetch(`${baseURL}/api/creategroup`, {
       method: 'post',
       body: JSON.stringify({
-          deptname: team.name,
-          deptdescription: team.description,
-          deptagents:team.deptagents,
+          deptname: group.name,
+          deptdescription: group.description,
+          deptagents:group.deptagents,
           customers:customers,
 
       }),
 
       headers: new Headers({
-         'Authorization': team.usertoken,
+         'Authorization': group.usertoken,
         'Content-Type': 'application/json',
       }),
 
@@ -486,10 +486,10 @@ export function createteam(team,customers) {
         console.log(res.statusCode);
           if(res.statusCode != 200){
 
-          dispatch(createteamError(res.message));
+          dispatch(creategroupError(res.message));
         }
         else{
-           dispatch(showTeams(res.message))
+           dispatch(showGroups(res.message))
             }
         }
     );
@@ -497,56 +497,22 @@ export function createteam(team,customers) {
 }
 
 
-export function editTeam(team,customers) {
-//  console.log('editTeam action called');
- // console.log(team.deptagents);
-//  console.log(team);
-  //alert(team)
-  return (dispatch) => {
-    fetch(`${baseURL}/api/editteam`, {
-      method: 'post',
-      body: JSON.stringify({
-        dept :{
-          _id:team.id,
-          deptname: team.name,
-          deptdescription: team.desc,
-        },
-        deptagents: team.deptagents,
-        customers : customers
-
-      })
-      ,
-      headers: new Headers({
-         'Authorization': team.token,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then((res) => {
-         console.log(res.statusCode);
-         alert(res.message);
-         browserHistory.push('/teams');
-        // dispatch(editteamError(res.message));
-
-
-        }
-    );
-  };
-}
-
-
-
-export function editGroup(group) {
-  //alert(team)
+export function editGroup(group,customers) {
+//  console.log('editGroup action called');
+ // console.log(group.deptagents);
+//  console.log(group);
+  //alert(group)
   return (dispatch) => {
     fetch(`${baseURL}/api/editgroup`, {
       method: 'post',
       body: JSON.stringify({
-        group :{
+        dept :{
           _id:group.id,
-          groupname: group.name,
-          groupdescription: group.desc,
-          status : group.status,
+          deptname: group.name,
+          deptdescription: group.desc,
         },
-        groupagents: group.groupagents
+        deptagents: group.deptagents,
+        customers : customers
 
       })
       ,
@@ -558,6 +524,8 @@ export function editGroup(group) {
          console.log(res.statusCode);
          alert(res.message);
          browserHistory.push('/groups');
+        // dispatch(editgroupError(res.message));
+
 
         }
     );
@@ -565,30 +533,10 @@ export function editGroup(group) {
 }
 
 
-export function addSelectedTeam(team) {
-  console.log(team)
-  return {
-    type: ActionTypes.ADD_SELECTED_TEAM,
-    team,
-  };
-}
 
 
-
-
-export function getTeamRequest(team,usertoken) {
-  console.log('getTeamRequest is called '+ team);
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/getTeam?id=${team}`, {
-      method: 'get',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedTeam(res.team)));
-  };
-}
 export function addSelectedGroup(group) {
+  //console.log(group)
   return {
     type: ActionTypes.ADD_SELECTED_GROUP,
     group,
@@ -596,7 +544,10 @@ export function addSelectedGroup(group) {
 }
 
 
+
+
 export function getGroupRequest(group,usertoken) {
+  console.log('getGroupRequest is called '+ group);
   return (dispatch) => {
     return fetch(`${baseURL}/api/getGroup?id=${group}`, {
       method: 'get',
@@ -609,61 +560,34 @@ export function getGroupRequest(group,usertoken) {
 }
 
 
-export function deleteTeam(team) {
-  return {
-    type: ActionTypes.DELETE_TEAM,
-    team,
-  };
-}
 
-export function deleteGROUP(group) {
+
+
+export function deleteGroup(group) {
   return {
     type: ActionTypes.DELETE_GROUP,
     group,
   };
-
-
 }
 
-export function deleteteam(team,usertoken,customers) {
-  console.log('deleteteam Action is called '+ team._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this team?"))
+
+export function deletegroup(group,usertoken,customers) {
+  if(confirm("Do you want to delete this group?"))
   {
   return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteTeam?id=${team._id}`, {
+    return fetch(`${baseURL}/api/deleteGroup?id=${group._id}`, {
       method: 'delete',
       headers: new Headers({
         'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-        team : team,
+        group : group,
         customers : customers,
 
       }),
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteTeam(team)));
-  };
-}
-else{
-  browserHistory.push('/teams');
-
-}
-
-}
-
-
-export function deletegroup(group,id,usertoken) {
-  if(confirm("Do you want to delete this Group?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteGroup?id=${id}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteGROUP(group)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteGroup(group)));
   };
 }
 else{
@@ -673,33 +597,9 @@ else{
 
 }
 
-export function joingroup(group,userid,usertoken) {
 
-  if(confirm("Do you want to join this Group?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/joinGroup`, {
-      method: 'post',
-      body: JSON.stringify({
-            groupid : group.get('_id'),
-            agentid : userid,
 
-      }),
 
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-   }).then((res) => res.json()).then((res) => res).then((res) => {
-         console.log(res.statusCode);
-         alert(res.message);
-         browserHistory.push('/dashboard');
-
-        }
-    );
-  };
-}
-}
 
 
 
@@ -732,10 +632,11 @@ export function showDeptAgents(agents) {
   };
 }
 
-export function showGroupAgents(agents) {
+
+export function showTeamAgents(agents) {
   console.log(agents);
   return {
-    type: ActionTypes.ADD_GROUPAGENTS,
+    type: ActionTypes.ADD_TEAMAGENTS,
     agents,
 
   };
@@ -787,18 +688,6 @@ export function getDeptAgents(token) {
 
 
 /****** get user details ***/
-export function getGroupAgents(token) {
-  console.log(token);
-  return (dispatch) => {
-    fetch(`${baseURL}/api/groupagents`, {
-        method: 'get',
-        headers: new Headers({
-        'Authorization': token,
-        'Pragma': 'no-cache'
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroupAgents(res)));
-  };
-}
 
 
 export function editAgent(id,role,token) {
@@ -934,30 +823,205 @@ else{
 }
 
 
-
-/*************************************************************************************************/
-/*                      Channel Related Actions                                                  */
-
-/*************************************************************************************************/
-
-export function createChannel(channel,usertoken,customers){
-  console.log(channel);
-  console.log(usertoken);
-  console.log('create message channel is called');
+/************************* Team Related Actions (old groups) ************/
+export function addSelectedTeam(team) {
+  return {
+    type: ActionTypes.ADD_SELECTED_TEAM,
+    team,
+  };
+}
+export function editTeam(team) {
+  //alert(team)
   return (dispatch) => {
-    fetch(`${baseURL}/api/createChannel`, {
+    fetch(`${baseURL}/api/editteam`, {
+      method: 'post',
+      body: JSON.stringify({
+        team :{
+          _id:team.id,
+          groupname: team.name,
+          groupdescription: team.desc,
+          status : team.status,
+        },
+        teamagents: team.teamagents
+
+      })
+      ,
+      headers: new Headers({
+         'Authorization': team.token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+         console.log(res.statusCode);
+      //   alert(res.message);
+         browserHistory.push('/teams');
+
+        }
+    );
+  };
+}
+
+
+export function getTeamRequest(team,usertoken) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/getTeam?id=${team}`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedTeam(res.team)));
+  };
+}
+export function deleteTEAM(team) {
+  return {
+    type: ActionTypes.DELETE_TEAM,
+    team,
+  };
+
+
+}
+
+export function deleteteam(team,id,usertoken) {
+  if(confirm("Do you want to delete this Team?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteTeam?id=${id}`, {
+      method: 'delete',
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteTEAM(team)));
+  };
+}
+else{
+  browserHistory.push('/teams');
+
+}
+
+}
+
+export function jointeam(team,userid,usertoken) {
+
+  if(confirm("Do you want to join this Team?"))
+  {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/joinTeam`, {
+      method: 'post',
+      body: JSON.stringify({
+            groupid : team.get('_id'),
+            agentid : userid,
+
+      }),
+
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+   }).then((res) => res.json()).then((res) => res).then((res) => {
+         console.log(res.statusCode);
+         alert(res.message);
+         browserHistory.push('/dashboard');
+
+        }
+    );
+  };
+}
+}
+
+
+export function getTeamAgents(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/teamagents`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showTeamAgents(res)));
+  };
+}
+/********************* Team Related Actions ************/
+export function createteamError(message) {
+  return {
+    type: ActionTypes.CREATETEAM_FAILURE,
+    message,
+  }
+}
+export function createTeam(team,usertoken) {
+//  console.log('createTeam is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createteam`, {
+      method: 'post',
+
+      body: JSON.stringify({
+          groupname: team.groupname,
+          groupdescription: team.groupdescription,
+          status : team.status,
+
+
+      }),
+
+      headers: new Headers({
+         'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+     // dispatch(createteamError(res))
+     browserHistory.push('/teams');
+      }
+     );
+  };
+}
+
+export function showTeams(teams) {
+  return {
+    type: ActionTypes.ADD_TEAMS,
+    teams,
+
+  };
+}
+
+export function getteams(token) {
+  console.log(token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getteams`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': token
+
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showTeams(res)));
+  };
+}
+
+
+
+/*************************************************************************************************/
+/*                      Subgroup Related Actions                                                  */
+
+/*************************************************************************************************/
+
+export function createSubgroup(subgroup,usertoken,customers){
+  console.log(subgroup);
+  console.log(usertoken);
+  console.log('create message subgroup is called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/createSubgroup`, {
       method: 'post',
       headers: new Headers({
          'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      channel : channel,
+      subgroup : subgroup,
       customers:customers,
       }),
  }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-        browserHistory.push('/messagechannels');
+        browserHistory.push('/subgroups');
 
         }
     );
@@ -966,26 +1030,26 @@ export function createChannel(channel,usertoken,customers){
 
 
 
-export function editChannel(channel,usertoken,customers){
-  console.log(channel);
+export function editSubgroup(subgroup,usertoken,customers){
+  console.log(subgroup);
   console.log(usertoken);
-  console.log('edit message channel is called');
+  console.log('edit message subgroup is called');
   return (dispatch) => {
-    fetch(`${baseURL}/api/editChannel`, {
+    fetch(`${baseURL}/api/editSubgroup`, {
       method: 'post',
       headers: new Headers({
         'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      channel : channel,
+      subgroup : subgroup,
       customers:customers,
       })
 
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
 
-        browserHistory.push('/messagechannels');
+        browserHistory.push('/subgroups');
 
         }
     );
@@ -993,35 +1057,35 @@ export function editChannel(channel,usertoken,customers){
 }
 
 
-export function updatechannellist(id){
+export function updatesubgrouplist(id){
    return {
-    type: ActionTypes.FILTER_CHANNELS,
+    type: ActionTypes.FILTER_SUBGROUPS,
     id,
 
   };
 }
-export function showChannels(channels) {
-  console.log(channels);
+export function showSubgroups(subgroups) {
+  console.log(subgroups);
   return {
-    type: ActionTypes.ADD_CHANNELS,
-    channels,
+    type: ActionTypes.ADD_SUBGROUPS,
+    subgroups,
 
   };
 }
 
-export function showCustomerChannels(channels) {
-  console.log(channels);
+export function showCustomerSubgroups(subgroups) {
+  console.log(subgroups);
   return {
-    type: ActionTypes.ADD_CUSTOMER_CHANNELS,
-    channels,
+    type: ActionTypes.ADD_CUSTOMER_SUBGROUPS,
+    subgroups,
 
   };
 }
 
-/*** get channels ***/
-export function getcustomerchannels(appid,appsecret,companyid){
+/*** get subgroups ***/
+export function getcustomersubgroups(appid,appsecret,companyid){
   return (dispatch) => {
-    fetch(`${baseURL}/api/getcustomerchannels/`, {
+    fetch(`${baseURL}/api/getcustomersubgroups/`, {
         method: 'post',
         body: JSON.stringify({
           appid: appid,
@@ -1035,19 +1099,19 @@ export function getcustomerchannels(appid,appsecret,companyid){
         'Content-Type': 'application/json',
       }),
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerChannels(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCustomerSubgroups(res)));
   };
 }
-export function getchannels(token) {
+export function getsubgroups(token) {
   console.log(token);
   return (dispatch) => {
-    fetch(`${baseURL}/api/getchannels`, {
+    fetch(`${baseURL}/api/getsubgroups`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showChannels(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showSubgroups(res)));
   };
 }
 
@@ -1059,41 +1123,41 @@ export function getSessionDetailsRequest(id,usertoken)
     id,
   };
 }
-export function getChannelRequest(id,usertoken) {
+export function getSubgroupRequest(id,usertoken) {
   console.log(id)
   return {
-    type: ActionTypes.ADD_SELECTED_CHANNEL,
+    type: ActionTypes.ADD_SELECTED_SUBGROUP,
     id,
   };
 }
 
-export function deleteCHANNEL(channel) {
-  alert('Channel deleted successfully');
+export function deleteSUBGROUP(subgroup) {
+  alert('Subgroup deleted successfully');
   return {
-    type: ActionTypes.DELETE_CHANNEL,
-   channel,
+    type: ActionTypes.DELETE_SUBGROUP,
+   subgroup,
   };
 }
-export function deletechannel(channel,usertoken,customers) {
-  console.log('deletechannel Action is called '+ channel._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this message channel?"))
+export function deletesubgroup(subgroup,usertoken,customers) {
+  console.log('deletesubgroup Action is called '+ subgroup._id + 'your token : '  + usertoken);
+  if(confirm("Do you want to delete this subgroup?"))
   {
   return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteChannel?id=${channel._id}`, {
+    return fetch(`${baseURL}/api/deleteSubgroup?id=${subgroup._id}`, {
       method: 'delete',
       headers: new Headers({
         'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      channel : channel,
+      subgroup : subgroup,
       customers:customers,
       })
-    }).then((res) => res).then(res => dispatch(deleteCHANNEL(channel)));
+    }).then((res) => res).then(res => dispatch(deleteSUBGROUP(subgroup)));
   };
 }
 else{
-  browserHistory.push('/messagechannels');
+  browserHistory.push('/subgroups');
 
 }
 
@@ -1180,7 +1244,7 @@ export function showResponses(responses) {
   };
 }
 
-/*** get channels ***/
+/*** get subgroups ***/
 export function getresponses(token) {
   console.log(token);
   return (dispatch) => {
@@ -1266,9 +1330,9 @@ export function showChatSummary(sessions){
   };
 }
 export function showAllChat(customerchat) {
-/* var customerchat = [{'id': '1','username' : 'John','team' :'IT','msg' :'I need help in software installation' },
-                  {'id': '2','username' : 'Alice','team' :'Sales','msg' :'I didnt get my order yet' },
-                  {'id': '3','username' : 'Joe','team' :'Payment','msg' :'Please confirm Payment status' }]
+/* var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
+                  {'id': '2','username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
+                  {'id': '3','username' : 'Joe','group' :'Payment','msg' :'Please confirm Payment status' }]
 
 */
 
@@ -1416,7 +1480,7 @@ export function filterbyDept(id,customerchat) {
   };
 }
 
-export function filterbyChannel(id,customerchat) {
+export function filterbySubgroup(id,customerchat) {
 
   var filtered;
   if(id == "all")
@@ -1432,7 +1496,7 @@ export function filterbyChannel(id,customerchat) {
 
   console.log(customerchat);
   return {
-    type: ActionTypes.FILTER_BY_CHANNEL,
+    type: ActionTypes.FILTER_BY_SUBGROUP,
     filtered,
     customerchat,
 
@@ -2276,10 +2340,10 @@ export function resolvesessionResponse(){
   }
 }
 
-export function movedToMessageChannelResponse(session){
-  console.log('assignToChannelResponse is called');
+export function movedToMessageSubgroupResponse(session){
+  console.log('assignToSubgroupResponse is called');
    return {
-    type : ActionTypes.MOVE_TO_MESSAGECHANNEL,
+    type : ActionTypes.MOVE_TO_MESSAGESUBGROUP,
     session,
   }
 }
@@ -2323,22 +2387,22 @@ export function assignToAgent(session,usertoken,agentemail,assignmentType) {
   };
 }
 
-//moved to message channel
-export function movedToMessageChannel(session,usertoken) {
+//moved to message subgroup
+export function movedToMessageSubgroup(session,usertoken) {
   return (dispatch) => {
-    fetch(`${baseURL}/api/movedToMessageChannel`, {
+    fetch(`${baseURL}/api/movedToMessageSubgroup`, {
       method: 'post',
       body: JSON.stringify({
         companyid : session.companyid,
         sessionid : session.sessionid,
-        channelAssignment : session,
+        subgroupAssignment : session,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(movedToMessageChannelResponse(session)));
+    }).then((res) => res.json()).then(res => dispatch(movedToMessageSubgroupResponse(session)));
   };
 }
 
@@ -2511,25 +2575,25 @@ export function getspecificuserchats(request_id,companyid,usertoken) {
 
 /************* My Profile functions***/
 
-// My Teams
-export function showMyTeams(myteams) {
-  console.log(myteams);
+// My Groups
+export function showMyGroups(mygroups) {
+  console.log(mygroups);
   return {
-    type: ActionTypes.ADD_MY_TEAMS,
-    myteams,
+    type: ActionTypes.ADD_MY_GROUPS,
+    mygroups,
 
   };
 }
-export function getmyuserteams(token) {
+export function getmyusergroups(token) {
   console.log(token);
   return (dispatch) => {
-    fetch(`${baseURL}/api/getmyuserteams`, {
+    fetch(`${baseURL}/api/getmyusergroups`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(showMyTeams(res.depts)));
+    }).then((res) => res.json()).then(res => dispatch(showMyGroups(res.depts)));
   };
 }
 
@@ -2738,7 +2802,7 @@ export function filterbysessionMedium(medium, sessionsummary) {
 
   };
 }
-export function filterbysessionChannel(id,sessionsummary) {
+export function filterbysessionSubgroup(id,sessionsummary) {
 
   var sessionsummaryfiltered;
   if(id == "all")
@@ -2747,7 +2811,7 @@ export function filterbysessionChannel(id,sessionsummary) {
   }
   else{
 
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length-1] == id)
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagesubgroup[c.messagesubgroup.length-1] == id)
 
   }
    return {
@@ -2783,10 +2847,10 @@ export function filterbysessionAgent(id,sessionsummary) {
 
 /****** High Charts
 **/
-export function channelwisestats(channelwisestats){
+export function subgroupwisestats(subgroupwisestats){
   return {
-    type: ActionTypes.CHANNEL_STATS,
-    channelwisestats,
+    type: ActionTypes.SUBGROUP_STATS,
+    subgroupwisestats,
 
   };
 }
@@ -2859,9 +2923,9 @@ export function customerstats(customerwisestats){
   };
 }
 
-export function getchannelwisestats(departmentid,token) {
+export function getsubgroupwisestats(departmentid,token) {
   return (dispatch) => {
-    fetch(`${baseURL}/api/getchannelwisecalls`, {
+    fetch(`${baseURL}/api/getsubgroupwisecalls`, {
       method: 'post',
       body: JSON.stringify({
         departmentid:departmentid,
@@ -2871,7 +2935,7 @@ export function getchannelwisestats(departmentid,token) {
         'Authorization': token,
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(channelwisestats(res.body)));
+    }).then((res) => res.json()).then(res => dispatch(subgroupwisestats(res.body)));
   };
 }
 
@@ -2980,56 +3044,7 @@ export function getagentwisenotifications(token) {
 
 
 
-/********************* Group Related Actions ************/
-export function creategroupError(message) {
-  return {
-    type: ActionTypes.CREATEGROUP_FAILURE,
-    message,
-  }
-}
-export function createGroup(group,usertoken) {
 
-  return (dispatch) => {
-    fetch(`${baseURL}/api/creategroup`, {
-      method: 'post',
-
-      body: JSON.stringify({
-          groupname: group.groupname,
-          groupdescription: group.groupdescription,
-          status : group.status,
-
-
-      }),
-
-      headers: new Headers({
-         'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(creategroupError(res)));
-  };
-}
-
-export function showGroups(groups) {
-  return {
-    type: ActionTypes.ADD_GROUPS,
-    groups,
-
-  };
-}
-
-export function getgroups(token) {
-  console.log(token);
-  return (dispatch) => {
-    fetch(`${baseURL}/api/getgroups`, {
-        method: 'get',
-        headers: new Headers({
-        'Authorization': token
-
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showGroups(res)));
-  };
-}
 
 /**** News related actions*****/
 export function createnews(news,usertoken) {
@@ -3092,7 +3107,7 @@ export function updatenews(news,usertoken){
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
          browserHistory.push(news.url);
-        // dispatch(editteamError(res.message));
+        // dispatch(editgroupError(res.message));
 
 
         }
@@ -3467,7 +3482,7 @@ export function showCompanylogo(res){
       type: ActionTypes.COMPANY_LOGO,
     }
 }
-//this is without-token version of getting teamlist for Chat widget
+//this is without-token version of getting grouplist for Chat widget
 export function getcompanylogo(appid,appsecret,companyid){
 
   return (dispatch) => {

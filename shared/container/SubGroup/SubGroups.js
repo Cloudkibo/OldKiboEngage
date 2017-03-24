@@ -5,14 +5,14 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import ChannelListItem from './ChannelListItem';
-import {getchannels} from '../../redux/actions/actions'
-import {deletechannel,getcustomers} from '../../redux/actions/actions'
+import SubgroupListItem from './SubgroupListItem';
+import {getsubgroups} from '../../redux/actions/actions'
+import {deletesubgroup,getcustomers} from '../../redux/actions/actions'
 
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
-class Channels extends Component {
+class SubGroups extends Component {
 
  constructor(props, context) {
       //call action to get user teams 
@@ -24,8 +24,9 @@ class Channels extends Component {
     if(usertoken != null)
     {
        
+      // alert('subgroups');
         console.log(usertoken);
-        props.getchannels(usertoken);
+        props.getsubgroups(usertoken);
         props.getcustomers(usertoken);
       }
     super(props, context);
@@ -40,8 +41,6 @@ class Channels extends Component {
   render() {
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
-    console.log(this.props.channels);
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -50,7 +49,7 @@ class Channels extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">MessageChannels Management </h3>
+              <h3 className ="page-title">Sub-Groups Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -58,7 +57,7 @@ class Channels extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/messagechannels">MessageChannels Management</Link>
+                               <Link to="/subgroups">SubGroups Management</Link>
                   </li>               
   
             </ul>
@@ -66,7 +65,7 @@ class Channels extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
-                   Message Channels
+                   SubGroups
                 </div> 
               </div>    
         
@@ -75,7 +74,7 @@ class Channels extends Component {
                  <div className="btn-team">
                  { this.props.userdetails.isAgent == "Yes"?
                     <br/> :
-                    <Link id="sample_editable_1_new" className="btn green" to='/createmessagechannel'> Create Message Channel
+                    <Link id="sample_editable_1_new" className="btn green" to='/createsubgroup'> Create Sub-Group
                     <i className="fa fa-plus"/>
                     </Link>
                 
@@ -88,7 +87,7 @@ class Channels extends Component {
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-                { this.props.channels && this.props.customers &&
+                { this.props.subgroups && this.props.customers &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -105,9 +104,9 @@ class Channels extends Component {
 
                     <tbody>                    
                       {
-                        this.props.teamdetails && this.props.channels.map((channel, i) => (
+                        this.props.groupdetails && this.props.subgroups.map((subgroup, i) => (
                           
-                          <ChannelListItem channel={channel} key={channel._id} team = {this.props.teamdetails.filter((team) => team._id == channel.groupid)}  onDelete={() => this.props.deletechannel(channel,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails={this.props.userdetails}/>
+                          <SubgroupListItem subgroup={subgroup} key={subgroup._id} group = {this.props.groupdetails.filter((group) => group._id == subgroup.groupid)}  onDelete={() => this.props.deletesubgroup(subgroup,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails={this.props.userdetails}/>
                                                       
                         ))
                       }
@@ -126,16 +125,16 @@ class Channels extends Component {
   }
 }
 
-Channels.propTypes = {
+SubGroups.propTypes = {
 
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   return {
-          channels:(state.dashboard.channels),
+          subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),
-          teamdetails :(state.dashboard.teamdetails),
+          groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
@@ -144,9 +143,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getchannels:getchannels,getcustomers : getcustomers,deletechannel:deletechannel}, dispatch);
+  return bindActionCreators({getsubgroups:getsubgroups,getcustomers : getcustomers,deletesubgroup:deletesubgroup}, dispatch);
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Channels);
+export default connect(mapStateToProps,mapDispatchToProps)(SubGroups);
 
 
 

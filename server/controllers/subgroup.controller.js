@@ -16,11 +16,11 @@ var notificationHubService = azure.createNotificationHubService('KiboEngagePush'
 var notificationHubService2 = azure.createNotificationHubService('KiboEngageProductionHub','Endpoint=sb://kiboengageproductionhub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=Hc1qWqbkLk4oGYJ9dN9vexUsIKk8hOeja5sEte89n9s=');
 
 
-/************************* Channel APIS ************************************/
-export function createChannel(req, res) {
-  //////console.log('create Channel is called');
+/************************* Subgroup APIS ************************************/
+export function createSubgroup(req, res) {
+  //////console.log('create Subgroup is called');
   var token = req.headers.authorization;
-  logger.serverLog('info', 'This is body in createChannel '+ JSON.stringify(req.body) );
+  logger.serverLog('info', 'This is body in createSubgroup '+ JSON.stringify(req.body) );
 
   ////////console.log(req.body);
   //////console.log(req.body.channel);
@@ -31,7 +31,7 @@ export function createChannel(req, res) {
                  'Authorization': `Bearer ${token}`,
                 
                  },
-      json: req.body.channel
+      json: req.body.subgroup
       
      
     };
@@ -42,7 +42,7 @@ export function createChannel(req, res) {
       if(!error  && response.statusCode == 201) {
       
             //send push notification to mobile clients
-            sendPushNotification(body,"Channels","CreateChannel",token);
+            sendPushNotification(body,"Subgroups","CreateSubgroup",token);
            
             return res.status(200).json({statusCode : 200,body});
       
@@ -59,7 +59,7 @@ export function createChannel(req, res) {
   }
 
 
-export function getchannels(req, res) {
+export function getsubgroups(req, res) {
   //////console.log('get getchannels is called');
   var token = req.headers.authorization;
   //////console.log('token received is  : ' + token);
@@ -90,7 +90,7 @@ export function getchannels(req, res) {
   }
 
 
-export function getcustomerchannels(req, res) {
+export function getcustomersubgroups(req, res) {
   //console.log('get  customer channels is called');
   ////console.log(req.body);
    var  headers =  {
@@ -124,8 +124,8 @@ export function getcustomerchannels(req, res) {
     request.get(options, callback);
   }
 
-export function destroyChannel(req, res) {
-  //console.log('destroyChannel is called.');
+export function destroySubgroup(req, res) {
+  //console.log('destroySubgroup is called.');
   //console.log(req.headers);
   var token = req.headers.authorization;
   //console.log(token);
@@ -146,7 +146,7 @@ export function destroyChannel(req, res) {
     ////console.log(body);
       if(!error  && response.statusCode == 204) {
           //send push notification to mobile clients
-        sendPushNotification(req.body.channel,"Channels","DeleteChannel",token);
+        sendPushNotification(req.body.channel,"Subgroups","DeleteSubgroup",token);
           
         res.sendStatus(200); 
     
@@ -160,12 +160,12 @@ export function destroyChannel(req, res) {
     
 }
 
-export function editChannel(req, res) {
-  //////console.log('edit Channel is called');
+export function editSubgroup(req, res) {
+  //////console.log('edit Subgroup is called');
   var token = req.headers.authorization;
   //console.log(token);
   //////console.log(req.body.channel);
-  var id = req.body.channel._id;
+  var id = req.body.subgroup._id;
   //////console.log(id);
    var options = {
       url: `${baseURL}/api/messagechannels/${id}`,
@@ -174,7 +174,7 @@ export function editChannel(req, res) {
                  'Authorization': `Bearer ${token}`,
                 
                  },
-      json: req.body.channel
+      json: req.body.subgroup
     };
     
     function callback(error, response, body) {
@@ -182,7 +182,7 @@ export function editChannel(req, res) {
         //////console.log(error)
       if(!error  && response.statusCode == 200) {
       
-            sendPushNotification(req.body.channel,"Channels","EditChannel",token);
+            sendPushNotification(req.body.subgroup,"Subgroups","EditSubgroup",token);
             return res.status(200).json({statusCode : 200,body});
       }
     else
@@ -201,8 +201,8 @@ export function editChannel(req, res) {
 /*** channel wise calls for High Charts
 **/
 
-export function getchannelwisecalls(req, res) {
-  //////console.log('edit Channel is called');
+export function getsubgroupwisecalls(req, res) {
+  //////console.log('edit Subgroup is called');
   var token = req.headers.authorization;
   //console.log(req.body.departmentid);
   //////console.log(id);
@@ -235,7 +235,7 @@ export function getchannelwisecalls(req, res) {
 
 
   export function getplatformwisecalls(req, res) {
-  //////console.log('edit Channel is called');
+  //////console.log('edit Subgroup is called');
   var token = req.headers.authorization;
   //////console.log(id);
    var options = {
@@ -273,7 +273,7 @@ export function getchannelwisecalls(req, res) {
 
 
   export function getdeptwisecalls(req, res) {
-  //////console.log('edit Channel is called');
+  //////console.log('edit Subgroup is called');
   var token = req.headers.authorization;
   //////console.log(id);
    var options = {

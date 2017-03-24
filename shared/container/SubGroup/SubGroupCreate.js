@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
-import {createChannel,getcustomers}  from '../../redux/actions/actions'
+import {createSubgroup,getcustomers}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -9,7 +9,7 @@ import { Link } from 'react-router';
 
 
 
-class MessageChannelCreate extends Component {
+class SubgroupCreate extends Component {
   constructor(props, context) {
        //call action to get user teams 
     const usertoken = auth.getToken();
@@ -19,32 +19,31 @@ class MessageChannelCreate extends Component {
       }
     super(props, context);
     
-    this.createmessageChannel = this.createmessageChannel.bind(this);
+    this.createSubgroup = this.createSubgroup.bind(this);
   }
 
  
 
-  createmessageChannel(e) {
+  createSubgroup(e) {
      e.preventDefault();
     const usertoken = auth.getToken();
     const nameRef = this.refs.name;
     const descRef = this.refs.desc;
-    const teamid = this.refs.teamid;
+    const groupid = this.refs.groupid;
 
     var companyid;
     var createdBy = this.props.userdetails._id;
 
-    if (nameRef.value && descRef.value && teamid.value && this.props.customers)
+    if (nameRef.value && descRef.value && groupid.value && this.props.customers)
      {
-      var channel = {'msg_channel_name' : nameRef.value,'msg_channel_description':descRef.value,'companyid' : this.props.userdetails.uniqueid,'groupid' : teamid.value,'createdby' : createdBy}
-      console.log(channel);
-      this.props.createChannel(channel,usertoken,this.props.customers.filter((c) => c.isMobileClient == "true"));
+      var subgroup = {'msg_channel_name' : nameRef.value,'msg_channel_description':descRef.value,'companyid' : this.props.userdetails.uniqueid,'groupid' : groupid.value,'createdby' : createdBy}
+      this.props.createSubgroup(subgroup,usertoken,this.props.customers.filter((c) => c.isMobileClient == "true"));
      
     }
   }
   handleChange(e){
-      const teamidRef =  this.refs.teamid;
-      teamidRef.value =  e.target.value;
+      const groupidRef =  this.refs.groupid;
+      groupidRef.value =  e.target.value;
    
     }
     
@@ -57,7 +56,7 @@ class MessageChannelCreate extends Component {
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">Message Channels Management </h3>
+              <h3 className ="page-title">SubGroups Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -65,7 +64,7 @@ class MessageChannelCreate extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/messagechannel"> Message Channels Management</Link>
+                               <Link to="/subgroups"> SubGroups Management</Link>
                   </li>               
   
             </ul>
@@ -79,7 +78,7 @@ class MessageChannelCreate extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                   Create Message Channel
+                   Create Subgroup
                 </div> 
               </div>    
         
@@ -87,7 +86,7 @@ class MessageChannelCreate extends Component {
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
                 <div className="form-group">
-                  <label className="control-label col-md-3"> Channel Name </label>
+                  <label className="control-label col-md-3"> Sub Group Name </label>
                    <div className="col-md-9">
                          <input className="form-control input-medium" type='text'  ref = "name"/>
                 
@@ -102,16 +101,16 @@ class MessageChannelCreate extends Component {
                    </div>
                 </div>
                  <div className="form-group">
-                  <label className="control-label col-md-3"> Select Team </label>
+                  <label className="control-label col-md-3"> Select Group </label>
                   <div className="col-md-9">   
                   {
-                        <select  ref = "teamid" onChange={this.handleChange.bind(this)}   >
+                        <select  ref = "groupid" onChange={this.handleChange.bind(this)}   >
                           {
-                           this.props.teamdetails &&
+                           this.props.groupdetails &&
                         
-                           this.props.teamdetails.map((team, i) => (
+                           this.props.groupdetails.map((group, i) => (
                           
-                          <option value={team._id} key={team._id}> {team.deptname}</option>
+                          <option value={group._id} key={group._id}> {group.deptname}</option>
                                                       
                         ))
                         }
@@ -124,7 +123,7 @@ class MessageChannelCreate extends Component {
               <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.createmessageChannel}>
+                    <button className="btn green" onClick={this.createSubgroup}>
                       <i className="fa fa-pencil"/>
                        Submit
                     </button>
@@ -133,7 +132,7 @@ class MessageChannelCreate extends Component {
                </div> 
                 <div className="col-md-9">
                   <div className="col-md-9">
-                    <Link to="/messagechannels" className="btn green">
+                    <Link to="/subgroups" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
@@ -166,15 +165,15 @@ function mapStateToProps(state) {
   console.log(state.dashboard.agent);
   
    return {
-    teamdetails:(state.dashboard.teamdetails),
+    groupdetails:(state.dashboard.groupdetails),
     userdetails:(state.dashboard.userdetails),
     errorMessage:(state.dashboard.errorMessage),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
-    channels :(state.dashboard.channels),
+    subgroups :(state.dashboard.subgroups),
     customers:(state.dashboard.customers),
 };
 }
-export default connect(mapStateToProps,{createChannel,getcustomers})(MessageChannelCreate);
+export default connect(mapStateToProps,{createSubgroup,getcustomers})(SubgroupCreate);
 
 

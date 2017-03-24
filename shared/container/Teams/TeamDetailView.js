@@ -1,8 +1,7 @@
-import TeamListItem from './TeamListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getTeamRequest,getDeptAgents}  from '../../redux/actions/actions'
+import { getTeamRequest,getTeamAgents}  from '../../redux/actions/actions'
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
@@ -19,7 +18,7 @@ class TeamDetailView extends Component {
        
         console.log(usertoken);
         console.log(props.params.id);
-         props.getDeptAgents(usertoken);
+        props.getTeamAgents(usertoken);
         props.getTeamRequest(props.params.id,usertoken);
        
     
@@ -51,7 +50,7 @@ class TeamDetailView extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/teams"> Team Management </Link>
+                               <Link to="/groups"> Team Management </Link>
                   </li>               
   
             </ul>
@@ -60,7 +59,7 @@ class TeamDetailView extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                    {this.props.team.deptname} Team
+                    {this.props.team.groupname} - Team
                 </div> 
               </div>    
         
@@ -70,14 +69,27 @@ class TeamDetailView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Team Name </label>
                    <div className="col-md-9">
-                         <input className="form-control" type='text' disabled value = {this.props.team.deptname}/>
+                         <input className="form-control" type='text' disabled value = {this.props.team.groupname}/>
                    </div>
                 </div>
 
                 <div className="form-group">
                   <label className="control-label col-md-3"> Description </label>
                    <div className="col-md-9">
-                         <textarea className="form-control" type='text' disabled rows='4' value = {this.props.team.deptdescription}/>
+                         <textarea className="form-control" type='text' disabled rows='4' value = {this.props.team.groupdescription}/>
+                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="control-label col-md-3"> Created By </label>
+                   <div className="col-md-9">
+                         <input className="form-control" type='text' disabled  value = {this.props.team.createdby.firstname + ' '+this.props.team.createdby.lastname}/>
+                   </div>
+                </div>
+                 <div className="form-group">
+                  <label className="control-label col-md-3"> Status </label>
+                   <div className="col-md-9">
+                         <input className="form-control" type='text' disabled value = {this.props.team.status}/>
                    </div>
                 </div>
 
@@ -86,9 +98,9 @@ class TeamDetailView extends Component {
                    <div className="col-md-9">
                    <ul>
                    {
-                    this.props.deptagents &&
-                         this.props.deptagents.filter((agent) => agent.deptid == this.props.team._id).map((agent, i)=> (
-                          this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
+                    this.props.teamagents && this.props.agents && this.props.team &&
+                         this.props.teamagents.filter((agent) => agent.groupid._id == this.props.team._id).map((agent, i)=> (
+                          this.props.agents.filter((ag) => ag._id == agent.agentid._id).map((ag,j) =>
                           (
                           <li>{ag.firstname + ' ' + ag.lastname}</li>
                           ))
@@ -106,16 +118,10 @@ class TeamDetailView extends Component {
               <div className="form-actions fluid">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                  {this.props.params.fromprofile?
-                    <Link to="/myprofile" className="btn green">
-                      <i className="fa fa-times"/>
-                       Back
-                    </Link>:
                     <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
-                  }
                     </div>
                </div>                
               </div>
@@ -145,16 +151,15 @@ TeamDetailView.contextTypes = {
 
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps of TeamDetailView is called');
-  console.log(state.dashboard.team);
   return {
     team: (state.dashboard.team),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
+    teamagents:(state.dashboard.teamagents),
     teamdetails:(state.dashboard.teamdetails),
     userdetails:(state.dashboard.userdetails),
      channels :(state.dashboard.channels),
   };
 }
 
-export default connect(mapStateToProps,{ getTeamRequest,getDeptAgents})(TeamDetailView);
+export default connect(mapStateToProps,{ getTeamRequest,getTeamAgents})(TeamDetailView);

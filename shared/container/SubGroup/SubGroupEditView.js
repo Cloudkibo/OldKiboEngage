@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
-import { getChannelRequest,getcustomers}  from '../../redux/actions/actions'
-import { editChannel}  from '../../redux/actions/actions'
+import { getSubgroupRequest,getcustomers}  from '../../redux/actions/actions'
+import { editSubgroup}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -10,7 +10,7 @@ import { Link } from 'react-router';
 
 
 
-class ChannelEditView extends Component {
+class SubgroupEditView extends Component {
   constructor(props, context) {
        //call action to get user teams 
     const usertoken = auth.getToken();
@@ -20,18 +20,18 @@ class ChannelEditView extends Component {
        
         console.log(usertoken);
         console.log(props.params.id);
-        props.getChannelRequest(props.params.id,usertoken);
+        props.getSubgroupRequest(props.params.id,usertoken);
         props.getcustomers(usertoken);
       }
 
     super(props, context);
     
-    this.editChannel = this.editChannel.bind(this);
+    this.editSubgroup = this.editSubgroup.bind(this);
   }
 
  
 
-  editChannel(e) {
+  editSubgroup(e) {
      e.preventDefault();
     const usertoken = auth.getToken();
     const idRef = this.refs.id;
@@ -44,9 +44,8 @@ class ChannelEditView extends Component {
 
     if (name.value && desc.value && teamid.value && this.props.customers)
      {
-      var channel = {'_id' : idRef.value,'msg_channel_name' : name.value,'msg_channel_description':desc.value,'companyid' : companyid.value,'groupid' : teamid.value,'createdby' : createdby.value,'activeStatus':status.value}
-      console.log(channel);
-      this.props.editChannel(channel,usertoken,this.props.customers.filter((c) => c.isMobileClient == "true"));
+      var subgroup = {'_id' : idRef.value,'msg_channel_name' : name.value,'msg_channel_description':desc.value,'companyid' : companyid.value,'groupid' : teamid.value,'createdby' : createdby.value,'activeStatus':status.value}
+      this.props.editSubgroup(subgroup,usertoken,this.props.customers.filter((c) => c.isMobileClient == "true"));
      
     }
   }
@@ -61,8 +60,8 @@ class ChannelEditView extends Component {
   render() {
        var ag = []
      {
-         this.props.channel &&
-                        this.props.channel.map((ch, i) => (
+         this.props.subgroup &&
+                        this.props.subgroup.map((ch, i) => (
                            ag.push(ch)                            
                         ))
 
@@ -74,7 +73,7 @@ class ChannelEditView extends Component {
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
-              <h3 className ="page-title">MessageChannels Management </h3>
+              <h3 className ="page-title">SubGroups Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -82,7 +81,7 @@ class ChannelEditView extends Component {
                     <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/messagechannels"> MessageChannels Management</Link>
+                               <Link to="/subgroups"> SubGroups Management</Link>
                   </li>               
   
             </ul>
@@ -91,12 +90,12 @@ class ChannelEditView extends Component {
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
          
-             {this.props.channel &&
+             {this.props.subgroup &&
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                   Edit Message Channel Details
+                   Edit Subgroup Details
                 </div> 
               </div>    
         
@@ -137,7 +136,7 @@ class ChannelEditView extends Component {
               <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.editChannel}>
+                    <button className="btn green" onClick={this.editSubgroup}>
                       <i className="fa fa-pencil"/>
                        Submit
                     </button>
@@ -146,7 +145,7 @@ class ChannelEditView extends Component {
                </div> 
                 <div className="col-md-9">
                   <div className="col-md-9">
-                    <Link to="/messagechannels" className="btn green">
+                    <Link to="/subgroups" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
@@ -173,25 +172,24 @@ class ChannelEditView extends Component {
      }
 }
 
-ChannelEditView.propTypes = {
-  editChannel : PropTypes.func.isRequired,
+SubgroupEditView.propTypes = {
+  editSubgroup : PropTypes.func.isRequired,
   
 };
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
-  console.log(state.dashboard.channel);
   
    return {
     
     team: (state.dashboard.team),
-    channels:(state.dashboard.channels),
+    subgroups:(state.dashboard.subgroups),
     deptagents:(state.dashboard.deptagents),
-    channel :(state.dashboard.channel),
-    teamdetails:(state.dashboard.teamdetails),
+    subgroup :(state.dashboard.subgroup),
+    groupdetails:(state.dashboard.groupdetails),
     errorMessage:(state.dashboard.errorMessage),
     customers:(state.dashboard.customers),
   };
 }
-export default connect(mapStateToProps,{ getChannelRequest,editChannel,getcustomers})(ChannelEditView);
+export default connect(mapStateToProps,{ getSubgroupRequest,editSubgroup,getcustomers})(SubgroupEditView);
 
 

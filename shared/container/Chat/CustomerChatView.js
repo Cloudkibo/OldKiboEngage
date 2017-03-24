@@ -65,8 +65,8 @@ class CustomerChatView extends Component {
         super(props, context);
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
-        this.assignSessionToGroup = this.assignSessionToGroup.bind(this);
-        this.moveToChannel = this.moveToChannel.bind(this);
+        this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
+        this.moveToSubgroup = this.moveToSubgroup.bind(this);
         this.resolveSession = this.resolveSession.bind(this)
         this.getSocketmessage = this.getSocketmessage.bind(this);
         this.getSocketmessageFromServer = this.getSocketmessageFromServer.bind(this);
@@ -142,11 +142,11 @@ onFileSubmit(event)
                           'msg' : this.state.userfile.type + ';' +this.state.userfile.name + ';'+this.props.userdetails.firstname + ' has shared a file',
                           'datetime' : Date.now(),
                           'request_id' : this.props.sessiondetails.request_id,
-                          'messagechannel': this.refs.channelid.value,
+                          'messagechannel': this.refs.subgroupid.value,
                           'companyid': this.props.userdetails.uniqueid,
                           'is_seen':'no',
                           'customerid' : this.props.sessiondetails.customerid,
-                          'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                          'teammembers' : this.refs.teammembers.value.trim().split(" "),
                           'sendersEmail' : this.props.userdetails.email,
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
@@ -287,14 +287,14 @@ else{
   }
   getgroupmembers(data){
     //alert(data.getmembers.join(" "));
-    this.refs.groupmembers.value = data.getmembers.join(" ");
+    this.refs.teammembers.value = data.getmembers.join(" ");
     this.forceUpdate()
   }
   componentDidMount() {
     const { socket,dispatch } = this.props;
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
-    this.props.route.socket.on('send:groupmembers',this.getgroupmembers);
+    this.props.route.socket.on('send:teammembers',this.getgroupmembers);
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
 
@@ -316,9 +316,9 @@ else{
       else if(obj['type'] == 'group'){
           // if any agent in the group is the current user
           var grpid = obj['id'];
-          if(this.props.groupagents){
-            for(var j = 0;j< this.props.groupagents.length;j++){
-              if(grpid == this.props.groupagents[j].groupid._id && this.props.userdetails._id == this.props.groupagents[j].agentid._id){
+          if(this.props.teamagents){
+            for(var j = 0;j< this.props.teamagents.length;j++){
+              if(grpid == this.props.teamagents[j].groupid._id && this.props.userdetails._id == this.props.teamagents[j].agentid._id){
                           userassigned = true;
                           break;
               }
@@ -368,9 +368,9 @@ else{
       else if(obj['type'] == 'group'){
           // if any agent in the group is the current user
           var grpid = obj['id'];
-          if(this.props.groupagents){
-            for(var j = 0;j< this.props.groupagents.length;j++){
-              if(grpid == this.props.groupagents[j].groupid._id && this.props.userdetails._id == this.props.groupagents[j].agentid._id){
+          if(this.props.teamagents){
+            for(var j = 0;j< this.props.teamagents.length;j++){
+              if(grpid == this.props.teamagents[j].groupid._id && this.props.userdetails._id == this.props.teamagents[j].agentid._id){
                           userassigned = true;
                           break;
               }
@@ -432,11 +432,11 @@ else{
                           'datetime' : Date.now(),
                           'time' : moment.utc().format('lll'),
                           'request_id' : this.props.sessiondetails.request_id,
-                          'messagechannel': this.refs.channelid.value,
+                          'messagechannel': this.refs.subgroupid.value,
                           'companyid': this.props.userdetails.uniqueid,
                           'is_seen':'no',
                           'customerid' : this.props.sessiondetails.customerid,
-                          'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                          'teammembers' : this.refs.teammembers.value.trim().split(" "),
                           'sendersEmail' : this.props.userdetails.email,
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
@@ -496,8 +496,8 @@ else{
 
    if(this.props.sessiondetails.agent_ids.type == "group")
    {
-    for(var i=0;i<this.props.groupagents.length;i++){
-      if(this.props.groupagents[i].groupid._id == this.props.sessiondetails.agent_ids.id && this.props.userdetails._id == this.props.groupagents[i].agentid._id){
+    for(var i=0;i<this.props.teamagents.length;i++){
+      if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids.id && this.props.userdetails._id == this.props.teamagents[i].agentid._id){
         agentingroup = true
         break
       }
@@ -536,12 +536,12 @@ else{
                            'customerid' : this.props.sessiondetails.customerid,
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
+                           'messagechannel': this.refs.subgroupid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
                             'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                             'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-                            'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                            'teammembers' : this.refs.teammembers.value.trim().split(" "),
                              'sendersEmail' : this.props.userdetails.email,
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
@@ -616,7 +616,7 @@ else{
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
+                           'messagechannel': this.refs.subgroupid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
                            'assignedagentname': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name],
@@ -624,7 +624,7 @@ else{
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
 
 
-                           'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                           'teammembers' : this.refs.teammembers.value.trim().split(" "),
          }
          //pushing agent email to array for sending push notifications
 
@@ -642,7 +642,7 @@ else{
         else{
         //this.props.chatlist.push(saveChat);
         }
-        this.refs.groupmembers.value = "";
+        this.refs.teammembers.value = "";
 
         if(this.props.sessiondetails.platform == 'web'){
         //socket.emit('send:message', saveChat);
@@ -700,7 +700,7 @@ else{
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
+                           'messagechannel': this.refs.subgroupid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
                             'agentemail' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].value],
@@ -740,13 +740,13 @@ else{
 
 
 // Assign chat to group
-  assignSessionToGroup(e){
+  assignSessionToTeam(e){
      const { socket,dispatch } = this.props;
 
      // local changes
 
   this.props.sessiondetails.status = "assigned";
-  this.props.sessiondetails.agent_ids =  {'id' : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].dataset.attrib,'type' : 'group'};
+  this.props.sessiondetails.agent_ids =  {'id' : this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,'type' : 'group'};
 
 
   // find the agent ids of the members with in a selected group
@@ -756,17 +756,17 @@ else{
   var agentids = []
 
 
-  for(var i=0;i<this.props.groupagents.length;i++){
-    if(this.props.groupagents[i].groupid._id == this.refs.grouplist.options[this.refs.grouplist.selectedIndex].dataset.attrib){
-      agentnames.push(this.props.groupagents[i].agentid.firstname);
-      agentemail.push(this.props.groupagents[i].agentid.email);
-      agentids.push(this.props.groupagents[i].agentid._id);
+  for(var i=0;i<this.props.teamagents.length;i++){
+    if(this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib){
+      agentnames.push(this.props.teamagents[i].agentid.firstname);
+      agentemail.push(this.props.teamagents[i].agentid.email);
+      agentids.push(this.props.teamagents[i].agentid._id);
     }
   }
 
      const usertoken = auth.getToken();
 
-    if(confirm("Are you sure you want to assign this session to " + this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text))
+    if(confirm("Are you sure you want to assign this session to " + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text))
     {
    callonce = "false";
 
@@ -786,11 +786,11 @@ else{
                           'status' : 'sent',
                           'customerid' : this.props.sessiondetails.customerid,
                           'type': 'log',
-                           'msg' : 'Session is assigned to ' + this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
+                           'msg' : 'Session is assigned to ' + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text,
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
+                           'messagechannel': this.refs.subgroupid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
 
@@ -799,7 +799,7 @@ else{
                            'assignedagentemail': agentemail,
 
                       }
-         this.refs.groupmembers.value =  agentemail.join(" ");
+         this.refs.teammembers.value =  agentemail.join(" ");
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
         }
@@ -838,7 +838,7 @@ else{
 
     // considering the use case of self assigning
     var assignment = {
-      assignedto : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].dataset.attrib,
+      assignedto : this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,
       assignedby : this.props.userdetails._id,
       sessionid : this.refs.requestid.value,
       companyid : this.props.userdetails.uniqueid,
@@ -853,7 +853,7 @@ else{
     socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
                                         'status' : 'assigned',
                                         'room' : this.props.userdetails.uniqueid,
-                                        'agentid' : {'id' : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].dataset.attrib,'type' : 'group'},
+                                        'agentid' : {'id' : this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,'type' : 'group'},
 
                                        });
 
@@ -862,16 +862,16 @@ else{
     // inform all group members about each others' email
 
     /* var informMsg = {
-                          'to' : this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text ,//group name
+                          'to' : this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text ,//group name
                           'from' : this.props.userdetails.firstname,
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'log',
-                           'msg' : 'This session is assigned to group : ' +  this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text ,
+                           'msg' : 'This session is assigned to group : ' +  this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text ,
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
-                           'messagechannel': this.refs.channelid.value,
+                           'messagechannel': this.refs.subgroupid.value,
                            'companyid': this.props.userdetails.uniqueid,
                            'is_seen':'no',
                            'agentemail' : agentemail,
@@ -891,7 +891,7 @@ else{
 
         var news = {
           'dateCreated' : Date.now(),
-          'message' : this.props.userdetails.firstname + ' has assigned a new session to ' + this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text + ' group',
+          'message' : this.props.userdetails.firstname + ' has assigned a new session to ' + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text + ' group',
           'createdBy' :  this.props.userdetails._id,
           'unread' : 'true',
           'companyid' : this.props.userdetails.uniqueid,
@@ -914,14 +914,14 @@ else{
 
 
  //move message to another message channel
- moveToChannel(e){
+ moveToSubgroup(e){
      const { socket,dispatch } = this.props;
      const usertoken = auth.getToken();
 
-   if(this.refs.channellist.value != this.refs.channelid.value)
+   if(this.refs.subgrouplist.value != this.refs.subgroupid.value)
    {
-             alert('Are you sure,you want to move this session to another channel ?');
-             this.props.sessiondetails.messagechannel.push(this.refs.channellist.value);
+             alert('Are you sure,you want to move this session to another subgroup ?');
+             this.props.sessiondetails.messagechannel.push(this.refs.subgrouplist.value);
 
              // generatate unique id for the chat message
               var today = new Date();
@@ -938,16 +938,16 @@ else{
                                     'status' : 'sent',
                                     'customerid' : this.props.sessiondetails.customerid,
                                     'type': 'log',
-                                    'msg' : 'Session is moved to Channel ' + this.refs.channellist.options[this.refs.channellist.selectedIndex].text ,
+                                    'msg' : 'Session is moved to Subgroup ' + this.refs.subgrouplist.options[this.refs.subgrouplist.selectedIndex].text ,
                                      'datetime' : Date.now(),
                                      'time' : moment.utc().format('lll'),
                                      'request_id' : this.props.sessiondetails.request_id,
-                                     'messagechannel': this.refs.channellist.value,
+                                     'messagechannel': this.refs.subgrouplist.value,
                                      'companyid': this.props.userdetails.uniqueid,
                                      'is_seen':'no',
                                      'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                                      'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-                                     'groupmembers' : this.refs.groupmembers.value.trim().split(" "),
+                                     'teammembers' : this.refs.teammembers.value.trim().split(" "),
                                       'sendersEmail' : this.props.userdetails.email,
                                 }
                    if(this.props.sessiondetails.platform == 'mobile'){
@@ -970,21 +970,21 @@ else{
 
                   //save new channel id on server
                   var assignment = {
-                      movedto : this.refs.channellist.value,
-                      movedfrom : this.refs.channelid.value,
+                      movedto : this.refs.subgrouplist.value,
+                      movedfrom : this.refs.subgroupid.value,
                       movedby : this.props.userdetails._id,
                       sessionid : this.refs.requestid.value,
                       companyid : this.props.userdetails.uniqueid,
                       datetime : Date.now(),
 
               }
-              this.refs.channelid.value = this.refs.channellist.value;
+              this.refs.subgroupid.value = this.refs.subgrouplist.value;
               this.props.movedToMessageChannel(assignment,usertoken);
 
                //update session status on socket
               socket.emit('updatesessionchannel',{'request_id':this.refs.requestid.value,
                                                   'room' : this.props.userdetails.uniqueid,
-                                                  'channelid' : this.refs.channellist.value
+                                                  'subgroupid' : this.refs.subgrouplist.value
 
                                                   });
 
@@ -992,7 +992,7 @@ else{
               this.forceUpdate();
     }
     else{
-      alert('Session is already assigned to this channel');
+      alert('Session is already assigned to this subgroup');
     }
 
 }
@@ -1092,10 +1092,10 @@ const { value, suggestions } = this.state;
 
               <td className="col-md-4">
                  <div className="input-group">
-                   <select  ref = "channellist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                   <select  ref = "subgrouplist" className="form-control" onChange={this.handleChange.bind(this)}   >
                           {
-                          this.props.channels && this.props.channels.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((channel,i) =>
-                            <option value={channel._id}>{channel.msg_channel_name}</option>
+                          this.props.subgroups && this.props.subgroups.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((subgroup,i) =>
+                            <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
 
                             )
                          }
@@ -1109,7 +1109,7 @@ const { value, suggestions } = this.state;
               </td>*/}
 
               <td className="col-md-4">
-                <button className="btn btn-primary" onClick = {this.moveToChannel}> Move </button>
+                <button className="btn btn-primary" onClick = {this.moveToSubgroup}> Move </button>
               </td>
 
               <td className="col-md-1">
@@ -1119,15 +1119,15 @@ const { value, suggestions } = this.state;
               </tr>
 
               {/*
-                this.props.groupdetails && this.props.groupdetails.length >0?
+                this.props.teamdetails && this.props.teamdetails.length >0?
                      <tr>
                     
                          <td className="col-md-4">
                            <div className="input-group">
-                             <select  ref = "grouplist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                             <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
                                     {
-                                    this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                                      <option value={group._id} data-attrib = {group._id}>{group.groupname}</option>
+                                    this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                                      <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
 
                                       )
                                    }
@@ -1137,14 +1137,14 @@ const { value, suggestions } = this.state;
                          </td>
 
                           <td className="col-md-4">
-                          <button className="btn btn-primary" onClick = {this.assignSessionToGroup}> Assigned To Group</button>
+                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
                           </td>
 
 
                           <td className="col-md-6">
                           <label>Current Status - {this.props.sessiondetails.status}</label>
                           <br/>
-                          <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+                          <label>{this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
 
                           </td>
 
@@ -1152,13 +1152,13 @@ const { value, suggestions } = this.state;
 
                      <tr>
                       <td className="col-md-4">
-                        <label>Chat Group List is empty</label>
+                        <label>Chat Team List is empty</label>
                      
                       </td>
                       <td className="col-md-6">
                         <label>Current Status - {this.props.sessiondetails.status}</label>
                         <br/>
-                        <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+                        <label>{this.props.groupdetails.filter((g) => g._id == this.props.groupdetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
 
                       </td>
                      </tr>
@@ -1170,7 +1170,7 @@ const { value, suggestions } = this.state;
                       <td className="col-md-6">
                         <label>Current Status - {this.props.sessiondetails.status}</label>
                         <br/>
-                        <label>{this.props.teamdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.channels.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+                        <label>{this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
 
                       </td>
                      </tr>
@@ -1191,9 +1191,9 @@ const { value, suggestions } = this.state;
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
-          <input type="hidden" defaultValue = "" ref="groupmembers"/>
+          <input type="hidden" defaultValue = "" ref="teammembers"/>
 
-          <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="channelid"/>
+          <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
@@ -1381,8 +1381,6 @@ const { value, suggestions } = this.state;
 
 
 function mapStateToProps(state) {
-  console.log(state.dashboard.team);
-  console.log(state.dashboard.chatlist);
   return {
 
           teamdetails:(state.dashboard.teamdetails),
@@ -1392,7 +1390,7 @@ function mapStateToProps(state) {
           deptagents:(state.dashboard.deptagents),
           customerchat :(state.dashboard.customerchat),
           chatlist :(state.dashboard.chatlist),
-          channels :(state.dashboard.channels),
+          subgroups :(state.dashboard.subgroups),
           customers:(state.dashboard.customers),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
           userchats :(state.dashboard.userchats),
@@ -1401,11 +1399,11 @@ function mapStateToProps(state) {
           mobileuserchat : (state.dashboard.mobileuserchat),
           ismessageSaved : (state.dashboard.ismessageSaved),
           tempMessage :(state.dashboard.tempMessage),
-          groupagents : (state.dashboard.groupagents),
+          teamagents : (state.dashboard.teamagents),
           groupdetails :(state.dashboard.groupdetails),
           customerchatold :(state.dashboard.customerchatold),
           chatlist :(state.dashboard.chatlist),
-          channels :(state.dashboard.channels),
+          subgroups :(state.dashboard.subgroups),
           customers:(state.dashboard.customers),
           customerchat_selected :(state.dashboard.customerchat_selected),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),

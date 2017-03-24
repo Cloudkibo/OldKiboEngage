@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import auth from '../../services/auth';
-import {createGroup}  from '../../redux/actions/actions'
+import {createTeam}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -9,18 +9,18 @@ import { Link } from 'react-router';
 
 
 
-class CreateGroup extends Component {
+class CreateTeam extends Component {
   constructor(props, context) {
        //call action to get user teams
     const usertoken = auth.getToken();
     super(props, context);
 
-    this.createGroup= this.createGroup.bind(this);
+    this.createTeam= this.createTeam.bind(this);
   }
 
 
 
-  createGroup(e) {
+  createTeam(e) {
      e.preventDefault();
     const usertoken = auth.getToken();
     const nameRef = this.refs.name;
@@ -32,8 +32,8 @@ class CreateGroup extends Component {
 
     if (nameRef.value && descRef.value)
      {
-      var group = {'groupname' : nameRef.value,'groupdescription':descRef.value,'companyid' : companyid,'status' : status,'createdby' : createdBy}
-      this.props.createGroup(group,usertoken);
+      var team = {'groupname' : nameRef.value,'groupdescription':descRef.value,'companyid' : companyid,'status' : status,'createdby' : createdBy}
+      this.props.createTeam(team,usertoken);
 
     }
   }
@@ -46,7 +46,7 @@ class CreateGroup extends Component {
          <SideBar/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Groups Management </h3>
+              <h3 className ="page-title">Teams Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -54,7 +54,7 @@ class CreateGroup extends Component {
                     <i className="fa fa-angle-right"/>
                   </li>
                   <li>
-                               <Link to="/groups"> Groups Management</Link>
+                               <Link to="/teams"> Teams Management</Link>
                   </li>
 
             </ul>
@@ -65,7 +65,7 @@ class CreateGroup extends Component {
 
                 {this.props.errorMessage && this.props.errorMessage.status == 'success' &&
 
-                     <div className = "alert alert-success"><span>Group created successfully</span></div>
+                     <div className = "alert alert-success"><span>Team created successfully</span></div>
                 }
 
 
@@ -73,7 +73,7 @@ class CreateGroup extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-group"/>
-                   Create Group
+                   Create Team
                 </div>
               </div>
 
@@ -81,7 +81,7 @@ class CreateGroup extends Component {
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
                 <div className="form-group">
-                  <label className="control-label col-md-3"> Group Name </label>
+                  <label className="control-label col-md-3"> Team Name </label>
                    <div className="col-md-9">
                          <input className="form-control input-medium" type='text'  ref = "name"/>
 
@@ -104,7 +104,7 @@ class CreateGroup extends Component {
                         </select>
                         <br/>
                         <br/>
-                        <b> Note : Making a group 'public' will allow anyone to join this group</b>
+                        <b> Note : Making a team 'public' will allow anyone to join this team</b>
                   </div>
                 </div>
 
@@ -112,7 +112,7 @@ class CreateGroup extends Component {
               <div className="row">
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.createGroup}>
+                    <button className="btn green" onClick={this.createTeam}>
                       <i className="fa fa-pencil"/>
                        Submit
                     </button>
@@ -121,7 +121,7 @@ class CreateGroup extends Component {
                </div>
                 <div className="col-md-9">
                   <div className="col-md-9">
-                    <Link to="/groups" className="btn green">
+                    <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
@@ -150,9 +150,6 @@ class CreateGroup extends Component {
 
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.agent);
-
    return {
     teamdetails:(state.dashboard.teamdetails),
     userdetails:(state.dashboard.userdetails),
@@ -162,4 +159,4 @@ function mapStateToProps(state) {
     channels :(state.dashboard.channels),
 };
 }
-export default connect(mapStateToProps,{createGroup})(CreateGroup);
+export default connect(mapStateToProps,{createTeam})(CreateTeam);

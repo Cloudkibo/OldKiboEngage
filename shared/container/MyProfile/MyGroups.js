@@ -1,8 +1,8 @@
-import MyTeamListItem from '../Teams/MyTeamListItem';
+import MyGroupListItem from '../Groups/MyGroupListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getmyuserteams} from '../../redux/actions/actions'
+import {getmyusergroups} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -12,10 +12,10 @@ import ProfileSideBar from '../../components/SideBar/ProfileSideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 
-class MyTeams extends Component {
+class MyGroups extends Component {
 
  constructor(props, context) {
-      //call action to get user teams
+      //call action to get user groups
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -25,7 +25,7 @@ class MyTeams extends Component {
     {
 
         console.log(usertoken);
-        props.getmyuserteams(usertoken);
+        props.getmyusergroups(usertoken);
       }
 
         super(props, context);
@@ -70,13 +70,13 @@ class MyTeams extends Component {
                 </div>
               </div>
           <div className="row profile-account">
-                <ProfileSideBar iscurrent="myteams"/>
+                <ProfileSideBar iscurrent="mygroups"/>
           <div className="col-md-9">
             <div className="portlet box">
             <div className="portlet body">
 
 
-                { this.props.myteamdetails &&
+                { this.props.mygroupdetails &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -88,9 +88,9 @@ class MyTeams extends Component {
                     </thead>
                     <tbody>
                       {
-                        this.props.myteamdetails.map((team, i) => (
+                        this.props.mygroupdetails.map((group, i) => (
 
-                          <MyTeamListItem team={team.deptid?team.deptid:team} key={team._id} />
+                          <MyGroupListItem group={group.deptid?group.deptid:group} key={group._id} />
 
                         ))
                       }
@@ -115,19 +115,19 @@ class MyTeams extends Component {
 function mapStateToProps(state) {
 
   return {
-          teamdetails:(state.dashboard.teamdetails),
+          groupdetails:(state.dashboard.groupdetails),
           userdetails:(state.dashboard.userdetails),
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           channels :(state.dashboard.channels),
-          myteamdetails:(state.dashboard.myteamdetails),
+          mygroupdetails:(state.dashboard.mygroupdetails),
            };
 }
 
 
 function mapDispatchToProps(dispatch) {
 
-  return bindActionCreators({ getmyuserteams:getmyuserteams}, dispatch);
+  return bindActionCreators({ getmyusergroups:getmyusergroups}, dispatch);
 }
-export default connect(mapStateToProps,mapDispatchToProps)(MyTeams);
+export default connect(mapStateToProps,mapDispatchToProps)(MyGroups);

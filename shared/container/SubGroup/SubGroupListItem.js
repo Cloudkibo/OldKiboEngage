@@ -7,31 +7,31 @@ var c = new Date(d);
 return c.toDateString();
 }
 
-var getDeptName = function(team){
+var getDeptName = function(group){
     var grp = [];
    
-     team.map((gr,i) =>(
+     group.map((gr,i) =>(
       grp.push(gr.deptname)
       ));
      return grp[0];
 }
-function ChannelListItem(props) {
+function SubgroupListItem(props) {
 
      
   return (
    
     <tr className = "odd">
-      <td>{props.channel.msg_channel_name} </td>
-      <td>{props.channel.msg_channel_description}</td>
-      <td>{getDeptName(props.team)}</td>
-      <td>{props.channel.activeStatus}</td>
-      <td>{handleDate(props.channel.creationdate)}</td>
+      <td>{props.subgroup.msg_channel_name} </td>
+      <td>{props.subgroup.msg_channel_description}</td>
+      <td>{getDeptName(props.group)}</td>
+      <td>{props.subgroup.activeStatus}</td>
+      <td>{handleDate(props.subgroup.creationdate)}</td>
        
 
         { props.userdetails.isAgent == "Yes"?
                     <br/> :
                     <td>
-                    <Link to={`/editchannel/${props.channel._id}`} className="btn blue-madison" >
+                    <Link to={`/editsubgroup/${props.subgroup._id}`} className="btn blue-madison" >
                     Edit
                     </Link>
                     <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
@@ -48,9 +48,9 @@ function ChannelListItem(props) {
   );
 }
 
-ChannelListItem.propTypes = {
+/*SubgroupListItem.propTypes = {
   onDelete: PropTypes.func.isRequired,
  
-};
+};*/
 
-export default ChannelListItem;
+export default SubgroupListItem;

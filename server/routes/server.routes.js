@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as UserController from '../controllers/user.controller';
 import * as TeamController from '../controllers/team.controller';
-import * as ChannelController from '../controllers/channel.controller';
+import * as Subgroupcontroller from '../controllers/subgroup.controller';
 import * as NotificationController from '../controllers/notifications.controller';
 import * as CustomerController from '../controllers/customer.controller';
 import * as ChatController from '../controllers/chat.controller';
@@ -14,6 +14,18 @@ var multipartyMiddleware = multiparty();
 
 const router = new Router();
 
+/** chat group routes **/
+router.route('/getteams').get(TeamController.getteams);
+router.route('/createteam').post(TeamController.createteam);
+router.route('/getTeam').get(TeamController.getTeam);
+router.route('/joinTeam').post(TeamController.joinTeam);
+router.route('/deleteTeam').delete(TeamController.destroyTeam);
+router.route('/editteam').post(TeamController.editteam);
+router.route('/teamagents').get(TeamController.teamagents);
+
+
+
+
 // Login user
 router.route('/getlogin').post(UserController.getlogin);
 // signup user
@@ -24,27 +36,23 @@ router.route('/updatenews').post(NewsController.updatenews);
 router.route('/forgotpassword').post(UserController.forgotpassword);
 router.route('/updateprofile').post(UserController.updateprofile);
 router.route('/changenewpassword').post(UserController.changenewpassword);
-router.route('/getteams').get(TeamController.getteams);
 router.route('/getgroups').get(GroupController.getgroups);
+
 router.route('/createfbPage').post(FbController.createfbPage);
 router.route('/editfbPage').post(FbController.editfbPage);
 router.route('/getfbpages').get(FbController.getfbpages);
 router.route('/getfbpage').get(FbController.getfbpage);
-router.route('/getmyuserteams').get(TeamController.getmyuserteams);
-router.route('/getcustomerteams').post(TeamController.getcustomerteams);
+router.route('/getmyusergroups').get(GroupController.getmyusergroups);
+router.route('/getcustomergroups').post(GroupController.getcustomergroups);
 router.route('/getcustomersession').post(ChatController.getcustomersession);
 router.route('/updatechatstatus').post(ChatController.updatechatstatus);
 router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
 router.route('/updatereschedule').post(ChatController.updatereschedule);
-router.route('/createteam').post(TeamController.createteam);
 router.route('/creategroup').post(GroupController.creategroup);
 router.route('/deletefbpage').delete(FbController.deletefbpage);
-router.route('/getTeam').get(TeamController.getTeam);
 router.route('/getGroup').get(GroupController.getGroup);
-router.route('/joinGroup').post(GroupController.joinGroup);
-router.route('/deleteTeam').delete(TeamController.destroyTeam);
-router.route('/deleteAgent').delete(UserController.deleteAgent);
 router.route('/deleteGroup').delete(GroupController.destroyGroup);
+router.route('/deleteAgent').delete(UserController.deleteAgent);
 router.route('/webhook').post(FbChatController.chatwebhook);
 router.route('/webhook').get(FbChatController.verifyhook);
 
@@ -55,33 +63,31 @@ router.route('/getfbChats').get(FbChatController.getfbChats);
 
 router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
-router.route('/groupagents').get(GroupController.groupagents);
-router.route('/editgroup').post(GroupController.editgroup);
 
-router.route('/editteam').post(TeamController.editteam);
+router.route('/editgroup').post(GroupController.editgroup);
 router.route('/editagent').post(UserController.editagent);
 router.route('/inviteAgent').post(UserController.inviteAgent);
 router.route('/invitetoken').get(UserController.invitetoken);
 router.route('/verifytoken').get(UserController.verifytoken);
 router.route('/verifypasswordResettoken').get(UserController.verifypasswordResettoken);
 router.route('/changepassword').post(UserController.changepassword);
-router.route('/createChannel').post(ChannelController.createChannel);
-router.route('/editChannel').post(ChannelController.editChannel);
-router.route('/getchannels').get(ChannelController.getchannels);
-router.route('/getcustomerchannels').post(ChannelController.getcustomerchannels);
+router.route('/createSubgroup').post(Subgroupcontroller.createSubgroup);
+router.route('/editSubgroup').post(Subgroupcontroller.editSubgroup);
+router.route('/getsubgroups').get(Subgroupcontroller.getsubgroups);
+router.route('/getcustomersubgroups').post(Subgroupcontroller.getcustomersubgroups);
 
-router.route('/getchannelwisecalls').post(ChannelController.getchannelwisecalls);
-router.route('/getplatformwisecalls').get(ChannelController.getplatformwisecalls);
-router.route('/getdeptwisecalls').get(ChannelController.getdeptwisecalls);
-router.route('/getpagewisecalls').get(ChannelController.getpagewisecalls);
-router.route('/getcountrywisecalls').get(ChannelController.getcountrywisecalls);
-router.route('/getmobilecalls').get(ChannelController.getmobilecalls);
+router.route('/getsubgroupwisecalls').post(Subgroupcontroller.getsubgroupwisecalls);
+router.route('/getplatformwisecalls').get(Subgroupcontroller.getplatformwisecalls);
+router.route('/getdeptwisecalls').get(Subgroupcontroller.getdeptwisecalls);
+router.route('/getpagewisecalls').get(Subgroupcontroller.getpagewisecalls);
+router.route('/getcountrywisecalls').get(Subgroupcontroller.getcountrywisecalls);
+router.route('/getmobilecalls').get(Subgroupcontroller.getmobilecalls);
 
-router.route('/gettopcustomers').get(ChannelController.gettopcustomers);
-router.route('/getagentwisecalls').get(ChannelController.getagentwisecalls);
-router.route('/getagentnotifications').get(ChannelController.getagentnotifications);
+router.route('/gettopcustomers').get(Subgroupcontroller.gettopcustomers);
+router.route('/getagentwisecalls').get(Subgroupcontroller.getagentwisecalls);
+router.route('/getagentnotifications').get(Subgroupcontroller.getagentnotifications);
 
-router.route('/deleteChannel').delete(ChannelController.destroyChannel);
+router.route('/deleteSubgroup').delete(Subgroupcontroller.destroySubgroup);
 
 router.route('/createResponse').post(UserController.createResponse);
 router.route('/uploadpicture').post(UserController.uploadpicture);

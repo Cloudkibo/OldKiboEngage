@@ -21,8 +21,8 @@ function removeDuplicates(originalArray, prop) {
 
 
 const initialState = { signupwarnings: {},userdetails : {}};
-const dashboardState = { userdetails : {},teamdetails:[],userjoinedroom:'notjoined'};
-const widgetState ={teamdetails:[],channels:[]}
+const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined'};
+const widgetState ={groupdetails:[],subgroups:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
 
@@ -45,31 +45,11 @@ const signup = (state =initialState, action) => {
 const dashboard = (state =dashboardState, action) => {
   switch (action.type) {
 
-  case ActionTypes.ADD_SELECTED_TEAM :
+  case ActionTypes.ADD_SELECTED_GROUP :
       var agentid =[];
       if(state.deptagents)
       {
-      state.deptagents.filter((agent) => agent.deptid == action.team._id).map((agent, i)=> (
-                          state.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
-                          (
-                             agentid.push({"_id" :ag._id})
-                          ))
-                          ));
-       };
-
-      return {
-        ...state,errorMessageProfile:'',
-        team: action.team,
-        newagents:agentid,
-       
-
-      };
-
-      case ActionTypes.ADD_SELECTED_GROUP :
-      var agentid =[];
-      if(state.groupagents)
-      {
-      state.groupagents.filter((agent) => agent.groupid == action.group._id).map((agent, i)=> (
+      state.deptagents.filter((agent) => agent.deptid == action.group._id).map((agent, i)=> (
                           state.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
                           (
                              agentid.push({"_id" :ag._id})
@@ -81,10 +61,11 @@ const dashboard = (state =dashboardState, action) => {
         ...state,errorMessageProfile:'',
         group: action.group,
         newagents:agentid,
-        
+       
 
       };
 
+     
       case ActionTypes.ADD_SELECTED_PAGE :
       return {
       
@@ -102,10 +83,10 @@ const dashboard = (state =dashboardState, action) => {
         
       };
 
-    case ActionTypes.ADD_SELECTED_CHANNEL :
+    case ActionTypes.ADD_SELECTED_SUBGROUP :
       return {
        ...state,errorMessageProfile:'',
-        channel: state.channels.filter((channel) => channel._id == action.id),
+        subgroup: state.subgroups.filter((subgroup) => subgroup._id == action.id),
        
       };
     case ActionTypes.ADD_SELECTED_RESPONSE :
@@ -142,14 +123,8 @@ const dashboard = (state =dashboardState, action) => {
 
 
           };
-          case ActionTypes.ADD_GROUPAGENTS:
-          return{
-            
-            ...state,errorMessageProfile:'',
-            groupagents : action.agents,
-            newagents : action.agents,
-            
-          };
+
+  
 
     case ActionTypes.ADD_NEWS:
           return{
@@ -164,29 +139,24 @@ const dashboard = (state =dashboardState, action) => {
           fbpages : action.fbpages,
 
              }
-   case ActionTypes.ADD_TEAMS:
-          console.log(action.teams)
+   case ActionTypes.ADD_GROUPS:
+          console.log(action.groups)
           return{
             ...state,errorMessageProfile:'',
-            teamdetails:action.teams,
+            groupdetails:action.groups,
             newagents: [],
             
 
       };
 
 
-    case ActionTypes.ADD_GROUPS:
-          return{
-            ...state,errorMessageProfile:'',
-            groupdetails : action.groups,
-    
-      };
+  
 
-   case ActionTypes.ADD_CHANNELS:
+   case ActionTypes.ADD_SUBGROUPS:
           return{
             ...state,errorMessageProfile:'',
-            channels : action.channels,
-       
+            subgroups : action.subgroups,
+             errorMessage:'',
 
       };
 
@@ -206,50 +176,44 @@ const dashboard = (state =dashboardState, action) => {
             responses : [action.response,...state.responses],
             
       };
-    case ActionTypes.ADD_MY_TEAMS:
+    case ActionTypes.ADD_MY_GROUPS:
           return{
             ...state,errorMessageProfile:'',
-            myteamdetails:action.myteams,
+            mygroupdetails:action.mygroups,
           
       };
-    case ActionTypes.ADD_TEAM:
+    case ActionTypes.ADD_GROUP:
     console.log(action.deptname);
       return {
         ...state,errorMessageProfile:'',
-        teamdetails: [{
+        groupdetails: [{
           deptname: action.deptname,
           deptdescription: action.deptdescription,
 
-        }, ...state.teamdetails],
+        }, ...state.groupdetails],
         
-         errorMessage:'Team created successfully',
+         errorMessage:'Group created successfully',
         
         };
 
 
-     case ActionTypes.DELETE_TEAM :
+     case ActionTypes.DELETE_GROUP :
       return {
         ...state,errorMessageProfile:'',
-        teamdetails: state.teamdetails.filter((team) => team._id !== action.team._id),
+        groupdetails: state.groupdetails.filter((group) => group._id !== action.group._id),
        
-        errorMessage:'Team deleted successfully',
+        errorMessage:'Group deleted successfully',
         
       };
 
-       case ActionTypes.DELETE_GROUP :
-      return {
-        ...state,errorMessageProfile:'',
-         groupdetails : state.groupdetails.filter((group) => group._id !== action.group._id),
-        errorMessage:'Group deleted successfully',
        
-      };
 
 
-      case ActionTypes.DELETE_CHANNEL :
+      case ActionTypes.DELETE_SUBGROUP :
       return {
         ...state,errorMessageProfile:'',
-        channels : state.channels.filter((channel) => channel._id !== action.channel._id),
-        errorMessage:'Message channel deleted successfully',
+        subgroups : state.subgroups.filter((subgroup) => subgroup._id !== action.subgroup._id),
+        errorMessage:'Subgroup deleted successfully',
         
       };
 
@@ -279,20 +243,9 @@ const dashboard = (state =dashboardState, action) => {
         
       };
 
-      case ActionTypes.CREATEGROUP_FAILURE:
-      return {
-         ...state,errorMessageProfile:'',
-         
-         errorMessage:action.message,
-         
-        };
+      
 
-      case ActionTypes.EDITGROUP_RESPONSE:
-      return {
-         ...state,errorMessageProfile:'',
-         errorMessage:action.message,
-        
-        };
+     
 
       case ActionTypes.EDITAGENT_RESPONSE:
       return {
@@ -474,7 +427,7 @@ const dashboard = (state =dashboardState, action) => {
             
             };
 
-              case ActionTypes.FILTER_BY_CHANNEL:
+              case ActionTypes.FILTER_BY_SUBGROUP:
             return {
               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
@@ -638,11 +591,11 @@ const dashboard = (state =dashboardState, action) => {
             };
 
 
-            case ActionTypes.CHANNEL_STATS:
+            case ActionTypes.SUBGROUP_STATS:
               return {
                ...state,errorMessageProfile:'', 
              errorMessage:action.chat_error,
-             channelwisestats : action.channelwisestats,
+             subgroupwisestats : action.subgroupwisestats,
              
             };
 
@@ -786,6 +739,69 @@ const dashboard = (state =dashboardState, action) => {
                 userjoinedroom:action.userjoinedroom,
                };
 
+        case ActionTypes.ADD_SELECTED_TEAM :
+      var agentid =[];
+      if(state.teamagents)
+      {
+      state.teamagents.filter((agent) => agent.groupid._id == action.team._id).map((agent, i)=> (
+                          state.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
+                          (
+                             agentid.push({"_id" :ag._id})
+                          ))
+                          ));
+       };
+
+      return {
+        ...state,errorMessageProfile:'',
+        team: action.team,
+        newagents:agentid,
+        
+
+      };
+
+      case ActionTypes.ADD_TEAMAGENTS:
+              return{
+                
+                ...state,errorMessageProfile:'',
+                teamagents : action.agents,
+                newagents : action.agents,
+                 errorMessage:''
+                
+              };
+
+
+      case ActionTypes.ADD_TEAMS:
+              return{
+                ...state,errorMessageProfile:'',
+                teamdetails : action.teams,
+                 errorMessage:''
+        
+          };
+
+
+     case ActionTypes.DELETE_TEAM :
+          return {
+            ...state,errorMessageProfile:'',
+             teamdetails : state.teamdetails.filter((team) => team._id !== action.team.get('_id')),
+            errorMessage:'Team deleted successfully',
+           
+          };
+
+      case ActionTypes.EDITTEAM_RESPONSE:
+          return {
+             ...state,errorMessageProfile:'',
+             errorMessage:action.message,
+            
+            };
+
+      case ActionTypes.CREATETEAM_FAILURE:
+          return {
+             ...state,errorMessageProfile:'',
+             
+             errorMessage:action.message,
+             
+            };
+
     default:
       return state;
   }
@@ -800,17 +816,17 @@ function widget(state = widgetState, action){
         ...state,
         companylogo:action.companylogo,
        }
-    case ActionTypes.ADD_CUSTOMER_TEAMS:
+    case ActionTypes.ADD_CUSTOMER_GROUPS:
           return {
             ...state,
-            teamdetails:action.teams,
+            groupdetails:action.groups,
            
 
             };
-    case ActionTypes.ADD_CUSTOMER_CHANNELS:
+    case ActionTypes.ADD_CUSTOMER_SUBGROUPS:
           return{
             ...state,
-            channels : action.channels,
+            subgroups : action.subgroups,
             
       };
 
@@ -835,10 +851,10 @@ function widget(state = widgetState, action){
         
 
       };
-    case ActionTypes.FILTER_CHANNELS:
+    case ActionTypes.FILTER_SUBGROUPS:
           return{
             ...state,
-            filterlist : state.channels.filter((channel) => channel.groupid == action.id),
+            filterlist : state.subgroups.filter((subgroup) => subgroup.groupid == action.id),
           
 
       };

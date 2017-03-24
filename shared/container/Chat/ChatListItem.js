@@ -72,8 +72,8 @@ if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.custome
 
 var ch=[]
      {
-         props.team && props.team.length > 0 &&
-                        props.team.map((grp, i) => (
+         props.group && props.group.length > 0 &&
+                        props.group.map((grp, i) => (
                            ag.push(grp)
                         ))
       console.log(ag);
@@ -82,8 +82,8 @@ var ch=[]
 
 
   {
-         props.channel &&
-                        props.channel.map((cha, i) => (
+         props.subgroup &&
+                        props.subgroup.map((cha, i) => (
                            ch.push(cha)
                         ))
 
