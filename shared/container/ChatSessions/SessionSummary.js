@@ -13,7 +13,7 @@ import { browserHistory } from 'react-router'
 class SessionSummary extends Component {
 
  constructor(props, context) {
-      //call action to get user teams
+      //call action to get user groups
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -179,8 +179,8 @@ class SessionSummary extends Component {
                                     <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
                                              <option value="all">All</option>
                                             {
-                                            this.props.teamdetails && this.props.teamdetails.map((team,i) =>
-                                              <option value={team._id}>{team.deptname}</option>
+                                            this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                                              <option value={group._id}>{group.deptname}</option>
 
                                               )
                                            }
@@ -194,8 +194,8 @@ class SessionSummary extends Component {
                                     <select  ref = "channellist" onChange={this.handleChangeChannel.bind(this)}   >
                                                <option value="all">All</option>
                                              {
-                                            this.props.channels && this.props.channels.map((channel,i) =>
-                                              <option value={channel._id}>{channel.msg_channel_name}</option>
+                                            this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
+                                              <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
 
                                               )
                                            }
@@ -218,10 +218,12 @@ class SessionSummary extends Component {
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
-                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
-                    {/* <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th> */}
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >SubGroup</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Assigned Agent</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Medium</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Request Time</th>
+                    
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
 
@@ -231,10 +233,10 @@ class SessionSummary extends Component {
 
                     <tbody>
                       {
-                        this.props.sessionsummaryfiltered && this.props.customers && this.props.channels && this.props.teamdetails && this.props.agents &&
+                        this.props.sessionsummaryfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.props.sessionsummaryfiltered.map((session, i) => (
 
-                           <SessionListItem session={session} key={session.request_id} agent={this.props.agents} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
+                           <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} customers={this.props.customers.filter((c) => c._id == session.customerid)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
 
                         ))
                       }
@@ -264,9 +266,9 @@ function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   console.log(state.dashboard.sessionsummaryfiltered);
   return {
-          channels:(state.dashboard.channels),
+          subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),
-          teamdetails :(state.dashboard.teamdetails),
+          groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

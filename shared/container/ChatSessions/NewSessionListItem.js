@@ -17,16 +17,16 @@ var rescheduled_by_name = []
   
   
   {
-         props.channels &&
-                        props.channels.map((cha, i) => (
+         props.subgroups &&
+                        props.subgroups.map((cha, i) => (
                            ch.push(cha)                            
                         ))
 
       }
  var gname =[]
      {
-         props.teams &&
-                        props.teams.map((cha, i) => (
+         props.groups &&
+                        props.groups.map((cha, i) => (
                            gname.push(cha)                            
                         ))
 

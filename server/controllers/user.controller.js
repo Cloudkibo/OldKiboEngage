@@ -1058,3 +1058,36 @@ export function getcompanylogo(req, res) {
     request.get(options, callback);
   }
 
+
+
+  export function getinvitedagents(req, res) {
+  console.log('get getinvitedagents is called');
+  var token = req.headers.authorization;
+  ////console.log('token received is  : ' + token);
+  var options = {
+      url: `${baseURL}/api/inviteagenttokens/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+
+
+    };
+    function callback(error, response, body) {
+      if(response.statusCode == 200) {
+        var info = JSON.parse(body);
+        ////console.log(response.statusCode)
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error});
+    }
+    }
+    request.get(options, callback);
+  }
+
+
+
+

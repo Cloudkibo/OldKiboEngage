@@ -19,6 +19,7 @@ import TeamDetailView from './container/Teams/TeamDetailView';
 import CreateTeam from './container/Teams/CreateTeam';
 
 import Agents from './container/Agents/Agents';
+import InvitedAgents from './container/Agents/InvitedAgents';
 import Chat from './container/Chat/Chat';
 import ClientChat from './container/Chat/ClientChat';
 import CompanySettings from './container/CompanySettings/CompanySettings';
@@ -163,6 +164,7 @@ const routes = (
     <Route path="/fbpages"  component={FbPages}  onEnter={requireAuth}/>
     <Route path="/editfbpage/:id" component={EditFbPage}  onEnter={requireAuth}/>
     <Route path="/widgetcode" component={Widget}  onEnter={requireAuth}/>
+    <Route path="/invitedagents" component={InvitedAgents}  onEnter={requireAuth}/>
 
      <Route path="/chatsessionview/:id"  component={SessionDetailView} onEnter={requireAuth}/>
      <Route path="/rescheduleresolvedsession/:id/:name/:email"  component={RescheduleResolvedSessions} onEnter={requireAuth}/>

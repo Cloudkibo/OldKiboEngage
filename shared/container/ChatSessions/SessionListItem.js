@@ -1,7 +1,15 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+var handleDate = function(d){
+  if(d && d!= ''){
+    var c = new Date(d);
+    return c.toDateString() + ' ' +c.getHours() + ':' + c.getMinutes();
+  }
 
+  
+
+}
 function SessionListItem(props) {
 var ch=[]
 
@@ -9,21 +17,21 @@ var ch=[]
 
 
   {
-         props.channels &&
-                        props.channels.map((cha, i) => (
+         props.subgroups &&
+                        props.subgroups.map((cha, i) => (
                            ch.push(cha)
                         ))
 
       }
  var gname =[]
      {
-         props.teams &&
-                        props.teams.map((cha, i) => (
+         props.groups &&
+                        props.groups.map((cha, i) => (
                            gname.push(cha)
                         ))
 
       }
-var agentname = []
+/*var agentname = []
 {
   if(props.agent.agent_ids && props.agent.agent_ids.length > 0){
     var agents = props.agent.filter((c) => c._id == props.session.agent_ids[props.session.agent_ids.length-1].id);
@@ -33,7 +41,7 @@ var agentname = []
                         ))
   }
 
-}
+}*/
   return (
 
       <tr className = "odd">
@@ -45,17 +53,20 @@ var agentname = []
         ch[0] &&
       <td>{ch[0].msg_channel_name}</td>
       }
-      {/*
-        props.agent && agentname[0] ?
-         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td> :
+       {
+        props.agent &&
+        props.agent && props.agent.length>0 ?
+         <td>{props.agent[0].firstname +' '+ props.agent[0].lastname}</td> :
           <td>-</td>
-      */
-      }
+      
+      
+    }
       {
         props.session.platform == "mobile"? <td>Mobile</td>:<td>Web</td>
       }
-
+      <td>{handleDate(props.session.requesttime)}</td>
       <td>{props.session.status}</td>
+
       {
         props.viewoption &&
         <td>

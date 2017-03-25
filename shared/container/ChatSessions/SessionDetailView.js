@@ -19,11 +19,11 @@ var handleDate = function(d){
 
 }
 
-var getchannelname = function(channels,id){
+var getchannelname = function(subgroups,id){
  var cname = ''
- for(var c=0;c<=channels.length - 1;c++){
-  if(channels[c]._id == id){
-    cname = channels[c].msg_channel_name;
+ for(var c=0;c<=subgroups.length - 1;c++){
+  if(subgroups[c]._id == id){
+    cname = subgroups[c].msg_channel_name;
     break;
   }
  }
@@ -100,8 +100,8 @@ var sessionsummarydetail = []
 
 var grpp = []
  {
-         this.props.teamdetails && sessionsummarydetail && sessionsummarydetail.length > 0 &&
-                        this.props.teamdetails.filter((c) => c._id == sessionsummarydetail[0].departmentid).map((grp, i) => (
+         this.props.groupdetails && sessionsummarydetail && sessionsummarydetail.length > 0 &&
+                        this.props.groupdetails.filter((c) => c._id == sessionsummarydetail[0].departmentid).map((grp, i) => (
                            grpp.push(grp)
                         ))
 
@@ -160,7 +160,7 @@ var grpp = []
                     </div>
 
                      <div className="form-group">
-                      <label className="control-label col-md-3"> Team </label>
+                      <label className="control-label col-md-3"> Group </label>
                        <div className="col-md-9">
                             <input className="form-control" type='text' value = {grpp[0].deptname}/>
 
@@ -192,13 +192,13 @@ var grpp = []
                     </div>
 
                     <div className="form-group">
-                      <label className="control-label col-md-3"> Message Channels Assignments </label>
+                      <label className="control-label col-md-3"> SubGroups Assignments </label>
                        <div className="col-md-9">
                        <ul>
                           {
                             sessionsummarydetail[0] && sessionsummarydetail[0].messagechannel &&
                            sessionsummarydetail[0].messagechannel.map((ch, i) => (
-                               <li>{getchannelname(this.props.channels,ch)}</li>
+                               <li>{getchannelname(this.props.subgroups,ch)}</li>
                             ))
                           }
                           </ul>
@@ -352,9 +352,9 @@ SessionDetailView.contextTypes = {
 
 function mapStateToProps(state) {
   return {
-          channels:(state.dashboard.channels),
+          subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),
-          teamdetails :(state.dashboard.teamdetails),
+          groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

@@ -13,7 +13,7 @@ import { browserHistory } from 'react-router'
 class AssignedSessions extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user groups 
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -91,6 +91,7 @@ class AssignedSessions extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Platform</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Request Time</th>
                     
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
                       
@@ -100,20 +101,20 @@ class AssignedSessions extends Component {
 
                     <tbody>                    
                       {
-                        this.props.assignedsocketsessions && this.props.customers && this.props.channels && this.props.teamdetails && this.props.agents &&
+                        this.props.assignedsocketsessions && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.props.assignedsocketsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)}  channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)}/>
+                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
 
 
                       {
-                        this.props.assignedsessions && this.props.customers && this.props.channels && this.props.teamdetails && this.props.agents &&
+                        this.props.assignedsessions && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.props.assignedsessions.map((session, i) => (
                           
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)}/>
+                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
@@ -139,9 +140,9 @@ AssignedSessions.propTypes = {
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   return {
-          channels:(state.dashboard.channels),
+          subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),
-          teamdetails :(state.dashboard.teamdetails),
+          groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

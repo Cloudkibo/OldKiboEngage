@@ -607,6 +607,24 @@ else{
 /*              AGENT RELATED actions                                                              */
 /***************************************************************************************************/
 
+export function showInvitedAgents(invitedagents) {
+  return {
+    type: ActionTypes.ADD_INVITED_AGENTS,
+    invitedagents,
+
+  };
+}
+export function getinvitedagents(usertoken){
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getinvitedagents`, {
+        method: 'get',
+        headers: new Headers({
+        'Authorization': usertoken,
+       
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showInvitedAgents(res)));
+  };
+}
 export function getAgentRequest(id,usertoken) {
   console.log(id)
   return {

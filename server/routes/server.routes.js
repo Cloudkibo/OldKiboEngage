@@ -22,7 +22,7 @@ router.route('/joinTeam').post(TeamController.joinTeam);
 router.route('/deleteTeam').delete(TeamController.destroyTeam);
 router.route('/editteam').post(TeamController.editteam);
 router.route('/teamagents').get(TeamController.teamagents);
-
+router.route('/getinvitedagents').get(UserController.getinvitedagents);
 
 
 

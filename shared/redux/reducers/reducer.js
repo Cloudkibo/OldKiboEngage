@@ -75,7 +75,12 @@ const dashboard = (state =dashboardState, action) => {
 
       };
 
-
+   case ActionTypes.ADD_INVITED_AGENTS:
+         return {
+          ...state,errorMessageProfile:'',
+        invitedagents: action.invitedagents,
+        }
+      
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
         ...state,errorMessageProfile:'',

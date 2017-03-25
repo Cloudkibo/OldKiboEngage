@@ -122,6 +122,19 @@ class SideBar extends Component
               </li>
                 :<li></li>
                 }
+
+               <li className="">
+                <Link to= '/invitedagents'>
+                  <i className="fa fa-user">
+                  </i>
+                  <span className="title">
+                     Invited Agents
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+                
               <li className="">
                 <Link to='/groups'>
                   <i className="fa fa-group">
