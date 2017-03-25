@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 var Highcharts = require('highcharts')
 
-class Channelwise extends React.Component {
+class Subgroupwise extends React.Component {
   constructor(props) {
       super(props);
         this.chart = undefined;
@@ -59,4 +59,4 @@ class Channelwise extends React.Component {
   }
 }
 
-export default Channelwise
+export default Subgroupwise

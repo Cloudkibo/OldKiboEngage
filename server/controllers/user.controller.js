@@ -854,63 +854,96 @@ export function updatesettings (req,res) {
   //  console.log(req.body);
   //  console.log(req.files);
     var company = JSON.parse(req.body.companyprofile);
-  //  console.log(company);
+    console.log(company);
     var token = req.headers.authorization;
 
+    if(req.files.file)
+    {
 
+            var serverPath = req.files.file.originalFilename;
+            //serverPath += '.' + req.files.file.type.split('/')[1];
 
-    var serverPath = req.files.file.originalFilename;
-    //serverPath += '.' + req.files.file.type.split('/')[1];
+          //console.log(__dirname);
+          //console.log(req.headers);
+          var dir = "./static/companyfiles";
+         
+          if(req.files.file.size == 0) return res.send('No file submitted');
 
-  //console.log(__dirname);
-  //console.log(req.headers);
-  var dir = "./static/companyfiles";
- 
-  if(req.files.file.size == 0) return res.send('No file submitted');
+          fs.readFile(req.files.file.path, function (err, data) {
+             var pathNew = dir + "/" + serverPath;
+             console.log(pathNew); 
+            company.widgetlogoURL = './companyfiles/'+serverPath;
+            var options = {
+              url: `${baseURL}/api/companyprofiles/updatecompanyprofile`,
+              rejectUnauthorized : false,
+              headers :  {
+                         'Authorization': `Bearer ${token}`,
 
-  fs.readFile(req.files.file.path, function (err, data) {
-     var pathNew = dir + "/" + serverPath;
-     console.log(pathNew); 
-    company.widgetlogoURL = './companyfiles/'+serverPath;
-    var options = {
-      url: `${baseURL}/api/companyprofiles/updatecompanyprofile`,
-      rejectUnauthorized : false,
-      headers :  {
-                 'Authorization': `Bearer ${token}`,
+                         },
+              json:company
+            };
+               
+                console.log(company);
 
-                 },
-      json:company
-    };
-       
-        console.log(company);
+                fs.writeFile(pathNew, data, function (err) {
+                  if(!err){
+                   function callback(error, response, body) {
+                            //console.log(body);
+                            if (!error && response.statusCode == 200) {
 
-        fs.writeFile(pathNew, data, function (err) {
-          if(!err){
-           function callback(error, response, body) {
-                    //console.log(body);
-                    if (!error && response.statusCode == 200) {
+                              console.log('api calling succeed')
+                              return res.status(200).send({status:'success',message:'Information has been updated successfully.',company:company});
 
-                      console.log('api calling succeed')
-                      return res.status(200).send({status:'success',message:'Information has been updated successfully.'});
+                            }
 
-                    }
+                            else
+                            {
+                              //console.log(error);
 
-                    else
-                    {
-                      //console.log(error);
+                              res.status(501).send({status:'danger',message:body.msg,statusCode:501});
+                            }
+                           }
+                             request.post(options, callback);
 
-                      res.status(501).send({status:'danger',message:body.msg,statusCode:501});
-                    }
-                   }
-                     request.post(options, callback);
+                  }
 
-          }
+                });
+            });
 
-        });
-    });
+        }
+      else{
+        var options = {
+              url: `${baseURL}/api/companyprofiles/updatecompanyprofile`,
+              rejectUnauthorized : false,
+              headers :  {
+                         'Authorization': `Bearer ${token}`,
 
+                         },
+              json:company
+            };
+               
+            
+          function callback(error, response, body) {
+                            //console.log(body);
+                            if (!error && response.statusCode == 200) {
 
+                              console.log('api calling succeed')
+                              return res.status(200).send({status:'success',message:'Information has been updated successfully.',company:company});
 
+                            }
+
+                            else
+                            {
+                              //console.log(error);
+
+                              res.status(501).send({status:'danger',message:body.msg,statusCode:501});
+                            }
+                           }
+                           request.post(options, callback);
+
+                  
+
+      }
   
 
 };

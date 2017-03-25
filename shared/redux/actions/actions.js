@@ -2624,6 +2624,17 @@ export function showUpdateProfile(msg){
 
   };
 }
+
+//update profile
+export function showUpdateSettings(msg){
+  console.log(msg);
+  return {
+    type: ActionTypes.ADD_UPDATE_SETTINGS,
+    errormessage : msg,
+    companysettings:msg.company,
+
+  };
+}
 export function showCreatePage(msg){
   console.log(msg);
   return {
@@ -2712,16 +2723,21 @@ export function createPage(fbpage,token) {
   };
 }
 
-export function updatesettings(file,companyprofile,token) {
-  console.log(token);
-  var fileData = new FormData();
+export function updatesettings(file,companyprofile,token,logoAlready) {
+ var fileData = new FormData();
+  if(logoAlready == true){
+        fileData.append('companyprofile',JSON.stringify(companyprofile));
+
+  }
+  else{
   fileData.append('file', file);
   fileData.append('filename', file.name);
   fileData.append('filetype', file.type);
   fileData.append('filesize', file.size);
   fileData.append('companyprofile',JSON.stringify(companyprofile));
+  }
   console.log(fileData);
- 
+  
   return (dispatch) =>
     fetch(`${baseURL}/api/updatesettings`, {
 
@@ -2730,7 +2746,7 @@ export function updatesettings(file,companyprofile,token) {
         headers: new Headers({
         'Authorization': token,
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateSettings(res))
       );
   };
 
@@ -2803,7 +2819,7 @@ export function filterbysessionDept(id,sessionsummary) {
 }
 
 export function filterbysessionMedium(medium, sessionsummary) {
-  alert(medium)
+//  alert(medium)
   var sessionsummaryfiltered;
   if(medium == "all")
   {
@@ -2829,7 +2845,7 @@ export function filterbysessionSubgroup(id,sessionsummary) {
   }
   else{
 
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagesubgroup[c.messagesubgroup.length-1] == id)
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length-1] == id)
 
   }
    return {
@@ -2849,7 +2865,7 @@ export function filterbysessionAgent(id,sessionsummary) {
   }
   else{
 
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids[c.agent_ids.length-1] == id)
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == id)
 
   }
    return {

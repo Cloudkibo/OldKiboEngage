@@ -87,8 +87,8 @@ class AssignedSessions extends Component {
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
-                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Message Channel</th>
+                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >SubGroup</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Platform</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Request Time</th>

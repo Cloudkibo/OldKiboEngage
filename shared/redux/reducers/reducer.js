@@ -283,6 +283,14 @@ const dashboard = (state =dashboardState, action) => {
            
 
           };
+
+          case ActionTypes.ADD_UPDATE_SETTINGS:
+           return {
+          ...state,
+           errorMessageProfile : action.errormessage,
+           companysettings:action.companysettings,
+
+          };
           case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
 
           return {

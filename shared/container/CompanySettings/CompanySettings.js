@@ -48,6 +48,7 @@ class CompanySettings extends Component {
 
 
   }
+ 
   _onChange(e) {
     e.preventDefault();
     let files;
@@ -76,6 +77,8 @@ class CompanySettings extends Component {
       
       if(this.props.userdetails.isAdmin === "Yes"){
        console.log(this.state.userfile)
+       if(this.state.src == '' )
+       {
        var companyprofile = {
                     'abandonedscheduleemail1':this.refs.abandonedscheduleemail1.value,
                     'abandonedscheduleemail2':this.refs.abandonedscheduleemail2.value,
@@ -96,12 +99,45 @@ class CompanySettings extends Component {
                     'allowsmsnotification':this.refs.allowsmsnotification.options[this.refs.allowemailnotification.selectedIndex].value,
                     'isdomainemail':this.refs.isdomainemail.options[this.refs.isdomainemail.selectedIndex].value,
                     'allowChat':this.refs.allowChat.options[this.refs.allowChat.selectedIndex].value,
-                    'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value
+                    'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value,
+                    'widgetlogoURL': this.props.companysettings.widgetlogoURL
                   }
                   console.log(companyprofile);
-                  this.props.updatesettings(this.state.userfile,companyprofile,usertoken);
+                  this.props.updatesettings(this.state.userfile,companyprofile,usertoken,true);
                 
               }
+
+          else{
+             {
+       var companyprofile = {
+                    'abandonedscheduleemail1':this.refs.abandonedscheduleemail1.value,
+                    'abandonedscheduleemail2':this.refs.abandonedscheduleemail2.value,
+                    'abandonedscheduleemail3':this.refs.abandonedscheduleemail3.value,
+                    'completedscheduleemail1': this.refs.completedscheduleemail1.value,
+                    'completedscheduleemail2': this.refs.completedscheduleemail2.value,
+                    'completedscheduleemail3':this.refs.completedscheduleemail3.value,
+                    'invitedscheduleemail1':this.refs.invitedscheduleemail1.value,
+                    'invitedscheduleemail2':this.refs.invitedscheduleemail2.value,
+                    'invitedscheduleemail3':this.refs.invitedscheduleemail3.value,
+                    'maxnumberofdepartment':this.refs.maxnumberofdepartment.value,
+                    'maxnumberofchannels':this.refs.maxnumberofchannels.value,
+                    'notificationemailaddress':this.refs.notificationemailaddress.value,
+                    'widgetwindowtab':this.refs.widgetwindowtab.options[this.refs.widgetwindowtab.selectedIndex].value,
+                    'showsummary':this.refs.showsummary.options[this.refs.showsummary.selectedIndex].value,
+                    'smsphonenumber':this.refs.smsphonenumber.value,
+                    'allowemailnotification':this.refs.allowemailnotification.options[this.refs.allowemailnotification.selectedIndex].value,
+                    'allowsmsnotification':this.refs.allowsmsnotification.options[this.refs.allowemailnotification.selectedIndex].value,
+                    'isdomainemail':this.refs.isdomainemail.options[this.refs.isdomainemail.selectedIndex].value,
+                    'allowChat':this.refs.allowChat.options[this.refs.allowChat.selectedIndex].value,
+                    'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value,
+                    
+                  }
+                  console.log(companyprofile);
+                  this.props.updatesettings(this.state.userfile,companyprofile,usertoken,false);
+                
+              }
+            }
+          }
       else {
                 alert("You can not update company settings. Only admin has the access to do it.")
               }
@@ -157,7 +193,7 @@ class CompanySettings extends Component {
                 <form  className ="form-horizontal form-bordered css-form">
                   <div className="form-body">
                                               <div className="form-group">
-                                                <label className="control-label col-md-3">Max number of Teams</label>
+                                                <label className="control-label col-md-3">Max number of Groups</label>
 
                                                 <div className="col-md-9">
                                                   <div id="spinner1">
@@ -171,7 +207,7 @@ class CompanySettings extends Component {
 
 
                                               <div className="form-group">
-                                                <label className="control-label col-md-3">Max number of Channels per team</label>
+                                                <label className="control-label col-md-3">Max number of Subgroups per Group</label>
 
                                                 <div className="col-md-9">
                                                   <div id="spinner1">

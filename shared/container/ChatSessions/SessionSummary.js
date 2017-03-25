@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
-import {getsessions,getcustomers,filterbysessionMedium,filterbysessionDept,filterbysessionChannel,filterbysessionAgent,filterbysessionstatus} from '../../redux/actions/actions'
+import {getsessions,getcustomers,filterbysessionMedium,filterbysessionDept,filterbysessionSubgroup,filterbysessionAgent,filterbysessionstatus} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
@@ -79,7 +79,7 @@ class SessionSummary extends Component {
     }
      handleChangeChannel(e){
      //alert(e.target.value);
-     this.props.filterbysessionChannel(e.target.value,this.props.sessionsummary);
+     this.props.filterbysessionSubgroup(e.target.value,this.props.sessionsummary);
      this.forceUpdate();
 
 
@@ -136,8 +136,8 @@ class SessionSummary extends Component {
                                   <th className="col-md-1">Status</th>
                                   <th className="col-md-1">Medium</th>
                                   <th className="col-md-1">Agents</th>
-                                  <th className="col-md-1">Team</th>
-                                  <th className="col-md-1">Message Channel</th>
+                                  <th className="col-md-1">Group</th>
+                                  <th className="col-md-1">Sub Group</th>
                                 </tr>
                                 <tr>
                                   <td className="col-md-1">
@@ -147,7 +147,7 @@ class SessionSummary extends Component {
                                             <option value="new">New</option>
                                             <option value="assigned">Assigned</option>
                                             <option value="resolved">Resolved</option>
-                                            <option value="archived">Archived</option>
+                                            
                                         </select>
                                   </td>
                                   <td className="col-md-1">
@@ -195,7 +195,7 @@ class SessionSummary extends Component {
                                                <option value="all">All</option>
                                              {
                                             this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
-                                              <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+                                                    <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
 
                                               )
                                            }
@@ -235,10 +235,12 @@ class SessionSummary extends Component {
                       {
                         this.props.sessionsummaryfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.props.sessionsummaryfiltered.map((session, i) => (
-
+                            session.agent_ids.length>0?
                            <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} customers={this.props.customers.filter((c) => c._id == session.customerid)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
-
-                        ))
+                           :
+                            <SessionListItem session={session} key={session.request_id} customers={this.props.customers.filter((c) => c._id == session.customerid)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
+                          
+                            ))
                       }
 
 
@@ -284,6 +286,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,filterbysessionMedium:filterbysessionMedium,filterbysessionDept:filterbysessionDept,filterbysessionChannel:filterbysessionChannel,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus}, dispatch);
+  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,filterbysessionMedium:filterbysessionMedium,filterbysessionDept:filterbysessionDept,filterbysessionSubgroup:filterbysessionSubgroup,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(SessionSummary);
