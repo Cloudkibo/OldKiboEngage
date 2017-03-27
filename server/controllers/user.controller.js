@@ -151,12 +151,12 @@ export function getuser(req, res) {
       if(response.statusCode == 200) {
         var info = JSON.parse(body);
         ////console.log(response.statusCode)
-      return res.status(200).json(info);
+      return res.status(200).json({status:200,info:info});
     }
 
     else
     {
-     return res.status(422).json({message:error});
+     return res.status(422).json({status:422,message:error});
     }
     }
     request.get(options, callback);

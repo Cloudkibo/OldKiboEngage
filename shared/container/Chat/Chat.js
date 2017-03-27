@@ -35,7 +35,7 @@ class Chat extends Component {
 
        //but for mobile clients we will fetch list of sessions and customers from server
         props.getmobilesessions(usertoken);
-        props.getuserchats(usertoken);
+       // props.getuserchats(usertoken);
 
         props.getresponses(usertoken);
 
@@ -60,7 +60,7 @@ class Chat extends Component {
 
 syncdata(){
  // alert('You are connected to socket. Joining now!');
-  this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
+  //this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
   this.props.route.socket.emit('getOnlineAgentList');
   //this.props.route.socket.emit('returnMySocketId');
   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
@@ -217,19 +217,22 @@ componentDidMount(){
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-    //alert('getupdatedChats is called' + data.length);
-/*    if(this.props.userchats){
-    this.props.getchatsfromsocket(this.props.userchats,data);
+   // alert('getupdatedChats is called' + data.length);
+  /*if(this.props.userchats){
+   // this.props.getchatsfromsocket(this.props.userchats,data);
   }
   else{
     this.props.getchatsfromsocket([],data);
   }*/
+
         //this.props.mobileuserchat.push(message);
     /*  alert(this.props.userchats.length);
       this.props.userchats.push(data);*/
       //this.props.getchatsfromsocket(this.props.userchats,'uniqueid');
      // alert(this.props.userchats.length);
-  //  this.forceUpdate();
+      this.props.previousChat(data,this.props.chatlist);
+  
+   // this.forceUpdate();
   }
 
 
@@ -422,9 +425,9 @@ componentDidMount(){
 
                                     (this.props.new_message_arrived_rid ?
 
-                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :"" }  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
+                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
                                     :
-                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {(this.refs.sessionid)? this.refs.sessionid.value :""} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
+                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
                                   )
 
 

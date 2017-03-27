@@ -146,8 +146,19 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-
               <li className="">
+                <Link to="/subgroups">
+                  <i className="fa fa-envelope-square">
+                  </i>
+                  <span className="title">
+                     Sub Groups
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+
+              {/*<li className="">
                 <Link to='/teams'>
                   <i className="fa fa-group">
                   </i>
@@ -157,7 +168,7 @@ class SideBar extends Component
                   <span className="selected">
                   </span>
                 </Link>
-              </li>
+              </li>*/}
 
               <li className="">
                 <Link to="/reports">
@@ -181,17 +192,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              <li className="">
-                <Link to="/subgroups">
-                  <i className="fa fa-envelope-square">
-                  </i>
-                  <span className="title">
-                     Sub Groups
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
+              
                <li className="">
                 <Link to="/cannedresponses">
                   <i className="fa fa-envelope-square">

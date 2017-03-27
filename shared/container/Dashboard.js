@@ -66,7 +66,7 @@ class Dashboard extends Component {
      
    
      
-      //alert('calling meeting')
+    //  alert('calling room join')
       this.props.route.socket.emit('create or join meeting for agent', {room: props.userdetails.uniqueid,agentEmail : props.userdetails.email,agentName : props.userdetails.firstname+' ' + props.userdetails.lastname,agentId:props.userdetails._id});
   
 
@@ -102,7 +102,7 @@ callSocket(){
     if(this.props.userdetails.uniqueid && this.props.userjoinedroom == 'notjoined'){
       this.props.setjoinedState('joining');
      
-      alert('calling meeting')
+     // alert('calling meeting')
       this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
   
 

@@ -64,7 +64,7 @@ componentDidMount(){
   }
 
   add(name,description,deptagents) {
-    alert('called');
+   // alert('called');
      const usertoken = auth.getToken();
      if(this.props.customers){
         this.props.creategroup({ name,description,usertoken,deptagents },this.props.customers.filter((c) => c.isMobileClient == "true"));

@@ -57,7 +57,8 @@ function receiveLogout() {
   return {
     type: ActionTypes.LOGOUT_SUCCESS,
     isFetching: false,
-    isAuthenticated: false
+    isAuthenticated: false,
+
   }
 }
 
@@ -197,6 +198,8 @@ export function logoutUser() {
     dispatch(requestLogout())
     cookie.remove('token', { path: '/' });
     dispatch(receiveLogout())
+
+    dispatch(setjoinedState('notjoined'));
     browserHistory.push('/login')
   }
 }
@@ -322,7 +325,15 @@ export function getuser(token) {
         'Authorization': token,
         'Pragma': 'no-cache'
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showUsername(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => {
+     if(res.status == 200){
+            dispatch(showUsername(res.info));
+     } 
+     else{
+        cookie.remove('token', { path: '/' });
+        browserHistory.push('/login');
+     }
+    });
   };
 }
 
@@ -2434,10 +2445,12 @@ export function setsocketid(yoursocketid){
   };
 }
 
-export function getchatsfromsocket(originalArray,prop){
-     var newArray = [];
+export function getchatsfromsocket(originalArray,newchats){
+     
+    alert('state type');
+     var newArray = originalArray.push.apply(originalArray,newchats);
      var lookupObject  = {};
-
+     var prop = 'uniqueid';
      for(var i in originalArray) {
         lookupObject[originalArray[i][prop]] = originalArray[i];
      }
@@ -2448,6 +2461,7 @@ export function getchatsfromsocket(originalArray,prop){
    return {
     type: ActionTypes.ADD_USER_CHATS,
     userchats : newArray,
+    chatlist: newArray,
 
 
   };
@@ -2515,13 +2529,15 @@ export function showuserchatspecific_mobile(userchats) {
 export function getuserchats(token) {
   console.log(token);
   return (dispatch) => {
+    //uncomment for mobile sessions
     fetch(`${baseURL}/api/getuserchats`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showuserchat(res.userchats)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showuserchat(res.userchats))); 
+    //dispatch(showuserchat([]));
   };
 }
 

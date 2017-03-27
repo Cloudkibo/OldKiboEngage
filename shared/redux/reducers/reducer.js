@@ -21,7 +21,7 @@ function removeDuplicates(originalArray, prop) {
 
 
 const initialState = { signupwarnings: {},userdetails : {}};
-const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined'};
+const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined',userchats:[],chatlist:[]};
 const widgetState ={groupdetails:[],subgroups:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
@@ -411,17 +411,10 @@ const dashboard = (state =dashboardState, action) => {
 
             };
           case ActionTypes.ADD_USER_CHATS:
-          var usChat = []
-          if(action.userchats.length>0 ){
-            usChat = action.userchats;
-
-          }
-          else{
-             usChat = state.userchats
-          }
            return {
             ...state,errorMessageProfile:'',
-            userchats : usChat,
+            userchats: action.userchats,
+            chatlist: action.chatlist,
             
             };
 
@@ -929,7 +922,8 @@ function auth(state = {isAuthenticated: false}, action) {
       return Object.assign({}, state, {
         isFetching: true,
         isAuthenticated: false,
-        errormessage:''
+        errormessage:'',
+
       })
     default:
       return state
