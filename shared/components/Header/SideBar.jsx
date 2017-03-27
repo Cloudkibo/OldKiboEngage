@@ -25,7 +25,7 @@ class SideBar extends Component
 
               <li className="">
                 <Link to='/notifications'>
-                  <i className="fa fa-envelope">
+                  <i className="fa fa-bell">
                   </i>
                   <span className="title">
                    Notifications
@@ -58,7 +58,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              
+
               <li className="">
                 <Link to='/assignedchatsessions'>
                   <i className="fa fa-chain">
@@ -134,7 +134,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-                
+
               <li className="">
                 <Link to='/groups'>
                   <i className="fa fa-group">
@@ -192,7 +192,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              
+
                <li className="">
                 <Link to="/cannedresponses">
                   <i className="fa fa-envelope-square">
@@ -216,7 +216,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              
+
               <li className="">
                 <Link to="/fbpages">
                   <i className="fa fa-facebook">

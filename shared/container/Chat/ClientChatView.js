@@ -21,6 +21,7 @@ class ClientChatView extends Component {
        this.getAgentSocket = this.getAgentSocket.bind(this);
        this.connectToCall = this.connectToCall.bind(this);
        this.connectCall = this.connectCall.bind(this);
+       this.sendMessage = this.sendMessage.bind(this);
   }
 
  connectCall(data){
@@ -153,6 +154,72 @@ class ClientChatView extends Component {
       }
     }
 
+  sendMessage(e) {
+   const { socket,dispatch } = this.props;
+
+    if (this.refs.msg.value!='') {
+
+       var message;
+       e.preventDefault();
+          //generate unique id of message - this change is for mobile clients
+       var today = new Date();
+       var uid = Math.random().toString(36).substring(7);
+       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+       var saveChat={}
+       if(this.refs.agentemail.value == ''){
+
+       saveChat = {
+                         'to' : 'All Agents',
+                         'from' : this.refs.name.value,
+                          'visitoremail' : this.refs.email.value,
+                          'type': 'message',
+                          'uniqueid' : unique_id,
+                          'msg' : this.refs.msg.value,
+                          'datetime' : Date.now(),
+                          'request_id' : this.refs.reqId.value,
+                          'messagechannel': this.refs.channelid.value,
+                          'companyid': this.props.sessiondetails.companyid,
+                          'is_seen':'no',
+                          'time' : moment.utc().format('lll'),
+                          'fromMobile' : 'no',
+                          'departmentid' : this.props.sessiondetails.departmentid,
+
+
+                     }
+                   }
+           else{
+                      saveChat = {
+                         'to' : this.refs.agentname.value,
+                         'from' : this.refs.name.value,
+                         'visitoremail' : this.refs.email.value,
+                         'agentemail' : this.props.sessiondetails.agentemail,
+                         'agentid': this.refs.agentid.value.trim().split(" "),
+                         'toagent' : this.refs.agentemail.value.trim().split(" ") ,
+                         'type': 'message',
+                         'uniqueid' : unique_id,
+                          'msg' : this.refs.msg.value,
+                          'datetime' : Date.now(),
+                          'time' : moment.utc().format('lll'),
+                          'request_id' : this.refs.reqId.value,
+                          'messagechannel': this.refs.channelid.value,
+                          'companyid': this.props.sessiondetails.companyid,
+                          'is_seen':'no',
+                          'fromMobile' : 'no',
+                          'socketid' : this.props.roomdetails.socketid,
+                          'departmentid' : this.props.sessiondetails.departmentid,
+                     }
+                   }
+        this.props.chatlist.push(saveChat);
+
+        //socket.emit('send:messageToAgent', saveChat);
+      this.props.sendmessageToAgent(saveChat);
+      this.props.savechat(saveChat);
+      this.refs.msg.value ='';
+      this.forceUpdate();
+     }
+   }
+
   connectToCall(e){
     const { socket,dispatch } = this.props;
 
@@ -269,12 +336,11 @@ class ClientChatView extends Component {
                     <div className="input-group">
                         <input id="btn-input" type="text" ref = "msg" className="form-control input-sm" placeholder="Type your message here..." onKeyDown={this.handleMessageSubmit}/>
                         <span className="input-group-btn">
-                            <button className="btn btn-warning btn-sm" id="btn-chat" onClick ={this.handleMessageSubmit}>
+                            <button className="btn btn-warning btn-sm" id="btn-chat" onClick ={this.sendMessage}>
                                 Send</button>
                         </span>
                     </div>
                 </div>
-
              <br/>
              {this.refs.agentname && this.refs.agentname.value && this.refs.agentname.value != '' ?
               <button className="btn green" onClick ={this.connectToCall}> Start Call </button> :
@@ -304,7 +370,7 @@ function mapStateToProps(state) {
     chatlist :(state.dashboard.chatlist),
     channels :(state.dashboard.channels),
     customers:(state.dashboard.customers),
-   
+
      };
 }
 

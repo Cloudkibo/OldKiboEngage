@@ -36,7 +36,7 @@ class CompanySettings extends Component {
         super(props, context);
         this.onSubmit = this.onSubmit.bind(this);
         this.state = {
-         
+
           src : '',
           userfile:null,
 
@@ -48,7 +48,7 @@ class CompanySettings extends Component {
 
 
   }
- 
+
   _onChange(e) {
     e.preventDefault();
     let files;
@@ -74,7 +74,7 @@ class CompanySettings extends Component {
      const usertoken = auth.getToken();
 
       var fileData = new FormData();
-      
+
       if(this.props.userdetails.isAdmin === "Yes"){
        console.log(this.state.userfile)
        if(this.state.src == '' )
@@ -104,7 +104,7 @@ class CompanySettings extends Component {
                   }
                   console.log(companyprofile);
                   this.props.updatesettings(this.state.userfile,companyprofile,usertoken,true);
-                
+
               }
 
           else{
@@ -130,11 +130,11 @@ class CompanySettings extends Component {
                     'isdomainemail':this.refs.isdomainemail.options[this.refs.isdomainemail.selectedIndex].value,
                     'allowChat':this.refs.allowChat.options[this.refs.allowChat.selectedIndex].value,
                     'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value,
-                    
+
                   }
                   console.log(companyprofile);
                   this.props.updatesettings(this.state.userfile,companyprofile,usertoken,false);
-                
+
               }
             }
           }
@@ -143,7 +143,7 @@ class CompanySettings extends Component {
               }
 
                event.preventDefault();
-      
+
     }
 
 
@@ -174,7 +174,7 @@ class CompanySettings extends Component {
 
                       </li>
                       <li>
-                        <Link to="/companysettings"> Company Settings </Link>
+                        <Link to="/companyprofile"> Company Settings </Link>
                       </li>
 
                     </ul>
@@ -354,12 +354,12 @@ class CompanySettings extends Component {
                                                   <textarea id="maxlength_textarea" ref= "abandonedscheduleemail1" defaultValue={this.props.companysettings.abandonedscheduleemail1} maxlength="5000" rows="2" placeholder="Type here" style={style1} className="form-control"></textarea>
                                                 </div>
                                               </div>
-                                             
+
                                               <div className="form-group">
                                                 <label className="control-label col-md-3">Logo for Client Widget</label>
                                                  {
                                                 this.props.companysettings.widgetlogoURL?
-                                              
+
                                                 <div className="col-md-9">
                                                   <img ref="widgetlogo"  src={this.props.companysettings.widgetlogoURL} style={{'width':'200px','height':'200px'}} />
                                                 </div>:<div className="hide"></div>
@@ -367,7 +367,7 @@ class CompanySettings extends Component {
                                                 <div>
                                                        <input type="file" onChange={this._onChange} className="pull-left"/>
 
-                                                       
+
                                                 </div>
                                               </div>
 
@@ -417,7 +417,7 @@ class CompanySettings extends Component {
                                                 </div>
                                               </div>
 
-                                              
+
                                               </div>
 
                                                {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "danger" &&

@@ -17,39 +17,38 @@ class AuthorizedHeader extends Component
 
 
     super(props, context);
-    
+
   }
 
  onClickNews(news,e){
  e.preventDefault();
  const usertoken = auth.getToken();
-    
- alert('news is clicked');
+
  this.props.updatenews(news,usertoken);
  }
   componentDidMount(){
 
        const usertoken = auth.getToken();
        this.props.getnews(this.props.user._id,usertoken);
-     
+
   }
 
   render()
   {
     return (
-    
+
       <div  className = "page-header navbar" >
         <div className="page-header-inner">
           <div className = "page-logo" >
               <a href = '/' >
                 <h4> KiboEngage </h4>
               </a>
-             
+
           </div >
           <div className="top-menu">
             <ul  className ="nav navbar-nav pull-right">
                     {this.props.news &&
-                        
+
                   <li className="dropdown dropdown-extended dropdown-notification" >
                       <a href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                       <i className="fa fa-bell-o"></i>
@@ -58,14 +57,14 @@ class AuthorizedHeader extends Component
                      <ul className="dropdown-menu">
                           <li className="external">
                             <h3><span className="bold">{this.props.news.length}</span> notifications</h3>
-                            <a href="extra_profile.html">view all</a>
+                            <a>view all</a>
                           </li>
-                       
+
                           <li>
                               <ul className="dropdown-menu-list scroller" style={{height: 250+'px',overflowY: 'scroll'}} data-handle-color="#637283">
                                   {
                                     this.props.news && this.props.news.map((news, i) => (
-                      
+
                                   <li onClick={this.onClickNews.bind(this,news)}>
                                     <Link to='#'>
                                           <span className="time">{handleDate(news.dateCreated)}</span>
@@ -80,7 +79,7 @@ class AuthorizedHeader extends Component
 
                                   }
                                 </ul>
-                              </li>  
+                              </li>
                      </ul>
                   </li>
             }
@@ -97,29 +96,29 @@ class AuthorizedHeader extends Component
                                     <i className="fa fa-user"/>
                                     My Profile
                                   </Link>
-                                </li> 
-                                
-                                
+                                </li>
+
+
                                 <li>
 
                                   <Link to="/mypickedchatsessions">
                                     <i className="fa fa-phone-square"/>
                                      My Picked Sessions
                                   </Link>
-                                </li> 
-                                
+                                </li>
+
                                 <li>
                                  <Logout roomid = {this.props.roomid}/>
                                 </li>
-                              
-                                         
-                            </ul>    
+
+
+                            </ul>
               </li>
             </ul>
           </div>
-             
-          
-          
+
+
+
     </div >
     </div>
 
@@ -129,7 +128,7 @@ class AuthorizedHeader extends Component
 
 function mapStateToProps(state) {
    return {
-    
+
     team: (state.dashboard.team),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
@@ -141,5 +140,3 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps,{ getnews,updatenews})(AuthorizedHeader);
-
-
