@@ -74,7 +74,7 @@ import io from 'socket.io-client'
 import FbChat from './container/facebookChat/FbChat'
 import Widget from './container/Widget/widget'
 let socket = io('')
-
+console.log('entered into routes');
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
     console.log('you are not logged in.');

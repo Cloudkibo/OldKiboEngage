@@ -64,6 +64,8 @@ function onDisconnect(io2, socket) {
   console.log('calling onDisconnect  :' + socket.id);
   //Remove agent from onlineAgents array
   var room;
+  console.log(socket.id);
+  console.log(onlineAgents);
   for(var j = 0;j<onlineAgents.length ;j++){
     if(onlineAgents[j].socketid == socket.id){
       console.log('Remove agent with  email : ' + onlineAgents[j].email);
@@ -826,7 +828,9 @@ socket.on('getOnlineAgentList',function() {
 
     console.log('agent leaving the room now '+ JSON.stringify(room));
 
+ 
     socket.leave(room.room);
+     //socket.emit('disconnect');
 
 
 
