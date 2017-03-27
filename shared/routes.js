@@ -30,10 +30,10 @@ import EditFbPage from './container/facebookPages/EditFbPage';
 import FbPages from './container/facebookPages/FbPages';
 
 import AgentEditView from './container/Agents/AgentEditView';
-import SubgroupCreate from './container/Subgroup/SubGroupCreate'
+import SubgroupCreate from './container/SubGroup/SubGroupCreate'
 import GroupCreateView from './container/Groups/GroupCreateView';
-import SubGroup from './container/Subgroup/SubGroups';
-import SubGroupEditView from './container/Subgroup/SubGroupEditView';
+import SubGroup from './container/SubGroup/SubGroups';
+import SubGroupEditView from './container/SubGroup/SubGroupEditView';
 import JoinCompany from './container/Agents/JoinCompany'
 import JoinCompanyFailure from './container/Agents/JoinCompanyFailure'
 import ResetPassword from './container/Auth/ResetPassword'
