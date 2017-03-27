@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import SubgroupListItem from './SubgroupListItem';
+import SubgroupListItem from './SubGroupListItem';
 import {getsubgroups} from '../../redux/actions/actions'
 import {deletesubgroup,getcustomers} from '../../redux/actions/actions'
 
