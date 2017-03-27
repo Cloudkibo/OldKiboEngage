@@ -13,6 +13,7 @@ class Verification extends Component {
     
   }
   componentDidMount(){
+    alert('calling');
     this.props.verifyEmail(this.props.params.id);
   }
   render() {

@@ -575,7 +575,7 @@ export function invitetoken(req,res){
 
 export function verifytoken(req,res){
 
-  //console.log('verifytoken is called');
+  console.log('verifytoken is called');
   //console.log(req.query.id);
   var id = req.query.id;
    var options = {
@@ -586,11 +586,11 @@ export function verifytoken(req,res){
 
     function callback(error, response, body) {
       
-      //console.log(body);
-
+      console.log(body);
+      console.log(response.status);
       if(!error && body != "Not Found")
       {
-        //console.log('success');
+        console.log('success');
          return res.status(200).json({statusCode:200,status : 'success'});
       }
 

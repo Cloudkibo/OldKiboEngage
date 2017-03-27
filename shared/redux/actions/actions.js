@@ -804,7 +804,7 @@ export function getInviteEmail(token) {
 export function verifyEmail(token) {
  console.log('verifyEmail is called '+ token);
   return (dispatch) => {
-    return fetch(`${baseURL}/verifytoken?id=${token}`, {
+    return fetch(`${baseURL}/api/verifytoken?id=${token}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
