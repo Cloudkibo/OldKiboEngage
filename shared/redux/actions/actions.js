@@ -1331,10 +1331,27 @@ else{
 
 /***************** Chat Actions ********************/
 
-export function getsessionsfromsocket(customerchat){
+export function getsessionsfromsocket(customerchat,selected_chat){
+  var customer_not_left = false;
+  if(selected_chat)
+  {
+        for(var i=0;i<customerchat.length;i++){
+          if(customerchat[i].request_id == selected_chat.request_id){
+              customer_not_left = true;
+              break;
+          }
+        }
+}
+  var current_chat;
+  if(customer_not_left == true){
+      current_chat = selected_chat;
+
+  }
+  
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
+    customerchat_selected:  current_chat,
 
   };
 }

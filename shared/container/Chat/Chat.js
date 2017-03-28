@@ -205,7 +205,8 @@ componentDidMount(){
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
 
-     this.props.getsessionsfromsocket(data);
+    
+     this.props.getsessionsfromsocket(data, this.props.customerchat_selected);
      this.forceUpdate();
   }
 

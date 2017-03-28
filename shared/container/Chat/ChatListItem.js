@@ -90,7 +90,7 @@ var ch=[]
       }
 var unread = []
 {
-  props.new_message_arrived_rid && props.new_message_arrived_rid != props.selectedsession.request_id &&  props.new_message_arrived_rid.map((unre, i) => (
+  props.new_message_arrived_rid && ((props.selectedsession && props.new_message_arrived_rid != props.selectedsession.request_id) || !props.selectedsession) &&  props.new_message_arrived_rid.map((unre, i) => (
                            unread.push(unre)
                         ))
 

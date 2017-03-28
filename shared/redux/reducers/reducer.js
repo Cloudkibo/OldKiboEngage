@@ -305,6 +305,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : action.customerchat,
              customerchatold : action.customerchat,
              serverresponse : action.serverresponse,
+             customerchat_selected:action.customerchat_selected,
             };
 
 

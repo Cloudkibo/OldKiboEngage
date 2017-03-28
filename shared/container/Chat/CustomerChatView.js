@@ -269,7 +269,7 @@ else{
      }
 
      else{
-      this.props.mobileuserchat.push(message);
+      //this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
       this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
       this.forceUpdate();
@@ -696,7 +696,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'log',
-                           'msg' : 'This session is assigned to you',
+                           'msg' : 'This session is assigned to' + this.props.userdetails.firstname,
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
