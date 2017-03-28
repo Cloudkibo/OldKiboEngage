@@ -190,9 +190,9 @@ create_session(data){
       this.forceUpdate()
     }
 
-    if(props.companylogo && props.companylogo!= ''){
+    if(this.props.companylogo && this.props.companylogo!= ''){
      // alert(props.companylogo);
-      this.refs.logo.src = props.companylogo.substr(1,props.companylogo.length);
+      this.refs.logo.src = this.props.companylogo.substr(1,this.props.companylogo.length);
      // this.forceUpdate();
     }
 
@@ -313,8 +313,9 @@ create_session(data){
           <div style={{'paddingTop':'2em'}}>
         
               <h3 className ="page-title widgettitle">KiboEngage Chat Widget </h3>
-              
+              {this.props.companylogo && this.props.companylogo != '' &&
                <img ref="logo" src="" style={{'width':'50px','height':'50px'}} className="pull-left"/>
+              }
               
             </div>
         </div>

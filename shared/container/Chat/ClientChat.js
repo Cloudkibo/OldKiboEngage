@@ -42,8 +42,9 @@ class ClientChat extends Component {
           <div style={{'paddingTop':'2em'}}>
         
               <h3 className ="page-title widgettitle">KiboEngage Chat Widget </h3>
-              
+              {this.props.companylogo && this.props.companylogo != '' &&
                <img ref="logo" src={this.props.companylogo.substr(0,this.props.companylogo.length)}  style={{'width':'50px','height':'50px'}} className="pull-left"/>
+              }
               
             </div>
         </div>
