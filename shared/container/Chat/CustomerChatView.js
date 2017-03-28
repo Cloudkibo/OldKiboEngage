@@ -69,6 +69,7 @@ class CustomerChatView extends Component {
         this.moveToSubgroup = this.moveToSubgroup.bind(this);
         this.resolveSession = this.resolveSession.bind(this)
         this.getSocketmessage = this.getSocketmessage.bind(this);
+        this.autoassignChat = this.autoassignChat.bind(this);
         this.getSocketmessageFromServer = this.getSocketmessageFromServer.bind(this);
         this.connectToCall = this.connectToCall.bind(this);
         this.connectCall = this.connectCall.bind(this);
@@ -412,9 +413,14 @@ else{
     var messageVal = this.state.value
     const { socket,dispatch } = this.props;
 
+//self assigning session
+      
      if (e.which === 13 && messageVal !="") {
 
         e.preventDefault();
+        if(this.props.sessiondetails.status == "new"){
+            this.autoassignChat();
+        }
             //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
@@ -696,7 +702,7 @@ else{
                           'visitoremail' : this.refs.customeremail.value,
                           'socketid' : this.refs.socketid_customer.value,
                           'type': 'log',
-                           'msg' : 'This session is assigned to' + this.props.userdetails.firstname,
+                           'msg' : 'This session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
                            'datetime' : Date.now(),
                            'time' : moment.utc().format('lll'),
                            'request_id' : this.props.sessiondetails.request_id,
@@ -738,6 +744,132 @@ else{
 }
 
 
+
+// Auto Assigning Chat Session to agent
+  autoassignChat(){
+     const { socket,dispatch } = this.props;
+     var agentemail = []
+     // local changes
+     this.props.sessiondetails.status = "assigned";
+     this.props.sessiondetails.agent_ids =  {'id' : this.props.userdetails._id,'type' : 'agent'};
+
+     const usertoken = auth.getToken();
+
+       // 1. Broadcast a log message to all agents and customer that session is assigned to agent
+
+       //generate unique id of message - this change is for mobile clients
+       var today = new Date();
+       var uid = Math.random().toString(36).substring(7);
+       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+       var saveChat = {
+                        'to' : this.refs.customername.value,
+                        'from' : this.props.userdetails.firstname,
+                        'visitoremail' : this.refs.customeremail.value,
+                        'socketid' : this.refs.socketid_customer.value,
+                        'uniqueid' : unique_id,
+                        'customerid' : this.props.sessiondetails.customerid,
+                        'type': 'log',
+                        'status' : 'sent',
+                         'msg' : 'Session is assigned to ' + this.props.userdetails.firstname,
+                         'datetime' : Date.now(),
+                         'time' : moment.utc().format('lll'),
+                         'request_id' : this.props.sessiondetails.request_id,
+                         'messagechannel': this.refs.subgroupid.value,
+                         'companyid': this.props.userdetails.uniqueid,
+                         'is_seen':'no',
+                         'assignedagentname': [this.props.userdetails.firstname],
+                         'agentid' : [this.props.userdetails._id],
+                         'assignedagentemail': [this.props.userdetails.email],
+
+
+                         'teammembers' : this.refs.teammembers.value.trim().split(" "),
+       }
+       //pushing agent email to array for sending push notifications
+
+       agentemail.push(this.props.userdetails.email);
+
+       if(this.props.sessiondetails.platform == 'mobile'){
+        saveChat.fromMobile = 'yes'
+       }
+       // for mobile customers
+      if(this.props.sessiondetails.platform == 'mobile'){
+           this.props.mobileuserchat.push(saveChat);
+      }
+
+      //for web customers
+      else{
+      //this.props.chatlist.push(saveChat);
+      }
+      this.refs.teammembers.value = "";
+
+      if(this.props.sessiondetails.platform == 'web'){
+      //socket.emit('send:message', saveChat);
+      //this.props.getchatfromAgent(saveChat);
+      socket.emit('send:agentsocket' , saveChat);
+      }
+      // 2. Send socket id of assigned agent to customer,all chat between agent and customer will now be point to point
+
+     // socket.emit('send:agentsocket' , saveChat);
+
+      this.props.savechat(saveChat);
+      callonce = "false";
+
+      // 3. update session status on server
+      var session = {
+        request_id : this.refs.requestid.value,
+        status : 'assigned',
+        usertoken :usertoken,
+      }
+      this.props.updatestatus(session);
+
+      //4. update agent assignment table on server
+
+      // considering the use case of self assigning
+      var assignment = {
+        assignedto : this.props.userdetails._id,
+        assignedby : this.props.userdetails._id,
+        sessionid : this.refs.requestid.value,
+        companyid : this.props.userdetails.uniqueid,
+        datetime : Date.now(),
+        type : 'agent',
+      }
+
+      this.props.assignToAgent(assignment,usertoken,agentemail,'agent');
+
+  //update session status on socket
+  socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
+                                      'status' : 'assigned',
+                                      'room' : this.props.userdetails.uniqueid,
+                                      'agentid' : {'id' : this.props.userdetails._id,'type' : 'agent'},
+
+                                     });
+// inform assignee that he has been assigned a Chat Session
+
+   var informMsg = {
+                        'to' : this.props.userdetails.firstname,
+                        'from' : this.props.userdetails.firstname,
+                        'visitoremail' : this.refs.customeremail.value,
+                        'socketid' : this.refs.socketid_customer.value,
+                        'type': 'log',
+                         'msg' : 'This session is assigned to ' + this.props.userdetails.firstname,
+                         'datetime' : Date.now(),
+                         'time' : moment.utc().format('lll'),
+                         'request_id' : this.props.sessiondetails.request_id,
+                         'messagechannel': this.refs.subgroupid.value,
+                         'companyid': this.props.userdetails.uniqueid,
+                         'is_seen':'no',
+                          'agentemail' : [this.props.userdetails.email],
+                          'agentid' : [this.props.userdetails._id],
+
+                    }
+
+  socket.emit('informAgent',informMsg);
+
+  socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
+  this.forceUpdate();
+ 
+}
 
 // Assign chat to group
   assignSessionToTeam(e){

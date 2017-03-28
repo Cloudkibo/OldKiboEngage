@@ -190,7 +190,7 @@ create_session(data){
       this.forceUpdate()
     }
 
-    if(props.companylogo){
+    if(props.companylogo && props.companylogo!= ''){
      // alert(props.companylogo);
       this.refs.logo.src = props.companylogo.substr(1,props.companylogo.length);
      // this.forceUpdate();
