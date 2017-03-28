@@ -201,6 +201,7 @@ export function logoutUser() {
 
     dispatch(setjoinedState('notjoined'));
     browserHistory.push('/login')
+    window.location.reload();
   }
 }
 

@@ -421,6 +421,14 @@ else{
         if(this.props.sessiondetails.status == "new"){
             this.autoassignChat();
         }
+
+   /*     if(this.props.sessiondetails.status == "assigned" && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id != this.props.userdetails._id){
+          alert('You cannot send message to Customer. This chat session is already assigned');
+
+        }
+
+        else{
+          */
             //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
@@ -464,7 +472,8 @@ else{
 
         this.state.value ='';
         this.forceUpdate();
-      }
+    //  }
+    }
     }
 
 /***** emit message on socket once it is saved on server ***/

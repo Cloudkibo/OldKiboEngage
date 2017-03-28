@@ -151,6 +151,23 @@ updateOnlineAgents(data){
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
 getSessionInfo(message){
+
+  /*//update the status of session
+  for(var i=0; i< this.props.customerchat.length;i++){
+    if(this.props.customerchat[i].request_id == message[0].request_id){
+       this.props.customerchat[i].status = "assigned";
+       this.props.customerchat[i].agent_ids =  {'id' : this.props.userdetails._id,'type' : 'agent'};
+       break;
+    }
+  }
+
+  if(this.props.customerchat_selected.request_id == message[0].request_id){
+      this.props.customerchat_selected.status = "assigned";
+       this.props.customerchat_selected.agent_ids =  {'id' : this.props.userdetails._id,'type' : 'agent'};
+     
+  }
+
+*/
    this.props.previousChat(message,this.props.chatlist);
    this.forceUpdate();
   }
