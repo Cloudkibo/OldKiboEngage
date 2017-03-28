@@ -287,7 +287,7 @@ function sendPushNotification(tagname,payload,alertmessage){
 
 
 export function getfbCustomers(req, res) {
-  //console.log('create Response is called');
+  console.log('getfbCustomers');
   var token = req.headers.authorization;
 
    var options = {
@@ -304,8 +304,8 @@ export function getfbCustomers(req, res) {
 
     function callback(error, response, body) {
 
-       // console.log(body);
-       // console.log(error)
+        console.log(body);
+        console.log(error)
       if(!error) {
             return res.status(201).json(JSON.parse(body));
       }

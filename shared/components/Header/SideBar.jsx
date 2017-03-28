@@ -217,7 +217,7 @@ class SideBar extends Component
               </li>
 
 
-              <li className="">
+              {/*<li className="">
                 <Link to="/fbpages">
                   <i className="fa fa-facebook">
                   </i>
@@ -240,6 +240,8 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
+              */
+              }
               <li className="">
                 <Link to="/companyprofile">
                   <i className="fa fa-cogs">
