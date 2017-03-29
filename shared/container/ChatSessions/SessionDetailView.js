@@ -88,7 +88,7 @@ class SessionDetailView extends Component {
 
   }
 
-  render() {
+render() {
 var sessionsummarydetail = []
      {
          this.props.sessionsummarydetail &&
@@ -267,13 +267,13 @@ var grpp = []
                 <div className="form-group">
                   <label className="control-label col-md-3"> To </label>
                    <div className="col-md-9">
-                         <input className="form-control input-medium" type='text'  ref = "name" />
+                         <input className="form-control input-medium" type='text'  value={sessionsummarydetail[0].customerid.name?sessionsummarydetail[0].customerid.name:sessionsummarydetail[0].customerid.customerID} ref = "name" />
                    </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label col-md-3"> Email Address </label>
                    <div className="col-md-9">
-                         <input className="form-control input-medium" type='text'  ref = "emailAdd"  />
+                         <input className="form-control input-medium" type='text' value={sessionsummarydetail[0].customerid.email?sessionsummarydetail[0].customerid.email:"N/A"} ref = "emailAdd"  />
                    </div>
                 </div>
                  <div className="form-group">
