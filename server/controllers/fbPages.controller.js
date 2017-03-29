@@ -56,10 +56,10 @@ export function createfbPage(req, res) {
 
 
 export function getfbpages(req, res) {
-  //console.log('create Response is called');
   var token = req.headers.authorization;
-
-   var options = {
+   console.log(token);
+ 
+     var options = {
       url: `${baseURL}/api/fbpages/`,
       rejectUnauthorized : false,
       headers :  {
