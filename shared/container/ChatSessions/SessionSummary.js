@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
-import {getsessions,getcustomers,filterbysessionMedium,filterbysessionDept,filterbysessionSubgroup,filterbysessionAgent,filterbysessionstatus} from '../../redux/actions/actions'
+import {getsessions,getcustomers,filterbysessionMedium,filterbysessionDept,filterbysessionSubgroup,filterbysessionAgent,filterbysessionstatus, updatesubgrouplist} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
@@ -73,6 +73,7 @@ class SessionSummary extends Component {
     handleChangeDepartment(e){
      //alert(e.target.value);
      this.props.filterbysessionDept(e.target.value,this.props.sessionsummary);
+     this.props.updatesubgrouplist(e.target.value);
      this.forceUpdate();
 
 
@@ -147,7 +148,7 @@ class SessionSummary extends Component {
                                             <option value="new">New</option>
                                             <option value="assigned">Assigned</option>
                                             <option value="resolved">Resolved</option>
-                                            
+
                                         </select>
                                   </td>
                                   <td className="col-md-1">
@@ -179,10 +180,10 @@ class SessionSummary extends Component {
                                     <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
                                              <option value="all">All</option>
                                             {
-                                            this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                                              <option value={group._id}>{group.deptname}</option>
 
-                                              )
+                                                this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                                                  <option value={group._id}>{group.deptname}</option>
+                                                )
                                            }
 
 
@@ -194,10 +195,14 @@ class SessionSummary extends Component {
                                     <select  ref = "channellist" onChange={this.handleChangeChannel.bind(this)}   >
                                                <option value="all">All</option>
                                              {
-                                            this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
+                                               this.refs.teamlist.value == 'all' ?
+                                               this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
                                                     <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
+                                               ) :
+                                               this.props.filterlist && this.props.filterlist.map((subgroup,i) =>
+                                                 <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+                                               )
 
-                                              )
                                            }
 
                                         </select>
@@ -223,7 +228,7 @@ class SessionSummary extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Assigned Agent</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Medium</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Request Time</th>
-                    
+
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
 
@@ -239,7 +244,7 @@ class SessionSummary extends Component {
                            <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} customers={this.props.customers.filter((c) => c._id == session.customerid)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
                            :
                             <SessionListItem session={session} key={session.request_id} customers={this.props.customers.filter((c) => c._id == session.customerid)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
-                          
+
                             ))
                       }
 
@@ -279,13 +284,13 @@ function mapStateToProps(state) {
           customers:(state.dashboard.customers),
           customerchat : (state.dashboard.customerchat),
           sessionsummary : (state.dashboard.sessionsummary),
-          sessionsummaryfiltered : (state.dashboard.sessionsummaryfiltered)
-
+          sessionsummaryfiltered : (state.dashboard.sessionsummaryfiltered),
+          filterlist :(state.widget.filterlist)
            };
 
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,filterbysessionMedium:filterbysessionMedium,filterbysessionDept:filterbysessionDept,filterbysessionSubgroup:filterbysessionSubgroup,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus}, dispatch);
+  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,filterbysessionMedium:filterbysessionMedium,filterbysessionDept:filterbysessionDept,filterbysessionSubgroup:filterbysessionSubgroup,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus, updatesubgrouplist: updatesubgrouplist}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(SessionSummary);

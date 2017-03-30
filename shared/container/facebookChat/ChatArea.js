@@ -379,7 +379,8 @@ updateState(e) {
 }
 
 setEmoji(emoji) {
-  this.setState({emoji: emoji})
+  console.log(emoji);
+  this.setState({value: this.state.value + emoji})
 }
 
 emojiPicker() {
