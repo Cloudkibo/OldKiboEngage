@@ -3571,3 +3571,8 @@ export function getcompanylogo(appid,appsecret,companyid){
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCompanylogo(res)));
   };
 }
+
+
+export function testingPractice(data){
+  return data;
+}
