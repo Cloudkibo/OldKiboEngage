@@ -58,7 +58,7 @@ var userchats = [];//array to hold all  chat msgs
 
 var fbchats = [];
 var fbusers =[];
- 
+
 // When the user disconnects.. perform this
 function onDisconnect(io2, socket) {
   console.log('calling onDisconnect  :' + socket.id);
@@ -73,7 +73,7 @@ function onDisconnect(io2, socket) {
       onlineAgents.splice(j,1);
       console.log(onlineAgents);
       socket.broadcast.to(room).emit('updateOnlineAgentList', onlineAgents);
-   
+
       break;
     }
 
@@ -95,7 +95,7 @@ function onDisconnect(io2, socket) {
       for(var k=0;k<userchats.length;k++){
         if(userchats[k].request_id == req_id){
            console.log('Remove chat message,customer went offline');
-      
+
           userchats.splice(k,1);
         }
       }
@@ -140,7 +140,7 @@ function onConnect(io2, socket) {
 
 // from agent to customer
   socket.on('send:message', function (data) {
-    
+
     /*** Add the logic here to send message as a push notification using customerid as a tag name for moble customers
     ***/
 
@@ -164,7 +164,7 @@ function onConnect(io2, socket) {
     else     {
           userchats.push(data);
          }
-       
+
     if(data.socketid){
             console.log('sending point to point message');
 
@@ -186,7 +186,7 @@ function onConnect(io2, socket) {
 
 
 
-          
+
           });
     }
 
@@ -198,7 +198,7 @@ function onConnect(io2, socket) {
                 {
                   if(onlineAgents[i].email == data.groupmembers[j] && onlineAgents[i].email != data.sendersEmail){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                     //break;
                   }
@@ -225,7 +225,7 @@ function onConnect(io2, socket) {
                                  departmentid:data.departmentid,
 
                               });
-                } 
+                }
     }
 
     if(data.assignedagentemail && data.assignedagentemail.length > 1){
@@ -236,7 +236,7 @@ function onConnect(io2, socket) {
                 {
                   if(onlineAgents[i].email == data.assignedagentemail[j]){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                     //break;
                   }
@@ -264,7 +264,7 @@ function onConnect(io2, socket) {
 
                               });
                 }
-                    
+
 
     }
 
@@ -295,14 +295,14 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
   }
     //remove duplicates
     onlineWebClientsSession = removeDuplicates(onlineWebClientsSession,'request_id');
-    console.log('total no. of sessions :' + onlineWebClientsSession.length); 
+    console.log('total no. of sessions :' + onlineWebClientsSession.length);
     for(var j = 0;j<onlineWebClientsSession.length;j++){
       if(onlineWebClientsSession[j].companyid == roomid){
         customer_in_company_room.push(onlineWebClientsSession[j]);
       }
     }
 
-    console.log('getCustomerSessionsList is called.Currently in your room : ' + roomid +' ,customers online :' + customer_in_company_room.length); 
+    console.log('getCustomerSessionsList is called.Currently in your room : ' + roomid +' ,customers online :' + customer_in_company_room.length);
     socket.emit('returnCustomerSessionsList',customer_in_company_room);
   });
 
@@ -316,14 +316,14 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
                 {
                   if(onlineAgents[i].email == agentemail[j]){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                     //break;
                   }
                 }
 
             }
-          
+
 
            for(var i=0;i<socketids.length;i++){
                      //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
@@ -361,7 +361,7 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
 
 
 
-          
+
           });*/
 
 
@@ -375,11 +375,11 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
                 }
               }
         }
-                
-          
 
-    
-    
+
+
+
+
   });
 
 //for mobile clients
@@ -393,13 +393,13 @@ socket.on('getmessagefromserver',function(data){
             console.log('sending point to point message to Agent');
             //find the socket id
             var socketids =[]
-           
+
             for(var j=0;j< data.toagent.length;j++){
                 for(var i = 0;i < onlineAgents.length;i++)
                 {
                   if(onlineAgents[i].email == data.toagent[j]){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                    // break;
                   }
@@ -428,9 +428,9 @@ socket.on('getmessagefromserver',function(data){
                                 fromMobile : data.fromMobile,
                                  departmentid:data.departmentid,
                               });
-                    
-                    
-           
+
+
+
     }
     else
     {
@@ -457,6 +457,44 @@ socket.on('getmessagefromserver',function(data){
 
 });
 
+socket.on('send:messageToBot', function(data){
+  var token = '23faab6fda14491294154d954eeede9c';
+  var payload =
+              {
+              query:[data.msg],
+              lang:'en',
+              sessionId:'2121'
+              }
+  var options = {
+      url: 'https://api.api.ai/v1/query',
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      rejectUnauthorized : false,
+      json: payload
+    };
+
+    function callback(error, response, body) {
+        console.log(error);
+        console.log(response.statusCode);
+        console.log(body);
+
+       if(!error && response.statusCode == 200)
+       {
+           //console.log(body)
+           data.msg = body.result.speech;
+            return socket.emit('send:message', data);
+       }
+       else
+       {
+         data.msg = 'error on bot side';
+           return socket.emit('send:message', data);
+
+       }
+    }
+           request.post(options, callback);
+})
+
 socket.on('send:messageToAgent', function (data) {
     console.log('sending a hello message to all agents');
     console.log(data);
@@ -466,13 +504,13 @@ socket.on('send:messageToAgent', function (data) {
             console.log('sending point to point message to Agent');
             //find the socket id
             var socketids =[]
-           
+
             for(var j=0;j< data.toagent.length;j++){
                 for(var i = 0;i < onlineAgents.length;i++)
                 {
                   if(onlineAgents[i].email == data.toagent[j]){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                     //break;
                   }
@@ -498,12 +536,12 @@ socket.on('send:messageToAgent', function (data) {
                                 fromMobile : data.fromMobile,
                                 departmentid:data.departmentid,
                               });
-                    
+
           }
            //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
-          
-                    
-           
+
+
+
     }
     else
     {
@@ -541,7 +579,7 @@ socket.on('getuserchats',function(room){
   }
 
   console.log('return userchats : ' + roomchats.length);
-  socket.emit('returnUserChat',roomchats);  
+  socket.emit('returnUserChat',roomchats);
 });
 
 // broadcast a notification to mobile client
@@ -553,9 +591,9 @@ socket.on('getuserchats',function(room){
             title:data.title,
             msg: data.msg,
             time:data.time,
-            
+
           });
-    
+
   });
 
 
@@ -583,10 +621,10 @@ socket.on('getuserchats',function(room){
     }
     else{
     io2.to(data.socketid).emit('send:getAgent',{
-           data:data       
+           data:data
           });
-    } 
-  
+    }
+
   });
 
  socket.on('updatesessionstatus',function(data){
@@ -602,7 +640,7 @@ socket.on('getuserchats',function(room){
     }
   }
 
- 
+
 
   var customer_in_company_room =[]; //only online customers who are in your room
 
@@ -616,7 +654,7 @@ socket.on('getuserchats',function(room){
   console.log('customers online : ' + customer_in_company_room.length);
   //ask clients to update their session list
    socket.broadcast.to(data.room).emit('returnCustomerSessionsList',customer_in_company_room);
- }); 
+ });
 
 
 socket.on('updatesessionchannel',function(data){
@@ -625,14 +663,14 @@ socket.on('updatesessionchannel',function(data){
   for(var i =0 ;i< onlineWebClientsSession.length ;i++){
     if(onlineWebClientsSession[i].request_id == data.request_id){
       console.log('updating session channel :');
-     
+
       onlineWebClientsSession[i].messagechannel.push(data.channelid);
       console.log(onlineWebClientsSession[i]);
       break;
     }
   }
 
- 
+
 
   var customer_in_company_room =[]; //only online customers who are in your room
 
@@ -646,8 +684,8 @@ socket.on('updatesessionchannel',function(data){
   console.log('customers online : ' + customer_in_company_room.length);
   //ask clients to update their session list
    socket.broadcast.to(data.room).emit('returnCustomerSessionsList',customer_in_company_room);
- }); 
-  
+ });
+
 // get online agents list
 socket.on('getOnlineAgentList',function() {
     console.log('getOnlineAgentList is called by :');
@@ -712,7 +750,7 @@ socket.on('getOnlineAgentList',function() {
     }
     else if (numClients > 0) {
 
-     
+
       socket.join(room.room);
       room.socketid = socket.id;
       console.log("Your  socket id: ", socket.id)
@@ -732,10 +770,10 @@ socket.on('getOnlineAgentList',function() {
       console.log('Customer joined room');
       socket.broadcast.to(room.room).emit('customer_joined',customer_in_company_room);
 
-      
+
     }
 
-   
+
   });
 
   socket.on('getCustomerSessionsList',function(roomid){
@@ -747,7 +785,7 @@ socket.on('getOnlineAgentList',function() {
       }
     }
 
-    console.log('getCustomerSessionsList is called.Currently in your room : ' + roomid +' ,customers online :' + customer_in_company_room.length); 
+    console.log('getCustomerSessionsList is called.Currently in your room : ' + roomid +' ,customers online :' + customer_in_company_room.length);
     socket.emit('returnCustomerSessionsList',customer_in_company_room);
   });
   socket.on('join scheduled meeting', function (room) {
@@ -779,7 +817,7 @@ socket.on('getOnlineAgentList',function() {
 
     console.log(room.room);
     socket.join(room.room);
-    
+
     //add lines to add company id and email in socket object
     var flag = 0;
     // append in online agents array
@@ -791,12 +829,12 @@ socket.on('getOnlineAgentList',function() {
             //set flag to true
             flag = 1;
             break;
-          } 
+          }
     }
     if(flag == 0)
     {*/
        onlineAgents.push({email:room.agentEmail,socketid:socket.id,room:room.room,agentName : room.agentName,agentId : room.agentId});
- 
+
     //}
     }
     console.log("Agents online :");
@@ -828,7 +866,7 @@ socket.on('getOnlineAgentList',function() {
 
     console.log('agent leaving the room now '+ JSON.stringify(room));
 
- 
+
     socket.leave(room.room);
      //socket.emit('disconnect');
 
@@ -936,7 +974,7 @@ socket.on('getOnlineAgentList',function() {
   }
 
 
-  
+
 }
 
 
@@ -969,7 +1007,7 @@ exports.socketf = function (socketio) {
 
     // Call onDisconnect.
     socket.on('disconnect', function () {
-      
+
       onDisconnect(socketio, socket);
       console.info('[%s] DISCONNECTED', socket.address);
     });
@@ -981,8 +1019,8 @@ exports.socketf = function (socketio) {
   });
 
 
-  
-  
+
+
 };
 
 
@@ -997,13 +1035,13 @@ exports.getchat = function(data){
             console.log('sending point to point message to Agent');
             //find the socket id
             var socketids =[]
-           
+
             for(var j=0;j< data.toagent.length;j++){
                 for(var i = 0;i < onlineAgents.length;i++)
                 {
                   if(onlineAgents[i].email == data.toagent[j]){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                    // break;
                   }
@@ -1033,7 +1071,7 @@ exports.getchat = function(data){
                                 departmentid:data.departmentid,
                               });
           }
-           
+
     }
     //broadcast message to all agents
     else{
@@ -1064,8 +1102,8 @@ exports.getchat = function(data){
               }
             }
     }
- 
-} 
+
+}
 
 
 
@@ -1095,7 +1133,7 @@ exports.getchatfromAgent = function(data){
     else     {
           userchats.push(data);
          }
-       
+
     if(data.socketid){
             console.log('sending point to point message');
 
@@ -1117,7 +1155,7 @@ exports.getchatfromAgent = function(data){
 
 
 
-          
+
           });
     }
 
@@ -1130,7 +1168,7 @@ exports.getchatfromAgent = function(data){
                 {
                   if(onlineAgents[i].email == data.groupmembers[j] && onlineAgents[i].email != data.sendersEmail){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                   //  break;
                   }
@@ -1157,7 +1195,7 @@ exports.getchatfromAgent = function(data){
                                 departmentid:data.departmentid,
 
                               });
-                } 
+                }
     }
 
     if(data.assignedagentemail && data.assignedagentemail.length > 1){
@@ -1168,7 +1206,7 @@ exports.getchatfromAgent = function(data){
                 {
                   if(onlineAgents[i].email == data.assignedagentemail[j]){
                      console.log('agent is online');
-                     
+
                     socketids.push(onlineAgents[i].socketid);
                     //break;
                   }
@@ -1196,13 +1234,13 @@ exports.getchatfromAgent = function(data){
 
                               });
                 }
-                    
+
 
     }
 
 
- 
-} 
+
+}
 
 
 
@@ -1220,7 +1258,7 @@ exports.getfbchat = function(data){
     }
   }
   if(flag == 0){
-     fbusers.push(data.customerobj); 
+     fbusers.push(data.customerobj);
      //inform agents that a new customer arrives on fbmessenger
     //broadcast message to all agents
   for(var i=0;i<onlineAgents.length;i++){
@@ -1230,11 +1268,11 @@ exports.getfbchat = function(data){
 
               }
             }
-    
+
   }
- 
+
   fbchats.push(data.chatobj);
-        
+
     //broadcast message to all agents
   for(var i=0;i<onlineAgents.length;i++){
               if(onlineAgents[i].room == data.chatobj.companyid){
@@ -1243,7 +1281,6 @@ exports.getfbchat = function(data){
 
               }
             }
-    
- 
-} 
 
+
+}
