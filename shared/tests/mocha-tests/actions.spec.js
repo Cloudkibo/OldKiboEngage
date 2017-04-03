@@ -1,4 +1,5 @@
 import * as actionCreator from '../../redux/actions/actions';
+import auth from '../../services/auth';
 
 var chai = require('chai');
 
@@ -10,4 +11,5 @@ describe('Testing a demo function', function(){
         let action = actionCreator.testingPractice(foo);
         expect(action).to.equal(foo);
     });
+
 });
