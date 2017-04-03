@@ -329,7 +329,7 @@ export function getuser(token) {
     }).then((res) => res.json()).then((res) => res).then(res => {
      if(res.status == 200){
             dispatch(showUsername(res.info));
-     } 
+     }
      else{
         cookie.remove('token', { path: '/' });
         browserHistory.push('/login');
@@ -632,7 +632,7 @@ export function getinvitedagents(usertoken){
         method: 'get',
         headers: new Headers({
         'Authorization': usertoken,
-       
+
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showInvitedAgents(res)));
   };
@@ -1348,7 +1348,7 @@ export function getsessionsfromsocket(customerchat,selected_chat){
       current_chat = selected_chat;
 
   }
-  
+
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
@@ -2464,7 +2464,7 @@ export function setsocketid(yoursocketid){
 }
 
 export function getchatsfromsocket(originalArray,newchats){
-     
+
     alert('state type');
      var newArray = originalArray.push.apply(originalArray,newchats);
      var lookupObject  = {};
@@ -2554,7 +2554,7 @@ export function getuserchats(token) {
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showuserchat(res.userchats))); 
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showuserchat(res.userchats)));
     //dispatch(showuserchat([]));
   };
 }
@@ -2771,7 +2771,7 @@ export function updatesettings(file,companyprofile,token,logoAlready) {
   fileData.append('companyprofile',JSON.stringify(companyprofile));
   }
   console.log(fileData);
-  
+
   return (dispatch) =>
     fetch(`${baseURL}/api/updatesettings`, {
 
@@ -2810,7 +2810,6 @@ export function getcompanysettings(token,id) {
 
 
 /*********** filter sessionsummary ***********/
-
 
 export function filterbysessionstatus(status,sessionsummary) {
 
