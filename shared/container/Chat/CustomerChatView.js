@@ -422,13 +422,13 @@ else{
             this.autoassignChat();
         }
 
-   /*     if(this.props.sessiondetails.status == "assigned" && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id != this.props.userdetails._id){
+       if(this.props.sessiondetails.status == "assigned" && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id != this.props.userdetails._id){
           alert('You cannot send message to Customer. This chat session is already assigned');
 
         }
 
         else{
-          */
+        
             //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
@@ -472,7 +472,7 @@ else{
 
         this.state.value ='';
         this.forceUpdate();
-    //  }
+      }
     }
     }
 
@@ -512,7 +512,7 @@ else{
    if(this.props.sessiondetails.agent_ids.type == "group")
    {
     for(var i=0;i<this.props.teamagents.length;i++){
-      if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids.id && this.props.userdetails._id == this.props.teamagents[i].agentid._id){
+      if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id && this.props.userdetails._id == this.props.teamagents[i].agentid._id){
         agentingroup = true
         break
       }
@@ -605,7 +605,7 @@ else{
      if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.sessiondetails.departmentid).length !== 0){
        // local changes
        this.props.sessiondetails.status = "assigned";
-       this.props.sessiondetails.agent_ids =  {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'};
+       this.props.sessiondetails.agent_ids.push({'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'});
 
        const usertoken = auth.getToken();
 
@@ -760,7 +760,7 @@ else{
      var agentemail = []
      // local changes
      this.props.sessiondetails.status = "assigned";
-     this.props.sessiondetails.agent_ids =  {'id' : this.props.userdetails._id,'type' : 'agent'};
+     this.props.sessiondetails.agent_ids.push({'id' : this.props.userdetails._id,'type' : 'agent'});
 
      const usertoken = auth.getToken();
 
