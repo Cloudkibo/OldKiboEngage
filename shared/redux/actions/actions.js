@@ -1338,6 +1338,7 @@ export function getsessionsfromsocket(customerchat,selected_chat){
   {
         for(var i=0;i<customerchat.length;i++){
           if(customerchat[i].request_id == selected_chat.request_id){
+              selected_chat = customerchat[i];
               customer_not_left = true;
               break;
           }

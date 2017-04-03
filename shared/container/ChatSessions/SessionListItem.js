@@ -48,7 +48,7 @@ var ch=[]
 
       <td>{props.session.customerid.name?props.session.customerid.name : props.session.customerid.customerID} </td>
       <td>{props.session.customerid.email?props.session.customerid.email : "N/A"}</td>
-      <td>{gname[0].deptname}</td>
+      <td>{gname.length>0? gname[0].deptname:'-'}</td>
       {
         ch[0] &&
       <td>{ch[0].msg_channel_name}</td>
