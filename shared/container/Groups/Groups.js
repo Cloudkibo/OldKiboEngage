@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getusergroups} from '../../redux/actions/actions'
 import {creategroup} from '../../redux/actions/actions'
-import {deletegroup,getcustomers} from '../../redux/actions/actions'
+import {deletegroup,getcustomers,getDeptAgents} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import GroupCreateView from './GroupCreateView';
@@ -52,6 +52,8 @@ componentDidMount(){
 
         console.log(usertoken);
         this.props.getusergroups(usertoken);
+        this.props.getDeptAgents(usertoken);
+    
         this.props.getcustomers(usertoken);
       }
 }
@@ -188,6 +190,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 
-  return bindActionCreators({ deletegroup:deletegroup,getcustomers:getcustomers,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
+  return bindActionCreators({ deletegroup:deletegroup,getcustomers:getcustomers,getDeptAgents:getDeptAgents,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Groups);

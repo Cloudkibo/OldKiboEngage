@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 function MyPickedSessionListItem(props) {
-var ag = []
 var ch=[]
      {
          props.customers &&
@@ -16,16 +15,16 @@ var ch=[]
 
   
   {
-         props.channels &&
-                        props.channels.map((cha, i) => (
+         props.subgroups &&
+                        props.subgroups.map((cha, i) => (
                            ch.push(cha)                            
                         ))
 
       }
  var gname =[]
      {
-         props.teams &&
-                        props.teams.map((cha, i) => (
+         props.groups &&
+                        props.groups.map((cha, i) => (
                            gname.push(cha)                            
                         ))
 
@@ -33,8 +32,8 @@ var ch=[]
   return (
    
     <tr className = "odd">
-      <td>{ag[0].name} </td>
-      <td>{ag[0].email}</td>
+      <td>{props.session.customerid.name?props.session.customerid.name:props.session.customerid.customerID} </td>
+      <td>{props.session.customerid.email}</td>
       <td>{gname[0].deptname}</td>
       <td>{ch[0].msg_channel_name}</td>
       <td>{props.session.status}</td>

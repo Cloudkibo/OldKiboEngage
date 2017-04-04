@@ -1392,7 +1392,7 @@ export function showAllChat(customerchat) {
 }
 
 export function showMyPickChatSessions(sessions,userid){
-  var mypickedsessions = sessions.filter((c) => c.status != "new" && c.agent_ids.length>0 && c.agent_ids[c.agent_ids.length-1] == userid)
+  var mypickedsessions = sessions.filter((c) => c.status != "new" && c.agent_ids.length>0 && c.agent_ids[c.agent_ids.length-1].id == userid)
   return {
     type: ActionTypes.SHOW_MY_PICKED_SESSIONS,
     mypickedsessions : mypickedsessions,
