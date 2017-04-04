@@ -22,6 +22,7 @@ import Agents from './container/Agents/Agents';
 import InvitedAgents from './container/Agents/InvitedAgents';
 import Chat from './container/Chat/Chat';
 import ClientChat from './container/Chat/ClientChat';
+import ClientChat2 from './container/Chat/ClientChat2';
 import CompanySettings from './container/CompanySettings/CompanySettings';
 import GroupDetailView from './container/Groups/GroupDetailView';
 import GroupEditView from './container/Groups/GroupEditView';
@@ -92,7 +93,7 @@ function redirectAuthUsers(nextState, replace) {
       pathname: '/dashboard',
       state: { nextPathname: nextState.location.pathname }
     })
-     
+
   }
 }
 
@@ -109,23 +110,23 @@ const routes = (
     <Route path="/joincompanyfailure" component={JoinCompanyFailure} />
     <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} socket = {socket}/>
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
-    
+
     <Route path="/creategroup" component={GroupCreateView} onEnter={requireAuth}/>
     <Route path="/groups" component={Groups} onEnter={requireAuth} />
     <Route path="/group/:id(/:fromprofile)" component={GroupDetailView}  onEnter={requireAuth}/>
     <Route path="/editgroup/:id" component={GroupEditView}  onEnter={requireAuth}/>
-    
-    
+
+
     <Route path="/editteam/:id" component={TeamEditView}  onEnter={requireAuth}/>
     <Route path="/createteam" component={CreateTeam}  onEnter={requireAuth}/>
     <Route path="/teams" component={Teams}  onEnter={requireAuth}/>
     <Route path="/team/:id" component={TeamDetailView}  onEnter={requireAuth}/>
-    
+
 
 
     <Route path="/editagent/:id" component={AgentEditView}  onEnter={requireAuth}/>
     <Route path="/createsubgroup" component={SubgroupCreate}  onEnter={requireAuth}/>
-    
+
     <Route path="/subgroups" component={SubGroup}  onEnter={requireAuth}/>
     <Route path="/editsubgroup/:id" component={SubGroupEditView}  onEnter={requireAuth}/>
 
@@ -149,6 +150,7 @@ const routes = (
     <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
      <Route path="/livehelp/:id/:pathname(/:requestid)" component={AddCustomer} socket={socket}/>
+     <Route path="/livehelp2(/:requestid)" component={ClientChat2} socket={socket}/>
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
      <Route path="/mygroups" component={MyGroups}  onEnter={requireAuth}/>
      <Route path="/myprofile" component={MyProfile}  onEnter={requireAuth}/>
