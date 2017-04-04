@@ -22,7 +22,7 @@ function removeDuplicates(originalArray, prop) {
 
 const initialState = { signupwarnings: {},userdetails : {}};
 const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined',userchats:[],chatlist:[]};
-const widgetState ={groupdetails:[],subgroups:[]}
+const widgetState ={groupdetails:[],subgroups:[],chatbotlist:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
 
@@ -823,6 +823,17 @@ function widget(state = widgetState, action){
         ...state,
         companylogo:action.companylogo,
        }
+
+      case ActionTypes.BOT_RESPONSE:
+       return {
+        ...state,
+        chatbotlist:[...state.chatbotlist,action.message],
+       }  
+       case ActionTypes.BOT_SESSION:
+        return {
+        ...state,
+        chatbotsessionid:action.chatbotsessionid
+       }  
     case ActionTypes.ADD_CUSTOMER_GROUPS:
           return {
             ...state,

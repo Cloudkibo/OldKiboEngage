@@ -4,13 +4,13 @@ import { Link } from 'react-router';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,sendmessageToAgent}  from '../../redux/actions/actions'
-import {savechat}  from '../../redux/actions/actions'
-
-import { updateChatList}  from '../../redux/actions/actions'
-import * as actions from '../../redux/actions/actions';
+import { chatbotsession,sendchatToBot,chatbotChatAdd}  from '../../redux/actions/actions'
 import moment from 'moment';
-
+import * as ReactDOM from 'react-dom';
+var handleDate = function(d){
+  var c = new Date(d);
+  return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
+}
 class ClientChatView2 extends Component {
 
   constructor(props, context) {
@@ -18,94 +18,73 @@ class ClientChatView2 extends Component {
        //props.getChatRequest(props.customerid);
        super(props, context);
        this.handleMessageSubmit= this.handleMessageSubmit.bind(this);
-       this.getAgentSocket = this.getAgentSocket.bind(this);
-       this.connectToCall = this.connectToCall.bind(this);
-       this.connectCall = this.connectCall.bind(this);
+       
        this.sendMessage = this.sendMessage.bind(this);
+       this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
- connectCall(data){
-   if(confirm("Other person is calling you to a call. Confirm to join."))
-       // window.location.href = data.url;
-        var win = window.open(data.url, '_blank');
-        win.focus();
- }
-  getAgentSocket(data){
-    console.log(data)
-    console.log('agent socket id is : ' + data.data.agentsocket);
-    // agentid,agentname and agentemail will now be array fields
-    this.refs.agentid.value='';
-    this.refs.agentname.value = '';
-    this.refs.agentemail.value = '';
-
-    for(var i = 0;i< data.data.agentid.length;i++){
-     this.refs.agentid.value = this.refs.agentid.value + ' ' + data.data.agentid[i];
-
-    this.refs.agentname.value = this.refs.agentname.value + ' ' + data.data.assignedagentname[i];
-    this.refs.agentemail.value = this.refs.agentemail.value + ' ' + data.data.assignedagentemail[i];
-   // this.props.updateChatList(data.data);
-    this.forceUpdate();
-     }
-
-
-  }
   componentDidMount() {
     const { socket,dispatch } = this.props;
    // also broadcast a notification message
-    //generate unique id of message - this change is for mobile clients
-  //   var today = new Date();
-  //   var uid = Math.random().toString(36).substring(7);
-  //   var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-   //
-  //    var hellomsg = {
-  //           to: 'All Agents',
-  //           from : this.props.roomdetails.customerid.name,
-  //           visitoremail:this.props.roomdetails.customerid.email,
-  //           datetime: Date.now(),
-  //           uniqueid : unique_id,
-  //           msg: 'User joined a chat session',
-  //           time : moment.utc().format('lll'),
-  //           type : 'message',
-  //           departmentid : this.props.roomdetails.departmentid,
-  //           request_id :this.props.roomdetails.request_id,
-  //           messagechannel:this.props.roomdetails.messagechannel[this.props.roomdetails.messagechannel.length-1],
-  //           companyid:this.props.roomdetails.room,
-  //           is_seen:'no',
-  //           fromMobile : 'no'
-   //
-   //
-  //         }
-  //  //socket.emit('send:messageToAgent',hellomsg);
-  //  this.props.sendmessageToAgent(hellomsg);
-   socket.on('send:message',message => this.props.updateChatList(message));
-   socket.on('send:getAgent',this.getAgentSocket);
-   socket.on('connecttocall',this.connectCall);
-
+    //generate unique id of session with bot
+     var today = new Date();
+     var uid = Math.random().toString(36).substring(7);
+     var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+     this.props.chatbotsession(unique_id);
+     this.scrollToBottom();
 
       }
 
 
- componentDidUpdate() {
-    const messageList = this.refs.messageList;
-    messageList.scrollTop = messageList.scrollHeight;
-  }
+componentWillUpdate(){
+  this.scrollToBottom();
+}
+
+scrollToBottom() {
+    const node = ReactDOM.findDOMNode(this.messagesEnd);
+    node.scrollIntoView({behavior: "smooth"});
+}
+
+
+componentDidUpdate() {
+    this.scrollToBottom();
+}
+
+ 
 
    handleMessageSubmit(e) {
-    const { socket,dispatch } = this.props;
-
+  
      if (e.which === 13 && this.refs.msg.value!='') {
 
         var message;
         e.preventDefault();
-           //generate unique id of message - this change is for mobile clients
-        var today = new Date();
-        var uid = Math.random().toString(36).substring(7);
-        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+        var query=[]
+        query.push(this.refs.msg.value);
+        var saveChat={
+                          
+                      query:query,
+                      lang:'en',
+                      sessionId: this.props.chatbotsessionid,
+                      from: 'user',
+                      msg:query[0],
+                      timestamp:Date.now(),
 
-        var saveChat={}
-        if(this.refs.agentemail.value == ''){
+                    
+                      }
 
-        saveChat = {
+      this.refs.msg.value ='';
+      this.props.chatbotChatAdd(saveChat);
+      this.props.sendchatToBot(saveChat);
+       this.forceUpdate();
+     }
+      
+    }
+
+ sendMessage(e) {
+  
+        e.preventDefault();
+        
+        var saveChat={
                           'to' : 'All Agents',
                           //'from' : this.refs.name.value,
                           // 'visitoremail' : this.refs.email.value,
@@ -123,130 +102,13 @@ class ClientChatView2 extends Component {
 
 
                       }
-                    }
-            else{
-                       saveChat = {
-                      //    'to' : this.refs.agentname.value,
-                      //    'from' : this.refs.name.value,
-                    //      'visitoremail' : this.refs.email.value,
-                  //        'agentemail' : this.props.sessiondetails.agentemail,
-                          'agentid': this.refs.agentid.value.trim().split(" "),
-                  //        'toagent' : this.refs.agentemail.value.trim().split(" ") ,
-                          'type': 'message',
-                          'uniqueid' : unique_id,
-                           'msg' : this.refs.msg.value,
-                           'datetime' : Date.now(),
-                           'time' : moment.utc().format('lll'),
-                    //       'request_id' : this.refs.reqId.value,
-                  //         'messagechannel': this.refs.channelid.value,
-                  //         'companyid': this.props.sessiondetails.companyid,
-                           'is_seen':'no',
-                           'fromMobile' : 'no',
-                    //       'socketid' : this.props.roomdetails.socketid,
-                    //       'departmentid' : this.props.sessiondetails.departmentid,
-                      }
-                    }
-         this.props.chatlist.push(saveChat);
-
-         //socket.emit('send:messageToAgent', saveChat);
-       this.props.sendmessageToAgent(saveChat);
-       this.props.savechat(saveChat);
-       this.refs.msg.value ='';
+      this.refs.msg.value ='';
+      this.props.chatbotChatAdd(saveChat);
+      this.props.sendchatToBot(saveChat);
        this.forceUpdate();
-      }
+      
     }
 
-  sendMessage(e) {
-   const { socket,dispatch } = this.props;
-
-    if (this.refs.msg.value!='') {
-
-       var message;
-       e.preventDefault();
-          //generate unique id of message - this change is for mobile clients
-       var today = new Date();
-       var uid = Math.random().toString(36).substring(7);
-       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-
-       var saveChat={}
-       if(this.refs.agentemail.value == ''){
-
-       saveChat = {
-                         'to' : 'All Agents',
-                         //'from' : this.refs.name.value,
-                          //'visitoremail' : this.refs.email.value,
-                          'type': 'message',
-                          'uniqueid' : unique_id,
-                          'msg' : this.refs.msg.value,
-                          'datetime' : Date.now(),
-                          'request_id' : this.refs.reqId.value,
-                          //'messagechannel': this.refs.channelid.value,
-                          'companyid': this.props.sessiondetails.companyid,
-                          'is_seen':'no',
-                          'time' : moment.utc().format('lll'),
-                          'fromMobile' : 'no',
-                          //'departmentid' : this.props.sessiondetails.departmentid,
-
-
-                     }
-                   }
-           else{
-                      saveChat = {
-                         //'to' : this.refs.agentname.value,
-                         //'from' : this.refs.name.value,
-                         //'visitoremail' : this.refs.email.value,
-                         //'agentemail' : this.props.sessiondetails.agentemail,
-                         //'agentid': this.refs.agentid.value.trim().split(" "),
-                         //'toagent' : this.refs.agentemail.value.trim().split(" ") ,
-                         'type': 'message',
-                         'uniqueid' : unique_id,
-                          'msg' : this.refs.msg.value,
-                          'datetime' : Date.now(),
-                          'time' : moment.utc().format('lll'),
-                          'request_id' : this.refs.reqId.value,
-                          //'messagechannel': this.refs.channelid.value,
-                          //'companyid': this.props.sessiondetails.companyid,
-                          'is_seen':'no',
-                          'fromMobile' : 'no',
-                          'socketid' : this.props.roomdetails.socketid,
-                          //'departmentid' : this.props.sessiondetails.departmentid,
-                     }
-                   }
-        this.props.chatlist.push(saveChat);
-
-        //socket.emit('send:messageToAgent', saveChat);
-        socket.emit('send:messageToBot', saveChat);
-      //this.props.sendmessageToAgent(saveChat);
-      this.props.savechat(saveChat);
-      this.refs.msg.value ='';
-      this.forceUpdate();
-     }
-   }
-
-  connectToCall(e){
-    const { socket,dispatch } = this.props;
-
-    var call= {};
-      var today = new Date();
-      var uid = Math.random().toString(36).substring(7);
-      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value.trim()+'&agentname='+this.refs.agentname.value.trim()+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
-      call.from = this.props.sessiondetails.customerName;
-      call.to = this.refs.agentname.value.trim();
-      call.agentemail = this.refs.agentemail.value.trim();
-      call.visitoremail = this.props.sessiondetails.email.trim();
-      call.request_id = this.props.sessiondetails.session_id;
-      call.url = meetingURLString;
-      console.log(call);
-      console.log(meetingURLString);
-      socket.emit('connecttocall', {room: this.props.sessiondetails.companyid, stanza: call});
-
-      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value.trim()+'&agentname='+this.refs.agentname.value.trim()+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;
-
-//      window.location.href = meetingURLString;
-      var win = window.open(meetingURLString, '_blank');
-      win.focus();
-  }
   render() {
 
     var leftStyle = {
@@ -268,28 +130,12 @@ class ClientChatView2 extends Component {
      return (
 
       <div>
-          <div>
-            {/*<label>Agent Name : </label>*/}
-            <input ref ="agentname" type = "hidden" />
-            <input ref ="agentid" type = "hidden" />
-            {/*<label>Agent Email: </label>*/}
-            <input ref ="agentemail" type = "hidden" />
-           {this.props.sessiondetails &&
-            <div>
-            <input ref="reqId" value = {this.props.sessiondetails.session_id} type="hidden"/>
-            <input ref="name" value = {this.props.sessiondetails.customerName} type="hidden" />
-            <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  type="hidden"/>
-            {/*<label> Customer Email: </label>*/}
-            <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
-           </div>
-           }
-            </div>
-
+        
           <div className="panel-body">
             <ul className="chat"  ref="messageList">
-                          {this.props.chatlist &&
-                            this.props.chatlist.filter((chat) => chat.request_id == this.refs.reqId.value).map((chat, i) => (
-                                     (this.refs.name.value === chat.from?
+                          {this.props.chatbotlist &&
+                            this.props.chatbotlist.filter((chat) => chat.sessionId == this.props.chatbotsessionid).map((chat, i) => (
+                                     (chat.from == 'user'?
                                    <li className="left clearfix userChatBoxTemp">
                                        <span className="chat-img pull-left userChat"> {chat.from.substr(0,1)}
                                       </span>
@@ -299,7 +145,7 @@ class ClientChatView2 extends Component {
                                             <strong className="primary-font">{chat.from}</strong>
                                             <small className="pull-right text-muted">
 
-                                                <span className="glyphicon glyphicon-time"></span>{chat.time}
+                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.timestamp)}
                                             </small>
                                         </div>
                                         <br/>
@@ -317,7 +163,7 @@ class ClientChatView2 extends Component {
                                         <div>
                                             <strong className="primary-font">{chat.from}</strong>
                                             <small className="pull-right text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{chat.time}
+                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.timestamp)}
                                             </small>
                                         </div>
                                         <br/>
@@ -333,6 +179,10 @@ class ClientChatView2 extends Component {
                             ))
                            }
             </ul>
+            <div style={ {float:"left", clear: "both"} }
+                ref={(el) => { this.messagesEnd = el; }}>
+            </div>
+            
             </div>
 
              <div className="panel-footer">
@@ -345,10 +195,7 @@ class ClientChatView2 extends Component {
                     </div>
                 </div>
              <br/>
-             {this.refs.agentname && this.refs.agentname.value && this.refs.agentname.value != '' ?
-              <button className="btn green" onClick ={this.connectToCall}> Start Call </button> :
-              <button className="btn green hide" onClick ={this.connectToCall}> Start Call </button>
-              }
+            
       </div>
   )
   }
@@ -360,21 +207,9 @@ class ClientChatView2 extends Component {
 
 function mapStateToProps(state) {
   return {
-    sessiondetails :(state.widget.sessiondetails),
-    roomdetails :(state.widget.roomdetails),
-
-
-    teamdetails:(state.dashboard.teamdetails),
-    userdetails:(state.dashboard.userdetails),
-    errorMessage:(state.dashboard.errorMessage),
-    agents:(state.dashboard.agents),
-    deptagents:(state.dashboard.deptagents),
-    customerchat :(state.dashboard.customerchat),
-    chatlist :(state.dashboard.chatlist),
-    channels :(state.dashboard.channels),
-    customers:(state.dashboard.customers),
-
+    chatbotlist :(state.widget.chatbotlist),
+    chatbotsessionid: (state.widget.chatbotsessionid)
      };
 }
 
-export default connect(mapStateToProps,{ getChatRequest,sendmessageToAgent,updateChatList,savechat})(ClientChatView2);
+export default connect(mapStateToProps,{ chatbotsession,sendchatToBot,chatbotChatAdd})(ClientChatView2);
