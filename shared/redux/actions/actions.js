@@ -3614,6 +3614,12 @@ export function chatbotResponse(res,username){
       type: ActionTypes.BOT_RESPONSE,
     }
 }
+
+
+
+export function testingPractice(data){
+  return data;
+
 export function sendchatToBot(message,username='')
 {
    return (dispatch) => {
@@ -3636,5 +3642,6 @@ export function sendchatToBot(message,username='')
 
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res,username)));
   };
+
 
 }
