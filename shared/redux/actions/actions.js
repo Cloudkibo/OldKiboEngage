@@ -3591,13 +3591,20 @@ export function chatbotsession(sessionid){
       type: ActionTypes.BOT_SESSION,
     }
 }
-export function chatbotResponse(res){
+export function chatbotResponse(res,username){
   console.log(res);
+  var newresp;
+  if(res.result.parameters && res.result.parameters.username){
+      newresp = res.result.speech.replace('chatbotuser', username);
+  }
+  else{
+    newresp = res.result.speech
+  }
   var message = {
                       lang:'en',
                       sessionId: res.sessionId ,
-                      from: 'bot',
-                      msg:res.result.speech,
+                      from: 'Bearbel',
+                      msg:newresp,
                       timestamp:res.timestamp,
                       
                     
@@ -3607,7 +3614,7 @@ export function chatbotResponse(res){
       type: ActionTypes.BOT_RESPONSE,
     }
 }
-export function sendchatToBot(message)
+export function sendchatToBot(message,username='')
 {
    return (dispatch) => {
     fetch('https://api.api.ai/v1/query', {
@@ -3623,10 +3630,11 @@ export function sendchatToBot(message)
                       from: message.from,
                       msg: message.msg,
                       timestamp: message.timestamp,
+                      
 })
        
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res,username)));
   };
 
 }

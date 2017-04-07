@@ -24,7 +24,7 @@ class ClientChatView2 extends Component {
   }
 
   componentDidMount() {
-    const { socket,dispatch } = this.props;
+  
    // also broadcast a notification message
     //generate unique id of session with bot
      var today = new Date();
@@ -32,10 +32,33 @@ class ClientChatView2 extends Component {
      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
      this.props.chatbotsession(unique_id);
      this.scrollToBottom();
+     var username = prompt("Hi! I am Bearbel. Whats your good name?");
+     this.refs.username.value = username;
 
+    
       }
 
+componentWillReceiveProps(props){
+  if(props.chatbotsessionid && !this.props.chatbotsessionid){
+        
+        var query=[]
+        query.push('I am chatbotuser');
+        var saveChat={
+                          
+                      query:query,
+                      lang:'en',
+                      sessionId: props.chatbotsessionid,
+                      from: 'user',
+                      msg:query[0],
+                      timestamp:Date.now(),
 
+                    
+                      }
+
+      this.refs.msg.value ='';
+      this.props.sendchatToBot(saveChat,this.refs.username.value);
+ }
+}
 componentWillUpdate(){
   this.scrollToBottom();
 }
@@ -65,7 +88,7 @@ componentDidUpdate() {
                       query:query,
                       lang:'en',
                       sessionId: this.props.chatbotsessionid,
-                      from: 'user',
+                      from: this.refs.username.value,
                       msg:query[0],
                       timestamp:Date.now(),
 
@@ -82,26 +105,22 @@ componentDidUpdate() {
 
  sendMessage(e) {
   
+        var message;
         e.preventDefault();
-        
+        var query=[]
+        query.push(this.refs.msg.value);
         var saveChat={
-                          'to' : 'All Agents',
-                          //'from' : this.refs.name.value,
-                          // 'visitoremail' : this.refs.email.value,
-                           'type': 'message',
-                           'uniqueid' : unique_id,
-                           'msg' : this.refs.msg.value,
-                           'datetime' : Date.now(),
-                        //   'request_id' : this.refs.reqId.value,
-                        //   'messagechannel': this.refs.channelid.value,
-                      //     'companyid': this.props.sessiondetails.companyid,
-                           'is_seen':'no',
-                           'time' : moment.utc().format('lll'),
-                           'fromMobile' : 'no',
-                        //   'departmentid' : this.props.sessiondetails.departmentid,
+                          
+                      query:query,
+                      lang:'en',
+                      sessionId: this.props.chatbotsessionid,
+                      from: this.refs.username.value,
+                      msg:query[0],
+                      timestamp:Date.now(),
 
-
+                    
                       }
+
       this.refs.msg.value ='';
       this.props.chatbotChatAdd(saveChat);
       this.props.sendchatToBot(saveChat);
@@ -132,10 +151,12 @@ componentDidUpdate() {
       <div>
         
           <div className="panel-body">
+          <input ref="username" type="hidden"/>
+          
             <ul className="chat"  ref="messageList">
                           {this.props.chatbotlist &&
                             this.props.chatbotlist.filter((chat) => chat.sessionId == this.props.chatbotsessionid).map((chat, i) => (
-                                     (chat.from == 'user'?
+                                     (chat.from == 'Bearbel'?
                                    <li className="left clearfix userChatBoxTemp">
                                        <span className="chat-img pull-left userChat"> {chat.from.substr(0,1)}
                                       </span>

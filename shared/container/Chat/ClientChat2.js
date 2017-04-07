@@ -50,7 +50,7 @@ class ClientChat2 extends Component {
         </div>
 
           <div className="page-content-wrapper">
-            <div className="page-content">
+            <div className="page-content" style={{'width':'500','margin':'0 auto'}}>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
