@@ -3619,7 +3619,7 @@ export function chatbotResponse(res,username){
 
 export function testingPractice(data){
   return data;
-
+}
 export function sendchatToBot(message,username='')
 {
    return (dispatch) => {
