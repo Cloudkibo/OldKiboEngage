@@ -83,10 +83,10 @@ class MyPickedSessions extends Component {
 
                     <tbody>                    
                       {
-                        this.props.mypickedsessions && this.props.customers && this.props.channels && this.props.teamdetails &&
+                        this.props.mypickedsessions && this.props.customers && this.props.subgroups && this.props.groupdetails &&
                         this.props.mypickedsessions.map((session, i) => (
                           
-                          <MyPickedSessionListItem session={session} key={session.request_id} userdetails={this.props.userdetails} customers={this.props.customers.filter((c) => c._id == session.customerid)} channels = {this.props.channels.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} teams = {this.props.teamdetails.filter((c) => c._id == session.departmentid)}/>
+                          <MyPickedSessionListItem session={session} key={session.request_id} userdetails={this.props.userdetails} customers={this.props.customers.filter((c) => c._id == session.customerid)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
                                                       
                         ))
                       }
@@ -112,9 +112,9 @@ MyPickedSessions.propTypes = {
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
   return {
-          channels:(state.dashboard.channels),
+          subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),
-          teamdetails :(state.dashboard.teamdetails),
+          groupdetails :(state.dashboard.groupdetails),
           errorMessage:(state.dashboard.errorMessage),
           responses :(state.dashboard.responses),
           agents:(state.dashboard.agents),

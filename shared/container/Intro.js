@@ -8,7 +8,7 @@ class Intro extends Component {
   constructor(props, context) {
        super(props, context);
        this.handleClick = this.handleClick.bind(this);
-    
+       this.handleBotClick = this.handleBotClick.bind(this);
     
   }
 
@@ -16,6 +16,12 @@ handleClick(e){
   //alert('i am clicked');
   e.preventDefault();
   loadKiboEngageWidget('cd89f71715f2014725163952')
+}
+
+handleBotClick(e){
+  //alert('i am clicked');
+  e.preventDefault();
+  loadKiboEngageBotWidget()
 }
  
   render() {
@@ -29,6 +35,7 @@ handleClick(e){
                         <li><i className="fa fa-phone"></i><span>1-425-890-9414</span></li>
                         <li><i className="fa fa-envelope-o"></i><span>support@cloudkibo.com</span></li>
                         <li><button onClick={this.handleClick}> Live Help </button></li>
+                        <li><button onClick={this.handleBotClick}> Chat Bot Help </button></li>
                     </ul>
                 </div>
                

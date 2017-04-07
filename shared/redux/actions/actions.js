@@ -1392,7 +1392,7 @@ export function showAllChat(customerchat) {
 }
 
 export function showMyPickChatSessions(sessions,userid){
-  var mypickedsessions = sessions.filter((c) => c.status != "new" && c.agent_ids.length>0 && c.agent_ids[c.agent_ids.length-1] == userid)
+  var mypickedsessions = sessions.filter((c) => c.status != "new" && c.agent_ids.length>0 && c.agent_ids[c.agent_ids.length-1].id == userid)
   return {
     type: ActionTypes.SHOW_MY_PICKED_SESSIONS,
     mypickedsessions : mypickedsessions,
@@ -3570,9 +3570,78 @@ export function getcompanylogo(appid,appsecret,companyid){
 
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showCompanylogo(res)));
   };
+
 }
+
+
+
+/******* chat bot actions*****/
+export function chatbotChatAdd(message){
+  console.log(message);
+   return{
+      message:message,
+      type: ActionTypes.BOT_RESPONSE,
+    }
+}
+
+export function chatbotsession(sessionid){
+    
+   return{
+      chatbotsessionid:sessionid,
+      type: ActionTypes.BOT_SESSION,
+    }
+}
+export function chatbotResponse(res,username){
+  console.log(res);
+  var newresp;
+  if(res.result.parameters && res.result.parameters.username){
+      newresp = res.result.speech.replace('chatbotuser', username);
+  }
+  else{
+    newresp = res.result.speech
+  }
+  var message = {
+                      lang:'en',
+                      sessionId: res.sessionId ,
+                      from: 'Bearbel',
+                      msg:newresp,
+                      timestamp:res.timestamp,
+                      
+                    
+  }
+   return{
+      message:message,
+      type: ActionTypes.BOT_RESPONSE,
+    }
+}
+
 
 
 export function testingPractice(data){
   return data;
+
+export function sendchatToBot(message,username='')
+{
+   return (dispatch) => {
+    fetch('https://api.api.ai/v1/query', {
+        method: 'post',
+        headers:new Headers({
+          'Authorization':' Bearer 23faab6fda14491294154d954eeede9c',
+          'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({
+                      query: message.query,
+                      lang: message.lang,
+                      sessionId: message.sessionId,
+                      from: message.from,
+                      msg: message.msg,
+                      timestamp: message.timestamp,
+                      
+})
+       
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res,username)));
+  };
+
+
 }

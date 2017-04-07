@@ -201,7 +201,7 @@ function mapStateToProps(state) {
           errorMessageProfile:(state.dashboard.errorMessageProfile),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
-          channels :(state.dashboard.channels),
+          subgroups :(state.dashboard.subgroups),
           myteamdetails:(state.dashboard.myteamdetails),
            };
 }

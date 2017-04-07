@@ -120,7 +120,7 @@ function mapStateToProps(state) {
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
-          channels :(state.dashboard.channels),
+          subgroups :(state.dashboard.subgroups),
           mygroupdetails:(state.dashboard.mygroupdetails),
            };
 }
