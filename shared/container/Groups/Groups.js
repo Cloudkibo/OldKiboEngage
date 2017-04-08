@@ -56,6 +56,11 @@ componentDidMount(){
     
         this.props.getcustomers(usertoken);
       }
+
+    setTimeout(function() {
+    $(".alert").remove(); 
+   
+    }, 3000);
 }
    handleClick(e) {
 
@@ -127,7 +132,8 @@ componentDidMount(){
               </div>
                {this.props.errorMessage &&
 
-                     <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
+                     <div className = "alert alert-success">
+                     <span>{this.props.errorMessage}</span></div>
                       }
               <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>
                 { this.props.groupdetails && this.props.customers &&

@@ -71,6 +71,7 @@
     "react-redux": "^4.1.2",
     "react-router": "^2.6.0",
     "react-router-redux": "^4.0.4",
+    "react-s-alert": "^1.2.2",
     "react-stickerpipe": "^1.8.2",
     "react-timeout": "^1.0.0",
     "react-timer-mixin": "^0.13.3",

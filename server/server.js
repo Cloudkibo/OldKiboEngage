@@ -188,6 +188,12 @@ const renderFullPage = (html, initialState) => {
               RevosliderInit.initRevoSlider();
 
             });
+
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 2000);
           </script>
              <script src="/dist/bundle.js"></script>
 

@@ -158,7 +158,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              {/*<li className="">
+            <li className="">
                 <Link to='/teams'>
                   <i className="fa fa-group">
                   </i>
@@ -168,7 +168,7 @@ class SideBar extends Component
                   <span className="selected">
                   </span>
                 </Link>
-              </li>*/}
+              </li>
 
               <li className="">
                 <Link to="/reports">

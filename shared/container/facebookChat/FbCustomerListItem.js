@@ -60,12 +60,14 @@ var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
 return res;
 }
 
-var pathname="https://graph.facebook.com/"+props.customer.user_id+"/picture?width=100&height=100"
+
+
+
   return (
 
     (unreadCount > 0 ?
      <div className="list-group-item" style={{'width':'300px','height':'70px','backgroundColor' : 'rgba(243, 86, 93, 0.18)'}} onClick={props.onClickSession}>
-     <img src={pathname} width="50" height="50" className="user-avatar" style={hleft}/>
+     <img src={props.customer.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
       {(unreadCount == 0?
@@ -76,7 +78,7 @@ var pathname="https://graph.facebook.com/"+props.customer.user_id+"/picture?widt
     </div>
     :
      <div className="list-group-item" style={{'width':'300px','height':'70px'}} onClick={props.onClickSession}>
-     <img src={pathname} width="50" height="50" className="user-avatar" style={hleft}/>
+     <img src={props.customer.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
       {(unreadCount == 0?

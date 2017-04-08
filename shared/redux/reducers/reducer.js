@@ -61,6 +61,7 @@ const dashboard = (state =dashboardState, action) => {
         ...state,errorMessageProfile:'',
         group: action.group,
         newagents:agentid,
+        errorMessage:'',
        
 
       };
@@ -72,6 +73,7 @@ const dashboard = (state =dashboardState, action) => {
 
         ...state,errorMessageProfile:'',
         fbpage:action.fbpage,
+        errorMessage:'',
 
       };
 
@@ -79,18 +81,21 @@ const dashboard = (state =dashboardState, action) => {
          return {
           ...state,errorMessageProfile:'',
         invitedagents: action.invitedagents,
+        errorMessage:'',
         }
       
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
         ...state,errorMessageProfile:'',
         agent: state.agents.filter((agent) => agent._id == action.id),
+        errorMessage:'',
         
       };
 
     case ActionTypes.ADD_SELECTED_SUBGROUP :
       return {
        ...state,errorMessageProfile:'',
+       errorMessage:'',
         subgroup: state.subgroups.filter((subgroup) => subgroup._id == action.id),
        
       };
@@ -98,6 +103,7 @@ const dashboard = (state =dashboardState, action) => {
       return {
        ...state,errorMessageProfile:'',
         response: state.responses.filter((response) => response._id == action.id),
+        errorMessage:'',
       
       };
    case ActionTypes.ADD_USER_DETAILS:
@@ -106,6 +112,7 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
              userdetails:action.user,
              errorMessage:action.chat_error,
+             errorMessage:'',
             
 
     };
@@ -115,6 +122,7 @@ const dashboard = (state =dashboardState, action) => {
             
             ...state,errorMessageProfile:'',
             agents:action.agents,
+            errorMessage:'',
             };
 
 
@@ -123,7 +131,7 @@ const dashboard = (state =dashboardState, action) => {
           return{
             ...state,errorMessageProfile:'',
             deptagents :action.agents,
-           
+           errorMessage:'',
              newagents : [],
 
 
@@ -135,19 +143,21 @@ const dashboard = (state =dashboardState, action) => {
           return{
             ...state,errorMessageProfile:'',
             news : action.news,
-           
+           errorMessage:'',
              }
 
     case ActionTypes.ADD_FB_PAGES:
           return{
           ...state,errorMessageProfile:'', 
           fbpages : action.fbpages,
+          errorMessage:'',
 
              }
    case ActionTypes.ADD_GROUPS:
           console.log(action.groups)
           return{
             ...state,errorMessageProfile:'',
+            errorMessage:'',
             groupdetails:action.groups,
             newagents: [],
             
@@ -169,7 +179,7 @@ const dashboard = (state =dashboardState, action) => {
           return{
             ...state,errorMessageProfile:'',
             responses : action.responses,
-           
+           errorMessage:'',
 
 
       };
@@ -179,13 +189,13 @@ const dashboard = (state =dashboardState, action) => {
           return{
             ...state,errorMessageProfile:'',
             responses : [action.response,...state.responses],
-            
+            errorMessage:'',
       };
     case ActionTypes.ADD_MY_GROUPS:
           return{
             ...state,errorMessageProfile:'',
             mygroupdetails:action.mygroups,
-          
+          errorMessage:'',
       };
     case ActionTypes.ADD_GROUP:
     console.log(action.deptname);
@@ -273,14 +283,14 @@ const dashboard = (state =dashboardState, action) => {
         return {
           ...state,errorMessageProfile:'',
            chat:action.chat,
-           
+           errorMessage:'',
           };
 
         case ActionTypes.ADD_UPDATE_PROFILE_WARNINGS:
         return {
           ...state,
            errorMessageProfile : action.errormessage,
-           
+           errorMessage:'',
 
           };
 
@@ -289,7 +299,7 @@ const dashboard = (state =dashboardState, action) => {
           ...state,
            errorMessageProfile : action.errormessage,
            companysettings:action.companysettings,
-
+           errorMessage:'',
           };
           case ActionTypes.SHOW_SPECIFIC_CHAT_ERROR:
 
@@ -306,6 +316,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchatold : action.customerchat,
              serverresponse : action.serverresponse,
              customerchat_selected:action.customerchat_selected,
+             errorMessage:'',
             };
 
 
@@ -323,6 +334,7 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.chat_error,
             tempMessage : action.tempMessage,
             ismessageSaved : action.ismessageSaved,
+            errorMessage:'',
 
             };
 
@@ -331,7 +343,7 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
             mobileuserchat : action.mobileuserchat,
-
+            errorMessage:'',
             };
 
 
@@ -340,7 +352,7 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
              userchats : action.userchats,
              errorMessage:action.chat_error,
-             
+             errorMessage:'',
             };
 
            case ActionTypes.SHOW_MY_PICKED_SESSIONS:
@@ -348,19 +360,21 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
              customerchatold : action.customerchat,
              mypickedsessions : action.mypickedsessions,
-             
+             errorMessage:'',
             };
 
           case ActionTypes.SHOW_ASSIGNED_SESSIONS:
              return {
               ...state,errorMessageProfile:'',
              assignedsessions : action.assignedsessions,
+             errorMessage:'',
             };
 
             case ActionTypes.SHOW_RESOLVED_SESSIONS:
             return {
              ...state,errorMessageProfile:'', 
              resolvedsessions : action.resolvedsessions,
+             errorMessage:'',
            
             };
 
@@ -368,6 +382,7 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
              newsessions : action.newsessions,
+             errorMessage:'',
              
             };
 
@@ -377,7 +392,7 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              assignedsessions : action.assignedsessions,
              assignedsocketsessions : action.assignedsocketsessions,
-             
+             errorMessage:'',
             };
 
 
@@ -386,7 +401,7 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              newsessions : action.newsessions,
              newsocketsessions : action.newsocketsessions,
-
+            errorMessage:'',
             };
 
 
@@ -395,7 +410,7 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              resolvedsessions : action.resolvedsessions,
              resolvedsocketsessions : action.resolvedsocketsessions,
-             
+             errorMessage:'',
             };
 
 
@@ -407,8 +422,8 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.chat_error,
              customerchat : action.customerchat,
              customerchatold : action.customerchat,
-             yoursocketid : action.yoursocketid
-
+             yoursocketid : action.yoursocketid,
+             errorMessage:'',
 
             };
           case ActionTypes.ADD_USER_CHATS:
@@ -416,7 +431,7 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
             userchats: action.userchats,
             chatlist: action.chatlist,
-            
+            errorMessage:'',
             };
 
             case ActionTypes.FILTER_BY_STATUS:
@@ -424,14 +439,14 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
-           
+           errorMessage:'',
             };
              case ActionTypes.FILTER_BY_DEPT:
             return {
               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
-            
+            errorMessage:'',
             };
 
               case ActionTypes.FILTER_BY_SUBGROUP:
@@ -439,13 +454,14 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
-            
+            errorMessage:'',
             };
             case ActionTypes.FILTER_BY_AGENT:
             return {
               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.filtered,
+             errorMessage:'',
             
             };
             case ActionTypes.SELECT_CUSTOMERCHAT:
@@ -453,6 +469,7 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              customerchat_selected : action.customerchat_selected[0],
              new_message_arrived_rid : action.new_message_arrived_rid,
+             errorMessage:'',
            
             };
 
@@ -461,6 +478,7 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
              fbchatSelected:action.fbchatSelected,
+             errorMessage:'',
 
 
 
@@ -472,7 +490,7 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              fbchats:action.fbchats,
              fbchatSelected:action.fbchatSelected,
-
+             errorMessage:'',
 
 
             };
@@ -481,12 +499,14 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
              fbchats:action.fbchats,
+             errorMessage:'',
             };
 
           case ActionTypes.FBCHAT_SENT_TO_AGENT:
               return {
              ...state,errorMessageProfile:'',
-             status:action.status
+             status:action.status,
+             errorMessage:'',
 
 
 
@@ -497,6 +517,7 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.chat_error,
              customerchat : action.customerchat,
              customerchatold : [action.customerchat,...state.customerchatold],
+             errorMessage:'',
            
             };
 
@@ -504,6 +525,7 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
              onlineAgents : action.onlineAgents,
+             errorMessage:'',
             };
 
           case ActionTypes.SHOW_CHAT_HISTORY:
@@ -511,6 +533,7 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              chatlist : action.chatlist,
+             errorMessage:'',
           
             };
 
@@ -537,6 +560,7 @@ const dashboard = (state =dashboardState, action) => {
              chatlist: chatlistt,
              new_message_arrived_rid : action.ch,
              userchats :cc,
+             errorMessage:'',
            
             };
 
@@ -545,7 +569,7 @@ const dashboard = (state =dashboardState, action) => {
            return {
             ...state,errorMessageProfile:'',
              errorMessage:action.status,
-            
+
             };
           case ActionTypes.SHOW_NOTIFICATIONS:
              return {
@@ -579,7 +603,7 @@ const dashboard = (state =dashboardState, action) => {
             return {
               ...state,errorMessageProfile:'',
               notification: state.notifications.filter((notification) => notification._id == action.id),
-
+              errorMessage:'',
 
             };
             case ActionTypes.SHOW_CUSTOMERS:
@@ -587,6 +611,7 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customers : action.customers,
+             errorMessage:'',
             };
 
             case ActionTypes.SHOW_COUNTRY_NAME:

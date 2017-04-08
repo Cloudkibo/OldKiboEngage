@@ -50,14 +50,15 @@ var ch=[]
       <td>{props.session.customerid.email?props.session.customerid.email : "N/A"}</td>
       <td>{gname.length>0? gname[0].deptname:'-'}</td>
       {
-        ch[0] &&
-      <td>{ch[0].msg_channel_name}</td>
+        ch && ch.length>0? 
+              <td>{ch[0].msg_channel_name}</td>:
+              <td> - </td>
       }
        {
-        props.agent &&
+      
         props.agent && props.agent.length>0 ?
          <td>{props.agent[0].firstname +' '+ props.agent[0].lastname}</td> :
-          <td>-</td>
+        <td>-</td>
       
       
     }

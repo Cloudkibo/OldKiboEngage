@@ -14,10 +14,15 @@ class GroupCreateView extends Component {
   addGroup() {
     const nameRef = this.refs.name;
    const descRef = this.refs.desc;
+   if(this.props.newagents.length <1){
+    alert('Group cannot be created. Please add atleast one agent in the group.');
+   }
+   else{
     if (nameRef.value && descRef.value) {
       this.props.addGroup(nameRef.value,descRef.value,this.props.newagents);
       nameRef.value = descRef.value = '';
     }
+  }
   }
 
   appendAgent(id,e){

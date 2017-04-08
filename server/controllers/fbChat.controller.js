@@ -87,6 +87,7 @@ export function chatwebhook(req, res) {
       											  'timezone' : customer.timezone,
       											  'companyid' : companyid,
       											  'gender' : customer.gender, 
+                              'profile_pic': customer.profile_pic
 								           }
 
 								           console.log('customerobj obj is ');
@@ -307,6 +308,10 @@ export function getfbCustomers(req, res) {
         console.log(body);
         console.log(error)
       if(!error) {
+            var customerlist = JSON.parse(body);
+            for(var i=0;i<customerlist.length;i++){
+
+            }
             return res.status(201).json(JSON.parse(body));
       }
     else
