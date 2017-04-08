@@ -1,0 +1,30 @@
+
+> mern-starter@1.0.0 test /home/coder/Projects/KiboEngage
+> mocha --compilers js:babel-core/register ./shared/tests/mocha-tests/* --reporter mochawesome
+
+
+
+  Testing a demo function
+    ✓ Lets see
+    1) Test Login Api
+
+
+  1 passing (315ms)
+  1 failing
+
+  1) Testing a demo function Test Login Api:
+
+      AssertionError: expected 'action' to equal 'foo'
+      + expected - actual
+
+      -action
+      +foo
+      
+      at Context.<anonymous> (shared/tests/mocha-tests/actions.spec.js:16:29)
+
+
+
+[mochawesome] Report JSON saved to /home/coder/Projects/KiboEngage/mochawesome-reports/mochawesome.json
+
+[mochawesome] Report HTML saved to /home/coder/Projects/KiboEngage/mochawesome-reports/mochawesome.html
+

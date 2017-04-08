@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Boilerplate project for building Isomorphic apps using React and Redux",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register ./shared/tests/mocha-tests/*",
+    "test": "mocha --compilers js:babel-core/register ./shared/tests/mocha-tests/* --reporter mochawesome",
     "test:server": "cross-env NODE_ENV=test PORT=8080 MONGO_URL=mongodb://localhost:27017/mern-test mocha --compilers js:babel-register --recursive server/tests/**/*.spec.js",
     "start": "cross-env NODE_ENV=development nodemon index.js",
     "start:prod": "cross-env NODE_ENV=production node index.js",
@@ -117,6 +117,7 @@
     "expect-jsx": "^2.2.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "mocha": "^2.5.3",
+    "mochawesome": "^2.0.4",
     "nodemon": "^1.9.1",
     "pre-commit": "^1.1.2",
     "react-addons-test-utils": "^15.0.1",
