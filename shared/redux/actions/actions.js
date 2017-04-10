@@ -2820,6 +2820,113 @@ export function getcompanysettings(token,id) {
 
 /*********** filter sessionsummary ***********/
 
+export function filterSessionSummary(status, medium, agentID, groupID, subgroupID, sessionsummary) {
+  var sessionsummaryfiltered;
+  if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID);
+  }
+  else if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium);
+  }
+  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.departmentid == groupID);
+  }
+  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.departmentid == groupID);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.departmentid == groupID);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium);
+  }
+  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  }
+  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  }
+  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.departmentid == groupID);
+  }
+  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+    sessionsummaryfiltered = sessionsummary;
+  }
+
+  return {
+    type: ActionTypes.FILTER_BY_SESSION,
+    sessionsummaryfiltered,
+    sessionsummary,
+
+  };
+}
+/*
 export function filterbysessionstatus(status,sessionsummary) {
 
   var sessionsummaryfiltered;
@@ -2917,9 +3024,7 @@ export function filterbysessionAgent(id,sessionsummary) {
 
   };
 }
-
-
-
+*/
 
 /****** High Charts
 **/
@@ -3593,7 +3698,7 @@ export function chatbotChatAdd(message){
 }
 
 export function chatbotsession(sessionid){
-    
+
    return{
       chatbotsessionid:sessionid,
       type: ActionTypes.BOT_SESSION,
@@ -3614,8 +3719,8 @@ export function chatbotResponse(res,username){
                       from: 'Bearbel',
                       msg:newresp,
                       timestamp:res.timestamp,
-                      
-                    
+
+
   }
    return{
       message:message,
@@ -3644,9 +3749,9 @@ export function sendchatToBot(message,username='')
                       from: message.from,
                       msg: message.msg,
                       timestamp: message.timestamp,
-                      
+
 })
-       
+
 
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res,username)));
   };

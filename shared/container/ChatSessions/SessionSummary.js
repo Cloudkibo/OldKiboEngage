@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
-import {getsessions,getcustomers,filterbysessionMedium,filterbysessionDept,filterbysessionSubgroup,getcustomersubgroups,filterbysessionAgent,filterbysessionstatus, updatesubgrouplist} from '../../redux/actions/actions'
+import {getsessions,getcustomers,getcustomersubgroups,filterSessionSummary, updatesubgrouplist} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
@@ -62,14 +62,17 @@ class SessionSummary extends Component {
       }
   }
 
-  handleChange(e){
+  handleChange(){
      //alert(e.target.value);
-     this.props.filterbysessionstatus(e.target.value,this.props.sessionsummaryfiltered);
+     this.setState({ subgroup: this.refs.teamlist.value });
+     this.props.filterSessionSummary(this.refs.status.value, this.refs.client.value, this.refs.agentList.value, this.refs.teamlist.value, this.refs.channellist.value, this.props.sessionsummary);
+     if(this.state.subgroup.value !== 'all') {
+       this.props.updatesubgrouplist(this.refs.teamlist.value);
+     }
      this.forceUpdate();
+  }
 
-
-    }
-
+/*
     handleChangeMedium(e){
     //  alert(e.target.value);
       this.props.filterbysessionMedium(e.target.value,this.props.sessionsummaryfiltered);
@@ -100,6 +103,8 @@ class SessionSummary extends Component {
 
 
     }
+    */
+
     componentWillReceiveProps(nextprops){
       if(nextprops.sessionsummaryfiltered){
         this.setState({loading:false});
@@ -160,7 +165,7 @@ class SessionSummary extends Component {
                                   </td>
                                   <td className="col-md-1">
 
-                                    <select  ref = "client" onChange={this.handleChangeMedium.bind(this)}   >
+                                    <select  ref = "client" onChange={this.handleChange.bind(this)}   >
                                             <option value="all">All</option>
                                             <option value="mobile">Mobile</option>
                                             <option value="web">Web</option>
@@ -169,7 +174,7 @@ class SessionSummary extends Component {
                                   </td>
                                   <td className="col-md-1">
 
-                                    <select  ref = "agentList" onChange={this.handleChangeAgents.bind(this)}   >
+                                    <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
                                           <option value="all">All</option>
 
                                            {
@@ -184,7 +189,7 @@ class SessionSummary extends Component {
                                   </td>
                                   <td className="col-md-1">
 
-                                    <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
+                                    <select  ref = "teamlist" onChange={this.handleChange.bind(this)}   >
                                              <option value="all">All</option>
                                             {
 
@@ -199,7 +204,7 @@ class SessionSummary extends Component {
 
                                   </td>
                                   <td className="col-md-1">
-                                    <select  ref = "channellist" onChange={this.handleChangeChannel.bind(this)}   >
+                                    <select  ref = "channellist" onChange={this.handleChange.bind(this)}   >
                                                <option value="all">All</option>
                                              {
                                                this.state.subgroup == 'all' ?
@@ -298,6 +303,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,getcustomersubgroups:getcustomersubgroups,filterbysessionMedium:filterbysessionMedium,filterbysessionDept:filterbysessionDept,filterbysessionSubgroup:filterbysessionSubgroup,filterbysessionAgent:filterbysessionAgent,filterbysessionstatus:filterbysessionstatus, updatesubgrouplist: updatesubgrouplist}, dispatch);
+  return bindActionCreators({getsessions:getsessions,getcustomers:getcustomers,getcustomersubgroups:getcustomersubgroups,filterSessionSummary:filterSessionSummary, updatesubgrouplist: updatesubgrouplist}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(SessionSummary);
