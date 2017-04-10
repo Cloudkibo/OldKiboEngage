@@ -12,4 +12,7 @@ describe('Testing a demo function', function(){
         expect(action).to.equal(foo);
     });
 
+    it('Test Login Api', function(){
+        expect("action").to.equal("foo");
+    });
 });
