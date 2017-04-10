@@ -319,7 +319,14 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:'',
             };
 
+            case ActionTypes.RESOLVE_SESSION:
 
+             return {
+            ...state,errorMessageProfile:'',
+             customerchat : action.customerchat,
+             customerchatold : action.customerchat,
+             errorMessage:'',
+            };
             case ActionTypes.CHAT_SAVE_RESPONSE:
            var cc = []
            if(state.userchats){

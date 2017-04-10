@@ -2379,11 +2379,19 @@ export function assignToAgentResponse(session){
     session,
   }
 }
-export function resolvesessionResponse(){
+export function resolvesessionResponse(request_id,customerchat){
 
+  for(var i=0;i<customerchat.length;i++){
+    if(customerchat[i].request_id == request_id){
+      customerchat[i].status = 'resolved';
+      break;
+
+    }
+  }
   console.log('resolvesession called');
    return {
     type : ActionTypes.RESOLVE_SESSION,
+    customerchat:customerchat,
 
   }
 }
@@ -2562,7 +2570,7 @@ export function getuserchats(token) {
 
 
 //mark session resolve
-export function resolvesession(request_id,usertoken) {
+export function resolvesession(request_id,usertoken,customerchat) {
   if(confirm("Are you sure,you want to mark session resolved?")){
   return (dispatch) => {
     fetch(`${baseURL}/api/resolvechatsession`, {
@@ -2575,7 +2583,7 @@ export function resolvesession(request_id,usertoken) {
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(resolvesessionResponse()));
+    }).then((res) => res.json()).then(res => dispatch(resolvesessionResponse(request_id,customerchat)));
   };
 }
 }

@@ -578,8 +578,9 @@ else{
 
       this.props.savechat(saveChat);
       const usertoken = auth.getToken();
-
-      this.props.resolvesession(this.props.sessiondetails.request_id,usertoken);//call action to mark session resolve;
+       // 3. update session status on server
+     
+      this.props.resolvesession(this.props.sessiondetails.request_id,usertoken,this.props.customerchat);//call action to mark session resolve;
       //update session status on socket
       socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
                                         'status' : 'resolved',
@@ -1338,7 +1339,7 @@ const { value, suggestions } = this.state;
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
-            <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1',width:600+'px'}}  ref="messageList">
+            <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1',width:600+'px'}}  ref="messageList">
 
                           {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
@@ -1357,11 +1358,11 @@ const { value, suggestions } = this.state;
                                        {
                                         (chat.type == 'file')?
 
-                                       <p  className='pull-right chatmsg'>
+                                       <p  className='chatmsg' style={{'marginLeft':'0px'}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
-                                       <p className="chatmsg">
+                                       <p className="chatmsg" style={{'marginLeft':'0px'}}>
                                             {chat.msg}
                                        </p>
                                      }
@@ -1414,12 +1415,12 @@ const { value, suggestions } = this.state;
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg'>
+                                         <p  className='chatmsg' style={{'marginLeft':'0px'}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p  className='pull-right chatmsg'>
+                                       <p  className='chatmsg' style={{'marginLeft':'0px'}}>
                                             {chat.msg}
                                        </p>
                                      }
