@@ -555,7 +555,9 @@ const dashboard = (state =dashboardState, action) => {
             }
             var cc = []
            if(state.userchats){
+              console.log('state.userchats' + state.userchats.length)
               cc = removeDuplicates([...state.userchats,action.message],'uniqueid')
+              console.log('state.userchats' + cc.length)
            }
            else{
             cc = [action.message]

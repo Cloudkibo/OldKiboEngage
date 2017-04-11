@@ -35,7 +35,7 @@ class Chat extends Component {
 
        //but for mobile clients we will fetch list of sessions and customers from server
         props.getmobilesessions(usertoken);
-       // props.getuserchats(usertoken);
+        props.getuserchats(usertoken); //get mobile userchats
 
         props.getresponses(usertoken);
 
@@ -236,12 +236,12 @@ componentDidMount(){
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
    // alert('getupdatedChats is called' + data.length);
-  /*if(this.props.userchats){
-   // this.props.getchatsfromsocket(this.props.userchats,data);
+  if(this.props.userchats){
+    this.props.getchatsfromsocket(this.props.userchats,data);
   }
   else{
     this.props.getchatsfromsocket([],data);
-  }*/
+  }
 
         //this.props.mobileuserchat.push(message);
     /*  alert(this.props.userchats.length);
@@ -250,7 +250,7 @@ componentDidMount(){
      // alert(this.props.userchats.length);
       this.props.previousChat(data,this.props.chatlist);
   
-   // this.forceUpdate();
+    this.forceUpdate();
   }
 
 

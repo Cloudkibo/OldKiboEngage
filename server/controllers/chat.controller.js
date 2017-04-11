@@ -350,14 +350,14 @@ export function getuserchats(req, res) {
        if(!error && response.statusCode == 200)
        {
 
-        var linq = Enumerable.from(body);
+       /* var linq = Enumerable.from(body);
         //console.log(linq);
         var result =
             linq.groupBy(function(x){return x.request_id;})
             .select(function(x){return { request_id:x.key(),Value:x.last() };})
             .toArray();
-        //console.log(result);
-        var info = result;
+        //console.log(result);*/
+        var info = body;
         return res.status(200).json({statusCode : 201,userchats:info});
        }
        else

@@ -1793,17 +1793,17 @@ export function getsessions(token) {
 export function getmobilesessions(token) {
   console.log(token);
   return (dispatch) => {
-    /*fetch(`${baseURL}/api/getsessions`, {
+    fetch(`${baseURL}/api/getsessions`, {
         method: 'get',
         headers: new Headers({
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver([])));
-  };*/
-    dispatch(getsessionsfromserver([]))
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver(res)));
+  };
+  //  dispatch(getsessionsfromserver())
 
-};
+
 }
 
 export function previousChat(previouschat,chatlist){
@@ -2474,7 +2474,6 @@ export function setsocketid(yoursocketid){
 
 export function getchatsfromsocket(originalArray,newchats){
 
-    alert('state type');
      var newArray = originalArray.push.apply(originalArray,newchats);
      var lookupObject  = {};
      var prop = 'uniqueid';
