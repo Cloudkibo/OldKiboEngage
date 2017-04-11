@@ -8,8 +8,8 @@ import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Picker from 'react-giphy-picker';
 import StickerMenu from 'react-stickerpipe';
+import EmojiPicker from 'react-emojipicker';
 
-var EmojiPicker = require('react-emoji-picker');
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload'
 
@@ -68,7 +68,6 @@ export class ChatArea extends Component {
         this.onFileSubmit = this.onFileSubmit.bind(this);
         this._onChange = this._onChange.bind(this);
         this.toggleEmojiPicker = this.toggleEmojiPicker.bind(this);
-        this.emojiPicker = this.emojiPicker.bind(this);
         this.setEmoji = this.setEmoji.bind(this);
         this.sendThumbsUp = this.sendThumbsUp.bind(this);
         this.log = this.log.bind(this);
@@ -147,6 +146,9 @@ handleMessageSubmit(e) {
 
     console.log('handleMessageSubmit' + e.which)
     if (e.which === 13 && this.state.value !="") {
+      this.setState({
+        value: ""
+      });
     var today = new Date();
     var uid = Math.random().toString(36).substring(7);
 
@@ -374,19 +376,8 @@ updateState(e) {
 }
 
 setEmoji(emoji) {
-  console.log(emoji);
-  this.setState({value: this.state.value + emoji})
-}
-
-emojiPicker() {
-  if(this.state.showEmojiPicker) {
-    return (
-      <EmojiPicker
-        onSelect={this.setEmoji}
-        query={this.state.emoji}
-      />
-    );
-  }
+  console.log(emoji.unicode);
+  this.setState({value: this.state.value + emoji.unicode})
 }
 
 
@@ -525,8 +516,7 @@ toggleStickerPicker() {
             {
                 this.state.showEmojiPicker &&
                 <EmojiPicker
-                  onSelect={this.setEmoji}
-                  query={this.state.emoji}
+                  onEmojiSelected={this.setEmoji}
                 />
 
             }
