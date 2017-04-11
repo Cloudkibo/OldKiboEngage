@@ -395,7 +395,71 @@ toggleVisible () {
 }
 
 sendSticker(sticker) {
-  console.log(sticker);
+  const usertoken = auth.getToken();
+  var today = new Date();
+  var uid = Math.random().toString(36).substring(7);
+  var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+  var pageid=''
+  for(var i=0;i<this.props.messages.length;i++){
+      if(this.props.messages[i].senderid == this.props.senderid){
+        pageid = this.props.messages[i].recipientid;
+        alert(pageid)
+        break;
+      }
+  }
+
+  var saveMsg = {
+      senderid: this.props.userdetails._id,
+      recipientid:this.props.senderid,
+      companyid:this.props.userdetails.uniqueid,
+      timestamp:Date.now(),
+      message:{
+        mid:unique_id,
+        seq:1,
+        attachments:[{
+          type:'image',
+          payload:{
+            url: sticker.image.hdpi,
+          }
+        }]
+      },
+      pageid:pageid
+  }
+
+  console.log(saveMsg);
+
+  this.props.getfbchatfromAgent(saveMsg);
+
+var data = {
+    senderid: this.props.userdetails._id,
+    recipientid:this.props.senderid,
+    companyid:this.props.userdetails.uniqueid,
+
+    seen:false,
+     message:{
+        mid:unique_id,
+        seq:1,
+        attachments:[{
+          type:'image',
+          payload:{
+            url: sticker.image.hdpi,
+          }
+        }]
+      },
+    inbound:true,
+    backColor: '#3d83fa',
+    textColor: "white",
+    avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+    duration: 0,
+    timestamp:Date.now(),
+
+
+  }
+this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+
+
+  this.forceUpdate();
+  event.preventDefault();
 }
 
 toggleStickerPicker() {
