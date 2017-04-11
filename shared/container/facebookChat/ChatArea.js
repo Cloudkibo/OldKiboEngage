@@ -260,72 +260,39 @@ onFileSubmit(event)
     sendThumbsUp()
         {
             const usertoken = auth.getToken();
-            var fileData = new FormData();
+            var today = new Date();
+            var uid = Math.random().toString(36).substring(7);
+            var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+            var pageid=''
+            for(var i=0;i<this.props.messages.length;i++){
+                if(this.props.messages[i].senderid == this.props.senderid){
+                  pageid = this.props.messages[i].recipientid;
+                  alert(pageid)
+                  break;
+                }
+            }
 
-            var f = new File([""], "thumbsUp", {type: "image/png"})
-
-            var thumbsUp = {
-              lastModified: 1489595926641,
-              lastModifiedDate: 'Wed Mar 15 2017 21:38:46 GMT+0500 (PKT)',
-              name: 'thumbsUp',
-              size: 3810,
-              type: 'image/png',
-            };
-
-            this.setState({ userfile: f });
-
-            console.log(this.state.userfile);
-
-                  var today = new Date();
-                  var uid = Math.random().toString(36).substring(7);
-                  var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-                  var pageid=''
-                  for(var i=0;i<this.props.messages.length;i++){
-                    if(this.props.messages[i].senderid == this.props.senderid){
-                      pageid = this.props.messages[i].recipientid;
-                      alert(pageid)
-                      break;
+            var saveMsg = {
+                senderid: this.props.userdetails._id,
+                recipientid:this.props.senderid,
+                companyid:this.props.userdetails.uniqueid,
+                timestamp:Date.now(),
+                message:{
+                  mid:unique_id,
+                  seq:1,
+                  attachments:[{
+                    type:'image',
+                    payload:{
+                      url: `https://kiboengage.kibosupport.com/images/thumbsUp.png`,
                     }
-                  }
+                  }]
+                },
+                pageid:pageid
+            }
 
-                  var thumbsUp = {
-                    lastModified: 1489595926641,
-                    lastModifiedDate: 'Wed Mar 15 2017 21:38:46 GMT+0500 (PKT)',
-                    name: 'thumbsUp',
-                    size: 3810,
-                    type: 'image/png',
-                  };
+            console.log(saveMsg);
 
-                  this.setState({ userfile: thumbsUp });
-
-                  var saveMsg = {
-                                  senderid: this.props.userdetails._id,
-                                  recipientid:this.props.senderid,
-                                  companyid:this.props.userdetails.uniqueid,
-                                  timestamp:Date.now(),
-                                  message:{
-                                    mid:unique_id,
-                                    seq:1,
-                                    attachments:[{
-                                      type:'image',
-                                      payload:{
-                                        url:'https://kiboengage.kibosupport.com/userfiles/thumbsUp.png',
-                                      }
-
-                                    }]
-                                  },
-
-                                 pageid:pageid
-
-               }
-
-
-                  fileData.append('file', this.state.userfile);
-                  fileData.append('filename',  this.state.userfile.name);
-                  fileData.append('filetype',  this.state.userfile.type);
-                  fileData.append('filesize',  this.state.userfile.size);
-                  fileData.append('chatmsg', JSON.stringify(saveMsg));
-                  this.props.uploadFbChatfile(fileData,usertoken,this.props.fbchats,this.props.senderid);
+            this.props.getfbchatfromAgent(saveMsg);
 
             this.forceUpdate();
             event.preventDefault();

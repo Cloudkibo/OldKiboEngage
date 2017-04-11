@@ -72,39 +72,6 @@ class SessionSummary extends Component {
      this.forceUpdate();
   }
 
-/*
-    handleChangeMedium(e){
-    //  alert(e.target.value);
-      this.props.filterbysessionMedium(e.target.value,this.props.sessionsummaryfiltered);
-      this.forceUpdate();
-    }
-
-    handleChangeDepartment(e){
-     //alert(e.target.value);
-     this.setState({ subgroup: this.refs.teamlist.value });
-     this.props.filterbysessionDept(e.target.value,this.props.sessionsummaryfiltered);
-     this.props.updatesubgrouplist(e.target.value);
-     this.forceUpdate();
-
-
-    }
-     handleChangeChannel(e){
-     //alert(e.target.value);
-     this.props.filterbysessionSubgroup(e.target.value,this.props.sessionsummaryfiltered);
-     this.forceUpdate();
-
-
-    }
-
-    handleChangeAgents(e){
-    // alert(e.target.value);
-     this.props.filterbysessionAgent(e.target.value,this.props.sessionsummaryfiltered);
-     this.forceUpdate();
-
-
-    }
-    */
-
     componentWillReceiveProps(nextprops){
       if(nextprops.sessionsummaryfiltered){
         this.setState({loading:false});
