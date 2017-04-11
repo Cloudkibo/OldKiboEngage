@@ -294,6 +294,34 @@ onFileSubmit(event)
 
             this.props.getfbchatfromAgent(saveMsg);
 
+       var data = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.senderid,
+              companyid:this.props.userdetails.uniqueid,
+
+              seen:false,
+               message:{
+                  mid:unique_id,
+                  seq:1,
+                  attachments:[{
+                    type:'image',
+                    payload:{
+                      url: `https://kiboengage.kibosupport.com/images/thumbsUp.png`,
+                    }
+                  }]
+                },
+              inbound:true,
+              backColor: '#3d83fa',
+              textColor: "white",
+              avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+              duration: 0,
+              timestamp:Date.now(),
+
+
+            }
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+
+
             this.forceUpdate();
             event.preventDefault();
 
