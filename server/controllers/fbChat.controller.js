@@ -401,10 +401,24 @@ export function sendTextMessage(req,res) {
               let token = fbpage.pageToken;
               let companyid = fbpage.companyid;
               console.log('token is ' + token);
-              
-              let messageData = { text:req.body.message.text }
+              let messageData;
+              if(req.body.message.text){
+               messageData= { text:req.body.message.text }
+              }
+              else{
+                messageData ={
+                            'attachment':{
+                              'type': 'image',
+                              'payload':
+                              {
+                                'url':req.body.message.attachments[0].payload.url,
+                              }
+                            }
+                          }
+                
+              }
               var chatobj = req.body;
-                                console.log(chatobj);
+              console.log(chatobj);
                                 
               var optionsChat = {
                                     url: `${baseURL}/api/fbmessages/`,
