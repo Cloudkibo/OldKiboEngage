@@ -1912,7 +1912,8 @@ export function showNotifications(notifications) {
 }
 
 export function uploadpicture(data,fname,token,picture) {
-  console.log(data);
+  //console.log(data);
+  console.log(fname);
   var values = {
        file: data,
        fileName:fname,
