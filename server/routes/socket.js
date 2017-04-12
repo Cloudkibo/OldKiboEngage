@@ -65,20 +65,54 @@ function onDisconnect(io2, socket) {
   //Remove agent from onlineAgents array
   var room;
   console.log(socket.id);
+  console.log(socket.room);
+  console.log(socket.email);// adding email id of agent
+  var onlineAgentsArray = [];       
   console.log(onlineAgents);
+  var get_company_index = 0;
+  var get_
   for(var j = 0;j<onlineAgents.length ;j++){
-    if(onlineAgents[j].socketid == socket.id){
-      console.log('Remove agent with  email : ' + onlineAgents[j].email);
-      room = onlineAgents[j].room;
-      onlineAgents.splice(j,1);
+    if(onlineAgents[j].company == socket.room){
+      var onlineAgentsArray = onlineAgents[j].onlineAgentsArray;
+      for (var i=0;i<onlineAgentsArray.length;i++){
+        console.log(onlineAgentsArray[i].email);
+        if(onlineAgentsArray[i].email == socket.email){
+          var socketid = onlineAgentsArray[i].socketid;
+          console.log(onlineAgentsArray[i].socketid);
+          for(var z=0;z< socketid.length;z++){
+            if(socketid[z] == socket.id){
+              console.log(onlineAgentsArray[i].socketid[z]);
+              onlineAgents[j].onlineAgentsArray[i].socketid.splice(z,1);
+              if(onlineAgents[j].onlineAgentsArray[i].socketid.length == 0){
+                onlineAgents[j].onlineAgentsArray.splice(i,1);
+                if(onlineAgents[j].onlineAgentsArray.length == 0){
+                    onlineAgents.splice(j,1);
+
+                }
+              }
+              break;
+            }
+
+          }
+          break;
+        }
+
+      }
+      room = socket.room;
       console.log(onlineAgents);
-      socket.broadcast.to(room).emit('updateOnlineAgentList', onlineAgents);
+      for(var i=0;i<onlineAgents.length;i++){
+        if(onlineAgents[i].company == socket.room){
+          onlineAgentsArray = onlineAgents[i].onlineAgentsArray;
+          break;
+        }
+      }
+      socket.broadcast.to(room).emit('updateOnlineAgentList', onlineAgentsArray);
 
       break;
+
     }
-
-  }
-
+ }
+    
   //remove session also
   var session_remove = false;
   var room
@@ -689,7 +723,15 @@ socket.on('updatesessionchannel',function(data){
 // get online agents list
 socket.on('getOnlineAgentList',function() {
     console.log('getOnlineAgentList is called by :');
-    socket.emit('updateOnlineAgentList',onlineAgents);
+    var onlineAgentsArray=[];
+     for(var i=0;i<onlineAgents.length;i++){
+        if(onlineAgents[i].company == socket.room){
+          onlineAgentsArray = onlineAgents[i].onlineAgentsArray;
+          break;
+        }
+      }
+  
+    socket.emit('updateOnlineAgentList',onlineAgentsArray);
   });
 
   socket.on('message', function (message) {
@@ -714,22 +756,6 @@ socket.on('getOnlineAgentList',function() {
 
   socket.on('leave', function (room) {
 
-    // TODO use API here to store this data into database
-/*
-    var visitorcalls = require('./../api/visitorcalls/visitorcalls.model.js');
-
-    visitorcalls.findOne({request_id : room.request_id}, function(err, gotVisitorCallData){
-
-      if(gotVisitorCallData == null) return ;
-
-      gotVisitorCallData.status = 'abandoned';
-      gotVisitorCallData.abandonedtime = room.abandonedtime;
-
-      gotVisitorCallData.save(function(err){
-        if(err) console.log(err);
-      });
-    });
-*/
     socket.broadcast.to(room.room).emit('left', room);
     socket.leave(room.room);
     socket.emit('left', room);
@@ -813,49 +839,89 @@ socket.on('getOnlineAgentList',function() {
 
   socket.on('create or join meeting for agent', function (room) {
 
-    console.log('joining the room now '+ JSON.stringify(room));
+          console.log('joining the room now '+ JSON.stringify(room));
 
-    console.log(room.room);
-    socket.join(room.room);
+          console.log(room.room);
+          socket.join(room.room);
+         //add lines to add company id and email in socket object
+          
+          socket.room = room.room  //adding company id
+          socket.email = room.agentEmail // adding email id of agent
+         
+          var flag = 0;
+          var flag_multilogin=0;
+          if(room.agentEmail){
+            // check if company id is in array of online agents
+            for(var i = 0;i< onlineAgents.length;i++)
+            {
+                  if(onlineAgents[i].company == room.room){
+                    //set flag to true
+                    flag = 1;
+                    break;
+                  }
+            }
+          if(flag == 0)
+          {
+            //this means that company is not in array:
+            var onlineAgentsArray = [];
 
-    //add lines to add company id and email in socket object
-    var flag = 0;
-    // append in online agents array
-    if(room.agentEmail){
-    //only push if not already pushed
-    /*for(var i = 0;i< onlineAgents.length;i++)
-    {
-          if(onlineAgents[i].email == room.agentEmail){
-            //set flag to true
-            flag = 1;
-            break;
+             onlineAgentsArray.push({email: room.agentEmail, socketid: [socket.id],agentName : room.agentName,agentId : room.agentId})
+             onlineAgents.push({company: room.room, onlineAgentsArray: onlineAgentsArray});
+
+          //}
           }
-    }
-    if(flag == 0)
-    {*/
-       onlineAgents.push({email:room.agentEmail,socketid:socket.id,room:room.room,agentName : room.agentName,agentId : room.agentId});
 
-    //}
-    }
-    console.log("Agents online :");
-    console.log(onlineAgents);
-    //inform other agents that new agent is online now
+          else{
+            // company is already in the list of onlineAgents, just add the current agent
+            var list_of_onlineagents = onlineAgents[i].onlineAgentsArray;
+            for(var j=0;j<list_of_onlineagents.length;j++){
+              if(list_of_onlineagents[j].email == room.agentEmail){
+                //this means that agent is online from another workstation (multilogin case)
+                flag_multilogin = 1;
+                break;
+              }
+            }
 
-    socket.broadcast.to(room.room).emit('updateOnlineAgentList', onlineAgents);
-    var clients = findClientsSocket(room.room); // This change is because of socket version change
+            if(flag_multilogin == 1){
+              //only add current socket id
+              onlineAgents[i].onlineAgentsArray[j].socketid.push(socket.id);
+            }
+            else{
 
-    var numClients = clients.length; // This change is because of socket version change
-    console.log('Clients connected to room : ' + numClients);
-   // socket.emit('joined', room);
+               var onlineAgentsArray;
+               if(onlineAgents[i].onlineAgentsArray && onlineAgents[i].onlineAgentsArray.length >0 ){
+                onlineAgentsArray = onlineAgents[i].onlineAgentsArray;
+               }
+               else{
+                onlineAgentsArray = [];
+               }
+               onlineAgentsArray.push({email: room.agentEmail, socketid: [socket.id],agentName : room.agentName,agentId : room.agentId})
+               onlineAgents[i].onlineAgentsArray = onlineAgentsArray;
 
-      room.socketid = socket.id;
-//      console.log('socket id is : ' + room.socketid);
-      console.log("Agent  socket id: ", socket.id)
+            }
+          }
+        }
+          console.log("Agents online :");
+          //inform other agents that new agent is online now
+          var onlineAgentsArray=[];
+           for(var i=0;i<onlineAgents.length;i++){
+              if(onlineAgents[i].company == room.room){
+                onlineAgentsArray = onlineAgents[i].onlineAgentsArray;
+                break;
+              }
+            }
+          console.log(onlineAgentsArray);
+            
+          socket.broadcast.to(room.room).emit('updateOnlineAgentList', onlineAgentsArray);
+          var clients = findClientsSocket(room.room); // This change is because of socket version change
 
-      socket.emit('agentjoined', room);
+          var numClients = clients.length; // This change is because of socket version change
+          console.log('Clients connected to room : ' + numClients);
+          room.socketid = socket.id;
+          console.log("Agent  socket id: ", socket.id)
+          socket.emit('agentjoined', room);
 
-
-  });
+});
 
   socket.on('returnMySocketId',function(){
       console.log('your socketid is : ' + socket.id);
@@ -1028,6 +1094,13 @@ exports.socketf = function (socketio) {
 exports.getchat = function(data){
   console.log('socket get chat is called');
   //console.log(glob);
+   var onlineAgentsCompany = [];
+  for(var i=0;i<onlineAgents.length;i++){
+    if(onlineAgents[i].company == data.companyid){
+      onlineAgentsCompany = onlineAgents[i].onlineAgentsArray;
+      break;
+    }
+  }
   if(data.fromMobile == 'no'){
      userchats.push(data);
   }
@@ -1035,18 +1108,20 @@ exports.getchat = function(data){
             console.log('sending point to point message to Agent');
             //find the socket id
             var socketids =[]
-
+           
             for(var j=0;j< data.toagent.length;j++){
                 for(var i = 0;i < onlineAgents.length;i++)
                 {
-                  if(onlineAgents[i].email == data.toagent[j]){
+                  if(onlineAgentsCompany[i].email == data.toagent[j]){
                      console.log('agent is online');
-
-                    socketids.push(onlineAgents[i].socketid);
-                   // break;
+                     for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
+                      socketids.push(onlineAgentsCompany[i].socketid[k]);
+                     }
+                    
+                    break;
                   }
 
-            }
+              }
             }
 
            for(var i=0;i<socketids.length;i++){
@@ -1075,7 +1150,7 @@ exports.getchat = function(data){
     }
     //broadcast message to all agents
     else{
-            for(var i=0;i<onlineAgents.length;i++){
+           /*for(var i=0;i<onlineAgents.length;i++){
               if(onlineAgents[i].room == data.companyid){
                 console.log('send message on agent socket');
                 console.log('online agents');
@@ -1100,7 +1175,26 @@ exports.getchat = function(data){
                                         });
 
               }
-            }
+            }*/
+
+            glob.to(data.companyid).emit('send:message',{
+                                          to: data.to,
+                                          toagent:data.toagent,
+                                          from : data.from,
+                                          visitoremail:data.visitoremail,
+                                          datetime:data.datetime,
+                                          uniqueid:data.uniqueid,
+                                          msg: data.msg,
+                                          time:data.time,
+                                          request_id : data.request_id,
+                                          type : data.type,
+                                          messagechannel:data.messagechannel,
+                                          companyid:data.companyid,
+                                          is_seen:data.is_seen,
+                                          fromMobile : data.fromMobile,
+                                          status : 'sent',
+                                          departmentid:data.departmentid,
+                                        });
     }
 
 }
