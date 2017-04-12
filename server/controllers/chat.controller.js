@@ -690,7 +690,7 @@ export function getChatMessage(req, res) {
     var chat   = req.body;
     console.log(chat);
     ss.getchat(req.body);
-    //sendpushToAgents(req.body); // this will send customer message to mobile agents through push notification
+    sendpushToAgents(req.body); // this will send customer message to mobile agents through push notification
     return res.json(200,{'status' : 'success'});
 
 };
