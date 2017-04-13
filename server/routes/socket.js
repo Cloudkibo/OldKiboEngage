@@ -377,227 +377,46 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
     }
 
     console.log('chat messages of this conversation is of length : ' + previous_chat.length);
-   /* io2.to(data.agentsocket).emit('informAgent',{
-            to: data.to,
-            assignedagentname : data.assignedagentname,
-            socketid:data.socketid,
-            from : data.from,
-            visitoremail:data.visitoremail,
-            datetime:data.datetime,
-            uniqueid: data.uniqueid,
-            msg: data.msg,
-            time:data.time,
-            type : data.type,
-            request_id :data.request_id,
-            messagechannel:data.messagechannel,
-            companyid:data.companyid,
-            is_seen:data.is_seen
+  
+    var onlineAgentsCompany = [];
+    for(var i=0;i<onlineAgents.length;i++){
+      if(onlineAgents[i].company == data.companyid){
+        onlineAgentsCompany = onlineAgents[i].onlineAgentsArray;
+        break;
+      }
+    }
 
-
-
-
-          });*/
-
-
-          for(var j = 0;j< data.agentemail.length;j++){
-              for(var i=0;i< onlineAgents.length;i++){
-                if(onlineAgents[i].email == data.agentemail[j])
+    //collect all socket ids of an agent
+    var socketids = [];
+   
+    for(var j = 0;j< data.agentemail.length;j++){
+              for(var i = 0;i < onlineAgentsCompany.length;i++)
+              {
+                if(onlineAgentsCompany[i].email  == data.agentemail[j])
                 {
                   console.log('agent is online');
-                  io2.to(onlineAgents[i].socketid).emit('informAgent',previous_chat);
-                 // break;
+                  for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
+                      socketids.push(onlineAgentsCompany[i].socketid[k]);
+                     }
+                  break;
                 }
               }
-        }
-
-
-
-
-
-  });
-
-//for mobile clients
-socket.on('getmessagefromserver',function(data){
-
-    console.log('sending a hello message to all agents');
-    console.log(data);
-    userchats.push(data);
-
-    if(data.toagent){
-            console.log('sending point to point message to Agent');
-            //find the socket id
-            var socketids =[]
-
-            for(var j=0;j< data.toagent.length;j++){
-                for(var i = 0;i < onlineAgents.length;i++)
-                {
-                  if(onlineAgents[i].email == data.toagent[j]){
-                     console.log('agent is online');
-
-                    socketids.push(onlineAgents[i].socketid);
-                   // break;
-                  }
-
-            }
-          }
-
-           for(var i=0;i<socketids.length;i++){
-            io2.sockets.connected[socketids[i]].join('grp');
-          }
-           //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
-           io2.to('grp').emit('send:message',{
-                                to: data.to,
-                                toagent:data.toagent,
-                                from : data.from,
-                                visitoremail:data.visitoremail,
-                                datetime:data.datetime,
-                                uniqueid:data.uniqueid,
-                                msg: data.msg,
-                                time:data.time,
-                                request_id : data.request_id,
-                                type : data.type,
-                                messagechannel:data.messagechannel,
-                                companyid:data.companyid,
-                                is_seen:data.is_seen,
-                                fromMobile : data.fromMobile,
-                                 departmentid:data.departmentid,
-                              });
-
-
-
-    }
-    else
-    {
-         console.log('broadcasting message');
-          socket.emit('send:message', {
-            to: data.to,
-            from : data.from,
-            visitoremail:data.visitoremail,
-            datetime:data.datetime,
-            msg: data.msg,
-            time:data.time,
-            uniqueid:data.uniqueid,
-            type : data.type,
-            request_id :data.request_id,
-            messagechannel:data.messagechannel,
-            companyid:data.companyid,
-            is_seen:data.is_seen,
-            fromMobile : data.fromMobile,
-             departmentid:data.departmentid,
-
-
-          });
-    }
-
-});
-
-socket.on('send:messageToBot', function(data){
-  var token = '23faab6fda14491294154d954eeede9c';
-  var payload =
-              {
-              query:[data.msg],
-              lang:'en',
-              sessionId:'2121'
               }
-  var options = {
-      url: 'https://api.api.ai/v1/query',
-      headers :  {
-                 'Authorization': `Bearer ${token}`
-                 },
-      rejectUnauthorized : false,
-      json: payload
-    };
+        
 
-    function callback(error, response, body) {
-        console.log(error);
-        console.log(response.statusCode);
-        console.log(body);
-
-       if(!error && response.statusCode == 200)
-       {
-           //console.log(body)
-           data.msg = body.result.speech;
-            return socket.emit('send:message', data);
-       }
-       else
-       {
-         data.msg = 'error on bot side';
-           return socket.emit('send:message', data);
-
-       }
+    for(var i=0;i<socketids.length;i++){
+        io2.to(socketids[i]).emit('informAgent',previous_chat);
+                
     }
-           request.post(options, callback);
-})
-
-socket.on('send:messageToAgent', function (data) {
-    console.log('sending a hello message to all agents');
-    console.log(data);
-    userchats.push(data);
-
-    if(data.toagent){
-            console.log('sending point to point message to Agent');
-            //find the socket id
-            var socketids =[]
-
-            for(var j=0;j< data.toagent.length;j++){
-                for(var i = 0;i < onlineAgents.length;i++)
-                {
-                  if(onlineAgents[i].email == data.toagent[j]){
-                     console.log('agent is online');
-
-                    socketids.push(onlineAgents[i].socketid);
-                    //break;
-                  }
-
-            }
-          }
-
-           for(var i=0;i<socketids.length;i++){
-            io2.to(socketids[i]).emit('send:message',{
-                                to: data.to,
-                                toagent:data.toagent,
-                                from : data.from,
-                                visitoremail:data.visitoremail,
-                                datetime:data.datetime,
-                                uniqueid:data.uniqueid,
-                                msg: data.msg,
-                                time:data.time,
-                                request_id : data.request_id,
-                                type : data.type,
-                                messagechannel:data.messagechannel,
-                                companyid:data.companyid,
-                                is_seen:data.is_seen,
-                                fromMobile : data.fromMobile,
-                                departmentid:data.departmentid,
-                              });
-
-          }
-           //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
 
 
 
-    }
-    else
-    {
-          socket.broadcast.to(data.companyid).emit('send:message', {
-            to: data.to,
-            from : data.from,
-            visitoremail:data.visitoremail,
-            datetime:data.datetime,
-            msg: data.msg,
-            time:data.time,
-            uniqueid:data.uniqueid,
-            type : data.type,
-            request_id :data.request_id,
-            messagechannel:data.messagechannel,
-            companyid:data.companyid,
-            is_seen:data.is_seen,
-            fromMobile : data.fromMobile,
-            departmentid:data.departmentid,
 
-          });
-    }
+
   });
+
+
+
 
 socket.on('getuserchats',function(room){
   //return userchats currently happening in room
@@ -734,26 +553,8 @@ socket.on('getOnlineAgentList',function() {
     socket.emit('updateOnlineAgentList',onlineAgentsArray);
   });
 
-  socket.on('message', function (message) {
-    //log('Got message:', message);
-    io2.to(message.to).emit('message', message);
-  });
-
-
-  socket.on('impicked', function (room) {
-
-    socket.broadcast.to(room.room).emit('picked', room);
-    socket.leave(room.room);
-    socket.emit('picked', room);
-
-  });
-
-  socket.on('ifinishedcall', function (room) {
-
-    socket.broadcast.to(room.room).emit('callfinished', room);
-
-  });
-
+  
+  
   socket.on('leave', function (room) {
 
     socket.broadcast.to(room.room).emit('left', room);
@@ -814,28 +615,7 @@ socket.on('getOnlineAgentList',function() {
     console.log('getCustomerSessionsList is called.Currently in your room : ' + roomid +' ,customers online :' + customer_in_company_room.length);
     socket.emit('returnCustomerSessionsList',customer_in_company_room);
   });
-  socket.on('join scheduled meeting', function (room) {
-
-    var clients = findClientsSocket(room.room); // This change is because of socket version change
-
-    var numClients = clients.length; // This change is because of socket version change
-
-    if (numClients === 0){
-      socket.emit('empty', room.room);
-    }
-    else if (numClients > 0) {
-
-      socket.join(room.room);
-      //socket.set('nickname', room.username);
-      room.socketid = socket.id;
-      socket.emit('joined', room);
-
-      socket.broadcast.to(room.room).emit('scheduled visitor join', room);
-
-    }
-
-    //console.log(io2.sockets.manager.rooms)
-  });
+ 
 
   socket.on('create or join meeting for agent', function (room) {
 
@@ -941,33 +721,7 @@ socket.on('getOnlineAgentList',function() {
     //console.log(io2.sockets.manager.rooms)
   });
 
-  socket.on('im', function(im){
-
-    // TODO use the API to do the following work
-
-  /*  var userchat = require('./../api/userchat/userchat.model.js');
-
-    var newUserChat = new userchat({
-      to : im.stanza.to,
-      from : im.stanza.from,
-      msg : im.stanza.msg,
-      datetime : {type: Date, default: Date.now },
-      request_id : im.stanza.request_id,
-      companyid: im.room,
-      visitoremail : im.stanza.visitoremail,
-      agentemail : im.stanza.agentemail
-    });
-
-    newUserChat.save(function (err2) {
-      if (err2) return console.log('Error 2'+ err2);
-
-    });
-    */
-
-  io2.to(im.stanza.to_id).emit('im', im.stanza);
-    //io2.sockets.socket(im.stanza.to_id).emit('im', im.stanza);
-
-  });
+  
 
   socket.on('connecttocall', function(call){
 
@@ -975,17 +729,34 @@ socket.on('getOnlineAgentList',function() {
     console.log('customer calling to agent');
     //this call is from customer to agent
     //check if agent is online
-    console.log(call.stanza);
-      for(var i = 0;i < onlineAgents.length;i++)
-            {
-              console.log('online agent');
-              console.log(onlineAgents[i]);
-              if(onlineAgents[i].email == call.stanza.agentemail){
-                console.log('agent is online');
+    console.log(call);
+    var onlineAgentsCompany = [];
+    for(var i=0;i<onlineAgents.length;i++){
+      if(onlineAgents[i].company == call.room){
+        onlineAgentsCompany = onlineAgents[i].onlineAgentsArray;
+        break;
+      }
+    }
 
-                io2.to(onlineAgents[i].socketid).emit('connecttocall', call.stanza);
+    //collect all socket ids of an agent
+    var socketids = [];
+    for(var i = 0;i < onlineAgentsCompany.length;i++)
+                {
+                  if(onlineAgentsCompany[i].email == call.stanza.agentemail){
+                     console.log('agent is online');
+                     for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
+                      socketids.push(onlineAgentsCompany[i].socketid[k]);
+                     }
+                    
+                    break;
+                  }
 
               }
+
+      for(var i = 0;i < socketids.length;i++)
+            {
+                io2.to(socketids[i]).emit('connecttocall', call.stanza);
+              
             }
 
   }
@@ -1110,7 +881,7 @@ exports.getchat = function(data){
             var socketids =[]
            
             for(var j=0;j< data.toagent.length;j++){
-                for(var i = 0;i < onlineAgents.length;i++)
+                for(var i = 0;i < onlineAgentsCompany.length;i++)
                 {
                   if(onlineAgentsCompany[i].email == data.toagent[j]){
                      console.log('agent is online');
@@ -1150,33 +921,7 @@ exports.getchat = function(data){
     }
     //broadcast message to all agents
     else{
-           /*for(var i=0;i<onlineAgents.length;i++){
-              if(onlineAgents[i].room == data.companyid){
-                console.log('send message on agent socket');
-                console.log('online agents');
-                console.log(onlineAgents[i]);
-                glob.to(onlineAgents[i].socketid).emit('send:message',{
-                                          to: data.to,
-                                          toagent:data.toagent,
-                                          from : data.from,
-                                          visitoremail:data.visitoremail,
-                                          datetime:data.datetime,
-                                          uniqueid:data.uniqueid,
-                                          msg: data.msg,
-                                          time:data.time,
-                                          request_id : data.request_id,
-                                          type : data.type,
-                                          messagechannel:data.messagechannel,
-                                          companyid:data.companyid,
-                                          is_seen:data.is_seen,
-                                          fromMobile : data.fromMobile,
-                                          status : 'sent',
-                                          departmentid:data.departmentid,
-                                        });
-
-              }
-            }*/
-
+        
             glob.to(data.companyid).emit('send:message',{
                                           to: data.to,
                                           toagent:data.toagent,
@@ -1207,6 +952,13 @@ exports.getchat = function(data){
 exports.getchatfromAgent = function(data){
   console.log('socket get chat from agent is called');
   console.log(data);
+  var onlineAgentsCompany = [];
+  for(var i=0;i<onlineAgents.length;i++){
+    if(onlineAgents[i].company == data.companyid){
+      onlineAgentsCompany = onlineAgents[i].onlineAgentsArray;
+      break;
+    }
+  }
     // don't push messages in userchats that come from mobile
     //add logic here for sending push notification to desired customer
     if(data.fromMobile && data.fromMobile == 'yes'){
@@ -1228,6 +980,7 @@ exports.getchatfromAgent = function(data){
           userchats.push(data);
          }
 
+    //this will send agents' message to customer
     if(data.socketid){
             console.log('sending point to point message');
 
@@ -1253,18 +1006,56 @@ exports.getchatfromAgent = function(data){
           });
     }
 
+
+    // this will replay agents own message on other workstations:
+    var socketids=[];
+    for(var i = 0;i < onlineAgentsCompany.length;i++)
+                {
+                  if(onlineAgentsCompany[i].email == data.sendersEmail){
+                     for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
+                             socketids.push(onlineAgentsCompany[i].socketid[k]);
+                   
+                      
+                     }
+                    
+                    break;
+                  }
+                }
+    for(var i=0;i<socketids.length;i++){
+                     //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
+                  glob.to(socketids[i]).emit('send:message',{
+                                to: data.to,
+                                socketid:data.socketid,
+                                from : data.from,
+                                visitoremail:data.visitoremail,
+                                datetime:data.datetime,
+                                msg: data.msg,
+                                time:data.time,
+                                uniqueid : data.uniqueid,
+                                type : data.type,
+                                request_id :data.request_id,
+                                messagechannel:data.messagechannel,
+                                companyid:data.companyid,
+                                is_seen:data.is_seen,
+                                departmentid:data.departmentid,
+
+                              });
+                } 
 // Logic for sending message to all group members
     if(data.groupmembers && data.groupmembers.length > 1 && data.sendersEmail){
       var socketids =[]
 
            for(var j=0;j< data.groupmembers.length;j++){
-                for(var i = 0;i < onlineAgents.length;i++)
+                for(var i = 0;i < onlineAgentsCompany.length;i++)
                 {
-                  if(onlineAgents[i].email == data.groupmembers[j] && onlineAgents[i].email != data.sendersEmail){
+                  if(onlineAgentsCompany[i].email == data.groupmembers[j] && onlineAgentsCompany[i].email != data.sendersEmail){
                      console.log('agent is online');
-
-                    socketids.push(onlineAgents[i].socketid);
-                  //  break;
+                     for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
+                      socketids.push(onlineAgentsCompany[i].socketid[k]);
+                     }
+                    
+                  //  socketids.push(onlineAgents[i].socketid);
+                    break;
                   }
 
               }
@@ -1296,13 +1087,15 @@ exports.getchatfromAgent = function(data){
       //this means that the message is sent on a group,we will inform all the members of the group that the chat session is assigned to the group
            var socketids =[]
            for(var j=0;j< data.assignedagentemail.length;j++){
-                for(var i = 0;i < onlineAgents.length;i++)
+                for(var i = 0;i < onlineAgentsCompany.length;i++)
                 {
-                  if(onlineAgents[i].email == data.assignedagentemail[j]){
+                  if(onlineAgentsCompany[i].email == data.assignedagentemail[j]){
                      console.log('agent is online');
-
-                    socketids.push(onlineAgents[i].socketid);
-                    //break;
+                     for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
+                      socketids.push(onlineAgentsCompany[i].socketid[k]);
+                     }
+                    //socketids.push(onlineAgents[i].socketid);
+                    break;
                   }
 
             }
@@ -1344,6 +1137,15 @@ exports.getchatfromAgent = function(data){
 exports.getfbchat = function(data){
   console.log('socket get Fb chat is called');
   console.log(data);
+
+  var onlineAgentsCompany = [];
+  for(var i=0;i<onlineAgents.length;i++){
+    if(onlineAgents[i].company == data.companyid){
+      onlineAgentsCompany = onlineAgents[i].onlineAgentsArray;
+      break;
+    }
+  }
+
   var flag=0;
   for(var i=0;i< fbusers.length;i++){
     if(fbusers[i].user_id == data.customerobj.user_id){
@@ -1355,26 +1157,11 @@ exports.getfbchat = function(data){
      fbusers.push(data.customerobj);
      //inform agents that a new customer arrives on fbmessenger
     //broadcast message to all agents
-  for(var i=0;i<onlineAgents.length;i++){
-              if(onlineAgents[i].room == data.chatobj.companyid){
-                //send message on agent socket
-                glob.to(onlineAgents[i].socketid).emit('send:fbcustomer',data.customerobj);
+      glob.to(data.chatobj.companyid).emit('send:fbcustomer',data.customerobj);
 
-              }
-            }
-
-  }
+      }
 
   fbchats.push(data.chatobj);
-
-    //broadcast message to all agents
-  for(var i=0;i<onlineAgents.length;i++){
-              if(onlineAgents[i].room == data.chatobj.companyid){
-                //send message on agent socket
-                glob.to(onlineAgents[i].socketid).emit('send:fbmessage',data.chatobj);
-
-              }
-            }
-
+                glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
 
 }

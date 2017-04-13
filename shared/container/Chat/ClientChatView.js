@@ -10,6 +10,7 @@ import {savechat}  from '../../redux/actions/actions'
 import { updateChatList}  from '../../redux/actions/actions'
 import * as actions from '../../redux/actions/actions';
 import moment from 'moment';
+import * as ReactDOM from 'react-dom';
 
 class ClientChatView extends Component {
 
@@ -22,6 +23,7 @@ class ClientChatView extends Component {
        this.connectToCall = this.connectToCall.bind(this);
        this.connectCall = this.connectCall.bind(this);
        this.sendMessage = this.sendMessage.bind(this);
+   //   this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
  connectCall(data){
@@ -53,9 +55,12 @@ class ClientChatView extends Component {
     const { socket,dispatch } = this.props;
    // also broadcast a notification message
     //generate unique id of message - this change is for mobile clients
+  
     var today = new Date();
     var uid = Math.random().toString(36).substring(7);
     var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+    
+    /*if(this.props.roomdetails){
 
      var hellomsg = {
             to: 'All Agents',
@@ -75,20 +80,19 @@ class ClientChatView extends Component {
 
 
           }
-   //socket.emit('send:messageToAgent',hellomsg);
+    //socket.emit('send:messageToAgent',hellomsg);
    this.props.sendmessageToAgent(hellomsg);
+  }*/
+  
    socket.on('send:message',message => this.props.updateChatList(message));
    socket.on('send:getAgent',this.getAgentSocket);
    socket.on('connecttocall',this.connectCall);
-
+ //  this.scrollToBottom();
+   
 
       }
 
 
- componentDidUpdate() {
-    const messageList = this.refs.messageList;
-    messageList.scrollTop = messageList.scrollHeight;
-  }
 
    handleMessageSubmit(e) {
     const { socket,dispatch } = this.props;
@@ -280,13 +284,14 @@ class ClientChatView extends Component {
             <input ref="channelid" value = {this.props.sessiondetails.messagechannel}  type="hidden"/>
             {/*<label> Customer Email: </label>*/}
             <input ref="email" value = {this.props.sessiondetails.email} type="hidden" />
+
            </div>
            }
             </div>
 
           <div className="panel-body">
             <ul className="chat"  ref="messageList">
-                          {this.props.chatlist &&
+                          {this.props.chatlist && this.props.sessiondetails &&
                             this.props.chatlist.filter((chat) => chat.request_id == this.refs.reqId.value).map((chat, i) => (
                                      (this.refs.name.value === chat.from?
                                    <li className="left clearfix userChatBoxTemp">
@@ -332,6 +337,7 @@ class ClientChatView extends Component {
                             ))
                            }
             </ul>
+            
             </div>
 
              <div className="panel-footer">

@@ -627,7 +627,7 @@ exports.register = function(socket) {
 function sendpushToAgents(chatmessage){
   console.log('send push to agents');
   console.log(chatmessage);
-    var payload = {
+  var payload = {
                               data: {
                                 uniqueid:chatmessage.uniqueid,
                                 request_id : chatmessage.request_id,
@@ -664,11 +664,11 @@ function sendpushToAgents(chatmessage){
               function callback(error, response, body) {
                 if(!error  && response.statusCode == 200) {
                    var agentlist = JSON.parse(body);
-                   console.log(agentlist);
+                 //  console.log(agentlist);
                    for(var i=0;i< agentlist.length;i++){
                     var obj = agentlist[i];
                     console.log('----- obj is');
-                    console.log(obj);
+                   // console.log(obj);
                     console.log(obj.agentid.email);
                     sendPushNotification(obj.agentid.email,payload,'Message received from customer');
                    }

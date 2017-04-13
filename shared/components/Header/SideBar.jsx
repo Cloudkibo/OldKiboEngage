@@ -22,32 +22,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-
-              <li className="">
-                <Link to='/notifications'>
-                  <i className="fa fa-bell">
-                  </i>
-                  <span className="title">
-                   Notifications
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
-
-              <li className="">
-                <Link to='/widgetcode'>
-                  <i className="fa fa-chain">
-                  </i>
-                  <span className="title">
-                    Widget
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
-
-              <li className="">
+               <li className="">
                 <Link to="/chat">
                   <i className="fa fa-comments-o">
                   </i>
@@ -59,7 +34,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
+               <li className="">
                 <Link to='/assignedchatsessions'>
                   <i className="fa fa-chain">
                   </i>
@@ -108,7 +83,19 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-             {this.props.isAdmin == "Yes"?
+
+              <li className="">
+                <Link to="/customers">
+                  <i className="fa fa-user">
+                  </i>
+                  <span className="title">
+                     Customer Directory
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+               {this.props.isAdmin == "Yes"?
               <li className="">
                 <Link to= '/agents'>
                   <i className="fa fa-user">
@@ -134,8 +121,8 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-
-              <li className="">
+  
+               <li className="">
                 <Link to='/groups'>
                   <i className="fa fa-group">
                   </i>
@@ -171,6 +158,37 @@ class SideBar extends Component
               </li>
 
               <li className="">
+                <Link to='/notifications'>
+                  <i className="fa fa-bell">
+                  </i>
+                  <span className="title">
+                   Notifications
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+
+              <li className="">
+                <Link to='/widgetcode'>
+                  <i className="fa fa-chain">
+                  </i>
+                  <span className="title">
+                    Widget
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+
+             
+
+             
+            
+
+              
+             
+              <li className="">
                 <Link to="/reports">
                   <i className="fa fa-bar-chart-o">
                   </i>
@@ -181,17 +199,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              <li className="">
-                <Link to="/customers">
-                  <i className="fa fa-user">
-                  </i>
-                  <span className="title">
-                     Customer Directory
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
+   
 
                <li className="">
                 <Link to="/cannedresponses">
