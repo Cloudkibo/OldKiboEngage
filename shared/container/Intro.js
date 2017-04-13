@@ -79,9 +79,9 @@ handleBotClick(e){
                       </a>
                     </li>
                     <li className="dropdown">
-                      <a className="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Developers
-                      </a>
+                      <Link to='/privacypolicy' className="dropdown-toggle">
+                        Privacy Policy
+                      </Link>
                         
                     </li>
                     <li className="dropdown">
