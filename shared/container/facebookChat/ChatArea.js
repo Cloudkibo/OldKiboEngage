@@ -158,7 +158,7 @@ handleMessageSubmit(e) {
     for(var i=0;i<this.props.messages.length;i++){
       if(this.props.messages[i].senderid == this.props.senderid){
         pageid = this.props.messages[i].recipientid;
-        alert(pageid)
+        //alert(pageid)
         break;
       }
     }
@@ -221,7 +221,7 @@ onFileSubmit(event)
               for(var i=0;i<this.props.messages.length;i++){
                 if(this.props.messages[i].senderid == this.props.senderid){
                   pageid = this.props.messages[i].recipientid;
-                  alert(pageid)
+                 // alert(pageid)
                   break;
                 }
               }
@@ -269,7 +269,7 @@ onFileSubmit(event)
             for(var i=0;i<this.props.messages.length;i++){
                 if(this.props.messages[i].senderid == this.props.senderid){
                   pageid = this.props.messages[i].recipientid;
-                  alert(pageid)
+                 // alert(pageid)
                   break;
                 }
             }
@@ -403,7 +403,7 @@ sendSticker(sticker) {
   for(var i=0;i<this.props.messages.length;i++){
       if(this.props.messages[i].senderid == this.props.senderid){
         pageid = this.props.messages[i].recipientid;
-        alert(pageid)
+       // alert(pageid)
         break;
       }
   }

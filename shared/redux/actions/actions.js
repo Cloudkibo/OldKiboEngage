@@ -1808,7 +1808,7 @@ export function getmobilesessions(token) {
 
 export function previousChat(previouschat,chatlist){
     var newchatlist = [...previouschat,...chatlist];
-
+    
     //removing duplicates
     var newArray = [];
      var lookupObject  = {};
@@ -2475,11 +2475,13 @@ export function setsocketid(yoursocketid){
 
 export function getchatsfromsocket(originalArray,newchats){
 
-     var newArray = originalArray.push.apply(originalArray,newchats);
+     var newchatlist = [...originalArray,...newchats];
+    
+     var newArray = [];
      var lookupObject  = {};
      var prop = 'uniqueid';
-     for(var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
+     for(var i in newchatlist) {
+        lookupObject[newchatlist[i][prop]] = newchatlist[i];
      }
 
      for(i in lookupObject) {

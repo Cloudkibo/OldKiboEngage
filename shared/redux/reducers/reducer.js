@@ -437,7 +437,7 @@ const dashboard = (state =dashboardState, action) => {
            return {
             ...state,errorMessageProfile:'',
             userchats: action.userchats,
-            chatlist: action.chatlist,
+            chatlist: action.chatlist? action.chatlist:state.chatlist,
             errorMessage:'',
             };
 

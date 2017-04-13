@@ -47,7 +47,7 @@ class FbChat extends Component {
   }
 
 getfbCustomer(data){
-  alert('New fb customer '+ data.first_name);
+ // alert('New fb customer '+ data.first_name);
   if(this.props.fbcustomers){
     this.props.updateCustomerList(data,this.props.fbcustomers);
     this.forceUpdate();
@@ -112,7 +112,7 @@ componentWillReceiveProps(props){
 }
  handleSession(customer,e){
 
-      alert(customer.user_id);
+    //  alert(customer.user_id);
       e.preventDefault();
       const usertoken = auth.getToken();
       this.refs.sessionid.value = customer.user_id;
