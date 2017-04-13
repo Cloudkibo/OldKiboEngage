@@ -1,7 +1,7 @@
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {changepassword,uploadpicture} from '../../redux/actions/actions'
+import {getuser,changepassword,uploadpicture} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -18,10 +18,18 @@ const src = '';
 class ChangeAvatar extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
-   
+
+   const usertoken = auth.getToken();
+
+   if(usertoken != null)
+   {
+
+       console.log(usertoken);
+       props.getuser(usertoken);
+     }
+
        super(props, context);
-     
+
         this.onSubmit = this.onSubmit.bind(this);
        // this.state = {file: '',imagePreviewUrl: ''};
          this.state = {
@@ -31,12 +39,12 @@ class ChangeAvatar extends Component {
               };
         this._cropImage = this._cropImage.bind(this);
         this._onChange = this._onChange.bind(this);
-        
+
   }
 
-   
-    
-  
+
+
+
   _cropImage() {
    this.refs.submitbtn.disabled = false;
     if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
@@ -79,27 +87,26 @@ class ChangeAvatar extends Component {
         }
         else{
 
-        this.props.uploadpicture(this.state.cropResult,this.state.image.name,usertoken,this.props.userdetails.picture); 
-        } 
-        event.preventDefault();     
-        
+        this.props.uploadpicture(this.state.cropResult,this.state.image.name,usertoken,this.props.userdetails.picture);
+        }
+        event.preventDefault();
     }
 
 
   render() {
     const token = auth.getToken()
     console.log(token)
-    
+
 
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container">
 
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-           
+
             <div className="page-content">
               <div className="row">
                 <div className="col-md-12">
@@ -108,21 +115,21 @@ class ChangeAvatar extends Component {
                       <li>
                         <i className="fa fa-home"/>
                         <Link to="/dashboard"> Dashboard </Link>
-                       
-                      </li>                  
+
+                      </li>
                       <li>
                         <Link to="/myprofile"> Profile </Link>
-                      </li>               
-      
+                      </li>
+
                     </ul>
                 </div>
-              </div>      
+              </div>
           <div className="row profile-account">
                 <ProfileSideBar iscurrent="changeavatar"/>
           <div className="col-md-9">
             <div className="portlet box">
             <div className="portlet body">
-                             
+
                   <div>
                   {this.props.userdetails.picture &&
                     <div>
@@ -159,8 +166,8 @@ class ChangeAvatar extends Component {
                       <h4> Preview Picture</h4>
                       <img style={{ width: '200',height:'200',border:'1px solid rgba(0, 0, 0, 0.26)',display:'block' }} src={this.state.cropResult} ref="profilepic"/>
                     </div>
-                  
-                    
+
+
                   </div>
                   </div>
                   <br/>
@@ -177,16 +184,16 @@ class ChangeAvatar extends Component {
                                                  <div className = "alert alert-success"><span>{this.props.errorMessageProfile.message}</span></div>
                                               }
 
-                  </div>                            
+                  </div>
 
               </div>
             </div>
           </div>
        </div>
 
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
       </div>
   )
   }
@@ -194,7 +201,7 @@ class ChangeAvatar extends Component {
 
 
 function mapStateToProps(state) {
-  
+
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
@@ -208,7 +215,7 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  
-  return bindActionCreators({ changepassword:changepassword,uploadpicture:uploadpicture}, dispatch);
+
+  return bindActionCreators({ getuser:getuser,changepassword:changepassword,uploadpicture:uploadpicture}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(ChangeAvatar);

@@ -585,7 +585,7 @@ export function verifytoken(req,res){
     };
 
     function callback(error, response, body) {
-      
+
       console.log(body);
       console.log(response.status);
       if(!error && body != "Not Found")
@@ -850,7 +850,7 @@ export function updatesettings (req,res) {
 
     console.log('update settings is called');
     console.log('req body');
-  
+
   //  console.log(req.body);
   //  console.log(req.files);
     var company = JSON.parse(req.body.companyprofile);
@@ -866,12 +866,12 @@ export function updatesettings (req,res) {
           //console.log(__dirname);
           //console.log(req.headers);
           var dir = "./static/companyfiles";
-         
+
           if(req.files.file.size == 0) return res.send('No file submitted');
 
           fs.readFile(req.files.file.path, function (err, data) {
              var pathNew = dir + "/" + serverPath;
-             console.log(pathNew); 
+             console.log(pathNew);
             company.widgetlogoURL = './companyfiles/'+serverPath;
             var options = {
               url: `${baseURL}/api/companyprofiles/updatecompanyprofile`,
@@ -882,7 +882,7 @@ export function updatesettings (req,res) {
                          },
               json:company
             };
-               
+
                 console.log(company);
 
                 fs.writeFile(pathNew, data, function (err) {
@@ -921,8 +921,8 @@ export function updatesettings (req,res) {
                          },
               json:company
             };
-               
-            
+
+
           function callback(error, response, body) {
                             //console.log(body);
                             if (!error && response.statusCode == 200) {
@@ -941,10 +941,10 @@ export function updatesettings (req,res) {
                            }
                            request.post(options, callback);
 
-                  
+
 
       }
-  
+
 
 };
 
@@ -1063,7 +1063,7 @@ export function getcompanylogo(req, res) {
              'kibo-app-id' : req.body.appid,
              'kibo-app-secret': req.body.appsecret,
              'kibo-client-id': req.body.clientid,
-             
+
       }
   var token = req.headers.authorization;
   var id = req.body.clientid;
@@ -1120,7 +1120,3 @@ export function getcompanylogo(req, res) {
     }
     request.get(options, callback);
   }
-
-
-
-
