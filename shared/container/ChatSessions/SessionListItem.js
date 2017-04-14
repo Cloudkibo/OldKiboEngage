@@ -7,8 +7,6 @@ var handleDate = function(d){
     return c.toDateString() + ' ' +c.getHours() + ':' + c.getMinutes();
   }
 
-  
-
 }
 function SessionListItem(props) {
 var ch=[]

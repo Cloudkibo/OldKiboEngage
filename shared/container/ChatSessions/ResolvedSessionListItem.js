@@ -1,7 +1,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+var handleDate = function(d){
+  if(d && d!= ''){
+    var c = new Date(d);
+    return c.toDateString() + ' ' +c.getHours() + ':' + c.getMinutes();
+  }
 
+}
 function ResolvedSessionListItem(props) {
 var ag = []
 var ch=[]
@@ -50,6 +56,8 @@ var agentname = []
       }
      
       <td>{props.session.status}</td>
+      <td>{handleDate(props.session.requesttime)}</td>
+     
       <td>
       {
         props.viewoption &&

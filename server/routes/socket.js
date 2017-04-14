@@ -112,18 +112,35 @@ function onDisconnect(io2, socket) {
 
     }
  }
-    
+   
+
   //remove session also
   var session_remove = false;
   var room
   var req_id;
+  var customer_in_company_room =[]; 
   for(var j = 0;j< onlineWebClientsSession.length;j++){
 
     if(onlineWebClientsSession[j].socketid == socket.id){
-       console.log('Remove session,customer went offline');
+      console.log('Remove session,customer went offline');
       room = onlineWebClientsSession[j].companyid;
       req_id = onlineWebClientsSession[j].request_id;
       console.log(req_id);
+
+       // update abandoned sessions list if the session status is new
+     
+      if(onlineWebClientsSession[j].status == 'new'){
+         customer_in_company_room =[]; //only online customers who are in your room
+
+          for(var j = 0;j<onlineWebClientsSession.length;j++){
+            if(onlineWebClientsSession[j].companyid == room){
+              customer_in_company_room.push(onlineWebClientsSession[j]);
+            }
+          }
+
+          socket.broadcast.to(room).emit('customer_left',customer_in_company_room);
+        }
+  console.log('customers online : ' + customer_in_company_room.length);
       //we will remove all the user chat from socket.io with this request id
       console.log('length of userchats before: '+ userchats.length)
       for(var k=0;k<userchats.length;k++){
@@ -143,7 +160,7 @@ function onDisconnect(io2, socket) {
   }
 
   if(session_remove == true){
-   var customer_in_company_room =[]; //only online customers who are in your room
+    customer_in_company_room =[]; //only online customers who are in your room
 
     for(var j = 0;j<onlineWebClientsSession.length;j++){
       if(onlineWebClientsSession[j].companyid == room){

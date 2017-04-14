@@ -91,6 +91,8 @@ class ResolvedSessions extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >SubGroup</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Request Time</th>
+                    
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
                        
                    

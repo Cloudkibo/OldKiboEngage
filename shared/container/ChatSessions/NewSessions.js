@@ -47,7 +47,7 @@ class NewSessions extends Component {
   }
 
   componentDidMount(){
-       this.props.route.socket.on('customer_joined',this.getupdatedSessions);
+       this.props.route.socket.on('customer_left',this.getupdatedSessions);
   }
   render() {
     const token = auth.getToken()
@@ -91,6 +91,8 @@ class NewSessions extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >SubGroup</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Is Rescheduled</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Rescheduled By</th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Request Time</th>
+                    
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
                       
                    
