@@ -1038,6 +1038,8 @@ exports.getchatfromAgent = function(data){
                     break;
                   }
                 }
+    console.log('socketids')
+   console.log(socketids);
     for(var i=0;i<socketids.length;i++){
                      //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
                   glob.to(socketids[i]).emit('send:message',{
