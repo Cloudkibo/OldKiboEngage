@@ -422,7 +422,7 @@ else{
             this.autoassignChat();
         }
 
-       if(this.props.sessiondetails.status == "assigned" && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id != this.props.userdetails._id){
+       if(this.props.sessiondetails.status == "assigned" && (this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id != this.props.userdetails._id && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'agent')){
           alert('You cannot send message to Customer. This chat session is already assigned');
 
         }
@@ -1260,7 +1260,7 @@ const { value, suggestions } = this.state;
 
               </tr>
 
-              {/*
+              {
                 this.props.teamdetails && this.props.teamdetails.length >0?
                      <tr>
                     
@@ -1305,8 +1305,8 @@ const { value, suggestions } = this.state;
                       </td>
                      </tr>
 
-             */}
-
+             }
+                {/*}
                     <tr>
                      
                       <td className="col-md-6">
@@ -1315,7 +1315,7 @@ const { value, suggestions } = this.state;
                         <label>{this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
 
                       </td>
-                     </tr>
+                     </tr>*/}
               </tbody>
             </table>
 
