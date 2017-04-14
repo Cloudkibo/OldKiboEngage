@@ -73,8 +73,7 @@ class CustomerChatView extends Component {
         this.getSocketmessageFromServer = this.getSocketmessageFromServer.bind(this);
         this.connectToCall = this.connectToCall.bind(this);
         this.connectCall = this.connectCall.bind(this);
-        this.getgroupmembers = this.getgroupmembers.bind(this);
-       this.onFileDownload = this.onFileDownload.bind(this);
+        this.onFileDownload = this.onFileDownload.bind(this);
         this.state = {
           value: '',
           suggestions: getSuggestions('',props.responses),
@@ -132,7 +131,17 @@ onFileSubmit(event)
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
               var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+               var teammembers = []
+              //create array of teammembers
+              if(this.props.sessiondetails.agent_ids.length > 0&& this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
+              {
 
+                 for(var i=0;i<this.props.teamagents.length;i++){
+                    if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+                      teammembers.push(this.props.teamagents[i].agentid.email);
+                    }
+                 }
+              }
               var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
@@ -147,7 +156,7 @@ onFileSubmit(event)
                           'companyid': this.props.userdetails.uniqueid,
                           'is_seen':'no',
                           'customerid' : this.props.sessiondetails.customerid,
-                          'teammembers' : this.refs.teammembers.value.trim().split(" "),
+                          'teammembers' : teammembers,
                           'sendersEmail' : this.props.userdetails.email,
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
@@ -286,16 +295,12 @@ else{
      }
      //this.forceUpdate();
   }
-  getgroupmembers(data){
-    //alert(data.getmembers.join(" "));
-    this.refs.teammembers.value = data.getmembers.join(" ");
-    this.forceUpdate()
-  }
+
   componentDidMount() {
     const { socket,dispatch } = this.props;
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
-    this.props.route.socket.on('send:teammembers',this.getgroupmembers);
+   // this.props.route.socket.on('send:teammembers',this.getgroupmembers);
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));
 
@@ -428,7 +433,17 @@ else{
         }
 
         else{
-        
+        var teammembers = []
+        //create array of teammembers
+        if(this.props.sessiondetails.agent_ids.length > 0 && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
+        {
+
+           for(var i=0;i<this.props.teamagents.length;i++){
+              if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+                teammembers.push(this.props.teamagents[i].agentid.email);
+              }
+           }
+        }
             //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
@@ -450,7 +465,7 @@ else{
                           'companyid': this.props.userdetails.uniqueid,
                           'is_seen':'no',
                           'customerid' : this.props.sessiondetails.customerid,
-                          'teammembers' : this.refs.teammembers.value.trim().split(" "),
+                          'teammembers' : teammembers,
                           'sendersEmail' : this.props.userdetails.email,
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
@@ -537,7 +552,17 @@ else{
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
         var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+        var teammembers = []
+        //create array of teammembers
+        if(this.props.sessiondetails.agent_ids.length > 0 && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
+        {
 
+           for(var i=0;i<this.props.teamagents.length;i++){
+              if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+                teammembers.push(this.props.teamagents[i].agentid.email);
+              }
+           }
+        }
         var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
@@ -556,7 +581,7 @@ else{
                            'is_seen':'no',
                             'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                             'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-                            'teammembers' : this.refs.teammembers.value.trim().split(" "),
+                            'teammembers' : teammembers,
                              'sendersEmail' : this.props.userdetails.email,
                       }
          if(this.props.sessiondetails.platform == 'mobile'){
@@ -604,6 +629,17 @@ else{
      var agentemail = []
 
      if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.sessiondetails.departmentid).length !== 0){
+        var teammembers = []
+        //create array of teammembers
+        if(this.props.sessiondetails.agent_ids.length > 0 && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
+        {
+
+           for(var i=0;i<this.props.teamagents.length;i++){
+              if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+                teammembers.push(this.props.teamagents[i].agentid.email);
+              }
+           }
+        }
        // local changes
        this.props.sessiondetails.status = "assigned";
        this.props.sessiondetails.agent_ids.push({'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'});
@@ -618,7 +654,7 @@ else{
          var today = new Date();
          var uid = Math.random().toString(36).substring(7);
          var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-
+        
          var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
@@ -640,7 +676,7 @@ else{
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
 
 
-                           'teammembers' : this.refs.teammembers.value.trim().split(" "),
+                           'teammembers' : teammembers,
          }
          //pushing agent email to array for sending push notifications
 
@@ -654,12 +690,7 @@ else{
              this.props.mobileuserchat.push(saveChat);
         }
 
-        //for web customers
-        else{
-        //this.props.chatlist.push(saveChat);
-        }
-        this.refs.teammembers.value = "";
-
+       
         if(this.props.sessiondetails.platform == 'web'){
         //socket.emit('send:message', saveChat);
         //this.props.getchatfromAgent(saveChat);
@@ -759,6 +790,17 @@ else{
   autoassignChat(){
      const { socket,dispatch } = this.props;
      var agentemail = []
+     var teammembers = []
+        //create array of teammembers
+        if(this.props.sessiondetails.agent_ids.length > 0 && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
+        {
+
+           for(var i=0;i<this.props.teamagents.length;i++){
+              if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+                teammembers.push(this.props.teamagents[i].agentid.email);
+              }
+           }
+        }
      // local changes
      this.props.sessiondetails.status = "assigned";
      this.props.sessiondetails.agent_ids.push({'id' : this.props.userdetails._id,'type' : 'agent'});
@@ -793,7 +835,7 @@ else{
                          'assignedagentemail': [this.props.userdetails.email],
 
 
-                         'teammembers' : this.refs.teammembers.value.trim().split(" "),
+                         'teammembers' : teammembers,
        }
        //pushing agent email to array for sending push notifications
 
@@ -806,12 +848,6 @@ else{
       if(this.props.sessiondetails.platform == 'mobile'){
            this.props.mobileuserchat.push(saveChat);
       }
-
-      //for web customers
-      else{
-      //this.props.chatlist.push(saveChat);
-      }
-      this.refs.teammembers.value = "";
 
       if(this.props.sessiondetails.platform == 'web'){
       //socket.emit('send:message', saveChat);
@@ -941,7 +977,7 @@ else{
                            'assignedagentemail': agentemail,
 
                       }
-         this.refs.teammembers.value =  agentemail.join(" ");
+         //alert(this.refs.teammembers.value)
          if(this.props.sessiondetails.platform == 'mobile'){
           saveChat.fromMobile = 'yes'
         }
@@ -1021,7 +1057,7 @@ else{
 
                       }*/
 
-    socket.emit('informGroupMembers',agentemail);
+    socket.emit('informGroupMembers',{'agentemail': agentemail,'companyid':this.props.userdetails.uniqueid});
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
 
 
@@ -1048,6 +1084,7 @@ else{
     if(news_array.length > 0){
         this.props.createnews(news_array,usertoken);
     }
+
     this.forceUpdate();
 
    }
@@ -1069,7 +1106,17 @@ else{
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
               var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+               var teammembers = []
+              //create array of teammembers
+              if(this.props.sessiondetails.agent_ids.length > 0 && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
+              {
 
+                 for(var i=0;i<this.props.teamagents.length;i++){
+                    if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+                      teammembers.push(this.props.teamagents[i].agentid.email);
+                    }
+                 }
+              }
               // 1. Broadcast a log message to all agents and customer that session is moved
                   var saveChat = {
                                     'to' : this.refs.customername.value,
@@ -1089,7 +1136,7 @@ else{
                                      'is_seen':'no',
                                      'agentemail' : this.refs.agentList.options[this.refs.agentList.selectedIndex].value,
                                      'agentid' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
-                                     'teammembers' : this.refs.teammembers.value.trim().split(" "),
+                                     'teammembers' : teammembers,
                                       'sendersEmail' : this.props.userdetails.email,
                                 }
                    if(this.props.sessiondetails.platform == 'mobile'){
@@ -1333,8 +1380,7 @@ const { value, suggestions } = this.state;
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
-          <input type="hidden" defaultValue = "" ref="teammembers"/>
-
+         
           <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>

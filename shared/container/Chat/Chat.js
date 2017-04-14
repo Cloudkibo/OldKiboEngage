@@ -78,7 +78,7 @@ updateOnlineAgents(data){
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
   getSocketmessage(message){
-   alert('socket called for message');
+   //alert('socket called for message');
    console.log(message);
    if(this.props.customerchat_selected){
    if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
@@ -207,6 +207,7 @@ componentDidMount(){
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.props.route.socket.on('returnUserChat',this.getupdatedChats);
         this.props.route.socket.on('syncdata',this.syncdata);
+      
 
 }
 

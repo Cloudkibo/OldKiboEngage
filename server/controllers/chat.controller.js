@@ -695,7 +695,7 @@ export function getChatMessage(req, res) {
 
 };
 
-// endpoint called by customer (web or mobile)
+// endpoint called by agent (web or mobile)
 export function getchatfromagent(req, res) {
     console.log('getchatfromagent is called');
     var chat   = req.body;

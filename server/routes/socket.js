@@ -357,28 +357,39 @@ socket.on('getCustomerSessionsListFirst',function(sessions,roomid){
     socket.emit('returnCustomerSessionsList',customer_in_company_room);
   });
 
- socket.on('informGroupMembers', function (agentemail) {
+ socket.on('informGroupMembers', function (data) {
     console.log('group members in group');
-    console.log(agentemail);
+    console.log(data.agentemail);
     //send agentemail array to every one in the group
-    var socketids =[]
-           for(var j=0;j< agentemail.length;j++){
-                for(var i = 0;i < onlineAgents.length;i++)
+    var onlineAgentsCompany = [];
+    for(var i=0;i<onlineAgents.length;i++){
+      if(onlineAgents[i].company == data.companyid){
+        onlineAgentsCompany = onlineAgents[i].onlineAgentsArray;
+        break;
+      }
+    }
+
+    //collect all socket ids of an agent
+    var socketids = [];
+   
+    for(var j = 0;j< data.agentemail.length;j++){
+              for(var i = 0;i < onlineAgentsCompany.length;i++)
+              {
+                if(onlineAgentsCompany[i].email  == data.agentemail[j])
                 {
-                  if(onlineAgents[i].email == agentemail[j]){
-                     console.log('agent is online');
-
-                    socketids.push(onlineAgents[i].socketid);
-                    //break;
-                  }
+                  console.log('agent is online');
+                  for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
+                      socketids.push(onlineAgentsCompany[i].socketid[k]);
+                     }
+                  break;
                 }
+              }
+              }
+        
 
-            }
-
-
-           for(var i=0;i<socketids.length;i++){
+    for(var i=0;i<socketids.length;i++){
                      //sendingSocket.to(sendingSocket.id).emit('publicMessage', 'Hello! How are you?')
-                  io2.to(socketids[i]).emit('send:groupmembers',{'getmembers':agentemail});
+                  io2.to(socketids[i]).emit('send:teammembers',{'getmembers':data.agentemail});
                 }
 
 });
@@ -1061,13 +1072,14 @@ exports.getchatfromAgent = function(data){
                               });
                 } 
 // Logic for sending message to all group members
-    if(data.groupmembers && data.groupmembers.length > 1 && data.sendersEmail){
+    if(data.teammembers && data.teammembers.length > 1 && data.sendersEmail){
+      
       var socketids =[]
-
-           for(var j=0;j< data.groupmembers.length;j++){
+  
+           for(var j=0;j< data.teammembers.length;j++){
                 for(var i = 0;i < onlineAgentsCompany.length;i++)
                 {
-                  if(onlineAgentsCompany[i].email == data.groupmembers[j] && onlineAgentsCompany[i].email != data.sendersEmail){
+                  if(onlineAgentsCompany[i].email == data.teammembers[j] && onlineAgentsCompany[i].email != data.sendersEmail){
                      console.log('agent is online');
                      for(var k=0;k< onlineAgentsCompany[i].socketid.length;k++){
                       socketids.push(onlineAgentsCompany[i].socketid[k]);
