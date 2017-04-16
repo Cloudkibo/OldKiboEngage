@@ -62,14 +62,14 @@ const dashboard = (state =dashboardState, action) => {
         group: action.group,
         newagents:agentid,
         errorMessage:'',
-       
+
 
       };
 
-     
+
       case ActionTypes.ADD_SELECTED_PAGE :
       return {
-      
+
 
         ...state,errorMessageProfile:'',
         fbpage:action.fbpage,
@@ -83,13 +83,13 @@ const dashboard = (state =dashboardState, action) => {
         invitedagents: action.invitedagents,
         errorMessage:'',
         }
-      
+
    case ActionTypes.ADD_SELECTED_AGENT :
       return {
         ...state,errorMessageProfile:'',
         agent: state.agents.filter((agent) => agent._id == action.id),
         errorMessage:'',
-        
+
       };
 
     case ActionTypes.ADD_SELECTED_SUBGROUP :
@@ -97,14 +97,14 @@ const dashboard = (state =dashboardState, action) => {
        ...state,errorMessageProfile:'',
        errorMessage:'',
         subgroup: state.subgroups.filter((subgroup) => subgroup._id == action.id),
-       
+
       };
     case ActionTypes.ADD_SELECTED_RESPONSE :
       return {
        ...state,errorMessageProfile:'',
         response: state.responses.filter((response) => response._id == action.id),
         errorMessage:'',
-      
+
       };
    case ActionTypes.ADD_USER_DETAILS:
           console.log(action.user.firstname)
@@ -113,13 +113,13 @@ const dashboard = (state =dashboardState, action) => {
              userdetails:action.user,
              errorMessage:action.chat_error,
              errorMessage:'',
-            
+
 
     };
    case ActionTypes.ADD_AGENTS:
           console.log(action.agents)
           return{
-            
+
             ...state,errorMessageProfile:'',
             agents:action.agents,
             errorMessage:'',
@@ -137,7 +137,7 @@ const dashboard = (state =dashboardState, action) => {
 
           };
 
-  
+
 
     case ActionTypes.ADD_NEWS:
           return{
@@ -148,7 +148,7 @@ const dashboard = (state =dashboardState, action) => {
 
     case ActionTypes.ADD_FB_PAGES:
           return{
-          ...state,errorMessageProfile:'', 
+          ...state,errorMessageProfile:'',
           fbpages : action.fbpages,
           errorMessage:'',
 
@@ -160,12 +160,12 @@ const dashboard = (state =dashboardState, action) => {
             errorMessage:'',
             groupdetails:action.groups,
             newagents: [],
-            
+
 
       };
 
 
-  
+
 
    case ActionTypes.ADD_SUBGROUPS:
           return{
@@ -206,9 +206,9 @@ const dashboard = (state =dashboardState, action) => {
           deptdescription: action.deptdescription,
 
         }, ...state.groupdetails],
-        
+
          errorMessage:'Group created successfully',
-        
+
         };
 
 
@@ -216,12 +216,12 @@ const dashboard = (state =dashboardState, action) => {
       return {
         ...state,errorMessageProfile:'',
         groupdetails: state.groupdetails.filter((group) => group._id !== action.group._id),
-       
+
         errorMessage:'Group deleted successfully',
-        
+
       };
 
-       
+
 
 
       case ActionTypes.DELETE_SUBGROUP :
@@ -229,44 +229,44 @@ const dashboard = (state =dashboardState, action) => {
         ...state,errorMessageProfile:'',
         subgroups : state.subgroups.filter((subgroup) => subgroup._id !== action.subgroup._id),
         errorMessage:'Subgroup deleted successfully',
-        
+
       };
 
       case ActionTypes.DELETE_RESPONSE :
       return {
         ...state,errorMessageProfile:'',
-        
+
         responses : state.responses.filter((response) => response._id != action.response._id),
         errorMessage:'Canned Response deleted successfully',
-        
+
       };
 
 
        case ActionTypes.DELETE_SELECTED_PAGE :
       return {
         ...state,errorMessageProfile:'',
-        
+
         fbpages:state.fbpages.filter((fbpage)=> fbpage.pageid != action.fbpage.pageid),
         errorMessage:'Facebook Page Info deleted successfully',
-        
+
       };
       case ActionTypes.DELETE_AGENT :
       return {
         ...state,errorMessageProfile:'',
         errorMessage:'Agent deleted successfully',
         agents : state.agents.filter((agent) => agent._id !== action.agent._id),
-        
+
       };
 
-      
 
-     
+
+
 
       case ActionTypes.EDITAGENT_RESPONSE:
       return {
         ...state,errorMessageProfile:'',
          errorMessage:action.message,
-       
+
         };
 
 
@@ -276,7 +276,7 @@ const dashboard = (state =dashboardState, action) => {
         ...state,errorMessageProfile:'',
          errorMessage:action.message,
          inviteurl:action.inviteurl,
-         
+
         };
 
         case ActionTypes.SHOW_SPECIFIC_CHAT:
@@ -306,7 +306,7 @@ const dashboard = (state =dashboardState, action) => {
           return {
             ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
-             
+
             };
           case ActionTypes.SHOW_ALL_CHAT:
            return {
@@ -374,24 +374,45 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
              assignedsessions : action.assignedsessions,
+             assignedsessionsfiltered: action.assignedsessions,
              errorMessage:'',
             };
 
+            case ActionTypes.FILTER_ASSIGNED_SESSION:
+            return {
+             ...state,errorMessageProfile:'',
+            assignedsessionsfiltered: action.assignedsessionsfiltered,
+           };
+
             case ActionTypes.SHOW_RESOLVED_SESSIONS:
             return {
-             ...state,errorMessageProfile:'', 
+             ...state,errorMessageProfile:'',
              resolvedsessions : action.resolvedsessions,
+             resolvedsessionsfiltered: action.resolvedsessions,
              errorMessage:'',
-           
+
             };
+
+            case ActionTypes.FILTER_RESOLVED_SESSION:
+            return {
+             ...state,errorMessageProfile:'',
+            resolvedsessionsfiltered: action.resolvedsessionsfiltered,
+           };
 
             case ActionTypes.SHOW_NEW_SESSIONS:
              return {
               ...state,errorMessageProfile:'',
              newsessions : action.newsessions,
+             newsessionsfiltered: action.newsessions,
              errorMessage:'',
-             
+
             };
+
+            case ActionTypes.FILTER_NEW_SESSION:
+            return {
+             ...state,errorMessageProfile:'',
+            newsessionsfiltered: action.newsessionsfiltered,
+           };
 
 
              case ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS:
@@ -469,7 +490,7 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.chat_error,
              customerchat : action.filtered,
              errorMessage:'',
-            
+
             };
             case ActionTypes.SELECT_CUSTOMERCHAT:
              return {
@@ -477,7 +498,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat_selected : action.customerchat_selected[0],
              new_message_arrived_rid : action.new_message_arrived_rid,
              errorMessage:'',
-           
+
             };
 
 
@@ -525,7 +546,7 @@ const dashboard = (state =dashboardState, action) => {
              customerchat : action.customerchat,
              customerchatold : [action.customerchat,...state.customerchatold],
              errorMessage:'',
-           
+
             };
 
           case ActionTypes.ONLINE_AGENTS:
@@ -541,7 +562,7 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.chat_error,
              chatlist : action.chatlist,
              errorMessage:'',
-          
+
             };
 
           case ActionTypes.ADD_CHAT_MESSAGE:
@@ -570,7 +591,7 @@ const dashboard = (state =dashboardState, action) => {
              new_message_arrived_rid : action.ch,
              userchats :cc,
              errorMessage:'',
-           
+
             };
 
           case ActionTypes.CHAT_SENT_TO_AGENT:
@@ -585,14 +606,14 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              notifications:action.notifications,
-            
+
             };
              case ActionTypes.CONFIRM_NOTIFICATION:
              return {
-             ...state,errorMessageProfile:'', 
+             ...state,errorMessageProfile:'',
              addednotification : action.msg,
              errorMessage :action.msg,
-             
+
             };
              case ActionTypes.DELETE_NOTIFICATION :
               return {
@@ -634,10 +655,10 @@ const dashboard = (state =dashboardState, action) => {
 
             case ActionTypes.SUBGROUP_STATS:
               return {
-               ...state,errorMessageProfile:'', 
+               ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              subgroupwisestats : action.subgroupwisestats,
-             
+
             };
 
 
@@ -653,7 +674,7 @@ const dashboard = (state =dashboardState, action) => {
             case ActionTypes.AGENT_STATS:
               return {
                 ...state,errorMessageProfile:'',
-            
+
              agentwisestats : action.agentwisestats,
             };
 
@@ -661,14 +682,14 @@ const dashboard = (state =dashboardState, action) => {
              case ActionTypes.AGENT_NOTIFICATIONS:
               return {
                 ...state,errorMessageProfile:'',
-           
+
              agentwisenotifications : action.agentwisenotifications,
 
             };
             case ActionTypes.MOBILE_STATS:
               return {
                 ...state,errorMessageProfile:'',
-          
+
              mobilewisestats : action.mobilewisestats,
 
             };
@@ -677,14 +698,14 @@ const dashboard = (state =dashboardState, action) => {
             case ActionTypes.PAGE_STATS:
               return {
               ...state,errorMessageProfile:'',
-           
+
              pagewisestats : action.pagewisestats,
             };
 
             case ActionTypes.DEPT_STATS:
               return {
               ...state,errorMessageProfile:'',
-          
+
              deptwisestats : action.deptwisestats,
             };
 
@@ -693,26 +714,26 @@ const dashboard = (state =dashboardState, action) => {
             case ActionTypes.PLATFORM_STATS:
               return {
               ...state,errorMessageProfile:'',
-          
+
              platformwisestats : action.platformwisestats,
             };
 
             case ActionTypes.COUNTRY_STATS:
               return {
               ...state,errorMessageProfile:'',
-         
+
              errorMessage:action.chat_error,
              countrywisestats : action.countrywisestats,
-            
+
             };
 
             case ActionTypes.SHOW_CHAT_SUMMARY:
              return {
               ...state,errorMessageProfile:'',
-         
+
               sessionsummary : action.sessionsummary,
               sessionsummaryfiltered : action.sessionsummary,
-         
+
             };
 
             case ActionTypes.ADD_SELECTED_SESSIONSUMMARY:
@@ -726,7 +747,7 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
              userchathistory : action.userchathistory,
-             
+
             };
 
 
@@ -741,7 +762,7 @@ const dashboard = (state =dashboardState, action) => {
             return {
               ...state,errorMessageProfile:'',
               customer: state.customers.filter((customer) => customer._id == action.id),
-              
+
             };
 
           case ActionTypes.COMPANY_PROFILE:
@@ -751,15 +772,15 @@ const dashboard = (state =dashboardState, action) => {
             };
 
              case ActionTypes.ADD_FB_CUSTOMERS:
-         
+
              return {
               ...state,errorMessageProfile:'',
                fbcustomers:action.fbcustomers,
-             
+
               };
 
                case ActionTypes.ADD_FB_CHATS:
-         
+
              return {
               ...state,errorMessageProfile:'',
               fbchats:action.fbchats,
@@ -768,7 +789,7 @@ const dashboard = (state =dashboardState, action) => {
 
 
           case ActionTypes.ADD_NEW_FB_CUSTOMER:
-         
+
              return {
               ...state,errorMessageProfile:'',
                 fbcustomers:action.fbcustomers,
@@ -796,18 +817,18 @@ const dashboard = (state =dashboardState, action) => {
         ...state,errorMessageProfile:'',
         team: action.team,
         newagents:agentid,
-        
+
 
       };
 
       case ActionTypes.ADD_TEAMAGENTS:
               return{
-                
+
                 ...state,errorMessageProfile:'',
                 teamagents : action.agents,
                 newagents : action.agents,
                  errorMessage:''
-                
+
               };
 
 
@@ -816,7 +837,7 @@ const dashboard = (state =dashboardState, action) => {
                 ...state,errorMessageProfile:'',
                 teamdetails : action.teams,
                  errorMessage:''
-        
+
           };
 
 
@@ -825,22 +846,22 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
              teamdetails : state.teamdetails.filter((team) => team._id !== action.team.get('_id')),
             errorMessage:'Team deleted successfully',
-           
+
           };
 
       case ActionTypes.EDITTEAM_RESPONSE:
           return {
              ...state,errorMessageProfile:'',
              errorMessage:action.message,
-            
+
             };
 
       case ActionTypes.CREATETEAM_FAILURE:
           return {
              ...state,errorMessageProfile:'',
-             
+
              errorMessage:action.message,
-             
+
             };
 
     default:
@@ -862,59 +883,59 @@ function widget(state = widgetState, action){
        return {
         ...state,
         chatbotlist:[...state.chatbotlist,action.message],
-       }  
+       }
        case ActionTypes.BOT_SESSION:
         return {
         ...state,
         chatbotsessionid:action.chatbotsessionid
-       }  
+       }
     case ActionTypes.ADD_CUSTOMER_GROUPS:
           return {
             ...state,
             groupdetails:action.groups,
-           
+
 
             };
     case ActionTypes.ADD_CUSTOMER_SUBGROUPS:
           return{
             ...state,
             subgroups : action.subgroups,
-            
+
       };
 
      case ActionTypes.ADD_CUSTOMER_SESSION:
           return{
             ...state,
             specificsession : action.specificsession,
-           
+
       };
 
       case ActionTypes.ADD_CUSTOMER_DETAILS:
           return{
             ...state,
            specificcustomer : action.specificcustomer,
-            
+
       };
     case ActionTypes.ADD_ROOM_DETAILS :
          return{
             ...state,
-          
+
             roomdetails : action.room,
-        
+
 
       };
     case ActionTypes.FILTER_SUBGROUPS:
           return{
             ...state,
             filterlist : state.subgroups.filter((subgroup) => subgroup.groupid == action.id),
-          
+
 
       };
     case ActionTypes.CREATE_SESSION:
          return{
           ...state,
             sessiondetails :action.session ,
-           
+
       };
 
 

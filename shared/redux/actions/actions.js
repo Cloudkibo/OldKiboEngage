@@ -1808,7 +1808,7 @@ export function getmobilesessions(token) {
 
 export function previousChat(previouschat,chatlist){
     var newchatlist = [...previouschat,...chatlist];
-    
+
     //removing duplicates
     var newArray = [];
      var lookupObject  = {};
@@ -2476,7 +2476,7 @@ export function setsocketid(yoursocketid){
 export function getchatsfromsocket(originalArray,newchats){
 
      var newchatlist = [...originalArray,...newchats];
-    
+
      var newArray = [];
      var lookupObject  = {};
      var prop = 'uniqueid';
@@ -2818,7 +2818,132 @@ export function getcompanysettings(token,id) {
   };
 }
 
+/*********** filter abandoned sessions ***********/
 
+export function filterAbandonedSession( groupID, subgroupID, newsessions) {
+  var newsessionsfiltered;
+
+  if(groupID !== 'all' && subgroupID !== 'all'){
+    newsessionsfiltered = newsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(groupID !== 'all' && subgroupID == 'all'){
+    newsessionsfiltered = newsessions.filter((c) => c.departmentid == groupID);
+  }
+  else if(groupID == 'all' && subgroupID !== 'all'){
+    newsessionsfiltered = newsessions.filter((c) => c.departmentid == groupID);
+  }
+  else if(groupID == 'all' && subgroupID == 'all'){
+    newsessionsfiltered = newsessions;
+  }
+
+
+  return {
+    type: ActionTypes.FILTER_NEW_SESSION,
+    newsessionsfiltered,
+    newsessions,
+
+  };
+}
+
+/*********** filter assigned sessions ***********/
+
+export function filterAssignedSession(medium, groupID, subgroupID, agentID, assignedsessions) {
+  var assignedsessionsfiltered;
+
+  if(medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID);
+  }
+  else if(medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.departmentid == groupID);
+  }
+  else if(medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium);
+  }
+  else if(medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium);
+  }
+  else if(medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  }
+  else if(medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.departmentid == groupID);
+  }
+  else if(medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all'){
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  }
+  else if(medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all'){
+    assignedsessionsfiltered = assignedsessions;
+  }
+
+  return {
+    type: ActionTypes.FILTER_ASSIGNED_SESSION,
+    assignedsessionsfiltered,
+    assignedsessions,
+
+  };
+}
+
+/*********** filter resolved sessions ***********/
+
+export function filterResolvedSession( groupID, subgroupID, agentID, resolvedsessions) {
+  var resolvedsessionsfiltered;
+
+  if(groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all'){
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(groupID !== 'all' && subgroupID !== 'all' && agentID == 'all'){
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(groupID !== 'all' && subgroupID == 'all' && agentID !== 'all'){
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  }
+  else if(groupID !== 'all' && subgroupID == 'all' && agentID == 'all'){
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.departmentid == groupID);
+  }
+  else if(groupID == 'all' && subgroupID !== 'all' && agentID !== 'all'){
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(groupID == 'all' && subgroupID !== 'all' && agentID == 'all'){
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(groupID == 'all' && subgroupID == 'all' && agentID !== 'all'){
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  }
+  else if(groupID == 'all' && subgroupID == 'all' && agentID == 'all'){
+    resolvedsessionsfiltered = resolvedsessions;
+  }
+
+  return {
+    type: ActionTypes.FILTER_RESOLVED_SESSION,
+    resolvedsessionsfiltered,
+    resolvedsessions,
+
+  };
+}
 
 /*********** filter sessionsummary ***********/
 
