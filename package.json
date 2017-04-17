@@ -69,6 +69,7 @@
     "react-emojipicker": "^1.0.3",
     "react-giphy-picker": "^1.0.0",
     "react-highcharts": "^10.0.0",
+    "react-notification-system": "^0.2.13",
     "react-redux": "^4.1.2",
     "react-router": "^2.6.0",
     "react-router-redux": "^4.0.4",

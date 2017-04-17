@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 const PureRenderMixin = require('react-addons-pure-render-mixin');  
 import Immutable from 'immutable';
+var NotificationSystem = require('react-notification-system');
 
 class Teams extends Component {
 
@@ -50,6 +51,14 @@ class Teams extends Component {
       filteredData: Immutable.fromJS(props.teamdetails).toList() 
     });
     }
+
+  if(props.errorMessage && props.errorMessage != ''){
+     this.refs.notificationSystem.addNotification({
+      message: props.errorMessage,
+      level: 'success'
+    });
+
+   }
   }
 
   filterData(event) {
@@ -74,6 +83,8 @@ class Teams extends Component {
     }*/
     return (
       <div>
+       <NotificationSystem ref="notificationSystem" />
+     
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
     
        <div className="page-container">
@@ -118,11 +129,7 @@ class Teams extends Component {
                               className="form-control"
                               onChange={ this.filterData.bind(this) }
                               placeholder="Search" />
-               {this.props.errorMessage &&
-
-                     <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
-                      
-                }
+               
                 { this.props.teamdetails &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>

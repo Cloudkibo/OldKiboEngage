@@ -115,11 +115,7 @@ class TeamEditView extends Component {
                   </li>
 
             </ul>
-                {this.props.errorMessage &&
-
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
-                      }
-
+              
              {this.props.team &&
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
@@ -162,14 +158,14 @@ class TeamEditView extends Component {
                   <label className="control-label col-md-3"> Fellow Agents </label>
                    <div className="col-md-9">
                    <div className="select2-container select2-container-multi">
-                   <ul className="select2-choices">
-
+                  
                    {
                     this.props.newagents &&
                           this.props.newagents.filter((agent) => agent.groupid._id == this.props.team._id).map((agent, i)=> (
                           this.props.agents.filter((ag) => ag._id == agent.agentid._id).map((ag,j) =>
                           (
-                          <li key ={i}  onClick = {this.removeAgent.bind(this,ag._id)}>{ag.firstname + ' ' + ag.lastname}</li>
+                            <p key ={i}  >{ag.firstname + ' ' + ag.lastname} <i style={{ cursor: 'pointer'}} onClick = {this.removeAgent.bind(this,ag._id)} className="fa fa-times-circle" /></p>
+                        
                           ))
 
 
@@ -177,7 +173,6 @@ class TeamEditView extends Component {
 
 
                    }
-                   </ul>
                    </div>
                    </div>
                 </div>
@@ -187,18 +182,17 @@ class TeamEditView extends Component {
                   <label className="control-label col-md-3"> All Agents </label>
                    <div className="col-md-9">
                    <div className="select2-container select2-container-multi">
-                   <ul className="select2-choices">
                    {
                     this.props.agents &&
                          this.props.agents.map((agent, i) =>
                         (
-                          <li  key ={i} className="select2-search-choice">
-                            <div  onClick = {this.appendAgent.bind(this,agent._id)}>{agent.firstname + ' ' + agent.lastname} </div></li>
-                        ))
+                          <p  key ={i} className="select2-search-choice">
+                            <div ><i style={{ cursor: 'pointer'}} onClick = {this.appendAgent.bind(this,agent._id)} className="fa fa-plus-circle" /> {agent.firstname + ' ' + agent.lastname} </div></p>
+                        
+                       ))
                   }
 
 
-                   </ul>
                    </div>
                    </div>
                 </div>

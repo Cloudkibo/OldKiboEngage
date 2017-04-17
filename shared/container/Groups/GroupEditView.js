@@ -110,10 +110,7 @@ class GroupEditView extends Component {
                   </li>
 
             </ul>
-                {this.props.errorMessage &&
-
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
-                      }
+               
 
              {this.props.group &&
             <div className="portlet box grey-cascade">

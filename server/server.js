@@ -187,13 +187,15 @@ const renderFullPage = (html, initialState) => {
               Metronic.setAssetsPath('/assets/'); // Set the assets folder path
               RevosliderInit.initRevoSlider();
 
+
+                          $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                                alert('hello')
+                                $(this).remove(); 
+                              });
+                            }, 1000);
             });
 
-            window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
-                });
-            }, 2000);
+
           </script>
              <script src="/dist/bundle.js"></script>
 

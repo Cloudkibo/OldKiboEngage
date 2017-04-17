@@ -83,10 +83,7 @@ class SubGroups extends Component {
                  }
                  </div>
               </div>
-               {this.props.errorMessage &&
-
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
-                      }
+              
                 { this.props.subgroups && this.props.customers &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>

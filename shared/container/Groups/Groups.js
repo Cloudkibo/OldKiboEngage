@@ -13,6 +13,8 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
+var NotificationSystem = require('react-notification-system');
+
 
 class Groups extends Component {
 
@@ -40,8 +42,7 @@ class Groups extends Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
-
-
+ 
   }
 
 componentDidMount(){
@@ -57,10 +58,9 @@ componentDidMount(){
         this.props.getcustomers(usertoken);
       }
 
-    setTimeout(function() {
-    $(".alert").remove(); 
+
+
    
-    }, 3000);
 }
    handleClick(e) {
 
@@ -69,6 +69,8 @@ componentDidMount(){
       });
       e.preventDefault();
   }
+  
+
 
   add(name,description,deptagents) {
    // alert('called');
@@ -84,13 +86,22 @@ componentDidMount(){
     });
  }
 
+ componentWillReceiveProps(props){
+  if(props.errorMessage && props.errorMessage != ''){
+     this.refs.notificationSystem.addNotification({
+      message: props.errorMessage,
+      level: 'success'
+    });
 
+  }
+ }
   render() {
     const token = auth.getToken()
     console.log(token)
 
     return (
       <div>
+      <NotificationSystem ref="notificationSystem" />
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
 
        <div className="page-container">
@@ -130,11 +141,7 @@ componentDidMount(){
                }
                  </div>
               </div>
-               {this.props.errorMessage &&
-
-                     <div className = "alert alert-success">
-                     <span>{this.props.errorMessage}</span></div>
-                      }
+                
               <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>
                 { this.props.groupdetails && this.props.customers &&
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
@@ -158,8 +165,9 @@ componentDidMount(){
                       }
                      </tbody>
                     </table>
-                }
 
+
+                }
 
             </div>
           </div>
