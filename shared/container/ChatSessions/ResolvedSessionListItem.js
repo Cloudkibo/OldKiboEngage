@@ -11,12 +11,12 @@ var handleDate = function(d){
 function ResolvedSessionListItem(props) {
 var ag = []
 var ch=[]
-  
-  
+console.log(props.agent);
+
   {
          props.subgroups &&
                         props.subgroups.map((cha, i) => (
-                           ch.push(cha)                            
+                           ch.push(cha)
                         ))
 
       }
@@ -24,48 +24,50 @@ var ch=[]
      {
          props.groups &&
                         props.groups.map((cha, i) => (
-                           gname.push(cha)                            
+                           gname.push(cha)
                         ))
 
       }
-var agentname = []
+/*var agentname = []
 {
    props.agent &&
                         props.agent.map((cha, i) => (
-                           agentname.push(cha)                            
+                           agentname.push(cha)
                         ))
 
-}
+}*/
   return (
-   
+
       <tr className = "odd">
-    
+
       <td>{props.session.customerid.name?props.session.customerid.name : props.session.customerid.customerID} </td>
       <td>{props.session.customerid.email?props.session.customerid.email : "N/A"}</td>
-    
+
       <td>{gname[0].deptname}</td>
       {
         ch[0] &&
       <td>{ch[0].msg_channel_name}</td>
       }
       {
-        props.agent && agentname[0] ?
-         <td>{agentname[0].firstname +' '+ agentname[0].lastname}</td> :
-          <td>-</td>
 
-      }
-     
+       props.agent && props.agent.length>0 ?
+        <td>{props.agent[0].firstname +' '+ props.agent[0].lastname}</td> :
+       <td>-</td>
+
+
+   }
+
       <td>{props.session.status}</td>
       <td>{handleDate(props.session.requesttime)}</td>
-     
+
       <td>
       {
         props.viewoption &&
-        
+
          <Link to={`/chatsessionview/${props.session.request_id}`} className="btn blue-madison" >
          View Details
         </Link>
-        
+
       }
       {
         // only web sessions can be rescheduled
@@ -75,11 +77,11 @@ var agentname = []
       </Link>
       }
       </td>
-    </tr> 
-    
+    </tr>
 
-     
-    
+
+
+
   );
 }
 
