@@ -25,7 +25,7 @@ class Groups extends Component {
    }
 
     const usertoken = auth.getToken();
-     console.log('componentWillMount is called');
+    console.log('componentWillMount is called');
     if(usertoken != null)
     {
 

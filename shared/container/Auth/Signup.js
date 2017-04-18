@@ -1,3 +1,4 @@
+
 import React, { Component,PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -6,6 +7,11 @@ import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 import { browserHistory } from 'react-router'
+import Phone,{
+  formatPhoneNumber,
+  parsePhoneNumber,
+  isValidPhoneNumber
+} from 'react-phone-number-input'
 
 class Signup extends React.Component {
 
@@ -13,14 +19,18 @@ class Signup extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onSubmit = this.onSubmit.bind(this);
+    this.state = {'phone':''};
   }
     onSubmit(event)
     {
       event.preventDefault();
+      if(isValidPhoneNumber(this.state.phone) == true){
+
+
                 const fnameRef = this.refs.fname;
                 const lnameRef = this.refs.lname;
                 const emailRef = this.refs.email;
-                const phoneRef = this.refs.phone;
+                //const phoneRef = this.refs.phone;
                 const pwdRef = this.refs.pwd;
                 const c_pwdRef = this.refs.c_pwd;
                 const cname = this.refs.cname;
@@ -29,12 +39,12 @@ class Signup extends React.Component {
                   alert('Password donot match!.Retype password');
                   pwdRef.value = c_pwdRef.value = ''
                 }
-                if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && emailRef.value && phoneRef.value && cname.value && cdnameRef.value) {
+                if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && emailRef.value &&  cname.value && cdnameRef.value) {
                   var user = {
                     'firstname': fnameRef.value,
                     'lastname': lnameRef.value,
                     'email': emailRef.value,
-                    'phone': phoneRef.value,
+                    'phone': this.state.phone,
                     'password': pwdRef.value,
                     'companyName': cname.value,
                     'website': cdnameRef.value
@@ -44,6 +54,7 @@ class Signup extends React.Component {
                   this.props.signupuser(user)
                  // fnameRef.value = lnameRef.value = pwdRef.value = c_pwdRef.value = emailRef.value = phoneRef.value = cname.value = cdnameRef.value = '';
                 }
+              }
     }
 
 
@@ -62,6 +73,9 @@ class Signup extends React.Component {
                           <div className="col-md-9 col-sm-9">
                             <h1>Register your admin account</h1>
                             <div className="content-form-page">
+                                  
+                                 
+
                                 <div className ="row">
                                   <div className ="col-md-7 col-sm-7">
                                       <span> * required to fill these field </span><br/>
@@ -86,9 +100,20 @@ class Signup extends React.Component {
                                               <label>Confirm Password *</label>
                                               <input type="password" className="form-control input-medium" ref="c_pwd" placeholder="Confirm Password" required/>
                                               </div>
+
+                                              <div className="form-group">
+                                             
+                                              </div>
                                               <div className="form-group">
                                               <label>Phone *</label>
-                                              <input type="number" className="form-control input-medium" ref="phone" required placeholder="Phone"/>
+                                              <Phone  placeholder="Enter phone number"
+                                                       value={ this.state.phone }
+                                                       onChange={ phone => this.setState({ phone }) } />
+
+                                              {String(isValidPhoneNumber(this.state.phone)) == 'false'?
+                                              <p style={{'color':'red'}}> Not a valid number</p>
+                                              :<p></p>
+                                              }
                                               </div>
                                               <div className="form-group">
                                               <label>Company Name *</label>

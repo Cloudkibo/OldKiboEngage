@@ -122,7 +122,9 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
 
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
-       
+         <link rel="stylesheet" href="/css/rrui.css"/>
+        <link rel="stylesheet" href="/css/styleuu.css"/>
+
 
   </head>
       <body>
@@ -188,11 +190,7 @@ const renderFullPage = (html, initialState) => {
               RevosliderInit.initRevoSlider();
 
 
-                          $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                                alert('hello')
-                                $(this).remove(); 
-                              });
-                            }, 1000);
+                        
             });
 
 
