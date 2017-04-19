@@ -84,30 +84,35 @@ export class ChatArea extends Component {
  // this.scrollToTop();
 }
 
-componentWillReceiveProps(nextprops){
-  if(nextprops.fbchats.length != this.props.fbchats.length){
-    //new chat added
-    this.scrollToBottom();
+componentDidUpdate(prevProps){
+  if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid == this.props.senderid){
+   
+   this.scrollToBottom();
+  
+  }
+
+  if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
+    this.scrollToTop()
   }
 }
 
 scrollToBottom() {
-    const node = ReactDOM.findDOMNode(this.messagesEnd);
-    node.scrollIntoView({behavior: "smooth"});
-   // node.scrollTop = node.offsetTop+'10px';
+    const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
+    console.log(node); 
+    console.log(node.offsetTop)
+
+    node.parentNode.scrollTop = node.offsetTop + 1100;
+
+  
 }
 
 
 scrollToTop() {
     const node = ReactDOM.findDOMNode(this.refs.chatmsg0);
-    node.parentNode.scrollTop = node.offsetTop+'10px';
+    node.parentNode.scrollTop = node.offsetTop - 100;
   
 }
 
-componentDidUpdate() {
-    this.scrollToTop();
-   
-}
 
 _onChange(e) {
     e.preventDefault();
