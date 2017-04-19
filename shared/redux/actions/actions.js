@@ -1586,7 +1586,7 @@ export function updatefbstatus(id,fbchats){
     type: ActionTypes.FB_CHAT_STATUS,
   }
 }
-export function selectFbCustomerChat(id,fbchat){
+export function selectFbCustomerChat(id,fbchat,profile_pic){
   var newfbChat = []
   var temp = fbchat.filter((c)=>c.senderid == id || c.recipientid == id);
   for(var i=0;i<temp.length;i++){
@@ -1610,6 +1610,7 @@ export function selectFbCustomerChat(id,fbchat){
   }
   return{
     fbchatSelected: newfbChat,
+    profile_pic:profile_pic,
     type: ActionTypes.FB_CHAT_SELECTED,
   }
 }

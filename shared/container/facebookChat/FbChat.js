@@ -104,7 +104,7 @@ componentWillReceiveProps(props){
    // alert(props.fbcustomers[0].first_name)
 
     this.refs.sessionid.value = props.fbcustomers[0].user_id;
-    this.props.selectFbCustomerChat(props.fbcustomers[0].user_id,props.fbchats);
+    this.props.selectFbCustomerChat(props.fbcustomers[0].user_id,props.fbchats,props.fbcustomers[0].profile_pic);
     callonce=false;
 
   }
@@ -119,7 +119,9 @@ componentWillReceiveProps(props){
       this.refs.customername.value = customer.first_name+' '+customer.last_name;
       this.props.updatefbstatus(customer.user_id,this.props.fbchats);
 
-      this.props.selectFbCustomerChat(customer.user_id,this.props.fbchats);
+      this.props.selectFbCustomerChat(customer.user_id,this.props.fbchats,customer.profile_pic);
+      //const node = ReactDOM.findDOMNode(this.refs.customername);
+      //node.scrollIntoView({behavior: "smooth"});
       this.forceUpdate();
 
     }
@@ -184,7 +186,7 @@ componentWillReceiveProps(props){
                            </div>
                          }
                            {this.props.fbchatSelected && this.props.fbcustomers && this.refs.sessionid && this.refs.customername &&
-                            <ChatArea messages={this.props.fbchatSelected} responses={this.props.responses} username={this.refs.customername.value} senderid={this.refs.sessionid.value} userdetails={this.props.userdetails}/>
+                            <ChatArea messages={this.props.fbchatSelected} responses={this.props.responses} username={this.refs.customername.value} userprofilepic={this.props.profile_pic} senderid={this.refs.sessionid.value} userdetails={this.props.userdetails}/>
                           }
                       </div>
                        </td>
@@ -227,7 +229,7 @@ function mapStateToProps(state) {
           serverresponse : (state.dashboard.serverresponse) ,
           groupagents : (state.dashboard.groupagents),
           groupdetails :(state.dashboard.groupdetails),
-
+          profile_pic:(state.dashboard.profile_pic),
           fbcustomers:state.dashboard.fbcustomers,
           fbchats:state.dashboard.fbchats,
           fbchatSelected:state.dashboard.fbchatSelected,

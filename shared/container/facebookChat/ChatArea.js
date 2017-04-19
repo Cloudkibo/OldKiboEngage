@@ -74,37 +74,32 @@ export class ChatArea extends Component {
         this.toggleVisible = this.toggleVisible.bind(this);
         this.toggleStickerPicker = this.toggleStickerPicker.bind(this);
         this.sendSticker = this.sendSticker.bind(this);
+        this.scrollToBottom = this.scrollToBottom.bind(this);
+        this.scrollToTop= this.scrollToTop.bind(this);
   }
 
 
-connectCall(data){
-   if(confirm("Other person is calling you to a call. Confirm to join."))
-        window.location.href = data.url;
- }
-connectToCall(e){
-      var call= {};
-      var today = new Date();
-      var uid = Math.random().toString(36).substring(7);
-      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-
-      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
-
-      call.from = this.props.userdetails.firstname;
-      call.to = this.refs.customername.value;
-      call.to_id = this.refs.socketid_customer.value;
-      call.agentemail = this.props.userdetails.email;
-      call.visitoremail = this.refs.customeremail.value;
-      call.request_id = this.props.sessiondetails.request_id;
-      call.url = meetingURLString;
-      console.log(call);
-      console.log(meetingURLString);
-      this.props.route.socket.emit('connecttocall', {room: this.props.userdetails.uniqueid, stanza: call});
-
-      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
-
-      window.location.href = meetingURLString;
-
+ 
+ componentWillUpdate(){
+ // this.scrollToTop();
 }
+
+scrollToBottom() {
+    const node = ReactDOM.findDOMNode(this.messagesEnd);
+    node.scrollIntoView({behavior: "smooth"});
+}
+
+
+scrollToTop() {
+    const node = ReactDOM.findDOMNode(this.refs.chatmsg0);
+    node.parentNode.scrollTop = node.offsetTop+'10px';
+  
+}
+
+componentDidUpdate() {
+    this.scrollToTop();
+}
+
 _onChange(e) {
     e.preventDefault();
     let files;
@@ -486,9 +481,9 @@ toggleStickerPicker() {
     let list = this.props.messages.map((data, index) => {
       return (
         data.senderid == this.props.senderid?
-        <div className='message clearfix' key={index}>
+        <div className='message left userChatBox' key={index} ref={'chatmsg'+index} id={'chatmsg'+index}>
         <div className='message-header'>
-          <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512' width="36px" height="36px"/>
+          <img className='profile-image' src={this.props.userprofilepic} width="36px" height="36px"/>
           <span className='username'>{this.props.username}</span>
           </div>
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
@@ -507,7 +502,8 @@ toggleStickerPicker() {
 
             </div>
         </div> :
-        <div className='message clearfix' key={index}>
+        <div className='message right agentChatBox' key={index} ref={'chatmsg'+index} id={'chatmsg'+index}>
+
         <div className='message-header'>
           <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
           <span className='username'>KiboEngage</span>
@@ -533,8 +529,15 @@ toggleStickerPicker() {
 
       return (
         <div>
-        <div id='messages-container'>
+         
+        <div id='messages-container'  ref={(el) => { this.messagesList = el; }} style={{'height':'400','overflowY':'scroll'}}>
+          <div style={ {float:"left", clear: "both"} }
+                ref={(el) => { this.messagesTop = el; }}>
+            </div>
           {list}
+          <div style={ {float:"left", clear: "both"} }
+                ref={(el) => { this.messagesEnd = el; }}>
+            </div>
         </div>
 
          <div className="panel-footer">
@@ -614,10 +617,7 @@ toggleStickerPicker() {
                <table className="table table-colored">
                  <tbody>
                     <tr>
-                       <td className="col-md-6">
-                            <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
-
-                       </td>
+                       
                        <td className="col-md-6">
                        <input type="file" onChange={this._onChange} className="pull-left"/>
 
