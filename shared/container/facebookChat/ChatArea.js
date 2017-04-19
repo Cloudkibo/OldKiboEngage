@@ -84,9 +84,17 @@ export class ChatArea extends Component {
  // this.scrollToTop();
 }
 
+componentWillReceiveProps(nextprops){
+  if(nextprops.fbchats.length != this.props.fbchats.length){
+    //new chat added
+    this.scrollToBottom();
+  }
+}
+
 scrollToBottom() {
     const node = ReactDOM.findDOMNode(this.messagesEnd);
     node.scrollIntoView({behavior: "smooth"});
+   // node.scrollTop = node.offsetTop+'10px';
 }
 
 
@@ -98,6 +106,7 @@ scrollToTop() {
 
 componentDidUpdate() {
     this.scrollToTop();
+   
 }
 
 _onChange(e) {
@@ -194,7 +203,7 @@ handleMessageSubmit(e) {
 
             }
     this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
-
+   // this.scrollToBottom();
         this.forceUpdate();
       }
     }
@@ -317,7 +326,7 @@ onFileSubmit(event)
 
             }
     this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
-
+    // this.scrollToBottom();
 
             this.forceUpdate();
             event.preventDefault();
@@ -451,7 +460,7 @@ var data = {
 
   }
 this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
-
+// this.scrollToBottom();
 
   this.forceUpdate();
   event.preventDefault();
@@ -530,7 +539,7 @@ toggleStickerPicker() {
       return (
         <div>
          
-        <div id='messages-container'  ref={(el) => { this.messagesList = el; }} style={{'height':'400','overflowY':'scroll'}}>
+        <div id='messages-container' style={{'height':'400','overflowY':'scroll'}}>
           <div style={ {float:"left", clear: "both"} }
                 ref={(el) => { this.messagesTop = el; }}>
             </div>

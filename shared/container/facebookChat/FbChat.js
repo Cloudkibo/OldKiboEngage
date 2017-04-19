@@ -68,20 +68,9 @@ getfbMessage(data){
       data.seen=true;
     }
       this.props.add_socket_fb_message(data,this.props.fbchats,this.refs.sessionid.value);
-
+      
     }
-   /* this.props.fbchatSelected.push({
-        message: data.message.text,
-        inbound: true,
-        backColor: '#3d83fa',
-        textColor: "white",
-        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
-        duration: 0,
-        timestamp:data.timestamp,
-        senderid:data.senderid,
-        recipientid:data.recipientid,
-        mid : data.message.mid,
-    })*/
+   
     this.forceUpdate();
 }
 syncdata(){
