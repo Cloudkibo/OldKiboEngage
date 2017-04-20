@@ -76,6 +76,8 @@ export class ChatArea extends Component {
         this.sendSticker = this.sendSticker.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.scrollToTop= this.scrollToTop.bind(this);
+        this.getMeta = this.getMeta.bind(this);
+
   }
 
 
@@ -479,6 +481,15 @@ toggleStickerPicker() {
   });
 }
 
+getMeta(event){ 
+   // alert(event.target.src);
+    var img = new Image();
+    img.addEventListener("load", function(){
+        alert( this.naturalWidth +' '+ this.naturalHeight );
+    });
+    return this.naturalHeight;
+}
+
 
   render () {
     // only show previous messages if they exist.
@@ -508,8 +519,12 @@ toggleStickerPicker() {
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
-                       <img src={da.payload.url} className='file-preview'/>:
-                       <a href={da.payload.url} target="_blank">{da.payload.url}  </a>
+                       <img src={da.payload.url} style={{
+                                                          'maxWidth': '100%',
+                                                           'maxHeight': '585px'}}/>
+                        
+                                                           :
+                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )
                 ))
               }
@@ -529,8 +544,10 @@ toggleStickerPicker() {
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
-                       <img src={da.payload.url} className='file-preview'/>:
-                       <a href={da.payload.url} target="_blank">{da.payload.url}  </a>
+                       <img src={da.payload.url}  style={{
+                                                          'maxWidth': '100%',
+                                                           'maxHeight': '585px'}}/>:
+                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )
                 ))
               }
