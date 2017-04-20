@@ -440,6 +440,11 @@ create_session(data){
      // this.forceUpdate();
     }
 
+    if(props.countryname){
+      this.refs.country.value = props.countryname;
+      this.forceUpdate();
+    }
+
     }
    componentDidMount() {
   // socket.on('joined',this.create_session)
