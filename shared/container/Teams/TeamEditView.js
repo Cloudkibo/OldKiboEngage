@@ -25,8 +25,10 @@ class TeamEditView extends Component {
         props.getTeamRequest(props.params.id,usertoken);
       }
 
-
         super(props, context);
+        this.state = {
+          status: ''
+        };
         this.editTeamDetail = this.editTeamDetail.bind(this);
 
 
@@ -35,13 +37,16 @@ class TeamEditView extends Component {
 
 
   editTeamDetail(e) {
+        this.setState({ status: this.refs.status.value });
         e.preventDefault();
         const usertoken = auth.getToken();
         const nameRef = this.refs.name;
         const descRef = this.refs.desc;
         const status = this.refs.status;
-
         const idRef = this.refs.id;
+
+        console.log(status.value);
+        console.log(this.state.status);
     if (nameRef.value && descRef.value) {
       //alert(nameRef.value);
       var ag=[]
@@ -51,7 +56,7 @@ class TeamEditView extends Component {
         }
       }
       console.log(ag);
-      this.props.editTeam({name :nameRef.value,desc:descRef.value,status : status.value,id:idRef.value,token:usertoken,teamagents: ag});
+      this.props.editTeam({name :nameRef.value,desc:descRef.value, status: status.value,id:idRef.value,token:usertoken,teamagents: ag});
      this.forceUpdate();
     }
   }
@@ -115,7 +120,7 @@ class TeamEditView extends Component {
                   </li>
 
             </ul>
-              
+
              {this.props.team &&
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
@@ -147,7 +152,7 @@ class TeamEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Active </label>
                   <div className="col-md-9">
-                        <select  ref = "status" defaultValue ={this.props.team.status} >
+                        <select  ref = "status" defaultValue ={this.state.status ? this.state.status:this.props.team.status} >
                           <option value="public"> public  </option>
                           <option value="private"> private </option>
                         </select>
@@ -158,14 +163,14 @@ class TeamEditView extends Component {
                   <label className="control-label col-md-3"> Fellow Agents </label>
                    <div className="col-md-9">
                    <div className="select2-container select2-container-multi">
-                  
+
                    {
                     this.props.newagents &&
                           this.props.newagents.filter((agent) => agent.groupid._id == this.props.team._id).map((agent, i)=> (
                           this.props.agents.filter((ag) => ag._id == agent.agentid._id).map((ag,j) =>
                           (
                             <p key ={i}  >{ag.firstname + ' ' + ag.lastname} <i style={{ cursor: 'pointer'}} onClick = {this.removeAgent.bind(this,ag._id)} className="fa fa-times-circle" /></p>
-                        
+
                           ))
 
 
@@ -188,7 +193,7 @@ class TeamEditView extends Component {
                         (
                           <p  key ={i} className="select2-search-choice">
                             <div ><i style={{ cursor: 'pointer'}} onClick = {this.appendAgent.bind(this,agent._id)} className="fa fa-plus-circle" /> {agent.firstname + ' ' + agent.lastname} </div></p>
-                        
+
                        ))
                   }
 
