@@ -519,10 +519,15 @@ getMeta(event){
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
-                       <img src={da.payload.url} style={{
+                        (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
+                       <img src={da.payload.url}  style={{
+                                                          'width':'32px',
+                                                          'height':'32px'}}/> :
+
+                       <img src={da.payload.url}  style={{
                                                           'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/>
-                        
+                                                           'maxHeight': '585px'}}/> 
+                       )                      
                                                            :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )
@@ -544,9 +549,21 @@ getMeta(event){
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
+                       (da.payload.url == 'https://kiboengage.kibosupport.com/images/thumbsUp.png'?
+                        <div style={{'textAlign':'right'}}>
+                       <img src={da.payload.url}  style={{
+                                                          'width':'32px',
+                                                          'height':'32px'}}/>
+                                                        </div> :
+                       <div>                                   
                        <img src={da.payload.url}  style={{
                                                           'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/>:
+                                                           'maxHeight': '585px'}}/> 
+                                                        </div>
+                       )                      
+                                                           : 
+                      
+                       
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )
                 ))
