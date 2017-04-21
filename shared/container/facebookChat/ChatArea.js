@@ -81,16 +81,16 @@ export class ChatArea extends Component {
   }
 
 
- 
+
  componentWillUpdate(){
  // this.scrollToTop();
 }
 
 componentDidUpdate(prevProps){
   if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid == this.props.senderid){
-   
+
    this.scrollToBottom();
-  
+
   }
 
   if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
@@ -100,19 +100,19 @@ componentDidUpdate(prevProps){
 
 scrollToBottom() {
     const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
-    console.log(node); 
+    console.log(node);
     console.log(node.offsetTop)
 
     node.parentNode.scrollTop = node.offsetTop + 1100;
 
-  
+
 }
 
 
 scrollToTop() {
     const node = ReactDOM.findDOMNode(this.refs.chatmsg0);
     node.parentNode.scrollTop = node.offsetTop - 100;
-  
+
 }
 
 
@@ -220,6 +220,7 @@ onFileSubmit(event)
     {
         const usertoken = auth.getToken();
         var fileData = new FormData();
+        this.refs.selectFile.value = null;
 
         if ( this.state.userfile ) {
               console.log(this.state.userfile)
@@ -265,6 +266,7 @@ onFileSubmit(event)
               fileData.append('chatmsg', JSON.stringify(saveMsg));
               this.props.uploadFbChatfile(fileData,usertoken,this.props.fbchats,this.props.senderid);
         }
+        ;
         this.forceUpdate();
         event.preventDefault();
 
@@ -481,7 +483,7 @@ toggleStickerPicker() {
   });
 }
 
-getMeta(event){ 
+getMeta(event){
    // alert(event.target.src);
     var img = new Image();
     img.addEventListener("load", function(){
@@ -526,8 +528,8 @@ getMeta(event){
 
                        <img src={da.payload.url}  style={{
                                                           'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/> 
-                       )                      
+                                                           'maxHeight': '585px'}}/>
+                       )
                                                            :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )
@@ -555,15 +557,15 @@ getMeta(event){
                                                           'width':'32px',
                                                           'height':'32px'}}/>
                                                         </div> :
-                       <div>                                   
+                       <div>
                        <img src={da.payload.url}  style={{
                                                           'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/> 
+                                                           'maxHeight': '585px'}}/>
                                                         </div>
-                       )                      
-                                                           : 
-                      
-                       
+                       )
+                                                           :
+
+
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )
                 ))
@@ -577,7 +579,7 @@ getMeta(event){
 
       return (
         <div>
-         
+
         <div id='messages-container' style={{'height':'400','overflowY':'scroll'}}>
           <div style={ {float:"left", clear: "both"} }
                 ref={(el) => { this.messagesTop = el; }}>
@@ -665,9 +667,9 @@ getMeta(event){
                <table className="table table-colored">
                  <tbody>
                     <tr>
-                       
+
                        <td className="col-md-6">
-                       <input type="file" onChange={this._onChange} className="pull-left"/>
+                       <input ref="selectFile" type="file" onChange={this._onChange} className="pull-left"/>
 
                          <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
                             Upload
