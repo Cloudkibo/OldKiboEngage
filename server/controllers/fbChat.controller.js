@@ -77,24 +77,26 @@ export function chatwebhook(req, res) {
 								        console.log(body);
 								        let customer = JSON.parse(body);
 								        if (!error) {
-								           // call kiboengage api to save customer
+								           // call kiboengage api to create session 
 								           var customerobj = {
 								           	  'first_name' : customer.first_name,
       											  'last_name' : customer.last_name,
       											  'user_id':sender, //this is the facebook id of a customer
+                              'pageid':fbpage._id,
       											   'email' : '',
       											  'timestamp' : customer.locale,
       											  'timezone' : customer.timezone,
       											  'companyid' : companyid,
       											  'gender' : customer.gender, 
-                              'profile_pic': customer.profile_pic
+                              'profile_pic': customer.profile_pic,
+                              'requesttime': Date.now(),
 								           }
 
 								           console.log('customerobj obj is ');
 								           console.log(customerobj);
 								           //call kiboengage API to save customer
 								            var optionsC = {
-												 	  url: `${baseURL}/api/fbCustomers/`,
+												 	  url: `${baseURL}/api/fbsessions/`,
 												      headers : headers,
 												      json:customerobj,
 
