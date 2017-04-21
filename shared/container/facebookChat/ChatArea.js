@@ -70,7 +70,7 @@ export class ChatArea extends Component {
         this.toggleEmojiPicker = this.toggleEmojiPicker.bind(this);
         this.setEmoji = this.setEmoji.bind(this);
         this.sendThumbsUp = this.sendThumbsUp.bind(this);
-        this.log = this.log.bind(this);
+        this.sendGIF = this.sendGIF.bind(this);
         this.toggleVisible = this.toggleVisible.bind(this);
         this.toggleStickerPicker = this.toggleStickerPicker.bind(this);
         this.sendSticker = this.sendSticker.bind(this);
@@ -389,14 +389,89 @@ updateState(e) {
 }
 
 setEmoji(emoji) {
-  console.log(emoji.unicode);
-  this.setState({value: this.state.value + emoji.unicode})
+  this.setState({
+    value: this.state.value + emoji.unicode,
+    visible: false,
+    showEmojiPicker: false,
+    showSticker: false,
+  });
 }
 
 
-log (gif) {
-  console.log(gif)
-  this.setState({enteredGif: gif})
+sendGIF (gif) {
+
+  this.setState({
+    visible: false,
+    showEmojiPicker: false,
+    showSticker: false,
+  });
+
+  const usertoken = auth.getToken();
+  var today = new Date();
+  var uid = Math.random().toString(36).substring(7);
+  var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+  var pageid=''
+  for(var i=0;i<this.props.messages.length;i++){
+      if(this.props.messages[i].senderid == this.props.senderid){
+        pageid = this.props.messages[i].recipientid;
+       // alert(pageid)
+        break;
+      }
+  }
+
+  var saveMsg = {
+      senderid: this.props.userdetails._id,
+      recipientid:this.props.senderid,
+      companyid:this.props.userdetails.uniqueid,
+      timestamp:Date.now(),
+      message:{
+        mid:unique_id,
+        seq:1,
+        attachments:[{
+          type:'image',
+          payload:{
+            url: gif.downsized.url,
+          }
+        }]
+      },
+      pageid:pageid
+  }
+
+  console.log(saveMsg);
+
+  this.props.getfbchatfromAgent(saveMsg);
+
+var data = {
+    senderid: this.props.userdetails._id,
+    recipientid:this.props.senderid,
+    companyid:this.props.userdetails.uniqueid,
+
+    seen:false,
+     message:{
+        mid:unique_id,
+        seq:1,
+        attachments:[{
+          type:'image',
+          payload:{
+            url: gif.downsized.url,
+          }
+        }]
+      },
+    inbound:true,
+    backColor: '#3d83fa',
+    textColor: "white",
+    avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+    duration: 0,
+    timestamp:Date.now(),
+
+
+  }
+this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+// this.scrollToBottom();
+
+  this.forceUpdate();
+  event.preventDefault();
+
 }
 
 toggleVisible () {
@@ -408,6 +483,11 @@ toggleVisible () {
 }
 
 sendSticker(sticker) {
+  this.setState({
+    visible: false,
+    showEmojiPicker: false,
+    showSticker: false,
+  });
   const usertoken = auth.getToken();
   var today = new Date();
   var uid = Math.random().toString(36).substring(7);
@@ -652,7 +732,7 @@ getMeta(event){
             {
               this.state.visible &&
               <Picker
-                onSelected={this.log}
+                onSelected={this.sendGIF}
               />
 
             }
