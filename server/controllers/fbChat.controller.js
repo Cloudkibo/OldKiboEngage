@@ -553,8 +553,14 @@ export function uploadchatfilefb(req, res) {
                                             ftype='image';
 
                                           }
+                                          else if(req.files.file.type.split('/')[0] == 'audio'){
+                                            ftype='audio';
+                                          }
+                                          else if(req.files.file.type.split('/')[0] == 'video'){
+                                            ftype='video';
+                                          }
                                           else{
-                                            ftype='file';
+                                            ftype="file";
                                           }
                                           var messageobj ={
                                             'attachment':{

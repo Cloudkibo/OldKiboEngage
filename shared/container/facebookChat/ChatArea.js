@@ -9,6 +9,7 @@ import auth from '../../services/auth';
 import Picker from 'react-giphy-picker';
 import StickerMenu from 'react-stickerpipe';
 import EmojiPicker from 'react-emojipicker';
+import ReactPlayer from 'react-player'
 
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload'
@@ -611,8 +612,11 @@ getMeta(event){
                                                            'maxHeight': '585px'}}/>
                        )
                                                            :
+                       (da.type == "video"?
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" />:
+
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       )
+                       ))
                 ))
               }
 
@@ -644,10 +648,11 @@ getMeta(event){
                                                         </div>
                        )
                                                            :
-
+                      (da.type == "video"?
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" />:
 
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       )
+                       ))
                 ))
               }
             </div>
