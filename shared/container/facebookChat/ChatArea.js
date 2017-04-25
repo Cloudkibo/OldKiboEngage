@@ -614,9 +614,11 @@ getMeta(event){
                                                            :
                        (da.type == "video"?
                         <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" />:
+                        (da.type == "audio"?
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30"/>:
 
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       ))
+                       )))
                 ))
               }
 
@@ -650,9 +652,11 @@ getMeta(event){
                                                            :
                       (da.type == "video"?
                         <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" />:
+                        (da.type == "audio"?
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" />:
 
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       ))
+                       )))
                 ))
               }
             </div>
