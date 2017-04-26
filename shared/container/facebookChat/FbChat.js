@@ -3,7 +3,7 @@ import ChatArea from './ChatArea';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getfbCustomers,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
+import {getfbCustomers,getfbSessions,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
 import Conversation from 'chat-template/dist/Conversation';
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -30,7 +30,8 @@ class FbChat extends Component {
     {
 
         console.log(usertoken);
-        props.getfbCustomers(usertoken);
+        props.getfbSessions(usertoken);
+       // props.getfbCustomers(usertoken);
         props.getfbChats(usertoken);
 
         props.getresponses(usertoken);
@@ -48,8 +49,8 @@ class FbChat extends Component {
 
 getfbCustomer(data){
  // alert('New fb customer '+ data.first_name);
-  if(this.props.fbcustomers){
-    this.props.updateCustomerList(data,this.props.fbcustomers);
+  if(this.props.fbsessions){
+    this.props.updateCustomerList(data,this.props.fbsessions);
     this.forceUpdate();
 
   }
@@ -88,12 +89,12 @@ componentDidMount(){
 }
 
 componentWillReceiveProps(props){
-  if(props.fbcustomers && props.fbchats && callonce == true && this.refs.sessionid){
+  if(props.fbsessions && props.fbchats && callonce == true && this.refs.sessionid){
    // alert(props.fbcustomers.length);
    // alert(props.fbcustomers[0].first_name)
 
-    this.refs.sessionid.value = props.fbcustomers[0].user_id;
-    this.props.selectFbCustomerChat(props.fbcustomers[0].user_id,props.fbchats,props.fbcustomers[0].profile_pic);
+    this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
+    this.props.selectFbCustomerChat(props.fbsessions[0].user_id.user_id,props.fbchats,props.fbsessions[0].user_id.profile_pic);
     callonce=false;
 
   }
@@ -104,11 +105,11 @@ componentWillReceiveProps(props){
     //  alert(customer.user_id);
       e.preventDefault();
       const usertoken = auth.getToken();
-      this.refs.sessionid.value = customer.user_id;
-      this.refs.customername.value = customer.first_name+' '+customer.last_name;
-      this.props.updatefbstatus(customer.user_id,this.props.fbchats);
+      this.refs.sessionid.value = customer.user_id.user_id;
+      this.refs.customername.value = customer.user_id.first_name+' '+customer.user_id.last_name;
+      this.props.updatefbstatus(customer.user_id.user_id,this.props.fbchats);
 
-      this.props.selectFbCustomerChat(customer.user_id,this.props.fbchats,customer.profile_pic);
+      this.props.selectFbCustomerChat(customer.user_id.user_id,this.props.fbchats,customer.user_id.profile_pic);
       //const node = ReactDOM.findDOMNode(this.refs.customername);
       //node.scrollIntoView({behavior: "smooth"});
       this.forceUpdate();
@@ -142,8 +143,8 @@ componentWillReceiveProps(props){
 
              	<div className="table-responsive">
 
-                {this.props.fbcustomers && this.props.fbcustomers.length == 0?
-                  <p>No Customer is online currently.</p>
+                {this.props.fbsessions && this.props.fbsessions.length == 0?
+                  <p>There is no customer session from Facebook</p>
 
                   :
                 <table className="table">
@@ -152,10 +153,10 @@ componentWillReceiveProps(props){
                    	<tr>
 			             		<td  className="col-md-2 myleftborder">
 			             			<div>
-					                      {this.props.fbcustomers && this.props.fbchats &&
-					                        this.props.fbcustomers.map((customer, i) => (
+					                      {this.props.fbsessions && this.props.fbchats &&
+					                        this.props.fbsessions.map((customer, i) => (
 
-                                    <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id)}  customer={customer} key={i} />
+                                    <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} key={i} />
 
                                   )
                                   )
@@ -166,15 +167,15 @@ componentWillReceiveProps(props){
 			                 </td>
                        <td  className="col-md-6">
                       <div>
-                          {this.props.fbcustomers &&
+                          {this.props.fbsessions &&
                             <div>
                                 <label>Customer Name :</label>
-                                <input defaultValue = {this.props.fbcustomers[0].first_name+ ' '+this.props.fbcustomers[0].last_name} ref="customername"/>
-                                 <input type="text" ref = "sessionid" defaultValue = {this.props.fbcustomers[0].user_id} />
+                                <input defaultValue = {this.props.fbsessions[0].user_id.first_name+ ' '+this.props.fbsessions[0].user_id.last_name} ref="customername"/>
+                                 <input type="text" ref = "sessionid" defaultValue = {this.props.fbsessions[0].user_id.user_id} />
 
                            </div>
                          }
-                           {this.props.fbchatSelected && this.props.fbcustomers && this.refs.sessionid && this.refs.customername &&
+                           {this.props.fbchatSelected && this.props.fbsessions && this.refs.sessionid && this.refs.customername &&
                             <ChatArea messages={this.props.fbchatSelected} responses={this.props.responses} username={this.refs.customername.value} userprofilepic={this.props.profile_pic} senderid={this.refs.sessionid.value} userdetails={this.props.userdetails}/>
                           }
                       </div>
@@ -222,7 +223,8 @@ function mapStateToProps(state) {
           fbcustomers:state.dashboard.fbcustomers,
           fbchats:state.dashboard.fbchats,
           fbchatSelected:state.dashboard.fbchatSelected,
+          fbsessions: state.dashboard.fbsessions,
                     };
 }
 
-export default connect(mapStateToProps,{getfbCustomers,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);
+export default connect(mapStateToProps,{getfbCustomers,getfbSessions,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);

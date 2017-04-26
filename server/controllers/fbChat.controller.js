@@ -132,7 +132,28 @@ export function chatwebhook(req, res) {
 			   							 	if(!error){
 
 			   							 		// emit the chat message on socket
-			   							 		 socket.getfbchat({chatobj,customerobj});
+                          var socketsession = {
+                              
+                              'user_id': JSON.stringify({
+                                first_name : customer.first_name,
+                                last_name : customer.last_name,
+                                email : '',
+                                timestamp : customer.locale,
+                                timezone : customer.timezone,
+                                profile_pic: customer.profile_pic,
+                                gender : customer.gender, 
+                                user_id:sender, 
+                             
+                              }), //this is the facebook id of a customer
+                              'pageid':fbpage,
+                              'companyid' : customerobj.companyid,
+                              'requesttime': customerobj.requesttime,
+                              'status':customerobj.status,
+                              'agent_ids':[],
+
+
+                           }
+			   							 		 socket.getfbchat({chatobj,socketsession});
 			   							 		//send push notification to all agents
             							 sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat'},'New message from Facebook Customer');
 
@@ -307,13 +328,8 @@ export function getfbCustomers(req, res) {
 
     function callback(error, response, body) {
 
-        console.log(body);
-        console.log(error)
       if(!error) {
-            var customerlist = JSON.parse(body);
-            for(var i=0;i<customerlist.length;i++){
-
-            }
+            
             return res.status(201).json(JSON.parse(body));
       }
     else
@@ -327,6 +343,38 @@ export function getfbCustomers(req, res) {
 
   }
 
+export function getfbSessions(req, res) {
+  console.log('getfbSessions');
+  var token = req.headers.authorization;
+
+   var options = {
+      url: `${baseURL}/api/fbsessions/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`,
+
+                 },
+    
+
+
+    };
+
+    function callback(error, response, body) {
+
+     
+      if(!error) {
+           return res.status(201).json(JSON.parse(body));
+      }
+    else
+    {
+      return res.status(422).json({statusCode : 422 ,data:error});
+
+    }
+
+   }
+        request.get(options, callback);
+
+  }
 
 
   export function getfbChats(req, res) {
@@ -442,7 +490,9 @@ export function sendTextMessage(req,res) {
                                         message: messageData,
                                     }
                                 }, function(error, response, body) {
-                                                
+                                                 console.log('sending message is ack');
+                                                 console.log(body);
+                                                 
                                                   if(!error){
                                                     res.json({status:'success'});
                                                   }

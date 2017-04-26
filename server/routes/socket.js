@@ -1179,20 +1179,20 @@ exports.getfbchat = function(data){
 
   var flag=0;
   for(var i=0;i< fbusers.length;i++){
-    if(fbusers[i].user_id == data.customerobj.user_id){
+    if(fbusers[i].user_id.user_id == data.socketsession.user_id.user_id){
       flag = 1;
       break;
     }
   }
   if(flag == 0){
-     fbusers.push(data.customerobj);
+     fbusers.push(data.socketsession);
      //inform agents that a new customer arrives on fbmessenger
     //broadcast message to all agents
-      glob.to(data.chatobj.companyid).emit('send:fbcustomer',data.customerobj);
+      glob.to(data.chatobj.companyid).emit('send:fbcustomer',data.socketsession);
 
       }
 
   fbchats.push(data.chatobj);
-                glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
+  glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
 
 }

@@ -3540,6 +3540,15 @@ export function showFbCustomers(fbcustomers) {
   };
 }
 
+export function showFbSessions(fbsessions) {
+
+  return {
+    type: ActionTypes.ADD_FB_SESSIONS,
+    fbsessions,
+
+  };
+}
+
 export function showFbChats(fbchats) {
 
   return {
@@ -3566,6 +3575,22 @@ export function getfbCustomers(usertoken){
 }
 
 
+export function getfbSessions(usertoken){
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getfbSessions`, {
+      method: 'get',
+
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showFbSessions(res))
+
+
+      );
+  };
+}
+
 export function getfbChats(usertoken){
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbChats`, {
@@ -3589,7 +3614,7 @@ export function updateCustomerList(data,customerlist){
      var lookupObject  = {};
 
      for(var i in customerlist) {
-        lookupObject[customerlist[i]['user_id']] = customerlist[i];
+        lookupObject[customerlist[i]['user_id']['user_id']] = customerlist[i];
      }
 
      for(i in lookupObject) {
@@ -3597,7 +3622,7 @@ export function updateCustomerList(data,customerlist){
      }
   return{
     type:ActionTypes.ADD_NEW_FB_CUSTOMER,
-    fbcustomers:newArray,
+    fbsessions:newArray,
   }
 }
 //send chat to facebook customer

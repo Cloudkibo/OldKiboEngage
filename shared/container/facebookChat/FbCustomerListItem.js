@@ -67,9 +67,9 @@ return res;
 
     (unreadCount > 0 ?
      <div className="list-group-item" style={{'width':'300px','height':'70px','backgroundColor' : 'rgba(243, 86, 93, 0.18)'}} onClick={props.onClickSession}>
-     <img src={props.customer.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
+     <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
-     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
+     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
       {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
@@ -78,9 +78,9 @@ return res;
     </div>
     :
      <div className="list-group-item" style={{'width':'300px','height':'70px'}} onClick={props.onClickSession}>
-     <img src={props.customer.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
+     <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
-     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.first_name + ' '+props.customer.last_name}</h4>
+     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
       {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 

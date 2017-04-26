@@ -779,8 +779,14 @@ const dashboard = (state =dashboardState, action) => {
                fbcustomers:action.fbcustomers,
 
               };
+            case ActionTypes.ADD_FB_SESSIONS:
 
-               case ActionTypes.ADD_FB_CHATS:
+            return {
+              ...state,errorMessageProfile:'',
+               fbsessions:action.fbsessions,
+
+              };
+            case ActionTypes.ADD_FB_CHATS:
 
              return {
               ...state,errorMessageProfile:'',
@@ -793,7 +799,7 @@ const dashboard = (state =dashboardState, action) => {
 
              return {
               ...state,errorMessageProfile:'',
-                fbcustomers:action.fbcustomers,
+                fbsessions:action.fbsessions,
                };
 
         case ActionTypes.JOINED_MEETING:

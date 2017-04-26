@@ -59,6 +59,7 @@ router.route('/webhook').get(FbChatController.verifyhook);
 router.route('/sendfbchat').post(FbChatController.sendTextMessage);
 
 router.route('/getfbCustomers').get(FbChatController.getfbCustomers);
+router.route('/getfbSessions').get(FbChatController.getfbSessions);
 router.route('/getfbChats').get(FbChatController.getfbChats);
 
 router.route('/getagents').get(UserController.getagents);
