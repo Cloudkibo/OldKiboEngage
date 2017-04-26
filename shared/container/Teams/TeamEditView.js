@@ -21,7 +21,6 @@ class TeamEditView extends Component {
         console.log(usertoken);
         console.log(props.params.id);
         props.getTeamAgents(usertoken);
-
         props.getTeamRequest(props.params.id,usertoken);
       }
 
@@ -29,15 +28,20 @@ class TeamEditView extends Component {
         this.state = {
           status: ''
         };
-        this.editTeamDetail = this.editTeamDetail.bind(this);
 
+        this.editTeamDetail = this.editTeamDetail.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
   }
 
-
+  handleChange(event){
+    this.setState({
+      status: event.target.value
+    });
+  }
 
   editTeamDetail(e) {
-        this.setState({ status: this.refs.status.value });
+
         e.preventDefault();
         const usertoken = auth.getToken();
         const nameRef = this.refs.name;
@@ -45,8 +49,6 @@ class TeamEditView extends Component {
         const status = this.refs.status;
         const idRef = this.refs.id;
 
-        console.log(status.value);
-        console.log(this.state.status);
     if (nameRef.value && descRef.value) {
       //alert(nameRef.value);
       var ag=[]
@@ -81,6 +83,18 @@ class TeamEditView extends Component {
     }
      e.preventDefault();
      this.forceUpdate();
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log("component will receive props is called.");
+    if(this.props.team.status !== nextProps.team.status){
+      console.log("inside if");
+      this.setState({
+        status: nextProps.team.status
+      });
+      this.forceUpdate();
+    }
+    console.log(this.state.status);
   }
 
    removeAgent(id,e){
@@ -152,7 +166,7 @@ class TeamEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Active </label>
                   <div className="col-md-9">
-                        <select  ref = "status" defaultValue ={this.state.status ? this.state.status:this.props.team.status} >
+                        <select  ref = "status" value ={this.state.status ? this.state.status:this.props.team.status} onChange={this.handleChange}>
                           <option value="public"> public  </option>
                           <option value="private"> private </option>
                         </select>
