@@ -126,7 +126,8 @@ export function chatwebhook(req, res) {
 											    };
 
 			   							 function callbackChat(error, response, body) {
-			   							 	console.log(body);
+			   							  console.log('inside callbackchat');
+                       	console.log(body);
 			   							 	console.log(error);
 
 			   							 	if(!error){
@@ -153,6 +154,8 @@ export function chatwebhook(req, res) {
 
 
                            }
+                           console.log('socketsession is');
+                           console.log(socketsession);
 			   							 		 socket.getfbchat({chatobj,socketsession});
 			   							 		//send push notification to all agents
             							 sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat'},'New message from Facebook Customer');
