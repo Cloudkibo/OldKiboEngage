@@ -135,17 +135,17 @@ export function chatwebhook(req, res) {
 			   							 		// emit the chat message on socket
                           var socketsession = {
                               
-                              'user_id': JSON.stringify({
-                                first_name : customer.first_name,
-                                last_name : customer.last_name,
-                                email : '',
-                                timestamp : customer.locale,
-                                timezone : customer.timezone,
-                                profile_pic: customer.profile_pic,
-                                gender : customer.gender, 
-                                user_id:sender, 
+                              'user_id': {
+                                'first_name' : customer.first_name,
+                                'last_name' : customer.last_name,
+                                'email' : '',
+                                'timestamp' : customer.locale,
+                                'timezone' : customer.timezone,
+                                'profile_pic': customer.profile_pic,
+                                'gender' : customer.gender, 
+                                'user_id':sender, 
                              
-                              }), //this is the facebook id of a customer
+                              }, //this is the facebook id of a customer
                               'pageid':fbpage,
                               'companyid' : customerobj.companyid,
                               'requesttime': customerobj.requesttime,
@@ -228,9 +228,9 @@ function sendpushToAllAgents(body,pushTitle){
                    var agentlist = info.agents;
                    for(var i=0;i< agentlist.length;i++){
                             var obj = agentlist[i];
-                            console.log('----- obj is');
+                 //           console.log('----- obj is');
                           //  console.log(obj);
-                            console.log(obj.email);
+                   //         console.log(obj.email);
                             sendPushNotification(obj.email,payload,pushTitle);
                    }
 
@@ -248,8 +248,8 @@ function sendpushToAllAgents(body,pushTitle){
 //for mobile agents
 function sendPushNotification(tagname,payload,alertmessage){
   console.log('sendPushNotification for message status update is called');
-  console.log(tagname);
-  console.log(payload);
+ // console.log(tagname);
+ // console.log(payload);
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
     alert : alertmessage,
@@ -274,7 +274,7 @@ function sendPushNotification(tagname,payload,alertmessage){
   notificationHubService.apns.send(tagname, iOSMessage, function(error){
     if(!error){
       console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-      console.log(iOSMessage);
+     // console.log(iOSMessage);
     } else {
       console.log('Azure push notification error : '+ JSON.stringify(error));
     }
@@ -283,7 +283,7 @@ function sendPushNotification(tagname,payload,alertmessage){
    notificationHubService2.apns.send(tagname, iOSMessage, function(error){
     if(!error){
       console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-      console.log(iOSMessage);
+   //   console.log(iOSMessage);
     } else {
       console.log('Azure push notification error : '+ JSON.stringify(error));
     }
@@ -302,7 +302,7 @@ function sendPushNotification(tagname,payload,alertmessage){
   notificationHubService3.apns.send(tagname, iOSMessage, function(error){
     if(!error){
       console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-      console.log(iOSMessage);
+   //   console.log(iOSMessage);
     } else {
       console.log('Azure push notification error : '+ JSON.stringify(error));
     }

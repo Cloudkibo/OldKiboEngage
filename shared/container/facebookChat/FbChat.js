@@ -91,8 +91,7 @@ componentDidMount(){
 componentWillReceiveProps(props){
   if(props.fbsessions && props.fbchats && callonce == true && this.refs.sessionid){
    // alert(props.fbcustomers.length);
-   // alert(props.fbcustomers[0].first_name)
-
+ 
     this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
     this.props.selectFbCustomerChat(props.fbsessions[0].user_id.user_id,props.fbchats,props.fbsessions[0].user_id.profile_pic);
     callonce=false;
