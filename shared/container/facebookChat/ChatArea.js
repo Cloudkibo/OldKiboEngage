@@ -60,6 +60,7 @@ export class ChatArea extends Component {
           showSticker: false,
           enteredGif: '',
           visible: false,
+          longtextwarning:'',
 
         };
        this.onChange = this.onChange.bind(this);
@@ -84,7 +85,7 @@ export class ChatArea extends Component {
 
 onTestURL(e){
   console.log(e)
-  var Video_EXTENSIONS = /\.(mp4|ogg|webm)($|\?)/i;
+  var Video_EXTENSIONS = /\.(mp4|ogg|webm|quicktime)($|\?)/i;
 
   var truef = Video_EXTENSIONS.test(e)
 
@@ -99,7 +100,7 @@ onTestURLAudio(e){
   var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i;
 
 
-  var truef = Audio_EXTENSIONS.test(e)
+  var truef = AUDIO_EXTENSIONS.test(e)
 
   if(truef == false){
     alert('Audio File Format not supported. Please download.')
@@ -163,7 +164,16 @@ _onChange(e) {
     reader.readAsDataURL(files[0]);
   }
 onChange(event, { newValue }) {
-
+    if(newValue.length >= 640){
+      this.setState({
+        longtextwarning:'Message is exceeding 640 character limit.'
+      })
+    }
+    else{
+        this.setState({
+        longtextwarning:''
+      })
+    }
     this.setState({
       value: newValue
     });
@@ -180,7 +190,13 @@ onChange(event, { newValue }) {
 handleMessageSubmit(e) {
 
     console.log('handleMessageSubmit' + e.which)
+
     if (e.which === 13 && this.state.value !="") {
+      if(this.state.value.length >= 640){
+        alert('Message cannot be send. It exceeds 640 character limit');
+      }
+      else{
+
       this.setState({
         value: ""
       });
@@ -197,6 +213,7 @@ handleMessageSubmit(e) {
         break;
       }
     }
+
     var saveMsg = {
               senderid: this.props.userdetails._id,
               recipientid:this.props.senderid,
@@ -237,6 +254,7 @@ handleMessageSubmit(e) {
    // this.scrollToBottom();
         this.forceUpdate();
       }
+    }
     }
 
 
@@ -715,6 +733,7 @@ getMeta(event){
 
                    inputProps={inputProps} />
             </div>
+            <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
             <div className="pull-right" style={{display: 'inline-block', paddingTop: '4px'}}>
               <i style={{fontSize: '30px', color: '#0099e6', cursor: 'pointer'}} className="fa fa-thumbs-up" onClick = {this.sendThumbsUp} ></i>
             </div>

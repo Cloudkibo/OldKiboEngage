@@ -43,10 +43,30 @@ class FbChat extends Component {
         //fb related
         this.getfbCustomer = this.getfbCustomer.bind(this);
         this.getfbMessage = this.getfbMessage.bind(this);
+        this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
+        this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
+        this.moveToSubgroup = this.moveToSubgroup.bind(this);
+        this.resolveSession = this.resolveSession.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
+        
 
   }
+handleChange(e){
 
+}
+assignSessionToTeam(e){
+
+}
+assignSessionToAgent(e){
+
+}
+moveToSubgroup(e){
+
+}
+resolveSession(e){
+
+}
 getfbCustomer(data){
  // alert('New fb customer '+ data.first_name);
   if(this.props.fbsessions){
@@ -166,6 +186,90 @@ componentWillReceiveProps(props){
 			                 </td>
                        <td  className="col-md-6">
                       <div>
+
+                       <div className="table-responsive">
+                   <table className="table table-colored">
+                   <tbody>
+                   <tr>
+                       <td className="col-md-4">
+                       <label className="control-label text-right">Assigned To Agent</label>
+                       </td>
+                      
+                       <td className="col-md-4">
+                       <label className="control-label text-right">Assigned To Team</label>
+                       </td>
+                   </tr>
+                   <tr>
+                   <td className="col-md-4">
+
+
+                        <div className="input-group">
+                        <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                              {
+
+                                this.props.agents && this.props.agents.map((agent,i) =>
+                                  agent._id == this.props.userdetails._id?
+                                  <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
+                                  <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
+
+                                  )
+
+                              }
+
+                            </select>
+
+
+                       </div>
+                    </td>
+
+                    <td className="col-md-4">
+                      <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
+                    </td>
+
+
+
+                    <td className="col-md-4">
+                       <div className="input-group">
+                         <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                                          {
+                                          this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                                            <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
+
+                                            )
+                                         }
+
+                         </select>
+                         </div>
+                      </td>
+                   {/*
+                    <td className="col-md-1">
+                      <button className="btn btn-primary" onClick = {this.picksession}> Pick Session </button>
+                    </td>*/}
+                  <td className="col-md-4">
+                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
+                  </td>
+
+                   
+                    </tr>
+
+
+                     
+                          <tr>
+                           
+                            <td className="col-md-6">
+                              <label>Current Status - {this.props.fbsessions[0].status}</label>
+                             
+                            </td>
+
+                             <td className="col-md-1">
+                              <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
+                             </td>
+
+                           </tr>
+                    </tbody>
+                  </table>
+
+          </div>
                           {this.props.fbsessions &&
                             <div>
                                 <label>Customer Name :</label>

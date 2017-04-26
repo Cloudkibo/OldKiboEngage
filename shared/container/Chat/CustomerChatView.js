@@ -674,8 +674,6 @@ else{
                            'assignedagentname': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name],
                            'agentid' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
-
-
                            'teammembers' : teammembers,
          }
          //pushing agent email to array for sending push notifications
