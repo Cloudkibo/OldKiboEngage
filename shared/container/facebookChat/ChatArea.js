@@ -78,11 +78,34 @@ export class ChatArea extends Component {
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.scrollToTop= this.scrollToTop.bind(this);
         this.getMeta = this.getMeta.bind(this);
-
+  
   }
 
 
+onTestURL(e){
+  console.log(e)
+  var Video_EXTENSIONS = /\.(mp4|ogg|webm)($|\?)/i;
 
+  var truef = Video_EXTENSIONS.test(e)
+
+  if(truef == false){
+    alert('Video File Format not supported. Please download.')
+  }
+  
+}
+
+onTestURLAudio(e){
+  console.log(e)
+  var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i;
+
+
+  var truef = Audio_EXTENSIONS.test(e)
+
+  if(truef == false){
+    alert('Audio File Format not supported. Please download.')
+  }
+  
+}
  componentWillUpdate(){
  // this.scrollToTop();
 }
@@ -613,9 +636,9 @@ getMeta(event){
                        )
                                                            :
                        (da.type == "video"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" />:
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30"/>:
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)} />:
 
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )))
@@ -651,9 +674,9 @@ getMeta(event){
                        )
                                                            :
                       (da.type == "video"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" />:
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" />:
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
 
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
                        )))

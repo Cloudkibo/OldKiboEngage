@@ -173,7 +173,7 @@ const renderFullPage = (html, initialState) => {
             <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
             <script src="scripts/widgetapp.js" type="text/javascript" ></script>
             <script src="scripts/widgetapp2.js" type="text/javascript" ></script>
-
+            
 
         <!-- BEGIN RevolutionSlider -->
             <script src="assets/global/plugins/slider-revolution-slider/rs-plugin/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script>
