@@ -117,7 +117,6 @@ const routes = (
     <Route path="/group/:id(/:fromprofile)" component={GroupDetailView}  onEnter={requireAuth}/>
     <Route path="/editgroup/:id" component={GroupEditView}  onEnter={requireAuth}/>
 
-
     <Route path="/editteam/:id" component={TeamEditView}  onEnter={requireAuth}/>
     <Route path="/createteam" component={CreateTeam}  onEnter={requireAuth}/>
     <Route path="/teams" component={Teams}  onEnter={requireAuth}/>
