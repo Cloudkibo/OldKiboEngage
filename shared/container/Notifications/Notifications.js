@@ -17,7 +17,7 @@ import { browserHistory } from 'react-router'
 class Notifications extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -25,19 +25,19 @@ class Notifications extends Component {
     console.log('constructor is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getnotifications(usertoken);
         props.getcustomers(usertoken);
       }
     super(props, context);
-  
-  
 
-    
+
+
+
   }
 
- 
+
 
   render() {
     console.log(this.props.userdetails.firstname)
@@ -47,31 +47,31 @@ class Notifications extends Component {
     return (
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container">
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Notifications Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/notifications">Notifications Management</Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-envelope"/>
                    Notifications
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-team">
@@ -85,7 +85,8 @@ class Notifications extends Component {
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
                 { this.props.notifications &&
-                   <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                  <div className="table-responsive">
+                   <table id ="sample_3" style={{ tableLayout: 'fixed', wordWrap: 'break-word'}} className="table table-striped table-bordered table-hover table-condensed dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Title </th>
@@ -94,30 +95,31 @@ class Notifications extends Component {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
 
-           
+
                     </tr>
                     </thead>
 
-                    <tbody>                    
+                    <tbody>
                       {
                         this.props.agents && this.props.notifications &&
                         this.props.notifications.map((notification, i) => (
-                          
+
                           <NotificationListItem notification={notification}  agent = {this.props.agents.filter((agent) => agent._id == notification.agent_id)}  onDelete={() => this.props.deletenotification(notification,token)}/>
-                                                      
+
                         ))
                       }
-                     </tbody> 
+                     </tbody>
                     </table>
+                    </div>
                 }
-        
-                
+
+
             </div>
           </div>
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -144,6 +146,3 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({getnotifications:getnotifications,deletenotification:deletenotification,getcustomers:getcustomers}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Notifications);
-
-
-
