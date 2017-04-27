@@ -3,7 +3,7 @@ import ChatArea from './ChatArea';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getfbCustomers,getfbSessions,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
+import {getfbCustomers,getteams,updatefbsessionlist,getTeamAgents,getfbSessions,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
 import Conversation from 'chat-template/dist/Conversation';
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -35,6 +35,10 @@ class FbChat extends Component {
         props.getfbChats(usertoken);
 
         props.getresponses(usertoken);
+
+         // get groups list and agents
+        props.getteams(usertoken);
+        props.getTeamAgents(usertoken);
         callonce=true;
 
       }
@@ -43,30 +47,12 @@ class FbChat extends Component {
         //fb related
         this.getfbCustomer = this.getfbCustomer.bind(this);
         this.getfbMessage = this.getfbMessage.bind(this);
-        this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
-        this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
-        this.moveToSubgroup = this.moveToSubgroup.bind(this);
-        this.resolveSession = this.resolveSession.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-
+        this.updateFbsessionlist = this.updateFbsessionlist.bind(this);
+       
         
 
   }
-handleChange(e){
 
-}
-assignSessionToTeam(e){
-
-}
-assignSessionToAgent(e){
-
-}
-moveToSubgroup(e){
-
-}
-resolveSession(e){
-
-}
 getfbCustomer(data){
  // alert('New fb customer '+ data.first_name);
   if(this.props.fbsessions){
@@ -77,6 +63,10 @@ getfbCustomer(data){
 
 }
 
+updateFbsessionlist(data){
+  this.props.updatefbsessionlist(data,this.props.fbsessions);
+  this.forceUpdate();
+}
 getfbMessage(data){
     if(this.props.fbchatSelected && this.props.fbchats && this.refs.sessionid)
     {
@@ -105,15 +95,16 @@ componentDidMount(){
         //fb related
         this.props.route.socket.on('send:fbcustomer',this.getfbCustomer);
         this.props.route.socket.on('send:fbmessage',this.getfbMessage);
+        this.props.route.socket.on('updateFBsessions',this.updateFbsessionlist);
 
 }
 
 componentWillReceiveProps(props){
-  if(props.fbsessions && props.fbchats && callonce == true && this.refs.sessionid){
+  if(props.fbsessions && props.fbchats && callonce == true){
    // alert(props.fbcustomers.length);
  
-    this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
-    this.props.selectFbCustomerChat(props.fbsessions[0].user_id.user_id,props.fbchats,props.fbsessions[0].user_id.profile_pic);
+    //this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
+    this.props.selectFbCustomerChat(props.fbsessions[0].user_id.user_id,props.fbchats,props.fbsessions[0].user_id.profile_pic,props.fbsessions[0]);
     callonce=false;
 
   }
@@ -127,8 +118,7 @@ componentWillReceiveProps(props){
       this.refs.sessionid.value = customer.user_id.user_id;
       this.refs.customername.value = customer.user_id.first_name+' '+customer.user_id.last_name;
       this.props.updatefbstatus(customer.user_id.user_id,this.props.fbchats);
-
-      this.props.selectFbCustomerChat(customer.user_id.user_id,this.props.fbchats,customer.user_id.profile_pic);
+      this.props.selectFbCustomerChat(customer.user_id.user_id,this.props.fbchats,customer.user_id.profile_pic,customer);
       //const node = ReactDOM.findDOMNode(this.refs.customername);
       //node.scrollIntoView({behavior: "smooth"});
       this.forceUpdate();
@@ -170,116 +160,34 @@ componentWillReceiveProps(props){
 
              			<tbody>
                    	<tr>
-			             		<td  className="col-md-2 myleftborder">
-			             			<div>
-					                      {this.props.fbsessions && this.props.fbchats &&
-					                        this.props.fbsessions.map((customer, i) => (
+        			             		<td  className="col-md-2 myleftborder">
+        			             			<div>
+        					                      {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
+        					                        this.props.fbsessions.map((customer, i) => (
 
-                                    <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} key={i} />
+                                            <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
 
-                                  )
-                                  )
-					                      }
-
-
-			                   </div>
-			                 </td>
-                       <td  className="col-md-6">
-                      <div>
-
-                       <div className="table-responsive">
-                   <table className="table table-colored">
-                   <tbody>
-                   <tr>
-                       <td className="col-md-4">
-                       <label className="control-label text-right">Assigned To Agent</label>
-                       </td>
-                      
-                       <td className="col-md-4">
-                       <label className="control-label text-right">Assigned To Team</label>
-                       </td>
-                   </tr>
-                   <tr>
-                   <td className="col-md-4">
+                                          )
+                                          )
+        					                      }
 
 
-                        <div className="input-group">
-                        <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
-                              {
+        			                   </div>
+        			                 </td>
+                               <td  className="col-md-6">
+                              <div>
 
-                                this.props.agents && this.props.agents.map((agent,i) =>
-                                  agent._id == this.props.userdetails._id?
-                                  <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
-                                  <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
-
-                                  )
-
-                              }
-
-                            </select>
-
-
-                       </div>
-                    </td>
-
-                    <td className="col-md-4">
-                      <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
-                    </td>
-
-
-
-                    <td className="col-md-4">
-                       <div className="input-group">
-                         <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
-                                          {
-                                          this.props.teamdetails && this.props.teamdetails.map((team,i) =>
-                                            <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
-
-                                            )
-                                         }
-
-                         </select>
-                         </div>
-                      </td>
-                   {/*
-                    <td className="col-md-1">
-                      <button className="btn btn-primary" onClick = {this.picksession}> Pick Session </button>
-                    </td>*/}
-                  <td className="col-md-4">
-                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
-                  </td>
-
-                   
-                    </tr>
-
-
-                     
-                          <tr>
-                           
-                            <td className="col-md-6">
-                              <label>Current Status - {this.props.fbsessions[0].status}</label>
-                             
-                            </td>
-
-                             <td className="col-md-1">
-                              <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
-                             </td>
-
-                           </tr>
-                    </tbody>
-                  </table>
-
-          </div>
-                          {this.props.fbsessions &&
+                          
+                          {this.props.fbsessions && this.props.fbsessionSelected &&
                             <div>
                                 <label>Customer Name :</label>
-                                <input defaultValue = {this.props.fbsessions[0].user_id.first_name+ ' '+this.props.fbsessions[0].user_id.last_name} ref="customername"/>
-                                 <input type="text" ref = "sessionid" defaultValue = {this.props.fbsessions[0].user_id.user_id} />
+                                <input defaultValue = {this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} ref="customername"/>
+                                <input type="text" ref = "sessionid" defaultValue = {this.props.fbsessionSelected.user_id.user_id} />
 
                            </div>
                          }
-                           {this.props.fbchatSelected && this.props.fbsessions && this.refs.sessionid && this.refs.customername &&
-                            <ChatArea messages={this.props.fbchatSelected} responses={this.props.responses} username={this.refs.customername.value} userprofilepic={this.props.profile_pic} senderid={this.refs.sessionid.value} userdetails={this.props.userdetails}/>
+                           {this.props.fbchatSelected && this.props.fbsessions && this.refs.sessionid && this.refs.customername && this.props.fbsessionSelected &&
+                            <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.refs.customername.value} userprofilepic={this.props.profile_pic} senderid={this.refs.sessionid.value} userdetails={this.props.userdetails}/>
                           }
                       </div>
                        </td>
@@ -326,8 +234,9 @@ function mapStateToProps(state) {
           fbcustomers:state.dashboard.fbcustomers,
           fbchats:state.dashboard.fbchats,
           fbchatSelected:state.dashboard.fbchatSelected,
+          fbsessionSelected: state.dashboard.fbsessionSelected,
           fbsessions: state.dashboard.fbsessions,
                     };
 }
 
-export default connect(mapStateToProps,{getfbCustomers,getfbSessions,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);
+export default connect(mapStateToProps,{getfbCustomers,updatefbsessionlist,getTeamAgents, getteams, getfbSessions,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);

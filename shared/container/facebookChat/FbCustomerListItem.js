@@ -34,15 +34,32 @@ var hright = {
 
 };
 var divMargin = {
-	'margin-top': '10px',
-  'clear': 'both',
+ 'clear': 'both',
 }
 var changecc ={
   'cursor': 'pointer',
   'background' : 'rgba(243, 86, 93, 0.18)',
 }
 
+var agentname = []
+if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.customer.agent_ids.length -1].type == "agent")
 
+{
+  props.agents.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1].id).map((c,i) =>(
+                           agentname.push(c.firstname + ' ' + c.lastname)
+                        ))
+
+}
+
+
+if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.customer.agent_ids.length -1].type == "group")
+
+{
+  props.team.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1].id).map((c,i) =>(
+                           agentname.push(c.groupname + ' Group')
+                        ))
+
+}
 var unreadCount = 0;
 for(var i = 0;i< props.userchat.length;i++){
   if(props.userchat[i].seen == false)
@@ -66,18 +83,26 @@ return res;
   return (
 
     (unreadCount > 0 ?
-     <div className="list-group-item" style={{'width':'300px','height':'70px','backgroundColor' : 'rgba(243, 86, 93, 0.18)'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(243, 86, 93, 0.18)'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
-      {(unreadCount == 0?
+        {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
        )}
+       <div style={divMargin}>
+            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
+            <br/>
+            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+           <br/>
+          
+      </div>
+     
 
     </div>
     :
-     <div className="list-group-item" style={{'width':'300px','height':'70px'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'300px'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
@@ -85,7 +110,19 @@ return res;
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
        )}
-
+       <div style={divMargin}>
+            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
+            <br/>
+            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+            <br/>
+            {
+              agentname.length > 0?
+              <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>:
+              <span></span>
+            }
+           <br/>
+          
+      </div>
     </div>
     )
  

@@ -1586,7 +1586,7 @@ export function updatefbstatus(id,fbchats){
     type: ActionTypes.FB_CHAT_STATUS,
   }
 }
-export function selectFbCustomerChat(id,fbchat,profile_pic){
+export function selectFbCustomerChat(id,fbchat,profile_pic,selectedsession){
   var newfbChat = []
   var temp = fbchat.filter((c)=>c.senderid == id || c.recipientid == id);
   for(var i=0;i<temp.length;i++){
@@ -1611,6 +1611,7 @@ export function selectFbCustomerChat(id,fbchat,profile_pic){
   return{
     fbchatSelected: newfbChat,
     profile_pic:profile_pic,
+    fbsessionSelected:selectedsession,
     type: ActionTypes.FB_CHAT_SELECTED,
   }
 }
@@ -3625,6 +3626,20 @@ export function updateCustomerList(data,customerlist){
     fbsessions:newArray,
   }
 }
+
+export function updatefbsessionlist(data,customerlist){
+  for(var i =0;i<customerlist.length;i++){
+    if(customerlist[i].pageid.pageid == data.pageid && customerlist[i].user_id.user_id == data.user_id){
+      customerlist[i].status = data.status;
+      customerlist[i].agent_ids.push(data.agentid);
+      break;
+    }
+  }
+   return{
+    type:ActionTypes.ADD_NEW_FB_CUSTOMER,
+    fbsessions:customerlist,
+  }
+}
 //send chat to facebook customer
 
 //send message to customer
@@ -3811,4 +3826,28 @@ export function sendchatToBot(message,username='')
   };
 
 
+}
+
+
+
+export function assignToAgentFB(session,usertoken,agentemail,assignmentType) {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/assignToAgentFB`, {
+      method: 'post',
+      body: JSON.stringify({
+        companyid : session.companyid,
+        pageid:session.pageid,
+        user_id:session.userid,
+        agentAssignment : session,
+        type : session.type,
+        agentemail:agentemail,
+        assignmentType:assignmentType,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => dispatch(assignToAgentResponse(session)));
+  };
 }

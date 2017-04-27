@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
-import { getfbchatfromAgent,add_socket_fb_message ,uploadFbChatfile} from '../../redux/actions/actions'
+import { getfbchatfromAgent,add_socket_fb_message ,uploadFbChatfile,createnews,assignToAgentFB} from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
@@ -79,10 +79,149 @@ export class ChatArea extends Component {
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.scrollToTop= this.scrollToTop.bind(this);
         this.getMeta = this.getMeta.bind(this);
+
+        this.handleChange = this.handleChange.bind(this);
+        this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
+        this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
+        this.resolveSession = this.resolveSession.bind(this);
+      
   
   }
 
+handleChange(e){
 
+}
+assignSessionToTeam(e){
+
+}
+assignSessionToAgent(e){
+     const { socket,dispatch } = this.props;
+     var agentemail = []
+    var teammembers = []
+      //create array of teammembers
+      if(this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'group')
+      {
+
+         for(var i=0;i<this.props.teamagents.length;i++){
+            if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+              teammembers.push(this.props.teamagents[i].agentid.email);
+            }
+         }
+      }
+   
+     const usertoken = auth.getToken();
+
+     if(confirm("Are you sure you want to assign this session to " + this.refs.agentList.options[this.refs.agentList.selectedIndex].text))
+     {
+          // local changes
+       this.props.fbsessionSelected.status = "assigned";
+       this.props.fbsessionSelected.agent_ids.push({'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'});
+
+       // 1. Broadcast a log message to all agents and customer that session is assigned to agent
+
+       //generate unique id of message - this change is for mobile clients
+       var today = new Date();
+       var uid = Math.random().toString(36).substring(7);
+       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+      
+
+       var saveMsg = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.fbsessionSelected.user_id.user_id,
+              companyid:this.props.userdetails.uniqueid,
+              timestamp:Date.now(),
+              message:{
+                mid:unique_id,
+                seq:1,
+                text:'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
+              },
+
+             pageid:this.props.fbsessionSelected.pageid.pageid,
+
+            }
+
+    this.props.getfbchatfromAgent(saveMsg);
+
+    var data = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.fbsessionSelected.user_id.user_id,
+              companyid:this.props.userdetails.uniqueid,
+              seen:false,
+              message:{
+                  text:'Session is assigned to ' + this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
+                  mid: unique_id,
+              },
+              inbound:true,
+              backColor: '#3d83fa',
+              textColor: "white",
+              avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+              duration: 0,
+              timestamp:Date.now(),
+              assignedagentname: [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name],
+              agentid : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
+              assignedagentemail: [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
+              teammembers : teammembers,
+
+
+            }
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+    //pushing agent email to array for sending push notifications
+
+    agentemail.push(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email);
+    //socket.emit('send:agentsocketfb' , saveChat);
+    
+     //3. update agent assignment table on server
+ 
+      var assignment = {
+        assignedto : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
+        assignedby : this.props.userdetails._id,
+        pageid : this.props.fbsessionSelected.pageid._id,
+        userid: this.props.fbsessionSelected.user_id._id,
+        companyid : this.props.userdetails.uniqueid,
+        datetime : Date.now(),
+        type : 'agent',
+      }
+
+      this.props.assignToAgentFB(assignment,usertoken,agentemail,'agent');
+
+  //update session status on socket
+  socket.emit('updatesessionstatusFB',{'pageid':this.props.fbsessionSelected.pageid.pageid,
+                                       'user_id':this.props.fbsessionSelected.user_id.user_id,
+                                      'status' : 'assigned',
+                                      'room' : this.props.userdetails.uniqueid,
+                                      'agentid' : {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'},
+
+                                     });
+
+
+
+
+
+  // create a news to inform agent that this session is assigned to him/her,if the assigned agent is not the user himself
+  if(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib != this.props.userdetails._id){
+      var news = {
+        'dateCreated' : Date.now(),
+        'message' : this.props.userdetails.firstname + ' has assigned a new facebook chat session to you.',
+        'createdBy' :  this.props.userdetails._id,
+        'unread' : 'true',
+        'companyid' : this.props.userdetails.uniqueid,
+        'target' :  this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,//agent id for whom the news is intended
+        'url' : '/fbchat',
+      }
+
+      this.props.createnews(news,usertoken);
+  }
+
+  this.forceUpdate();
+  }
+  
+  
+
+}
+
+resolveSession(e){
+
+}
 onTestURL(e){
   console.log(e)
   var Video_EXTENSIONS = /\.(mp4|ogg|webm|quicktime)($|\?)/i;
@@ -709,7 +848,79 @@ getMeta(event){
 
       return (
         <div>
+          <div className="table-responsive">
+                           <table className="table table-colored">
+                           <tbody>
+                                        <tr>
+                                           <td className="col-md-4">
+                                           <label className="control-label text-right">Assigned To Agent</label>
+                                           </td>
+                                           <td className="col-md-4">
+                                           </td>
+                                           <td className="col-md-4">
+                                           <label className="control-label text-right">Assigned To Team</label>
+                                           </td>
+                                        </tr>
+                     <tr>
+                     <td className="col-md-4">
 
+
+                          <div className="input-group">
+                          <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                                {
+                                  this.props.agents && this.props.agents.map((agent,i) =>
+                                    <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
+
+                                    )
+
+                                }
+
+                              </select>
+
+
+                         </div>
+                      </td>
+
+                      <td className="col-md-4">
+                        <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
+                      </td>
+
+
+
+                      <td className="col-md-4">
+                         <div className="input-group">
+                           <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                                          {
+                                          this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                                            <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
+
+                                            )
+                                         }
+
+                         </select>
+                           </div>
+                        </td>
+                   
+
+                      <td className="col-md-4">
+                         <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
+                      </td>
+
+                      <td className="col-md-1">
+                        <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
+                      </td>
+
+                      </tr>
+                      <tr>
+                        <td className="col-md-4"> Status : {this.props.fbsessionSelected.status}</td>
+                      </tr>
+
+
+
+                    </tbody>
+                  </table>
+
+          </div>
         <div id='messages-container' style={{'height':'400','overflowY':'scroll'}}>
           <div style={ {float:"left", clear: "both"} }
                 ref={(el) => { this.messagesTop = el; }}>
@@ -845,8 +1056,9 @@ function mapStateToProps(state) {
           fbcustomers:state.dashboard.fbcustomers,
           fbchats:state.dashboard.fbchats,
           fbchatSelected:state.dashboard.fbchatSelected,
+          fbsessionSelected:state.dashboard.fbsessionSelected,
           status:state.dashboard.status,
                     };
 }
 
-export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message,uploadFbChatfile})(ChatArea);
+export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message,uploadFbChatfile,createnews,assignToAgentFB})(ChatArea);

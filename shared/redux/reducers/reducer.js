@@ -506,6 +506,7 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
              fbchatSelected:action.fbchatSelected,
+             fbsessionSelected:action.fbsessionSelected,
              errorMessage:'',
              profile_pic:action.profile_pic,
 

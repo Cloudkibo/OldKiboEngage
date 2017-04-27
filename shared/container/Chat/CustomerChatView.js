@@ -777,7 +777,7 @@ else{
     }
   }
   else {
-    alert("Selected agent is not in the team. You cannot assign session to this agent.")
+    alert("Selected agent is not in the Group. You cannot assign session to this agent.")
   }
 
 }

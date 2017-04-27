@@ -749,7 +749,25 @@ socket.on('getOnlineAgentList',function() {
     //console.log(io2.sockets.manager.rooms)
   });
 
-  
+  socket.on('updatesessionstatusFB',function(data){
+  console.log('updatesessionstatusFB is called');
+  console.log(data);
+  console.log(fbusers);
+  for(var i =0 ;i< fbusers.length ;i++){
+    if(fbusers[i].pageid.pageid == data.pageid && fbusers[i].user_id.user_id == data.user_id){
+      console.log('updating session status :');
+      fbusers[i].status = data.status;
+      fbusers[i].agent_ids.push(data.agentid);
+      console.log(fbusers[i]);
+      break;
+    }
+  }
+
+  //ask clients to update their session list
+   socket.broadcast.to(data.room).emit('updateFBsessions',data);
+ 
+ });
+
 
   socket.on('connecttocall', function(call){
 
@@ -1196,3 +1214,6 @@ exports.getfbchat = function(data){
   glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
 
 }
+
+
+
