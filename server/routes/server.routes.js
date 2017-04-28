@@ -62,7 +62,7 @@ router.route('/getfbCustomers').get(FbChatController.getfbCustomers);
 router.route('/getfbSessions').get(FbChatController.getfbSessions);
 router.route('/getfbChats').get(FbChatController.getfbChats);
 router.route('/assignToAgentFB').post(FbChatController.assignToAgentFB);
-
+router.route('/resolvechatsessionfb').post(FbChatController.resolvechatsessionfb);
 router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
 

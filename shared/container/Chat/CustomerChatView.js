@@ -519,7 +519,7 @@ else{
  resolveSession(e){
 
   // Only assigned agent can resolve session
-    const { socket,dispatch } = this.props;
+  const { socket,dispatch } = this.props;
   var agentingroup = false
 
    // check that agent is in this group

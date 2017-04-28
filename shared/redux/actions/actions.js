@@ -3857,3 +3857,27 @@ export function assignToAgentFB(session,usertoken,agentemail,assignmentType) {
     }).then((res) => res.json()).then(res => dispatch(assignToAgentResponse(session)));
   };
 }
+
+
+//mark session resolve
+export function resolvesessionfb(data,usertoken) {
+  console.log('resolvesessionfb');
+  console.log(data);
+  if(confirm("Are you sure,you want to mark session resolved?")){
+  return (dispatch) => {
+    fetch(`${baseURL}/api/resolvechatsessionfb`, {
+      method: 'post',
+      body: JSON.stringify({
+        companyid : data.companyid,
+        pageid:data.pageid,
+        user_id:data.userid,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => {console.log(res)});
+  };
+}
+}

@@ -734,3 +734,46 @@ export function assignToAgentFB(req, res) {
 
   }
 
+
+export function resolvechatsessionfb(req, res) {
+  console.log('resolvesession is called');
+  console.log(req.body);
+  var token = req.headers.authorization;
+
+
+  var options = {
+      url: `${baseURL}/api/fbsessions/fbresolveSession`,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+      rejectUnauthorized : false,
+      json: req.body
+
+
+    };
+
+    function callback(error, response, body) {
+        console.log(error);
+        console.log(response.statusCode);
+        console.log(body);
+
+       if(!error && response.statusCode == 200)
+       {
+           //console.log(body)
+           // inform mobile agents through push notification
+           //send push notification to all agents
+            sendpushToAllAgents({'pageid' : req.body.pageid,'user_id':req.body.user_id,'type':'fbchat_resolved'},'Resolve Chat Session');
+
+            return res.status(200).json({statusCode : 201,message:'success'});
+                   }
+       else
+       {
+           res.sendStatus(422);
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+       }
+           request.post(options, callback);
+
+  }
+

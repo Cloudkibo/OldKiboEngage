@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
-import { getfbchatfromAgent,add_socket_fb_message ,uploadFbChatfile,createnews,assignToAgentFB} from '../../redux/actions/actions'
+import { getfbchatfromAgent,add_socket_fb_message ,resolvesessionfb,uploadFbChatfile,createnews,assignToAgentFB} from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
@@ -330,7 +330,128 @@ assignSessionToAgent(e){
 }
 
 resolveSession(e){
+  // Only assigned agent can resolve session
+  const { socket,dispatch } = this.props;
+  var agentingroup = false
 
+   // check that agent is in this group
+   if(this.props.fbsessionSelected.status == "new"){
+      alert('You cannot resolve this session.Only assigned sessions can be resolved')
+
+  }
+   else if(this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "group")
+   {
+    for(var i=0;i<this.props.teamagents.length;i++){
+      if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.userdetails._id == this.props.teamagents[i].agentid._id){
+        agentingroup = true
+        break
+      }
+   }
+  }
+
+  
+  else if(this.props.userdetails._id != this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "group"){
+    alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
+  }
+
+  else if(agentingroup == false && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "group"){
+    alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
+  }
+
+
+  else{
+        //generate unique id of message - this change is for mobile clients
+        var today = new Date();
+        var uid = Math.random().toString(36).substring(7);
+        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+        var teammembers = []
+        //create array of teammembers
+         if(this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'group')
+        {
+
+           for(var i=0;i<this.props.teamagents.length;i++){
+              if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+                teammembers.push(this.props.teamagents[i].agentid.email);
+              }
+           }
+        }
+
+         // local changes
+       this.props.fbsessionSelected.status = "resolved";
+
+       //generate unique id of message - this change is for mobile clients
+       var today = new Date();
+       var uid = Math.random().toString(36).substring(7);
+       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+      
+
+       var saveMsg = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.fbsessionSelected.user_id.user_id,
+              companyid:this.props.userdetails.uniqueid,
+              timestamp:Date.now(),
+              message:{
+                mid:unique_id,
+                seq:1,
+                text:'Session is marked as resolved by ' + this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
+           
+              },
+
+             pageid:this.props.fbsessionSelected.pageid.pageid,
+
+            }
+
+    this.props.getfbchatfromAgent(saveMsg);
+
+    var data = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.fbsessionSelected.user_id.user_id,
+              companyid:this.props.userdetails.uniqueid,
+              seen:false,
+              message:{
+                  text:'Session is marked as resolved by ' + this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
+                  mid: unique_id,
+              },
+              inbound:true,
+              backColor: '#3d83fa',
+              textColor: "white",
+              avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+              duration: 0,
+              timestamp:Date.now(),
+              assignedagentname: [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name],
+              agentid : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
+              assignedagentemail: [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
+              teammembers : teammembers,
+
+
+            }
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+       
+      const usertoken = auth.getToken();
+       // 3. update session status on server
+        var resolvesessionbody = {
+        pageid : this.props.fbsessionSelected.pageid._id,
+        userid: this.props.fbsessionSelected.user_id._id,
+        companyid : this.props.userdetails.uniqueid,
+        datetime : Date.now(),
+      }
+
+      this.props.resolvesessionfb(resolvesessionbody,usertoken);
+
+      //update session status on socket
+       //update session status on socket
+      socket.emit('updatesessionstatusFB',{'pageid':this.props.fbsessionSelected.pageid.pageid,
+                                       'user_id':this.props.fbsessionSelected.user_id.user_id,
+                                      'status' : 'resolved',
+                                      'room' : this.props.userdetails.uniqueid,
+                                      'agentid' : {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'},
+
+                                     });
+
+
+      this.forceUpdate();
+  }
+ 
 }
 onTestURL(e){
   console.log(e)
@@ -1228,4 +1349,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message,uploadFbChatfile,createnews,assignToAgentFB})(ChatArea);
+export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message,resolvesessionfb,uploadFbChatfile,createnews,assignToAgentFB})(ChatArea);
