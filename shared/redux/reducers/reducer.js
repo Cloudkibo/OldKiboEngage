@@ -801,6 +801,7 @@ const dashboard = (state =dashboardState, action) => {
              return {
               ...state,errorMessageProfile:'',
                 fbsessions:action.fbsessions,
+                fbsessionSelected:action.fbsessionSelected?action.fbsessionSelected:state.fbsessionSelected,
                };
 
         case ActionTypes.JOINED_MEETING:

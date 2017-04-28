@@ -3627,7 +3627,7 @@ export function updateCustomerList(data,customerlist){
   }
 }
 
-export function updatefbsessionlist(data,customerlist){
+export function updatefbsessionlist(data,customerlist,currentSession){
   for(var i =0;i<customerlist.length;i++){
     if(customerlist[i].pageid.pageid == data.pageid && customerlist[i].user_id.user_id == data.user_id){
       customerlist[i].status = data.status;
@@ -3635,9 +3635,15 @@ export function updatefbsessionlist(data,customerlist){
       break;
     }
   }
+
+  if(currentSession.pageid.pageid == data.pageid && currentSession.user_id.user_id == data.user_id){
+     currentSession.status = data.status;
+     currentSession.agent_ids.push(data.agentid);
+  }
    return{
     type:ActionTypes.ADD_NEW_FB_CUSTOMER,
     fbsessions:customerlist,
+    fbsessionSelected: currentSession,
   }
 }
 //send chat to facebook customer

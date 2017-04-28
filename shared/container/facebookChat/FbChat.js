@@ -64,11 +64,11 @@ getfbCustomer(data){
 }
 
 updateFbsessionlist(data){
-  this.props.updatefbsessionlist(data,this.props.fbsessions);
+  this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected);
   this.forceUpdate();
 }
 getfbMessage(data){
-    if(this.props.fbchatSelected && this.props.fbchats && this.refs.sessionid)
+    if(this.props.fbchatSelected && this.props.fbchats)
     {
       if(data.senderid != this.props.fbchatSelected[0].senderid)
       {
@@ -78,7 +78,7 @@ getfbMessage(data){
     else{
       data.seen=true;
     }
-      this.props.add_socket_fb_message(data,this.props.fbchats,this.refs.sessionid.value);
+      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbchatSelected[0].senderid);
       
     }
    
@@ -115,7 +115,7 @@ componentWillReceiveProps(props){
     //  alert(customer.user_id);
       e.preventDefault();
       const usertoken = auth.getToken();
-      this.refs.sessionid.value = customer.user_id.user_id;
+    //  this.refs.sessionid.value = customer.user_id.user_id;
       this.refs.customername.value = customer.user_id.first_name+' '+customer.user_id.last_name;
       this.props.updatefbstatus(customer.user_id.user_id,this.props.fbchats);
       this.props.selectFbCustomerChat(customer.user_id.user_id,this.props.fbchats,customer.user_id.profile_pic,customer);
@@ -182,12 +182,11 @@ componentWillReceiveProps(props){
                             <div>
                                 <label>Customer Name :</label>
                                 <input defaultValue = {this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} ref="customername"/>
-                                <input type="text" ref = "sessionid" defaultValue = {this.props.fbsessionSelected.user_id.user_id} />
-
+                            
                            </div>
                          }
-                           {this.props.fbchatSelected && this.props.fbsessions && this.refs.sessionid && this.refs.customername && this.props.fbsessionSelected &&
-                            <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.refs.customername.value} userprofilepic={this.props.profile_pic} senderid={this.refs.sessionid.value} userdetails={this.props.userdetails}/>
+                           {this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
+                            <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} userprofilepic={this.props.profile_pic} senderid={this.props.fbsessionSelected.user_id.user_id} userdetails={this.props.userdetails}/>
                           }
                       </div>
                        </td>

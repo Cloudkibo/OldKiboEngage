@@ -84,6 +84,7 @@ export class ChatArea extends Component {
         this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
         this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
         this.resolveSession = this.resolveSession.bind(this);
+        this.autoassignChat = this.autoassignChat.bind(this);
       
   
   }
@@ -92,6 +93,115 @@ handleChange(e){
 
 }
 assignSessionToTeam(e){
+
+}
+
+
+autoassignChat(){
+    const { socket,dispatch } = this.props;
+    var agentemail = []
+    var teammembers = []
+      //create array of teammembers
+      if(this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'group')
+      {
+
+         for(var i=0;i<this.props.teamagents.length;i++){
+            if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+              teammembers.push(this.props.teamagents[i].agentid.email);
+            }
+         }
+      }
+   
+     const usertoken = auth.getToken();
+
+          // local changes
+       this.props.fbsessionSelected.status = "assigned";
+       this.props.fbsessionSelected.agent_ids.push({'id' : this.props.userdetails._id,'type' : 'agent'});
+
+       // 1. Broadcast a log message to all agents and customer that session is assigned to agent
+
+       //generate unique id of message - this change is for mobile clients
+       var today = new Date();
+       var uid = Math.random().toString(36).substring(7);
+       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+      
+
+       var saveMsg = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.fbsessionSelected.user_id.user_id,
+              companyid:this.props.userdetails.uniqueid,
+              timestamp:Date.now(),
+              message:{
+                mid:unique_id,
+                seq:1,
+                text:'Session is assigned to ' + this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
+              },
+
+             pageid:this.props.fbsessionSelected.pageid.pageid,
+
+            }
+
+    this.props.getfbchatfromAgent(saveMsg);
+
+    var data = {
+              senderid: this.props.userdetails._id,
+              recipientid:this.props.fbsessionSelected.user_id.user_id,
+              companyid:this.props.userdetails.uniqueid,
+              seen:false,
+              message:{
+                  text:'Session is assigned to ' + this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
+                  mid: unique_id,
+              },
+              inbound:true,
+              backColor: '#3d83fa',
+              textColor: "white",
+              avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+              duration: 0,
+              timestamp:Date.now(),
+              assignedagentname: [this.props.userdetails.firstname],
+              agentid : [this.props.userdetails._id],
+              assignedagentemail: [this.props.userdetails.email],
+              teammembers : teammembers,
+
+
+            }
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+    //pushing agent email to array for sending push notifications
+
+    agentemail.push(this.props.userdetails.email);
+    //socket.emit('send:agentsocketfb' , saveChat);
+    
+     //3. update agent assignment table on server
+ 
+      var assignment = {
+        assignedto : this.props.userdetails._id,
+        assignedby : this.props.userdetails._id,
+        pageid : this.props.fbsessionSelected.pageid._id,
+        userid: this.props.fbsessionSelected.user_id._id,
+        companyid : this.props.userdetails.uniqueid,
+        datetime : Date.now(),
+        type : 'agent',
+      }
+
+      this.props.assignToAgentFB(assignment,usertoken,agentemail,'agent');
+
+  //update session status on socket
+  socket.emit('updatesessionstatusFB',{'pageid':this.props.fbsessionSelected.pageid.pageid,
+                                       'user_id':this.props.fbsessionSelected.user_id.user_id,
+                                       'status' : 'assigned',
+                                       'room' : this.props.userdetails.uniqueid,
+                                       'agentid' : {'id' : this.props.userdetails._id,'type' : 'agent'},
+
+                                     });
+
+
+
+
+
+  this.forceUpdate();
+  
+  
+  
 
 }
 assignSessionToAgent(e){
@@ -327,10 +437,22 @@ onChange(event, { newValue }) {
     });
   }
 handleMessageSubmit(e) {
-
+    const { socket,dispatch } = this.props;
+   
     console.log('handleMessageSubmit' + e.which)
 
     if (e.which === 13 && this.state.value !="") {
+      if(this.props.fbsessionSelected.status == "new"){
+            this.autoassignChat();
+        }
+
+      if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
+          alert('You cannot send message to Customer. This chat session is already assigned');
+
+        }
+     else{
+
+       
       if(this.state.value.length >= 640){
         alert('Message cannot be send. It exceeds 640 character limit');
       }
@@ -374,7 +496,6 @@ handleMessageSubmit(e) {
               senderid: this.props.userdetails._id,
               recipientid:this.props.senderid,
               companyid:this.props.userdetails.uniqueid,
-
               seen:false,
               message:{
                 text:this.state.value,
@@ -389,20 +510,33 @@ handleMessageSubmit(e) {
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid);
+    socket.emit('broadcast_fbmessage',saveMsg);
+
    // this.scrollToBottom();
         this.forceUpdate();
       }
     }
+  }
     }
 
 
 onFileSubmit(event)
     {
+         const { socket,dispatch } = this.props;
+   
         const usertoken = auth.getToken();
         var fileData = new FormData();
         this.refs.selectFile.value = null;
+         if(this.props.fbsessionSelected.status == "new"){
+            this.autoassignChat();
+        }
+        if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
+          alert('You cannot send message to Customer. This chat session is already assigned');
 
+        }
+     else{
         if ( this.state.userfile ) {
               console.log(this.state.userfile)
 
@@ -447,7 +581,7 @@ onFileSubmit(event)
               fileData.append('chatmsg', JSON.stringify(saveMsg));
               this.props.uploadFbChatfile(fileData,usertoken,this.props.fbchats,this.props.senderid);
         }
-        ;
+        }
         this.forceUpdate();
         event.preventDefault();
 
@@ -455,6 +589,15 @@ onFileSubmit(event)
 
     sendThumbsUp()
         {
+           const { socket,dispatch } = this.props;
+           if(this.props.fbsessionSelected.status == "new"){
+            this.autoassignChat();
+        }
+          if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
+          alert('You cannot send message to Customer. This chat session is already assigned');
+
+        }
+         else{
             const usertoken = auth.getToken();
             var today = new Date();
             var uid = Math.random().toString(36).substring(7);
@@ -516,6 +659,8 @@ onFileSubmit(event)
 
             }
     this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+    socket.emit('broadcast_fbmessage',saveMsg);
+  }
     // this.scrollToBottom();
 
             this.forceUpdate();
@@ -580,12 +725,20 @@ setEmoji(emoji) {
 
 
 sendGIF (gif) {
+   const { socket,dispatch } = this.props;
+     if(this.props.fbsessionSelected.status == "new"){
+            this.autoassignChat();
+        }
+     if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
+          alert('You cannot send message to Customer. This chat session is already assigned');
 
-  this.setState({
-    visible: false,
-    showEmojiPicker: false,
-    showSticker: false,
-  });
+        }
+     else{
+      this.setState({
+        visible: false,
+        showEmojiPicker: false,
+        showSticker: false,
+      });
 
   const usertoken = auth.getToken();
   var today = new Date();
@@ -648,6 +801,8 @@ var data = {
 
   }
 this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+socket.emit('broadcast_fbmessage',saveMsg);
+}
 // this.scrollToBottom();
 
   this.forceUpdate();
@@ -664,6 +819,15 @@ toggleVisible () {
 }
 
 sendSticker(sticker) {
+   const { socket,dispatch } = this.props;
+    if(this.props.fbsessionSelected.status == "new"){
+            this.autoassignChat();
+        }
+  if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
+          alert('You cannot send message to Customer. This chat session is already assigned');
+
+        }
+  else{
   this.setState({
     visible: false,
     showEmojiPicker: false,
@@ -730,9 +894,12 @@ var data = {
 
   }
 this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
+socket.emit('broadcast_fbmessage',saveMsg);
+
 // this.scrollToBottom();
 
   this.forceUpdate();
+}
   event.preventDefault();
 }
 
@@ -808,7 +975,7 @@ getMeta(event){
 
         <div className='message-header'>
           <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
-          <span className='username'>KiboEngage</span>
+          <span className='username'>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</span>
           </div>
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
 

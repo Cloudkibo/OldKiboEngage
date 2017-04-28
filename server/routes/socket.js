@@ -768,6 +768,12 @@ socket.on('getOnlineAgentList',function() {
  
  });
 
+  //broadcast facebook messages send by agent to other agents 
+  socket.on('broadcast_fbmessage',function(data){
+        fbchats.push(data);
+        socket.broadcast.to(data.companyid).emit('send:fbmessage',data);
+
+  });
 
   socket.on('connecttocall', function(call){
 
@@ -1215,5 +1221,9 @@ exports.getfbchat = function(data){
 
 }
 
+exports.getfileChatfromAgent = function(data){
+    fbchats.push(data.chatobj);
+    glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
 
+}
 

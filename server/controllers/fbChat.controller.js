@@ -640,6 +640,8 @@ export function uploadchatfilefb(req, res) {
                                                             console.log('fb message');
                                                             console.log(body);
                                                             if(!error){
+                                                              socket.getfileChatfromAgent({chatobj});
+                          
                                                               res.json({status:'success',chatmsg:chatobj});
                                                             }
                                                             else{

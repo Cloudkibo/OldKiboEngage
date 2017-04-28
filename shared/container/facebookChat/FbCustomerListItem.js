@@ -96,7 +96,8 @@ return res;
             <br/>
             <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
            <br/>
-          
+          <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+           <br/>
       </div>
      
 
@@ -117,9 +118,17 @@ return res;
             <br/>
             {
               agentname.length > 0?
-              <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>:
-              <span></span>
+              <div>
+                <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>
+                <br/>
+                <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+              </div>:
+              <div> <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span></div>
+
             }
+            <br/>
+            
+           <br/>
            <br/>
           
       </div>
