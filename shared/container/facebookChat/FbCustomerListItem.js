@@ -56,7 +56,7 @@ if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.custome
 
 {
   props.team.filter((c) => c._id == props.customer.agent_ids[props.customer.agent_ids.length -1].id).map((c,i) =>(
-                           agentname.push(c.groupname + ' Group')
+                           agentname.push('Team: '+ c.groupname)
                         ))
 
 }

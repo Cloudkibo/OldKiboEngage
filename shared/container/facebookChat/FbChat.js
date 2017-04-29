@@ -235,6 +235,8 @@ function mapStateToProps(state) {
           fbchatSelected:state.dashboard.fbchatSelected,
           fbsessionSelected: state.dashboard.fbsessionSelected,
           fbsessions: state.dashboard.fbsessions,
+          teamagents : (state.dashboard.teamagents),
+        
                     };
 }
 
