@@ -179,7 +179,7 @@ assignSessionToTeam(e){
         type : 'group',
       }
 
-      this.props.assignToAgentFB(assignment,usertoken,agentemail,'agent');
+      this.props.assignToAgentFB(assignment,usertoken,agentemail,'group');
 
   //update session status on socket
   socket.emit('updatesessionstatusFB',{'pageid':this.props.fbsessionSelected.pageid.pageid,
