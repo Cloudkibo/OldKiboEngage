@@ -250,7 +250,7 @@ function sendpushToAllAgents(body,pushTitle){
 
 //for mobile agents
 function sendPushNotification(tagname,payload,alertmessage){
-  console.log('sendPushNotification for message status update is called');
+  //console.log('sendPushNotification for message status update is called');
  // console.log(tagname);
  // console.log(payload);
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
@@ -468,6 +468,9 @@ export function sendTextMessage(req,res) {
                               'payload':
                               {
                                 'url':req.body.message.attachments[0].payload.url,
+                                'sticker_id': req.body.message.sticker_id,
+                             
+
                               }
                             }
                           }

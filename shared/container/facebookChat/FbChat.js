@@ -68,7 +68,6 @@ updateFbsessionlist(data){
   this.forceUpdate();
 }
 getfbMessage(data){
-  alert('get message is called');
     if(this.props.fbchatSelected && this.props.fbchats)
     {
       if(data.senderid != this.props.fbchatSelected[0].senderid)

@@ -882,7 +882,7 @@ onFileSubmit(event)
                 }
             }
 
-            var saveMsg = {
+             var saveMsg = {
                 senderid: this.props.userdetails._id,
                 recipientid:this.props.senderid,
                 companyid:this.props.userdetails.uniqueid,
@@ -890,17 +890,19 @@ onFileSubmit(event)
                 message:{
                   mid:unique_id,
                   seq:1,
+                  sticker_id: 369239263222822,
                   attachments:[{
                     type:'image',
                     payload:{
                       url: `https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png?_nc_ad=z-m&oh=547beb90237e24a9682810a5144c9fba&oe=5988CFDC`,
+                      sticker_id: 369239263222822, 
                     }
                   }]
                 },
                 pageid:pageid
             }
-
-            console.log(saveMsg);
+  
+           console.log(saveMsg);
 
             this.props.getfbchatfromAgent(saveMsg);
 
