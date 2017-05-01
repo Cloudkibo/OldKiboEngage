@@ -44,8 +44,8 @@ export function chatwebhook(req, res) {
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
         console.log(event);
-        if(event.attachments){
-          console.log(event.attachments);
+        if(event.message.attachments){
+          console.log(event.message.attachments);
         }
         let sender = event.sender.id;
         let page = event.recipient.id;
