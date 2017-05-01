@@ -168,12 +168,12 @@ export function chatwebhook(req, res) {
                            // update fbsession status if marked resolved
 
                            if(bodyC.fbsession && bodyC.fbsession.status == 'resolved'){
-                            var customerobjS = JSON.stringify({
+                            var customerobjS = {
                                   companyid : bodyC.fbsession.companyid,
                                   pageid:bodyC.fbsession.pageid,
                                   user_id: bodyC.fbsession.user_id,
                                   status:'assigned',
-                                })
+                                }
                                //call kiboengage API to save customer
                             var optionsS = {
                             url: `${baseURL}/api/fbsessions/fbupdatestatus`,
