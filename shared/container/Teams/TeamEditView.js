@@ -87,7 +87,7 @@ class TeamEditView extends Component {
 
   componentWillReceiveProps(nextProps){
     console.log("component will receive props is called.");
-    if(this.props.team.status !== nextProps.team.status){
+    if(!this.props.team || this.props.team.status !== nextProps.team.status){
       console.log("inside if");
       this.setState({
         status: nextProps.team.status

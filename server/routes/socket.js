@@ -770,6 +770,7 @@ socket.on('getOnlineAgentList',function() {
 
   //broadcast facebook messages send by agent to other agents 
   socket.on('broadcast_fbmessage',function(data){
+        console.log('broadcast fb message is called');
         fbchats.push(data);
         socket.broadcast.to(data.companyid).emit('send:fbmessage',data);
 

@@ -68,6 +68,7 @@ updateFbsessionlist(data){
   this.forceUpdate();
 }
 getfbMessage(data){
+  alert('get message is called');
     if(this.props.fbchatSelected && this.props.fbchats)
     {
       if(data.senderid != this.props.fbchatSelected[0].senderid)
@@ -78,7 +79,7 @@ getfbMessage(data){
     else{
       data.seen=true;
     }
-      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbchatSelected[0].senderid);
+      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbsessionSelected.user_id.user_id);
       
     }
    

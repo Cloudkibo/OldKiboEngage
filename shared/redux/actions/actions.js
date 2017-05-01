@@ -1642,9 +1642,20 @@ var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
       })
   }
   }
+// removing duplicates
+    var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in newfbChat) {
+        lookupObject[newfbChat[i]['mid']] = newfbChat[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
 
    return{
-    fbchatSelected: newfbChat,
+    fbchatSelected: newArray,
     fbchats:fbchats,
     type: ActionTypes.FB_CHAT_ADDED,
   }

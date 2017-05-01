@@ -61,6 +61,7 @@ export class ChatArea extends Component {
           enteredGif: '',
           visible: false,
           longtextwarning:'',
+          agentinTeam: false,
 
         };
        this.onChange = this.onChange.bind(this);
@@ -606,6 +607,7 @@ onTestURLAudio(e){
  // this.scrollToTop();
 }
 
+
 componentDidUpdate(prevProps){
   if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid == this.props.senderid){
 
@@ -616,7 +618,23 @@ componentDidUpdate(prevProps){
   if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
     this.scrollToTop()
   }
-}
+  //check if the status of the fbsession is changed
+  if((prevProps.fbsessionSelected.agent_ids.length != this.props.fbsessionSelected.agent_ids.length) || (prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id)){
+    
+      if(this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type== 'group'){
+        //check if the agent is in assigned team
+        for(var i=0;i< this.props.teamagents.length;i++){
+          if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id){
+          
+            this.setState({'agentinTeam' : true})
+            break;
+
+            }
+          }
+        }
+      }
+  }
+
 
 scrollToBottom() {
     const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
@@ -692,7 +710,8 @@ handleMessageSubmit(e) {
       if(this.props.fbsessionSelected.status == "new"){
             this.autoassignChat();
         }
-      if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
+        var index = this.props.fbsessionSelected.agent_ids.length-1
+       if(this.props.fbsessionSelected.status == "assigned" && ((this.props.fbsessionSelected.agent_ids[index].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[index].type == 'agent') || (this.state.agentinTeam == false && this.props.fbsessionSelected.agent_ids[index].type == 'group'))){
           sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
         }
