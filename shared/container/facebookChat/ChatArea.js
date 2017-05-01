@@ -459,13 +459,7 @@ resolveSession(e){
   // Only assigned agent can resolve session
   const { socket,dispatch } = this.props;
   var agentingroup = false
-
-   // check that agent is in this group
-   if(this.props.fbsessionSelected.status == "new"){
-      alert('You cannot resolve this session.Only assigned sessions can be resolved')
-
-  }
-   else if(this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "group")
+  if(this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "group")
    {
     for(var i=0;i<this.props.teamagents.length;i++){
       if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.userdetails._id == this.props.teamagents[i].agentid._id){
@@ -475,8 +469,14 @@ resolveSession(e){
    }
   }
 
+   // check that agent is in this group
+   if(this.props.fbsessionSelected.status == "new"){
+      alert('You cannot resolve this session.Only assigned sessions can be resolved')
 
-  else if(this.props.userdetails._id != this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "group"){
+  }
+  
+
+  else if(this.props.userdetails._id != this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "agent"){
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
   }
 
@@ -621,7 +621,7 @@ componentDidUpdate(prevProps){
   //check if the status of the fbsession is changed
   if((prevProps.fbsessionSelected.agent_ids.length != this.props.fbsessionSelected.agent_ids.length) || (prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id)){
     
-      if(this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type== 'group'){
+      if(this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type== 'group'){
         //check if the agent is in assigned team
         for(var i=0;i< this.props.teamagents.length;i++){
           if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id){
