@@ -232,7 +232,7 @@ autoassignChat(){
       {
 
          for(var i=0;i<this.props.teamagents.length;i++){
-            if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+            if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id){
               teammembers.push(this.props.teamagents[i].agentid.email);
             }
          }
@@ -339,7 +339,7 @@ assignSessionToAgent(e){
       {
 
          for(var i=0;i<this.props.teamagents.length;i++){
-            if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+            if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id){
               teammembers.push(this.props.teamagents[i].agentid.email);
             }
          }
@@ -496,7 +496,7 @@ resolveSession(e){
         {
 
            for(var i=0;i<this.props.teamagents.length;i++){
-              if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
+              if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id){
                 teammembers.push(this.props.teamagents[i].agentid.email);
               }
            }
