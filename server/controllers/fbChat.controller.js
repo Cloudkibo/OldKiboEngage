@@ -140,18 +140,8 @@ export function chatwebhook(req, res) {
 			   							 		// emit the chat message on socket
                           var socketsession = {
                               
-                              'user_id': {
-                                'first_name' : customer.first_name,
-                                'last_name' : customer.last_name,
-                                'email' : '',
-                                'timestamp' : customer.locale,
-                                'timezone' : customer.timezone,
-                                'profile_pic': customer.profile_pic,
-                                'gender' : customer.gender, 
-                                'user_id':sender, 
-                             
-                              }, //this is the facebook id of a customer
-                              'pageid':fbpage,
+                              'user_id': bodyC.fbsession.user_id,
+                              'pageid':bodyC.fbsession.pageid,
                               'companyid' : customerobj.companyid,
                               'requesttime': customerobj.requesttime,
                               'status':bodyC.fbsession.status == 'resolved'?'assigned': bodyC.fbsession.status,
