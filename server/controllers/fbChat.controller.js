@@ -155,7 +155,7 @@ export function chatwebhook(req, res) {
                               'companyid' : customerobj.companyid,
                               'requesttime': customerobj.requesttime,
                               'status':bodyC.fbsession.status == 'resolved'?'assigned': bodyC.fbsession.status,
-                              'agent_ids':[],
+                              'agent_ids':bodyC.fbsession.agent_ids,
 
 
                            }
