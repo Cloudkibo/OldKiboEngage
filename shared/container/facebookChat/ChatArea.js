@@ -85,8 +85,8 @@ export class ChatArea extends Component {
         this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
         this.resolveSession = this.resolveSession.bind(this);
         this.autoassignChat = this.autoassignChat.bind(this);
-      
-  
+
+
   }
 
 handleChange(e){
@@ -126,7 +126,7 @@ assignSessionToTeam(e){
        var today = new Date();
        var uid = Math.random().toString(36).substring(7);
        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-      
+
 
        var saveMsg = {
               senderid: this.props.userdetails._id,
@@ -163,12 +163,12 @@ assignSessionToTeam(e){
               assignedagentname: agentnames,
               agentid : agentids,
               assignedagentemail: agentemail,
-            
+
             }
     this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
-    
+
      //3. update agent assignment table on server
- 
+
       var assignment = {
         assignedto :  this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,
         assignedby : this.props.userdetails._id,
@@ -218,7 +218,7 @@ assignSessionToTeam(e){
     }
   this.forceUpdate();
   }
-  
+
 }
 
 
@@ -236,7 +236,7 @@ autoassignChat(){
             }
          }
       }
-   
+
      const usertoken = auth.getToken();
 
           // local changes
@@ -249,7 +249,7 @@ autoassignChat(){
        var today = new Date();
        var uid = Math.random().toString(36).substring(7);
        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-      
+
 
        var saveMsg = {
               senderid: this.props.userdetails._id,
@@ -295,9 +295,9 @@ autoassignChat(){
 
     agentemail.push(this.props.userdetails.email);
     //socket.emit('send:agentsocketfb' , saveChat);
-    
+
      //3. update agent assignment table on server
- 
+
       var assignment = {
         assignedto : this.props.userdetails._id,
         assignedby : this.props.userdetails._id,
@@ -324,9 +324,9 @@ autoassignChat(){
 
 
   this.forceUpdate();
-  
-  
-  
+
+
+
 
 }
 assignSessionToAgent(e){
@@ -343,7 +343,7 @@ assignSessionToAgent(e){
             }
          }
       }
-   
+
      const usertoken = auth.getToken();
 
      if(confirm("Are you sure you want to assign this session to " + this.refs.agentList.options[this.refs.agentList.selectedIndex].text))
@@ -358,7 +358,7 @@ assignSessionToAgent(e){
        var today = new Date();
        var uid = Math.random().toString(36).substring(7);
        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-      
+
 
        var saveMsg = {
               senderid: this.props.userdetails._id,
@@ -404,9 +404,9 @@ assignSessionToAgent(e){
 
     agentemail.push(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email);
     //socket.emit('send:agentsocketfb' , saveChat);
-    
+
      //3. update agent assignment table on server
- 
+
       var assignment = {
         assignedto : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,
         assignedby : this.props.userdetails._id,
@@ -449,8 +449,8 @@ assignSessionToAgent(e){
 
   this.forceUpdate();
   }
-  
-  
+
+
 
 }
 
@@ -474,7 +474,7 @@ resolveSession(e){
    }
   }
 
-  
+
   else if(this.props.userdetails._id != this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "group"){
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
   }
@@ -508,7 +508,7 @@ resolveSession(e){
        var today = new Date();
        var uid = Math.random().toString(36).substring(7);
        var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-      
+
 
        var saveMsg = {
               senderid: this.props.userdetails._id,
@@ -519,7 +519,7 @@ resolveSession(e){
                 mid:unique_id,
                 seq:1,
                 text:'Session is marked as resolved by ' + this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-           
+
               },
 
              pageid:this.props.fbsessionSelected.pageid.pageid,
@@ -551,7 +551,7 @@ resolveSession(e){
 
             }
     this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid)
-       
+
       const usertoken = auth.getToken();
        // 3. update session status on server
         var resolvesessionbody = {
@@ -576,7 +576,7 @@ resolveSession(e){
 
       this.forceUpdate();
   }
- 
+
 }
 onTestURL(e){
   console.log(e)
@@ -587,7 +587,7 @@ onTestURL(e){
   if(truef == false){
     alert('Video File Format not supported. Please download.')
   }
-  
+
 }
 
 onTestURLAudio(e){
@@ -600,7 +600,7 @@ onTestURLAudio(e){
   if(truef == false){
     alert('Audio File Format not supported. Please download.')
   }
-  
+
 }
  componentWillUpdate(){
  // this.scrollToTop();
@@ -684,8 +684,8 @@ onChange(event, { newValue }) {
   }
 handleMessageSubmit(e) {
     const { socket,dispatch } = this.props;
-    var sendmessage = true;  
-     
+    var sendmessage = true;
+
     console.log('handleMessageSubmit' + e.which)
 
     if (e.which === 13 && this.state.value !="") {
@@ -699,7 +699,7 @@ handleMessageSubmit(e) {
 
      if(sendmessage == true){
 
-       
+
       if(this.state.value.length >= 640){
         alert('Message cannot be send. It exceeds 640 character limit');
       }
@@ -1199,7 +1199,7 @@ getMeta(event){
           <img className='profile-image' src={this.props.userprofilepic} width="36px" height="36px"/>
           <span className='username'>{this.props.username}</span>
           </div>
-            <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
+            <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
 
               <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
@@ -1235,7 +1235,7 @@ getMeta(event){
           <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
           <span className='username'>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</span>
           </div>
-            <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)'}}>
+            <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
 
               <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
@@ -1325,7 +1325,7 @@ getMeta(event){
                          </select>
                            </div>
                         </td>
-                   
+
 
                       <td className="col-md-4">
                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
