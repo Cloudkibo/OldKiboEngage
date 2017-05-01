@@ -140,8 +140,19 @@ export function chatwebhook(req, res) {
 			   							 		// emit the chat message on socket
                           var socketsession = {
                               
-                              'user_id': bodyC.fbsession.user_id,
-                              'pageid':bodyC.fbsession.pageid,
+                              'user_id': {
+                                'first_name' : customer.first_name,
+                                'last_name' : customer.last_name,
+                                'email' : '',
+                                'timestamp' : customer.locale,
+                                'timezone' : customer.timezone,
+                                'profile_pic': customer.profile_pic,
+                                'gender' : customer.gender, 
+                                'user_id':sender,
+                                '_id':bodyC.fbsession.user_id, 
+                             
+                              }, //this is the facebook id of a customer
+                              'pageid':fbpage,
                               'companyid' : customerobj.companyid,
                               'requesttime': customerobj.requesttime,
                               'status':bodyC.fbsession.status == 'resolved'?'assigned': bodyC.fbsession.status,
@@ -159,8 +170,8 @@ export function chatwebhook(req, res) {
                            if(bodyC.fbsession && bodyC.fbsession.status == 'resolved'){
                             var customerobjS = JSON.stringify({
                                   companyid : bodyC.fbsession.companyid,
-                                  pageid:bodyC.fbsession.pageid._id,
-                                  user_id: bodyC.fbsession.user_id._id,
+                                  pageid:bodyC.fbsession.pageid,
+                                  user_id: bodyC.fbsession.user_id,
                                   status:'assigned',
                                 })
                                //call kiboengage API to save customer
