@@ -187,6 +187,7 @@ componentWillReceiveProps(props){
                          }
                            {this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
                             <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} userprofilepic={this.props.profile_pic} senderid={this.props.fbsessionSelected.user_id.user_id} userdetails={this.props.userdetails}/>
+                            
                           }
                       </div>
                        </td>

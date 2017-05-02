@@ -10,9 +10,16 @@ import Picker from 'react-giphy-picker';
 import StickerMenu from 'react-stickerpipe';
 import EmojiPicker from 'react-emojipicker';
 import ReactPlayer from 'react-player'
-
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload'
+
+var geturl = function(payload){
+ return   `https://maps.googleapis.com/maps/api/staticmap?center=${payload.coordinates.lat},${payload.coordinates.long}&zoom=13&scale=false&size=400x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C${payload.coordinates.lat},${payload.coordinates.long}`
+}
+
+var getmainURL = function(payload){
+  return `https://www.google.com/maps/place/${payload.coordinates.lat},${payload.coordinates.long}/`
+}
 
 var handleDate = function(d){
 if(d){
@@ -1199,8 +1206,7 @@ getMeta(event){
     return this.naturalHeight;
 }
 
-
-  render () {
+render () {
     // only show previous messages if they exist.
     // display messages of active channel
     const { value, suggestions } = this.state;
@@ -1238,13 +1244,18 @@ getMeta(event){
                                                            'maxHeight': '585px'}}/>
                        )
                                                            :
-                       (da.type == "video"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242" onPlay={this.onTestURL.bind(this, da.payload.url)} />:
+                      (da.type == "video"?
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)} />:
+                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
 
+                      (da.type == "location"?
+                       <div>
+                       <p> {da.title} </p> 
+                       <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
+                       </div> :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       )))
+                       ))))
                 ))
               }
 
@@ -1281,8 +1292,13 @@ getMeta(event){
                         (da.type == "audio"?
                         <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
 
+                        (da.type == "location"?
+                       <div>
+                       <p> {da.title} </p> 
+                       <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
+                       </div> :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       )))
+                       ))))
                 ))
               }
             </div>
