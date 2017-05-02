@@ -121,7 +121,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-  
+
                <li className="">
                 <Link to='/groups'>
                   <i className="fa fa-group">
@@ -181,13 +181,6 @@ class SideBar extends Component
                 </Link>
               </li>
 
-             
-
-             
-            
-
-              
-             
               <li className="">
                 <Link to="/reports">
                   <i className="fa fa-bar-chart-o">
@@ -199,7 +192,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-   
+
 
                <li className="">
                 <Link to="/cannedresponses">
@@ -224,6 +217,17 @@ class SideBar extends Component
                 </Link>
               </li>
 
+              <li className="">
+                <Link to="/instructionsforintegratingfacebook">
+                  <i className="fa fa-info-circle">
+                  </i>
+                  <span className="title">
+                    Facebook Integration
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
 
               <li className="">
                 <Link to="/fbpages">
@@ -248,8 +252,8 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              
-              
+
+
               <li className="">
                 <Link to="/companyprofile">
                   <i className="fa fa-cogs">

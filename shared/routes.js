@@ -74,6 +74,7 @@ import RescheduleAbandonedSessions from './container/ChatSessions/RescheduleAban
 import io from 'socket.io-client'
 import FbChat from './container/facebookChat/FbChat'
 import Widget from './container/Widget/widget'
+import FacebookIntegrationInstructions from './container/FacebookIntegrationInstructions/FacebookIntegrationInstructions';
 import PrivacyPolicy from './container/PrivacyPolicy'
 let socket = io('')
 console.log('entered into routes');
@@ -122,7 +123,7 @@ const routes = (
     <Route path="/teams" component={Teams}  onEnter={requireAuth}/>
     <Route path="/team/:id" component={TeamDetailView}  onEnter={requireAuth}/>
 
-
+    <Route path="/instructionsforintegratingfacebook" component={FacebookIntegrationInstructions} onEnter={requireAuth} />
 
     <Route path="/editagent/:id" component={AgentEditView}  onEnter={requireAuth}/>
     <Route path="/createsubgroup" component={SubgroupCreate}  onEnter={requireAuth}/>
