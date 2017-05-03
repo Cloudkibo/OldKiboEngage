@@ -204,6 +204,7 @@ export function editSubgroup(req, res) {
 export function getsubgroupwisecalls(req, res) {
   //////console.log('edit Subgroup is called');
   var token = req.headers.authorization;
+  console.log(req.body);
   //console.log(req.body.departmentid);
   //////console.log(id);
    var options = {
