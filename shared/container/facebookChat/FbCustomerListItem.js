@@ -8,7 +8,7 @@ function FbCustomerListItem(props) {
   var leftStyle = {
   float: 'left',
   color:'blue',
-  
+
 };
  var rightStyle = {
   float: 'right',
@@ -60,6 +60,12 @@ if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.custome
                         ))
 
 }
+
+var selected = false;
+if(props.customer._id === props.selectedCustomer._id){
+  selected = true;
+}
+
 var unreadCount = 0;
 for(var i = 0;i< props.userchat.length;i++){
   if(props.userchat[i].seen == false)
@@ -82,8 +88,8 @@ return res;
 
   return (
 
-    (unreadCount > 0 ?
-     <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(243, 86, 93, 0.18)'}} onClick={props.onClickSession}>
+    (selected ?
+     <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(128, 128, 128, 0.4)'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
@@ -99,7 +105,7 @@ return res;
           <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
            <br/>
       </div>
-     
+
 
     </div>
     :
@@ -127,14 +133,14 @@ return res;
 
             }
             <br/>
-            
+
            <br/>
            <br/>
-          
+
       </div>
     </div>
     )
- 
+
   );
 }
 

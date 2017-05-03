@@ -48,8 +48,8 @@ class FbChat extends Component {
         this.getfbCustomer = this.getfbCustomer.bind(this);
         this.getfbMessage = this.getfbMessage.bind(this);
         this.updateFbsessionlist = this.updateFbsessionlist.bind(this);
-       
-        
+
+
 
   }
 
@@ -79,9 +79,9 @@ getfbMessage(data){
       data.seen=true;
     }
       this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbsessionSelected.user_id.user_id);
-      
+
     }
-   
+
     this.forceUpdate();
 }
 syncdata(){
@@ -102,7 +102,7 @@ componentDidMount(){
 componentWillReceiveProps(props){
   if(props.fbsessions && props.fbchats && callonce == true){
    // alert(props.fbcustomers.length);
- 
+
     //this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
     this.props.selectFbCustomerChat(props.fbsessions[0].user_id.user_id,props.fbchats,props.fbsessions[0].user_id.profile_pic,props.fbsessions[0]);
     callonce=false;
@@ -165,7 +165,7 @@ componentWillReceiveProps(props){
         					                      {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
         					                        this.props.fbsessions.map((customer, i) => (
 
-                                            <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
+                                            <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} selectedCustomer={this.props.fbsessionSelected} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
 
                                           )
                                           )
@@ -177,17 +177,17 @@ componentWillReceiveProps(props){
                                <td  className="col-md-6">
                               <div>
 
-                          
+
                           {this.props.fbsessions && this.props.fbsessionSelected &&
                             <div>
                                 <label>Customer Name :</label>
                                 <input defaultValue = {this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} ref="customername"/>
-                            
+
                            </div>
                          }
                            {this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
                             <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} userprofilepic={this.props.profile_pic} senderid={this.props.fbsessionSelected.user_id.user_id} userdetails={this.props.userdetails}/>
-                            
+
                           }
                       </div>
                        </td>
@@ -237,7 +237,7 @@ function mapStateToProps(state) {
           fbsessionSelected: state.dashboard.fbsessionSelected,
           fbsessions: state.dashboard.fbsessions,
           teamagents : (state.dashboard.teamagents),
-        
+
                     };
 }
 

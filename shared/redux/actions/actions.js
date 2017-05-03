@@ -1864,33 +1864,33 @@ export function updateChatList(message,ch,id_not_added)
   console.log(message);
   console.log(ch);
   console.log(id_not_added);
+  console.log(message.request_id);
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
   if(!id_not_added){
     if(ch){
-    ch.push(new_message_arrived_rid);
+      console.log("this one");
+      ch.push(new_message_arrived_rid);
+    }
+    else{
+      ch =[];
+      ch.push(new_message_arrived_rid);
+    }
   }
-  else{
-    ch =[];
-    ch.push(new_message_arrived_rid);
-  }
-
-  }
-  else
-    {
-  if(ch){
-    if(new_message_arrived_rid != id_not_added){
-    ch.push(new_message_arrived_rid);
+  else {
+    if(ch){
+      if(new_message_arrived_rid != id_not_added){
+        console.log("message added");
+        ch.push(new_message_arrived_rid);
       }
-   }
-   else{
-    ch =[];
-    if(new_message_arrived_rid != id_not_added){
-    ch.push(new_message_arrived_rid);
+    }
+    else{
+      ch =[];
+      if(new_message_arrived_rid != id_not_added){
+        ch.push(new_message_arrived_rid);
       }
-
-   }
- }
+    }
+  }
   var temp = ch[0];
   for(var i=1;i<ch.length; i++){
     if(ch[i] === temp){

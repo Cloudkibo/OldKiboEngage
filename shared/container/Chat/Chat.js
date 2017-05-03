@@ -54,7 +54,7 @@ class Chat extends Component {
         this.getSessionInfo = this.getSessionInfo.bind(this);
         this.getSocketmessage = this.getSocketmessage.bind(this);
         this.syncdata = this.syncdata.bind(this);
-      
+
 
   }
 
@@ -100,12 +100,22 @@ updateOnlineAgents(data){
 
     else if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no'){
      // alert(' i m called2')
+     console.log("Chat Not Selected");
      this.props.userchats.push(message);
 
      this.props.updateChatList(message,this.props.new_message_arrived_rid);
      //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
      this.forceUpdate();
   }
+  else if((this.props.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no'){
+   // alert(' i m called2')
+   console.log("Chat Selected");
+   this.props.userchats.push(message);
+
+   this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
+   //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+   this.forceUpdate();
+}
 
 
  }
@@ -151,7 +161,7 @@ updateOnlineAgents(data){
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
 getSessionInfo(message){
- 
+
   //update the status of session
   for(var i=0; i< this.props.customerchat.length;i++){
     if(this.props.customerchat[i].request_id == message[0].request_id){
@@ -164,7 +174,7 @@ getSessionInfo(message){
   if(this.props.customerchat_selected.request_id == message[0].request_id){
       this.props.customerchat_selected.status = "assigned";
        this.props.customerchat_selected.agent_ids.push({'id' : this.props.userdetails._id,'type' : 'agent'});
-     
+
   }
 
 
@@ -207,7 +217,7 @@ componentDidMount(){
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.props.route.socket.on('returnUserChat',this.getupdatedChats);
         this.props.route.socket.on('syncdata',this.syncdata);
-      
+
 
 }
 
@@ -223,7 +233,7 @@ componentDidMount(){
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
 
-    
+
      this.props.getsessionsfromsocket(data, this.props.customerchat_selected);
      this.forceUpdate();
   }
@@ -250,7 +260,7 @@ componentDidMount(){
       //this.props.getchatsfromsocket(this.props.userchats,'uniqueid');
      // alert(this.props.userchats.length);
       this.props.previousChat(data,this.props.chatlist);
-  
+
     this.forceUpdate();
   }
 
@@ -491,7 +501,7 @@ componentDidMount(){
 }
 
 function mapStateToProps(state) {
- 
+
   return {
           teamdetails:(state.dashboard.teamdetails),
           userdetails:(state.dashboard.userdetails),
