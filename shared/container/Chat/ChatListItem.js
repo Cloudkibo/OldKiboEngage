@@ -76,7 +76,7 @@ var ch=[]
                         props.group.map((grp, i) => (
                            ag.push(grp)
                         ))
-      console.log(ag);
+
       }
 
 
@@ -90,7 +90,7 @@ var ch=[]
       }
 var unread = []
 {
-  props.new_message_arrived_rid && ((props.selectedsession && props.new_message_arrived_rid != props.selectedsession.request_id) || !props.selectedsession) &&  props.new_message_arrived_rid.map((unre, i) => (
+  props.new_message_arrived_rid &&  props.new_message_arrived_rid.map((unre, i) => (
                            unread.push(unre)
                         ))
 
@@ -123,7 +123,7 @@ return res;
 }
   return (
    (ag.length > 0?
-   
+
    (props.userchat.length > 0 || props.customer.platform == 'web' ?
          <div className="list-group" onClick={props.onClickSession} style={changec}>
          {
