@@ -38,7 +38,7 @@ var divMargin = {
 }
 var changecc ={
   'cursor': 'pointer',
-  'background' : 'rgba(243, 86, 93, 0.18)',
+  'background' : 'rgba(195, 188, 188, 0.4)',
 }
 
 var agentname = []
@@ -89,7 +89,7 @@ return res;
   return (
 
     (selected ?
-     <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(128, 128, 128, 0.4)'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(195, 188, 188, 0.4)'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
@@ -102,7 +102,16 @@ return res;
             <br/>
             <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
            <br/>
-          <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+           {
+              agentname.length > 0?
+              <div>
+                <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>
+                <br/>
+                <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+              </div>:
+              <div> <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span></div>
+
+            }
            <br/>
       </div>
 
@@ -132,9 +141,6 @@ return res;
               <div> <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span></div>
 
             }
-            <br/>
-
-           <br/>
            <br/>
 
       </div>

@@ -32,7 +32,7 @@ class ClientChatView2 extends Component {
      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
      this.props.chatbotsession(unique_id);
      this.scrollToBottom();
-     var username = prompt("Hi! I am Bearbel. Whats your good name?");
+     var username = prompt("Hi! I am Kitt. Whats your good name?");
      this.refs.username.value = username;
 
     
@@ -42,7 +42,7 @@ componentWillReceiveProps(props){
   if(props.chatbotsessionid && !this.props.chatbotsessionid){
         
         var query=[]
-        query.push('I am chatbotuser');
+        query.push('Hi');
         var saveChat={
                           
                       query:query,
@@ -156,7 +156,7 @@ componentDidUpdate() {
             <ul className="chat"  ref="messageList">
                           {this.props.chatbotlist &&
                             this.props.chatbotlist.filter((chat) => chat.sessionId == this.props.chatbotsessionid).map((chat, i) => (
-                                     (chat.from == 'Bearbel'?
+                                     (chat.from == 'Kitt'?
                                    <li className="left clearfix userChatBoxTemp">
                                        <span className="chat-img pull-left userChat"> {chat.from.substr(0,1)}
                                       </span>

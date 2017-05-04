@@ -3802,7 +3802,7 @@ export function chatbotResponse(res,username){
   var message = {
                       lang:'en',
                       sessionId: res.sessionId ,
-                      from: 'Bearbel',
+                      from: 'Kitt',
                       msg:newresp,
                       timestamp:res.timestamp,
 
@@ -3825,7 +3825,7 @@ export function sendchatToBot(message,username='')
     fetch('https://api.api.ai/v1/query', {
         method: 'post',
         headers:new Headers({
-          'Authorization':' Bearer 23faab6fda14491294154d954eeede9c',
+          'Authorization':' Bearer 7f81f5b6921f4749a0ec86c23407a4fe',
           'Content-Type': 'application/json'
         }),
         body: JSON.stringify({
