@@ -481,7 +481,7 @@ resolveSession(e){
       alert('You cannot resolve this session.Only assigned sessions can be resolved')
 
   }
-  
+
 
   else if(this.props.userdetails._id != this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == "agent"){
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
@@ -614,9 +614,12 @@ onTestURLAudio(e){
  // this.scrollToTop();
 }
 
+componentDidMount(){
+  this.scrollToBottom();
+}
 
 componentDidUpdate(prevProps){
-  if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid == this.props.senderid){
+  /*if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid == this.props.senderid){
 
    this.scrollToBottom();
 
@@ -624,15 +627,16 @@ componentDidUpdate(prevProps){
 
   if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
     this.scrollToTop()
-  }
+  }*/
+  this.scrollToBottom();
   //check if the status of the fbsession is changed
   if((prevProps.fbsessionSelected.agent_ids.length != this.props.fbsessionSelected.agent_ids.length) || (prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id)){
-    
+
       if(this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type== 'group'){
         //check if the agent is in assigned team
         for(var i=0;i< this.props.teamagents.length;i++){
           if(this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id){
-          
+
             this.setState({'agentinTeam' : true})
             break;
 
@@ -644,11 +648,13 @@ componentDidUpdate(prevProps){
 
 
 scrollToBottom() {
-    const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
+    /*const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
     console.log(node);
     console.log(node.offsetTop)
 
-    node.parentNode.scrollTop = node.offsetTop + 1100;
+    node.parentNode.scrollTop = node.offsetTop + 1100;*/
+    const node = ReactDOM.findDOMNode(this.messagesEnd);
+    node.scrollIntoView({behavior: "smooth"});
 
 
 }
@@ -902,13 +908,13 @@ onFileSubmit(event)
                     type:'image',
                     payload:{
                       url: `https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png?_nc_ad=z-m&oh=547beb90237e24a9682810a5144c9fba&oe=5988CFDC`,
-                      sticker_id: 369239263222822, 
+                      sticker_id: 369239263222822,
                     }
                   }]
                 },
                 pageid:pageid
             }
-  
+
            console.log(saveMsg);
 
             this.props.getfbchatfromAgent(saveMsg);
@@ -1251,7 +1257,7 @@ render () {
 
                       (da.type == "location"?
                        <div>
-                       <p> {da.title} </p> 
+                       <p> {da.title} </p>
                        <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                        </div> :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
@@ -1294,7 +1300,7 @@ render () {
 
                         (da.type == "location"?
                        <div>
-                       <p> {da.title} </p> 
+                       <p> {da.title} </p>
                        <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                        </div> :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
