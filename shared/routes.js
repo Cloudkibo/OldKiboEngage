@@ -64,6 +64,7 @@ import ChangeAvatar from './container/MyProfile/ChangeAvatar'
 import ChangePassword from './container/MyProfile/ChangePassword'
 
 import Customers from './container/CustomerDirectory/Customers'
+import FacebookCustomers from './container/FacebookCustomerDirectory/FacebookCustomers'
 import AddCustomer from './container/CustomerDirectory/AddCustomer'
 import EmailCustomer from './container/CustomerDirectory/EmailCustomer'
 import Router from 'react-router';
@@ -150,6 +151,7 @@ const routes = (
     <Route path="/notification/:id" component={NotificationView}  onEnter={requireAuth}/>
     <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
+     <Route path="/FBcustomers" component={FacebookCustomers} onEnter={requireAuth} />
      <Route path="/livehelp/:id/:pathname(/:requestid)" component={AddCustomer} socket={socket}/>
      <Route path="/livehelp2" component={ClientChat2} />
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
