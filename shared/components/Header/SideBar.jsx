@@ -95,6 +95,19 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
+
+              <li className="">
+                <Link to="/FBcustomers">
+                  <i className="fa fa-users">
+                  </i>
+                  <span className="title">
+                     Facebook Customers
+                  </span>
+                  <span className="selected">
+                  </span>
+                </Link>
+              </li>
+
                {this.props.isAdmin == "Yes"?
               <li className="">
                 <Link to= '/agents'>
