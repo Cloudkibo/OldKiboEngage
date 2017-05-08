@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {showAllChat}  from '../../redux/actions/actions'
+import {showAllChat,getcompanylogo}  from '../../redux/actions/actions'
 import {savechat}  from '../../redux/actions/actions'
 
 import ClientChatView2 from './ClientChatView2';
@@ -19,6 +19,9 @@ class ClientChat2 extends Component {
      const { dispatch} =props;
      console.log('componentWillMount is called');
         props.showAllChat();
+        var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59'
+        var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
+        props.getcompanylogo(appid,appsecret,props.params.id);
         super(props, context);
 
 
@@ -30,6 +33,13 @@ class ClientChat2 extends Component {
 
     }
 
+    componentWillReceiveProps(props){
+       if(this.props.companylogo && this.props.companylogo!= ''){
+     // alert(props.companylogo);
+      this.refs.logo.src = this.props.companylogo.substr(1,this.props.companylogo.length);
+     // this.forceUpdate();
+    }
+    }
 
 
   render() {
@@ -94,4 +104,4 @@ function mapStateToProps(state) {
  	      };
 }
 
-export default connect(mapStateToProps,{showAllChat})(ClientChat2);
+export default connect(mapStateToProps,{showAllChat,getcompanylogo})(ClientChat2);

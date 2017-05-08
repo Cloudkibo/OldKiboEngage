@@ -153,7 +153,7 @@ const routes = (
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
      <Route path="/FBcustomers" component={FacebookCustomers} onEnter={requireAuth} />
      <Route path="/livehelp/:id/:pathname(/:requestid)" component={AddCustomer} socket={socket}/>
-     <Route path="/livehelp2" component={ClientChat2} />
+     <Route path="/livehelp2/:id" component={ClientChat2} />
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
      <Route path="/mygroups" component={MyGroups}  onEnter={requireAuth}/>
      <Route path="/myprofile" component={MyProfile}  onEnter={requireAuth}/>
