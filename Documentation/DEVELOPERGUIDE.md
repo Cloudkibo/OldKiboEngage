@@ -27,8 +27,8 @@ Following shows the complete server side folder and file. And each file has a de
 
 **Controllers**
 
-*channel.controller.js*
-Contains code for calling KiboSupport API for Message Channels
+*subgroup.controller.js*
+Contains code for calling KiboSupport API for Subgroups
 
 *chat.controller.js*
 Contains code for calling KiboSupport API for Chat 
@@ -39,11 +39,19 @@ Contains code for calling KiboSupport API for adding and retrieving customers
 *team.controller.js*
 Contains code for calling KiboSupport API for Teams
 
+*group.controller.js*
+Contains code for calling KiboSupport API for Groups
+
 *notification.controller.js*
 Contains code for calling KiboSupport API for Notifications
 
 *user.controller.js*
 Contains code for calling KiboSupport API for authentication and agent related information
+
+*fbchat.controller.js*
+Contains code for calling KiboSupport API for Facebook Customers and chat related information
+*fbpages.controller.js*
+Contains code for calling KiboSupport API for Facebook Pages information
 
 ## Client side code
 
@@ -58,33 +66,33 @@ Following is the general workflow that will be followed for all react containers
 React Containers will receive data from reducer,update their state and pass this data to react component as a ‘prop’(property).
 In Kibo Engage,section below is describing React Containers,Data that they will receive from Reducer,Actions that can take place in container,components of react container and what data each react component will receive from container.
 
-###1.  Teams Container
+###1.  Group Container
 
-Teams container will receive all teams data from Kibo support api.
+Groups container will receive all groups data from Kibosupport api.
 
-i. Team : 
+i. Group : 
 
-Each team component will hold details of a each team present in all teams data.
+Each team component will hold details of a each group present in all groups data.
 
 **Actions:**
 
-i.  Edit team
+i.  Edit group
 
-ii. Delete team
+ii. Delete group
 
 iii.View Component:
 
-It will display details of a particular team whose id is passed as a parameter
+It will display details of a particular group whose id is passed as a parameter
 
-iv. Edit team component:
+iv. Edit group component:
 
-It will enable user to modify team details.
+It will enable user to modify group details.
 
   **Actions:**
   
   i. Save
 
-iv. Create new team:
+iv. Create new group:
 
 No prior data required.
 
@@ -116,16 +124,16 @@ It will display form to fill details of a new agent
 
   i.    Submit
 
-###3.    Message Channels Container
-Message Channels container will receive  message channels data from KiboSupport Api.
+###3.    Subgroups Container
+Subgroups container will receive  subgroups data from KiboSupport Api.
 
-i.  Message Channel:
+i.  Subgroups:
 
-Each message channel is a component that will hold details of that channel.
+Each subgroup is a component that will hold details of that subgroup.
 
-ii. Add Channel:
+ii. Add Subgroup:
 
-This will show a form to create a new message channel
+This will show a form to create a new subgroup
 
 **Actions:**
 
@@ -235,28 +243,28 @@ Each resolved session can be rescheduled in future.To reschedule the session Age
 For reports,we have use HighCharts library to present interative charts.For each type of type like Message Channel wise Session Stats,Department wise session stats,Platform wise session stats there is a separate high chart component.
 
 
-###11.  Groups Container
+###11.  Teams Container
 
-Agent Groups will be the group comprises of more than one agent.Any chat session can be assigned to a Group other than individual agent.The purpose of the group is to allow agents to work in collaboration for solving customer queries.There can be two types of Groups:
+Agent Teams will be the group comprises of more than one agent.Any chat session can be assigned to a Team other than individual agent.The purpose of the team is to allow agents to work in collaboration for solving customer queries.There can be two types of Team:
 
-1. Public Groups : Public Groups are visible to all agents within a company.Any agent can search and join a public group
+1. Public Teams : Public Groups are visible to all agents within a company. Any agent can search and join a public team
 
-2. Private Groups : Only the agent who created a private group can add other agents in his group
+2. Private Teams : Only the agent who created a private team can add other agents in his team
 
-Groups container will receive all groups data from Kibo support api.
+Team container will receive all groups data from Kibo support api.
 
-i. GroupDetailView : 
+i. TeamDetailView : 
 
-In GroupDetailView.js,the details of a specific group will be presented.
+In TeamDetailView.js,the details of a specific team will be presented.
 
 
-ii. GroupDetailView :
+ii. TeamEditView :
 
-It will enable user to modify group details and add other agents to group.
+It will enable user to modify team details and add other agents to team.
 
-iii. GroupCreateView :
+iii. TeamCreateView :
 
-It will enable user to create a group
+It will enable user to create a team
 
 
 
@@ -290,7 +298,7 @@ Following actions are related to user login or signup.They will return user deta
 
 ###2. Actions related to Teams:
 
-Following actions are related to fetch and create teams/departments.They will return team details to reducer
+Following actions are related to fetch and create teams.They will return team details to reducer
 
       i.  getuserteams : Calls server api to fetch agent's team information
       ii. getcustomerteams : This is without-token version of getting teamlist for Chat widget
@@ -309,15 +317,15 @@ Following actions are related to fetch and create agents.They will return agent 
       iv. inviteagent : Calls server api to invite agent
       v.  deleteagent : Calls server api to delete agent
 
-###4. Actions related to Message Channels:
+###4. Actions related to Subgroups:
 
-Following actions are related to fetch and create message channels.They will return channel details to reducer
+Following actions are related to fetch and create subgroups.They will return subgroup details to reducer
 
-      i.  createChannel : Calls server api to create message channel
-      ii. editChannel : Calls server api to edit details of message channel
-      iii.  getcustomerchannels : This is without-token version of getting channel list for Chat widget
-      iv. getchannels : Calls server api to fetch message channels
-      v.  deletechannel : Calls server api to delete channel
+      i.   createSubgroup : Calls server api to create subgroup
+      ii.  editSubgroup : Calls server api to edit details of subgroup
+      iii. getcustomersubgroup : This is without-token version of getting subgroup list for Chat widget
+      iv. getsubgroups : Calls server api to fetch subgroup
+      v.  deletesubgroup : Calls server api to delete subgroup
 
 ###5. Actions related to Canned Response:
 
@@ -402,6 +410,17 @@ Following actions are related to fetch and create groups.They will return group 
       iv. editGroup : Calls server api to edit group details
       v.  joingroup : This will add agent to group
       vi. deletegroup : Call server api to delete group
+
+###13. Actions related to Facebook Integration:
+
+Following actions are related to fetch and create facebook pages and chat.
+
+      i.  getfbpages : Calls server api to fetch facebook pages information
+      ii. editPage : Call server api to edit the details of facebook pages
+      iii.getfbCustomers : Calls server api to fetch list of facebook customers
+      iv. getfbSessions : Calls server api to fetch details of facebook chat session
+      v.  getfbChats : Call server api to fetch chat messages of facebook customers
+     
 
 ### reducers/reducer.js
 
