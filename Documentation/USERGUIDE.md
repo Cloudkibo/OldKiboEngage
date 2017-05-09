@@ -22,8 +22,8 @@ Support agents are on a typing spree when they are answering large number of cus
 ### Message Channels
 Channels are topical conversation threads within the inbox. Channel is assigned to Team.A team can have more than one channel
 
-### Teams
-Teams are the organizational units like IT,Customer Support ,Sales e.t.c with in a Company
+### Groups
+Groups are the organizational units like IT,Customer Support ,Sales e.t.c with in a Company
 
 ### Personalized Calls
 client can have option to decide which support agent he wants to talk to.Clients can choose specific agent to discuss their issue.
@@ -47,10 +47,13 @@ Customer can just fill a form and join agent in the call.
 Screen sharing feature helps you to direct your visitor directly to the answer they've been looking for,
 instead of trying to explain where to find the answer.
 
+### Integration with Facebook Messenger
+Companies can now easily integrate their KiboEngage Dashboard with their Facebook Page to communicate effectively with customers on Facebook
+
 ## Application use
 
 ### Signup
-You can signup your compnay with Kiboengage with your email id.
+You can signup your company with Kiboengage with your email id.
 
 **As company owner**
 
@@ -94,22 +97,22 @@ Agent and customer during chat can invite each other to audio/video call by clic
 ![Audio Video Call](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/audiovideo.PNG)
 
 
-### Teams
+### Groups
 
-Company can create teams so that agent can be categoried according to their relevent area. To create team simple name the team and give description. To activate the team you need to assign an agent to the team to make it operative.
+Company can create groups so that agent can be categoried according to their relevent area. To create group simple name the group and give description. To activate the group you need to assign an agent to the group to make it operative.
 
-![Manage team](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/create%20new%20team.PNG)
+![Manage group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/create%20new%20group.PNG)
 
-List of Teams can be seen also each team can be viewed and deleted. Compnay admin can give the right to supervisor to edit the team and agent can only view the team. further roles of Admin, Supervisor and Agent can be seen here 
+List of Groups can be seen also each group can be viewed and deleted. Compnay admin can give the right to supervisor to edit the group and agent can only view the group. further roles of Admin, Supervisor and Agent can be seen here 
 
 ![role hierarchy](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/roles.PNG)
 
 ![role detail](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/roles%20details.PNG)
 
 
-![List group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/manageteam.PNG)
+![List group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/managegroup.PNG)
 
-When supervisor or admin edit the Team, it can change the description of team and assign and remove agent from the team.
+When supervisor or admin edit the Group, it can change the description of group and assign and remove agent from the group.
 
 
 
@@ -162,15 +165,15 @@ Agents can create notifications
 ![notifications](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/notifications.PNG)
 
 
-### Message Channels
+### SubGroups
 
-Agent can create a message channel by clicking on Create Channel button
+Agent can create a subgroup by clicking on Create Subgroup button
 
-![message channels](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/messageChannel.PNG)
+![message channels](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/subgroup.PNG)
 
 
-Edit Message Channel
-![message channels edit](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/messageChannelEdit.PNG)
+Edit Subgroup
+![message channels edit](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/subgroupEdit.PNG)
 
 
 ### Canned Responses
@@ -240,8 +243,8 @@ Also gives option to change password and Profile picture.
 
 ![password](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/changepassword.PNG)
 
-### My Teams
- This shows a list of Teams agent has created or joined
+### My Groups
+ This shows a list of Groups agent has created or joined
 
 ![mygroups](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/mygroups.PNG)
 
@@ -259,21 +262,21 @@ Our Real-Time report gives you an overview of agents' activity. Measure your liv
 ![customer](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/customer.PNG)
 
 
-### Groups
+### Teams
 
-Agent Groups will be the group comprises of more than one agent.Any chat session can be assigned to a Group other than individual agent.The purpose of the group is to allow agents to work in collaboration for solving customer queries.There can be two types of Groups:
+Agent Teams will be the team comprises of more than one agent.Any chat session can be assigned to a Team other than individual agent.The purpose of the team is to allow agents to work in collaboration for solving customer queries.There can be two types of Teams:
 
-  *1. Public Groups :*
-      Public Groups are visible to all agents within a company.Any agent can search and join a public group
+  *1. Public Teams :*
+      Public Teams are visible to all agents within a company.Any agent can search and join a public team
 
-  *2. Private Groups :*
-      Only the agent who created a private group can add other agents in his group
+  *2. Private Teams :*
+      Only the agent who created a private group can add other agents in his team
 
-![creategroup](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/creategroup.PNG)
+![createteams](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/createteam.PNG)
 
-![viewgroups](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/grouplist.PNG)
+![viewteams](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/teamlist.PNG)
 
-![assignToGroup](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedToGroup.PNG)
+![assignToTeam](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedToTeam.PNG)
 
 
 
