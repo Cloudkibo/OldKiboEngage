@@ -19,8 +19,8 @@ Notifications are the messages broadcasted from Agents to all customers.Agent ca
 ### Canned Repsonses
 Support agents are on a typing spree when they are answering large number of customers and typing same thing over and over may bore them and reduce their productivity. To keep things up and up for your agents and maintain their pace, you can create well-formatted - predetermined responses for commonly asked questions. 
 
-### Message Channels
-Channels are topical conversation threads within the inbox. Channel is assigned to Team.A team can have more than one channel
+### SubGroups
+Subgroups are topical conversation threads within the inbox. Subgroup is assigned to Group.A group can have more than one subgroup
 
 ### Groups
 Groups are the organizational units like IT,Customer Support ,Sales e.t.c with in a Company
@@ -110,7 +110,7 @@ List of Groups can be seen also each group can be viewed and deleted. Compnay ad
 ![role detail](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/roles%20details.PNG)
 
 
-![List group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/managegroup.PNG)
+![List group](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/managegroup.png)
 
 When supervisor or admin edit the Group, it can change the description of group and assign and remove agent from the group.
 
@@ -169,11 +169,11 @@ Agents can create notifications
 
 Agent can create a subgroup by clicking on Create Subgroup button
 
-![message channels](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/subgroup.PNG)
+![message channels](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/subgroup.png)
 
 
 Edit Subgroup
-![message channels edit](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/subgroupEdit.PNG)
+![message channels edit](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/subgroupEdit.png)
 
 
 ### Canned Responses
@@ -246,7 +246,7 @@ Also gives option to change password and Profile picture.
 ### My Groups
  This shows a list of Groups agent has created or joined
 
-![mygroups](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/mygroups.PNG)
+![mygroups](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/mygroups.png)
 
 
 ### Report 
@@ -272,11 +272,11 @@ Agent Teams will be the team comprises of more than one agent.Any chat session c
   *2. Private Teams :*
       Only the agent who created a private group can add other agents in his team
 
-![createteams](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/createteam.PNG)
+![createteams](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/createteam.png)
 
-![viewteams](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/teamlist.PNG)
+![viewteams](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/teamlist.png)
 
-![assignToTeam](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedToTeam.PNG)
+![assignToTeam](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedToTeam.png)
 
 
 
