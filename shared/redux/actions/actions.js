@@ -12,7 +12,7 @@ const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http:/
 
 function requestLogin(creds) {
   return {
-    type: ActionTypes.LOGIN_REQUEST,
+    type: ActionTypes.LOGIN_REQUEST ,
     isFetching: true,
     isAuthenticated: false,
     creds
@@ -1866,8 +1866,11 @@ export function updateChatList(message,ch,id_not_added)
   console.log(id_not_added);
   console.log(message.request_id);
   // id_not_added is the request_id of the customer with whom agent is already having chat
-  var new_message_arrived_rid = message.request_id;
-  if(!id_not_added){
+  var new_message_arrived_rid = message.uniqueid;
+  if(!message.is_seen){
+    ch.push(new_message_arrived_rid);
+  }
+  /*if(!id_not_added){
     if(ch){
       console.log("this one");
       ch.push(new_message_arrived_rid);
@@ -1890,7 +1893,7 @@ export function updateChatList(message,ch,id_not_added)
         ch.push(new_message_arrived_rid);
       }
     }
-  }
+  }*/
   var temp = ch[0];
   for(var i=1;i<ch.length; i++){
     if(ch[i] === temp){
