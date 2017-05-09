@@ -279,6 +279,20 @@ Agent Teams will be the team comprises of more than one agent.Any chat session c
 ![assignToTeam](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/assignedToTeam.png)
 
 
+### Integration with Facebook Messenger
+
+Detail guide for integrating KiboEngage dashboard with facebook messegner is present here:
+https://kiboengage.kibosupport.com/instructionsforintegratingfacebook
+
+For each facebook page, company admin is required to add the details of facebook page in Facebook Pages tab of KiboEngage
+![fbpages](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/fbpages.png)
+![fbpageInfo](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/fbpageInfo.png)
+![fbchat](https://github.com/Cloudkibo/KiboEngage/blob/master/Documentation/fbchat.png)
+
+
+
+
+
 
 
 
