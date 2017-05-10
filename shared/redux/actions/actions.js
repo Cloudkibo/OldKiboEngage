@@ -1867,10 +1867,10 @@ export function updateChatList(message,ch,id_not_added)
   console.log(message.request_id);
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.uniqueid;
-  if(!message.is_seen){
+  /*if(!message.is_seen){
     ch.push(new_message_arrived_rid);
-  }
-  /*if(!id_not_added){
+  }*/
+  if(!id_not_added){
     if(ch){
       console.log("this one");
       ch.push(new_message_arrived_rid);
@@ -1893,7 +1893,7 @@ export function updateChatList(message,ch,id_not_added)
         ch.push(new_message_arrived_rid);
       }
     }
-  }*/
+  }
   var temp = ch[0];
   for(var i=1;i<ch.length; i++){
     if(ch[i] === temp){
