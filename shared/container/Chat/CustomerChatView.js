@@ -83,7 +83,7 @@ class CustomerChatView extends Component {
         };
         this._onChange = this._onChange.bind(this);
         this.onFileSubmit = this.onFileSubmit.bind(this);
-        
+
         this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
@@ -184,7 +184,7 @@ onFileSubmit(event)
 
 
 connectCall(data){
- 
+
    if(confirm("Other person is calling you to a call. Confirm to join."))
         //window.location.href = data.url;
         var win = window.open(data.url, '_blank');
@@ -419,7 +419,7 @@ else{
     const { socket,dispatch } = this.props;
 
 //self assigning session
-      
+
      if (e.which === 13 && messageVal !="") {
 
         e.preventDefault();
@@ -604,7 +604,7 @@ else{
       this.props.savechat(saveChat);
       const usertoken = auth.getToken();
        // 3. update session status on server
-     
+
       this.props.resolvesession(this.props.sessiondetails.request_id,usertoken,this.props.customerchat);//call action to mark session resolve;
       //update session status on socket
       socket.emit('updatesessionstatus',{'request_id':this.refs.requestid.value,
@@ -654,7 +654,7 @@ else{
          var today = new Date();
          var uid = Math.random().toString(36).substring(7);
          var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-        
+
          var saveChat = {
                           'to' : this.refs.customername.value,
                           'from' : this.props.userdetails.firstname,
@@ -688,7 +688,7 @@ else{
              this.props.mobileuserchat.push(saveChat);
         }
 
-       
+
         if(this.props.sessiondetails.platform == 'web'){
         //socket.emit('send:message', saveChat);
         //this.props.getchatfromAgent(saveChat);
@@ -754,7 +754,7 @@ else{
                       }
 
     socket.emit('informAgent',informMsg);
-  
+
     socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
 
 
@@ -912,7 +912,7 @@ else{
 
   socket.emit('getCustomerSessionsList',this.props.userdetails.uniqueid);
   this.forceUpdate();
- 
+
 }
 
 // Assign chat to group
@@ -1308,7 +1308,7 @@ const { value, suggestions } = this.state;
               {
                 this.props.teamdetails && this.props.teamdetails.length >0?
                      <tr>
-                    
+
                          <td className="col-md-4">
                            <div className="input-group">
                              <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
@@ -1340,7 +1340,7 @@ const { value, suggestions } = this.state;
                      <tr>
                       <td className="col-md-4">
                         <label>Chat Team List is empty</label>
-                     
+
                       </td>
                       <td className="col-md-6">
                         <label>Current Status - {this.props.sessiondetails.status}</label>
@@ -1353,7 +1353,7 @@ const { value, suggestions } = this.state;
              }
                 {/*}
                     <tr>
-                     
+
                       <td className="col-md-6">
                         <label>Current Status - {this.props.sessiondetails.status}</label>
                         <br/>
@@ -1378,7 +1378,7 @@ const { value, suggestions } = this.state;
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
-         
+
           <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>

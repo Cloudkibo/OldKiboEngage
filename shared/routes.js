@@ -77,6 +77,7 @@ import FbChat from './container/facebookChat/FbChat'
 import Widget from './container/Widget/widget'
 import FacebookIntegrationInstructions from './container/FacebookIntegrationInstructions/FacebookIntegrationInstructions';
 import PrivacyPolicy from './container/PrivacyPolicy'
+import Features from './container/Features';
 let socket = io('')
 console.log('entered into routes');
 function requireAuth(nextState, replace) {
@@ -175,6 +176,7 @@ const routes = (
      <Route path="/rescheduleresolvedsession/:id/:name/:email"  component={RescheduleResolvedSessions} onEnter={requireAuth}/>
      <Route path="/rescheduleabandonedsession/:id/:name/:email"  component={RescheduleAbandonedSessions} onEnter={requireAuth}/>
      <Route path="/privacypolicy" component={PrivacyPolicy} />
+     <Route path="/features" component={Features} />
      <Route path="*" component={NotFound} />
   </Route>
 

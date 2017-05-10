@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-
+import {updateChatList} from '../redux/actions/actions';
 
 function notifyMe(message) {
   // Let's check if the browser supports notifications
@@ -50,16 +50,22 @@ class App extends Component {
   constructor(props, context) {
     super(props, context);
     this.alertme = this.alertme.bind(this);
-
+    this.getSocketmessage = this.getSocketmessage.bind(this);
   }
 
   alertme(data){
     notifyMe('customer joined a session');
 
   }
+
+  getSocketmessage(message){
+    this.props.updateChatList(message);
+  }
+
   componentDidMount(){
 
         this.props.route.socket.on('customer_joined',this.alertme);
+        this.props.route.socket.on('send:message',this.getSocketmessage);
 
 }
 
@@ -67,7 +73,7 @@ class App extends Component {
     return (
 
       <div>
-        
+
         { this.props.children }
 
       </div>
@@ -80,4 +86,8 @@ App.propTypes = {
   children: PropTypes.object.isRequired,
 };
 
-export default connect()(App);
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps,{updateChatList})(App);
