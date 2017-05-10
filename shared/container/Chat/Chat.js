@@ -298,7 +298,6 @@ componentDidMount(){
     }
 
      handleSession(id,platform,e){
-     // console.log(platform);
       console.log(id);
       e.preventDefault();
       const usertoken = auth.getToken();
@@ -317,7 +316,7 @@ componentDidMount(){
      // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
 
       this.props.selectCustomerChat(id,this.props.customerchat,this.props.new_message_arrived_rid);
-      this.forceUpdate();
+    //  this.forceUpdate();
 
     }
 

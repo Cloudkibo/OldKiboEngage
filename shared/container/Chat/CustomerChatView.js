@@ -53,7 +53,6 @@ class CustomerChatView extends Component {
     //call action to get user teams
      const usertoken = auth.getToken();
      console.log('constructor is called');
-    //alert(props.sessiondetails.departmentid);
     if(usertoken != null)
      {
         console.log(usertoken);
@@ -270,11 +269,11 @@ else{
 
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-    if(this.props.sessiondetails.platform == 'web' && this.props.sessiondetails.request_id == message.request_id){
-   //  alert('message arrived');
-     this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
+    if(this.refs.pltid.value === 'web' && this.refs.reqid.value === message.request_id){
+     //alert(this.props.customerchat_selected.platform);
+     this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
      this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-      this.forceUpdate();
+   //   this.forceUpdate();
 
      }
 
@@ -282,7 +281,7 @@ else{
       //this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
       this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
-      this.forceUpdate();
+   //   this.forceUpdate();
      // alert(this.props.mobileuserchat.length);
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
@@ -1330,6 +1329,9 @@ const { value, suggestions } = this.state;
 
                           <td className="col-md-6">
                           <label>Current Status - {this.props.sessiondetails.status}</label>
+                          <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
+                          <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
+                         
                           <br/>
                           <label>{this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
 

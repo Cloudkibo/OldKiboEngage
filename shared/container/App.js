@@ -65,7 +65,7 @@ class App extends Component {
   componentDidMount(){
 
         this.props.route.socket.on('customer_joined',this.alertme);
-        this.props.route.socket.on('send:message',this.getSocketmessage);
+     //   this.props.route.socket.on('send:message',this.getSocketmessage);
 
 }
 
