@@ -117,13 +117,14 @@ class AddNotification extends Component {
                          <textarea className="form-control" type='text' rows='4' ref="desc" placeholder="Enter notification text"/>
                    </div>
                 </div>
-
+                {/*
                 <div className="form-group">
                   <label className="control-label col-md-3"> Upload Image</label>
                    <div className="col-md-9">
                             <input className="form-control input-medium" type='file'  ref = "img"/>
                    </div>
                 </div>
+              */}
               <div className="form-actions fluid">
               <div className="row">
                 <div className="col-md-3">
