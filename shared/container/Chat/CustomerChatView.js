@@ -270,8 +270,10 @@ else{
 
    //get updated chat messages from socket
    //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-    if(this.props.sessiondetails.platform == 'web' && this.props.sessiondetails.request_id == message.request_id){
+    if(this.props.sessiondetails.platform == 'web' && this.props.sessiondetails.request_id === message.request_id){
    //  alert('message arrived');
+   console.log(this.props.sessiondetails.request_id);
+   console.log(message.request_id);
      this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.sessiondetails.request_id);
      this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
       this.forceUpdate();
@@ -1390,7 +1392,7 @@ const { value, suggestions } = this.state;
 
                                (this.props.userdetails.firstname === chat.from?
                                     <li className="right clearfix agentChatBox" style={{'marginLeft':'180px','width':'400px'}}>
-                                 
+
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
