@@ -1389,7 +1389,8 @@ const { value, suggestions } = this.state;
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
 
                                (this.props.userdetails.firstname === chat.from?
-                                   <li className="right clearfix agentChatBox">
+                                    <li className="right clearfix agentChatBox" style={{'marginLeft':'180px','width':'400px'}}>
+                                 
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
@@ -1447,7 +1448,7 @@ const { value, suggestions } = this.state;
                             this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
 
                                (this.props.userdetails.firstname === chat.from?
-                                   <li className="right clearfix agentChatBox">
+                                   <li className="right clearfix agentChatBox" style={{'marginLeft':'180px','width':'400px'}}>
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">
