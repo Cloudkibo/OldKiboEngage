@@ -164,6 +164,7 @@ export function chatwebhook(req, res) {
                            console.log(socketsession);
 			   							 		 socket.getfbchat({chatobj,socketsession});
 
+                          sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
 
                            // update fbsession status if marked resolved
 
@@ -188,7 +189,8 @@ export function chatwebhook(req, res) {
                               console.log(bodyS);
                               if(!error){
                                   //send push notification to all agents
-                                  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
+                                  console.log('sending push to all agents');
+                                //  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
 
                               }
                               else{
