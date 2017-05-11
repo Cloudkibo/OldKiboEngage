@@ -58,9 +58,9 @@ class Features extends Component {
               </a>
             </li>
             <li className="dropdown">
-              <a className="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                Features
-              </a>
+            <Link to='/features' className="dropdown-toggle">
+              Features
+            </Link>
             </li>
             <li className="dropdown">
               <a className="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
@@ -68,9 +68,9 @@ class Features extends Component {
               </a>
             </li>
             <li className="dropdown">
-              <a className="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                Developers
-              </a>
+            <Link to='/privacypolicy' className="dropdown-toggle">
+              Privacy Policy
+            </Link>
             </li>
             <li className="dropdown">
               <a className="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
@@ -98,74 +98,40 @@ class Features extends Component {
       <div className="row">
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-phone-square text-primary sr-icons"></i>
-            <h3>Live Communication</h3>
-            <p className="text-muted">Instant chat, make audio call, share screen
-            to communicate the problem and solve them live.</p>
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-comments text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Live Chat</h3>
+            <p className="text-muted">Instant chat feature allows your visitors to
+            initiate a chat and communicate with your agents.</p>
           </div>
         </div>
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
             <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-users text-primary sr-icons"></i>
-            <h3>Agent Groups</h3>
-            <p className="text-muted">Use agent groups to better organize teams in
-             your organization and automate conversation assignment to relevant groups.</p>
+            <br></br><br></br>
+            <h3>Customer Directory</h3>
+            <p className="text-muted">Agents would have directory of previous customers or visitors.</p>
           </div>
         </div>
-        <div className="col-lg-3 col-md-6 text-center">
-          <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-envelope-square text-primary sr-icons"></i>
-            <h3>Sub Groups</h3>
-            <p className="text-muted">Categorize conversations into subgroups and
-             route your customers to the right groups.</p>
-          </div>
-        </div>
-        <div className="col-lg-3 col-md-6 text-center">
-          <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-user text-primary sr-icons"></i>
-            <h3>Role Based Access</h3>
-            <p className="text-muted">Exercise fine grained access control to features
-             by assigning specific roles to users in your organization.</p>
-          </div>
-        </div>
-      </div>
-      <br></br>
-      <br></br>
-      <div className="row">
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
             <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-bell text-primary sr-icons"></i>
-            <h3>Push Notifications</h3>
-            <p className="text-muted">Ensure that users get alerted when you respond
-             to them, even if they aren’t actively using your app.</p>
-          </div>
-        </div>
-        <div className="col-lg-3 col-md-6 text-center">
-          <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-location-arrow text-primary sr-icons"></i>
-            <h3>Optimized UI</h3>
-            <p className="text-muted">Empower your agents with our interface that
-             is optimized for messaging. Bulk actions, short codes, fast conversation
-              switching, and other features help agents respond faster. Real time
-              updates to conversations allow your agents to multitask and prioritize
-              issues, boosting agent productivity.</p>
-          </div>
-        </div>
-        <div className="col-lg-3 col-md-6 text-center">
-          <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-list-alt text-primary sr-icons"></i>
-            <h3>Bulk Actions</h3>
-            <p className="text-muted">Manage different queries and respond to them in
-            a single action. You can assign multiple conversations to agents or groups,
-            update the status, and even reply in bulk.</p>
+            <br></br><br></br>
+            <h3>Notifications</h3>
+            <p className="text-muted">Notifications are the messages broadcasted
+            from Agents to all customers.Agent can send information related to new
+            offers,product launch and other advertisements to customers.</p>
           </div>
         </div>
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
             <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-database text-primary sr-icons"></i>
-            <h3>Canned Response</h3>
-            <p className="text-muted">Set up pre-formatted response templates to answer
-            common questions, saving your agents the trouble of typing the same thing over and over.</p>
+            <br></br><br></br>
+            <h3>Canned Repsonses</h3>
+            <p className="text-muted">Typing same thing over and
+            over may bore them and reduce their productivity. To keep things up
+            for your agents and maintain their pace, you can create well-formatted
+            - predetermined responses for commonly asked questions.</p>
           </div>
         </div>
       </div>
@@ -174,37 +140,114 @@ class Features extends Component {
       <div className="row">
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-comment text-primary sr-icons"></i>
-            <h3>Rich Messaging</h3>
-            <p className="text-muted">Make conversations more friendly with rich messages.
-            Agents can respond to user queries with images and deep-links to provide a truly
-            mobile experience.</p>
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-envelope-square text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Sub Groups</h3>
+            <p className="text-muted">Subgroups are topical conversation threads within
+            the inbox. Sub group is assigned to Group.A group can have more than one sub group.</p>
           </div>
         </div>
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-file-code-o text-primary sr-icons"></i>
-            <h3>Short Code</h3>
-            <p className="text-muted">Create short codes for commonly used phrases, for
-            agents to access them rapidly. For example, typing /hand  will convert into
-            “Have a nice day.”</p>
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-users text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Groups</h3>
+            <p className="text-muted">Groups are the organizational units like IT,
+            Customer Support ,Sales e.t.c with in a Company.</p>
           </div>
         </div>
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
-            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-facebook text-primary sr-icons"></i>
-            <h3>Facebook Integration</h3>
-            <p className="text-muted">Start engaging with your customers on Facebook
-            by bringing your knowledge base and forums to your Facebook fans with
-            the Facebook Page tab. </p>
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-phone-square text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Personalized Calls</h3>
+            <p className="text-muted">Client can have option to decide which support
+            agent he wants to talk to.Clients can choose specific agent to discuss their issue.</p>
           </div>
         </div>
+        <div className="col-lg-3 col-md-6 text-center">
+          <div className="service-box">
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-user text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Agent Management</h3>
+            <p className="text-muted">KiboEngage enables Agent Management.You can
+            invite agents and can manange their roles</p>
+          </div>
+        </div>
+      </div>
+      <br></br>
+      <br></br>
+      <div className="row">
         <div className="col-lg-3 col-md-6 text-center">
           <div className="service-box">
             <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-bar-chart text-primary sr-icons"></i>
+            <br></br><br></br>
             <h3>Reports</h3>
-            <p className="text-muted">View reports on performance by agents and teams,
-             agent response time, call statistic, team traffic to get the insights.</p>
+            <p className="text-muted">Bring focus on work performed by agents and
+            teams, agent response time, call statistic, group traffic to get the
+            insights. Analytics plays a huge role in customer service. Quality reports
+            helps you to stay on target.</p>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 text-center">
+          <div className="service-box">
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-link text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Widget on Website</h3>
+            <p className="text-muted">Each company has its own unique identity. Easy way
+            to embed widget code and connect with you customer.</p>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 text-center">
+          <div className="service-box">
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-phone text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Audio/Video Call</h3>
+            <p className="text-muted">Live call with your customer helps to have live
+            conversation with your customer and understand their problems and solve
+            them. Customer can just fill a form and join agent in the call.</p>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 text-center">
+          <div className="service-box">
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-desktop text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Screen sharing</h3>
+            <p className="text-muted">Screen sharing feature helps you to direct your
+            visitor directly to the answer they have been looking for, instead of trying
+             to explain where to find the answer.</p>
+          </div>
+        </div>
+      </div>
+      <br></br>
+      <br></br>
+      <div className="row">
+        <div className="col-lg-3 col-md-6 text-center">
+          <div className="service-box">
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-facebook-official text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Integration with Facebook Messenger</h3>
+            <p className="text-muted">Companies can now easily integrate their KiboEngage
+            Dashboard with their Facebook Page to communicate effectively with customers on Facebook</p>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 text-center">
+          <div className="service-box">
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-user text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Role Based Access</h3>
+            <p className="text-muted">Exercise fine grained access control to features
+            by assigning specific roles to agents in your organization.</p>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-6 text-center">
+          <div className="service-box">
+            <i style={{fontSize: 40, color: '#F05F40'}} className="fa fa-envelope text-primary sr-icons"></i>
+            <br></br><br></br>
+            <h3>Rich Messaging</h3>
+            <p className="text-muted">Make conversations more friendly with rich messages. Agents
+            can respond to user queries with images, GIFs, emoticons, stickers, videos and
+            deep-links to provide a truly exciting experience.</p>
           </div>
         </div>
       </div>
