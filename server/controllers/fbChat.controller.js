@@ -188,7 +188,7 @@ export function chatwebhook(req, res) {
                               console.log(bodyS);
                               if(!error){
                                   //send push notification to all agents
-                                  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat'},'New message from Facebook Customer');
+                                  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
 
                               }
                               else{
@@ -240,14 +240,9 @@ export function chatwebhook(req, res) {
 function sendpushToAllAgents(body,pushTitle){
   console.log('send push to all agents');
   var payload = {
-                              data: {
-                                customerid : body.customerid,
-                                msgid:body.msgid,
-                                type:body.type,
-                                status : pushTitle,
-                              },
+                              data: body,
                               badge: 0
-                            };
+                };
  
  var  headers =  {
    'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
@@ -804,7 +799,7 @@ export function resolvechatsessionfb(req, res) {
            //console.log(body)
            // inform mobile agents through push notification
            //send push notification to all agents
-            sendpushToAllAgents({'pageid' : req.body.pageid,'user_id':req.body.user_id,'type':'fbchat_resolved'},'Resolve Chat Session');
+            sendpushToAllAgents({'pageid' : req.body.pageid,'user_id':req.body.user_id,'type':'fbchat_resolved','status':'Resolve Chat Session'},'Resolve Chat Session');
 
             return res.status(200).json({statusCode : 201,message:'success'});
                    }
