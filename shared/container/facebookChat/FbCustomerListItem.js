@@ -118,6 +118,36 @@ return res;
 
     </div>
     :
+    unreadCount > 0 ?
+    <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(255, 0, 0, 0.6)'}} onClick={props.onClickSession}>
+    <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
+
+    <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
+       {(unreadCount == 0?
+      <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
+
+      )}
+      <div style={divMargin}>
+           <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
+           <br/>
+           <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+          <br/>
+          {
+             agentname.length > 0?
+             <div>
+               <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>
+               <br/>
+               <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+             </div>:
+             <div> <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span></div>
+
+           }
+          <br/>
+     </div>
+
+
+   </div>
+   :
      <div className="list-group-item" style={{'width':'300px'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
