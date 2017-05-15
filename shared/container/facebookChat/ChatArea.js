@@ -69,6 +69,7 @@ export class ChatArea extends Component {
           visible: false,
           longtextwarning:'',
           agentinTeam: false,
+          showFileUploading:false,
 
         };
        this.onChange = this.onChange.bind(this);
@@ -99,6 +100,11 @@ export class ChatArea extends Component {
 
 handleChange(e){
 
+}
+componentDidUpdate(props){
+  if(props.fbsessionSelected.length != this.props.fbsessionSelected.length){
+    this.setState({showFileUploading:false});
+  }
 }
 assignSessionToTeam(e){
 
@@ -803,14 +809,16 @@ handleMessageSubmit(e) {
 
 onFileSubmit(event)
     {
-         const { socket,dispatch } = this.props;
+        const { socket,dispatch } = this.props;
         var sendmessage = true;
         const usertoken = auth.getToken();
         var fileData = new FormData();
         this.refs.selectFile.value = null;
+       
          if(this.props.fbsessionSelected.status == "new"){
             this.autoassignChat();
         }
+        
         if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
           sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
@@ -820,7 +828,7 @@ onFileSubmit(event)
 
         if ( this.state.userfile ) {
               console.log(this.state.userfile)
-
+               this.setState({showFileUploading:true});
 
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
@@ -1484,8 +1492,15 @@ render () {
                          <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
                             Upload
                           </button>
+
                        </td>
                     </tr>
+                    {
+                      this.state.showFileUploading == true &&
+                      <tr>
+                        <td>Uploading file...Please wait</td>
+                      </tr>  
+                    } 
                   </tbody>
                   </table>
                   </div>

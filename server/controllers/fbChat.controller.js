@@ -697,6 +697,7 @@ export function uploadchatfilefb(req, res) {
 
                           else{
                                 console.log('Error: ', error)
+                                res.json({status:'failure'}); 
                             }
                      
                       }
