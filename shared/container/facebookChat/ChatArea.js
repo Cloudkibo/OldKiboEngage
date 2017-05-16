@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
-import { getfbchatfromAgent,add_socket_fb_message ,resolvesessionfb,uploadFbChatfile,createnews,assignToAgentFB} from '../../redux/actions/actions'
+import { getfbchatfromAgent,add_socket_fb_message,updatefileuploadStatus, resolvesessionfb,uploadFbChatfile,createnews,assignToAgentFB} from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
@@ -69,7 +69,7 @@ export class ChatArea extends Component {
           visible: false,
           longtextwarning:'',
           agentinTeam: false,
-          showFileUploading:false,
+          
 
         };
        this.onChange = this.onChange.bind(this);
@@ -101,11 +101,7 @@ export class ChatArea extends Component {
 handleChange(e){
 
 }
-componentDidUpdate(props){
-  if(props.fbsessionSelected.length != this.props.fbsessionSelected.length){
-    this.setState({showFileUploading:false});
-  }
-}
+
 assignSessionToTeam(e){
 
     const { socket,dispatch } = this.props;
@@ -815,21 +811,25 @@ onFileSubmit(event)
         var fileData = new FormData();
         this.refs.selectFile.value = null;
        
-         if(this.props.fbsessionSelected.status == "new"){
-            this.autoassignChat();
-        }
         
-        if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
-          sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
-        }
+      
 
-       if(sendmessage == true){
+        if ( this.state.userfile && this.state.userfile != '' ) {
 
-        if ( this.state.userfile ) {
+              this.props.updatefileuploadStatus(true);
+              if(this.props.fbsessionSelected.status == "new"){
+                    this.autoassignChat();
+                }
+                
+              if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
+                sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
+
+              }
+
+            if(sendmessage == true){
               console.log(this.state.userfile)
-               this.setState({showFileUploading:true});
-
+             
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
               var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
@@ -869,9 +869,15 @@ onFileSubmit(event)
               fileData.append('filesize',  this.state.userfile.size);
               fileData.append('chatmsg', JSON.stringify(saveMsg));
               this.props.uploadFbChatfile(fileData,usertoken,this.props.fbchats,this.props.senderid);
+              this.setState({ userfile:''});
+              this.forceUpdate();
         }
         }
-        this.forceUpdate();
+
+        else{
+          alert('Please choose a file to upload.');
+        }
+       // this.forceUpdate();
         event.preventDefault();
 
     }
@@ -1496,9 +1502,9 @@ render () {
                        </td>
                     </tr>
                     {
-                      this.state.showFileUploading == true &&
+                      this.props.showFileUploading && this.props.showFileUploading == true &&
                       <tr>
-                        <td>Uploading file...Please wait</td>
+                        <td><p style={{color:'red'}}>Uploading file...Please wait</p></td>
                       </tr>  
                     } 
                   </tbody>
@@ -1541,7 +1547,8 @@ function mapStateToProps(state) {
           fbchatSelected:state.dashboard.fbchatSelected,
           fbsessionSelected:state.dashboard.fbsessionSelected,
           status:state.dashboard.status,
+          showFileUploading: state.dashboard.showFileUploading,
                     };
 }
 
-export default connect(mapStateToProps,{getfbchatfromAgent,add_socket_fb_message,resolvesessionfb,uploadFbChatfile,createnews,assignToAgentFB})(ChatArea);
+export default connect(mapStateToProps,{updatefileuploadStatus,getfbchatfromAgent,add_socket_fb_message,resolvesessionfb,uploadFbChatfile,createnews,assignToAgentFB})(ChatArea);

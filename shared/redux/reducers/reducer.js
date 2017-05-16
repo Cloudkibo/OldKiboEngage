@@ -521,6 +521,7 @@ const dashboard = (state =dashboardState, action) => {
              fbchats:action.fbchats,
              fbchatSelected:action.fbchatSelected,
              errorMessage:'',
+             showFileUploading:false,
 
 
             };
@@ -872,6 +873,12 @@ const dashboard = (state =dashboardState, action) => {
              errorMessage:action.message,
 
             };
+      case ActionTypes.SHOW_FILE_UPLOAD_INDICATOR:
+       return{
+          ...state,
+            showFileUploading :action.showFileUploading ,
+
+      };       
 
     default:
       return state;
@@ -947,6 +954,7 @@ function widget(state = widgetState, action){
 
       };
 
+   
 
   default:
       return state;

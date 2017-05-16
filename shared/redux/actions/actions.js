@@ -3743,6 +3743,12 @@ export function uploadFbChatfile(fileData,usertoken,fbchats,id) {
 };
 
 
+export function updatefileuploadStatus(status){
+  return{
+    showFileUploading:status,
+    type:ActionTypes.SHOW_FILE_UPLOAD_INDICATOR,
+  }
+}
 /*** reseting joined state ***/
 export function setjoinedState(stateVar){
    return{
