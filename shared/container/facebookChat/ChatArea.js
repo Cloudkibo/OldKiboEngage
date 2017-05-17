@@ -613,21 +613,22 @@ onTestURLAudio(e){
 
 }
  componentWillUpdate(){
- // this.scrollToTop();
+  //this.scrollToTop();
 }
 
 componentDidMount(){
-  //this.scrollToBottom();
+ // alert('i am called');
+  this.scrollToBottom();
 }
 
 componentDidUpdate(prevProps){
-  /*if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid == this.props.senderid){
-
+  if(prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id || prevProps.fbchatSelected.length == this.props.fbchatSelected.length -1 ){
+//   alert('i am called');
    this.scrollToBottom();
 
   }
 
-  if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
+  /*if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
     this.scrollToTop()
   }*/
   //this.scrollToBottom();
@@ -655,8 +656,13 @@ scrollToBottom() {
     console.log(node.offsetTop)
 
     node.parentNode.scrollTop = node.offsetTop + 1100;*/
-    const node = ReactDOM.findDOMNode(this.messagesEnd);
-    node.scrollIntoView({behavior: "smooth"});
+   // const node = ReactDOM.findDOMNode(this.messagesEnd);
+    //node.scrollIntoView({behavior: "smooth"});
+    //alert(this.props.fbchatSelected.length-1);
+    console.log(this.refs[this.props.fbchatSelected.length-1])
+    this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
+  
+    //node.scrollTop = node.scrollHeight;
 
 
 }
@@ -1241,7 +1247,7 @@ render () {
     let list = this.props.messages.map((data, index) => {
       return (
         data.senderid == this.props.senderid?
-        <div className='message left userChatBox' key={index} ref={'chatmsg'+index} id={'chatmsg'+index}>
+        <div className='message left userChatBox' key={index} ref={index} id={'chatmsg'+index}>
         <div className='message-header'>
           <img className='profile-image' src={this.props.userprofilepic} width="36px" height="36px"/>
           <span className='username'>{this.props.username}</span>
@@ -1281,7 +1287,7 @@ render () {
 
             </div>
         </div> :
-        <div className='message right agentChatBox' key={index} ref={'chatmsg'+index} id={'chatmsg'+index}>
+        <div className='message right agentChatBox' key={index} ref={index} id={'chatmsg'+index}>
 
         <div className='message-header'>
           <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
@@ -1403,7 +1409,7 @@ render () {
                   </table>
 
           </div>
-        <div id='messages-container' style={{'height':'400px','overflowY':'scroll'}}>
+        <div id='messages-container' style={{'height':'370px','overflowY':'scroll'}}>
           <div style={ {float:"left", clear: "both"} }
                 ref={(el) => { this.messagesTop = el; }}>
             </div>

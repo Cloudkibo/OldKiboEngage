@@ -180,8 +180,8 @@ componentWillReceiveProps(props){
 
                           {this.props.fbsessions && this.props.fbsessionSelected &&
                             <div>
-                                <label>Customer Name :</label>
-                                <input defaultValue = {this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} ref="customername"/>
+                                <label>Customer Name: </label>
+                                <label ref="customername">{this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name}</label>
 
                            </div>
                          }
