@@ -89,7 +89,7 @@ return res;
   return (
 
     (selected ?
-     <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(195, 188, 188, 0.4)'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'150px'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
@@ -119,7 +119,7 @@ return res;
     </div>
     :
     unreadCount > 0 ?
-    <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(255, 0, 0, 0.6)'}} onClick={props.onClickSession}>
+    <div className="list-group-item" style={{'width':'300px','backgroundColor' : 'rgba(255, 0, 0, 0.6)','height':'150px'}} onClick={props.onClickSession}>
     <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
@@ -148,7 +148,7 @@ return res;
 
    </div>
    :
-     <div className="list-group-item" style={{'width':'300px'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'300px','height':'150px'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
 
      <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>

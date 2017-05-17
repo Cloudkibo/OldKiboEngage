@@ -617,7 +617,7 @@ onTestURLAudio(e){
 }
 
 componentDidMount(){
-  this.scrollToBottom();
+  //this.scrollToBottom();
 }
 
 componentDidUpdate(prevProps){
@@ -630,7 +630,7 @@ componentDidUpdate(prevProps){
   if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
     this.scrollToTop()
   }*/
-  this.scrollToBottom();
+  //this.scrollToBottom();
   //check if the status of the fbsession is changed
   if((prevProps.fbsessionSelected.agent_ids.length != this.props.fbsessionSelected.agent_ids.length) || (prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id)){
 
@@ -1403,7 +1403,7 @@ render () {
                   </table>
 
           </div>
-        <div id='messages-container' style={{'height':'400','overflowY':'scroll'}}>
+        <div id='messages-container' style={{'height':'400px','overflowY':'scroll'}}>
           <div style={ {float:"left", clear: "both"} }
                 ref={(el) => { this.messagesTop = el; }}>
             </div>
@@ -1413,9 +1413,9 @@ render () {
             </div>
         </div>
 
-         <div className="panel-footer">
+         <div className="panel-footer" style={{'marginTop':'-80px'}}>
 
-          <div style={{display: 'inline-block', width: '94%'}}>
+          <div style={{display: 'inline-block', width: '94%'}} className="pull-left">
                   <Autosuggest  ref = "msg" suggestions={suggestions}
 
                    onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
@@ -1426,10 +1426,11 @@ render () {
 
                    inputProps={inputProps} />
             </div>
-            <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
-            <div className="pull-right" style={{display: 'inline-block', paddingTop: '4px'}}>
+            <div className="pull-right" style={{display: 'inline-block'}}>
               <i style={{fontSize: '30px', color: '#0099e6', cursor: 'pointer'}} className="fa fa-thumbs-up" onClick = {this.sendThumbsUp} ></i>
             </div>
+            <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
+           
             <br />
             <br />
             <div>

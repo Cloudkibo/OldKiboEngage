@@ -135,10 +135,10 @@ componentWillReceiveProps(props){
       <div>
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
 
-       <div className="page-container">
+       <div className="page-container" >
 
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
-          <div className="page-content-wrapper">
+          <div className="page-content-wrapper" >
             <div className="page-content">
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
@@ -148,7 +148,7 @@ componentWillReceiveProps(props){
                 </div>
               </div>
 
-           <div className="portlet-body">
+           <div className="portlet-body"  >
 
              	<div className="table-responsive">
 
@@ -161,7 +161,7 @@ componentWillReceiveProps(props){
              			<tbody>
                    	<tr>
         			             		<td  className="col-md-2 myleftborder">
-        			             			<div>
+        			             			<div style={{'height':'80vh','overflow-y':'scroll'}}>
         					                      {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
         					                        this.props.fbsessions.map((customer, i) => (
 
@@ -175,7 +175,7 @@ componentWillReceiveProps(props){
         			                   </div>
         			                 </td>
                                <td  className="col-md-6">
-                              <div>
+                              <div >
 
 
                           {this.props.fbsessions && this.props.fbsessionSelected &&

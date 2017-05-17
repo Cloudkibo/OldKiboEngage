@@ -1098,7 +1098,7 @@ export function getcompanylogo(req, res) {
   var token = req.headers.authorization;
   ////console.log('token received is  : ' + token);
   var options = {
-      url: `${baseURL}/api/inviteagenttokens/`,
+      url: `${baseURL}/api/inviteagenttokens/`, //call tempaccounts
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`
