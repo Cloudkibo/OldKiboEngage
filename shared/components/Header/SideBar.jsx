@@ -10,7 +10,7 @@ class SideBar extends Component
   return (
    <div className="page-sidebar navbar-collapse collapse">
 
-            <ul className="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            <ul className="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style={{'height':'95vh !important'}}>
               <li className="start">
                <Link to='/dashboard'>
                   <i className="fa fa-dashboard">
@@ -218,18 +218,8 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              <li className="">
-                <Link to="/completedcalls">
-                  <i className="fa fa-question-circle">
-                  </i>
-                  <span className="title">
-                     FAQs
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
-
+           
+            {this.props.isAdmin == "Yes"?
               <li className="">
                 <Link to="/instructionsforintegratingfacebook">
                   <i className="fa fa-info-circle">
@@ -242,6 +232,9 @@ class SideBar extends Component
                 </Link>
               </li>
 
+                :<li></li>
+                }
+             {this.props.isAdmin == "Yes"?
               <li className="">
                 <Link to="/fbpages">
                   <i className="fa fa-facebook">
@@ -254,6 +247,8 @@ class SideBar extends Component
                 </Link>
               </li>
 
+                :<li></li>
+                }
               <li className="">
                 <Link to="/fbchat">
                   <i className="fa fa-facebook">
@@ -266,7 +261,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-
+            {this.props.isAdmin == "Yes"?
               <li className="">
                 <Link to="/companyprofile">
                   <i className="fa fa-cogs">
@@ -278,6 +273,9 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
+
+                :<li></li>
+                }
 
 
           </ul>
