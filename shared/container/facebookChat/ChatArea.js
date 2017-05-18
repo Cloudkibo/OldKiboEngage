@@ -661,8 +661,9 @@ scrollToBottom() {
     //alert(this.props.fbchatSelected.length-1);
     //console.log(this.refs[this.props.fbchatSelected.length-1])
    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
+    //alert(this.props.fbchatSelected.length);
     const target = ReactDOM.findDOMNode(this.refs[this.props.fbchatSelected.length-1]);
-    target.parentNode.scrollTop = target.offsetTop;   
+    target.parentNode.scrollTop = target.offsetTop;  
     //node.scrollTop = node.scrollHeight;
 
 
@@ -1410,14 +1411,10 @@ render () {
                   </table>
 
           </div>
-        <div id='messages-container' style={{'height':'370px','overflowY':'scroll'}}>
-          <div style={ {float:"left", clear: "both"} }
-                ref={(el) => { this.messagesTop = el; }}>
-            </div>
+        <div id='messages-container' style={{'height':'370px','overflowY':'scroll'}} ref="messagelist">
+         
           {list}
-          <div style={ {float:"left", clear: "both"} }
-                ref={(el) => { this.messagesEnd = el; }}>
-            </div>
+          
         </div>
 
          <div className="panel-footer" style={{'marginTop':'-80px'}}>
