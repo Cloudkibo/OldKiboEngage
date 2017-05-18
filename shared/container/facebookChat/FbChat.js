@@ -64,6 +64,7 @@ getfbCustomer(data){
 }
 
 updateFbsessionlist(data){
+  
   this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected);
   this.forceUpdate();
 }
@@ -160,7 +161,7 @@ componentWillReceiveProps(props){
 
         			             		<div  className="chat_wrapper_left myleftborder">
                                       {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
-        					                        this.props.fbsessions.map((customer, i) => (
+        					                        this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
 
                                             <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} selectedCustomer={this.props.fbsessionSelected} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
 

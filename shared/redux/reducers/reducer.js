@@ -804,7 +804,12 @@ const dashboard = (state =dashboardState, action) => {
                 fbsessions:action.fbsessions,
                 fbsessionSelected:action.fbsessionSelected?action.fbsessionSelected:state.fbsessionSelected,
                };
-
+          case ActionTypes.FILTER_RESOLVED_SESSION_FB:
+            return {
+              ...state,errorMessageProfile:'',
+                fbsessionSelected:action.fbsessionSelected,
+                fbchatSelected:state.fbchats.filter((c)=>c.senderid == action.fbsessionSelected.user_id.user_id || c.recipientid == action.fbsessionSelected.user_id.user_id)
+               };
         case ActionTypes.JOINED_MEETING:
              return {
               ...state,errorMessageProfile:'',

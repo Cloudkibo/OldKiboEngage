@@ -3647,6 +3647,16 @@ export function updatefbsessionlist(data,customerlist,currentSession){
      currentSession.status = data.status;
      currentSession.agent_ids.push(data.agentid);
   }
+
+  if(currentSession.status == "resolved"){
+    // we need to reset currentSession to the first (new/assigned session in the list) session
+    for(var j=0;j<customerlist.length;j++){
+      if(customerlist[j].status != "resolved"){
+        currentSession = customerlist[j];
+        break;
+      }
+    } 
+  }
    return{
     type:ActionTypes.ADD_NEW_FB_CUSTOMER,
     fbsessions:customerlist,
@@ -3884,9 +3894,15 @@ export function assignToAgentFB(session,usertoken,agentemail,assignmentType) {
   };
 }
 
+export function resolvefbsessionResponse(fbsessionSelected,fbsession){
+   return{
+      fbsessionSelected:fbsession.filter((c) => c.status!= 'resolved')[0],
+      type: ActionTypes.FILTER_RESOLVED_SESSION_FB,
+    }
+}
 
 //mark session resolve
-export function resolvesessionfb(data,usertoken) {
+export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession) {
   console.log('resolvesessionfb');
   console.log(data);
   if(confirm("Are you sure,you want to mark session resolved?")){
@@ -3903,7 +3919,7 @@ export function resolvesessionfb(data,usertoken) {
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => {console.log(res)});
+    }).then((res) => res.json()).then(res => dispatch(resolvefbsessionResponse(fbsessionSelected,fbsession)));
   };
 }
 }

@@ -571,7 +571,7 @@ resolveSession(e){
         datetime : Date.now(),
       }
 
-      this.props.resolvesessionfb(resolvesessionbody,usertoken);
+      this.props.resolvesessionfb(resolvesessionbody,usertoken,this.props.fbsessionSelected,this.props.fbsessions);
 
       //update session status on socket
        //update session status on socket
