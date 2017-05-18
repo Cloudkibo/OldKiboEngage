@@ -10,7 +10,7 @@ class SideBar extends Component
   return (
    <div className="page-sidebar navbar-collapse collapse">
 
-            <ul className="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style={{'height':'95vh !important'}}>
+            <ul className="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
               <li className="start">
                <Link to='/dashboard'>
                   <i className="fa fa-dashboard">

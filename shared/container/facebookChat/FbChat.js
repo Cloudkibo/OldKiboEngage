@@ -150,19 +150,16 @@ componentWillReceiveProps(props){
 
            <div className="portlet-body"  >
 
-             	<div className="table-responsive">
+             	<div>
 
                 {this.props.fbsessions && this.props.fbsessions.length == 0?
                   <p>There is no customer session from Facebook</p>
 
                   :
-                <table className="table">
+                <div className="chat_wrapper">
 
-             			<tbody>
-                   	<tr>
-        			             		<td  className="col-md-2 myleftborder">
-        			             			<div style={{'height':'80vh','overflow-y':'scroll'}}>
-        					                      {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
+        			             		<div  className="chat_wrapper_left myleftborder">
+                                      {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
         					                        this.props.fbsessions.map((customer, i) => (
 
                                             <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} selectedCustomer={this.props.fbsessionSelected} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
@@ -173,9 +170,8 @@ componentWillReceiveProps(props){
 
 
         			                   </div>
-        			                 </td>
-                               <td  className="col-md-6">
-                              <div >
+        			                
+                              <div className="chat_wrapper_right">
 
 
                           {this.props.fbsessions && this.props.fbsessionSelected &&
@@ -190,10 +186,7 @@ componentWillReceiveProps(props){
 
                           }
                       </div>
-                       </td>
-			                </tr>
-			            </tbody>
-                </table>
+                      </div>
               }
         		</div>
 

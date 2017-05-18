@@ -659,9 +659,10 @@ scrollToBottom() {
    // const node = ReactDOM.findDOMNode(this.messagesEnd);
     //node.scrollIntoView({behavior: "smooth"});
     //alert(this.props.fbchatSelected.length-1);
-    console.log(this.refs[this.props.fbchatSelected.length-1])
-    this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
-  
+    //console.log(this.refs[this.props.fbchatSelected.length-1])
+   // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
+    const target = ReactDOM.findDOMNode(this.refs[this.props.fbchatSelected.length-1]);
+    target.parentNode.scrollTop = target.offsetTop;   
     //node.scrollTop = node.scrollHeight;
 
 

@@ -10,6 +10,40 @@ body {
 	background: #fff;
 }
 
+
+.chat_wrapper {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    height:100vh;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.chat_wrapper_left {
+    -webkit-flex: 0.28;
+    -ms-flex: 0.28;
+    flex: 0.28;
+    
+    overflow-y:scroll;
+    
+    padding: 1em;
+   
+}
+
+.chat_wrapper_right {
+    -webkit-flex: 0.72;
+    -ms-flex: 0.72;
+    flex: 0.72;
+    
+    overflow-y:scroll;
+    
+    padding: 1em;
+    
+}
+
+
 /***
 General typography
 ***/
@@ -3362,5 +3396,7 @@ text-align: left;
 
 
 /*********** Chat ***********/
+
+
 
 
