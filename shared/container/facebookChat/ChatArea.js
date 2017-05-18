@@ -602,7 +602,7 @@ onTestURL(e){
 
 onTestURLAudio(e){
   console.log(e)
-  var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i;
+  var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx|mp4)($|\?)/i;
 
 
   var truef = AUDIO_EXTENSIONS.test(e)
