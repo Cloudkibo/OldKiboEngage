@@ -69,6 +69,7 @@ export class ChatArea extends Component {
           visible: false,
           longtextwarning:'',
           agentinTeam: false,
+      
           
 
         };
@@ -571,7 +572,7 @@ resolveSession(e){
         datetime : Date.now(),
       }
 
-      this.props.resolvesessionfb(resolvesessionbody,usertoken,this.props.fbsessionSelected,this.props.fbsessions);
+      this.props.resolvesessionfb(resolvesessionbody,usertoken,this.props.fbsessionSelected,this.props.fbsessions,this.props.fbchats);
 
       //update session status on socket
        //update session status on socket
@@ -583,8 +584,7 @@ resolveSession(e){
 
                                      });
 
-
-      this.forceUpdate();
+     this.forceUpdate();
   }
 
 }
@@ -1337,6 +1337,7 @@ render () {
 
 
       return (
+      
         <div>
           <div className="table-responsive">
                            <table className="table table-colored">
@@ -1516,7 +1517,7 @@ render () {
                   </table>
                   </div>
        </div>
-
+     
       )
 
   }
@@ -1553,6 +1554,7 @@ function mapStateToProps(state) {
           fbsessionSelected:state.dashboard.fbsessionSelected,
           status:state.dashboard.status,
           showFileUploading: state.dashboard.showFileUploading,
+       
                     };
 }
 

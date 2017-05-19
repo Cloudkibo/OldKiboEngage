@@ -65,7 +65,7 @@ getfbCustomer(data){
 
 updateFbsessionlist(data){
   
-  this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected);
+  this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected,this.props.fbchats,this.props.fbchatSelected);
   this.forceUpdate();
 }
 getfbMessage(data){
@@ -105,9 +105,12 @@ componentWillReceiveProps(props){
    // alert(props.fbcustomers.length);
 
     //this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
-    this.props.selectFbCustomerChat(props.fbsessions[0].user_id.user_id,props.fbchats,props.fbsessions[0].user_id.profile_pic,props.fbsessions[0]);
+    var choosen_session = props.fbsessions.filter((c) => c.status != "resolved")[0];
+    if(choosen_session)
+    {
+    this.props.selectFbCustomerChat(choosen_session.user_id.user_id,props.fbchats,choosen_session.user_id.profile_pic,choosen_session);
     callonce=false;
-
+    }
   }
 
 }
@@ -153,8 +156,8 @@ componentWillReceiveProps(props){
 
              	<div>
 
-                {this.props.fbsessions && this.props.fbsessions.length == 0?
-                  <p>There is no customer session from Facebook</p>
+                {this.props.fbsessions && this.props.fbsessions.filter((c) => c.status != 'resolved').length == 0?
+                  <p>There are no active customer sessions from Facebook</p>
 
                   :
                 <div className="chat_wrapper">
@@ -175,7 +178,7 @@ componentWillReceiveProps(props){
                               <div className="chat_wrapper_right">
 
 
-                          {this.props.fbsessions && this.props.fbsessionSelected &&
+                          {this.props.fbsessions && this.props.fbsessionSelected && 
                             <div>
                                 <label>Customer Name: </label>
                                 <label ref="customername">{this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name}</label>
@@ -231,6 +234,8 @@ function mapStateToProps(state) {
           fbsessionSelected: state.dashboard.fbsessionSelected,
           fbsessions: state.dashboard.fbsessions,
           teamagents : (state.dashboard.teamagents),
+          componentVisible:state.dashboard.componentVisible,
+
 
                     };
 }

@@ -3634,7 +3634,8 @@ export function updateCustomerList(data,customerlist){
   }
 }
 
-export function updatefbsessionlist(data,customerlist,currentSession){
+export function updatefbsessionlist(data,customerlist,currentSession,fbchat,fbchatSelected){
+  var resetcurrent = false;
   for(var i =0;i<customerlist.length;i++){
     if(customerlist[i].pageid.pageid == data.pageid && customerlist[i].user_id.user_id == data.user_id){
       customerlist[i].status = data.status;
@@ -3650,17 +3651,45 @@ export function updatefbsessionlist(data,customerlist,currentSession){
 
   if(currentSession.status == "resolved"){
     // we need to reset currentSession to the first (new/assigned session in the list) session
+    var newfbChat=[];
     for(var j=0;j<customerlist.length;j++){
       if(customerlist[j].status != "resolved"){
-        currentSession = customerlist[j];
-        break;
+        var newcurrentSession = customerlist[j];
+        
+        var temp = fbchat.filter((c)=>c.senderid == currentSession.user_id.user_id || c.recipientid == currentSession.user_id.user_id);
+        for(var i=0;i<temp.length;i++){
+        if(temp[i].message){
+                newfbChat.push(
+                  {
+                    message: temp[i].message.text,
+                    inbound: true,
+                    backColor: '#3d83fa',
+                    textColor: "white",
+                    avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+                    duration: 0,
+                    timestamp:temp[i].timestamp,
+                    senderid:temp[i].senderid,
+                    recipientid:temp[i].recipientid,
+                    mid:temp[i].message.mid,
+                    attachments:temp[i].message.attachments,
+                    seen:false
+                  })
+              }
+          }
+           break;
+        }
+        
+       
       }
+      resetcurrent = true;
+          
     } 
-  }
+  
    return{
     type:ActionTypes.ADD_NEW_FB_CUSTOMER,
     fbsessions:customerlist,
-    fbsessionSelected: currentSession,
+    fbsessionSelected: resetcurrent == true?newcurrentSession:currentSession,
+    fbchatSelected: resetcurrent == true?newfbChat:fbchatSelected,
   }
 }
 //send chat to facebook customer
@@ -3894,15 +3923,43 @@ export function assignToAgentFB(session,usertoken,agentemail,assignmentType) {
   };
 }
 
-export function resolvefbsessionResponse(fbsessionSelected,fbsession){
+export function resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat){
+   
+     var fbsessionSelected = fbsession.filter((c) => c.status!= 'resolved')[0]
+      var newfbChat = []
+      if(fbsessionSelected){
+
+      var temp = fbchat.filter((c)=>c.senderid == fbsessionSelected.user_id.user_id || c.recipientid == fbsessionSelected.user_id.user_id);
+      for(var i=0;i<temp.length;i++){
+        if(temp[i].message){
+                newfbChat.push(
+                  {
+                    message: temp[i].message.text,
+                    inbound: true,
+                    backColor: '#3d83fa',
+                    textColor: "white",
+                    avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+                    duration: 0,
+                    timestamp:temp[i].timestamp,
+                    senderid:temp[i].senderid,
+                    recipientid:temp[i].recipientid,
+                    mid:temp[i].message.mid,
+                    attachments:temp[i].message.attachments,
+                    seen:false
+                  })
+              }
+          }
+    }
    return{
-      fbsessionSelected:fbsession.filter((c) => c.status!= 'resolved')[0],
+    
+      fbsessionSelected:fbsessionSelected,
+      fbchatSelected:newfbChat,
       type: ActionTypes.FILTER_RESOLVED_SESSION_FB,
     }
 }
 
 //mark session resolve
-export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession) {
+export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession,fbchat) {
   console.log('resolvesessionfb');
   console.log(data);
   if(confirm("Are you sure,you want to mark session resolved?")){
@@ -3919,7 +3976,7 @@ export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession) {
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(resolvefbsessionResponse(fbsessionSelected,fbsession)));
+    }).then((res) => res.json()).then(res => dispatch(resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat)));
   };
 }
 }

@@ -21,7 +21,7 @@ function removeDuplicates(originalArray, prop) {
 
 
 const initialState = { signupwarnings: {},userdetails : {}};
-const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined',userchats:[],chatlist:[]};
+const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined',userchats:[],chatlist:[],componentVisible:'true'};
 const widgetState ={groupdetails:[],subgroups:[],chatbotlist:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
@@ -803,12 +803,14 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
                 fbsessions:action.fbsessions,
                 fbsessionSelected:action.fbsessionSelected?action.fbsessionSelected:state.fbsessionSelected,
+                fbchatSelected:action.fbchatSelected?action.fbchatSelected:state.fbchatSelected,
                };
           case ActionTypes.FILTER_RESOLVED_SESSION_FB:
             return {
               ...state,errorMessageProfile:'',
                 fbsessionSelected:action.fbsessionSelected,
-                fbchatSelected:state.fbchats.filter((c)=>c.senderid == action.fbsessionSelected.user_id.user_id || c.recipientid == action.fbsessionSelected.user_id.user_id)
+                fbchatSelected:action.fbchatSelected
+               
                };
         case ActionTypes.JOINED_MEETING:
              return {
