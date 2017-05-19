@@ -1249,29 +1249,39 @@ render () {
     let list = this.props.messages.map((data, index) => {
       return (
         data.senderid == this.props.senderid?
-        <div className='message left userChatBox' key={index} ref={index} id={'chatmsg'+index}>
-        <div className='message-header'>
+        <div  key={index} ref={index} id={'chatmsg'+index} style={styles.left.container}>
+        {/*<div className='message-header'>
           <img className='profile-image' src={this.props.userprofilepic} width="36px" height="36px"/>
           <span className='username'>{this.props.username}</span>
-          </div>
+        </div>
+        
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
-
-              <span className='time'>{handleDate(data.timestamp)}</span>
+*/
+      }
+       <h4 style={styles.timestyle}>12:37am</h4>
+      <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.left.wrapperNoColor: styles.left.wrapper}>
+             {/* <span className='time'>{handleDate(data.timestamp)}</span> 
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
-
+             */}
+            
+             <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
                         (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
+                       
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
                                                           'height':'32px'}}/> :
 
+                       <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
                                                           'maxWidth': '100%',
                                                            'maxHeight': '585px'}}/>
+                       </div>
                        )
                                                            :
+                      <div style={styles.imagestyle}>
                       (da.type == "video"?
                         <ReactPlayer url={da.payload.url} controls={true} width="420" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
@@ -1283,38 +1293,52 @@ render () {
                        <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                        </div> :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       ))))
+                       )))
+                        </div>
+                       )
+
+
                 ))
+               
               }
 
             </div>
         </div> :
-        <div className='message right agentChatBox' key={index} ref={index} id={'chatmsg'+index}>
-
-        <div className='message-header'>
+        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'right'}}>
+         <h4 style={styles.timestyle}>12:37am</h4>
+        {
+          /*<div className='message-header'>
           <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
           <span className='username'>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</span>
           </div>
+         
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
-
-              <span className='time'>{handleDate(data.timestamp)}</span>
-              <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
+             */
+        }
+          <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
+             {/* <span className='time'>{handleDate(data.timestamp)}</span>
+              <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p> */}
+             
+              <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
                        (da.payload.url == 'https://kiboengage.kibosupport.com/images/thumbsUp.png'?
-                        <div style={{'textAlign':'right'}}>
+                      <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
                                                           'height':'32px'}}/>
                                                         </div> :
-                       <div>
+                       <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
                                                           'maxWidth': '100%',
                                                            'maxHeight': '585px'}}/>
                                                         </div>
                        )
+                        
+
                                                            :
+                      <div style={styles.imagestyle}>
                       (da.type == "video"?
                         <ReactPlayer url={da.payload.url} controls={true} width="420" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
@@ -1326,7 +1350,9 @@ render () {
                        <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                        </div> :
                        <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       ))))
+                       )))
+                       </div>
+                       )
                 ))
               }
             </div>
@@ -1522,6 +1548,132 @@ render () {
 
   }
 }
+
+const textStyle = {
+  fontSize: 14,
+  
+  marginTop: 5,
+  marginBottom: 5,
+  marginLeft: 10,
+  marginRight: 10,
+  wordWrap: 'break-word',
+};
+
+
+const styles = {
+
+  left: {
+    container: {
+      flex: 1,
+      alignItems: 'flex-start',
+      flexDirection: 'row',
+      marginLeft: 8,
+      marginRight: 0,
+      flexDirection: 'row',
+    },
+    wrapper: {
+      borderRadius: 15,
+      backgroundColor: '#f0f0f0',
+      minHeight: 20,
+      justifyContent: 'flex-end',
+      marginBottom: 15,
+      boxSizing: 'border-box',
+      maxWidth: '95%',
+      clear:'left',
+      float:'left',
+      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+    },
+
+    wrapperNoColor: {
+      borderRadius: 15,
+      minHeight: 20,
+      justifyContent: 'flex-end',
+      marginBottom: 15,
+      boxSizing: 'border-box',
+      maxWidth: '95%',
+      clear:'left',
+      float:'left',
+      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+    },
+    containerToNext: {
+      borderBottomLeftRadius: 3,
+    },
+    containerToPrevious: {
+      borderTopLeftRadius: 3,
+    },
+    text: {
+      color: 'black',
+      ...textStyle,
+    },
+  },
+  right: {
+    container: {
+      flex: 1,
+      alignItems: 'flex-end',
+      marginLeft: 0,
+      marginRight: 8,
+      flexDirection: 'row',
+    },
+    wrapper: {
+      borderRadius: 15,
+      backgroundColor: '#0084ff',
+      minHeight: 20,
+      justifyContent: 'flex-end',
+      marginBottom: 15,
+      boxSizing: 'border-box',
+      maxWidth: '95%',
+      clear: 'right',
+      float:'right',
+
+      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+    },
+
+    wrapperNoColor: {
+      borderRadius: 15,
+      minHeight: 20,
+      justifyContent: 'flex-end',
+      marginBottom: 15,
+      boxSizing: 'border-box',
+      maxWidth: '95%',
+      clear: 'right',
+      float:'right',
+
+      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+    },
+    containerToNext: {
+      borderBottomRightRadius: 3,
+    },
+    containerToPrevious: {
+      borderTopRightRadius: 3,
+    },
+     text: {
+      color: 'white',
+      ...textStyle,
+    },
+  },
+  bottom: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+
+  timestyle:{
+    clear:'both',
+    display: 'block',
+    fontWeight: 500,
+    marginTop: 12,
+    marginRight: 0,
+    marginBottom: 12,
+    marginLeft: 20,
+    textTransform: 'uppercase',
+    color: 'rgba(0, 0, 0, .40)',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  imagestyle:{
+    textAlign:'center',
+    padding:10,
+  },
+};
 
 
 function mapStateToProps(state) {

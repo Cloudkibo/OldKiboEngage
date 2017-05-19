@@ -4,6 +4,7 @@ Page Header
 /* Header search bar, toggler button & top menu */
 .page-header.navbar {
   background-color: #2b3643;
+  border-radius: 0px !important;
   /* Top notification menu/bar */
   /* Header seaech box */
   /* Toggler button for sidebar expand/collapse and responsive sidebar menu */
@@ -96,6 +97,7 @@ Page Header
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-dark .dropdown-menu {
   background: #3f4f62;
   border: 0;
+  border-radius: 0px !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-dark .dropdown-menu:after {
   border-bottom-color: #3f4f62;
