@@ -141,9 +141,9 @@ class ChangeAvatar extends Component {
                     <label> Upload new image </label>
                     <input type="file" onChange={this._onChange} accept='image/*' />
                     <br />
-                    <div style={{height: '400', width: '400'}}>
+                    <div>
                     <Cropper
-                      style={{ height: '400', width: '400' }}
+                      style={{ maxWidth: '400', maxHeight: '400' }}
                       aspectRatio={2/2}
                       preview=".img-preview"
                       guides={false}
@@ -151,18 +151,13 @@ class ChangeAvatar extends Component {
                       ref="cropper"
                       crop={this._crop}
                     />
-
-                    <br/>
-                      <button onClick={ this._cropImage } className="btn green" >
+                   </div>
+                   <br />
+                          <button onClick={ this._cropImage } disabled={(this.state.src == '')} className="btn green" >
                           Crop Image
                         </button>
-
-                   </div>
-                   <br/>
-                   <br/>
-                   <br/>
-                   <br/>
-                    <div className="row" >
+                        
+                    <div className="row" style={{paddingTop: 25, paddingLeft: 15}}>
                       <h4> Preview Picture</h4>
                       <img style={{ width: '200',height:'200',border:'1px solid rgba(0, 0, 0, 0.26)',display:'block' }} src={this.state.cropResult} ref="profilepic"/>
                     </div>
@@ -172,7 +167,7 @@ class ChangeAvatar extends Component {
                   </div>
                   <br/>
                   <div className="row">
-                  <button onClick={ this.onSubmit } ref="submitbtn" className="btn green" >
+                  <button onClick={ this.onSubmit } disabled={(this.state.src == '')} ref="submitbtn" className="btn green" >
                           Submit
                   </button>
                   <br/>
