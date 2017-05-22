@@ -16,7 +16,7 @@ class ResetPassword extends Component {
   onSubmit(event)
   {
     event.preventDefault();
-    if(this.refs.password != this.refs.confirm_password){
+    if(this.refs.password.value != this.refs.confirm_password.value){
       alert("Passwords do not match");
       return;
     }
