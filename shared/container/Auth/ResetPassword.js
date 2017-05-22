@@ -16,6 +16,10 @@ class ResetPassword extends Component {
   onSubmit(event)
   {
     event.preventDefault();
+    if(this.refs.password != this.refs.confirm_password){
+      alert("Passwords do not match");
+      return;
+    }
     if(this.refs.password.value.length > 6){
     var dataToSend = {
         token : this.props.params.id,
@@ -49,6 +53,10 @@ class ResetPassword extends Component {
                     <div className="form-group">
                       <label htmlFor="domain">Password *</label>
                       <input type='password' ref='password' className="form-control input-medium" placeholder='Password' required = 'required'/>
+                      </div>
+                            <div className="form-group">
+                      <label htmlFor="domain">Confirm Password *</label>
+                      <input type='password' ref='confirm_password' className="form-control input-medium" placeholder='Confirm Password' required = 'required'/>
                       </div>
 
                       <button type = "submit"  className="btn btn-primary">
