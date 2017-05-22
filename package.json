@@ -73,6 +73,7 @@
     "react-notification-system": "^0.2.13",
     "react-phone-number-input": "^0.10.0",
     "react-player": "^0.15.0",
+    "react-progressbar": "^1.4.6",
     "react-redux": "^4.1.2",
     "react-router": "^2.6.0",
     "react-router-redux": "^4.0.4",
@@ -93,6 +94,7 @@
     "socket.io-client": "^1.0.6",
     "socketio-jwt": "^2.0.2",
     "superagent": "^2.1.0",
+    "tai-password-strength": "^1.0.4",
     "validator": "^5.4.0",
     "winston": "^1.0.1",
     "winston-papertrail": "1.0.1"
