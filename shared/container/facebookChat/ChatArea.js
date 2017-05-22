@@ -30,6 +30,60 @@ return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 }
 }
 
+var showDate = function(prev,next){
+  console.log(prev);
+  console.log(next);
+  var p = new Date(Number(prev));
+  var n = new Date(Number(next));
+  console.log(p.getDay());
+  console.log(n.getDay());
+  
+  if(n.getMinutes() - p.getMinutes() > 10 ||   n.getDay() != p.getDay() || n.getMonth() != p.getMonth() || n.getFullYear() != p.getFullYear()){
+    console.log('true');
+    console.log(n.getMinutes() - p.getMinutes())
+   return "true";
+
+  }
+  else{
+    console.log('false');
+    return "false";
+  }
+}
+function formatAMPM(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
+var displayDate = function(x){
+  var today = new Date();
+  var n = new Date(Number(x))
+  var days = ["SUN","MON","TUES","WED","THU","FRI","SAT"];
+  var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"] 
+  var s = '';
+  if(today.getFullYear() == n.getFullYear()){
+      if(today.getMonth() == n.getMonth()){
+          if(today.getDay() == n.getDay()){
+              s =  formatAMPM(n);
+          }
+          else{
+            s = days[n.getDay()] + "," + formatAMPM(n);
+          }
+      }
+      else{
+        s =  days[n.getDay()] + ' ' + month[n.getMonth()]  + "," + formatAMPM(n)
+      }
+  }
+  else{
+    s =  days[n.getDay()] + ' ' + month[n.getMonth()] + n.getDay() +n.getFullYear() + "," + formatAMPM(n);
+  }
+ // alert(s);
+  return s;
+}
 var getSuggestions = function(value,cr) {
   console.log(cr);
   const languages = cr
@@ -1249,21 +1303,29 @@ render () {
     let list = this.props.messages.map((data, index) => {
       return (
         data.senderid == this.props.senderid?
-        <div  key={index} ref={index} id={'chatmsg'+index} style={styles.left.container}>
-        {/*<div className='message-header'>
-          <img className='profile-image' src={this.props.userprofilepic} width="36px" height="36px"/>
+       <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'left','clear':'both'}}>
+       {/* <div className='message-header'>
+          
           <span className='username'>{this.props.username}</span>
         </div>
         
-            <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
-*/
+      /*      <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
+
+      }*/}
+
+      { index == 0? 
+         <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
+
+          index > 0 && showDate(this.props.messages[index-1].timestamp,data.timestamp) == "true"  &&
+         <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
+        
       }
-       <h4 style={styles.timestyle}>12:37am</h4>
-      <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.left.wrapperNoColor: styles.left.wrapper}>
+      <div style={{'float':'left'}}>
              {/* <span className='time'>{handleDate(data.timestamp)}</span> 
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
              */}
-            
+             <img src={this.props.userprofilepic} width="25px" height="25px" style={{'borderRadius':5,'float':'left'}} />
+             <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.left.wrapperNoColor: styles.left.wrapper}>
              <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
@@ -1301,11 +1363,17 @@ render () {
                 ))
                
               }
-
+              </div>
             </div>
         </div> :
-        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'right'}}>
-         <h4 style={styles.timestyle}>12:37am</h4>
+        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'right','clear':'both'}}>
+         { index == 0? 
+         <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
+
+          index > 0 && showDate(this.props.messages[index-1].timestamp,data.timestamp) == "true"  &&
+         <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
+        
+         }
         {
           /*<div className='message-header'>
           <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
@@ -1355,7 +1423,21 @@ render () {
                        )
                 ))
               }
+             
             </div>
+            {
+              index == this.props.messages.length - 1?
+                   <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
+              :
+
+              this.props.messages[index+1].senderid != data.senderid && index<this.props.messages.length &&
+            
+               <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
+             
+            }
+           
+
+
         </div>
 
       )
@@ -1550,7 +1632,7 @@ render () {
 }
 
 const textStyle = {
-  fontSize: 14,
+  fontSize: 12,
   
   marginTop: 5,
   marginBottom: 5,
@@ -1578,10 +1660,11 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '95%',
-      clear:'left',
-      float:'left',
+      maxWidth: '55%',
+      clear:'right',
+      float:'right',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginLeft: 10,
     },
 
     wrapperNoColor: {
@@ -1590,10 +1673,11 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '95%',
-      clear:'left',
-      float:'left',
+      maxWidth: '55%',
+      clear:'rigth',
+      float:'right',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginLeft: 10,
     },
     containerToNext: {
       borderBottomLeftRadius: 3,
@@ -1621,7 +1705,7 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '95%',
+      maxWidth: '55%',
       clear: 'right',
       float:'right',
 
@@ -1634,7 +1718,7 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '95%',
+      maxWidth: '55%',
       clear: 'right',
       float:'right',
 
@@ -1673,6 +1757,16 @@ const styles = {
     textAlign:'center',
     padding:10,
   },
+   sendername:{
+   
+    position: 'relative',
+    float: 'right',
+    width: '100%',
+    marginTop: '-10px',
+    fontSize: 10,
+    color: '#676161',
+    marginBottom:10,
+  }
 };
 
 
