@@ -14,10 +14,14 @@ var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload'
 
 var geturl = function(payload){
+//  console.log('payload');
+//  console.log(payload);
  return   `https://maps.googleapis.com/maps/api/staticmap?center=${payload.coordinates.lat},${payload.coordinates.long}&zoom=13&scale=false&size=400x200&maptype=roadmap&format=png&key=AIzaSyDDTb4NWqigQmW_qCVmSAkmZIIs3tp1x8Q&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C${payload.coordinates.lat},${payload.coordinates.long}`
 }
 
 var getmainURL = function(payload){
+//  console.log('payload');
+//  console.log(payload);
   return `https://www.google.com/maps/place/${payload.coordinates.lat},${payload.coordinates.long}/`
 }
 
@@ -1342,21 +1346,24 @@ render () {
                                                            'maxHeight': '585px'}}/>
                        </div>
                        )
-                                                           :
-                      <div style={styles.imagestyle}>
-                      (da.type == "video"?
+                      :
+                     <div style={styles.imagestyle}>
+                      {
+                        da.type == "video"?
                         <ReactPlayer url={da.payload.url} controls={true} width="420" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
                         <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
-
-                      (da.type == "location"?
-                       <div>
-                       <p> {da.title} </p>
-                       <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
-                       </div> :
-                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       )))
+                        (da.type == "location"?
+                           <div>
+                             <p> {da.title} </p>
+                             <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
+                           </div>
+                       :
+                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
+                       ))
+                        }
                         </div>
+                      
                        )
 
 
@@ -1660,7 +1667,7 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '55%',
+      maxWidth: '80%',
       clear:'both',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
       marginLeft: '1em',
@@ -1674,11 +1681,12 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '55%',
-      clear:'rigth',
-      float:'right',
+      maxWidth: '80%',
+      clear:'both',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-      marginLeft: '10px',
+      marginLeft: '1em',
+      position: 'relative',
+      display: 'inline-block',
     },
     containerToNext: {
       borderBottomLeftRadius: 3,
@@ -1707,10 +1715,11 @@ const styles = {
       marginBottom: 15,
       boxSizing: 'border-box',
       maxWidth: '55%',
-      clear: 'right',
-      float:'right',
-
+      clear: 'both',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginLeft: '1em',
+      position: 'relative',
+      display: 'inline-block',
     },
 
     wrapperNoColor: {
@@ -1720,10 +1729,13 @@ const styles = {
       marginBottom: 15,
       boxSizing: 'border-box',
       maxWidth: '55%',
-      clear: 'right',
-      float:'right',
+      clear: 'both',
+    
 
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+       marginLeft: '1em',
+      position: 'relative',
+      display: 'inline-block',
     },
     containerToNext: {
       borderBottomRightRadius: 3,
