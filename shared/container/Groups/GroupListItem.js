@@ -22,7 +22,7 @@ function GroupListItem(props) {
          View
         </Link>
          {
-        props.userdetails.isAdmin == "Yes" ?
+        (props.userdetails.isAdmin == "Yes" || props.userdetails.isSupervisor == "Yes") ?
         <span>
         <Link to={`/editgroup/${props.group._id}`} className="btn blue-madison" >
          Edit
