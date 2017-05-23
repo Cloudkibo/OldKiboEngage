@@ -1390,6 +1390,16 @@ render () {
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
              */
         }
+           {
+              index == 0?
+                   <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
+              :
+
+              this.props.messages[index-1].senderid != data.senderid  &&
+            
+               <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
+             
+            }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
              {/* <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p> */}
@@ -1432,16 +1442,7 @@ render () {
               }
              
             </div>
-            {
-              index == this.props.messages.length - 1?
-                   <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
-              :
-
-              this.props.messages[index+1].senderid != data.senderid && index<this.props.messages.length &&
-            
-               <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
-             
-            }
+           
            
 
 
