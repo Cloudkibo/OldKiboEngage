@@ -3304,7 +3304,7 @@ text-align: left;
   height: 100%;
 }
 .chat-messages-container {
-  margin-bottom: 100px;
+  /*margin-bottom: 100px;*/
   word-wrap: break-word;
 }
 #chat-form {
@@ -3366,7 +3366,7 @@ text-align: left;
   padding: 10px;
   height:550px;
   overflow-y: scroll;
-  margin-bottom: 100px;
+  /*margin-bottom: 100px;*/
 }
 // left column
 div#messages-container img {

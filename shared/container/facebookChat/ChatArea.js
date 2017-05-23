@@ -35,21 +35,14 @@ return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 }
 
 var showDate = function(prev,next){
-  console.log(prev);
-  console.log(next);
   var p = new Date(Number(prev));
   var n = new Date(Number(next));
-  console.log(p.getDay());
-  console.log(n.getDay());
   
   if(n.getMinutes() - p.getMinutes() > 10 ||   n.getDay() != p.getDay() || n.getMonth() != p.getMonth() || n.getFullYear() != p.getFullYear()){
-    console.log('true');
-    console.log(n.getMinutes() - p.getMinutes())
    return "true";
 
   }
   else{
-    console.log('false');
     return "false";
   }
 }
@@ -753,9 +746,14 @@ _onChange(e) {
     reader.onload = () => {
       this.setState({ src: reader.result,
                        });
+      this.onFileSubmit();
+
     };
     console.log(reader.result);
     reader.readAsDataURL(files[0]);
+    
+
+
   }
 onChange(event, { newValue }) {
     if(newValue.length >= 640){
@@ -869,14 +867,15 @@ handleMessageSubmit(e) {
     }
 
 
-onFileSubmit(event)
+onFileSubmit()
     {
         const { socket,dispatch } = this.props;
         var sendmessage = true;
         const usertoken = auth.getToken();
         var fileData = new FormData();
         this.refs.selectFile.value = null;
-       
+        console.log('on onFileSubmit');
+        console.log(this.state.userfile);
         
 
       
@@ -944,7 +943,7 @@ onFileSubmit(event)
           alert('Please choose a file to upload.');
         }
        // this.forceUpdate();
-        event.preventDefault();
+   //     event.preventDefault();
 
     }
 
@@ -1534,10 +1533,11 @@ render () {
           
         </div>
 
-         <div className="panel-footer" style={{'marginTop':'-80px'}}>
-
-          <div style={{display: 'inline-block', width: '94%'}} className="pull-left">
-                  <Autosuggest  ref = "msg" suggestions={suggestions}
+        
+        
+          <div style={styles.inputContainer}>
+            <div style={styles.inputField}>
+                <Autosuggest  ref = "msg" suggestions={suggestions}
 
                    onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
                    getSuggestionValue={getSuggestionValue}
@@ -1547,35 +1547,50 @@ render () {
 
                    inputProps={inputProps} />
             </div>
-            <div className="pull-right" style={{display: 'inline-block'}}>
-              <i style={{fontSize: '30px', color: '#0099e6', cursor: 'pointer'}} className="fa fa-thumbs-up" onClick = {this.sendThumbsUp} ></i>
-            </div>
-            <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
-           
-            <br />
-            <br />
-            <div>
+
+            <div style={styles.toolbox}>
             <div style={{display: 'inline-block'}}>
-              <i style={{position: 'relative', display: 'inline-block', width: '2em', height: '2.5em', cursor: 'pointer'}} onClick = {this.toggleEmojiPicker}>
+            
+                <i style={styles.iconclass} onClick = {() => {this.refs.selectFile.click()}}>
+                <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-paperclip"></i>
+              </i>
+                <input ref="selectFile" type="file" onChange={this._onChange} style={styles.inputf}/>
+              
+            </div>
+
+            <div style={{display: 'inline-block'}}>
+              <i style={styles.iconclass}  onClick = {this.toggleEmojiPicker}>
                 <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-smile-o"></i>
               </i>
             </div>
               <div style={{display: 'inline-block'}}>
-                <i style={{position: 'relative', display: 'inline-block', width: '2em', height: '2.5em', cursor: 'pointer'}} onClick = {this.toggleStickerPicker}>
+                <i style={styles.iconclass}  onClick = {this.toggleStickerPicker}>
                   <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
                   <i style={{position: 'absolute', left: '0', width: '100%', textAlign: 'center', fontSize: '15px'}} className="fa fa-smile-o"></i>
                 </i>
               </div>
               <div style={{display: 'inline-block'}}>
-                <i style={{position: 'relative', display: 'inline-block', width: '2em', height: '2.5em', cursor: 'pointer'}} onClick = {this.toggleVisible}>
+                <i style={styles.iconclass}  onClick = {this.toggleVisible}>
                   <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
                   <p style={{position: 'absolute', text: 'GIF', left: '0', width: '100%', textAlign: 'center', fontSize: '10px'}}>GIF</p>
                 </i>
               </div>
+
+
+            <div style={{display: 'inline-block'}}>
+              <i style={styles.iconclass}  onClick = {this.sendThumbsUp}>
+                <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up"></i>
+              </i>
             </div>
+           
+
+            </div>
+         
+                </div>
 
 
-
+              <div>
+                    <div style={{'clear':'both','float':'right'}}>
             {
                 this.state.showEmojiPicker &&
                 <EmojiPicker
@@ -1602,36 +1617,21 @@ render () {
               />
 
             }
-
-                </div>
-
-
-              <div className="row">
+              </div>
+              {
+                this.state.longtextwarning != '' &&
+              <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
+              }
               </div>
 
-            <div className="table-responsive">
-               <table className="table table-colored">
-                 <tbody>
-                    <tr>
-
-                       <td className="col-md-6">
-                       <input ref="selectFile" type="file" onChange={this._onChange} className="pull-left"/>
-
-                         <button onClick={ this.onFileSubmit } ref="submitbtn" className="pull-right btn green pull-right" >
-                            Upload
-                          </button>
-
-                       </td>
-                    </tr>
-                    {
+               {
                       this.props.showFileUploading && this.props.showFileUploading == true &&
-                      <tr>
-                        <td><p style={{color:'red'}}>Uploading file...Please wait</p></td>
-                      </tr>  
-                    } 
-                  </tbody>
-                  </table>
-                  </div>
+                     <p style={{color:'red'}}>Uploading file...Please wait</p>
+                     
+              } 
+
+            
+          
        </div>
      
       )
@@ -1785,7 +1785,54 @@ const styles = {
     borderRadius: '5px',
     /* float: left; */
     display: 'inline-block',
-  }
+  },
+
+  inputContainer:{
+    display: 'table',
+    margin: 10,
+    width: '100%',
+    borderBottom: '1px solid #dddfe2',
+    borderTop: '1px solid #dddfe2',
+    minHeight: 50,
+    position: 'relative',
+  },
+  inputField:{
+    minHeight: 30,
+    verticalAlign: 'middle',
+    width: '100%',
+    padding: '15px 10px',
+    height:24,
+  },
+  toolbox:{
+    display: 'table-cell',
+    width: 70,
+    padding: '3px 0',
+    verticalAlign: 'bottom',
+    whiteSpace: 'nowrap',
+  },
+
+  element:{
+  display: 'inline-block',
+  alignItems: 'center',
+},
+ 
+ faicon: {
+  margin: 10,
+  cursor: 'pointer',
+  fontSize: 30,
+},
+inputf:{
+  display: 'none',
+},
+
+iconclass:{
+    height: 24,
+    padding: '0 15px',
+    width: 24,
+    position: 'relative',
+    display: 'inline-block',
+    cursor: 'pointer',
+}
 };
 
 
