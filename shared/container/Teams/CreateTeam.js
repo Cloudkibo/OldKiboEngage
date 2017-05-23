@@ -33,6 +33,8 @@ class CreateTeam extends Component {
     if (nameRef.value && descRef.value)
      {
       var team = {'groupname' : nameRef.value,'groupdescription':descRef.value,'companyid' : companyid,'status' : status,'createdby' : createdBy}
+      console.log("Team Data", team);
+      console.log("User Token", usertoken);
       this.props.createTeam(team,usertoken);
 
     }

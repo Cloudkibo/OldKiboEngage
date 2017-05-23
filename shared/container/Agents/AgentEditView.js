@@ -128,7 +128,7 @@ class AgentEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Role </label>
                   <div className="col-md-9">
-                    <input className="form-control input-medium" type='text' defaultValue = {role} ref = "role"/>
+                    <input className="form-control input-medium" type='text' defaultValue = {role} disabled ref = "role"/>
                    </div>
                    </div> 
                  <div className="form-group">
