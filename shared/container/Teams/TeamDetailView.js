@@ -6,6 +6,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
+var NotificationSystem = require('react-notification-system');
 
 class TeamDetailView extends Component {
 
@@ -38,6 +39,8 @@ class TeamDetailView extends Component {
    
      return (
       <div>
+         <NotificationSystem ref="notificationSystem" />
+       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
        <div className="page-container">
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">

@@ -6,7 +6,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import { Link } from 'react-router';
-
+var NotificationSystem = require('react-notification-system');
 
 
 class CreateTeam extends Component {
@@ -41,7 +41,8 @@ class CreateTeam extends Component {
   render() {
     return (
       <div>
-
+        <NotificationSystem ref="notificationSystem" />
+       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
        <div className="page-container">
          <SideBar/>
           <div className="page-content-wrapper">
