@@ -1000,6 +1000,8 @@ export function createTeam(team,usertoken) {
 
     }).then((res) => res.json()).then((res) => res).then((res) => {
      // dispatch(createteamError(res))
+     console.log("Response", res);
+     alert("Response", res);
      browserHistory.push('/teams');
       }
      );

@@ -131,7 +131,7 @@ componentDidMount(){
           <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-group">
-                 { this.props.userdetails.isAdmin == "Yes" ?
+                 { (this.props.userdetails.isAdmin == "Yes") ?
 
                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Create New Group
 
