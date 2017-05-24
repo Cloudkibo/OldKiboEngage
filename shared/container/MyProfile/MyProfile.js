@@ -72,7 +72,15 @@ class MyProfile extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    console.log(token);
+    var myRole = '';
+    if(this.props.userdetails.isAdmin == 'Yes'){
+      myRole = 'admin';
+    }else if(this.props.userdetails.isSupervisor == 'Yes'){
+      myRole = 'supervisor';
+    }else if(this.props.userdetails.isAgent == 'Yes'){
+      myRole = 'agent';
+    }
 
     return (
       <div>
@@ -121,7 +129,7 @@ class MyProfile extends Component {
 
                                              <div className="form-group">
                                                 <label>Role</label>
-                                                <input type="email"  className="form-control"  ref = "role" required  value={this.props.userdetails.role} disabled/>
+                                                <input type="email"  className="form-control"  ref = "role" required  value={myRole} disabled/>
                                               </div>
 
                                               <div className="form-group">
