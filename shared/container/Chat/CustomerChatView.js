@@ -625,7 +625,11 @@ else{
 // Assign chat to other agent
   assignSessionToAgent(e){
      const { socket,dispatch } = this.props;
-     var agentemail = []
+     var agentemail = [];
+     if(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib == -1){
+       alert("Please select an agent from the dropdown menu");
+       return;
+     }
 
      if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.sessiondetails.departmentid).length !== 0){
         var teammembers = []
@@ -929,8 +933,11 @@ else{
   var agentnames = []
   var agentemail = []
   var agentids = []
-
-  alert("ID: " + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib);
+  if(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib == -1){
+    alert("Please select a team from the dropdown menu");
+    return;
+  }
+  
 
   for(var i=0;i<this.props.teamagents.length;i++){
     if(this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib){
@@ -1246,6 +1253,9 @@ const { value, suggestions } = this.state;
 
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                        
+                        <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
+                  
                         {this.props.sessiondetails.platform == "web"?
 
                          (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>

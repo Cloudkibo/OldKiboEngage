@@ -165,10 +165,14 @@ assignSessionToTeam(e){
 
   // find the agent ids of the members with in a selected group
 
-  var agentnames = []
-  var agentemail = []
-  var agentids = []
+  var agentnames = [];
+  var agentemail = [];
+  var agentids = [];
 
+  if(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib == -1){
+    alert("Please select a team from a dropdown menu");
+    return;
+  }
 
   for(var i=0;i<this.props.teamagents.length;i++){
     if(this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib){
@@ -393,8 +397,12 @@ autoassignChat(){
 }
 assignSessionToAgent(e){
      const { socket,dispatch } = this.props;
-     var agentemail = []
-    var teammembers = []
+     var agentemail = [];
+    var teammembers = [];
+    if(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib == -1){
+      alert("Please select an agent from the dropdown menu");
+      return;
+    }
       //create array of teammembers
       if(this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'group')
       {
@@ -1473,6 +1481,7 @@ render () {
 
                           <div className="input-group">
                           <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                                <option value={-1} data-attrib = {-1} data-type = {-1} data-name={-1} data-email={-1}>Select Agent</option>
                                 {
                                   this.props.agents && this.props.agents.map((agent,i) =>
                                     <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
@@ -1488,7 +1497,7 @@ render () {
                       </td>
 
                       <td className="col-md-4">
-                        <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
+                        <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>
                       </td>
 
 
@@ -1496,6 +1505,7 @@ render () {
                       <td className="col-md-4">
                          <div className="input-group">
                            <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                                          <option value={-1} data-attrib = {-1}>Select Team</option>
                                           {
                                           this.props.teamdetails && this.props.teamdetails.map((team,i) =>
                                             <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
@@ -1509,7 +1519,7 @@ render () {
 
 
                       <td className="col-md-4">
-                         <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
+                         <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>
                       </td>
 
                       <td className="col-md-1">
