@@ -917,8 +917,8 @@ else{
 // Assign chat to group
   assignSessionToTeam(e){
      const { socket,dispatch } = this.props;
-
      // local changes
+
 
   this.props.sessiondetails.status = "assigned";
   this.props.sessiondetails.agent_ids =  {'id' : this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,'type' : 'group'};
@@ -930,6 +930,7 @@ else{
   var agentemail = []
   var agentids = []
 
+  alert("ID: " + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib);
 
   for(var i=0;i<this.props.teamagents.length;i++){
     if(this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib){
@@ -1271,7 +1272,7 @@ const { value, suggestions } = this.state;
               </td>
 
               <td className="col-md-4">
-                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
+                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>
               </td>
 
 
@@ -1310,7 +1311,8 @@ const { value, suggestions } = this.state;
 
                          <td className="col-md-4">
                            <div className="input-group">
-                             <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                             <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}>
+                                    <option value={-1} data-attrib = {-1}>Select A Team</option>
                                     {
                                     this.props.teamdetails && this.props.teamdetails.map((team,i) =>
                                       <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
@@ -1323,7 +1325,7 @@ const { value, suggestions } = this.state;
                          </td>
 
                           <td className="col-md-4">
-                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
+                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>
                           </td>
 
 
