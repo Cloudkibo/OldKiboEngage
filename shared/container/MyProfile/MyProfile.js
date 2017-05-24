@@ -126,7 +126,7 @@ class MyProfile extends Component {
 
                                               <div className="form-group">
                                               <label>Phone</label>
-                                              <input type="number" className="form-control" ref="phone" required placeholder="Phone" defaultValue={this.props.userdetails.phone}/>
+                                              <input type="text" className="form-control" ref="phone" required placeholder="Phone" defaultValue={this.props.userdetails.phone}/>
                                               </div>
                                               <div className="form-group">
                                               <label>City</label>
