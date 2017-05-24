@@ -113,6 +113,7 @@ class Teams extends Component {
         
            <div className="portlet-body">
              <div className="table-toolbar">
+                 {this.props.userdetails.isAgent != "Yes" &&
                  <div className="btn-team">
                  
                     <Link id="sample_editable_1_new" className="btn green" to='/createteam'> Create Team
@@ -123,6 +124,7 @@ class Teams extends Component {
                     
                  
                  </div>
+               }
               </div>
                       <input
                               type="text"
