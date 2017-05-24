@@ -1619,7 +1619,7 @@ export function selectFbCustomerChat(id,fbchat,profile_pic,selectedsession){
 }
 
 
-export function add_socket_fb_message(data,fbchats,id){
+export function add_socket_fb_message(data,fbchats,id,fbsessions){
 
 fbchats.push(data);
 
@@ -1656,9 +1656,24 @@ var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
          newArray.push(lookupObject[i]);
      }
 
+
+
+//update last message field
+var newArrayC = []
+for(var i=0;i< fbsessions.length;i++){
+  var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+  var lastmessage = selectedchat[selectedchat.length-1];
+  var newfbsession = fbsessions[i];
+  newfbsession.lastmessage = lastmessage;
+  newArrayC.push(newfbsession);
+}
+
+var sorted = orderByDate(newArrayC,'timestamp');
+
    return{
     fbchatSelected: newArray,
     fbchats:fbchats,
+    fbsessions:sorted,
     type: ActionTypes.FB_CHAT_ADDED,
   }
 
@@ -3584,7 +3599,82 @@ export function getfbCustomers(usertoken){
   };
 }
 
+function orderByDate(arr, dateProp) {
+  return arr.slice().sort(function (a, b) {
+    console.log(a['lastmessage'][dateProp]);
+    return b['lastmessage'][dateProp] - a['lastmessage'][dateProp] ;
+  });
+}
+export function appendlastmessage(fbsessions,fbchats){
 
+var newArray = []
+var newfbChat=[]
+for(var i=0;i< fbsessions.length;i++){
+  var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+  var lastmessage = selectedchat[selectedchat.length-1];
+  var newfbsession = fbsessions[i];
+  newfbsession.lastmessage = lastmessage;
+  newArray.push(newfbsession);
+}
+
+var sorted = orderByDate(newArray,'timestamp');
+var choosen_session = sorted.filter((c) => c.status != "resolved")[0];
+var newfbChat = []
+  var temp = fbchats.filter((c)=>c.senderid == choosen_session.user_id.user_id || c.recipientid == choosen_session.user_id.user_id);
+  for(var i=0;i<temp.length;i++){
+    if(temp[i].message){
+    newfbChat.push(
+      {
+        message: temp[i].message.text,
+        inbound: true,
+        backColor: '#3d83fa',
+        textColor: "white",
+        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+        duration: 0,
+        timestamp:temp[i].timestamp,
+        senderid:temp[i].senderid,
+        recipientid:temp[i].recipientid,
+        mid:temp[i].message.mid,
+        attachments:temp[i].message.attachments,
+        seen:false
+      })
+  }
+  }
+ 
+return {
+    type: ActionTypes.ADD_LASTMESSAGE_FB_SESSION,
+    fbchatSelected: newfbChat,
+    profile_pic:choosen_session.user_id.profile_pic,
+    fbsessionSelected:choosen_session,
+    sorted,
+
+  };
+
+}
+
+
+export function updatelastmessage(fbsessions,fbchats){
+
+var newArray = []
+var newfbChat=[]
+for(var i=0;i< fbsessions.length;i++){
+  var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+  var lastmessage = selectedchat[selectedchat.length-1];
+  var newfbsession = fbsessions[i];
+  newfbsession.lastmessage = lastmessage;
+  newArray.push(newfbsession);
+}
+
+var sorted = orderByDate(newArray,'timestamp');
+
+ 
+return {
+    type: ActionTypes.UPDATE_LASTMESSAGE_FB_SESSION,
+    sorted,
+
+  };
+
+}
 export function getfbSessions(usertoken){
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbSessions`, {

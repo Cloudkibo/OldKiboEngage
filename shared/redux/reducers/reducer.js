@@ -522,6 +522,7 @@ const dashboard = (state =dashboardState, action) => {
              fbchatSelected:action.fbchatSelected,
              errorMessage:'',
              showFileUploading:false,
+             fbsessions:action.fbsessions,
 
 
             };
@@ -885,7 +886,16 @@ const dashboard = (state =dashboardState, action) => {
           ...state,
             showFileUploading :action.showFileUploading ,
 
-      };       
+      };  
+      case ActionTypes.ADD_LASTMESSAGE_FB_SESSION:
+         return{
+          ...state,
+            fbsessions :action.sorted,
+            fbchatSelected: action.fbchatSelected,
+            profile_pic:action.profile_pic,
+            fbsessionSelected:action.fbsessionSelected,
+
+      };    
 
     default:
       return state;

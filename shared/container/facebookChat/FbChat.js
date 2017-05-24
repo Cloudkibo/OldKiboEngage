@@ -3,7 +3,7 @@ import ChatArea from './ChatArea';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getfbCustomers,getteams,updatefbsessionlist,getTeamAgents,getfbSessions,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
+import {getfbCustomers,appendlastmessage,getteams,updatefbsessionlist,getTeamAgents,getfbSessions,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
 import Conversation from 'chat-template/dist/Conversation';
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -79,7 +79,7 @@ getfbMessage(data){
     else{
       data.seen=true;
     }
-      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbsessionSelected.user_id.user_id);
+      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbsessionSelected.user_id.user_id,this.props.fbsessions);
 
     }
 
@@ -104,14 +104,21 @@ componentWillReceiveProps(props){
   if(props.fbsessions && props.fbchats && callonce == true){
    // alert(props.fbcustomers.length);
 
+    // call action to append last messages
+     this.props.appendlastmessage(props.fbsessions, props.fbchats);
     //this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
+     callonce=false;
+   
+    
+  }
+
+  /*if(props.fbsessions && props.fbsessions[0].lastmessage && !this.props.fbsessions[0].lastmessage){
     var choosen_session = props.fbsessions.filter((c) => c.status != "resolved")[0];
     if(choosen_session)
     {
     this.props.selectFbCustomerChat(choosen_session.user_id.user_id,props.fbchats,choosen_session.user_id.profile_pic,choosen_session);
-    callonce=false;
     }
-  }
+  }*/
 
 }
  handleSession(customer,e){
@@ -240,4 +247,4 @@ function mapStateToProps(state) {
                     };
 }
 
-export default connect(mapStateToProps,{getfbCustomers,updatefbsessionlist,getTeamAgents, getteams, getfbSessions,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);
+export default connect(mapStateToProps,{getfbCustomers,appendlastmessage,updatefbsessionlist,getTeamAgents, getteams, getfbSessions,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);
