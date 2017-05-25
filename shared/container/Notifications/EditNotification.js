@@ -64,7 +64,7 @@ class EditNotification extends Component {
      return (
 
       <div>
-      <div className="page-container">
+      <div className="page-container hbox space-between">
          <SideBar/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 

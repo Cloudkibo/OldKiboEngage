@@ -40,9 +40,9 @@ class CreateFbPage extends Component {
   render() {
     //const cls = `form ${(this.props.showCR ? 'appear' : 'hide')}`;
 
-    return (
-      <div>
-        <div className="page-container">
+       return (
+      <div className="vbox viewport">
+        <div className="page-container hbox space-between">
           <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
              <div className="page-content">

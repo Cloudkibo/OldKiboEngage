@@ -69,9 +69,9 @@ class AddNotification extends Component {
    
     return (
 
-      <div>
+      <div className="vbox viewport">
 
-       <div className="page-container">
+       <div className="page-container hbox space-between">
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 

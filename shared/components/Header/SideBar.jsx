@@ -8,9 +8,9 @@ class SideBar extends Component
   render()
   {
   return (
-   <div className="page-sidebar navbar-collapse collapse">
+   <div className="page-sidebar">
 
-            <ul className="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            <ul className="page-sidebar-menu">
               <li className="start">
                <Link to='/dashboard'>
                   <i className="fa fa-dashboard">

@@ -93,8 +93,8 @@ class GroupEditView extends Component {
   render() {
 
      return (
-      <div>
-       <div className="page-container">
+      <div className="vbox viewport">
+       <div className="page-container hbox space-between">
          <SideBar/>
           <div className="page-content-wrapper">
             <div className="page-content">

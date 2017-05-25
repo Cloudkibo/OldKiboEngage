@@ -136,13 +136,14 @@ callSocket(){
     const username = this.props.userdetails.firstname
     console.log(username)
     return (
-       <div>
+       <div className="vbox viewport">
        {
         this.props.userdetails &&
 
-       <AuthorizedHeader name = {this.props.userdetails.firstname} isAdmin ={this.props.userdetails.isAdmin} user ={this.props.userdetails} roomid = {this.props.userdetails.uniqueid} />
+       <AuthorizedHeader className= "headerclass" name = {this.props.userdetails.firstname} isAdmin ={this.props.userdetails.isAdmin} user ={this.props.userdetails} roomid = {this.props.userdetails.uniqueid} />
        }
-       <div className="page-container">
+
+        <div className="page-container hbox space-between">
           <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
@@ -153,6 +154,8 @@ callSocket(){
           </div>
        </div>
        </div>
+
+     
 
 
   )
