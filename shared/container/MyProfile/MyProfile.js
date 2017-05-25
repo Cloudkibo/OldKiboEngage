@@ -5,7 +5,7 @@ import {getuser,updateprofile} from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
-import SideBar from '../../components/Header/SideBar';
+import SideBar from '../../components/Header/SideBar.jsx';
 import ProfileSideBar from '../../components/SideBar/ProfileSideBar';
 
 import auth from '../../services/auth';

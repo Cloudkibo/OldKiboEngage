@@ -1,9 +1,28 @@
 import React, { Component,PropTypes } from 'react';
-
 import { Link } from 'react-router';
+import auth from '../../services/auth';
+import Logout from '../../container/Auth/Logout';
+import moment from 'moment'
+import { getnews,updatenews}  from '../../redux/actions/actions'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class SideBar extends Component
 {
+
+  constructor(props, context) {
+
+        const usertoken = auth.getToken();
+    console.log('componentWillMount is called');
+    if(usertoken != null)
+    {
+
+        console.log(usertoken);
+        props.getcompanysettings(usertoken,props.userdetails.uniqueid);
+      }
+    super(props, context);
+
+  }
 
   render()
   {
@@ -254,7 +273,7 @@ class SideBar extends Component
                   <i className="fa fa-facebook">
                   </i>
                   <span className="title">
-                    Facebook Chat
+                    Facebook Chat {console.log("I am awesome", this.props)} 
                   </span>
                   <span className="selected">
                   </span>
@@ -285,4 +304,24 @@ class SideBar extends Component
 }
 }
 
-export default SideBar;
+
+function mapStateToProps(state) {
+  console.log("I am auth header", state)
+   return {
+
+    team: (state.dashboard.team),
+    agents:(state.dashboard.agents),
+    deptagents:(state.dashboard.deptagents),
+    agent :(state.dashboard.agent),
+    errorMessage:(state.dashboard.errorMessage),
+    channels :(state.dashboard.channels),
+    userdetails:(state.dashboard.userdetails),
+    news : (state.dashboard.news),
+    companysettings:(state.dashboard.companysettings),
+  };
+}
+function mapDispatchToProps(dispatch) {
+
+  return bindActionCreators({getcompanysettings:getcompanysettings,updatesettings:updatesettings}, dispatch);
+}
+export default connect(mapStateToProps,mapDispatchToProps)(SideBar);

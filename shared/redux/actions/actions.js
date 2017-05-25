@@ -957,7 +957,12 @@ export function jointeam(team,userid,usertoken) {
       }),
    }).then((res) => res.json()).then((res) => res).then((res) => {
          console.log(res.statusCode);
-         alert(res.message);
+         if(res.statusCode == 200){
+           alert("You have joined the team");
+         }else{
+         alert("Failed to join the team");
+         }
+         console.log("Team Joining", res.message);
          browserHistory.push('/dashboard');
 
         }
