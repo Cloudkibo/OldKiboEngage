@@ -67,8 +67,10 @@ class SubgroupEditView extends Component {
 
       }
     return (
-      <div className="vbox viewport">
 
+      <div className="vbox viewport">
+       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
+ 
        <div className="page-container hbox space-between">
          <SideBar/> 
           <div className="page-content-wrapper">
@@ -188,6 +190,7 @@ function mapStateToProps(state) {
     groupdetails:(state.dashboard.groupdetails),
     errorMessage:(state.dashboard.errorMessage),
     customers:(state.dashboard.customers),
+    userdetails:(state.dashboard.userdetails),
   };
 }
 export default connect(mapStateToProps,{ getSubgroupRequest,editSubgroup,getcustomers})(SubgroupEditView);
