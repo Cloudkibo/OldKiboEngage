@@ -108,6 +108,7 @@ else {
 //forgot password
 
 export function showForgotPassword(msg){
+
   return {
     type: ActionTypes.ADD_FORGOTPASSWORD_WARNINGS,
     errormessage : msg,
@@ -135,6 +136,7 @@ export function forgotpassword(creds) {
 
 }
 
+
 export function resetpassword(creds) {
   console.log(creds);
      return (dispatch) => {
@@ -149,7 +151,12 @@ export function resetpassword(creds) {
 
     })
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showForgotPassword(res)));
+    }).then((res) => res.json()).then((res) => res).then(res =>{
+
+    cookie.remove('token', { path: '/' });
+    dispatch(setjoinedState('notjoined'));
+    dispatch(showForgotPassword(res))
+    });
   };
 
 }
