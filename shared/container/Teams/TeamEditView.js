@@ -118,8 +118,9 @@ class TeamEditView extends Component {
 
      return (
       <div className="vbox viewport">
+      <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
        <div className="page-container hbox space-between">
-         <SideBar/>
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">Team Management  </h3>
@@ -270,7 +271,7 @@ function mapStateToProps(state) {
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
     teamagents:(state.dashboard.teamagents),
-
+    userdetails:(state.dashboard.userdetails),
     errorMessage:(state.dashboard.errorMessage),
     newagents:state.dashboard.newagents,
     channels :(state.dashboard.channels),

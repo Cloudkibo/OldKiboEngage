@@ -67,7 +67,7 @@ class JoinCompany extends React.Component {
                      <Header/>
                     <div className = "mainBody">
                       <div className ="row margin-bottom-40">
-                          <SideBar/>
+                          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
                           <div className="col-md-9 col-sm-9">
                             <h1>Join Company</h1>
                             <div className="content-form-page">

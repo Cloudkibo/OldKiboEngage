@@ -69,7 +69,7 @@ class EmailCustomer extends Component {
      
        <div className="page-container hbox space-between">
 
-         <SideBar/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Customer Directory Management </h3>

@@ -46,7 +46,7 @@ class CreateTeam extends Component {
         <NotificationSystem ref="notificationSystem" />
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
        <div className="page-container hbox space-between">
-         <SideBar/>
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">Teams Management </h3>
