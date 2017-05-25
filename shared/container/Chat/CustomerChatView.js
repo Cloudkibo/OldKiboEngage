@@ -625,7 +625,11 @@ else{
 // Assign chat to other agent
   assignSessionToAgent(e){
      const { socket,dispatch } = this.props;
-     var agentemail = []
+     var agentemail = [];
+     if(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib == -1){
+       alert("Please select an agent from the dropdown menu");
+       return;
+     }
 
      if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.sessiondetails.departmentid).length !== 0){
         var teammembers = []
@@ -917,8 +921,8 @@ else{
 // Assign chat to group
   assignSessionToTeam(e){
      const { socket,dispatch } = this.props;
-
      // local changes
+
 
   this.props.sessiondetails.status = "assigned";
   this.props.sessiondetails.agent_ids =  {'id' : this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,'type' : 'group'};
@@ -929,7 +933,11 @@ else{
   var agentnames = []
   var agentemail = []
   var agentids = []
-
+  if(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib == -1){
+    alert("Please select a team from the dropdown menu");
+    return;
+  }
+  
 
   for(var i=0;i<this.props.teamagents.length;i++){
     if(this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib){
@@ -1245,6 +1253,9 @@ const { value, suggestions } = this.state;
 
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                        
+                        <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
+                  
                         {this.props.sessiondetails.platform == "web"?
 
                          (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
@@ -1271,7 +1282,7 @@ const { value, suggestions } = this.state;
               </td>
 
               <td className="col-md-4">
-                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assigned To Agent</button>
+                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>
               </td>
 
 
@@ -1310,7 +1321,8 @@ const { value, suggestions } = this.state;
 
                          <td className="col-md-4">
                            <div className="input-group">
-                             <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                             <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}>
+                                    <option value={-1} data-attrib = {-1}>Select A Team</option>
                                     {
                                     this.props.teamdetails && this.props.teamdetails.map((team,i) =>
                                       <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
@@ -1323,7 +1335,7 @@ const { value, suggestions } = this.state;
                          </td>
 
                           <td className="col-md-4">
-                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assigned To Team</button>
+                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>
                           </td>
 
 
