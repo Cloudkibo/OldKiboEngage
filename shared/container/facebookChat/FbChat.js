@@ -127,7 +127,7 @@ componentWillReceiveProps(props){
       e.preventDefault();
       const usertoken = auth.getToken();
     //  this.refs.sessionid.value = customer.user_id.user_id;
-      this.refs.customername.value = customer.user_id.first_name+' '+customer.user_id.last_name;
+     // this.refs.customername.value = customer.user_id.first_name+' '+customer.user_id.last_name;
       this.props.updatefbstatus(customer.user_id.user_id,this.props.fbchats);
       this.props.selectFbCustomerChat(customer.user_id.user_id,this.props.fbchats,customer.user_id.profile_pic,customer);
       //const node = ReactDOM.findDOMNode(this.refs.customername);
@@ -150,7 +150,8 @@ componentWillReceiveProps(props){
 
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper" >
-            <div className="page-content">
+
+           {/* <div className="page-content">
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -160,8 +161,8 @@ componentWillReceiveProps(props){
               </div>
 
            <div className="portlet-body"  >
-
-             	<div>
+              */}
+             {/*	<div>
 
                 {this.props.fbsessions && this.props.fbsessions.filter((c) => c.status != 'resolved').length == 0?
                   <p>There are no active customer sessions from Facebook</p>
@@ -183,27 +184,72 @@ componentWillReceiveProps(props){
         			                   </div>
         			                
                               <div className="chat_wrapper_right">
-
-
-                          {this.props.fbsessions && this.props.fbsessionSelected && 
+                        
+                          <div style={{'display':'none'}}>
+                          {
+                            this.props.fbsessions && this.props.fbsessionSelected && 
                             <div>
                                 <label>Customer Name: </label>
                                 <label ref="customername">{this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name}</label>
 
                            </div>
                          }
-                           {this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
+                         </div>
+                        
+
+                           {
+                            this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
                             <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} userprofilepic={this.props.profile_pic} senderid={this.props.fbsessionSelected.user_id.user_id} userdetails={this.props.userdetails}/>
 
-                          }
+                          
+                        }
+
+                       
                       </div>
                       </div>
               }
         		</div>
+          */}
 
+            <div  className="vbox viewport" style={{'overflow':'hidden'}}>
+            <header style={{'border':'0px'}}> 
+            <h3>Facebook Chat Sessions </h3>
+            </header>
+                <section className="main hbox space-between">
+                  <nav className="navclassSessionList">
+                                 
+
+                     {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
+                                                        this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
+
+                                                          <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} selectedCustomer={this.props.fbsessionSelected} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
+
+                                                        )
+                                                        )
+                                                      }
+
+                </nav>
+                 <article className="articleclass ">
+    
+                       {
+                            this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
+                            <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} userprofilepic={this.props.profile_pic} senderid={this.props.fbsessionSelected.user_id.user_id} userdetails={this.props.userdetails}/>
+
+                          
+                        }
+
+        </article>
+    </section>
+    </div>
+
+
+
+
+        {/*
             </div>
           </div>
        </div>
+     */}
        </div>
       </div>
       </div>

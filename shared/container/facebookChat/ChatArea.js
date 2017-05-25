@@ -722,7 +722,9 @@ scrollToBottom() {
    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
     //alert(this.props.fbchatSelected.length);
     const target = ReactDOM.findDOMNode(this.refs[this.props.fbchatSelected.length-1]);
-    target.parentNode.scrollTop = target.offsetTop;  
+    target.scrollIntoView({behavior: "smooth"});
+   // target.parentNode.scrollTop = target.offsetTop;  
+   // console.log(target);
     //node.scrollTop = node.scrollHeight;
 
 
@@ -1461,20 +1463,16 @@ render () {
 
       return (
       
-        <div>
+        <div className="anotherflx">
+        <div className="headerchatarea">
+          <h4> Customer : {this.props.fbsessionSelected.user_id.first_name+' ' + this.props.fbsessionSelected.user_id.last_name}</h4>
+          
+          <h4> Status : {this.props.fbsessionSelected.status}</h4>
+          <br/>
           <div className="table-responsive">
                            <table className="table table-colored">
                            <tbody>
-                                        <tr>
-                                           <td className="col-md-4">
-                                           <label className="control-label text-right">Assigned To Agent</label>
-                                           </td>
-                                           <td className="col-md-4">
-                                           </td>
-                                           <td className="col-md-4">
-                                           <label className="control-label text-right">Assigned To Team</label>
-                                           </td>
-                                        </tr>
+                                      
                      <tr>
                      <td className="col-md-4">
 
@@ -1527,9 +1525,7 @@ render () {
                       </td>
 
                       </tr>
-                      <tr>
-                        <td className="col-md-4"> Status : {this.props.fbsessionSelected.status}</td>
-                      </tr>
+                     
 
 
 
@@ -1537,15 +1533,16 @@ render () {
                   </table>
 
           </div>
-        <div id='messages-container' style={{'height':'370px','overflowY':'scroll'}} ref="messagelist">
-         
+          </div>
+        <article ref="messagelist">
+         <div>
           {list}
-          
-        </div>
+         </div> 
+        </article>
 
         
-        
-          <div style={styles.inputContainer}>
+        <div className="footerchatarea">
+          <div style={styles.inputContainer} >
             <div style={styles.inputField}>
                 <Autosuggest  ref = "msg" suggestions={suggestions}
 
@@ -1558,91 +1555,91 @@ render () {
                    inputProps={inputProps} />
             </div>
 
-            <div style={styles.toolbox}>
-            <div style={{display: 'inline-block'}}>
-            
-                <i style={styles.iconclass} onClick = {() => {this.refs.selectFile.click()}}>
-                <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-paperclip"></i>
-              </i>
-                <input ref="selectFile" type="file" onChange={this._onChange} style={styles.inputf}/>
-              
-            </div>
 
-            <div style={{display: 'inline-block'}}>
-              <i style={styles.iconclass}  onClick = {this.toggleEmojiPicker}>
-                <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-smile-o"></i>
-              </i>
-            </div>
-              <div style={{display: 'inline-block'}}>
-                <i style={styles.iconclass}  onClick = {this.toggleStickerPicker}>
-                  <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
-                  <i style={{position: 'absolute', left: '0', width: '100%', textAlign: 'center', fontSize: '15px'}} className="fa fa-smile-o"></i>
-                </i>
-              </div>
-              <div style={{display: 'inline-block'}}>
-                <i style={styles.iconclass}  onClick = {this.toggleVisible}>
-                  <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
-                  <p style={{position: 'absolute', text: 'GIF', left: '0', width: '100%', textAlign: 'center', fontSize: '10px'}}>GIF</p>
-                </i>
-              </div>
+              <div style={styles.toolbox}>
+                    <div style={{display: 'inline-block'}}>
+                    
+                        <i style={styles.iconclass} onClick = {() => {this.refs.selectFile.click()}}>
+                        <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-paperclip"></i>
+                      </i>
+                        <input ref="selectFile" type="file" onChange={this._onChange} style={styles.inputf}/>
+                      
+                    </div>
+
+                    <div style={{display: 'inline-block'}}>
+                      <i style={styles.iconclass}  onClick = {this.toggleEmojiPicker}>
+                        <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-smile-o"></i>
+                      </i>
+                    </div>
+                      <div style={{display: 'inline-block'}}>
+                        <i style={styles.iconclass}  onClick = {this.toggleStickerPicker}>
+                          <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
+                          <i style={{position: 'absolute', left: '0', width: '100%', textAlign: 'center', fontSize: '15px'}} className="fa fa-smile-o"></i>
+                        </i>
+                      </div>
+                      <div style={{display: 'inline-block'}}>
+                        <i style={styles.iconclass}  onClick = {this.toggleVisible}>
+                          <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
+                          <p style={{position: 'absolute', text: 'GIF', left: '0', width: '100%', textAlign: 'center', fontSize: '10px'}}>GIF</p>
+                        </i>
+                      </div>
 
 
-            <div style={{display: 'inline-block'}}>
-              <i style={styles.iconclass}  onClick = {this.sendThumbsUp}>
-                <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up"></i>
-              </i>
-            </div>
+                    <div style={{display: 'inline-block'}}>
+                      <i style={styles.iconclass}  onClick = {this.sendThumbsUp}>
+                        <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up"></i>
+                      </i>
+                    </div>
            
 
             </div>
-         
-                </div>
+          </div>
 
 
               <div>
                     <div style={{'clear':'both','float':'right'}}>
-            {
-                this.state.showEmojiPicker &&
-                <EmojiPicker
-                  onEmojiSelected={this.setEmoji}
-                />
+                      {
+                          this.state.showEmojiPicker &&
+                          <EmojiPicker
+                            onEmojiSelected={this.setEmoji}
+                          />
 
-            }
+                      }
 
-            {
-              this.state.showSticker &&
-              <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px'}}>
-              <StickerMenu
-                apiKey={'80b32d82b0c7dc5c39d2aafaa00ba2bf'}
-                userId={'imran.shoukat@khi.iba.edu.pk'}
-                sendSticker={this.sendSticker}
-              />
-              </div>
-            }
+                      {
+                        this.state.showSticker &&
+                        <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px'}}>
+                        <StickerMenu
+                          apiKey={'80b32d82b0c7dc5c39d2aafaa00ba2bf'}
+                          userId={'imran.shoukat@khi.iba.edu.pk'}
+                          sendSticker={this.sendSticker}
+                        />
+                        </div>
+                      }
 
-            {
-              this.state.visible &&
-              <Picker
-                onSelected={this.sendGIF}
-              />
+                      {
+                        this.state.visible &&
+                        <Picker
+                          onSelected={this.sendGIF}
+                        />
 
-            }
+                      }
               </div>
               {
                 this.state.longtextwarning != '' &&
               <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
               }
-              </div>
+          </div>
 
                {
                       this.props.showFileUploading && this.props.showFileUploading == true &&
                      <p style={{color:'red'}}>Uploading file...Please wait</p>
                      
               } 
-
             
-          
-       </div>
+ 
+      </div>
+      </div>
      
       )
 
@@ -1799,12 +1796,13 @@ const styles = {
 
   inputContainer:{
     display: 'table',
-    margin: 10,
+    margin: '10px 0px',
     width: '100%',
     borderBottom: '1px solid #dddfe2',
     borderTop: '1px solid #dddfe2',
     minHeight: 50,
     position: 'relative',
+
   },
   inputField:{
     minHeight: 30,
