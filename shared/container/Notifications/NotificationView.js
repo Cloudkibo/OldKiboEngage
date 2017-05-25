@@ -59,6 +59,7 @@ class NotificationView extends Component {
      return (
 
       <div>
+      <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
       <div className="page-container">
          <SideBar/> 
           <div className="page-content-wrapper">

@@ -81,7 +81,7 @@ class AgentEditView extends Component {
     }
     return (
       <div>
-
+       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
        <div className="page-container">
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
