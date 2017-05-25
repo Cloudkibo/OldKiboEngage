@@ -37,7 +37,7 @@ class ClientChat extends Component {
     return (
       <div>
       
-       <div className="page-container">
+       <div className="page-container hbox space-between">
        <div className="widgetheader">
           <div style={{'paddingTop':'2em'}}>
         

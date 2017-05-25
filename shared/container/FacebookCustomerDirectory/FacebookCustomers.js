@@ -47,10 +47,10 @@ filterData(event) {
 }
 
 componentWillReceiveProps(props){
-  if(props.customers){
+  if(props.fbcustomers){
     this.setState({
-      data: Immutable.fromJS(props.customers).toList(),
-      filteredData: Immutable.fromJS(props.customers).toList()
+      data: Immutable.fromJS(props.fbcustomers).toList(),
+      filteredData: Immutable.fromJS(props.fbcustomers).toList()
     });
   }
 }
@@ -58,11 +58,11 @@ componentWillReceiveProps(props){
 render() {
   const token = auth.getToken()
   const { filteredData } = this.state;
-
+  console.log(filteredData);
   return (
-    <div>
+    <div className="vbox viewport">
       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-      <div className="page-container">
+      <div className="page-container hbox space-between">
         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
         <div className="page-content-wrapper">
           <div className="page-content">

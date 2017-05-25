@@ -54,9 +54,9 @@ class RescheduleAbandonedSessions extends Component {
     const token = auth.getToken()
     console.log(token)
     return (
-      <div>
+      <div className="vbox viewport">
 
-       <div className="page-container">
+       <div className="page-container hbox space-between">
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">

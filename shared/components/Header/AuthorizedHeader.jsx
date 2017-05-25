@@ -36,7 +36,7 @@ class AuthorizedHeader extends Component
   render()
   {
     return (
-
+    
       <div  className = "page-header navbar" >
         <div className="page-header-inner">
           <div className = "page-logo" >

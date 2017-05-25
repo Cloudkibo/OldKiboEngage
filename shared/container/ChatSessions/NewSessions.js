@@ -70,10 +70,10 @@ class NewSessions extends Component {
   render() {
     const token = auth.getToken()
     console.log(token)
-    return (
-      <div>
+     return (
+      <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-       <div className="page-container">
+       <div className="page-container hbox space-between">
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">

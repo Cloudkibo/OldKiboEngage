@@ -44,9 +44,9 @@ class AddCustomer extends Component {
    
     return (
 
-      <div>
+      <div className="vbox viewport">
 
-       <div className="page-container">
+       <div className="page-container hbox space-between">
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">customer </h3>

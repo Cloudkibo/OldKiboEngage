@@ -326,7 +326,18 @@ Page Header
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover,
 .page-sidebar {
   background-color: #364150;
+    /* previous syntax */
+        /* previous syntax */
+        -webkit-box-flex: 2;
+           -moz-box-flex: 2;
+            -ms-box-flex: 2;
+                box-flex: 2;
 
+        /* current syntax */
+        -webkit-flex: 2;
+           -moz-flex: 2;
+            -ms-flex: 2;
+                flex: 2;
   /* Default sidebar */
   /* light sidebar */
   /* Sidebar search */

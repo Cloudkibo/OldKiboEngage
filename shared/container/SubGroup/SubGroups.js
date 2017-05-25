@@ -42,10 +42,10 @@ class SubGroups extends Component {
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     return (
-      <div>
+      <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
     
-       <div className="page-container">
+       <div className="page-container hbox space-between">
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
           <div className="page-content-wrapper">
             <div className="page-content"> 
@@ -90,7 +90,7 @@ class SubGroups extends Component {
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Team </th>
+                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Active</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created On</th>
                      { this.props.userdetails.isAgent == "Yes"?<br/> :
