@@ -1676,8 +1676,18 @@ var newArrayC = []
 for(var i=0;i< fbsessions.length;i++){
   var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
   var lastmessage = selectedchat[selectedchat.length-1];
+  console.log('lastmessage');
+  console.log(lastmessage);
   var newfbsession = fbsessions[i];
-  newfbsession.lastmessage = lastmessage;
+  if(!newfbsession.lastmessage){
+    console.log('newfbsession.lastmessage was not defined');
+    newfbsession['lastmessage'] = lastmessage;
+    console.log(newfbsession);
+  }
+  else{
+    newfbsession.lastmessage = lastmessage;
+  
+  }
   newArrayC.push(newfbsession);
 }
 
@@ -3737,7 +3747,7 @@ export function getfbChats(usertoken){
 }
 
 // update customer list
-export function updateCustomerList(data,customerlist){
+export function updateCustomerList(data,customerlist,selectedchat){
   customerlist.push(data);
    var newArray = [];
      var lookupObject  = {};
@@ -3749,10 +3759,20 @@ export function updateCustomerList(data,customerlist){
      for(i in lookupObject) {
          newArray.push(lookupObject[i]);
      }
-  return{
-    type:ActionTypes.ADD_NEW_FB_CUSTOMER,
-    fbsessions:newArray,
-  }
+     if(!selectedchat.user_id){
+      return{
+        type:ActionTypes.ADD_NEW_FB_CUSTOMER,
+        fbsessions:newArray,
+        fbsessionSelected:newArray[0],
+      }
+    }
+      else{
+        return{
+        type:ActionTypes.ADD_NEW_FB_CUSTOMER,
+        fbsessions:newArray,
+        
+      }
+      }
 }
 
 export function updatefbsessionlist(data,customerlist,currentSession,fbchat,fbchatSelected){

@@ -56,7 +56,7 @@ class FbChat extends Component {
 getfbCustomer(data){
  // alert('New fb customer '+ data.first_name);
   if(this.props.fbsessions){
-    this.props.updateCustomerList(data,this.props.fbsessions);
+    this.props.updateCustomerList(data,this.props.fbsessions,this.props.fbsessionSelected);
     this.forceUpdate();
 
   }
@@ -156,7 +156,9 @@ componentWillReceiveProps(props){
             <header style={{'border':'0px'}}> 
             <h3>Facebook Chat Sessions </h3>
             </header>
-                <section className="main hbox space-between">
+
+            {this.props.fbsessions && this.props.fbsessions.filter((c)=> c.status != "resolved").length > 0 ?
+            <section className="main hbox space-between">
                   <nav className="navclassSessionList">
                       <div className="anotherflx">
                       <div className="headerchatarea" style={{'flex-basis':50}}>           
@@ -198,6 +200,9 @@ componentWillReceiveProps(props){
 
         </article>
     </section>
+    :
+    <p> There are no active facebook chat sessions</p>
+  }
     </div>
 
 
