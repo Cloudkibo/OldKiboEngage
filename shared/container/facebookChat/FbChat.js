@@ -110,7 +110,7 @@ componentDidMount(){
 }
 
 componentWillReceiveProps(props){
-  if(props.fbsessions && props.fbchats && callonce == true){
+  if(props.fbsessions && props.fbchats && callonce == true && props.fbsessions.length >0 ){
    // alert(props.fbcustomers.length);
 
     // call action to append last messages

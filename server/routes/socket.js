@@ -1215,11 +1215,15 @@ exports.getfbchat = function(data){
      //inform agents that a new customer arrives on fbmessenger
     //broadcast message to all agents
       glob.to(data.chatobj.companyid).emit('send:fbcustomer',data.socketsession);
-
+      setTimeout(function(){ 
+                fbchats.push(data.chatobj);
+                glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
+          }, 1000);
       }
-
-  fbchats.push(data.chatobj);
-  glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
+  else{    
+      fbchats.push(data.chatobj);
+      glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
+      }
 
 }
 
