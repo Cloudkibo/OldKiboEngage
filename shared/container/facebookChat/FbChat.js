@@ -73,14 +73,14 @@ updateFbsessionlist(data){
 getfbMessage(data){
     if(this.props.fbchatSelected && this.props.fbchats)
     {
-      if(data.senderid != this.props.fbchatSelected[0].senderid)
+   /*   if(data.senderid != this.props.fbchatSelected[0].user)
       {
 
           data.seen = false;
        }
     else{
       data.seen=true;
-    }
+    }*/
       this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbsessionSelected.user_id.user_id,this.props.fbsessions,this.props.sessionsortorder);
 
     }
