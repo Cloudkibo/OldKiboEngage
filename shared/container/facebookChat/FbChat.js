@@ -73,7 +73,10 @@ updateFbsessionlist(data){
 getfbMessage(data){
     if(this.props.fbsessionSelected && this.props.fbchats)
     {
-     if(data.senderid != this.props.fbsessionSelected.user_id.user_id)
+      if(!this.props.fbsessionSelected.user_id){
+        data.seen = false;
+      }
+     else if(this.props.fbsessionSelected.user_id && data.senderid != this.props.fbsessionSelected.user_id.user_id)
       {
 
           data.seen = false;
