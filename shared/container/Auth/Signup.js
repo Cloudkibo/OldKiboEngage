@@ -160,9 +160,12 @@ class Signup extends React.Component {
                                                        value={ this.state.phone }
                                                        onChange={ phone => this.setState({ phone }) } />
 
-                                              {String(isValidPhoneNumber(this.state.phone)) == 'false'?
+                                              {
+                                                (this.state.phone != '') ?
+                                                      ( String(isValidPhoneNumber(this.state.phone)) == 'false'?
                                               <p style={{'color':'red'}}> Not a valid number</p>
-                                              :<p></p>
+                                                      :<p></p> ) : <p></p>
+                                              
                                               }
                                               </div>
                                               <div className="form-group">
