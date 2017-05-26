@@ -25,16 +25,16 @@ function sendPushNotification(tagname, payload){
   }
   notificationHubService.gcm.send(tagname, androidMessage, function(error){
     if(!error){
-      console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
+  //    console.log('Azure push notification sent to Android using GCM Module, client number : '+ tagname);
     } else {
-      console.log('Azure push notification error : '+ JSON.stringify(error));
+   //   console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
   notificationHubService.apns.send(tagname, iOSMessage, function(error){
     if(!error){
-      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+  //    console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
     } else {
-      console.log('Azure push notification error : '+ JSON.stringify(error));
+   //   console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
 
@@ -42,9 +42,9 @@ function sendPushNotification(tagname, payload){
 
   notificationHubService2.apns.send(tagname, iOSMessage, function(error){
     if(!error){
-      console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+   //   console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
     } else {
-      console.log('Azure push notification error : '+ JSON.stringify(error));
+    //  console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
 }
@@ -1201,7 +1201,8 @@ exports.getfbchat = function(data){
       break;
     }
   }
-
+  console.log('onlineAgentsCompany');
+  console.log(onlineAgentsCompany);
   var flag=0;
   for(var i=0;i< fbusers.length;i++){
     if(fbusers[i].user_id.user_id == data.socketsession.user_id.user_id){

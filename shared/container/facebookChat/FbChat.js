@@ -54,7 +54,8 @@ class FbChat extends Component {
   }
 
 getfbCustomer(data){
- // alert('New fb customer '+ data.first_name);
+  console.log('new fb customer is received');
+  console.log(data);
   if(this.props.fbsessions){
     this.props.updateCustomerList(data,this.props.fbsessions,this.props.fbsessionSelected);
     this.forceUpdate();
@@ -71,6 +72,8 @@ updateFbsessionlist(data){
   this.forceUpdate();
 }
 getfbMessage(data){
+  console.log('new fb message is received');
+  console.log(data);
     if(this.props.fbsessionSelected && this.props.fbchats)
     {
       if(!this.props.fbsessionSelected.user_id){
