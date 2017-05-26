@@ -127,8 +127,7 @@ class AuthorizedHeader extends Component
 }
 
 function mapStateToProps(state) {
-  console.log("I am auth header", state)
-   return {
+    return {
 
     team: (state.dashboard.team),
     agents:(state.dashboard.agents),

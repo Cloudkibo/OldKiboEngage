@@ -82,9 +82,10 @@ export function getteams(req, res) {
   }
 
 export function getTeam(req, res) {
-  //console.log('getTeam is called.');
+  console.log('getTeam is called.');
   var token = req.headers.authorization;
   var id = req.query.id;
+  console.log(id);
    var options = {
       url: `${baseURL}/api/groups/${id}`,
       rejectUnauthorized : false,
@@ -96,8 +97,8 @@ export function getTeam(req, res) {
     function callback(error, response, body) {
     
       var info = JSON.parse(body);
-      //  //console.log(info);
-        
+      console.log(info);
+      console.log(error);  
       if(!error  && response.statusCode == 200) {
         res.status(200).json({team:info}); 
     
@@ -286,7 +287,7 @@ export function joinTeam(req, res) {
     };
     //console.log(options.json.dept);
     function callback(error, response, body) {
-        //console.log(body);
+        console.log(body);
     
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')

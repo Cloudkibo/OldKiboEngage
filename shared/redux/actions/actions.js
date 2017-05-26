@@ -862,6 +862,7 @@ else{
 
 /************************* Team Related Actions (old groups) ************/
 export function addSelectedTeam(team) {
+  console.log(team);
   return {
     type: ActionTypes.ADD_SELECTED_TEAM,
     team,

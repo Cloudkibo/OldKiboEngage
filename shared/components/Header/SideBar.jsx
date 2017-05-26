@@ -302,7 +302,6 @@ class SideBar extends Component
 
 
 function mapStateToProps(state) {
-  console.log("I am auth header", state)
    return {
 
     team: (state.dashboard.team),

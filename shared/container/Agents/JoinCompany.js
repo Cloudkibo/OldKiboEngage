@@ -6,7 +6,11 @@ import {getInviteEmail} from '../../redux/actions/actions'
 import Header from '../../components/Header/Header.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/SideBar/SideBar.jsx';
-
+import Phone,{
+  formatPhoneNumber,
+  parsePhoneNumber,
+  isValidPhoneNumber
+} from 'react-phone-number-input';
 
 class JoinCompany extends React.Component {
 
@@ -14,6 +18,7 @@ class JoinCompany extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onSubmit = this.onSubmit.bind(this);
+    this.state = {'phone':''};
 
 
 
@@ -24,35 +29,38 @@ class JoinCompany extends React.Component {
     onSubmit(event)
     {
                 event.preventDefault();
-                const fnameRef = this.refs.fname;
-                const lnameRef = this.refs.lname;
-                const emailRef = this.refs.email;
-                const phoneRef = this.refs.phone;
-                const pwdRef = this.refs.pwd;
-                const c_pwdRef = this.refs.c_pwd;
-                const cname = this.refs.cname;
-                const cdnameRef = this.refs.cdname;
-                const tokenref = this.refs.token;
-                if (pwdRef.value != c_pwdRef.value) {
-                  alert('Password donot match!.Retype password');
-                  pwdRef.value = c_pwdRef.value = ''
-                }
-                if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && emailRef.value && phoneRef.value && cname.value && cdnameRef.value) {
-                  var user = {
-                    'firstname': fnameRef.value,
-                    'lastname': lnameRef.value,
-                    'email': emailRef.value,
-                    'phone': phoneRef.value,
-                    'password': pwdRef.value,
-                    'companyName': cname.value,
-                    'website': cdnameRef.value,
-                    'token' : tokenref.value
-                  }
-                  console.log(user);
+                if(isValidPhoneNumber(this.state.phone) == true){
 
-                   this.props.signupuser(user)
-                 // fnameRef.value = lnameRef.value = pwdRef.value = c_pwdRef.value = emailRef.value = phoneRef.value = cname.value = cdnameRef.value = '';
-                }
+                    const fnameRef = this.refs.fname;
+                    const lnameRef = this.refs.lname;
+                    const emailRef = this.refs.email;
+                    const phoneRef = this.refs.phone;
+                    const pwdRef = this.refs.pwd;
+                    const c_pwdRef = this.refs.c_pwd;
+                    const cname = this.refs.cname;
+                    const cdnameRef = this.refs.cdname;
+                    const tokenref = this.refs.token;
+                    if (pwdRef.value != c_pwdRef.value) {
+                      alert('Password donot match!.Retype password');
+                      pwdRef.value = c_pwdRef.value = ''
+                    }
+                    if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && emailRef.value  && cname.value && cdnameRef.value) {
+                      var user = {
+                        'firstname': fnameRef.value,
+                        'lastname': lnameRef.value,
+                        'email': emailRef.value,
+                        'phone': this.state.phone,
+                        'password': pwdRef.value,
+                        'companyName': cname.value,
+                        'website': cdnameRef.value,
+                        'token' : tokenref.value
+                      }
+                      console.log(user);
+
+                       this.props.signupuser(user)
+                     // fnameRef.value = lnameRef.value = pwdRef.value = c_pwdRef.value = emailRef.value = phoneRef.value = cname.value = cdnameRef.value = '';
+                    }
+                  }
     }
 
 
@@ -67,7 +75,7 @@ class JoinCompany extends React.Component {
                      <Header/>
                     <div className = "mainBody">
                       <div className ="row margin-bottom-40">
-                          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
+                          <SideBar isAdmin ="no"/>
                           <div className="col-md-9 col-sm-9">
                             <h1>Join Company</h1>
                             <div className="content-form-page">
@@ -103,7 +111,17 @@ class JoinCompany extends React.Component {
                                               </div>
                                               <div className="form-group">
                                               <label>Phone *</label>
-                                              <input type="number" className="form-control input-medium" ref="phone" required placeholder="Phone"/>
+                                              <Phone  placeholder="Enter phone number"
+                                                       value={ this.state.phone }
+                                                       onChange={ phone => this.setState({ phone }) } />
+
+                                              {
+                                                (this.state.phone != '') ?
+                                                      ( String(isValidPhoneNumber(this.state.phone)) == 'false'?
+                                              <p style={{'color':'red'}}> Not a valid number</p>
+                                                      :<p></p> ) : <p></p>
+                                              
+                                              }
                                               </div>
                                               <div className="form-group">
                                               <label>Company Name *</label>

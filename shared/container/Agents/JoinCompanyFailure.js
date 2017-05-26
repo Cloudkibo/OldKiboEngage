@@ -16,7 +16,7 @@ class JoinCompanyFailure extends React.Component {
                      <Header/>
                     <div className = "mainBody">
                       <div className ="row margin-bottom-40">
-                          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
+                          <SideBar isAdmin ="no"/>
                           <div className="col-md-9 col-sm-9">
                             <h1>Link Expired!</h1>
                             <div className="content-form-page">
