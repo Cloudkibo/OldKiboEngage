@@ -5,21 +5,14 @@ import Logout from '../../container/Auth/Logout';
 import moment from 'moment'
 import { getnews,updatenews}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 
 class SideBar extends Component
 {
 
   constructor(props, context) {
 
-        const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
-    if(usertoken != null)
-    {
 
-        console.log(usertoken);
-        props.getcompanysettings(usertoken,props.userdetails.uniqueid);
-      }
     super(props, context);
 
   }
@@ -238,7 +231,7 @@ class SideBar extends Component
                 </Link>
               </li>
            
-            {this.props.isAdmin == "Yes"?
+            {(this.props.isAdmin == "Yes" && this.props.companysettings.enableFacebook == 'Yes')?
               <li className="">
                 <Link to="/instructionsforintegratingfacebook">
                   <i className="fa fa-info-circle">
@@ -253,7 +246,7 @@ class SideBar extends Component
 
                 :<li></li>
                 }
-             {this.props.isAdmin == "Yes"?
+             { (this.props.isAdmin == "Yes" && this.props.companysettings.enableFacebook == 'Yes') ?
               <li className="">
                 <Link to="/fbpages">
                   <i className="fa fa-facebook">
@@ -268,17 +261,20 @@ class SideBar extends Component
 
                 :<li></li>
                 }
-              <li className="">
+                {(this.props.companysettings.enableFacebook == 'Yes') ? 
+                  <li  className="">
                 <Link to="/fbchat">
                   <i className="fa fa-facebook">
                   </i>
                   <span className="title">
-                    Facebook Chat {console.log("I am awesome", this.props)} 
+                    Facebook Chat  
                   </span>
                   <span className="selected">
                   </span>
                 </Link>
-              </li>
+              </li> : <li></li>
+            }
+              
 
             {this.props.isAdmin == "Yes"?
               <li className="">
@@ -320,8 +316,4 @@ function mapStateToProps(state) {
     companysettings:(state.dashboard.companysettings),
   };
 }
-function mapDispatchToProps(dispatch) {
-
-  return bindActionCreators({getcompanysettings:getcompanysettings,updatesettings:updatesettings}, dispatch);
-}
-export default connect(mapStateToProps,mapDispatchToProps)(SideBar);
+export default connect(mapStateToProps,{ getnews,updatenews})(SideBar);

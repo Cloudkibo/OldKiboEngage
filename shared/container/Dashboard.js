@@ -5,7 +5,7 @@ import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents,getnews} from '../redux/actions/actions'
 import {getusergroups} from '../redux/actions/actions'
-import {getsubgroups,updateAgentList,setjoinedState} from '../redux/actions/actions'
+import {getsubgroups,updateAgentList,setjoinedState, getcompanysettings} from '../redux/actions/actions'
 import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import Footer from '../components/Footer/Footer.jsx';
@@ -21,7 +21,14 @@ var fetchnews = false;
 class Dashboard extends Component {
  constructor(props, context) {
 
+     const usertoken = auth.getToken();
+    console.log('componentWillMount is called');
+    if(usertoken != null)
+    {
 
+        console.log(usertoken);
+        props.getcompanysettings(usertoken,props.userdetails.uniqueid);
+      }
     super(props, context);
      this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
      this.create_agentsession = this.create_agentsession.bind(this);
@@ -174,9 +181,10 @@ function mapStateToProps(state) {
   subgroups :(state.dashboard.subgroups),
   onlineAgents:(state.dashboard.onlineAgents),
   news : (state.dashboard.news),
-  userjoinedroom:(state.dashboard.userjoinedroom)
+  userjoinedroom:(state.dashboard.userjoinedroom),
+  companysettings:(state.dashboard.companysettings),
 
    }
 }
 
-export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,setjoinedState,getresponses,getsubgroups,getDeptAgents,getusergroups})(ReactTimeout(Dashboard));
+export default connect(mapStateToProps,{getuser,getnews,updateAgentList,getAgents,setjoinedState,getresponses,getsubgroups,getDeptAgents,getusergroups, getcompanysettings})(ReactTimeout(Dashboard));
