@@ -19,11 +19,12 @@ class ChangePassword extends Component {
        super(props, context);
         this.onChangeCurrentPassword = this.onChangeCurrentPassword.bind(this);
         this.onChangeNewPassword = this.onChangeNewPassword.bind(this);
-
+        this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
         
          this.state = {
           cpwdErr: '',
-          npwdErr:''
+          npwdErr:'',
+          doesMatch: '',
         };
      
         this.onSubmit = this.onSubmit.bind(this);
@@ -70,11 +71,29 @@ onChangeCurrentPassword(event) {
       npwdErr : 'LengthOk'
     });
   }
+
+    if(event.target.value != this.refs.confirm_npwd.value){
+      this.setState({doesMatch: 'Passwords do not match'});
+    }else{
+      this.setState({doesMatch: ''});
+    }
+  }
+
+  onChangeConfirmPassword(event) {
+    if(event.target.value != this.refs.npwd.value){
+      this.setState({doesMatch: 'Passwords do not match'});
+    }else{
+      this.setState({doesMatch: ''});
+    }
   }
   onSubmit(event)
     {
        const usertoken = auth.getToken();
        event.preventDefault();
+       if(this.refs.npwd.value != this.refs.confirm_npwd.value){
+         alert("Passwords Do Not Match");
+         return;
+       }
        if(this.refs.cpwd.value != '' && this.refs.cpwd.value.length >= 6 && this.refs.cpwd.value != '' && this.refs.cpwd.value.length && this.refs.npwd.value != '' && this.refs.npwd.value.length >=6)
        {
                     var user = {
@@ -151,6 +170,8 @@ onChangeCurrentPassword(event) {
                                                 <label>New Password</label>
                                                 <input type="password"  className="form-control "  ref = "npwd" required placeholder="Enter new password" onChange={this.onChangeNewPassword}/>
                                               </div>
+
+
                                               {
                                                 this.state.npwdErr == ""?
                                                 <span>Enter password</span>:<span></span>
@@ -162,13 +183,23 @@ onChangeCurrentPassword(event) {
                                                 <span>Length of password should be greater than 6 characters.</span>:<span></span>
 
                                               }
+                                              <div className="form-group">
+                                              <br/>
+                                                <label>Confirm Password</label>
+                                                <input type="password"  className="form-control "  ref = "confirm_npwd" required placeholder="Enter confirm password" onChange={this.onChangeConfirmPassword}/>
+                                                 <span>{this.state.doesMatch}</span>
+                                              </div>
+
                                                <br/>
                                                <br/>
                                               <div className="form-actions">
-                                                      <button type="submit" className="btn green btn-send">Change Password</button>
+                                                      <button type="submit" disabled={(this.state.doesMatch == '') ? false:true} className="btn green btn-send">Change Password</button>
                                                       <Link to='/dashboard' className="btn default"> Cancel </Link> 
                                               </div>
+                                                
+                                               
 
+                                              
 
                                              {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "danger" &&
                                                  <div className = "alert alert-danger"><span>{this.props.errorMessageProfile.message}</span></div>
@@ -177,7 +208,6 @@ onChangeCurrentPassword(event) {
                                               {this.props.errorMessageProfile && this.props.errorMessageProfile.status == "success" &&
                                                  <div className = "alert alert-success"><span>{this.props.errorMessageProfile.message}</span></div>
                                               }
-
 
                                   </form>
              
