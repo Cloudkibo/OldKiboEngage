@@ -865,8 +865,7 @@ handleMessageSubmit(e) {
 
 
             }
-
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions);
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder);
     socket.emit('broadcast_fbmessage',saveMsg);
 
    // this.scrollToBottom();
@@ -1033,7 +1032,7 @@ onFileSubmit()
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
     socket.emit('broadcast_fbmessage',saveMsg);
   }
     // this.scrollToBottom();
@@ -1178,7 +1177,7 @@ var data = {
 
 
   }
-this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
 socket.emit('broadcast_fbmessage',saveMsg);
 }
 // this.scrollToBottom();
@@ -1274,7 +1273,7 @@ var data = {
 
 
   }
-this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
 socket.emit('broadcast_fbmessage',saveMsg);
 
 // this.scrollToBottom();
@@ -1359,9 +1358,9 @@ render () {
                      <div style={styles.imagestyle}>
                       {
                         da.type == "video"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
+                        <ReactPlayer url={da.payload.url} controls={true} width="100%" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
+                        <ReactPlayer url={da.payload.url} controls={true} width="100%" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
                         (da.type == "location"?
                            <div>
                              <p> {da.title} </p>
@@ -1434,9 +1433,9 @@ render () {
                                                            :
                       <div style={styles.imagestyle}>
                       (da.type == "video"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
+                        <ReactPlayer url={da.payload.url} controls={true} width="100%" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="420" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
+                        <ReactPlayer url={da.payload.url} controls={true} width="100%" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
 
                         (da.type == "location"?
                        <div>
@@ -1874,7 +1873,7 @@ function mapStateToProps(state) {
           fbsessionSelected:state.dashboard.fbsessionSelected,
           status:state.dashboard.status,
           showFileUploading: state.dashboard.showFileUploading,
-       
+          sessionsortorder:state.dashboard.sessionsortorder,
                     };
 }
 

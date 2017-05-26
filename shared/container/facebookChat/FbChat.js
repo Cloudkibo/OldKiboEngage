@@ -3,7 +3,7 @@ import ChatArea from './ChatArea';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {getfbCustomers,appendlastmessage,getteams,updatefbsessionlist,getTeamAgents,getfbSessions,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
+import {getfbCustomers,sortSessionsList,appendlastmessage,getteams,updatefbsessionlist,getTeamAgents,getfbSessions,updatefbstatus,updateCustomerList,add_socket_fb_message,getfbChats,getresponses,selectFbCustomerChat}  from '../../redux/actions/actions'
 import Conversation from 'chat-template/dist/Conversation';
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -48,7 +48,7 @@ class FbChat extends Component {
         this.getfbCustomer = this.getfbCustomer.bind(this);
         this.getfbMessage = this.getfbMessage.bind(this);
         this.updateFbsessionlist = this.updateFbsessionlist.bind(this);
-
+        this.handleChange = this.handleChange.bind(this);
 
 
   }
@@ -62,7 +62,9 @@ getfbCustomer(data){
   }
 
 }
-
+handleChange(e){
+  this.props.sortSessionsList(this.props.fbsessions,e.target.value);
+}
 updateFbsessionlist(data){
   
   this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected,this.props.fbchats,this.props.fbchatSelected);
@@ -79,7 +81,7 @@ getfbMessage(data){
     else{
       data.seen=true;
     }
-      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbsessionSelected.user_id.user_id,this.props.fbsessions);
+      this.props.add_socket_fb_message(data,this.props.fbchats,this.props.fbsessionSelected.user_id.user_id,this.props.fbsessions,this.props.sessionsortorder);
 
     }
 
@@ -150,75 +152,28 @@ componentWillReceiveProps(props){
 
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper" >
-
-           {/* <div className="page-content">
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
-                   Facebook Chat Page
-                </div>
-              </div>
-
-           <div className="portlet-body"  >
-              */}
-             {/*	<div>
-
-                {this.props.fbsessions && this.props.fbsessions.filter((c) => c.status != 'resolved').length == 0?
-                  <p>There are no active customer sessions from Facebook</p>
-
-                  :
-                <div className="chat_wrapper">
-
-        			             		<div  className="chat_wrapper_left myleftborder">
-                                      {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
-        					                        this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
-
-                                            <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} selectedCustomer={this.props.fbsessionSelected} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
-
-                                          )
-                                          )
-        					                      }
-
-
-        			                   </div>
-        			                
-                              <div className="chat_wrapper_right">
-                        
-                          <div style={{'display':'none'}}>
-                          {
-                            this.props.fbsessions && this.props.fbsessionSelected && 
-                            <div>
-                                <label>Customer Name: </label>
-                                <label ref="customername">{this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name}</label>
-
-                           </div>
-                         }
-                         </div>
-                        
-
-                           {
-                            this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
-                            <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} userprofilepic={this.props.profile_pic} senderid={this.props.fbsessionSelected.user_id.user_id} userdetails={this.props.userdetails}/>
-
-                          
-                        }
-
-                       
-                      </div>
-                      </div>
-              }
-        		</div>
-          */}
-
             <div  className="vbox viewport" style={{'overflow':'hidden'}}>
             <header style={{'border':'0px'}}> 
             <h3>Facebook Chat Sessions </h3>
             </header>
                 <section className="main hbox space-between">
                   <nav className="navclassSessionList">
-                                 
+                      <div className="anotherflx">
+                      <div className="headerchatarea" style={{'flex-basis':50}}>           
+                      <div className="input-group">
+                          <label>Sort By Date</label>
 
+                          <select  ref = "sortsetting" className="form-control"  aria-describedby="basic-addon3" onChange={this.handleChange.bind(this)}   >
+                                <option value="0">Newest on Top</option>
+                                <option value="1">Oldest on Top</option>
+                               
+                              </select>
+
+
+                      </div>
+                      </div>
+                      <article>
+                      <div>
                      {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails &&
                                                         this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
 
@@ -228,6 +183,9 @@ componentWillReceiveProps(props){
                                                         )
                                                       }
 
+                  </div>
+                  </article>
+                  </div>
                 </nav>
                  <article className="articleclass ">
     
@@ -288,9 +246,9 @@ function mapStateToProps(state) {
           fbsessions: state.dashboard.fbsessions,
           teamagents : (state.dashboard.teamagents),
           componentVisible:state.dashboard.componentVisible,
-
+          sessionsortorder:state.dashboard.sessionsortorder,
 
                     };
 }
 
-export default connect(mapStateToProps,{getfbCustomers,appendlastmessage,updatefbsessionlist,getTeamAgents, getteams, getfbSessions,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);
+export default connect(mapStateToProps,{getfbCustomers,sortSessionsList,appendlastmessage,updatefbsessionlist,getTeamAgents, getteams, getfbSessions,add_socket_fb_message,updateCustomerList,getfbChats,updatefbstatus,getresponses,selectFbCustomerChat})(FbChat);

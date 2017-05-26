@@ -1632,7 +1632,7 @@ export function selectFbCustomerChat(id,fbchat,profile_pic,selectedsession){
 }
 
 
-export function add_socket_fb_message(data,fbchats,id,fbsessions){
+export function add_socket_fb_message(data,fbchats,id,fbsessions,order){
 
 fbchats.push(data);
 
@@ -1681,7 +1681,7 @@ for(var i=0;i< fbsessions.length;i++){
   newArrayC.push(newfbsession);
 }
 
-var sorted = orderByDate(newArrayC,'timestamp');
+var sorted = orderByDate(newArrayC,'timestamp',Number(order));
 
    return{
     fbchatSelected: newArray,
@@ -1691,6 +1691,18 @@ var sorted = orderByDate(newArrayC,'timestamp');
   }
 
 
+}
+
+export function sortSessionsList(fbsessions,order){
+
+  var sorted = orderByDate(fbsessions,'timestamp',Number(order));
+
+   return{
+    fbsessions:sorted,
+    order:order,
+    type: ActionTypes.FB_SORT_SESSIONS,
+
+  }
 }
 export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
   if(new_message_arrived_rid && new_message_arrived_rid.length > 0)
@@ -3612,10 +3624,14 @@ export function getfbCustomers(usertoken){
   };
 }
 
-function orderByDate(arr, dateProp) {
+function orderByDate(arr, dateProp,order=0) {
   return arr.slice().sort(function (a, b) {
     console.log(a['lastmessage'][dateProp]);
-    return b['lastmessage'][dateProp] - a['lastmessage'][dateProp] ;
+    if(order==0)
+      return b['lastmessage'][dateProp] - a['lastmessage'][dateProp] ;
+    else{
+      return a['lastmessage'][dateProp] - b['lastmessage'][dateProp] ;
+    }
   });
 }
 export function appendlastmessage(fbsessions,fbchats){

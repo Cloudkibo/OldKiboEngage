@@ -21,7 +21,7 @@ function removeDuplicates(originalArray, prop) {
 
 
 const initialState = { signupwarnings: {},userdetails : {}};
-const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined',userchats:[],chatlist:[],componentVisible:'true'};
+const dashboardState = { userdetails : {},groupdetails:[],userjoinedroom:'notjoined',sessionsortorder:"0",userchats:[],chatlist:[],componentVisible:'true'};
 const widgetState ={groupdetails:[],subgroups:[],chatbotlist:[]}
 const signup = (state =initialState, action) => {
   switch (action.type) {
@@ -895,7 +895,14 @@ const dashboard = (state =dashboardState, action) => {
             profile_pic:action.profile_pic,
             fbsessionSelected:action.fbsessionSelected,
 
-      };    
+      };  
+      case ActionTypes.FB_SORT_SESSIONS:
+         return{
+          ...state,
+            fbsessions :action.fbsessions,
+            sessionsortorder: action.order,
+
+      };  
 
     default:
       return state;
