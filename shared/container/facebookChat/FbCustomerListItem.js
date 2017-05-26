@@ -41,6 +41,9 @@ var changecc ={
   'background' : 'rgba(195, 188, 188, 0.4)',
 }
 
+var customername={
+  fontSize :'1.2em',
+}
 var agentname = []
 if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.customer.agent_ids.length -1].type == "agent")
 
@@ -89,27 +92,26 @@ return res;
   return (
 
     (selected ?
-     <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'150px'}} onClick={props.onClickSession}>
-     <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
-
-     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
-        {(unreadCount == 0?
+     <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'100px'}} onClick={props.onClickSession}>
+     <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
+    <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
+      <br/>
+    <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+      {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
        )}
        <div style={divMargin}>
             <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
             <br/>
-            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-           <br/>
            {
               agentname.length > 0?
               <div>
-                <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>
-                <br/>
-                <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+                 <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
               </div>:
-              <div> <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span></div>
+              <div>
+                 <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+              </div>
 
             }
            <br/>
@@ -119,10 +121,13 @@ return res;
     </div>
     :
     unreadCount > 0 ?
-    <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(255, 0, 0, 0.6)','height':'150px'}} onClick={props.onClickSession}>
-    <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
+    <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(255, 0, 0, 0.6)','height':'100px'}} onClick={props.onClickSession}>
+    <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
 
-    <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
+    <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
+    <br/>
+    <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+            
        {(unreadCount == 0?
       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
@@ -130,16 +135,15 @@ return res;
       <div style={divMargin}>
            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
            <br/>
-           <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+          
           <br/>
           {
              agentname.length > 0?
              <div>
-               <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>
-               <br/>
-               <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+               <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
              </div>:
-             <div> <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span></div>
+             <div> <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+           </div>
 
            }
           <br/>
@@ -148,10 +152,12 @@ return res;
 
    </div>
    :
-     <div className="list-group-item" style={{'width':'100%','height':'150px'}} onClick={props.onClickSession}>
-     <img src={props.customer.user_id.profile_pic} width="50" height="50" className="user-avatar" style={hleft}/>
-
-     <h4 className = 'list-group-item-heading' style={hleft}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</h4>
+     <div className="list-group-item" style={{'width':'100%','height':'100px'}} onClick={props.onClickSession}>
+     <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
+    <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
+     <br/>
+    <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+   
       {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
@@ -159,16 +165,14 @@ return res;
        <div style={divMargin}>
             <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
             <br/>
-            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-            <br/>
             {
               agentname.length > 0?
               <div>
-                <span  style={rightAgent}><i className="fa fa-headphones"/>{agentname[agentname.length-1]}</span>
-                <br/>
-                <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+                 <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
               </div>:
-              <div> <span  style={rightAgent}><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span></div>
+              <div>  
+                     <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
+              </div>
 
             }
            <br/>

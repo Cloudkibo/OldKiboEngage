@@ -231,7 +231,7 @@ class SideBar extends Component
                 </Link>
               </li>
            
-            {(this.props.isAdmin == "Yes" && this.props.companysettings.enableFacebook == 'Yes')?
+            {(this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes')?
               <li className="">
                 <Link to="/instructionsforintegratingfacebook">
                   <i className="fa fa-info-circle">
@@ -246,7 +246,7 @@ class SideBar extends Component
 
                 :<li></li>
                 }
-             { (this.props.isAdmin == "Yes" && this.props.companysettings.enableFacebook == 'Yes') ?
+             { (this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
               <li className="">
                 <Link to="/fbpages">
                   <i className="fa fa-facebook">
@@ -261,7 +261,7 @@ class SideBar extends Component
 
                 :<li></li>
                 }
-                {(this.props.companysettings.enableFacebook == 'Yes') ? 
+                {(this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ? 
                   <li  className="">
                 <Link to="/fbchat">
                   <i className="fa fa-facebook">
