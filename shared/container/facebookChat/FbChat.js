@@ -74,6 +74,7 @@ updateFbsessionlist(data){
 getfbMessage(data){
   console.log('new fb message is received');
   console.log(data);
+  console.log(this.props.fbsessionSelected);
     if(this.props.fbsessionSelected && this.props.fbchats)
     {
       if(!this.props.fbsessionSelected.user_id){

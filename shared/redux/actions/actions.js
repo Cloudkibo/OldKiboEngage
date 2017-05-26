@@ -3748,6 +3748,8 @@ export function getfbChats(usertoken){
 
 // update customer list
 export function updateCustomerList(data,customerlist,selectedchat){
+  console.log('selectedchat');
+  console.log(selectedchat);
   customerlist.push(data);
    var newArray = [];
      var lookupObject  = {};
@@ -3760,6 +3762,8 @@ export function updateCustomerList(data,customerlist,selectedchat){
          newArray.push(lookupObject[i]);
      }
      if(!selectedchat.user_id){
+      console.log('user_id not defined');
+      console.log(newArray[0]);
       return{
         type:ActionTypes.ADD_NEW_FB_CUSTOMER,
         fbsessions:newArray,
