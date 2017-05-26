@@ -11,6 +11,10 @@ import Phone,{
   parsePhoneNumber,
   isValidPhoneNumber
 } from 'react-phone-number-input';
+import Progress from 'react-progressbar';
+var taiPasswordStrength = require("tai-password-strength")
+var strengthTester = new taiPasswordStrength.PasswordStrength();
+
 
 class JoinCompany extends React.Component {
 
@@ -18,11 +22,54 @@ class JoinCompany extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onSubmit = this.onSubmit.bind(this);
-    this.state = {'phone':''};
+    this.handlePwdChange = this.handlePwdChange.bind(this);
+    this.state = {'phone':'', strength: '', pwdBar: 0, pwd_color: 'red'};
 
 
 
   }
+   handlePwdChange(event) {
+    var result = strengthTester.check(event.target.value);
+    console.log("Password changed", result.strengthCode);
+    var text = "";
+    var bar = 0;
+    var color = 'red';
+    switch (result.strengthCode) {
+    case "VERY_WEAK":
+        text = "WEAK";
+        bar = 25;
+        color= 'red';
+        break; 
+    case "WEAK":
+        text = "REASONABLE";
+        bar = 50;
+        color = 'orange';
+        break; 
+    case "REASONABLE":
+        text = "GOOD";
+        bar = 75;
+        color = 'yellow';
+    case "STRONG":
+        text = "STRONG";
+        bar = 100;
+        color = 'green';
+        break; 
+    case "VERY_STRONG":
+        text = "STRONG";
+        bar = 100;
+        color = 'green';
+        color
+        break; 
+    default: 
+        text = "";
+        bar = 0;
+        color = 'red';
+}
+    this.setState({strength: text});
+    this.setState({pwdBar: bar});
+    this.setState({pwd_color: color});
+  }
+
   componentDidMount(){
     this.props.getInviteEmail(this.props.params.id);
   }
@@ -44,7 +91,11 @@ class JoinCompany extends React.Component {
                       alert('Password donot match!.Retype password');
                       pwdRef.value = c_pwdRef.value = ''
                     }
-                    if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && emailRef.value  && cname.value && cdnameRef.value) {
+                    if (pwdRef.value.length <= 6) {
+                      alert('Length of password should be greater than 6');
+                      pwdRef.value = c_pwdRef.value = ''
+                    }
+                    if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && pwdRef.value != '' && c_pwdRef.value  != '' && emailRef.value  && cname.value && cdnameRef.value) {
                       var user = {
                         'firstname': fnameRef.value,
                         'lastname': lnameRef.value,
@@ -103,12 +154,15 @@ class JoinCompany extends React.Component {
                                               </div>
                                               <div className="form-group">
                                                 <label>Password *</label>
-                                                <input type="password" className="form-control input-medium" ref="pwd" placeholder="Password" required placeholder="Password"/>
+                                                <input type="password" className="form-control input-medium" ref="pwd" onChange={this.handlePwdChange} placeholder="Password" required placeholder="Password"/>
+                                                <div> Strength: {this.state.strength}</div>
+                                                <div> <Progress completed={this.state.pwdBar} color={this.state.pwd_color} /> </div>
                                               </div>
                                               <div className="form-group">
                                               <label>Confirm Password *</label>
                                               <input type="password" className="form-control input-medium" ref="c_pwd" placeholder="Confirm Password" required/>
                                               </div>
+
                                               <div className="form-group">
                                               <label>Phone *</label>
                                               <Phone  placeholder="Enter phone number"

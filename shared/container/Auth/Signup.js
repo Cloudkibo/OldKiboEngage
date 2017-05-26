@@ -47,7 +47,7 @@ class Signup extends React.Component {
                   alert('Length of password should be greater than 6');
                   pwdRef.value = c_pwdRef.value = ''
                 }
-                if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && emailRef.value &&  cname.value && cdnameRef.value) {
+                if (fnameRef.value && lnameRef.value && pwdRef.value && c_pwdRef.value && pwdRef.value != '' && c_pwdRef.value !='' && emailRef.value &&  cname.value && cdnameRef.value) {
                   var user = {
                     'firstname': fnameRef.value,
                     'lastname': lnameRef.value,
