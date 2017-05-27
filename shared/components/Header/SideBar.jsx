@@ -59,7 +59,7 @@ class SideBar extends Component
               </li>
 
               <li className="">
-                <Link to='/newchatsessions'>
+                <Link to='/abandonedchatsessions'>
                   <i className="fa fa-chain-broken">
                   </i>
                   <span className="title">
@@ -230,7 +230,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-           
+
             {(this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes')?
               <li className="">
                 <Link to="/instructionsforintegratingfacebook">
@@ -261,20 +261,20 @@ class SideBar extends Component
 
                 :<li></li>
                 }
-                {(this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ? 
+                {(this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
                   <li  className="">
                 <Link to="/fbchat">
                   <i className="fa fa-facebook">
                   </i>
                   <span className="title">
-                    Facebook Chat  
+                    Facebook Chat
                   </span>
                   <span className="selected">
                   </span>
                 </Link>
               </li> : <li></li>
             }
-              
+
 
             {this.props.isAdmin == "Yes"?
               <li className="">

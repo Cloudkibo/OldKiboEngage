@@ -77,7 +77,7 @@ class NewSessions extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">New Chat Sessions </h3>
+              <h3 className ="page-title">Abandoned Chat Sessions </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
@@ -85,7 +85,7 @@ class NewSessions extends Component {
                     <i className="fa fa-angle-right"/>
                   </li>
                   <li>
-                               <Link to="/newchatsessions">New Chat Sessions </Link>
+                               <Link to="/abandonedchatsessions">Abandoned Chat Sessions </Link>
                   </li>
 
             </ul>
@@ -93,7 +93,7 @@ class NewSessions extends Component {
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
-                  New Chat Sessions
+                  Abandoned Chat Sessions
                 </div>
               </div>
 

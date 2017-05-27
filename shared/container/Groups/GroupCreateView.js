@@ -110,7 +110,7 @@ class GroupCreateView extends Component {
                    this.props.newagents.map((agent, i)=> (
                    this.props.agents.filter((ag) => ag._id == agent._id).map((ag,j) =>
                    (
-                   <li key ={i} onClick = {this.removeAgent.bind(this,ag._id)}>{ag.firstname + ' ' + ag.lastname}</li>
+                   <li key ={i}>{ag.firstname + ' ' + ag.lastname}<i style={{ cursor: 'pointer'}} onClick = {this.removeAgent.bind(this,ag._id)} className="fa fa-times-circle" /></li>
                    ))
 
 
@@ -134,7 +134,7 @@ class GroupCreateView extends Component {
                   this.props.agents.map((agent, i) =>
                  (
                    <li  key ={i} className="select2-search-choice">
-                     <div  onClick = {this.appendAgent.bind(this,agent._id)}>{agent.firstname + ' ' + agent.lastname} </div></li>
+                     <div><i style={{ cursor: 'pointer'}} onClick = {this.appendAgent.bind(this,agent._id)} className="fa fa-plus-circle" />{agent.firstname + ' ' + agent.lastname} </div></li>
                  ))
            }
 
