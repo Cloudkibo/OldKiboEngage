@@ -1,4 +1,4 @@
-import FbCustomerListItem from './FbCustomerListItem';
+  import FbCustomerListItem from './FbCustomerListItem';
 import ChatArea from './ChatArea';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
