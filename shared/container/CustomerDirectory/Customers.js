@@ -99,7 +99,7 @@ filterData(event) {
              <div className="table-toolbar">
                  <div className="btn-team">
                    <label> Search </label>
-                   <input type="text" placeholder = "Search Customer By Customer ID" className="form-control" 
+                   <input type="text" placeholder = "Search Customer By Name/Email" className="form-control" 
                               onChange={ this.filterData.bind(this)}  /> 
                  </div>
               </div>
