@@ -11,7 +11,8 @@ import StickerMenu from 'react-stickerpipe';
 import EmojiPicker from 'react-emojipicker';
 import ReactPlayer from 'react-player'
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
-import { FileUpload } from 'redux-file-upload'
+import { FileUpload } from 'redux-file-upload';
+import ReactTooltip from 'react-tooltip';
 
 var geturl = function(payload){
 //  console.log('payload');
@@ -1314,6 +1315,7 @@ render () {
 
     let list = this.props.messages.map((data, index) => {
       return (
+        
         data.senderid == this.props.senderid?
        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'left','clear':'both'}}>
        {/* <div className='message-header'>
@@ -1332,6 +1334,7 @@ render () {
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
         
       }
+      
       <div style={{'float':'left'}}>
              {/* <span className='time'>{handleDate(data.timestamp)}</span> 
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
@@ -1554,9 +1557,10 @@ render () {
                    inputProps={inputProps} />
             </div>
 
-
+        
+              <ReactTooltip place="bottom" type="dark" effect="solid"/>
               <div style={styles.toolbox}>
-                    <div style={{display: 'inline-block'}}>
+                    <div style={{display: 'inline-block'}} data-tip="attachments">
                     
                         <i style={styles.iconclass} onClick = {() => {this.refs.selectFile.click()}}>
                         <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-paperclip"></i>
@@ -1565,18 +1569,18 @@ render () {
                       
                     </div>
 
-                    <div style={{display: 'inline-block'}}>
+                    <div style={{display: 'inline-block'}} data-tip="emoticons">
                       <i style={styles.iconclass}  onClick = {this.toggleEmojiPicker}>
                         <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-smile-o"></i>
                       </i>
                     </div>
-                      <div style={{display: 'inline-block'}}>
+                      <div style={{display: 'inline-block'}} data-tip="stickers">
                         <i style={styles.iconclass}  onClick = {this.toggleStickerPicker}>
                           <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
                           <i style={{position: 'absolute', left: '0', width: '100%', textAlign: 'center', fontSize: '15px'}} className="fa fa-smile-o"></i>
                         </i>
                       </div>
-                      <div style={{display: 'inline-block'}}>
+                      <div style={{display: 'inline-block'}} data-tip="GIF">
                         <i style={styles.iconclass}  onClick = {this.toggleVisible}>
                           <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-file-o"></i>
                           <p style={{position: 'absolute', text: 'GIF', left: '0', width: '100%', textAlign: 'center', fontSize: '10px'}}>GIF</p>
@@ -1584,7 +1588,7 @@ render () {
                       </div>
 
 
-                    <div style={{display: 'inline-block'}}>
+                    <div style={{display: 'inline-block'}} data-tip="Thumbs Up">
                       <i style={styles.iconclass}  onClick = {this.sendThumbsUp}>
                         <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up"></i>
                       </i>
