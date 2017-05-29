@@ -680,9 +680,9 @@ componentDidMount(){
  // alert('i am called');
    //workaround for push bottom bar to bottom
     this.setState({
-        visible: true,
+        visible: false,
         showEmojiPicker: false,
-        showSticker: false,
+        showSticker: true,
       });
    setTimeout(() =>{
        this.setState({
@@ -700,9 +700,9 @@ componentDidUpdate(prevProps){
   //workaround for push bottom bar to bottom
  
      this.setState({
-        visible: true,
+        visible: false,
         showEmojiPicker: false,
-        showSticker: false,
+        showSticker: true,
       });
    setTimeout(() =>{
        this.setState({
@@ -1216,7 +1216,6 @@ socket.emit('broadcast_fbmessage',saveMsg);
 }
 
 toggleVisible () {
-  alert('i am called');
   this.setState({
     visible: !this.state.visible,
     showEmojiPicker: false,
