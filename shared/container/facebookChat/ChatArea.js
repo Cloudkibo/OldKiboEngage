@@ -682,15 +682,18 @@ componentDidMount(){
     this.setState({
         visible: false,
         showEmojiPicker: false,
-        showSticker: true,
+        showSticker: false,
+        showthisdiv:true,
       });
+
    setTimeout(() =>{
        this.setState({
         visible: false,
         showEmojiPicker: false,
         showSticker: false,
+        showthisdiv:false,
       });
-   },10);
+   },0.000001);
   this.scrollToBottom();
 }
 
@@ -699,18 +702,21 @@ componentDidUpdate(prevProps){
 //   alert('i am called');
   //workaround for push bottom bar to bottom
  
-     this.setState({
+    this.setState({
         visible: false,
         showEmojiPicker: false,
-        showSticker: true,
+        showSticker: false,
+        showthisdiv:true,
       });
+
    setTimeout(() =>{
        this.setState({
         visible: false,
         showEmojiPicker: false,
         showSticker: false,
+        showthisdiv:false,
       });
-   },10);
+   },0.000001);
    this.scrollToBottom();
 
   }
@@ -1649,6 +1655,12 @@ render () {
                       }
 
                       {
+                        this.state.showthisdiv &&
+                        <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px',backgroundColor:'white',opacity:0.1}}>
+                       
+                        </div>
+                      }
+                      {
                         this.state.visible &&
                         <Picker
                           onSelected={this.sendGIF}
@@ -1656,18 +1668,19 @@ render () {
 
                       }
               </div>
-              {
-                this.state.longtextwarning != '' &&
-              <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
-              }
+              
           </div>
 
 
-               {
+              {
                       this.props.showFileUploading && this.props.showFileUploading == true &&
                      <p style={{color:'red'}}>Uploading file...Please wait</p>
                      
               } 
+              {
+                this.state.longtextwarning != '' &&
+              <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
+              }
             
  
       </div>
