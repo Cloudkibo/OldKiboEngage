@@ -127,7 +127,7 @@ const renderFullPage = (html, initialState) => {
 
 
   </head>
-      <body>
+      <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed-hide-logo ">
 
         <div id="root">${html}</div>
 
@@ -195,6 +195,19 @@ const renderFullPage = (html, initialState) => {
 
 
           </script>
+          <script>
+jQuery(document).ready(function() {       
+   // initiate layout and plugins
+   Metronic.init(); // init metronic core components
+Layout.init(); // init current layout
+QuickSidebar.init(); // init quick sidebar
+Demo.init(); // init demo features
+  $("#draggable").draggable({
+      handle: ".modal-header"
+  });
+});
+</script>
+
              <script src="/dist/bundle.js"></script>
 
          </body>

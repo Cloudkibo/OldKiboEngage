@@ -20,9 +20,18 @@ class SideBar extends Component
   render()
   {
   return (
-   <div className="page-sidebar">
+    
+  	<div>
+        <div className="page-sidebar navbar-collapse collapse">
 
-            <ul className="page-sidebar-menu">
+            <ul className="page-sidebar-menu page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
+              <li className="sidebar-toggler-wrapper">
+                  
+                  <div className="sidebar-toggler">
+                  </div>
+                  
+                </li>
+
               <li className="start">
                <Link to='/dashboard'>
                   <i className="fa fa-dashboard">
@@ -295,6 +304,7 @@ class SideBar extends Component
 
           </ul>
   </div>
+</div>
 
  );
 }
