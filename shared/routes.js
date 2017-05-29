@@ -162,7 +162,7 @@ const routes = (
      <Route path="/changeavatar" component={ChangeAvatar}  onEnter={requireAuth}/>
      <Route path="/mypickedchatsessions"  component={MyPickedSessions}  onEnter={requireAuth}/>
      <Route path="/assignedchatsessions"  component={AssignedSessions}  socket={socket} onEnter={requireAuth}/>
-     <Route path="/newchatsessions"  component={NewSessions}  socket={socket} onEnter={requireAuth}/>
+     <Route path="/abandonedchatsessions"  component={NewSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/resolvedchatsessions"  component={ResolvedSessions}  socket={socket} onEnter={requireAuth}/>
      <Route path="/summarychatsessions"  component={SessionSummary}  socket={socket} onEnter={requireAuth}/>
      <Route path="/reports"  component={Reports}  onEnter={requireAuth}/>
