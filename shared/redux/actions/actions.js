@@ -504,12 +504,12 @@ export function creategroup(group,customers) {
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
           if(res.statusCode != 200){
-
           dispatch(creategroupError(res.message));
         }
         else{
            dispatch(showGroups(res.message))
             }
+          alert(res.message);
         }
     );
   };
