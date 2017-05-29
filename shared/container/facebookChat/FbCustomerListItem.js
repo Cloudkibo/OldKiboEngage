@@ -21,8 +21,12 @@ var clearStyle = {
 };
 var rightAgent = {
  float:'right',
-
+ 
 };
+var changefont={
+  fontSize:10,
+  float:'right'
+}
 var hleft = {
  float:'left',
  display:'inline',
@@ -81,9 +85,22 @@ for(var i = 0;i< props.userchat.length;i++){
 
 //console.log(unread);
 var handleDate = function(d){
-var c = new Date(d);
-var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()
+var c = new Date(Number(d));
+var res = c.toDateString()
 return res;
+}
+
+var handleTime = function(d){
+var date = new Date(Number(d));
+
+var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
 }
 
 
@@ -92,18 +109,22 @@ return res;
   return (
 
     (selected ?
-     <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'100px'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'90px'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
     <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
+    <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
+             
       <br/>
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+    <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
+   
       {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
        )}
+        <br/>
+        <br/>
        <div style={divMargin}>
-            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
-            <br/>
            {
               agentname.length > 0?
               <div>
@@ -114,29 +135,30 @@ return res;
               </div>
 
             }
-           <br/>
+          
       </div>
 
 
     </div>
     :
     unreadCount > 0 ?
-    <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.6)','height':'100px'}} onClick={props.onClickSession}>
+    <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.6)','height':'90px'}} onClick={props.onClickSession}>
     <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
 
     <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
-    <br/>
+    <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
+             
+      <br/>
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+    <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
 
        {(unreadCount == 0?
       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
       )}
+        <br/>
+        <br/>
       <div style={divMargin}>
-           <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
-           <br/>
-
-          <br/>
           {
              agentname.length > 0?
              <div>
@@ -146,25 +168,28 @@ return res;
            </div>
 
            }
-          <br/>
+          
      </div>
 
 
    </div>
    :
-     <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'height':'100px'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'height':'90px'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
-    <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
-     <br/>
+     <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
+     <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
+             
+      <br/>
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+    <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
 
       {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
        )}
+        <br/>
+        <br/>
        <div style={divMargin}>
-            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
-            <br/>
             {
               agentname.length > 0?
               <div>
@@ -175,7 +200,7 @@ return res;
               </div>
 
             }
-           <br/>
+          
 
       </div>
     </div>
