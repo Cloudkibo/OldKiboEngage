@@ -121,6 +121,7 @@ export class ChatArea extends Component {
           visible: false,
           longtextwarning:'',
           agentinTeam: false,
+          showthisdiv: false,
       
           
 
@@ -147,8 +148,7 @@ export class ChatArea extends Component {
         this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
         this.resolveSession = this.resolveSession.bind(this);
         this.autoassignChat = this.autoassignChat.bind(this);
-
-
+      
   }
 
 handleChange(e){
@@ -678,12 +678,39 @@ onTestURLAudio(e){
 
 componentDidMount(){
  // alert('i am called');
+   //workaround for push bottom bar to bottom
+    this.setState({
+        visible: true,
+        showEmojiPicker: false,
+        showSticker: false,
+      });
+   setTimeout(() =>{
+       this.setState({
+        visible: false,
+        showEmojiPicker: false,
+        showSticker: false,
+      });
+   },10);
   this.scrollToBottom();
 }
 
 componentDidUpdate(prevProps){
   if(prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id || prevProps.fbchatSelected.length == this.props.fbchatSelected.length -1 ){
 //   alert('i am called');
+  //workaround for push bottom bar to bottom
+ 
+     this.setState({
+        visible: true,
+        showEmojiPicker: false,
+        showSticker: false,
+      });
+   setTimeout(() =>{
+       this.setState({
+        visible: false,
+        showEmojiPicker: false,
+        showSticker: false,
+      });
+   },10);
    this.scrollToBottom();
 
   }
@@ -1189,6 +1216,7 @@ socket.emit('broadcast_fbmessage',saveMsg);
 }
 
 toggleVisible () {
+  alert('i am called');
   this.setState({
     visible: !this.state.visible,
     showEmojiPicker: false,
@@ -1290,6 +1318,8 @@ toggleStickerPicker() {
     showEmojiPicker: false,
     showSticker: !this.state.showSticker,
   });
+  //alert('i am called ' + this.state.showSticker);
+  //this.forceUpdate();
 }
 
 getMeta(event){
@@ -1598,7 +1628,6 @@ render () {
             </div>
           </div>
 
-
               <div>
                     <div style={{'clear':'both','float':'right'}}>
                       {
@@ -1634,6 +1663,7 @@ render () {
               }
           </div>
 
+
                {
                       this.props.showFileUploading && this.props.showFileUploading == true &&
                      <p style={{color:'red'}}>Uploading file...Please wait</p>
@@ -1642,6 +1672,7 @@ render () {
             
  
       </div>
+
       </div>
      
       )
@@ -1799,7 +1830,7 @@ const styles = {
 
   inputContainer:{
     display: 'table',
-    margin: '10px 0px',
+    margin: '0px 0px',
     width: '100%',
     borderBottom: '1px solid #dddfe2',
     borderTop: '1px solid #dddfe2',
@@ -1817,7 +1848,7 @@ const styles = {
   toolbox:{
     display: 'table-cell',
     width: 70,
-    padding: '3px 0',
+    padding: '0px 0',
     verticalAlign: 'bottom',
     whiteSpace: 'nowrap',
   },

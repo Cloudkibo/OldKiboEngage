@@ -3636,6 +3636,7 @@ text-align: left;
            -moz-flex: 5;
             -ms-flex: 5;
                 flex: 5;
+                overflow-y:hidden;
 
 
       }
@@ -3681,7 +3682,8 @@ text-align: left;
 .anotherflx >.footerchatarea {
   order: 3;
     flex-shrink: 0;
-    flex-basis: 100px;
-  /*  background:blue;*/
+    flex-basis: 50px;
+   
+    
 }
 
