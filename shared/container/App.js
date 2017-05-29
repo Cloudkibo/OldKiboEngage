@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {updateChatList} from '../redux/actions/actions';
+import { updateChatList } from '../redux/actions/actions';
+import { notify } from '../services/notify';
 
 function notifyMe(message) {
   // Let's check if the browser supports notifications
@@ -53,18 +54,20 @@ class App extends Component {
     this.getSocketmessage = this.getSocketmessage.bind(this);
   }
 
-  alertme(data){
-    notifyMe('customer joined a session');
-
-  }
-
   getSocketmessage(message){
     this.props.updateChatList(message);
   }
 
+  alertme(data) {
+    // notifyMe('customer joined a session');
+    notify(`customer joined a session ${data}`);
+  }
+
   componentDidMount(){
 
-        this.props.route.socket.on('customer_joined',this.alertme);
+        this.props.route.socket.on('customer_joined', this.alertme);
+        //this.props.route.socket.on('send:fbcustomer', this.alertme); // these don't work here
+        //this.props.route.socket.on('send:fbmessage', this.alertme);
      //   this.props.route.socket.on('send:message',this.getSocketmessage);
 
 }

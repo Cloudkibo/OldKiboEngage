@@ -15,6 +15,7 @@ import { browserHistory } from 'react-router'
 import Avatar from 'react-avatar';
 import io from 'socket.io-client';
 import Autosuggest from 'react-autosuggest';
+import { notify } from '../../services/notify';
 
 
 var callonce=false;
@@ -67,7 +68,7 @@ handleChange(e){
   this.props.sortSessionsList(this.props.fbsessions,e.target.value);
 }
 updateFbsessionlist(data){
-  
+
   this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected,this.props.fbchats,this.props.fbchatSelected);
   this.forceUpdate();
 }
@@ -75,6 +76,7 @@ getfbMessage(data){
   console.log('new fb message is received');
   console.log(data);
   console.log(this.props.fbsessionSelected);
+  notify(data);
     if(this.props.fbsessionSelected && this.props.fbchats)
     {
       if(!this.props.fbsessionSelected.user_id){
@@ -117,8 +119,8 @@ componentWillReceiveProps(props){
      this.props.appendlastmessage(props.fbsessions, props.fbchats);
     //this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
      callonce=false;
-   
-    
+
+
   }
 
   /*if(props.fbsessions && props.fbsessions[0].lastmessage && !this.props.fbsessions[0].lastmessage){
@@ -160,7 +162,7 @@ componentWillReceiveProps(props){
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper" >
             <div  className="vbox viewport" style={{'overflow':'hidden'}}>
-            <header style={{'border':'0px'}}> 
+            <header style={{'border':'0px'}}>
             <h3>Facebook Chat Sessions </h3>
             </header>
 
@@ -168,14 +170,14 @@ componentWillReceiveProps(props){
             <section className="main hbox space-between">
                   <nav className="navclassSessionList">
                       <div className="anotherflx">
-                      <div className="headerchatarea" style={{'flex-basis':50}}>           
+                      <div className="headerchatarea" style={{'flex-basis':50}}>
                       <div className="input-group">
                           <label>Sort By Date</label>
 
                           <select  ref = "sortsetting" className="form-control"  aria-describedby="basic-addon3" onChange={this.handleChange.bind(this)}   >
                                 <option value="0">Newest on Top</option>
                                 <option value="1">Oldest on Top</option>
-                               
+
                               </select>
 
 
@@ -197,12 +199,12 @@ componentWillReceiveProps(props){
                   </div>
                 </nav>
                  <article className="articleclass ">
-    
+
                        {
                             this.props.fbchatSelected && this.props.fbsessions  && this.props.fbsessionSelected &&
                             <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props} responses={this.props.responses} username={this.props.fbsessionSelected.user_id.first_name+ ' '+this.props.fbsessionSelected.user_id.last_name} userprofilepic={this.props.profile_pic} senderid={this.props.fbsessionSelected.user_id.user_id} userdetails={this.props.userdetails}/>
 
-                          
+
                         }
 
         </article>

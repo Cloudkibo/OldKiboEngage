@@ -716,7 +716,7 @@ export function changepassword (req,res) {
 
 
 
-//update profile
+// update profile
 export function updateprofile (req,res) {
 
     var user = req.body;
@@ -1103,9 +1103,8 @@ export function getcompanylogo(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-
-
     };
+    
     function callback(error, response, body) {
       if(response.statusCode == 200) {
         var info = JSON.parse(body);
