@@ -1633,11 +1633,13 @@ export function selectFbCustomerChat(id,fbchat,profile_pic,selectedsession){
 
 
 export function add_socket_fb_message(data,fbchats,id,fbsessions,order){
+console.log(id);
 
 fbchats.push(data);
 
 var newfbChat = []
 var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
+console.log(temp.length)
   for(var i=0;i<temp.length;i++){
     if(temp[i].message){
     newfbChat.push(
