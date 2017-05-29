@@ -69,8 +69,6 @@ if(props.customer.agent_ids.length > 0 && props.customer.agent_ids[props.custome
 }
 
 var selected = false;
-console.log('props.selectedCustomer');
-console.log(props.selectedCustomer);
 if(props.customer.user_id.user_id === props.selectedCustomer.user_id.user_id && props.customer.pageid.pageid === props.selectedCustomer.pageid.pageid){
   selected = true;
 }
