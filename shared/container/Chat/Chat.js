@@ -2,7 +2,7 @@ import ChatListItem from './ChatListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {removeDuplicates,getsessionsfromsocket,removeDuplicatesWebChat,updatechatstatus,previousChat,getteams,getTeamAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterbystatus,selectCustomerChat,filterbyDept,filterbySubgroup,filterbyAgent}  from '../../redux/actions/actions'
+import {removeDuplicates,updatesubgrouplist,getcustomersubgroups,getsessionsfromsocket,removeDuplicatesWebChat,updatechatstatus,previousChat,getteams,getTeamAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterChat,selectCustomerChat}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -19,6 +19,11 @@ var callSocketChat
 class Chat extends Component {
 
  constructor(props, context) {
+
+   var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59';
+   var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx';
+   var companyid = props.userdetails.uniqueid;
+   props.getcustomersubgroups(appid,appsecret,companyid);
       //call action to get user teams
     callMobileChatSessions =  false;
     callOnce = false;
@@ -54,6 +59,9 @@ class Chat extends Component {
         this.getSessionInfo = this.getSessionInfo.bind(this);
         this.getSocketmessage = this.getSocketmessage.bind(this);
         this.syncdata = this.syncdata.bind(this);
+        this.state = {
+          subgroup: 'all'
+        };
 
 
   }
@@ -265,15 +273,21 @@ componentDidMount(){
   }
 
 
-   handleChange(e){
+   handleChange(){
      //alert(e.target.value);
-     this.props.filterbystatus(e.target.value,this.props.customerchatold);
+     this.setState({ subgroup: this.refs.grouplist.value });
+     this.props.filterChat(this.refs.status.value,this.refs.agentList.value,this.refs.grouplist.value,this.refs.subgrouplist.value,this.props.customerchatold);
+     if(this.state.subgroup.value !== 'all') {
+       this.props.updatesubgrouplist(this.refs.grouplist.value);
+     }
      this.forceUpdate();
+     //this.props.filterbystatus(e.target.value,this.props.customerchatold);
+     //this.forceUpdate();
 
 
     }
 
-
+/*
     handleChangeDepartment(e){
      //alert(e.target.value);
      this.props.filterbyDept(e.target.value,this.props.customerchatold);
@@ -296,7 +310,7 @@ componentDidMount(){
 
 
     }
-
+*/
      handleSession(id,platform,e){
       console.log(id);
       e.preventDefault();
@@ -378,7 +392,7 @@ componentDidMount(){
               */}
              		<td className="col-md-1">
 
-             		  <select  ref = "agentList" onChange={this.handleChangeAgents.bind(this)}   >
+             		  <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
                         <option value="all">All</option>
 
                          {
@@ -393,29 +407,33 @@ componentDidMount(){
              		</td>
              		<td className="col-md-1">
 
-             		  <select  ref = "grouplist" onChange={this.handleChangeDepartment.bind(this)}   >
+             		  <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
                            <option value="all">All</option>
-                          {
-                         	this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                         		<option value={group._id}>{group.deptname}</option>
+                           {
 
-                         		)
+                             this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                            		<option value={group._id}>{group.deptname}</option>
+                             )
+
                          }
-
-
 
                       </select>
 
              		</td>
              		<td className="col-md-1">
-             		  <select  ref = "subgrouplist" onChange={this.handleChangeSubgroup.bind(this)}   >
+             		  <select  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
                              <option value="all">All</option>
-                           {
-                         	this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
-                         		<option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
+                             {
+                               this.state.subgroup == 'all' ?
+                               this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
+                                    <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
+                               ) :
+                               this.props.filterlist && this.props.filterlist.map((subgroup,i) =>
+                                 <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+                               )
 
-                         		)
-                         }
+                           }
+
 
                       </select>
 
@@ -428,7 +446,7 @@ componentDidMount(){
              	<div className="table-responsive">
                 <input type="hidden" ref = "sessionid" />
                 <p>Chat Sessions assigned to your Group will be listed here.</p>
-                {!this.props.customerchat?
+                {!this.props.customerchatfiltered?
                   <p>Loading Chat Sessions...</p>:
                   <br/>
                 }
@@ -448,8 +466,8 @@ componentDidMount(){
 			             	<tr>
 			             		<td  className="col-md-3">
 			             			<div>
-					                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchat && this.props.customerchat.length > 0  &&
-					                        this.props.customerchat.map((customer, i) => (
+					                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0  &&
+					                        this.props.customerchatfiltered.map((customer, i) => (
 
                                     (this.props.new_message_arrived_rid ?
 
@@ -508,6 +526,7 @@ function mapStateToProps(state) {
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           customerchat :(state.dashboard.customerchat),
+          customerchatfiltered :(state.dashboard.customerchatfiltered),
           customerchatold :(state.dashboard.customerchatold),
           chatlist :(state.dashboard.chatlist),
  		      subgroups :(state.dashboard.subgroups),
@@ -522,7 +541,8 @@ function mapStateToProps(state) {
           serverresponse : (state.dashboard.serverresponse) ,
           teamagents : (state.dashboard.teamagents),
           groupdetails :(state.dashboard.groupdetails),
+          filterlist :(state.widget.filterlist),
                     };
 }
 
-export default connect(mapStateToProps,{removeDuplicates,removeDuplicatesWebChat,updatechatstatus,getmobilesessions,getteams,getTeamAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterbystatus,filterbyAgent,filterbyDept,filterbySubgroup})(Chat);
+export default connect(mapStateToProps,{removeDuplicates,updatesubgrouplist,getcustomersubgroups,removeDuplicatesWebChat,updatechatstatus,getmobilesessions,getteams,getTeamAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterChat})(Chat);

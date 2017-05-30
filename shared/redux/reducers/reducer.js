@@ -313,6 +313,7 @@ const dashboard = (state =dashboardState, action) => {
             ...state,errorMessageProfile:'',
              errorMessage:action.chat_error,
              customerchat : action.customerchat,
+             customerchatfiltered: action.customerchat,
              customerchatold : action.customerchat,
              serverresponse : action.serverresponse,
              customerchat_selected:action.customerchat_selected,
@@ -761,6 +762,11 @@ const dashboard = (state =dashboardState, action) => {
              sessionsummaryfiltered:action.sessionsummaryfiltered,
             };
 
+            case ActionTypes.FILTER_BY_CHAT:
+            return {
+             ...state,errorMessageProfile:'',
+            customerchatfiltered:action.customerchatfiltered,
+           };
 
             case ActionTypes.ADD_SELECTED_CUSTOMER :
             return {
@@ -811,7 +817,7 @@ const dashboard = (state =dashboardState, action) => {
               ...state,errorMessageProfile:'',
                 fbsessionSelected:action.fbsessionSelected,
                 fbchatSelected:action.fbchatSelected
-               
+
                };
         case ActionTypes.JOINED_MEETING:
              return {
@@ -886,7 +892,7 @@ const dashboard = (state =dashboardState, action) => {
           ...state,
             showFileUploading :action.showFileUploading ,
 
-      };  
+      };
       case ActionTypes.ADD_LASTMESSAGE_FB_SESSION:
          return{
           ...state,
@@ -895,14 +901,14 @@ const dashboard = (state =dashboardState, action) => {
             profile_pic:action.profile_pic,
             fbsessionSelected:action.fbsessionSelected,
 
-      };  
+      };
       case ActionTypes.FB_SORT_SESSIONS:
          return{
           ...state,
             fbsessions :action.fbsessions,
             sessionsortorder: action.order,
 
-      };  
+      };
 
     default:
       return state;
@@ -978,7 +984,7 @@ function widget(state = widgetState, action){
 
       };
 
-   
+
 
   default:
       return state;
