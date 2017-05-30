@@ -572,7 +572,7 @@ export function uploadchatfilefb(req, res) {
   console.log('uploadchatfile called');
   console.log(req);
   console.log('req body');
-  console.log(req.body)
+ // console.log(req.body)
   if(req.body)
   {
             console.log(req.body.chatmsg);
@@ -588,125 +588,136 @@ export function uploadchatfilefb(req, res) {
           //  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
             var serverPath = obj.message.mid;
             serverPath += '.' + req.files.file.type.split('/')[1];
-
+            console.log('__dirname');
             console.log(__dirname);
             console.log(req.headers);
-            var dir = "./static/userfiles";
-            
+            var dir = path.resolve(__dirname, '../../static/');
+            console.log('req.files.file.size');
+            console.log(req.files.file.size);
             if(req.files.file.size == 0) return res.send('No file submitted');
 
             fs.readFile(req.files.file.path, function (err, data) {
-                  var pathNew = dir + "/" + serverPath;
+                  var pathNew = dir + "/userfiles/" + serverPath;
                   req.body.path = serverPath;
-                  console.log(req.body);
+                  if(!err)
+                  {
+                          fs.writeFile(pathNew, data, function (err) {
+                            if(!err){
+                            console.log('writing file');  
+                            console.log(obj);
+                            console.log(obj.message.attachments);
+                             obj.message.attachments[0].payload.url = 'https://kiboengage.kibosupport.com/userfiles/'+serverPath;
+                             console.log(obj);
+                             var options = {
+                              url: `${baseURL}/api/fbpages/getpage`,
+                                headers : headers,
+                              
+                                form:{
+                                  'pageid':obj.pageid,
+                                }
 
-                  fs.writeFile(pathNew, data, function (err) {
-                    if(!err){
-                    console.log(obj);
-                    console.log(obj.message.attachments);
-                     obj.message.attachments[0].payload.url = 'https://kiboengage.kibosupport.com/userfiles/'+serverPath;
-                     console.log(obj);
-                     var options = {
-                      url: `${baseURL}/api/fbpages/getpage`,
-                        headers : headers,
-                      
-                        form:{
-                          'pageid':obj.pageid,
-                        }
+                            };
 
-                    };
+                         function callback(error, response, body) {
+                              console.log(body);
+                              console.log(error);
+                              if(!error) 
+                              {
 
-                 function callback(error, response, body) {
-                      console.log(body);
-                      console.log(error);
-                      if(!error) 
-                      {
+                                            var fbpage = JSON.parse(body);
+                                            let token = fbpage.pageToken;
+                                            let companyid = fbpage.companyid;
+                                            console.log('token is ' + token);
+                                            
+                                            var chatobj = obj;
+                                            console.log(chatobj);
+                                                              
+                                            var optionsChat = {
+                                                                  url: `${baseURL}/api/fbmessages/`,
+                                                                    rejectUnauthorized : false,
+                                                                    headers : headers,
+                                                                    json:chatobj,
 
-                        var fbpage = JSON.parse(body);
-                        let token = fbpage.pageToken;
-                        let companyid = fbpage.companyid;
-                        console.log('token is ' + token);
-                        
-                        var chatobj = obj;
-                        console.log(chatobj);
-                                          
-                        var optionsChat = {
-                                              url: `${baseURL}/api/fbmessages/`,
-                                                rejectUnauthorized : false,
-                                                headers : headers,
-                                                json:chatobj,
+                                                                };
 
-                                            };
+                                            function callbackChat(error, response, body) {
+                                                              console.log(body);
+                                                              console.log(error);
+                                                             
+                                                              var ftype = '';
+                                                              if(req.files.file.type.split('/')[0] == 'image'){
+                                                                ftype='image';
 
-                        function callbackChat(error, response, body) {
-                                          console.log(body);
-                                          console.log(error);
-                                         
-                                          var ftype = '';
-                                          if(req.files.file.type.split('/')[0] == 'image'){
-                                            ftype='image';
+                                                              }
+                                                              else if(req.files.file.type.split('/')[0] == 'audio'){
+                                                                ftype='audio';
+                                                              }
+                                                              else if(req.files.file.type.split('/')[0] == 'video'){
+                                                                ftype='video';
+                                                              }
+                                                              else{
+                                                                ftype="file";
+                                                              }
+                                                              var messageobj ={
+                                                                'attachment':{
+                                                                  'type': ftype,
+                                                                  'payload':
+                                                                  {
+                                                                    'url':chatobj.message.attachments[0].payload.url,
+                                                                  }
+                                                                }
+                                                              }
+                                                              console.log(messageobj);
+                                                              console.log('token is');
+                                                              console.log(token);
+                                                              request({
+                                                                  url: 'https://graph.facebook.com/v2.6/me/messages',
+                                                                  qs: {access_token:token},
+                                                                  method: 'POST',
+                                                                  json: {
+                                                                      recipient: {id:chatobj.recipientid},
+                                                                      message: messageobj,
+                                                                  }
+                                                              }, function(error, response, body) {
+                                                                              
+                                                                                console.log('fb message');
+                                                                                console.log(body);
+                                                                                if(!error){
+                                                                                  socket.getfileChatfromAgent({chatobj});
+                                              
+                                                                                  res.json({status:'success',chatmsg:chatobj});
+                                                                                }
+                                                                                else{
+                                                                                   res.json({status:'failure'});
+                                                                                }
 
-                                          }
-                                          else if(req.files.file.type.split('/')[0] == 'audio'){
-                                            ftype='audio';
-                                          }
-                                          else if(req.files.file.type.split('/')[0] == 'video'){
-                                            ftype='video';
-                                          }
-                                          else{
-                                            ftype="file";
-                                          }
-                                          var messageobj ={
-                                            'attachment':{
-                                              'type': ftype,
-                                              'payload':
-                                              {
-                                                'url':chatobj.message.attachments[0].payload.url,
-                                              }
-                                            }
-                                          }
-                                          console.log(messageobj);
-                                          console.log('token is');
-                                          console.log(token);
-                                          request({
-                                              url: 'https://graph.facebook.com/v2.6/me/messages',
-                                              qs: {access_token:token},
-                                              method: 'POST',
-                                              json: {
-                                                  recipient: {id:chatobj.recipientid},
-                                                  message: messageobj,
-                                              }
-                                          }, function(error, response, body) {
-                                                          
-                                                            console.log('fb message');
-                                                            console.log(body);
-                                                            if(!error){
-                                                              socket.getfileChatfromAgent({chatobj});
-                          
-                                                              res.json({status:'success',chatmsg:chatobj});
+                                                                          }
+                                                                          )
                                                             }
-                                                            else{
-                                                               res.json({status:'failure'});
-                                                            }
+                                            request.post(optionsChat,callbackChat);
 
-                                                      }
-                                                      )
-                                        }
-                                    request.post(optionsChat,callbackChat);
+                                    }
 
+                                  else{
+                                        console.log('Error: ', error)
+                                        res.json({status:'failure'}); 
+                                    }
+                             
+                              }
 
-                            }
-
+                               request.post(options, callback);
+                          }
                           else{
-                                console.log('Error: ', error)
-                                res.json({status:'failure'}); 
-                            }
-                     
-                      }
-
-                       request.post(options, callback);
-                  }
-                });
+                            console.log('error in file writing');
+                            console.log(err);
+                            res.json({status:'failure'}); 
+                          }
+                        });
+                }
+                else{
+                      console.log('error in reading file');
+                      res.json({status:'failure'}); 
+                }
               });
 
     }

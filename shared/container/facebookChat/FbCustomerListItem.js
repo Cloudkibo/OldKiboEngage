@@ -44,6 +44,9 @@ var changecc ={
   'cursor': 'pointer',
   'background' : 'rgba(195, 188, 188, 0.4)',
 }
+var statusstyle={
+  marginLeft : 2.5+'em',
+}
 
 var customername={
   fontSize :'1.2em',
@@ -109,7 +112,7 @@ var hours = date.getHours();
   return (
 
     (selected ?
-     <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'90px'}} onClick={props.onClickSession}>
+     <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'auto'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
     <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
     <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
@@ -117,32 +120,27 @@ var hours = date.getHours();
       <br/>
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
     <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
-   
+
       {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
        )}
-        <br/>
-        <br/>
-       <div style={divMargin}>
-           {
+    <br/>
+       {
               agentname.length > 0?
-              <div>
-                 <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
-              </div>:
-              <div>
-                 <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-              </div>
-
+              
+                 <span style={statusstyle} ><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
+              :
+                 <span style={statusstyle}><i className="fa fa-headphones"/>{props.customer.status}</span>
+              
             }
-          
-      </div>
+     
 
 
     </div>
     :
     unreadCount > 0 ?
-   ( <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'90px'}} onClick={props.onClickSession}>
+   ( <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'auto'}} onClick={props.onClickSession}>
     <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
     <span className='badge' style={rightStyle}>{unreadCount}</span>
     
@@ -153,26 +151,21 @@ var hours = date.getHours();
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
     
     <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
-     <br/>
-        <br/>
-      <div style={divMargin}>
-          {
-             agentname.length > 0?
-             <div>
-               <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
-             </div>:
-             <div> <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-           </div>
-
-           }
+    <br/> 
+  {
+          agentname.length > 0?
           
-     </div>
+             <span style={statusstyle} ><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
+          :
+             <span style={statusstyle}><i className="fa fa-headphones"/>{props.customer.status}</span>
+          
+        }
 
 
    </div>
    )
    :
-    (<div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'height':'90px'}} onClick={props.onClickSession}>
+    (<div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'height':'auto'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
      <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
      <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
@@ -180,22 +173,15 @@ var hours = date.getHours();
       <br/>
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
     <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
-        <br/>
-        <br/>
-       <div style={divMargin}>
-            {
+      <br/>
+       {
               agentname.length > 0?
-              <div>
-                 <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
-              </div>:
-              <div>
-                     <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-              </div>
-
+              
+                 <span style={statusstyle} ><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
+              :
+                 <span style={statusstyle}><i className="fa fa-headphones"/>{props.customer.status}</span>
+              
             }
-          
-
-      </div>
     </div>
     ))
 
