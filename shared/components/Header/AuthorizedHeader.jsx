@@ -36,7 +36,7 @@ class AuthorizedHeader extends Component
   render()
   {
     return (
-    
+
       <div  className = "page-header navbar" >
         <div className="page-header-inner">
           <div className = "page-logo" >
@@ -50,7 +50,7 @@ class AuthorizedHeader extends Component
 		</a>
           <div className="top-menu">
             <ul  className ="nav navbar-nav pull-right">
-            
+
                     {this.props.news &&
 
                   <li className="dropdown dropdown-extended dropdown-notification" >
@@ -63,7 +63,7 @@ class AuthorizedHeader extends Component
                             <h3><span className="bold">{this.props.news.length}</span> notifications</h3>
                             <a>view all</a>
                           </li>
-               
+
                           <li>
                               <ul className="dropdown-menu-list scroller" style={{height: 250+'px',overflowY: 'scroll'}} data-handle-color="#637283">
                                   {
