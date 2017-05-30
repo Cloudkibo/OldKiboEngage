@@ -170,7 +170,7 @@ class AssignedSessions extends Component {
                        </table>
               </div>
 
-             { this.props.assignedsessionsfiltered ?
+             { this.props.assignedsessionsfiltered && this.props.assignedsessionsfiltered.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>

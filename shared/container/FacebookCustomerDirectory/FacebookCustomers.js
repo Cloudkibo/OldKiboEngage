@@ -85,18 +85,19 @@ render() {
                 </div>
               </div>
               <div className="portlet-body">
-                <div className="table-toolbar">
-                  <div className="btn-team">
-                    <label> Search </label>
-                    <input type="text" placeholder = "Search Customer" className="form-control" onChange = {this.filterData} />
-                  </div>
-                </div>
 
                {this.props.errorMessage &&
                  <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                }
 
-               { this.props.fbcustomers && filteredData ?
+               { this.props.fbcustomers && filteredData && this.props.fbcustomers.length > 0 ?
+                 <div>
+                 <div className="table-toolbar">
+                   <div className="btn-team">
+                     <label> Search </label>
+                     <input type="text" placeholder = "Search Customer" className="form-control" onChange = {this.filterData} />
+                   </div>
+                 </div>
                  <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                  <thead>
                   <tr>
@@ -111,7 +112,8 @@ render() {
                     ))
                   }
                 </tbody>
-              </table> :
+              </table>
+              </div> :
               <p>Currently, there is no Facebook Customer to show.</p>
               }
             </div>

@@ -84,7 +84,7 @@ class Notifications extends Component {
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-                { this.props.notifications ?
+                { this.props.notifications && this.props.notifications.length > 0 ?
                   <div className="table-responsive">
                    <table id ="sample_3" style={{ tableLayout: 'fixed', wordWrap: 'break-word'}} className="table table-striped table-bordered table-hover table-condensed dataTable">
                    <thead>

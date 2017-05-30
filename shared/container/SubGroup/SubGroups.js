@@ -84,7 +84,7 @@ class SubGroups extends Component {
                  </div>
               </div>
 
-                { this.props.subgroups && this.props.customers ?
+                { this.props.subgroups && this.props.customers && this.props.subgroups.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>

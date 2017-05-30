@@ -126,7 +126,7 @@ class Teams extends Component {
                  </div>
                }
               </div>
-              { this.props.teamdetails && filteredData ?
+              { this.props.teamdetails && filteredData && this.props.teamdetails.length > 0 ?
                 <div>
                       <input
                               type="text"

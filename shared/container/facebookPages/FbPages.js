@@ -91,7 +91,7 @@ class FbPages extends Component {
                    <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
                     }
 
-                { this.props.fbpages && this.props.responses ?
+                { this.props.fbpages && this.props.responses && this.props.fbpages.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>

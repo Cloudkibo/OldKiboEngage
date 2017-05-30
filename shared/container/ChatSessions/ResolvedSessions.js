@@ -160,7 +160,7 @@ class ResolvedSessions extends Component {
                        </table>
               </div>
 
-             { this.props.resolvedsessionsfiltered ?
+             { this.props.resolvedsessionsfiltered && this.props.resolvedsessionsfiltered.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
