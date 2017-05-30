@@ -15,6 +15,7 @@ function notifyMe(message) {
         lang: "",
         body: message,
         tag: "sometag",
+        icon: "./companyfiles/logo_small.png",
     });
   }
   // Otherwise, we need to ask the user for permission
