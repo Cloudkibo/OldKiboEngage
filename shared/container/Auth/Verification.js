@@ -9,8 +9,8 @@ class Verification extends Component {
 
  constructor(props, context) {
     super(props, context);
-    
-    
+
+
   }
   componentDidMount(){
    // alert('calling');
@@ -23,7 +23,7 @@ class Verification extends Component {
                         <div className = "mainBody">
                             <div className ="row margin-bottom-40">
                               <SideBarr/>
-                               <div className="col-md-9 col-sm-9"> 
+                               <div className="col-md-9 col-sm-9">
                                     <h1>Account verified!</h1>
                                      <div className="content-form-page">
                                         <div className ="row">
@@ -32,33 +32,31 @@ class Verification extends Component {
                                               <br/>
                                               <br/>
                                               <br/>
-                                              <Link to="/login" className='btn-password btn btn-send'>
+                                              <a href="/" className='btn-password btn btn-send'>
                                                Go to Login Page
-                                              </Link>
+                                              </a>
                                           </div>
                                         </div>
-                                      </div>        
-                             
+                                      </div>
+
                                 </div>
-                              
+
                             </div>
                         </div>
-                        </div> 
+                        </div>
         )
- 
-  
+
+
 
 }
 }
 
 function mapStateToProps(state) {
   console.log('mapStateToProps function called');
-  
+
   return {
-   
+
   }
   ;
 }
 export default connect(mapStateToProps,{verifyEmail })(Verification);
-
-
