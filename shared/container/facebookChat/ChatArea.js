@@ -993,7 +993,6 @@ onFileSubmit()
     sendThumbsUp()
 
         {
-          alert('i am called');
            const { socket,dispatch } = this.props;
            var sendmessage = true;
            if(this.props.fbsessionSelected.status == "new"){
@@ -1055,7 +1054,7 @@ onFileSubmit()
                   attachments:[{
                     type:'image',
                     payload:{
-                      url: `https://kiboengage.kibosupport.com/images/thumbsUp.png`,
+                      url: `https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png?_nc_ad=z-m&oh=547beb90237e24a9682810a5144c9fba&oe=5988CFDC`,
                     }
                   }]
                 },
@@ -1376,10 +1375,11 @@ render () {
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
                         (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
-                       
+                       <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
-                                                          'height':'32px'}}/> :
+                                                          'height':'32px'}}/>
+                      </div> :
 
                        <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
@@ -1449,7 +1449,8 @@ render () {
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
-                       (da.payload.url == 'https://kiboengage.kibosupport.com/images/thumbsUp.png'?
+                      (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
+                      
                       <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
@@ -1620,9 +1621,9 @@ render () {
                       </div>
 
 
-                    <div style={{display: 'inline-block'}} data-tip="Thumbs Up">
+                    <div style={{display: 'inline-block'}} data-tip="Thumbs Up" onClick = {this.sendThumbsUp.bind(this)}>
                       <i style={styles.iconclass}  >
-                        <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', right: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up" onClick = {this.sendThumbsUp.bind(this)}></i>
+                        <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', right: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up" ></i>
                       
                       </i>
                     </div>
@@ -1775,17 +1776,15 @@ const styles = {
     },
 
     wrapperNoColor: {
-      borderRadius: 15,
+       borderRadius: 15,
       minHeight: 20,
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '55%',
-      clear: 'both',
-    
-
+      maxWidth: '80%',
+      clear:'both',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-       marginLeft: '1em',
+      marginLeft: '1em',
       position: 'relative',
       display: 'inline-block',
     },

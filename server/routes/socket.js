@@ -7,6 +7,7 @@ var glob;
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
 var notificationHubService2 = azure.createNotificationHubService('KiboEngageProductionHub','Endpoint=sb://kiboengageproductionhub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=Hc1qWqbkLk4oGYJ9dN9vexUsIKk8hOeja5sEte89n9s=');
+var logger = require('../logger/logger');
 
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
@@ -1192,6 +1193,8 @@ exports.getchatfromAgent = function(data){
 /******** not exporting in controller file **********/
 exports.getfbchat = function(data){
   console.log('socket get Fb chat is called');
+  logger.serverLog('info', 'This is body in getfbchat '+ JSON.stringify(data) );
+ 
   console.log(data);
 
   var onlineAgentsCompany = [];
@@ -1228,7 +1231,10 @@ exports.getfbchat = function(data){
 }
 
 exports.getfileChatfromAgent = function(data){
+    logger.serverLog('info', 'This is body in getfileChatfromAgent '+ JSON.stringify(data) );
+ 
     fbchats.push(data.chatobj);
+
     glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
 
 }
