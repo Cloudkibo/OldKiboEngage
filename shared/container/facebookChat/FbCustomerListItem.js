@@ -142,21 +142,18 @@ var hours = date.getHours();
     </div>
     :
     unreadCount > 0 ?
-    <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.6)','height':'90px'}} onClick={props.onClickSession}>
+   ( <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'90px'}} onClick={props.onClickSession}>
     <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
-
+    <span className='badge' style={rightStyle}>{unreadCount}</span>
+    
     <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
     <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
              
       <br/>
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
+    
     <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
-
-       {(unreadCount == 0?
-      <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
-
-      )}
-        <br/>
+     <br/>
         <br/>
       <div style={divMargin}>
           {
@@ -173,8 +170,9 @@ var hours = date.getHours();
 
 
    </div>
+   )
    :
-     <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'height':'90px'}} onClick={props.onClickSession}>
+    (<div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'height':'90px'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
      <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
      <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
@@ -182,11 +180,6 @@ var hours = date.getHours();
       <br/>
     <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
     <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
-
-      {(unreadCount == 0?
-       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
-
-       )}
         <br/>
         <br/>
        <div style={divMargin}>
@@ -204,7 +197,7 @@ var hours = date.getHours();
 
       </div>
     </div>
-    )
+    ))
 
   );
 }

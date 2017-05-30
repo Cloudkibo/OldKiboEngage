@@ -680,17 +680,20 @@ componentDidMount(){
  // alert('i am called');
    //workaround for push bottom bar to bottom
     this.setState({
-        visible: true,
+        visible: false,
         showEmojiPicker: false,
         showSticker: false,
+        showthisdiv:true,
       });
+
    setTimeout(() =>{
        this.setState({
         visible: false,
         showEmojiPicker: false,
         showSticker: false,
+        showthisdiv:false,
       });
-   },10);
+   },0.000001);
   this.scrollToBottom();
 }
 
@@ -699,18 +702,21 @@ componentDidUpdate(prevProps){
 //   alert('i am called');
   //workaround for push bottom bar to bottom
  
-     this.setState({
-        visible: true,
+    this.setState({
+        visible: false,
         showEmojiPicker: false,
         showSticker: false,
+        showthisdiv:true,
       });
+
    setTimeout(() =>{
        this.setState({
         visible: false,
         showEmojiPicker: false,
         showSticker: false,
+        showthisdiv:false,
       });
-   },10);
+   },0.000001);
    this.scrollToBottom();
 
   }
@@ -985,7 +991,9 @@ onFileSubmit()
     }
 
     sendThumbsUp()
+
         {
+          alert('i am called');
            const { socket,dispatch } = this.props;
            var sendmessage = true;
            if(this.props.fbsessionSelected.status == "new"){
@@ -1216,7 +1224,6 @@ socket.emit('broadcast_fbmessage',saveMsg);
 }
 
 toggleVisible () {
-  alert('i am called');
   this.setState({
     visible: !this.state.visible,
     showEmojiPicker: false,
@@ -1619,8 +1626,9 @@ render () {
 
 
                     <div style={{display: 'inline-block'}} data-tip="Thumbs Up">
-                      <i style={styles.iconclass}  onClick = {this.sendThumbsUp}>
-                        <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up"></i>
+                      <i style={styles.iconclass}  >
+                        <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', right: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up" onClick = {this.sendThumbsUp.bind(this)}></i>
+                      
                       </i>
                     </div>
            
@@ -1650,6 +1658,12 @@ render () {
                       }
 
                       {
+                        this.state.showthisdiv &&
+                        <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px',backgroundColor:'white',opacity:0.1}}>
+                       
+                        </div>
+                      }
+                      {
                         this.state.visible &&
                         <Picker
                           onSelected={this.sendGIF}
@@ -1657,18 +1671,19 @@ render () {
 
                       }
               </div>
-              {
-                this.state.longtextwarning != '' &&
-              <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
-              }
+              
           </div>
 
 
-               {
+              {
                       this.props.showFileUploading && this.props.showFileUploading == true &&
                      <p style={{color:'red'}}>Uploading file...Please wait</p>
                      
               } 
+              {
+                this.state.longtextwarning != '' &&
+              <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
+              }
             
  
       </div>
@@ -1847,7 +1862,7 @@ const styles = {
   },
   toolbox:{
     display: 'table-cell',
-    width: 70,
+    width: 100,
     padding: '0px 0',
     verticalAlign: 'bottom',
     whiteSpace: 'nowrap',

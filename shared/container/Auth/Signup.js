@@ -158,7 +158,8 @@ class Signup extends React.Component {
                                               <label>Phone *</label>
                                               <Phone  placeholder="Enter phone number"
                                                        value={ this.state.phone }
-                                                       onChange={ phone => this.setState({ phone }) } />
+                                                       onChange={ phone => this.setState({ phone }) }
+                                                       country="US" />
 
                                               {
                                                 (this.state.phone != '') ?

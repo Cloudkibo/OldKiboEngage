@@ -83,7 +83,6 @@ export function getgroups(req, res) {
   //console.log('create group');
   //console.log(req.body);
   logger.serverLog('info', 'This is body in creategroup '+ JSON.stringify(req.body) );
-
   var options;
   if(req.body.deptagents){  
    options = {

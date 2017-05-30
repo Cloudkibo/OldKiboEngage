@@ -1566,8 +1566,9 @@ export function filterbySubgroup(id,customerchat) {
   };
 }
 
-export function filterbyAgent(id,customerchat) {
+export function filterbyAgent(id, customerchat) {
 
+  console.log("In Filter Agent");
   var filtered;
   if(id == "all")
   {
@@ -1575,12 +1576,18 @@ export function filterbyAgent(id,customerchat) {
   }
   else{
 
-    filtered = customerchat.filter((c) => c.agent_ids[c.agent_ids.length-1].id == id)
+    filtered = customerchat.filter((c) => {
+      console.log(c.agent_ids);
+      if(c.agent_ids.length != 0){
+      return c.agent_ids[c.agent_ids.length-1].id == id;
+      }
+      // return id;
+    });
 
   }
-    console.log(filtered);
+    console.log("Filtered", filtered);
 
-  console.log(customerchat);
+  console.log("unfiltered", customerchat);
   return {
     type: ActionTypes.FILTER_BY_AGENT,
     filtered,
@@ -1633,11 +1640,13 @@ export function selectFbCustomerChat(id,fbchat,profile_pic,selectedsession){
 
 
 export function add_socket_fb_message(data,fbchats,id,fbsessions,order){
+console.log(id);
 
 fbchats.push(data);
 
 var newfbChat = []
 var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
+console.log(temp.length)
   for(var i=0;i<temp.length;i++){
     if(temp[i].message){
     newfbChat.push(
@@ -1686,7 +1695,7 @@ for(var i=0;i< fbsessions.length;i++){
   }
   else{
     newfbsession.lastmessage = lastmessage;
-  
+
   }
   newArrayC.push(newfbsession);
 }
@@ -3115,6 +3124,67 @@ export function filterSessionSummary(status, medium, agentID, groupID, subgroupI
   };
 }
 
+/*********** filter chat ***********/
+
+export function filterChat(status, agentID, groupID, subgroupID, customerchat) {
+  var customerchatfiltered;
+  if(status !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID);
+  }
+  else if(status !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status);
+  }
+  else if(status !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.status == status && c.departmentid == groupID);
+  }
+  else if(status !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.status == status);
+  }
+  else if(status == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  }
+  else if(status == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  }
+  else if(status == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.departmentid == groupID);
+  }
+  else if(status == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
+    customerchatfiltered = customerchat.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  }
+  else if(status == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+    customerchatfiltered = customerchat;
+  }
+
+  return {
+    type: ActionTypes.FILTER_BY_CHAT,
+    customerchatfiltered,
+    customerchat,
+
+  };
+}
+
 /****** High Charts
 **/
 export function subgroupwisestats(subgroupwisestats){
@@ -3679,7 +3749,7 @@ var newfbChat = []
       })
   }
   }
- 
+
 return {
     type: ActionTypes.ADD_LASTMESSAGE_FB_SESSION,
     fbchatSelected: newfbChat,
@@ -3706,7 +3776,7 @@ for(var i=0;i< fbsessions.length;i++){
 
 var sorted = orderByDate(newArray,'timestamp');
 
- 
+
 return {
     type: ActionTypes.UPDATE_LASTMESSAGE_FB_SESSION,
     sorted,
@@ -3774,7 +3844,7 @@ export function updateCustomerList(data,customerlist,selectedchat){
         return{
         type:ActionTypes.ADD_NEW_FB_CUSTOMER,
         fbsessions:newArray,
-        
+
       }
       }
 }
@@ -3800,7 +3870,7 @@ export function updatefbsessionlist(data,customerlist,currentSession,fbchat,fbch
     for(var j=0;j<customerlist.length;j++){
       if(customerlist[j].status != "resolved"){
         var newcurrentSession = customerlist[j];
-        
+
         var temp = fbchat.filter((c)=>c.senderid == currentSession.user_id.user_id || c.recipientid == currentSession.user_id.user_id);
         for(var i=0;i<temp.length;i++){
         if(temp[i].message){
@@ -3823,13 +3893,13 @@ export function updatefbsessionlist(data,customerlist,currentSession,fbchat,fbch
           }
            break;
         }
-        
-       
+
+
       }
       resetcurrent = true;
-          
-    } 
-  
+
+    }
+
    return{
     type:ActionTypes.ADD_NEW_FB_CUSTOMER,
     fbsessions:customerlist,
@@ -4069,7 +4139,7 @@ export function assignToAgentFB(session,usertoken,agentemail,assignmentType) {
 }
 
 export function resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat){
-   
+
      var fbsessionSelected = fbsession.filter((c) => c.status!= 'resolved')[0]
       var newfbChat = []
       if(fbsessionSelected){
@@ -4096,7 +4166,7 @@ export function resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat){
           }
     }
    return{
-    
+
       fbsessionSelected:fbsessionSelected,
       fbchatSelected:newfbChat,
       type: ActionTypes.FILTER_RESOLVED_SESSION_FB,

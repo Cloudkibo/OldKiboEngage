@@ -57,7 +57,7 @@ httpapp.use('/api', serverroutes);
 import { Router } from 'express';
 if(process.env.NODE_ENV === 'production'){
   const router = new Router();
-  router.route('*').get( function(req,res){
+ router.route('*').get( function(req,res){
     res.redirect('https://kiboengage.kibosupport.com' + req.url);
   });
   httpapp.use('*', router);
@@ -127,7 +127,7 @@ const renderFullPage = (html, initialState) => {
 
 
   </head>
-      <body>
+      <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed-hide-logo ">
 
         <div id="root">${html}</div>
 
@@ -195,6 +195,19 @@ const renderFullPage = (html, initialState) => {
 
 
           </script>
+          <script>
+jQuery(document).ready(function() {       
+   // initiate layout and plugins
+   Metronic.init(); // init metronic core components
+Layout.init(); // init current layout
+QuickSidebar.init(); // init quick sidebar
+Demo.init(); // init demo features
+  $("#draggable").draggable({
+      handle: ".modal-header"
+  });
+});
+</script>
+
              <script src="/dist/bundle.js"></script>
 
          </body>
@@ -219,7 +232,7 @@ app.use((req, res, next) => {
     if (redirectLocation) {
       return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     }
-
+    
     if (!renderProps) {
       return next();
     }

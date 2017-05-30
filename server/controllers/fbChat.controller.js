@@ -39,6 +39,8 @@ export function verifyhook(req,res) {
 export function chatwebhook(req, res) {
  
     console.log('chat webhook is called');
+    logger.serverLog('info', 'This is body in chatwebhook '+ JSON.stringify(req.body) );
+ 
     // call api to fetch page info from pageid
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {

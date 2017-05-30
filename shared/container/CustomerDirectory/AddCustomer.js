@@ -555,9 +555,9 @@ create_session(data){
     browserHistory.push('/clientchat')}
     return (
 
-      <div className="vbox viewport">
+      <div>
 
-       <div className="page-container hbox space-between">
+       <div>
        <div className="widgetheader">
           <div style={{'paddingTop':'2em'}}>
 
@@ -568,7 +568,7 @@ create_session(data){
 
             </div>
         </div>
-          <div className="page-content-wrapper clear-fix">
+          <div className="page-content-wrapper clear-fix" style={{'display':'flex','justifyContent':'center'}}>
             <div className="page-content">
 
                 {this.props.errorMessage &&
@@ -605,7 +605,7 @@ create_session(data){
                   <div className="form-group">
                   <label className="control-label col-md-3"> Country </label>
                   <div className="col-md-9">
-                        <select  ref = "country" defaultValue ={this.props.countryname} >
+                        <select  ref = "country" defaultValue ={this.props.countryname} className="form-control input-sm">
                           {
                             Countries.map((c,i) =>
                               <option value={c.name} >{c.name}</option>
