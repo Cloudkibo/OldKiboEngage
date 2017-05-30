@@ -144,7 +144,7 @@ class NewSessions extends Component {
                        </table>
               </div>
 
-             { this.props.newsessionsfiltered ?
+             { this.props.newsessionsfiltered && this.props.newsessionsfiltered.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>

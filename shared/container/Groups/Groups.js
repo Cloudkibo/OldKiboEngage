@@ -143,7 +143,7 @@ componentDidMount(){
               </div>
 
               <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>
-                { this.props.groupdetails && this.props.customers ?
+                { this.props.groupdetails && this.props.customers && this.props.groupdetails.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>

@@ -65,7 +65,7 @@ class InvitedAgents extends Component {
 
            <div className="portlet-body">
 
-             { this.props.invitedagents ?
+             { this.props.invitedagents && this.props.invitedagents.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>

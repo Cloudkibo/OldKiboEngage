@@ -196,7 +196,7 @@ class SessionSummary extends Component {
                   <p> Loading Session Summary... </p>:
                   <br/>
               }
-             { this.props.sessionsummaryfiltered ?
+             { this.props.sessionsummaryfiltered && this.props.sessionsummaryfiltered.length > 0 ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
