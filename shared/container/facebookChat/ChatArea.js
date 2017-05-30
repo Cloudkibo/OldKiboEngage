@@ -1353,16 +1353,9 @@ render () {
     let list = this.props.messages.map((data, index) => {
       return (
         
-        data.senderid == this.props.senderid?
+        data.senderid == this.props.fbsessionSelected.user_id.user_id?
        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'left','clear':'both'}}>
-       {/* <div className='message-header'>
-          
-          <span className='username'>{this.props.username}</span>
-        </div>
-        
-      /*      <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
-
-      }*/}
+     
 
       { index == 0? 
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
@@ -1472,18 +1465,20 @@ render () {
 
                                                            :
                       <div style={styles.imagestyle}>
-                      (da.type == "video"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="100%" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
+                       {
+                        da.type == "video"?
+                        <ReactPlayer url={da.payload.url} controls={true}  width="250" height="242"  onPlay={this.onTestURL.bind(this, da.payload.url)} />:
                         (da.type == "audio"?
-                        <ReactPlayer url={da.payload.url} controls={true} width="100%" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>:
-
+                        <ReactPlayer url={da.payload.url} controls={true} width="250" height="30" onPlay={this.onTestURLAudio.bind(this, da.payload.url)} />:
                         (da.type == "location"?
-                       <div>
-                       <p> {da.title} </p>
-                       <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
-                       </div> :
-                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url}  </a>
-                       )))
+                           <div>
+                             <p> {da.title} </p>
+                             <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
+                           </div>
+                       :
+                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
+                       ))
+                        }
                        </div>
                        )
                 ))
@@ -1826,6 +1821,7 @@ const styles = {
   imagestyle:{
     textAlign:'center',
     padding:10,
+    width:'inherit',
   },
    sendername:{
    

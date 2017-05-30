@@ -8,7 +8,7 @@ import auth from '../../services/auth';
 import CustomerListItem from './CustomerListItem';
 import {getcustomers} from '../../redux/actions/actions'
 import { browserHistory } from 'react-router'
-const PureRenderMixin = require('react-addons-pure-render-mixin');  
+const PureRenderMixin = require('react-addons-pure-render-mixin');
 import Immutable from 'immutable';
 
 import { bindActionCreators } from 'redux';
@@ -16,7 +16,7 @@ import { bindActionCreators } from 'redux';
 class Customers extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -24,23 +24,23 @@ class Customers extends Component {
     console.log('constructor is called');
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getcustomers(usertoken)
       }
     super(props, context);
-    this.state = { 
+    this.state = {
       data: Immutable.List(),
       filteredData: Immutable.List(),
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-  
-  
 
-    
+
+
+
   }
 
- 
+
 filterData(event) {
     event.preventDefault();
     const regex = new RegExp(event.target.value, 'i');
@@ -54,9 +54,9 @@ filterData(event) {
   }
  componentWillReceiveProps(props){
     if(props.customers){
-       this.setState({ 
+       this.setState({
       data: Immutable.fromJS(props.customers).toList(),
-      filteredData: Immutable.fromJS(props.customers).toList() 
+      filteredData: Immutable.fromJS(props.customers).toList()
     });
     }
   }
@@ -65,50 +65,50 @@ filterData(event) {
     const token = auth.getToken()
     console.log(token)
     const { filteredData } = this.state;
-   
+
     console.log(this.props.notifications);
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container hbox space-between">
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Customer Directory Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/customers">Customer Directory Management</Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
                    Customers
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-team">
                    <label> Search </label>
-                   <input type="text" placeholder = "Search Customer By Name/Email" className="form-control" 
-                              onChange={ this.filterData.bind(this)}  /> 
+                   <input type="text" placeholder = "Search Customer By Name/Email" className="form-control"
+                              onChange={ this.filterData.bind(this)}  />
                  </div>
               </div>
-             
+
                {this.props.errorMessage &&
 
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
-                { this.props.customers &&
+                { this.props.customers && filteredData ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -118,29 +118,30 @@ filterData(event) {
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Contact No.</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Options</th>
 
-           
+
                     </tr>
                     </thead>
 
-                    <tbody>                    
+                    <tbody>
                       {
                         this.props.customers && filteredData && filteredData.map((customer, i) => (
-                          
+
                           <CustomerListItem customer={customer} />
-                                                      
+
                         ))
                       }
-                     </tbody> 
-                    </table>
+                     </tbody>
+                    </table> :
+                    <p>Currently, there is no customer to show.</p>
                 }
-        
-                
+
+
             </div>
           </div>
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -167,6 +168,3 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({getcustomers:getcustomers}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Customers);
-
-
-

@@ -170,7 +170,7 @@ class AssignedSessions extends Component {
                        </table>
               </div>
 
-             { this.props.assignedsessionsfiltered &&
+             { this.props.assignedsessionsfiltered ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -208,7 +208,8 @@ class AssignedSessions extends Component {
                         ))
                       }
                      </tbody>
-                    </table>
+                    </table> :
+                    <p>Currently, there is not any assigned chat sessions to show.</p>
                 }
 
 

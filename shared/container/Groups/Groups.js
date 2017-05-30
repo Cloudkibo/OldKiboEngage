@@ -42,7 +42,7 @@ class Groups extends Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
- 
+
   }
 
 componentDidMount(){
@@ -54,13 +54,13 @@ componentDidMount(){
         console.log(usertoken);
         this.props.getusergroups(usertoken);
         this.props.getDeptAgents(usertoken);
-    
+
         this.props.getcustomers(usertoken);
       }
 
 
 
-   
+
 }
    handleClick(e) {
 
@@ -69,7 +69,7 @@ componentDidMount(){
       });
       e.preventDefault();
   }
-  
+
 
 
   add(name,description,deptagents) {
@@ -141,9 +141,9 @@ componentDidMount(){
                }
                  </div>
               </div>
-                
+
               <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>
-                { this.props.groupdetails && this.props.customers &&
+                { this.props.groupdetails && this.props.customers ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -164,8 +164,8 @@ componentDidMount(){
                         ))
                       }
                      </tbody>
-                    </table>
-
+                    </table> :
+                    <p>Currently, there is no group to show.</p>
 
                 }
 

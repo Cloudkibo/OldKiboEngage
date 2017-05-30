@@ -16,6 +16,7 @@ function notifyMe(message) {
         lang: "",
         body: message,
         tag: "sometag",
+        icon: "https://kiboengage.kibosupport.com/companyfiles/logo_small.png",
     });
   }
   // Otherwise, we need to ask the user for permission

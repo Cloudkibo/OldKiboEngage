@@ -144,7 +144,7 @@ class NewSessions extends Component {
                        </table>
               </div>
 
-             { this.props.newsessionsfiltered &&
+             { this.props.newsessionsfiltered ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -182,7 +182,8 @@ class NewSessions extends Component {
                         ))
                       }
                      </tbody>
-                    </table>
+                    </table> :
+                    <p>Currently, there is not any abandoned chat sessions to show.</p>
                 }
 
 

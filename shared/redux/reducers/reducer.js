@@ -523,7 +523,7 @@ const dashboard = (state =dashboardState, action) => {
              fbchatSelected:action.fbchatSelected,
              errorMessage:'',
              showFileUploading:false,
-             fbsessions:action.fbsessions,
+             fbsessions:action.fbsessions?action.fbsessions:state.fbsessions,
 
 
             };

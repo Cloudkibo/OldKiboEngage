@@ -376,7 +376,6 @@ componentDidMount(){
                           <option value="new">New</option>
                           <option value="assigned">Assigned</option>
                           <option value="resolved">Resolved</option>
-                          <option value="archived">Archived</option>
                       </select>
              		</td>
              		{
