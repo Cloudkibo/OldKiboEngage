@@ -1566,8 +1566,9 @@ export function filterbySubgroup(id,customerchat) {
   };
 }
 
-export function filterbyAgent(id,customerchat) {
+export function filterbyAgent(id, customerchat) {
 
+  console.log("In Filter Agent");
   var filtered;
   if(id == "all")
   {
@@ -1575,12 +1576,18 @@ export function filterbyAgent(id,customerchat) {
   }
   else{
 
-    filtered = customerchat.filter((c) => c.agent_ids[c.agent_ids.length-1].id == id)
+    filtered = customerchat.filter((c) => {
+      console.log(c.agent_ids);
+      if(c.agent_ids.length != 0){
+      return c.agent_ids[c.agent_ids.length-1].id == id;
+      }
+      // return id;
+    });
 
   }
-    console.log(filtered);
+    console.log("Filtered", filtered);
 
-  console.log(customerchat);
+  console.log("unfiltered", customerchat);
   return {
     type: ActionTypes.FILTER_BY_AGENT,
     filtered,
