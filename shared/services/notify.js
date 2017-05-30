@@ -10,6 +10,7 @@ export function notify(message) {
       dir: 'auto',
       lang: '',
       body: message,
+      icon: '/companyfiles/logo_small.png',
       tag: 'sometag',
     });
   }
@@ -29,6 +30,7 @@ export function notify(message) {
           dir: 'auto',
           lang: '',
           body: message,
+          icon: '/companyfiles/logo_small.png',
           tag: 'sometag',
         });
       }

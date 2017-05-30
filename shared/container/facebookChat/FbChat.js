@@ -57,18 +57,16 @@ class FbChat extends Component {
 getfbCustomer(data){
   console.log('new fb customer is received');
   console.log(data);
-  if(this.props.fbsessions){
+  if (this.props.fbsessions) {
     this.props.updateCustomerList(data,this.props.fbsessions,this.props.fbsessionSelected);
     this.forceUpdate();
-
   }
-
 }
+
 handleChange(e){
   this.props.sortSessionsList(this.props.fbsessions,e.target.value);
 }
 updateFbsessionlist(data){
-
   this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected,this.props.fbchats,this.props.fbchatSelected);
   this.forceUpdate();
 }
@@ -77,7 +75,6 @@ getfbMessage(data){
   console.log('new fb message is received');
   console.log(data);
   console.log(this.props.fbsessionSelected);
-  notify(data);
     if(this.props.fbsessionSelected && this.props.fbchats)
     {
       if(!this.props.fbsessionSelected.user_id){

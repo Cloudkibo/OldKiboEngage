@@ -54,23 +54,27 @@ class App extends Component {
     this.getSocketmessage = this.getSocketmessage.bind(this);
   }
 
+  componentDidMount () {
+    this.props.route.socket.on('customer_joined', this.alertme);
+    this.props.route.socket.on('send:fbcustomer', (data) => {
+      notify('facebook customer joined');
+    });
+    this.props.route.socket.on('updateFBsessions', (data) => {
+      if (data.status === 'assigned') {
+        notify(`${data.user_id.first_name } ${data.user_id.last_name} of Facebook Page ${data.pageid.pageTitle} has been assigned.`);
+      } else {
+        notify(`${data.user_id.first_name } ${data.user_id.last_name} of Facebook Page ${data.pageid.pageTitle} has been resolved.`);
+      }
+    });
+  }
+
   getSocketmessage(message){
     this.props.updateChatList(message);
   }
 
   alertme(data) {
-    // notifyMe('customer joined a session');
-    notify(`customer joined a session ${data}`);
+    notify('customer joined a session');
   }
-
-  componentDidMount(){
-
-        this.props.route.socket.on('customer_joined', this.alertme);
-        //this.props.route.socket.on('send:fbcustomer', this.alertme); // these don't work here
-        //this.props.route.socket.on('send:fbmessage', this.alertme);
-     //   this.props.route.socket.on('send:message',this.getSocketmessage);
-
-}
 
   render() {
     return (
