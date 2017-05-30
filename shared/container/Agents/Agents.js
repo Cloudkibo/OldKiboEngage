@@ -15,7 +15,7 @@ import { browserHistory } from 'react-router'
 class Agents extends Component {
 
  constructor(props, context) {
-      //call action to get user teams 
+      //call action to get user teams
     if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
@@ -30,9 +30,9 @@ class Agents extends Component {
     this.cancelInvite = this.cancelInvite.bind(this);
     this.add = this.add.bind(this);
     props.getAgents(usertoken);
-   
 
-    
+
+
   }
 
   add(email) {
@@ -56,7 +56,7 @@ class Agents extends Component {
       });
       e.preventDefault();
   }
-  
+
 
   render() {
     console.log(this.props.userdetails.firstname)
@@ -66,31 +66,31 @@ class Agents extends Component {
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-    
+
        <div className="page-container hbox space-between">
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Agents Management </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/agents"> Agents Management</Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
                     <i className="fa fa-user"/>
                    Agents
-                </div> 
-              </div>    
-        
+                </div>
+              </div>
+
            <div className="portlet-body">
              <div className="table-toolbar">
                  <div className="btn-team">
@@ -106,15 +106,15 @@ class Agents extends Component {
 
                {this.props.inviteurl &&
                       <div>
-                     
+
                         <p> Here is URL sent to the Invitee </p>
                         <p>{this.props.inviteurl} </p>
-                        
+
                       </div>
                 }
-               <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid} website = {this.props.userdetails.website}/>      
-                   
-                { this.props.agents &&
+               <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid} website = {this.props.userdetails.website}/>
+
+                { this.props.agents ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -126,25 +126,26 @@ class Agents extends Component {
                     </tr>
                     </thead>
 
-                    <tbody>                    
+                    <tbody>
                       {
                         this.props.agents.map((agent, i) => (
-                          
+
                           <AgentListItem agent={agent} key={agent._id}  onDelete={() => this.props.deleteagent(agent,token)}/>
-                                                      
+
                         ))
                       }
-                     </tbody> 
-                    </table>
+                     </tbody>
+                    </table> :
+                    <p>Currently, there is no agent to show.</p>
                 }
-        
-                
+
+
             </div>
           </div>
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -175,9 +176,9 @@ function mapStateToProps(state) {
           customerchat_selected :(state.dashboard.customerchat_selected),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
           userchats :(state.dashboard.userchats),
-          responses :(state.dashboard.responses), 
-          onlineAgents:(state.dashboard.onlineAgents), 
-          inviteurl:(state.dashboard.inviteurl),     
+          responses :(state.dashboard.responses),
+          onlineAgents:(state.dashboard.onlineAgents),
+          inviteurl:(state.dashboard.inviteurl),
 
            };
 }
@@ -188,6 +189,3 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ deleteagent:deleteagent,inviteagent:inviteagent,getAgents:getAgents}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Agents);
-
-
-

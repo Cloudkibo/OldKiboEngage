@@ -27,20 +27,20 @@ class FbPages extends Component {
         props.getfbpages(usertoken)
       }
     super(props, context);
-   
+
 
 
 
 
   }
- 
+
 
 
   render() {
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     console.log(token)
- 
+
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -84,14 +84,14 @@ class FbPages extends Component {
 
                  </div>
               </div>
-              
+
 
                 {this.props.errorMessage &&
 
                    <div className = "alert alert-success"><span>{this.props.errorMessage}</span></div>
-                    }    
+                    }
 
-                { this.props.responses &&
+                { this.props.fbpages && this.props.responses ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -108,7 +108,6 @@ class FbPages extends Component {
 
                     <tbody>
                       {
-                        this.props.fbpages &&
                         this.props.fbpages.map((fbpage, i) => (
 
                           <FbPageItem page={fbpage} key={fbpage._id}  onDelete={() => this.props.deletefbpage(fbpage,token)} userdetails={this.props.userdetails}/>
@@ -116,7 +115,8 @@ class FbPages extends Component {
                         ))
                       }
                      </tbody>
-                    </table>
+                    </table> :
+                    <p>Currently, there is no Facebook Page to show.</p>
                 }
 
 

@@ -196,7 +196,7 @@ class SessionSummary extends Component {
                   <p> Loading Session Summary... </p>:
                   <br/>
               }
-             { this.props.sessionsummaryfiltered &&
+             { this.props.sessionsummaryfiltered ?
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -230,7 +230,8 @@ class SessionSummary extends Component {
 
 
                      </tbody>
-                    </table>
+                    </table> :
+                    <p>Currently, there is not any chat sessions to show its summary.</p>
                 }
 
 

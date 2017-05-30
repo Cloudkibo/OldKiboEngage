@@ -96,7 +96,7 @@ render() {
                  <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                }
 
-               { this.props.fbcustomers &&
+               { this.props.fbcustomers && filteredData ?
                  <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                  <thead>
                   <tr>
@@ -111,7 +111,8 @@ render() {
                     ))
                   }
                 </tbody>
-              </table>
+              </table> :
+              <p>Currently, there is no Facebook Customer to show.</p>
               }
             </div>
           </div>
