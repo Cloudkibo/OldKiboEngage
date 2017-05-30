@@ -134,7 +134,7 @@ class Teams extends Component {
                               onChange={ this.filterData.bind(this) }
                               placeholder="Search" />
 
-
+                  <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -160,6 +160,7 @@ class Teams extends Component {
                       }
                      </tbody>
                     </table>
+                    </div>
                     </div> :
                     <p> Currently, there is no team to show. </p>
                 }

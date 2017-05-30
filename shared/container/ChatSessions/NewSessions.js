@@ -145,6 +145,7 @@ class NewSessions extends Component {
               </div>
 
              { this.props.newsessionsfiltered && this.props.newsessionsfiltered.length > 0 ?
+               <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -182,7 +183,8 @@ class NewSessions extends Component {
                         ))
                       }
                      </tbody>
-                    </table> :
+                    </table>
+                    </div> :
                     <p>Currently, there is not any abandoned chat sessions to show.</p>
                 }
 

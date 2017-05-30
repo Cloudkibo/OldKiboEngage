@@ -110,6 +110,7 @@ filterData(event) {
                                    onChange={ this.filterData.bind(this)}  />
                       </div>
                    </div>
+                   <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -133,6 +134,7 @@ filterData(event) {
                       }
                      </tbody>
                     </table>
+                    </div>
                     </div> :
                     <p>Currently, there is no customer to show.</p>
                 }

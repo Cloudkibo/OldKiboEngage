@@ -65,7 +65,10 @@ class AssignedSessions extends Component {
   }
 
   componentDidMount(){
-       this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
+        console.log("Pre page");
+        this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
+        console.log("Pagination added from component did mount");
+
   }
   render() {
     const token = auth.getToken()
@@ -99,7 +102,7 @@ class AssignedSessions extends Component {
 
            <div className="portlet-body">
            <div className="table-responsive">
-                    <table className="table">
+                    <table className="table" id="avicii">
                      <tbody>
                      <tr>
                        <th className="col-md-1">Medium</th>
@@ -171,7 +174,8 @@ class AssignedSessions extends Component {
               </div>
 
              { this.props.assignedsessionsfiltered && this.props.assignedsessionsfiltered.length > 0 ?
-                   <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                   <div className="table-responsive">
+                   <table id ="sample_3" className="table table-condensed table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
@@ -208,7 +212,8 @@ class AssignedSessions extends Component {
                         ))
                       }
                      </tbody>
-                    </table> :
+                    </table>
+                    </div> :
                     <p>Currently, there is not any assigned chat sessions to show.</p>
                 }
 
