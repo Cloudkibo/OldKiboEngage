@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {updateChatList} from '../redux/actions/actions';
+import { updateChatList } from '../redux/actions/actions';
+import { notify } from '../services/notify';
 
 function notifyMe(message) {
   // Let's check if the browser supports notifications
@@ -54,21 +55,27 @@ class App extends Component {
     this.getSocketmessage = this.getSocketmessage.bind(this);
   }
 
-  alertme(data){
-    notifyMe('customer joined a session');
-
+  componentDidMount () {
+    this.props.route.socket.on('customer_joined', this.alertme);
+    this.props.route.socket.on('send:fbcustomer', (data) => {
+      notify('facebook customer joined');
+    });
+    this.props.route.socket.on('updateFBsessions', (data) => {
+      if (data.status === 'assigned') {
+        notify(`${data.user_id.first_name } ${data.user_id.last_name} of Facebook Page ${data.pageid.pageTitle} has been assigned.`);
+      } else {
+        notify(`${data.user_id.first_name } ${data.user_id.last_name} of Facebook Page ${data.pageid.pageTitle} has been resolved.`);
+      }
+    });
   }
 
   getSocketmessage(message){
     this.props.updateChatList(message);
   }
 
-  componentDidMount(){
-
-        this.props.route.socket.on('customer_joined',this.alertme);
-     //   this.props.route.socket.on('send:message',this.getSocketmessage);
-
-}
+  alertme(data) {
+    notify('customer joined a session');
+  }
 
   render() {
     return (

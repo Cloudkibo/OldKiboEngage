@@ -15,6 +15,7 @@ import { browserHistory } from 'react-router'
 import Avatar from 'react-avatar';
 import io from 'socket.io-client';
 import Autosuggest from 'react-autosuggest';
+import { notify } from '../../services/notify';
 
 
 var callonce=false;
@@ -56,18 +57,16 @@ class FbChat extends Component {
 getfbCustomer(data){
   console.log('new fb customer is received');
   console.log(data);
-  if(this.props.fbsessions){
+  if (this.props.fbsessions) {
     this.props.updateCustomerList(data,this.props.fbsessions,this.props.fbsessionSelected);
     this.forceUpdate();
-
   }
-
 }
+
 handleChange(e){
   this.props.sortSessionsList(this.props.fbsessions,e.target.value);
 }
 updateFbsessionlist(data){
-
   this.props.updatefbsessionlist(data,this.props.fbsessions,this.props.fbsessionSelected,this.props.fbchats,this.props.fbchatSelected);
   this.forceUpdate();
 }
