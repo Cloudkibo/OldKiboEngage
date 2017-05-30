@@ -1345,7 +1345,8 @@ const { value, suggestions } = this.state;
                           <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
                          
                           <br/>
-                          <label>{this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+                          <label>{
+                            (this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid).length > 0) ? this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname : ''}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
 
                           </td>
 
@@ -1359,7 +1360,7 @@ const { value, suggestions } = this.state;
                       <td className="col-md-6">
                         <label>Current Status - {this.props.sessiondetails.status}</label>
                         <br/>
-                        <label>{this.props.groupdetails.filter((g) => g._id == this.props.groupdetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+                        <label>{ (this.props.groupdetails.filter((g) => g._id == this.props.groupdetails.departmentid).length > 0) ? this.props.groupdetails.filter((g) => g._id == this.props.groupdetails.departmentid)[0].deptname : ''}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
 
                       </td>
                      </tr>
