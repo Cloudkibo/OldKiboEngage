@@ -90,23 +90,19 @@ const renderFullPage = (html, initialState) => {
         <title>Kibo Engage</title>
            <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css'>
            <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css'>
-
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
         <!--<link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>-->
          
          <link rel="stylesheet" href='/css/bootstrap/css/bootstrap.min.css' />
          <link rel="stylesheet" href='/css/style.css' />
-
          <link rel="stylesheet" href='/css/css/components.css' />
          <link rel="stylesheet" href='/css/layout/css/layout.css' />
          <link rel="stylesheet" href='/css/layout/css/custom.css' />
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
         <link rel="stylesheet" href='/css/chatui.css' />
-
         <!-- Page level plugin styles START -->
         <link href="assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
         <link href="assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.css" rel="stylesheet">
@@ -120,19 +116,12 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/style-responsive.css" rel="stylesheet">
         <link href="assets/frontend/layout/css/themes/red.css" rel="stylesheet" id="style-color">
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
-
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
-        
          <link rel="stylesheet" href="/css/rrui.css"/>
         <link rel="stylesheet" href="/css/styleuu.css"/>
-        
-
-
   </head>
       <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed-hide-logo ">
-
         <div id="root">${html}</div>
-
              <script src="/socket.io/socket.io.js"></script>
              <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
              <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
@@ -167,7 +156,6 @@ const renderFullPage = (html, initialState) => {
              <script src="assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
              <!-- END PAGE LEVEL PLUGINS -->
              <!-- BEGIN PAGE LEVEL SCRIPTS -->
-
             <script src = "/scripts/back-to-top.js"></script>
             <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
             <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
@@ -175,17 +163,12 @@ const renderFullPage = (html, initialState) => {
             <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
             <script src="scripts/widgetapp.js" type="text/javascript" ></script>
             <script src="scripts/widgetapp2.js" type="text/javascript" ></script>
-            <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="http://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
             
-
         <!-- BEGIN RevolutionSlider -->
             <script src="assets/global/plugins/slider-revolution-slider/rs-plugin/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script>
             <script src="assets/global/plugins/slider-revolution-slider/rs-plugin/js/jquery.themepunch.tools.min.js" type="text/javascript"></script>
             <script src="assets/frontend/pages/scripts/revo-slider-init.js" type="text/javascript"></script>
             <!-- END RevolutionSlider -->
-
             <script>
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
             /* Init Metronic's core jquery plugins and layout scripts */
@@ -193,18 +176,12 @@ const renderFullPage = (html, initialState) => {
               Metronic.init(); // Run metronic theme
               Metronic.setAssetsPath('/assets/'); // Set the assets folder path
               RevosliderInit.initRevoSlider();
-
-
                         
             });
-
-
           </script>
-          
           <script>
 jQuery(document).ready(function() {       
    // initiate layout and plugins
-   
    Metronic.init(); // init metronic core components
 Layout.init(); // init current layout
 QuickSidebar.init(); // init quick sidebar
@@ -214,14 +191,13 @@ Demo.init(); // init demo features
   });
 });
 </script>
-
-
              <script src="/dist/bundle.js"></script>
-
          </body>
     </html>
   `;
 };
+
+
 
 const renderError = err => {
   const softTab = '&#32;&#32;&#32;&#32;';

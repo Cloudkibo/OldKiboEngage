@@ -36,23 +36,18 @@ class AuthorizedHeader extends Component
   render()
   {
     return (
-
+    
       <div  className = "page-header navbar" >
         <div className="page-header-inner">
           <div className = "page-logo" >
               <a href = '/' >
                 <h4> KiboEngage </h4>
               </a>
-              	<div className="menu-toggler sidebar-toggler hide">
-          </div>
+
           </div >
-          <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-		</a>
           <div className="top-menu">
             <ul  className ="nav navbar-nav pull-right">
-
                     {this.props.news &&
-
                   <li className="dropdown dropdown-extended dropdown-notification" >
                       <a href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                       <i className="fa fa-bell-o"></i>
@@ -63,12 +58,10 @@ class AuthorizedHeader extends Component
                             <h3><span className="bold">{this.props.news.length}</span> notifications</h3>
                             <a>view all</a>
                           </li>
-
                           <li>
                               <ul className="dropdown-menu-list scroller" style={{height: 250+'px',overflowY: 'scroll'}} data-handle-color="#637283">
                                   {
                                     this.props.news && this.props.news.map((news, i) => (
-
                                   <li onClick={this.onClickNews.bind(this,news)}>
                                     <Link to='#'>
                                           <span className="time">{handleDate(news.dateCreated)}</span>
@@ -80,7 +73,6 @@ class AuthorizedHeader extends Component
                                     </Link>
                                   </li>
                                     ))
-
                                   }
                                 </ul>
                               </li>
@@ -118,14 +110,6 @@ class AuthorizedHeader extends Component
 
                             </ul>
               </li>
-
-              	<li class="dropdown dropdown-quick-sidebar-toggler">
-					<a href="javascript:;" class="dropdown-toggle">
-					<i class="icon-logout"></i>
-					</a>
-				</li>
-
-
             </ul>
           </div>
 

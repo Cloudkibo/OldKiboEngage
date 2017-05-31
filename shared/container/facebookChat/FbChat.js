@@ -183,7 +183,7 @@ componentWillReceiveProps(props){
                       </div>
                       <article>
                       <div>
-                     {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id && this.props.fbsessions.length > 0 && this.props.fbsessions[0].lastmessage &&
+                     {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id && 
                                                         this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
 
                                                           <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} selectedCustomer={this.props.fbsessionSelected} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>

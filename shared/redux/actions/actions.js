@@ -3679,11 +3679,18 @@ export function showFbSessions(fbsessions) {
   };
 }
 
+function orderByDateFbChats(arr, dateProp) {
+  return arr.slice().sort(function (a, b) {
+      return a[dateProp] - b[dateProp] ;
+   
+    }
+  );
+}
 export function showFbChats(fbchats) {
-
+  var sorted = orderByDateFbChats(fbchats,'timestamp');
   return {
     type: ActionTypes.ADD_FB_CHATS,
-    fbchats,
+    fbchats:sorted,
 
   };
 }
