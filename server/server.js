@@ -122,8 +122,10 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
 
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
+        
          <link rel="stylesheet" href="/css/rrui.css"/>
         <link rel="stylesheet" href="/css/styleuu.css"/>
+        
 
 
   </head>
@@ -173,6 +175,9 @@ const renderFullPage = (html, initialState) => {
             <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
             <script src="scripts/widgetapp.js" type="text/javascript" ></script>
             <script src="scripts/widgetapp2.js" type="text/javascript" ></script>
+            <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="http://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
             
 
         <!-- BEGIN RevolutionSlider -->
@@ -195,9 +200,11 @@ const renderFullPage = (html, initialState) => {
 
 
           </script>
+          
           <script>
 jQuery(document).ready(function() {       
    // initiate layout and plugins
+   
    Metronic.init(); // init metronic core components
 Layout.init(); // init current layout
 QuickSidebar.init(); // init quick sidebar
@@ -207,6 +214,7 @@ Demo.init(); // init demo features
   });
 });
 </script>
+
 
              <script src="/dist/bundle.js"></script>
 

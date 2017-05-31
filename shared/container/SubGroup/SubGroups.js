@@ -85,6 +85,7 @@ class SubGroups extends Component {
               </div>
 
                 { this.props.subgroups && this.props.customers && this.props.subgroups.length > 0 ?
+                  <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -108,7 +109,8 @@ class SubGroups extends Component {
                         ))
                       }
                      </tbody>
-                    </table> :
+                    </table> 
+                    </div>:
                     <p>Currently, there is no subgroup to show.</p>
                 }
 

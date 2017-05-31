@@ -71,6 +71,7 @@
     "react-giphy-picker": "git+https://github.com/Cloudkibo/react-giphy-picker.git",
     "react-highcharts": "^10.0.0",
     "react-notification-system": "^0.2.13",
+    "react-pagination-table": "^1.0.5",
     "react-phone-number-input": "^0.10.0",
     "react-player": "^0.15.0",
     "react-progressbar": "^1.4.6",

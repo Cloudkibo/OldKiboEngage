@@ -66,6 +66,7 @@ class InvitedAgents extends Component {
            <div className="portlet-body">
 
              { this.props.invitedagents && this.props.invitedagents.length > 0 ?
+               <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -88,7 +89,7 @@ class InvitedAgents extends Component {
 
 
                      </tbody>
-                    </table> :
+                    </table></div> :
                     <p>Currently, there is no invited agent to show.</p>
                 }
 

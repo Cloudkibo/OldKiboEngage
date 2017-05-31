@@ -144,6 +144,7 @@ componentDidMount(){
 
               <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>
                 { this.props.groupdetails && this.props.customers && this.props.groupdetails.length > 0 ?
+                  <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -164,7 +165,7 @@ componentDidMount(){
                         ))
                       }
                      </tbody>
-                    </table> :
+                    </table></div> :
                     <p>Currently, there is no group to show.</p>
 
                 }

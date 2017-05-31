@@ -161,6 +161,7 @@ class ResolvedSessions extends Component {
               </div>
 
              { this.props.resolvedsessionsfiltered && this.props.resolvedsessionsfiltered.length > 0 ?
+               <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -198,7 +199,8 @@ class ResolvedSessions extends Component {
                         ))
                       }
                      </tbody>
-                    </table> :
+                    </table>
+                    </div> :
                     <p>Currently, there is not any resolved chat sessions to show.</p>
                 }
 

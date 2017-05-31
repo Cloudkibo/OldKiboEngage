@@ -86,7 +86,7 @@ class Notifications extends Component {
                       }
                 { this.props.notifications && this.props.notifications.length > 0 ?
                   <div className="table-responsive">
-                   <table id ="sample_3" style={{ tableLayout: 'fixed', wordWrap: 'break-word'}} className="table table-striped table-bordered table-hover table-condensed dataTable">
+                   <table id ="sample_3" style={{ tableLayout: 'fixed', wordWrap: 'break-word'}} className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Title </th>
