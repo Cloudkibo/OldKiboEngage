@@ -24,7 +24,7 @@ import Subgroupwise from './Subgroupwise'
 
 var ReactDOM = require('react-dom');
 var Highcharts = require('highcharts');
-var platform_bool ;//= false; 
+var platform_bool ;//= false;
 var team_bool ;//= false;
 var pages_bool;// = false;
 var mobile_bool;
@@ -61,7 +61,7 @@ var getAverageCallTime =  function(allCallsList){
               sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
 
             }
-            
+
             if(data[index].endtime != undefined && data[index].picktime != undefined){
               countForCall += 1;
               sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
@@ -146,13 +146,13 @@ var getAverageWaitMin = function(allCallsList,days){
         //console.log(data)
         for(var index in data){
           if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) < days*24){
-           
+
             if(data[index].picktime != undefined){
               count += 1;
               sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
 
             }
-           
+
             if(data[index].endtime != undefined){
               countForCall += 1;
               sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
@@ -179,7 +179,7 @@ var getAverageCallMin =  function(allCallsList,days){
         var sumForCall = 0;
 
         var data = allCallsList;
-   
+
         for(var index in data){
           //console.log((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2))
 
@@ -189,7 +189,7 @@ var getAverageCallMin =  function(allCallsList,days){
               sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
 
             }
-            
+
             if(data[index].endtime != undefined && data[index].picktime != undefined){
               countForCall += 1;
               sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
@@ -214,17 +214,17 @@ var getAverageCallMin =  function(allCallsList,days){
 class HighCharts extends Component {
 
  constructor(props, context) {
-      //call action to get user groups 
+      //call action to get user groups
   if(props.userdetails.accountVerified == "No"){
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
     console.log('constructor is called');
-    
+
     super(props, context);
     if(usertoken != null)
     {
-       
+
         console.log(usertoken);
         props.getplatformwisestats(usertoken);
         props.getdeptwisestats(usertoken);
@@ -238,9 +238,11 @@ class HighCharts extends Component {
         props.getagentwisenotifications(usertoken);
         //get resolved sessions
         props.getresolvedsessions(usertoken);
-        props.getsubgroupwisestats(this.props.groupdetails[0]._id,usertoken);
-    } 
-    
+        if (this.props.groupdetails.length > 0) {
+          props.getsubgroupwisestats(this.props.groupdetails[0]._id,usertoken);
+        }
+    }
+
     this.state = {categories:[],categoriesSubgroups :[],categoriesCustomer :[],categoriesNotif:[],categoriesAgent :[],categoriesAvg:[],categoriesPages:[],categoriesMobile:[],categoriesGroup:[], chartSeries : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesSubgroups : [{"name": "Number of calls", "data": [], type: "column"}],chartSeriesNotif : [{"name": "Number of Notifications", "data": [], type: "column"}],chartSeriesCustomer: [{"name": "Number of Sessions", "data": [], type: "column"}], chartSeriesAvg : [{"name": "Average Time", "data": [], type: "column"}],chartSeriesAgent : [{"name": "Agent wise stats", "data": [], type: "column"}], chartSeriesTeam : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesPages : [{"name": "Number of calls", "data": [], type: "column"}], chartSeriesMobile : [{"name": "Number of calls", "data": [], type: "column"}],currentDate :new Date()};
     this._getteamwisestats = this._getteamwisestats.bind(this);
     this._getplatformwisestats = this._getplatformwisestats.bind(this);
@@ -264,8 +266,8 @@ _getteamwisestats(day){
         var tempArray =[];
         for(var i in deptStatsData.gotDeptCalls){
           var gotDate = new Date(deptStatsData.gotDeptCalls[i]._id.year,deptStatsData.gotDeptCalls[i]._id.month-1,deptStatsData.gotDeptCalls[i]._id.day, 0,0,0,0);
-         
-      
+
+
             if((new Date(new Date().setDate(new Date().getDate()-day))) <= (gotDate)){
 
               var tempDeptName = deptStatsData.deptNames[getIndexFromPropertyValue3(deptStatsData.deptNames, deptStatsData.gotDeptCalls[i]._id.departmentid)].deptname;
@@ -293,13 +295,13 @@ _getteamwisestats(day){
              this.state.categoriesGroup.push(tempArray[i].deptName);
         }
 
-        
-       
+
+
           this.refs.targetDateTeam.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
 
 
-      
-    
+
+
 }
 
 
@@ -311,8 +313,8 @@ _getsubgroupwisestats(day,stats,subgrouplist){
         var tempArray =[];
         for(var i in subgrouPstatSdata){
           var gotDate = new Date(subgrouPstatSdata[i]._id.year,subgrouPstatSdata[i]._id.month-1,subgrouPstatSdata[i]._id.day, 0,0,0,0);
-         
-      
+
+
             if((new Date(new Date().setDate(new Date().getDate()-day))) <= (gotDate)){
 
               var tempChName = subgrouplist[getIndexFromPropertyValue3(subgrouplist, subgrouPstatSdata[i]._id.messagechannel)].msg_channel_name;
@@ -340,15 +342,15 @@ _getsubgroupwisestats(day,stats,subgrouplist){
              this.state.categoriesSubgroups.push(tempArray[i].chName);
         }
 
-        
-       
+
+
           this.refs.targetDateSubgroup.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
          // alert(this.state.categoriesSubgroups)
-     
+
           this.forceUpdate();
 
-      
-    
+
+
 }
 
 
@@ -359,16 +361,18 @@ _getagentwisestats(day,agentstats,agentlist){
       this.state.chartSeriesAgent[0].data = [];
       this.state.categoriesAgent = [];
       var agentStatsData = agentstats;
-            
+
       var agentList = agentlist;
         var tempArray =[];
         for(var i in agentStatsData){
           var gotDate = new Date(agentStatsData[i]._id.year,agentStatsData[i]._id.month-1,agentStatsData[i]._id.day, 0,0,0,0);
-         
-      
-            if((new Date(new Date().setDate(new Date().getDate()-day))) <= (gotDate)){
 
-              var tempAgentName = agentList[getIndexFromPropertyValue3(agentList, agentStatsData[i]._id.agent_ids)].firstname;
+
+            if((new Date(new Date().setDate(new Date().getDate()-day))) <= (gotDate)){
+              var aID = getIndexFromPropertyValue3(agentList, agentStatsData[i]._id.agent_ids);
+              if (aID){
+                var tempAgentName = agentList[aID].firstname;
+              }
               var tempCount = agentStatsData[i].count;
               var foundInArray = false;
 
@@ -393,12 +397,12 @@ _getagentwisestats(day,agentstats,agentlist){
              this.state.categoriesAgent.push(tempArray[i].agName);
         }
 
-        
-       
+
+
           this.refs.targetDateAgent.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
-          
-      
-    
+
+
+
 }
 
 
@@ -407,14 +411,16 @@ _getcustomerwisestats(day,custstats){
       this.state.chartSeriesCustomer[0].data = [];
       this.state.categoriesCustomer = [];
       var custStatsData = custstats;
-      var customerList = custstats.customersData;      
+      var customerList = custstats.customersData;
         var tempArray =[];
         for(var i in custStatsData.topCustomersCount){
           var gotDate = new Date(custStatsData.topCustomersCount[i]._id.year,custStatsData.topCustomersCount[i]._id.month-1,custStatsData.topCustomersCount[i]._id.day, 0,0,0,0);
-      
-            if((new Date(new Date().setDate(new Date().getDate()-day))) <= (gotDate)){
 
-              var tempCustName = customerList[getIndexFromPropertyValue3(customerList, custStatsData.topCustomersCount[i]._id.customerid)].name;
+            if((new Date(new Date().setDate(new Date().getDate()-day))) <= (gotDate)){
+              var cID = getIndexFromPropertyValue3(customerList, custStatsData.topCustomersCount[i]._id.customerid);
+              if (cID){
+                var tempCustName = customerList[cID].name;
+              }
               var tempCount = custStatsData.topCustomersCount[i].count;
               var foundInArray = false;
 
@@ -439,12 +445,12 @@ _getcustomerwisestats(day,custstats){
              this.state.categoriesCustomer.push(tempArray[i].agName);
         }
 
-        
-       
+
+
           this.refs.targetDateCustomer.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
-          
-      
-    
+
+
+
 }
 
 
@@ -452,11 +458,11 @@ _getagentwisenotif(agentstats,agentlist){
       this.state.chartSeriesNotif[0].data = [];
       this.state.categoriesNotif = [];
       var agentStatsData = agentstats;
-            
+
       var agentList = agentlist;
       var tempArray =[];
         for(var i in agentStatsData.notficationsCount){
-         
+
               var tempAgentName = agentList[getIndexFromPropertyValue3(agentList, agentStatsData.notficationsCount[i]._id.agent_id)].firstname;
               var tempCount = agentStatsData.notficationsCount[i].count;
               var foundInArray = false;
@@ -474,7 +480,7 @@ _getagentwisenotif(agentstats,agentlist){
                   count: tempCount
                 });
               }
-            
+
           }
 
           for(var i in tempArray){
@@ -482,9 +488,9 @@ _getagentwisenotif(agentstats,agentlist){
              this.state.categoriesNotif.push(tempArray[i].agName);
         }
 
-     
-      
-    
+
+
+
 }
 
 _getplatformwisestats(day){
@@ -525,7 +531,7 @@ _getplatformwisestats(day){
         }
        // alert(this.state.chartSeries[0].data.length);
        this.refs.targetDate.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
-      
+
   }
 
 
@@ -571,7 +577,7 @@ _getpagewisestats(day){
         }
        // alert(this.state.categoriesPages.length);
        this.refs.targetDatePages.value = handleDate(new Date(new Date().setDate(new Date().getDate()-day)));
-      
+
   }
 
 componentDidMount(){
@@ -589,7 +595,7 @@ customer_bool = false;
 }
 
  componentWillReceiveProps(props) {
-    
+
 
     if(props.resolvedsessions && avg_call == false){
       var CallStats = this.refs.CallStatsAvg.value;
@@ -605,7 +611,7 @@ customer_bool = false;
         this.state.categoriesAvg.push('Average Wait Time');
         this.state.categoriesAvg.push('Average Call Time');
         this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
-    
+
       }
     }
     if(props.platformwisestats && platform_bool == false){
@@ -619,7 +625,7 @@ customer_bool = false;
         var tempArray =[];
         for(var i in platformStatsData){
           var gotDate = new Date(platformStatsData[i]._id.year,platformStatsData[i]._id.month-1,platformStatsData[i]._id.day, 0,0,0,0);
-          
+
           if((new Date(new Date().setDate(new Date().getDate()-365))) <= (gotDate)){
 
             var tempCurrentPage = platformStatsData[i]._id.platform;
@@ -660,7 +666,7 @@ customer_bool = false;
        this.state.categoriesMobile =[];
        var tempArray =[];
        for(var i in mobileStatsData){
-          
+
             var tempCurrentPage = mobileStatsData[i]._id.isMobileClient;
             var tempCount = mobileStatsData[i].count;
 
@@ -682,7 +688,7 @@ customer_bool = false;
                 count: tempCount});
             }
           }
-        
+
 
         for(var i in tempArray){
 
@@ -697,7 +703,7 @@ customer_bool = false;
       }
 
 
-    
+
     /**** group wise call stats ********/
 
      if(props.deptwisestats && team_bool == false){
@@ -705,13 +711,13 @@ customer_bool = false;
       team_bool  = true;
       var CallStatsDept = this.refs.CallStatsDept.value;
        this.state.categoriesGroup =[];
-      
+
       if(CallStatsDept == 'This Year'){
 
         var tempArray =[];
         for(var i in deptStatsData.gotDeptCalls){
           var gotDate = new Date(deptStatsData.gotDeptCalls[i]._id.year,deptStatsData.gotDeptCalls[i]._id.month-1,deptStatsData.gotDeptCalls[i]._id.day, 0,0,0,0);
-          
+
           if((new Date(new Date().setDate(new Date().getDate()-365))) <= (gotDate)){
 
             var tempDeptName = deptStatsData.deptNames[getIndexFromPropertyValue3(deptStatsData.deptNames, deptStatsData.gotDeptCalls[i]._id.departmentid)].deptname;
@@ -741,7 +747,7 @@ customer_bool = false;
         this.refs.targetDateTeam.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
       }
 
-   
+
     }
 
 
@@ -759,7 +765,7 @@ customer_bool = false;
         for(var i in pageStatsData){
           if(pageStatsData[i]._id.currentpage){
           var gotDate = new Date( pageStatsData[i]._id.year, pageStatsData[i]._id.month-1, pageStatsData[i]._id.day, 0,0,0,0);
-          
+
           if((new Date(new Date().setDate(new Date().getDate()-365))) <= (gotDate)){
 
             var tempCurrentPage =  pageStatsData[i]._id.currentpage;
@@ -805,10 +811,10 @@ customer_bool = false;
        agent_bool  = true;
       var CallStatsAgent = this.refs.CallStatsAgent.value;
        this.state.categoriesAgent =[];
-      
+
       if(CallStatsAgent == 'This Year'){
         this._getagentwisestats(365,props.agentwisestats,props.agents);
-   
+
     }
 
   }
@@ -818,10 +824,10 @@ customer_bool = false;
       customer_bool  = true;
       var CallStatsCust = this.refs.CallStatsCust.value;
        this.state.categoriesCustomer =[];
-      
+
       if(CallStatsCust == 'This Year'){
         this._getcustomerwisestats(365,props.customerwisestats);
-   
+
     }
 
   }
@@ -837,7 +843,7 @@ customer_bool = false;
    // subgroup_bool = true;
     //alert('i am called');
     this._getsubgroupwisestats(365,props.subgroupwisestats,props.subgroups);
-    }  
+    }
 }
 
  refreshData1(e){
@@ -845,8 +851,8 @@ customer_bool = false;
       this.state.chartSeries[0].data = [];
       this.state.categories = [];
       var platformStatsData = this.props.platformwisestats;
-      
-    
+
+
       if(this.refs.CallStats.value  == 'Today'){
 
         //alert(this.refs.CallStats.value)
@@ -884,7 +890,7 @@ customer_bool = false;
           this.state.categories.push(tempArray[i].currentpage);
 
         }
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDate.value = handleDate(this.state.currentDate);
       }
 
@@ -896,7 +902,7 @@ customer_bool = false;
 
       if(this.refs.CallStats.value == 'Last 30 days'){
       //  alert(this.refs.CallStats.value)
-        this._getplatformwisestats(30);        
+        this._getplatformwisestats(30);
         }
 
       if(this.refs.CallStats.value == 'This Year'){
@@ -914,16 +920,16 @@ refreshData2(e){
       this.state.chartSeriesTeam[0].data = [];
       this.state.categoriesGroup = [];
       var deptStatsData = this.props.deptwisestats;
-      
-    
+
+
       if(this.refs.CallStatsDept.value  == 'Today'){
 
         var tempArray =[];
         for(var i in deptStatsData.gotDeptCalls){
           var gotDate = new Date(deptStatsData.gotDeptCalls[i]._id.year,deptStatsData.gotDeptCalls[i]._id.month-1,deptStatsData.gotDeptCalls[i]._id.day, 0,0,0,0);
           var currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0,0,0,0);
-          var currentDate1 = new Date(); 
-        
+          var currentDate1 = new Date();
+
             if((currentDate.getTime()) == (gotDate.getTime())){
 
               var tempDeptName = deptStatsData.deptNames[getIndexFromPropertyValue3(deptStatsData.deptNames, deptStatsData.gotDeptCalls[i]._id.departmentid)].deptname;
@@ -951,7 +957,7 @@ refreshData2(e){
              this.state.categoriesGroup.push(tempArray[i].deptName);
         }
 
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateTeam.value = handleDate(this.state.currentDate);
       }
 
@@ -959,16 +965,16 @@ refreshData2(e){
 
           this._getteamwisestats(7)
 
-        
+
       }
 
       if(this.refs.CallStatsDept.value == 'Last 30 days'){
 
-        this._getteamwisestats(30)         
+        this._getteamwisestats(30)
        }
 
       if(this.refs.CallStatsDept.value == 'This Year'){
-        this._getteamwisestats(365)       
+        this._getteamwisestats(365)
     }
       this.forceUpdate()
 
@@ -981,15 +987,15 @@ refreshData5(e){
       this.state.categoriesAgent= [];
       var agentStatsData = this.props.agentwisestats;
       var agentList = this.props.agents;
-    
+
       if(this.refs.CallStatsAgent.value  == 'Today'){
      //   alert('Today');
         var tempArray =[];
         for(var i in agentStatsData){
           var gotDate = new Date(agentStatsData[i]._id.year,agentStatsData[i]._id.month-1,agentStatsData[i]._id.day, 0,0,0,0);
           var currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0,0,0,0);
-          var currentDate1 = new Date(); 
-        
+          var currentDate1 = new Date();
+
             if((currentDate.getTime()) == (gotDate.getTime())){
 
               var tempAgentName = agentList[getIndexFromPropertyValue3(agentList,agentStatsData[i]._id.agent_ids)].firstname;
@@ -1017,7 +1023,7 @@ refreshData5(e){
              this.state.categoriesAgent.push(tempArray[i].agName);
         }
 
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateAgent.value = handleDate(this.state.currentDate);
       }
 
@@ -1025,13 +1031,13 @@ refreshData5(e){
           //alert(this.props.agentwisestats.length);
           this._getagentwisestats(7,this.props.agentwisestats,this.props.agents)
 
-        
+
       }
 
       if(this.refs.CallStatsAgent.value == 'Last 30 days'){
 
             this._getagentwisestats(30,this.props.agentwisestats,this.props.agents)
-      
+
        }
 
       if(this.refs.CallStatsAgent.value == 'This Year'){
@@ -1049,14 +1055,14 @@ refreshData6(e){
       this.state.categoriesCustomer= [];
       var custStatsData = this.props.customerwisestats;
       var agentList = this.props.customerwisestats.customersData;
-    
+
       if(this.refs.CallStatsCust.value  == 'Today'){
         var tempArray =[];
          for(var i in custStatsData.topCustomersCount){
           var gotDate = new Date(custStatsData.topCustomersCount[i]._id.year,custStatsData.topCustomersCount[i]._id.month-1,custStatsData.topCustomersCount[i]._id.day, 0,0,0,0);
           var currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0,0,0,0);
-          var currentDate1 = new Date(); 
-        
+          var currentDate1 = new Date();
+
             if((currentDate.getTime()) == (gotDate.getTime())){
 
               var tempCustName = agentList[getIndexFromPropertyValue3(agentList,custStatsData.topCustomersCount[i]._id.customerid)].name;
@@ -1084,21 +1090,21 @@ refreshData6(e){
              this.state.categoriesCustomer.push(tempArray[i].agName);
         }
 
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateCustomer.value = handleDate(this.state.currentDate);
       }
 
       if(this.refs.CallStatsCust.value == 'Last 7 days'){
           this._getcustomerwisestats(7,this.props.customerwisestats)
 
-        
+
       }
 
       if(this.refs.CallStatsCust.value == 'Last 30 days'){
 
             this._getcustomerwisestats(30,this.props.customerwisestats)
 
-      
+
        }
 
       if(this.refs.CallStatsCust.value == 'This Year'){
@@ -1119,15 +1125,15 @@ refreshData7(e){
       this.state.categoriesSubgroups= [];
       var  subgrouPstatSdata = this.props.subgroupwisestats;
       var chList = this.props.subgroups;
-    
+
       if(this.refs.CallStatsSubgroup.value  == 'Today'){
         var tempArray =[];
          for(var i in subgrouPstatSdata){
           var gotDate = new Date(subgrouPstatSdata[i]._id.year,subgrouPstatSdata[i]._id.month-1,subgrouPstatSdata[i]._id.day, 0,0,0,0);
-         
+
           var currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0,0,0,0);
-          var currentDate1 = new Date(); 
-        
+          var currentDate1 = new Date();
+
             if((currentDate.getTime()) == (gotDate.getTime())){
 
               var tempChName = subgrouplist[getIndexFromPropertyValue3(subgrouplist, subgrouPstatSdata[i]._id.messagechannel)].msg_channel_name;
@@ -1155,21 +1161,21 @@ refreshData7(e){
              this.state.categoriesSubgroups.push(tempArray[i].agName);
         }
 
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateSubgroup.value = handleDate(this.state.currentDate);
       }
 
       if(this.refs.CallStatsSubgroup.value == 'Last 7 days'){
           this._getsubgroupwisestats(7,this.props.subgroupwisestats,this.props.subgroups)
 
-        
+
       }
 
       if(this.refs.CallStatsSubgroup.value == 'Last 30 days'){
 
          this._getsubgroupwisestats(30,this.props.subgroupwisestats,this.props.subgroups)
 
-      
+
        }
 
       if(this.refs.CallStatsSubgroup.value == 'This Year'){
@@ -1187,8 +1193,8 @@ refreshData3(e){
       this.state.categoriesPages = [];
 
       var pageStatsData = this.props.pagewisestats;
-      
-    
+
+
       if(this.refs.CallStatsPages.value  == 'Today'){
 
         //alert(this.refs.CallStats.value)
@@ -1228,7 +1234,7 @@ refreshData3(e){
           this.state.categoriesPages.push(tempArray[i].currentpage);
 
         }
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDatePages.value = handleDate(this.state.currentDate);
       }
 
@@ -1240,7 +1246,7 @@ refreshData3(e){
 
       if(this.refs.CallStatsPages.value == 'Last 30 days'){
       //  alert(this.refs.CallStats.value)
-        this._getpagewisestats(30);        
+        this._getpagewisestats(30);
         }
 
       if(this.refs.CallStatsPages.value == 'This Year'){
@@ -1264,14 +1270,14 @@ refreshData4(e){
 
        //this.state.chartSeriesAvg[0].data.push(20);
        // this.state.chartSeriesAvg[0].data.push(30);
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateAvg.value = handleDate(this.state.currentDate);
-     
-    
+
+
       }
 
       if(this.refs.CallStatsAvg.value == 'Last 7 days'){
-       
+
         var x = getAverageWaitMin(this.props.resolvedsessions,7);
         var x2 = getAverageCallMin(this.props.resolvedsessions,7);
         this.state.chartSeriesAvg[0].data.push(Math.round(x * 10) / 10);
@@ -1279,9 +1285,9 @@ refreshData4(e){
 
        //this.state.chartSeriesAvg[0].data.push(20);
        // this.state.chartSeriesAvg[0].data.push(30);
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-7)));
-   
+
       }
 
       if(this.refs.CallStatsAvg.value == 'Last 30 days'){
@@ -1292,9 +1298,9 @@ refreshData4(e){
 
        //this.state.chartSeriesAvg[0].data.push(20);
        // this.state.chartSeriesAvg[0].data.push(30);
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-30)));
-   
+
         }
 
       if(this.refs.CallStatsAvg.value == 'This Year'){
@@ -1305,9 +1311,9 @@ refreshData4(e){
 
        //this.state.chartSeriesAvg[0].data.push(20);
        // this.state.chartSeriesAvg[0].data.push(30);
-        currentDate1 = this.state.currentDate; 
+        currentDate1 = this.state.currentDate;
         this.refs.targetDateAvg.value = handleDate(new Date(new Date().setDate(new Date().getDate()-365)));
-   
+
         }
       this.forceUpdate()
 
@@ -1320,10 +1326,10 @@ refreshData4(e){
    // this.state.categoriesSubgroups = [];
     //this.state.chartSeriesSubgroups = [];
      this.props.getsubgroupwisestats(e.target.value,token);
-    
+
     // this.forceUpdate();
-   
-   
+
+
     }
 
   render() {
@@ -1336,35 +1342,35 @@ refreshData4(e){
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
        <div className="page-container hbox space-between">
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/> 
+         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content"> 
+            <div className="page-content">
               <h3 className ="page-title">Reports </h3>
             <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
-                  </li>                  
+                    <i className="fa fa-angle-right"/>
+                  </li>
                   <li>
                                <Link to="/reports">Reports</Link>
-                  </li>               
-  
+                  </li>
+
             </ul>
 
             <div>
               <label> Choose Department </label>
                <select  ref = "teamlist" onChange={this.handleChangeDepartment.bind(this)}   >
-                          
+
                           {
                           this.props.groupdetails && this.props.groupdetails.map((group,i) =>
                             <option value={group._id}>{group.deptname}</option>
 
                             )
                          }
-                         
 
-                         
+
+
                 </select>
 
           <br/>
@@ -1376,30 +1382,30 @@ refreshData4(e){
             :
             <p>No data found</p>
             }
-        
 
 
-           <div class="clearfix">
+
+           <div className="clearfix">
             From <input ref="targetDateSubgroup" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-          
 
-          <div class="btn-group">
+
+          <div className="btn-group">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData7.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData7.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData7.bind(this)} className="btn btn-success">Last 30 days</label>
             <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData7.bind(this)} className="btn btn-success">This Year</label>
           </div>
-          
+
 
             </div>
             {
               this.props.platformwisestats && this.state.categories.length > 0 &&
                 <Platform series = {this.state.chartSeries} categories = {this.state.categories} title="Platform wise Sessions Stats"/>
             }
-        
+
            <input defaultValue="This Year" ref="CallStats" type="hidden"/>
            <input defaultValue="This Year" ref="CallStatsDept" type="hidden"/>
            <input defaultValue="This Year" ref="CallStatsPages" type="hidden"/>
@@ -1410,15 +1416,15 @@ refreshData4(e){
             <input defaultValue="This Year" ref="CallStatsNotif" type="hidden"/>
             <input defaultValue="This Year" ref="CallStatsCust" type="hidden"/>
             <input defaultValue="This Year" ref="CallStatsSubgroup" type="hidden"/>
-                     
 
-           
-           <div class="clearfix">
+
+
+           <div className="clearfix">
             From <input ref="targetDate" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-           <div class="btn-group">
+           <div className="btn-group">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData1.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData1.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData1.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1433,17 +1439,17 @@ refreshData4(e){
               this.props.deptwisestats && this.state.categoriesGroup.length > 0 &&
                 <Teamwise series = {this.state.chartSeriesTeam} categories = {this.state.categoriesGroup} title="Group wise Sessions Stats"/>
             }
-        
 
 
-           <div class="clearfix">
+
+           <div className="clearfix">
             From <input ref="targetDateTeam" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-          
 
-          <div class="btn-group">
+
+          <div className="btn-group">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData2.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData2.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData2.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1458,17 +1464,17 @@ refreshData4(e){
               this.props.pagewisestats && this.state.categoriesPages.length > 0 &&
                 <Pagewise series = {this.state.chartSeriesPages} categories = {this.state.categoriesPages} title="Page wise Sessions Stats"/>
             }
-        
 
 
-           <div class="clearfix">
+
+           <div className="clearfix">
             From <input ref="targetDatePages" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-          
 
-          <div class="btn-group">
+
+          <div className="btn-group">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData3.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData3.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData3.bind(this)} className="btn btn-success">Last 30 days</label>
@@ -1482,8 +1488,8 @@ refreshData4(e){
           <center><h3>Country wise Stats</h3></center>
           <table className="table table-striped table-bordered table-hover dataTable">
             <thead>
-              <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Country</th>
-              <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Number of Sessions</th>
+              <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending'>Country</th>
+              <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending'>Number of Sessions</th>
             </thead>
            <tbody>
             {
@@ -1494,10 +1500,10 @@ refreshData4(e){
                             </tr>
                             )
              }
-            
+
             </tbody>
-          </table>   
-    
+          </table>
+
 
          <br/>
           <br/>
@@ -1506,7 +1512,7 @@ refreshData4(e){
               this.props.mobilewisestats && this.state.categoriesMobile.length > 0 &&
                 <Countrywise series = {this.state.chartSeriesMobile} categories = {this.state.categoriesMobile} title="Mobile Clients vs. Web Clients"/>
             }
-        
+
 
 
           <br/>
@@ -1516,59 +1522,59 @@ refreshData4(e){
               this.props.resolvedsessions && this.state.categoriesAvg.length>0 &&
                 <AvgCall series = {this.state.chartSeriesAvg} categories = {this.state.categoriesAvg} />
             }
-        
 
 
-           <div class="clearfix">
+
+           <div className="clearfix">
             From <input ref="targetDateAvg" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-          
 
-          <div class="btn-group">
+
+          <div className="btn-group">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData4.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData4.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData4.bind(this)} className="btn btn-success">Last 30 days</label>
             <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData4.bind(this)} className="btn btn-success">This Year</label>
           </div>
-          
-          
 
-          
+
+
+
           <br/>
           <br/>
 
            {
-              this.state.categoriesAgent.length>0 && 
+              this.state.categoriesAgent.length>0 &&
                 <Agentwise series = {this.state.chartSeriesAgent} categories = {this.state.categoriesAgent}  title = "Agent wise Session Stats"/>
             }
-        
 
 
-           <div class="clearfix">
+
+           <div className="clearfix">
             From <input ref="targetDateAgent" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-          
 
-          <div class="btn-group">
+
+          <div className="btn-group">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData5.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData5.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData5.bind(this)} className="btn btn-success">Last 30 days</label>
             <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData5.bind(this)} className="btn btn-success">This Year</label>
           </div>
-          
-          
+
+
           <br/>
           <br/>
 
            {
-              this.state.categoriesNotif.length>0 && 
+              this.state.categoriesNotif.length>0 &&
                 <Notificationwise series = {this.state.chartSeriesNotif} categories = {this.state.categoriesNotif}  title = "Agent wise Notifications Stats"/>
             }
-        
+
 
           <br/>
           <br/>
@@ -1579,28 +1585,28 @@ refreshData4(e){
             :
             <p>No data found</p>
             }
-        
 
 
-           <div class="clearfix">
+
+           <div className="clearfix">
             From <input ref="targetDateCustomer" type="text"/>
                        <br/>
            To  <input ref="currentDate" value = {handleDate(this.state.currentDate)}/>
            </div>
-          
 
-          <div class="btn-group">
+
+          <div className="btn-group">
             <label btn-radio="'Today'" uncheckable=""  data-attrib = "Today" onClick={this.refreshData6.bind(this)} className="btn btn-success">Today</label>
             <label btn-radio="'Last 7 days'" uncheckable=""  data-attrib = "Last 7 days"  onClick={this.refreshData6.bind(this)} className="btn btn-success">Last 7 days</label>
             <label btn-radio="'Last 30 days'" uncheckable="" data-attrib="Last 30 days"  onClick={this.refreshData6.bind(this)} className="btn btn-success">Last 30 days</label>
             <label btn-radio="'This Year'" uncheckable=""  data-attrib="This Year" onClick={this.refreshData6.bind(this)} className="btn btn-success">This Year</label>
           </div>
-          
-          
+
+
        </div>
-       </div> 
+       </div>
       </div>
-      </div> 
+      </div>
   )
   }
 }
@@ -1627,15 +1633,12 @@ function mapStateToProps(state) {
           resolvedsessions :(state.dashboard.resolvedsessions),
 
           customerwisestats : state.dashboard.customerwisestats,
-          agentwisestats : state.dashboard.agentwisestats,  
+          agentwisestats : state.dashboard.agentwisestats,
           agentwisenotifications : state.dashboard.agentwisenotifications,
-            
+
 
            };
 }
 
 
 export default connect(mapStateToProps,{getpagewisestats,getagentwisecalls,gettopcustomers,getagentwisenotifications,getresolvedsessions,getmobilewisestats,getcountrywisestats,getsubgroupwisestats,getplatformwisestats,getdeptwisestats})(HighCharts);
-
-
-
