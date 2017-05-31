@@ -56,15 +56,18 @@ class App extends Component {
   }
 
   componentDidMount () {
+    
     this.props.route.socket.on('customer_joined', this.alertme);
     this.props.route.socket.on('send:fbcustomer', (data) => {
       notify('facebook customer joined');
     });
     this.props.route.socket.on('updateFBsessions', (data) => {
+      console.log('updateFBsessions desktop notify');
+      console.log(data);
       if (data.status === 'assigned') {
-        notify(`${data.user_id.first_name } ${data.user_id.last_name} of Facebook Page ${data.pageid.pageTitle} has been assigned.`);
+        notify(`${data.username } of Facebook Page ${data.pageTitle} has been assigned to ${data.agentname}`);
       } else {
-        notify(`${data.user_id.first_name } ${data.user_id.last_name} of Facebook Page ${data.pageid.pageTitle} has been resolved.`);
+        notify(`${data.username} of Facebook Page ${data.pageTitle} has been resolved by ${data.agentname}`);
       }
     });
   }

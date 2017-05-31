@@ -254,7 +254,9 @@ assignSessionToTeam(e){
                                       'status' : 'assigned',
                                       'room' : this.props.userdetails.uniqueid,
                                       'agentid' : {'id' :  this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,'type' : 'group'},
-
+                                      'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
+                                      'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
+                                      'agentname': this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text,
                                      });
 
 
@@ -383,7 +385,10 @@ autoassignChat(){
                                        'status' : 'assigned',
                                        'room' : this.props.userdetails.uniqueid,
                                        'agentid' : {'id' : this.props.userdetails._id,'type' : 'agent'},
-
+                                      'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
+                                      'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
+                                      'agentname': this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
+                                    
                                      });
 
 
@@ -496,8 +501,12 @@ assignSessionToAgent(e){
                                       'status' : 'assigned',
                                       'room' : this.props.userdetails.uniqueid,
                                       'agentid' : {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'},
-
+                                      'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
+                                      'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
+                                      'agentname': this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
+                                  
                                      });
+
 
 
 
@@ -640,9 +649,13 @@ resolveSession(e){
                                        'user_id':this.props.fbsessionSelected.user_id.user_id,
                                       'status' : 'resolved',
                                       'room' : this.props.userdetails.uniqueid,
-                                      'agentid' : {'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'},
-
+                                      'agentid' : {'id' : this.props.userdetails._id,'type' : 'agent'},
+                                      'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
+                                      'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
+                                      'agentname': this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
+                                    
                                      });
+
 
      this.forceUpdate();
   }
