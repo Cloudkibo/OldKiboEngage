@@ -7,7 +7,7 @@ import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Picker from 'react-giphy-picker';
-import StickerMenu from 'react-stickerpipe';
+import StickerMenu from '../../components/StickerPicker/stickers';
 import EmojiPicker from 'react-emojipicker';
 import ReactPlayer from 'react-player'
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
@@ -1455,41 +1455,18 @@ render () {
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
 
          }
-<<<<<<< HEAD
-        {
-          /*<div className='message-header'>
-          <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
-          <span className='username'>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</span>
-          </div>
 
-            <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
-             */
-        }
-=======
-
->>>>>>> 3a93a1face888d83835bea7889e2f08a2808ae8f
            {
               index == 0?
                    <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid) }</div>
               :
 
               this.props.messages[index-1].senderid != data.senderid  &&
-<<<<<<< HEAD
-
-               <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
-
-            }
-          <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
-             {/* <span className='time'>{handleDate(data.timestamp)}</span>
-              <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p> */}
-
-=======
 
                <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid)  }</div>
 
             }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
->>>>>>> 3a93a1face888d83835bea7889e2f08a2808ae8f
               <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
@@ -1689,13 +1666,13 @@ render () {
 
                       {
                         this.state.showSticker &&
-                        <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px'}}>
+
                         <StickerMenu
                           apiKey={'80b32d82b0c7dc5c39d2aafaa00ba2bf'}
                           userId={'imran.shoukat@khi.iba.edu.pk'}
                           sendSticker={this.sendSticker}
                         />
-                        </div>
+                        
                       }
 
                       {
