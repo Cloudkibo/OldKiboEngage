@@ -24,7 +24,7 @@ class SideBar extends Component
   	<div>
         <div className="page-sidebar navbar-collapse collapse">
 
-            <ul className="page-sidebar-menu page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
+            <ul className="page-sidebar-menu page-sidebar-menu-closed page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
               <li className="sidebar-toggler-wrapper">
                   
                   <div className="sidebar-toggler">
