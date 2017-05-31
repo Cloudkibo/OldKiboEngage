@@ -4177,7 +4177,7 @@ export function resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat){
 export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession,fbchat) {
   console.log('resolvesessionfb');
   console.log(data);
-  if(confirm("Are you sure,you want to mark session resolved?")){
+ 
   return (dispatch) => {
     fetch(`${baseURL}/api/resolvechatsessionfb`, {
       method: 'post',
@@ -4193,5 +4193,5 @@ export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession,fbch
       }),
     }).then((res) => res.json()).then(res => dispatch(resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat)));
   };
-}
+
 }

@@ -565,6 +565,8 @@ resolveSession(e){
 
 
   else{
+
+     if(confirm("Are you sure,you want to mark session resolved?")){
         //generate unique id of message - this change is for mobile clients
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
@@ -658,6 +660,7 @@ resolveSession(e){
 
 
      this.forceUpdate();
+   }
   }
 
 }
