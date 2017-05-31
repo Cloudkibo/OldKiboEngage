@@ -3941,7 +3941,8 @@ export function fbchatmessageSent(res){
 }
 
 export function showfbfilesuccess(chat,fbchats,id){
-//  alert('adding file upload');
+  console.log('showfbfilesuccess');
+  console.log(fbchats.length);
   fbchats.push(chat.chatmsg);
   var newfbChat = []
   var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
@@ -3982,7 +3983,7 @@ export function showfbfilesuccess(chat,fbchats,id){
      var lookupObject  = {};
 
      for(var i in fbchats) {
-        lookupObject[fbchats[i]['mid']] = fbchats[i];
+        lookupObject[fbchats[i]['message']['mid']] = fbchats[i];
      }
 
      for(i in lookupObject) {
