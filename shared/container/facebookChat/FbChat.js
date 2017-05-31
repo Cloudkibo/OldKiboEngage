@@ -110,13 +110,16 @@ componentDidMount(){
 }
 
 componentWillReceiveProps(props){
-  if(props.fbsessions && props.fbchats && callonce == true && props.fbsessions.length >0 ){
+  if(props.fbsessions && props.fbchats && props.fbsessions.length >0 ){
    // alert(props.fbcustomers.length);
 
     // call action to append last messages
+    if(!props.fbsessions[0].lastmessage)
+    {
      this.props.appendlastmessage(props.fbsessions, props.fbchats);
+    }
     //this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
-     callonce=false;
+     //callonce=false;
 
 
   }

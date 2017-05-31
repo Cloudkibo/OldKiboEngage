@@ -3977,9 +3977,20 @@ export function showfbfilesuccess(chat,fbchats,id){
          newArray.push(lookupObject[i]);
      }
 
+ // removing duplicates from fbchats
+    var newArrayfb = [];
+     var lookupObject  = {};
+
+     for(var i in fbchats) {
+        lookupObject[fbchats[i]['mid']] = fbchats[i];
+     }
+
+     for(i in lookupObject) {
+         newArrayfb.push(lookupObject[i]);
+     }
      return{
       fbchatSelected: newArray,
-      fbchats:fbchats,
+      fbchats:newArrayfb,
       type: ActionTypes.FB_CHAT_ADDED,
     }
 

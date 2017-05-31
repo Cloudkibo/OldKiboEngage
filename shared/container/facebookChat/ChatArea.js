@@ -47,6 +47,18 @@ var showDate = function(prev,next){
     return "false";
   }
 }
+
+var handleAgentName = function(agents,senderid){
+  var agname = agents.filter((c) => c._id == senderid);
+  if(agname.length > 0){
+    return agname[0].firstname + ' ' + agname[0].lastname
+  }
+  else
+  {
+    console.log('undefined' + senderid);
+    return 'undefined'
+  }
+}
 function formatAMPM(date) {
   var hours = date.getHours();
   var minutes = date.getMinutes();
@@ -232,7 +244,7 @@ assignSessionToTeam(e){
               assignedagentemail: agentemail,
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions);
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder);
 
      //3. update agent assignment table on server
 
@@ -359,7 +371,7 @@ autoassignChat(){
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
     //pushing agent email to array for sending push notifications
 
     agentemail.push(this.props.userdetails.email);
@@ -475,7 +487,7 @@ assignSessionToAgent(e){
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
     //pushing agent email to array for sending push notifications
 
     agentemail.push(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email);
@@ -632,7 +644,7 @@ resolveSession(e){
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
 
       const usertoken = auth.getToken();
        // 3. update session status on server
@@ -693,7 +705,7 @@ onTestURLAudio(e){
 }
 
 componentDidMount(){
- // alert('i am called');
+  //alert('i am called');
    //workaround for push bottom bar to bottom
     this.setState({
         visible: false,
@@ -710,12 +722,12 @@ componentDidMount(){
         showthisdiv:false,
       });
    },0.000001);
-  this.scrollToBottom();
+  this.scrollToBottom(this.props.messages);
 }
 
 componentDidUpdate(prevProps){
+
   if(prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id || prevProps.fbchatSelected.length == this.props.fbchatSelected.length -1 ){
-//   alert('i am called');
   //workaround for push bottom bar to bottom
 
     this.setState({
@@ -733,11 +745,12 @@ componentDidUpdate(prevProps){
         showthisdiv:false,
       });
    },0.000001);
-   this.scrollToBottom();
+  this.scrollToBottom(this.props.messages);
+
 
   }
 
-  /*if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
+ /*if(prevProps.fbchatSelected.length != this.props.fbchatSelected.length && prevProps.senderid != this.props.senderid){
     this.scrollToTop()
   }*/
   //this.scrollToBottom();
@@ -759,7 +772,7 @@ componentDidUpdate(prevProps){
   }
 
 
-scrollToBottom() {
+scrollToBottom(fbchatlist) {
     /*const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
     console.log(node);
     console.log(node.offsetTop)
@@ -771,11 +784,14 @@ scrollToBottom() {
     //console.log(this.refs[this.props.fbchatSelected.length-1])
    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
     //alert(this.props.fbchatSelected.length);
-    const target = ReactDOM.findDOMNode(this.refs[this.props.fbchatSelected.length-1]);
-    target.scrollIntoView({behavior: "smooth"});
-   // target.parentNode.scrollTop = target.offsetTop;
-   // console.log(target);
-    //node.scrollTop = node.scrollHeight;
+    console.log('scrollToBottom called');
+    const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length-1]);
+    if(target){
+       target.scrollIntoView({behavior: "smooth"});
+
+    }
+   //target.parentNode.scrollTop = target.offsetTop;
+  // target.scrollTop = target.scrollHeight;
 
 
 }
@@ -1417,7 +1433,7 @@ render () {
                              <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                            </div>
                        :
-                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
+                       <a href={da.payload.url} target="_blank" style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
                        ))
                         }
                         </div>
@@ -1439,6 +1455,7 @@ render () {
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
 
          }
+<<<<<<< HEAD
         {
           /*<div className='message-header'>
           <img className='profile-image' src='https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48' width="36px" height="36px"/>
@@ -1448,12 +1465,16 @@ render () {
             <div className='message-content' style={{'backgroundColor':'rgba(236, 236, 236, 0.1)', wordWrap: 'break-word'}}>
              */
         }
+=======
+
+>>>>>>> 3a93a1face888d83835bea7889e2f08a2808ae8f
            {
               index == 0?
-                   <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
+                   <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid) }</div>
               :
 
               this.props.messages[index-1].senderid != data.senderid  &&
+<<<<<<< HEAD
 
                <div style={styles.sendername}>{this.props.agents.filter((c) => c._id == data.senderid)[0].firstname + ' ' + this.props.agents.filter((c) => c._id == data.senderid)[0].lastname  }</div>
 
@@ -1462,6 +1483,13 @@ render () {
              {/* <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p> */}
 
+=======
+
+               <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid)  }</div>
+
+            }
+          <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
+>>>>>>> 3a93a1face888d83835bea7889e2f08a2808ae8f
               <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
@@ -1494,7 +1522,7 @@ render () {
                              <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                            </div>
                        :
-                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
+                       <a href={da.payload.url} target="_blank" style={styles.right.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
                        ))
                         }
                        </div>
