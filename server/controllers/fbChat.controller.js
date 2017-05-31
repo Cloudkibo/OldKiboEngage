@@ -587,7 +587,8 @@ export function uploadchatfilefb(req, res) {
            // var serverPath = '/' + 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate();
           //  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
             var serverPath = obj.message.mid;
-            serverPath += '.' + req.files.file.type.split('/')[1];
+            var fext = req.files.file.name.split('.');
+            serverPath += '.' + fext[fext.length-1];
             console.log('__dirname');
             console.log(__dirname);
             console.log(req.headers);

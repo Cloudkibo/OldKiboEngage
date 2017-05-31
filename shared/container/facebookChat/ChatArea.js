@@ -232,7 +232,7 @@ assignSessionToTeam(e){
               assignedagentemail: agentemail,
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions);
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder);
 
      //3. update agent assignment table on server
 
@@ -359,7 +359,7 @@ autoassignChat(){
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
     //pushing agent email to array for sending push notifications
 
     agentemail.push(this.props.userdetails.email);
@@ -475,7 +475,7 @@ assignSessionToAgent(e){
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
     //pushing agent email to array for sending push notifications
 
     agentemail.push(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email);
@@ -632,7 +632,7 @@ resolveSession(e){
 
 
             }
-    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions)
+    this.props.add_socket_fb_message(data,this.props.fbchats,this.props.senderid,this.props.fbsessions,this.props.sessionsortorder)
 
       const usertoken = auth.getToken();
        // 3. update session status on server
@@ -1417,7 +1417,7 @@ render () {
                              <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                            </div>
                        :
-                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
+                       <a href={da.payload.url} target="_blank" style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
                        ))
                         }
                         </div>
@@ -1459,8 +1459,6 @@ render () {
 
             }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
-             {/* <span className='time'>{handleDate(data.timestamp)}</span>
-              <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p> */}
 
               <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
@@ -1494,7 +1492,7 @@ render () {
                              <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                            </div>
                        :
-                       <a href={da.payload.url} target="_blank" style={{ 'wordWrap': 'break-word'}}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
+                       <a href={da.payload.url} target="_blank" style={styles.right.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
                        ))
                         }
                        </div>
