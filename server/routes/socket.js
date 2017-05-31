@@ -907,6 +907,8 @@ exports.socketf = function (socketio) {
     onConnect(socketio, socket);
     console.info('[%s] CONNECTED', socket.address);
 
+    console.log(onlineAgents);
+
   });
 
 
@@ -1237,5 +1239,23 @@ exports.getfileChatfromAgent = function(data){
 
     glob.to(data.chatobj.companyid).emit('send:fbmessage',data.chatobj);
 
+}
+
+exports.verifyThisAccount = function (email, uniqueid) {
+  console.log(onlineAgents);
+  console.log(uniqueid);
+  console.log(email);
+  for (var i in onlineAgents) {
+    if(onlineAgents[i].company === uniqueid) {
+      console.log('company found with id '+ uniqueid)
+      console.log('agents in company '+ JSON.stringify(onlineAgents[i].onlineAgentsArray))
+      for (var j in onlineAgents[i].onlineAgentsArray) {
+        if(onlineAgents[i].onlineAgentsArray[j].email === email) {
+          console.log(onlineAgents[i].onlineAgentsArray[j])
+          glob.to(onlineAgents[i].onlineAgentsArray[j].socketid).emit('verified', onlineAgents[i]);
+        }
+      }
+    }
+  }
 }
 

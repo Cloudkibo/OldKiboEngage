@@ -170,11 +170,11 @@ export function showTokenResponse(status){
   var s = '';
   if(status == 200){
     console.log('status is '+ status);
-    s = 'success';
+    s = 'Successfully verified.';
 
   }
   else{
-    s = 'fail'
+    s = 'Not verified';
   }
 
   return {
@@ -746,7 +746,10 @@ export function editAgent(id,role,token) {
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-         dispatch(editagentError(res.message));
+        if(res.message === 'success')
+          dispatch(editagentError('User is successfully updated.'));
+        else
+          dispatch(editagentError('User not updated. Please try again.'));
 
 
         }
