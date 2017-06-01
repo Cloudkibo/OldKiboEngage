@@ -172,21 +172,22 @@ componentWillReceiveProps(props){
                   <nav className="navclassSessionList">
                       <div className="anotherflx">
                       <div className="headerchatarea" style={{'flex-basis':50}}>
-                      <div className="input-group">
-                          <label>Sort By Date</label>
-
+                      <div style={{marginTop: '5px'}} className="input-group" >
+                        <div style={{display: 'inline-block', marginRight: '10px'}}>
+                          <label style={{float: 'left'}}>Sort By Date:</label>
+                        </div>
+                        <div style={{display: 'inline-block'}}>
                           <select  ref = "sortsetting" className="form-control"  aria-describedby="basic-addon3" onChange={this.handleChange.bind(this)}   >
                                 <option value="0">Newest on Top</option>
                                 <option value="1">Oldest on Top</option>
-
-                              </select>
-
+                          </select>
+                        </div>
 
                       </div>
                       </div>
                       <article>
                       <div>
-                     {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id && 
+                     {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id &&
                                                         this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
 
                                                           <FbCustomerListItem onClickSession={this.handleSession.bind(this,customer)} userchat = {this.props.fbchats.filter((ch) => ch.senderid== customer.user_id.user_id)}  customer={customer} selectedCustomer={this.props.fbsessionSelected} key={i} agents = {this.props.agents} team = {this.props.teamdetails}/>
