@@ -6,6 +6,7 @@ import Buffer from 'Buffer';
 import path from 'path';
 var fs = require('fs');
 var logger = require('../logger/logger');
+var ss = require('../routes/socket');
 
 var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
@@ -588,9 +589,12 @@ export function verifytoken(req,res){
 
       console.log(body);
       console.log(response.status);
+      body = JSON.parse(body);
       if(!error && body != "Not Found")
       {
         console.log('success');
+        console.log(body);
+          ss.verifyThisAccount(body.body.email, body.body.uniqueid);
          return res.status(200).json({statusCode:200,status : 'success'});
       }
 

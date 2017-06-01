@@ -78,7 +78,12 @@ import Widget from './container/Widget/widget'
 import FacebookIntegrationInstructions from './container/FacebookIntegrationInstructions/FacebookIntegrationInstructions';
 import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
-let socket = io('')
+let socket = io('');
+
+socket.on('verified', () => {
+  location.reload();
+});
+
 console.log('entered into routes');
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
