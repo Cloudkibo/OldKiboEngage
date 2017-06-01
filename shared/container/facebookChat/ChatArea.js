@@ -7,7 +7,7 @@ import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Picker from 'react-giphy-picker';
-import StickerMenu from 'react-stickerpipe';
+import StickerMenu from '../../components/StickerPicker/stickers';
 import EmojiPicker from 'react-emojipicker';
 import ReactPlayer from 'react-player'
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
@@ -726,7 +726,7 @@ componentDidMount(){
 }
 
 componentDidUpdate(prevProps){
-  
+
   if(prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id || prevProps.fbchatSelected.length == this.props.fbchatSelected.length -1 ){
   //workaround for push bottom bar to bottom
 
@@ -746,7 +746,7 @@ componentDidUpdate(prevProps){
       });
    },0.000001);
   this.scrollToBottom(this.props.messages);
-  
+
 
   }
 
@@ -789,9 +789,9 @@ scrollToBottom(fbchatlist) {
     const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length-1]);
     if(target){
        target.scrollIntoView({behavior: "smooth"});
-    
+
     }
-   //target.parentNode.scrollTop = target.offsetTop;  
+   //target.parentNode.scrollTop = target.offsetTop;
   // target.scrollTop = target.scrollHeight;
 
 
@@ -1465,9 +1465,11 @@ render () {
 
               this.props.messages[index-1].senderid != data.senderid  &&
 
+
             
                <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid)  }</div>
              
+
 
             }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
@@ -1671,13 +1673,13 @@ render () {
 
                       {
                         this.state.showSticker &&
-                        <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px'}}>
+
                         <StickerMenu
                           apiKey={'80b32d82b0c7dc5c39d2aafaa00ba2bf'}
                           userId={'imran.shoukat@khi.iba.edu.pk'}
                           sendSticker={this.sendSticker}
                         />
-                        </div>
+                        
                       }
 
                       {
