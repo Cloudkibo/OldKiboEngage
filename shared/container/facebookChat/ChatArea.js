@@ -784,6 +784,7 @@ scrollToBottom(fbchatlist) {
     //console.log(this.refs[this.props.fbchatSelected.length-1])
    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
     //alert(this.props.fbchatSelected.length);
+
     console.log('scrollToBottom called');
     const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length-1]);
     if(target){
@@ -792,6 +793,7 @@ scrollToBottom(fbchatlist) {
     }
    //target.parentNode.scrollTop = target.offsetTop;
   // target.scrollTop = target.scrollHeight;
+
 
 
 }
@@ -1463,10 +1465,15 @@ render () {
 
               this.props.messages[index-1].senderid != data.senderid  &&
 
+
+            
                <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid)  }</div>
+             
+
 
             }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
+
               <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
