@@ -17,7 +17,7 @@ function MyStickerPacks({ stickerPacks, shop, toggleShop, showPack, colors }) {
             {
               stickerPacks.length > 0
               ? stickerPacks.map(stickerPack => (
-                <img  style={{width: '50px', height: '50px'}}
+                <img  style={{width: '50px', height: '50px', cursor: 'pointer'}}
                   className="sticker"
                   onClick={() => showPack(stickerPack.pack_name)}
                   src={stickerPack.main_icon.mdpi}
