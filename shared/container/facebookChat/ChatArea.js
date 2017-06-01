@@ -38,7 +38,7 @@ return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 var showDate = function(prev,next){
   var p = new Date(Number(prev));
   var n = new Date(Number(next));
-  
+
   if(n.getMinutes() - p.getMinutes() > 10 ||   n.getDay() != p.getDay() || n.getMonth() != p.getMonth() || n.getFullYear() != p.getFullYear()){
    return "true";
 
@@ -73,7 +73,7 @@ var displayDate = function(x){
   var today = new Date();
   var n = new Date(Number(x))
   var days = ["SUN","MON","TUES","WED","THU","FRI","SAT"];
-  var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"] 
+  var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
   var s = '';
   if(today.getFullYear() == n.getFullYear()){
       if(today.getMonth() == n.getMonth()){
@@ -134,8 +134,8 @@ export class ChatArea extends Component {
           longtextwarning:'',
           agentinTeam: false,
           showthisdiv: false,
-      
-          
+
+
 
         };
        this.onChange = this.onChange.bind(this);
@@ -160,7 +160,7 @@ export class ChatArea extends Component {
         this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
         this.resolveSession = this.resolveSession.bind(this);
         this.autoassignChat = this.autoassignChat.bind(this);
-      
+
   }
 
 handleChange(e){
@@ -400,7 +400,7 @@ autoassignChat(){
                                       'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
                                       'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
                                       'agentname': this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-                                    
+
                                      });
 
 
@@ -516,7 +516,7 @@ assignSessionToAgent(e){
                                       'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
                                       'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
                                       'agentname': this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
-                                  
+
                                      });
 
 
@@ -667,7 +667,7 @@ resolveSession(e){
                                       'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
                                       'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
                                       'agentname': this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-                                    
+
                                      });
 
 
@@ -729,7 +729,7 @@ componentDidUpdate(prevProps){
   
   if(prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id || prevProps.fbchatSelected.length == this.props.fbchatSelected.length -1 ){
   //workaround for push bottom bar to bottom
- 
+
     this.setState({
         visible: false,
         showEmojiPicker: false,
@@ -784,6 +784,7 @@ scrollToBottom(fbchatlist) {
     //console.log(this.refs[this.props.fbchatSelected.length-1])
    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
     //alert(this.props.fbchatSelected.length);
+
     console.log('scrollToBottom called');
     const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length-1]);
     if(target){
@@ -792,6 +793,7 @@ scrollToBottom(fbchatlist) {
     }
    //target.parentNode.scrollTop = target.offsetTop;  
   // target.scrollTop = target.scrollHeight;
+
 
 
 }
@@ -827,7 +829,7 @@ _onChange(e) {
     };
     console.log(reader.result);
     reader.readAsDataURL(files[0]);
-    
+
 
 
   }
@@ -951,9 +953,9 @@ onFileSubmit()
         this.refs.selectFile.value = null;
         console.log('on onFileSubmit');
         console.log(this.state.userfile);
-        
 
-      
+
+
 
         if ( this.state.userfile && this.state.userfile != '' ) {
 
@@ -961,7 +963,7 @@ onFileSubmit()
               if(this.props.fbsessionSelected.status == "new"){
                     this.autoassignChat();
                 }
-                
+
               if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
                 sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
@@ -969,7 +971,7 @@ onFileSubmit()
 
             if(sendmessage == true){
               console.log(this.state.userfile)
-             
+
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
               var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
@@ -1166,6 +1168,7 @@ setEmoji(emoji) {
 
 
 sendGIF (gif) {
+  console.log(gif);
    const { socket,dispatch } = this.props;
    var sendmessage = true;
      if(this.props.fbsessionSelected.status == "new"){
@@ -1383,21 +1386,21 @@ render () {
 
     let list = this.props.messages.map((data, index) => {
       return (
-        
+
         data.senderid == this.props.fbsessionSelected.user_id.user_id?
        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'left','clear':'both'}}>
-     
 
-      { index == 0? 
+
+      { index == 0?
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
 
           index > 0 && showDate(this.props.messages[index-1].timestamp,data.timestamp) == "true"  &&
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
-        
+
       }
-      
+
       <div style={{'float':'left'}}>
-             {/* <span className='time'>{handleDate(data.timestamp)}</span> 
+             {/* <span className='time'>{handleDate(data.timestamp)}</span>
               <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
              */}
              <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle} />
@@ -1415,8 +1418,8 @@ render () {
 
                        <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
-                                                          'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/>
+                                                          'width': '154px'
+                                                           }}/>
                        </div>
                        )
                       :
@@ -1436,42 +1439,45 @@ render () {
                        ))
                         }
                         </div>
-                      
+
                        )
 
 
                 ))
-               
+
               }
               </div>
             </div>
         </div> :
         <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'right','clear':'both'}}>
-         { index == 0? 
+         { index == 0?
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
 
           index > 0 && showDate(this.props.messages[index-1].timestamp,data.timestamp) == "true"  &&
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
-        
+
          }
-       
+
            {
               index == 0?
                    <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid) }</div>
               :
 
               this.props.messages[index-1].senderid != data.senderid  &&
+
             
                <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid)  }</div>
              
+
             }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
+
               <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
                       (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
-                      
+
                       <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
@@ -1479,11 +1485,11 @@ render () {
                                                         </div> :
                        <div style={styles.imagestyle}>
                        <img src={da.payload.url}  style={{
-                                                          'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/>
+                                                          'width': '154px'
+                                                           }}/>
                                                         </div>
                        )
-                        
+
 
                                                            :
                       <div style={styles.imagestyle}>
@@ -1505,10 +1511,10 @@ render () {
                        )
                 ))
               }
-             
+
             </div>
-           
-           
+
+
 
 
         </div>
@@ -1518,17 +1524,17 @@ render () {
 
 
       return (
-      
+
         <div className="anotherflx">
         <div className="headerchatarea">
           <h4> Customer : {this.props.fbsessionSelected.user_id.first_name+' ' + this.props.fbsessionSelected.user_id.last_name}</h4>
-          
+
           <h4> Status : {this.props.fbsessionSelected.status}</h4>
           <br/>
           <div className="table-responsive">
                            <table className="table table-colored">
                            <tbody>
-                                      
+
                      <tr>
                      <td className="col-md-4">
 
@@ -1581,7 +1587,7 @@ render () {
                       </td>
 
                       </tr>
-                     
+
 
 
 
@@ -1593,10 +1599,10 @@ render () {
         <article ref="messagelist">
          <div>
           {list}
-         </div> 
+         </div>
         </article>
 
-        
+
         <div className="footerchatarea">
           <div style={styles.inputContainer} >
             <div style={styles.inputField}>
@@ -1611,16 +1617,16 @@ render () {
                    inputProps={inputProps} />
             </div>
 
-        
+
               <ReactTooltip place="bottom" type="dark" effect="solid"/>
               <div style={styles.toolbox}>
                     <div style={{display: 'inline-block'}} data-tip="attachments">
-                    
+
                         <i style={styles.iconclass} onClick = {() => {this.refs.selectFile.click()}}>
                         <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-paperclip"></i>
                       </i>
                         <input ref="selectFile" type="file" onChange={this._onChange} style={styles.inputf}/>
-                      
+
                     </div>
 
                     <div style={{display: 'inline-block'}} data-tip="emoticons">
@@ -1645,10 +1651,10 @@ render () {
                     <div style={{display: 'inline-block'}} data-tip="Thumbs Up" onClick = {this.sendThumbsUp.bind(this)}>
                       <i style={styles.iconclass}  >
                         <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', right: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up" ></i>
-                      
+
                       </i>
                     </div>
-           
+
 
             </div>
           </div>
@@ -1677,7 +1683,7 @@ render () {
                       {
                         this.state.showthisdiv &&
                         <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px',backgroundColor:'white',opacity:0.1}}>
-                       
+
                         </div>
                       }
                       {
@@ -1688,25 +1694,25 @@ render () {
 
                       }
               </div>
-              
+
           </div>
 
 
               {
                       this.props.showFileUploading && this.props.showFileUploading == true &&
                      <p style={{color:'red'}}>Uploading file...Please wait</p>
-                     
-              } 
+
+              }
               {
                 this.state.longtextwarning != '' &&
               <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
               }
-            
- 
+
+
       </div>
 
       </div>
-     
+
       )
 
   }
@@ -1714,7 +1720,7 @@ render () {
 
 const textStyle = {
   fontSize: 12,
-  
+
   marginTop: 5,
   marginBottom: 5,
   marginLeft: 10,
@@ -1844,7 +1850,7 @@ const styles = {
     width:'inherit',
   },
    sendername:{
-   
+
     position: 'relative',
     float: 'right',
     width: '100%',
@@ -1888,7 +1894,7 @@ const styles = {
   display: 'inline-block',
   alignItems: 'center',
 },
- 
+
  faicon: {
   margin: 10,
   cursor: 'pointer',
