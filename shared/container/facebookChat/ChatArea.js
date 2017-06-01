@@ -786,11 +786,19 @@ scrollToBottom(fbchatlist) {
     //alert(this.props.fbchatSelected.length);
 
     console.log('scrollToBottom called');
-    const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length-1]);
+    const target = ReactDOM.findDOMNode(this.refs.messagelist);
+   
+        
     if(target){
-       target.scrollIntoView({behavior: "smooth"});
-
+       target.scrollIntoView(false);
+     }
+    else{
+      console.log('target not found');
     }
+
+  
+
+    
    //target.parentNode.scrollTop = target.offsetTop;
   // target.scrollTop = target.scrollHeight;
 
@@ -1388,7 +1396,7 @@ render () {
       return (
 
         data.senderid == this.props.fbsessionSelected.user_id.user_id?
-       <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'left','clear':'both'}}>
+       <div  key={index} ref={index} id={index} style={{'textAlign':'left','clear':'both'}}>
 
 
       { index == 0?
@@ -1449,7 +1457,7 @@ render () {
               </div>
             </div>
         </div> :
-        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'right','clear':'both'}}>
+        <div  key={index} ref={index} id={index} style={{'textAlign':'right','clear':'both'}}>
          { index == 0?
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
 
@@ -1598,9 +1606,10 @@ render () {
 
           </div>
           </div>
-        <article ref="messagelist">
-         <div>
+        <article>
+         <div  ref="messagelist">
           {list}
+          <div style={{'height':20,'width':20}}></div>
          </div>
         </article>
 
