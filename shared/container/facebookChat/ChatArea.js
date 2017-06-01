@@ -13,7 +13,7 @@ import ReactPlayer from 'react-player'
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload';
 import ReactTooltip from 'react-tooltip';
-
+import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 var geturl = function(payload){
 //  console.log('payload');
 //  console.log(payload);
@@ -786,19 +786,14 @@ scrollToBottom(fbchatlist) {
     //alert(this.props.fbchatSelected.length);
 
     console.log('scrollToBottom called');
-    const target = ReactDOM.findDOMNode(this.refs.messagelist);
-   
-        
+    const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length-1]);
     if(target){
-       target.scrollIntoView(false);
-     }
-    else{
-      console.log('target not found');
+   /*   scrollIntoViewIfNeeded(target, false, {
+    duration: 150
+   });*/
+       target.scrollIntoView({behavior: "smooth"});
+
     }
-
-  
-
-    
    //target.parentNode.scrollTop = target.offsetTop;
   // target.scrollTop = target.scrollHeight;
 
@@ -1396,7 +1391,7 @@ render () {
       return (
 
         data.senderid == this.props.fbsessionSelected.user_id.user_id?
-       <div  key={index} ref={index} id={index} style={{'textAlign':'left','clear':'both'}}>
+       <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'left','clear':'both'}}>
 
 
       { index == 0?
@@ -1408,9 +1403,7 @@ render () {
       }
 
       <div style={{'float':'left'}}>
-             {/* <span className='time'>{handleDate(data.timestamp)}</span>
-              <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
-             */}
+            
              <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle} />
              <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.left.wrapperNoColor: styles.left.wrapper}>
              <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
@@ -1418,18 +1411,32 @@ render () {
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
                         (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
-                       <div style={styles.imagestyle}>
+                       <div style={styles.imagestyle, {'width':'32px',
+                                                          'height':'32px'}}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
                                                           'height':'32px'}}/>
                       </div> :
-
-                       <div style={styles.imagestyle}>
-                       <img src={da.payload.url}  style={{
+                      (da.payload.url.indexOf('.gif') != -1?
+                          <div style={styles.imagestyle,{'width': '170px',
+                        backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 120,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        borderRadius:'1.3em',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)'
+                     }}>
+                      
+                       </div>:
+                       <div style={styles.imagestyle,{'width': '170px',height:'170px',boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                        borderRadius:'1.3em'}}>
+                       <img src={da.payload.url} ref={'img'+da.mid}  style={{
                                                           'width': '154px'
                                                            }}/>
                        </div>
-                       )
+                       ))
                       :
                      <div style={styles.imagestyle}>
                       {
@@ -1457,7 +1464,7 @@ render () {
               </div>
             </div>
         </div> :
-        <div  key={index} ref={index} id={index} style={{'textAlign':'right','clear':'both'}}>
+        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'right','clear':'both'}}>
          { index == 0?
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
 
@@ -1488,17 +1495,34 @@ render () {
                        (da.type == "image"?
                       (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
 
-                      <div style={styles.imagestyle}>
+                      <div style={styles.imagestyle,{
+                                                          'width':'32px',
+                                                          'height':'32px'}}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
                                                           'height':'32px'}}/>
                                                         </div> :
-                       <div style={styles.imagestyle}>
+                         (da.payload.url.indexOf('.gif') != -1?
+                       <div style={styles.imagestyle,{'width': '170px',
+                         backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 120,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                        borderRadius:'1.3em',
+                     }}>
+                      
+                       </div>:
+                       <div style={styles.imagestyle,{'width': '170px',height:'170px',boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                        borderRadius:'1.3em'}}>
                        <img src={da.payload.url}  style={{
                                                           'width': '154px'
                                                            }}/>
-                                                        </div>
-                       )
+                       </div>
+                       ))                                 
+                       
 
 
                                                            :
@@ -1606,10 +1630,9 @@ render () {
 
           </div>
           </div>
-        <article>
-         <div  ref="messagelist">
+        <article ref="messagelist">
+         <div>
           {list}
-          <div style={{'height':20,'width':20}}></div>
          </div>
         </article>
 
@@ -1770,15 +1793,16 @@ const styles = {
       borderRadius: 15,
       minHeight: 20,
       justifyContent: 'flex-end',
-      marginBottom: 15,
+      
       boxSizing: 'border-box',
       maxWidth: '80%',
       clear:'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginBottom: 15,*/
       marginLeft: '1em',
       position: 'relative',
       display: 'inline-block',
-    },
+      },
     containerToNext: {
       borderBottomLeftRadius: 3,
     },
@@ -1817,11 +1841,12 @@ const styles = {
        borderRadius: 15,
       minHeight: 20,
       justifyContent: 'flex-end',
-      marginBottom: 15,
+     
       boxSizing: 'border-box',
       maxWidth: '80%',
       clear:'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginBottom: 15,*/
       marginLeft: '1em',
       position: 'relative',
       display: 'inline-block',
