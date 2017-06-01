@@ -120,7 +120,7 @@ const renderFullPage = (html, initialState) => {
          <link rel="stylesheet" href="/css/rrui.css"/>
         <link rel="stylesheet" href="/css/styleuu.css"/>
   </head>
-      <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed-hide-logo ">
+      <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed ">
         <div id="root">${html}</div>
              <script src="/socket.io/socket.io.js"></script>
              <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
