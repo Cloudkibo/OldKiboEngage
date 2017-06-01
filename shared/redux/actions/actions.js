@@ -3941,7 +3941,8 @@ export function fbchatmessageSent(res){
 }
 
 export function showfbfilesuccess(chat,fbchats,id){
-//  alert('adding file upload');
+  console.log('showfbfilesuccess');
+  console.log(fbchats.length);
   fbchats.push(chat.chatmsg);
   var newfbChat = []
   var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
@@ -3977,9 +3978,20 @@ export function showfbfilesuccess(chat,fbchats,id){
          newArray.push(lookupObject[i]);
      }
 
+ // removing duplicates from fbchats
+    var newArrayfb = [];
+     var lookupObject  = {};
+
+     for(var i in fbchats) {
+        lookupObject[fbchats[i]['message']['mid']] = fbchats[i];
+     }
+
+     for(i in lookupObject) {
+         newArrayfb.push(lookupObject[i]);
+     }
      return{
       fbchatSelected: newArray,
-      fbchats:fbchats,
+      fbchats:newArrayfb,
       type: ActionTypes.FB_CHAT_ADDED,
     }
 
