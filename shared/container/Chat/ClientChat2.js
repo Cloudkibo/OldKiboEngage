@@ -39,9 +39,9 @@ class ClientChat2 extends Component {
   render() {
 
     return (
-      <div className="vbox viewport">
+      <div>
 
-       <div className="page-container hbox space-between">
+       <div>
        <div className="widgetheader">
           <div style={{'paddingTop':'2em'}}>
 
@@ -53,8 +53,8 @@ class ClientChat2 extends Component {
             </div>
         </div>
 
-          <div className="page-content-wrapper">
-            <div className="page-content" style={{'width':'500','margin':'0 auto'}}>
+          <div style ={{'display': 'flex',justifyContent: 'center'}}>
+            <div style ={{'display': 'flex',justifyContent: 'center','flex': '0 0 500px'}}>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
