@@ -20,6 +20,13 @@ var geturl = function(payload){
  return   `https://maps.googleapis.com/maps/api/staticmap?center=${payload.coordinates.lat},${payload.coordinates.long}&zoom=13&scale=false&size=400x200&maptype=roadmap&format=png&key=AIzaSyDDTb4NWqigQmW_qCVmSAkmZIIs3tp1x8Q&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C${payload.coordinates.lat},${payload.coordinates.long}`
 }
 
+var get_preview = function(){
+var detectedUrl = 'https://en.wikipedia.org/wiki/Artificial_neural_network'
+fetch(detectedUrl)
+        .then(response => response.text())
+        .then(text => { console.log(text)});
+}
+
 var getmainURL = function(payload){
 //  console.log('payload');
 //  console.log(payload);
@@ -138,6 +145,7 @@ export class ChatArea extends Component {
 
 
         };
+        get_preview();
        this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
@@ -160,9 +168,34 @@ export class ChatArea extends Component {
         this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
         this.resolveSession = this.resolveSession.bind(this);
         this.autoassignChat = this.autoassignChat.bind(this);
+        this.getagentname = this.getagentname.bind(this);
+        this.getteamname = this.getteamname.bind(this);
 
   }
 
+getteamname(){
+  var fbsession = this.props.fbsessionSelected;
+  var team = 'Not assigned'
+  if(fbsession.agent_ids.length > 0 && fbsession.agent_ids[fbsession.agent_ids.length-1].type == 'group'){
+    var teamname = this.props.teamdetails.filter((c) => c._id == fbsession.agent_ids[fbsession.agent_ids.length-1].id)
+    if(teamname.length > 0){
+      team = teamname[0].groupname;
+    }
+  }
+  return team
+}
+
+getagentname(){
+  var fbsession = this.props.fbsessionSelected;
+  var agent = 'Not assigned'
+  if(fbsession.agent_ids.length > 0 && fbsession.agent_ids[fbsession.agent_ids.length-1].type == 'agent'){
+    var agentname = this.props.agents.filter((c) => c._id == fbsession.agent_ids[fbsession.agent_ids.length-1].id)
+    if(agentname.length > 0){
+      agent = agentname[0].firstname + ' ' + agentname[0].lastname ;
+    }
+  }
+  return agent;
+}
 handleChange(e){
 
 }
@@ -1430,12 +1463,17 @@ render () {
                      }}>
                       
                        </div>:
-                       <div style={styles.imagestyle,{'width': '170px',height:'170px',boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                       <div style={styles.imagestyle,{ 
+                        backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 170,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
                         borderRadius:'1.3em'}}>
-                       <img src={da.payload.url} ref={'img'+da.mid}  style={{
-                                                          'width': '154px'
-                                                           }}/>
-                       </div>
+                     
+                        </div>
                        ))
                       :
                      <div style={styles.imagestyle}>
@@ -1510,7 +1548,7 @@ render () {
                                                         </div> :
                          (da.payload.url.indexOf('.gif') != -1?
                        <div style={styles.imagestyle,{'width': '170px',
-                         backgroundImage: `url(${da.payload.url})`,
+                        backgroundImage: `url(${da.payload.url})`,
                         width: 170,
                         height: 120,
                         backgroundSize: 'cover',
@@ -1521,12 +1559,17 @@ render () {
                      }}>
                       
                        </div>:
-                       <div style={styles.imagestyle,{'width': '170px',height:'170px',boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                       <div style={styles.imagestyle,{ 
+                        backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 170,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
                         borderRadius:'1.3em'}}>
-                       <img src={da.payload.url}  style={{
-                                                          'width': '154px'
-                                                           }}/>
-                       </div>
+                     
+                        </div>
                        ))                                 
                        
 
@@ -1566,71 +1609,102 @@ render () {
       return (
 
         <div className="anotherflx">
-        <div className="headerchatarea">
-          <h4> Customer : {this.props.fbsessionSelected.user_id.first_name+' ' + this.props.fbsessionSelected.user_id.last_name}</h4>
-
-          <h4> Status : {this.props.fbsessionSelected.status}</h4>
-          <br/>
+        <div className="headerchatarea" style={{'flexBasis':90}}>
+         
           <div className="table-responsive">
-                           <table className="table table-colored">
+                  <table className="table  table-condensed table-striped" style={{'marginBottom':0}}>
                            <tbody>
 
-                     <tr>
-                     <td className="col-md-4">
+                     <tr className="table-bordered">
+                        <td className="table-bordered col-md-3">
+                               <label> Customer : {this.props.fbsessionSelected.user_id.first_name+' ' + this.props.fbsessionSelected.user_id.last_name}</label>
 
-
-                          <div className="input-group">
-                          <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
-                                <option value={-1} data-attrib = {-1} data-type = {-1} data-name={-1} data-email={-1}>Select Agent</option>
-                                {
-                                  this.props.agents && this.props.agents.map((agent,i) =>
-                                    <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
-
-                                    )
-
-                                }
-
-                              </select>
-
-
-                         </div>
-                      </td>
-
-                      <td className="col-md-4">
-                        <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>
-                      </td>
-
-
-
-                      <td className="col-md-4">
-                         <div className="input-group">
-                           <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
-                                          <option value={-1} data-attrib = {-1}>Select Team</option>
-                                          {
-                                          this.props.teamdetails && this.props.teamdetails.map((team,i) =>
-                                            <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
-
-                                            )
-                                         }
-
-                         </select>
-                           </div>
+         
+                        </td>
+                        <td className="table-bordered col-md-2">
+                         <label> Page : {this.props.fbsessionSelected.pageid.pageTitle}</label>
+        
+                        </td>
+                        <td className="table-bordered col-md-2">
+                         <label> Status : {this.props.fbsessionSelected.status}</label>
+        
+                        </td>
+                        <td className="table-bordered col-md-3">
+                         <label> Agent : {this.getagentname()}</label>
+        
+                        </td>
+                         <td className="table-bordered col-md-2">
+                         <label> Team : {this.getteamname()}</label>
+        
                         </td>
 
+                    </tr>
+                    </tbody>
+                    </table>
+                  
+                    <table className="table  table-condensed table-striped" style={{'marginBottom':0}}>
+                           <tbody>
+                              <tr>
 
-                      <td className="col-md-4">
-                         <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>
-                      </td>
-
-                      <td className="col-md-1">
-                        <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
-                      </td>
-
-                      </tr>
-
+                             <td className="col-md-6">
 
 
+                                  <div className="input-group">
+                                  <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                                        <option value={-1} data-attrib = {-1} data-type = {-1} data-name={-1} data-email={-1}>Select Agent</option>
+                                        {
+                                          this.props.agents && this.props.agents.map((agent,i) =>
+                                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
 
+                                            )
+
+                                        }
+
+                                      </select>
+
+
+                                 
+                             
+                             <span className="input-group-btn">
+
+                              { this.props.fbsessionSelected.agent_ids.length == 0?
+                                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>:
+                                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Re-Assign To Agent</button>
+
+                              }
+                              </span>
+                              </div>
+                               </td>
+
+
+                              <td className="col-md-6">
+                                 <div className="input-group">
+                                   <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                                                  <option value={-1} data-attrib = {-1}>Select Team</option>
+                                                  {
+                                                  this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                                                    <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
+
+                                                    )
+                                                 }
+
+                                 </select>
+                               
+
+                              <span className="input-group-btn">>
+                               { this.props.fbsessionSelected.agent_ids.length == 0?
+                                 <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>:
+                                 <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Re-Assign To Team</button>
+                              }
+                              </span>
+                              </div>
+                               
+                              </td>
+                              <td className="col-md-2">
+                                <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
+                              </td>
+
+                              </tr>
                     </tbody>
                   </table>
 
@@ -1640,6 +1714,9 @@ render () {
          <div>
           {list}
          </div>
+
+
+         
         </article>
 
 
