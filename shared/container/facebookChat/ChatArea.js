@@ -1450,8 +1450,14 @@ render () {
                              <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                            </div>
                        :
+                       (da.type == "fallback"?
+                           <div>
+                             <p> {da.title} </p>
+                              <ReactPlayer url={data.message} controls={true} width="100%" height="242"  onPlay={this.onTestURL.bind(this, da.url)} />
+                       
+                           </div>:
                        <a href={da.payload.url} target="_blank" style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
-                       ))
+                       )))
                         }
                         </div>
 
