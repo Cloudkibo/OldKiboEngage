@@ -90,6 +90,7 @@
     "redux-thunk": "^1.0.3",
     "request": "^2.72.0",
     "sanitize-html": "^1.11.3",
+    "scroll-into-view-if-needed": "^1.1.0",
     "sendgrid": "1.0.1",
     "slug": "^0.9.1",
     "socket.io": "^1.0.6",

@@ -341,174 +341,136 @@ componentDidMount(){
 
     return (
       <div className="vbox viewport">
-
-       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
-
-       <div className="page-container hbox space-between">
-
-         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
+        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
+        <div className="page-container hbox space-between">
+          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="page-content">
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
-                   Chat
-                </div>
-              </div>
-
-           <div className="portlet-body">
-       		<div className="table-responsive">
-             <table className="table">
-             	<tbody>
-             	<tr>
-             		<th className="col-md-1">Status</th>
-             		{/*<th className="col-md-1">Medium</th>*/}
-             		<th className="col-md-1">Agents</th>
-             		<th className="col-md-1">Group</th>
-             		<th className="col-md-1">Sub Group</th>
-             	</tr>
-             	<tr>
-             		<td className="col-md-1">
-
-             		  <select  ref = "status" onChange={this.handleChange.bind(this)}   >
-                          <option value="all">All</option>
-                          <option value="new">New</option>
-                          <option value="assigned">Assigned</option>
-                          <option value="resolved">Resolved</option>
-                      </select>
-             		</td>
-             		{
-                  /*<td className="col-md-1">
-
-             		  <select  ref = "client" onChange={this.handleChangeMedium.bind(this)}   >
-                          <option value="all">All</option>
-                          <option value="mobile">Mobile</option>
-                          <option value="web">Web</option>
-
-                      </select>
-             		</td>
-              */}
-             		<td className="col-md-1">
-
-             		  <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
-                        <option value="all">All</option>
-
-                         {
-                         	this.props.agents && this.props.agents.map((agent,i) =>
-                         		<option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
-
-                         		)
-                         }
-
-
-                      </select>
-             		</td>
-             		<td className="col-md-1">
-
-             		  <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
-                           <option value="all">All</option>
-                           {
-
-                             this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                            		<option value={group._id}>{group.deptname}</option>
-                             )
-
-                         }
-
-                      </select>
-
-             		</td>
-             		<td className="col-md-1">
-             		  <select  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
-                             <option value="all">All</option>
-                             {
-                               this.state.subgroup == 'all' ?
-                               this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
-                                    <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
-                               ) :
-                               this.props.filterlist && this.props.filterlist.map((subgroup,i) =>
-                                 <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
-                               )
-
-                           }
-
-
-                      </select>
-
-             		</td>
-             	</tr>
-             	</tbody>
-                </table>
-                </div>
-
-             	<div className="table-responsive">
-                <input type="hidden" ref = "sessionid" />
-                <p>Chat Sessions assigned to your Group will be listed here.</p>
-                {!this.props.customerchatfiltered?
-                  <p>Loading Chat Sessions...</p>:
-                  <br/>
-                }
-                {this.props.customerchatold && this.props.customerchatold.length == 0?
-                  <p>No Customer is online currently.</p>
-
-                  :
-                <table className="table">
-
-             			<tbody>
-                  <tr>
-                  {
-                  this.props.yoursocketid &&
-                  <input  type = "hidden" ref = "agentsocketfield" name="agentsocketfield" value={this.props.yoursocketid}/>
-                  }
-                  </tr>
-			             	<tr>
-			             		<td  className="col-md-3">
-			             			<div>
-					                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0  &&
-					                        this.props.customerchatfiltered.map((customer, i) => (
-
-                                    (this.props.new_message_arrived_rid ?
-
-                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
-                                    :
-                                    <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
-                                  )
-
-
-					                        ))
-					                      }
-			                     	</div>
-			                    </td>
-                          {this.refs.sessionid?
-                          <td className="col-md-6">
-                          {
-                            this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
-                            (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
-			                    	<CustomerChatView newChatClicked = "true" socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
-                            ):
-                            (
-                            this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses &&  this.props.customerchat_selected.platform == 'web' &&
-                            <CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
+            <div className="vbox viewport" style={{'overflow':'hidden'}}>
+              <article>
+              <header style={{'border':'0px'}}>
+                <h3>Chat </h3>
+              </header>
+              <div>
+                <div style={{display: 'inline-block', marginRight: '50px'}}>
+                  <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                    <label>Status:</label>
+                  </div>
+                  <div style={{display: 'inline-block', float: 'left'}}>
+             		    <select  ref = "status" onChange={this.handleChange.bind(this)}   >
+                      <option value="all">All</option>
+                      <option value="new">New</option>
+                      <option value="assigned">Assigned</option>
+                      <option value="resolved">Resolved</option>
+                    </select>
+                  </div>
+                  </div>
+                  <div style={{display: 'inline-block', marginRight: '50px'}}>
+                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                      <label>Agent:</label>
+                    </div>
+                    <div style={{display: 'inline-block', float: 'left'}}>
+                      <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
+                       <option value="all">All</option>
+                        {
+                          this.props.agents && this.props.agents.map((agent,i) =>
+                            <option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
                             )
-
+                        }
+                      </select>
+                    </div>
+                  </div>
+                  <div style={{display: 'inline-block', marginRight: '50px'}}>
+                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                      <label>Group:</label>
+                    </div>
+                    <div style={{display: 'inline-block', float: 'left'}}>
+                      <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
+                        <option value="all">All</option>
+                         {
+                            this.props.groupdetails && this.props.groupdetails.map((group,i) =>
+                              <option value={group._id}>{group.deptname}</option>
+                           )
                          }
-                          </td>:
-                         <td className="col-md-6">
-                              <p>Click on session to view Chat messages</p>
-                         </td>
+                      </select>
+                    </div>
+                  </div>
+                  <div style={{display: 'inline-block', marginRight: '50px'}}>
+                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                      <label>Sub Group:</label>
+                    </div>
+                    <div style={{display: 'inline-block', float: 'left'}}>
+                      <select  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
+                         <option value="all">All</option>
+                           {
+                             this.state.subgroup == 'all' ?
+                             this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
+                               <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
+                              ) :
+                            this.props.filterlist && this.props.filterlist.map((subgroup,i) =>
+                              <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+                            )
+                           }
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </article>
+              { this.props.customerchatold && this.props.customerchatold.length > 0 ?
+              <section className="main hbox space-between">
+                <nav className="navclassSessionList" >
+                  <div className="anotherflx">
+                    <div className="headerchatarea" style={{'flexBasis':50}}>
+                      <input type="hidden" ref = "sessionid" />
+                    </div>
+                    <article>
+                      <div>
+                      {
+                      this.props.yoursocketid &&
+                      <input  type = "hidden" ref = "agentsocketfield" name="agentsocketfield" value={this.props.yoursocketid}/>
+                      }
+                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0  &&
+                        this.props.customerchatfiltered.map((customer, i) => (
+
+                          (this.props.new_message_arrived_rid ?
+
+                          <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
+                          :
+                          <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
+                        )
 
 
-                          }
-			                </tr>
-			            </tbody>
-                </table>
-              }
-        		</div>
+                        ))
+                      }
+                      </div>
+                    </article>
+                  </div>
+                </nav>
+                <article className="articleclassChat">
+                {this.refs.sessionid?
+                  <div>
+                {
+                  this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
+                  (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
+                  <CustomerChatView newChatClicked = "true" socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
+                  ):
+                  (
+                  this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses &&  this.props.customerchat_selected.platform == 'web' &&
+                  <CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
+                  )
+
+               }
+               </div>:
+               <p>Click on session to view Chat messages</p>
+                }
+
+                </article>
+              </section>
+              :
+              <p> No Customer is online currently.</p>
+            }
 
             </div>
-          </div>
-       </div>
+
        </div>
       </div>
       </div>

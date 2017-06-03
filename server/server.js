@@ -119,8 +119,10 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
          <link rel="stylesheet" href="/css/rrui.css"/>
         <link rel="stylesheet" href="/css/styleuu.css"/>
+      
+        
   </head>
-      <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed-hide-logo ">
+      <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed ">
         <div id="root">${html}</div>
              <script src="/socket.io/socket.io.js"></script>
              <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
@@ -163,7 +165,9 @@ const renderFullPage = (html, initialState) => {
             <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
             <script src="scripts/widgetapp.js" type="text/javascript" ></script>
             <script src="scripts/widgetapp2.js" type="text/javascript" ></script>
-            
+
+
+
         <!-- BEGIN RevolutionSlider -->
             <script src="assets/global/plugins/slider-revolution-slider/rs-plugin/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script>
             <script src="assets/global/plugins/slider-revolution-slider/rs-plugin/js/jquery.themepunch.tools.min.js" type="text/javascript"></script>

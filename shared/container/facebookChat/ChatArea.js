@@ -7,17 +7,24 @@ import ReactEmoji from 'react-emoji'
 import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Picker from 'react-giphy-picker';
-import StickerMenu from 'react-stickerpipe';
+import StickerMenu from '../../components/StickerPicker/stickers';
 import EmojiPicker from 'react-emojipicker';
 import ReactPlayer from 'react-player'
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload';
 import ReactTooltip from 'react-tooltip';
-
+import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 var geturl = function(payload){
 //  console.log('payload');
 //  console.log(payload);
  return   `https://maps.googleapis.com/maps/api/staticmap?center=${payload.coordinates.lat},${payload.coordinates.long}&zoom=13&scale=false&size=400x200&maptype=roadmap&format=png&key=AIzaSyDDTb4NWqigQmW_qCVmSAkmZIIs3tp1x8Q&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C${payload.coordinates.lat},${payload.coordinates.long}`
+}
+
+var get_preview = function(){
+var detectedUrl = 'https://en.wikipedia.org/wiki/Artificial_neural_network'
+fetch(detectedUrl)
+        .then(response => response.text())
+        .then(text => { console.log(text)});
 }
 
 var getmainURL = function(payload){
@@ -38,7 +45,7 @@ return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 var showDate = function(prev,next){
   var p = new Date(Number(prev));
   var n = new Date(Number(next));
-  
+
   if(n.getMinutes() - p.getMinutes() > 10 ||   n.getDay() != p.getDay() || n.getMonth() != p.getMonth() || n.getFullYear() != p.getFullYear()){
    return "true";
 
@@ -73,7 +80,7 @@ var displayDate = function(x){
   var today = new Date();
   var n = new Date(Number(x))
   var days = ["SUN","MON","TUES","WED","THU","FRI","SAT"];
-  var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"] 
+  var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
   var s = '';
   if(today.getFullYear() == n.getFullYear()){
       if(today.getMonth() == n.getMonth()){
@@ -134,10 +141,11 @@ export class ChatArea extends Component {
           longtextwarning:'',
           agentinTeam: false,
           showthisdiv: false,
-      
-          
+
+
 
         };
+        get_preview();
        this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
@@ -160,9 +168,34 @@ export class ChatArea extends Component {
         this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
         this.resolveSession = this.resolveSession.bind(this);
         this.autoassignChat = this.autoassignChat.bind(this);
-      
+        this.getagentname = this.getagentname.bind(this);
+        this.getteamname = this.getteamname.bind(this);
+
   }
 
+getteamname(){
+  var fbsession = this.props.fbsessionSelected;
+  var team = 'Not assigned'
+  if(fbsession.agent_ids.length > 0 && fbsession.agent_ids[fbsession.agent_ids.length-1].type == 'group'){
+    var teamname = this.props.teamdetails.filter((c) => c._id == fbsession.agent_ids[fbsession.agent_ids.length-1].id)
+    if(teamname.length > 0){
+      team = teamname[0].groupname;
+    }
+  }
+  return team
+}
+
+getagentname(){
+  var fbsession = this.props.fbsessionSelected;
+  var agent = 'Not assigned'
+  if(fbsession.agent_ids.length > 0 && fbsession.agent_ids[fbsession.agent_ids.length-1].type == 'agent'){
+    var agentname = this.props.agents.filter((c) => c._id == fbsession.agent_ids[fbsession.agent_ids.length-1].id)
+    if(agentname.length > 0){
+      agent = agentname[0].firstname + ' ' + agentname[0].lastname ;
+    }
+  }
+  return agent;
+}
 handleChange(e){
 
 }
@@ -400,7 +433,7 @@ autoassignChat(){
                                       'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
                                       'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
                                       'agentname': this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-                                    
+
                                      });
 
 
@@ -516,7 +549,7 @@ assignSessionToAgent(e){
                                       'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
                                       'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
                                       'agentname': this.refs.agentList.options[this.refs.agentList.selectedIndex].text,
-                                  
+
                                      });
 
 
@@ -667,7 +700,7 @@ resolveSession(e){
                                       'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
                                       'username': this.props.fbsessionSelected.user_id.first_name+' '+ this.props.fbsessionSelected.user_id.last_name,
                                       'agentname': this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-                                    
+
                                      });
 
 
@@ -726,10 +759,10 @@ componentDidMount(){
 }
 
 componentDidUpdate(prevProps){
-  
+
   if(prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id || prevProps.fbchatSelected.length == this.props.fbchatSelected.length -1 ){
   //workaround for push bottom bar to bottom
- 
+
     this.setState({
         visible: false,
         showEmojiPicker: false,
@@ -746,7 +779,7 @@ componentDidUpdate(prevProps){
       });
    },0.000001);
   this.scrollToBottom(this.props.messages);
-  
+
 
   }
 
@@ -784,14 +817,19 @@ scrollToBottom(fbchatlist) {
     //console.log(this.refs[this.props.fbchatSelected.length-1])
    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
     //alert(this.props.fbchatSelected.length);
+
     console.log('scrollToBottom called');
     const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length-1]);
     if(target){
+   /*   scrollIntoViewIfNeeded(target, false, {
+    duration: 150
+   });*/
        target.scrollIntoView({behavior: "smooth"});
-    
+
     }
-   //target.parentNode.scrollTop = target.offsetTop;  
+   //target.parentNode.scrollTop = target.offsetTop;
   // target.scrollTop = target.scrollHeight;
+
 
 
 }
@@ -827,7 +865,7 @@ _onChange(e) {
     };
     console.log(reader.result);
     reader.readAsDataURL(files[0]);
-    
+
 
 
   }
@@ -951,9 +989,9 @@ onFileSubmit()
         this.refs.selectFile.value = null;
         console.log('on onFileSubmit');
         console.log(this.state.userfile);
-        
 
-      
+
+
 
         if ( this.state.userfile && this.state.userfile != '' ) {
 
@@ -961,7 +999,7 @@ onFileSubmit()
               if(this.props.fbsessionSelected.status == "new"){
                     this.autoassignChat();
                 }
-                
+
               if(this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length-1].type == 'agent')){
                 sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
@@ -969,7 +1007,7 @@ onFileSubmit()
 
             if(sendmessage == true){
               console.log(this.state.userfile)
-             
+
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
               var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
@@ -1167,6 +1205,7 @@ setEmoji(emoji) {
 
 
 sendGIF (gif) {
+  console.log(gif);
    const { socket,dispatch } = this.props;
    var sendmessage = true;
      if(this.props.fbsessionSelected.status == "new"){
@@ -1384,23 +1423,21 @@ render () {
 
     let list = this.props.messages.map((data, index) => {
       return (
-        
+
         data.senderid == this.props.fbsessionSelected.user_id.user_id?
        <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'left','clear':'both'}}>
-     
 
-      { index == 0? 
+
+      { index == 0?
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
 
           index > 0 && showDate(this.props.messages[index-1].timestamp,data.timestamp) == "true"  &&
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
-        
+
       }
-      
+
       <div style={{'float':'left'}}>
-             {/* <span className='time'>{handleDate(data.timestamp)}</span> 
-              <p className='message-body'>{ ReactEmoji.emojify(data.message) }</p>
-             */}
+            
              <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle} />
              <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.left.wrapperNoColor: styles.left.wrapper}>
              <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
@@ -1408,18 +1445,37 @@ render () {
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
                         (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
-                       <div style={styles.imagestyle}>
+                       <div style={styles.imagestyle, {'width':'32px',
+                                                          'height':'32px'}}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
                                                           'height':'32px'}}/>
                       </div> :
-
-                       <div style={styles.imagestyle}>
-                       <img src={da.payload.url}  style={{
-                                                          'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/>
-                       </div>
-                       )
+                      (da.payload.url.indexOf('.gif') != -1?
+                          <div style={styles.imagestyle,{'width': '170px',
+                        backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 120,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        borderRadius:'1.3em',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)'
+                     }}>
+                      
+                       </div>:
+                       <div style={styles.imagestyle,{ 
+                        backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 170,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                        borderRadius:'1.3em'}}>
+                     
+                        </div>
+                       ))
                       :
                      <div style={styles.imagestyle}>
                       {
@@ -1433,58 +1489,91 @@ render () {
                              <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                            </div>
                        :
+                       (da.type == "fallback"?
+                           <div>
+                             <p> {da.title} </p>
+                              <ReactPlayer url={data.message} controls={true} width="100%" height="242"  onPlay={this.onTestURL.bind(this, da.url)} />
+                       
+                           </div>:
                        <a href={da.payload.url} target="_blank" style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length-1]}  </a>
-                       ))
+                       )))
                         }
                         </div>
-                      
+
                        )
 
 
                 ))
-               
+
               }
               </div>
             </div>
         </div> :
         <div  key={index} ref={index} id={'chatmsg'+index} style={{'textAlign':'right','clear':'both'}}>
-         { index == 0? 
+         { index == 0?
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>:
 
           index > 0 && showDate(this.props.messages[index-1].timestamp,data.timestamp) == "true"  &&
          <h4 style={styles.timestyle}>{displayDate(data.timestamp)}</h4>
-        
+
          }
-       
+
            {
               index == 0?
                    <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid) }</div>
               :
 
               this.props.messages[index-1].senderid != data.senderid  &&
+
+
             
                <div style={styles.sendername}>{handleAgentName(this.props.agents,data.senderid)  }</div>
              
+
+
             }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
+
               <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
                       (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png'?
-                      
-                      <div style={styles.imagestyle}>
+
+                      <div style={styles.imagestyle,{
+                                                          'width':'32px',
+                                                          'height':'32px'}}>
                        <img src={da.payload.url}  style={{
                                                           'width':'32px',
                                                           'height':'32px'}}/>
                                                         </div> :
-                       <div style={styles.imagestyle}>
-                       <img src={da.payload.url}  style={{
-                                                          'maxWidth': '100%',
-                                                           'maxHeight': '585px'}}/>
-                                                        </div>
-                       )
-                        
+                         (da.payload.url.indexOf('.gif') != -1?
+                       <div style={styles.imagestyle,{'width': '170px',
+                        backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 120,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                        borderRadius:'1.3em',
+                     }}>
+                      
+                       </div>:
+                       <div style={styles.imagestyle,{ 
+                        backgroundImage: `url(${da.payload.url})`,
+                        width: 170,
+                        height: 170,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundRepeat: 'no-repeat',
+                        boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                        borderRadius:'1.3em'}}>
+                     
+                        </div>
+                       ))                                 
+                       
+
 
                                                            :
                       <div style={styles.imagestyle}>
@@ -1506,10 +1595,10 @@ render () {
                        )
                 ))
               }
-             
+
             </div>
-           
-           
+
+
 
 
         </div>
@@ -1519,73 +1608,104 @@ render () {
 
 
       return (
-      
+
         <div className="anotherflx">
-        <div className="headerchatarea">
-          <h4> Customer : {this.props.fbsessionSelected.user_id.first_name+' ' + this.props.fbsessionSelected.user_id.last_name}</h4>
-          
-          <h4> Status : {this.props.fbsessionSelected.status}</h4>
-          <br/>
+        <div className="headerchatarea" style={{'flexBasis':90}}>
+         
           <div className="table-responsive">
-                           <table className="table table-colored">
+                  <table className="table  table-condensed table-striped" style={{'marginBottom':0}}>
                            <tbody>
-                                      
-                     <tr>
-                     <td className="col-md-4">
 
+                     <tr className="table-bordered">
+                        <td className="table-bordered col-md-3">
+                               <label> Customer : {this.props.fbsessionSelected.user_id.first_name+' ' + this.props.fbsessionSelected.user_id.last_name}</label>
 
-                          <div className="input-group">
-                          <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
-                                <option value={-1} data-attrib = {-1} data-type = {-1} data-name={-1} data-email={-1}>Select Agent</option>
-                                {
-                                  this.props.agents && this.props.agents.map((agent,i) =>
-                                    <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
-
-                                    )
-
-                                }
-
-                              </select>
-
-
-                         </div>
-                      </td>
-
-                      <td className="col-md-4">
-                        <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>
-                      </td>
-
-
-
-                      <td className="col-md-4">
-                         <div className="input-group">
-                           <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
-                                          <option value={-1} data-attrib = {-1}>Select Team</option>
-                                          {
-                                          this.props.teamdetails && this.props.teamdetails.map((team,i) =>
-                                            <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
-
-                                            )
-                                         }
-
-                         </select>
-                           </div>
+         
+                        </td>
+                        <td className="table-bordered col-md-2">
+                         <label> Page : {this.props.fbsessionSelected.pageid.pageTitle}</label>
+        
+                        </td>
+                        <td className="table-bordered col-md-2">
+                         <label> Status : {this.props.fbsessionSelected.status}</label>
+        
+                        </td>
+                        <td className="table-bordered col-md-3">
+                         <label> Agent : {this.getagentname()}</label>
+        
+                        </td>
+                         <td className="table-bordered col-md-2">
+                         <label> Team : {this.getteamname()}</label>
+        
                         </td>
 
+                    </tr>
+                    </tbody>
+                    </table>
+                  
+                    <table className="table  table-condensed table-striped" style={{'marginBottom':0}}>
+                           <tbody>
+                              <tr>
 
-                      <td className="col-md-4">
-                         <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>
-                      </td>
-
-                      <td className="col-md-1">
-                        <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
-                      </td>
-
-                      </tr>
-                     
+                             <td className="col-md-6">
 
 
+                                  <div className="input-group">
+                                  <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+                                        <option value={-1} data-attrib = {-1} data-type = {-1} data-name={-1} data-email={-1}>Select Agent</option>
+                                        {
+                                          this.props.agents && this.props.agents.map((agent,i) =>
+                                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
 
+                                            )
+
+                                        }
+
+                                      </select>
+
+
+                                 
+                             
+                             <span className="input-group-btn">
+
+                              { this.props.fbsessionSelected.agent_ids.length == 0?
+                                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>:
+                                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Re-Assign To Agent</button>
+
+                              }
+                              </span>
+                              </div>
+                               </td>
+
+
+                              <td className="col-md-6">
+                                 <div className="input-group">
+                                   <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                                                  <option value={-1} data-attrib = {-1}>Select Team</option>
+                                                  {
+                                                  this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                                                    <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
+
+                                                    )
+                                                 }
+
+                                 </select>
+                               
+
+                              <span className="input-group-btn">>
+                               { this.props.fbsessionSelected.agent_ids.length == 0?
+                                 <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>:
+                                 <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Re-Assign To Team</button>
+                              }
+                              </span>
+                              </div>
+                               
+                              </td>
+                              <td className="col-md-2">
+                                <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
+                              </td>
+
+                              </tr>
                     </tbody>
                   </table>
 
@@ -1594,10 +1714,13 @@ render () {
         <article ref="messagelist">
          <div>
           {list}
-         </div> 
+         </div>
+
+
+         
         </article>
 
-        
+
         <div className="footerchatarea">
           <div style={styles.inputContainer} >
             <div style={styles.inputField}>
@@ -1612,16 +1735,16 @@ render () {
                    inputProps={inputProps} />
             </div>
 
-        
+
               <ReactTooltip place="bottom" type="dark" effect="solid"/>
               <div style={styles.toolbox}>
                     <div style={{display: 'inline-block'}} data-tip="attachments">
-                    
+
                         <i style={styles.iconclass} onClick = {() => {this.refs.selectFile.click()}}>
                         <i style={{fontSize: '25px', position: 'absolute', left: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-paperclip"></i>
                       </i>
                         <input ref="selectFile" type="file" onChange={this._onChange} style={styles.inputf}/>
-                      
+
                     </div>
 
                     <div style={{display: 'inline-block'}} data-tip="emoticons">
@@ -1646,10 +1769,10 @@ render () {
                     <div style={{display: 'inline-block'}} data-tip="Thumbs Up" onClick = {this.sendThumbsUp.bind(this)}>
                       <i style={styles.iconclass}  >
                         <i style={{fontSize: '25px', color: '#0099e6',position: 'absolute', right: '0', width: '100%', height: '2.5em', textAlign: 'center'}} className="fa fa-thumbs-up" ></i>
-                      
+
                       </i>
                     </div>
-           
+
 
             </div>
           </div>
@@ -1666,19 +1789,19 @@ render () {
 
                       {
                         this.state.showSticker &&
-                        <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px'}}>
+
                         <StickerMenu
                           apiKey={'80b32d82b0c7dc5c39d2aafaa00ba2bf'}
                           userId={'imran.shoukat@khi.iba.edu.pk'}
                           sendSticker={this.sendSticker}
                         />
-                        </div>
+                        
                       }
 
                       {
                         this.state.showthisdiv &&
                         <div style={{overflow: 'scroll', objectFit: 'contain', height: '300px', width: '670px',backgroundColor:'white',opacity:0.1}}>
-                       
+
                         </div>
                       }
                       {
@@ -1689,25 +1812,25 @@ render () {
 
                       }
               </div>
-              
+
           </div>
 
 
               {
                       this.props.showFileUploading && this.props.showFileUploading == true &&
                      <p style={{color:'red'}}>Uploading file...Please wait</p>
-                     
-              } 
+
+              }
               {
                 this.state.longtextwarning != '' &&
               <p style={{'color':'red'}}>{this.state.longtextwarning}</p>
               }
-            
- 
+
+
       </div>
 
       </div>
-     
+
       )
 
   }
@@ -1715,7 +1838,7 @@ render () {
 
 const textStyle = {
   fontSize: 12,
-  
+
   marginTop: 5,
   marginBottom: 5,
   marginLeft: 10,
@@ -1754,15 +1877,16 @@ const styles = {
       borderRadius: 15,
       minHeight: 20,
       justifyContent: 'flex-end',
-      marginBottom: 15,
+      
       boxSizing: 'border-box',
       maxWidth: '80%',
       clear:'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginBottom: 15,*/
       marginLeft: '1em',
       position: 'relative',
       display: 'inline-block',
-    },
+      },
     containerToNext: {
       borderBottomLeftRadius: 3,
     },
@@ -1801,11 +1925,12 @@ const styles = {
        borderRadius: 15,
       minHeight: 20,
       justifyContent: 'flex-end',
-      marginBottom: 15,
+     
       boxSizing: 'border-box',
       maxWidth: '80%',
       clear:'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginBottom: 15,*/
       marginLeft: '1em',
       position: 'relative',
       display: 'inline-block',
@@ -1845,7 +1970,7 @@ const styles = {
     width:'inherit',
   },
    sendername:{
-   
+
     position: 'relative',
     float: 'right',
     width: '100%',
@@ -1889,7 +2014,7 @@ const styles = {
   display: 'inline-block',
   alignItems: 'center',
 },
- 
+
  faicon: {
   margin: 10,
   cursor: 'pointer',
