@@ -1156,6 +1156,7 @@ updateState(e) {
 }
 
 setEmoji(emoji) {
+  console.log(emoji)
   this.setState({
     value: this.state.value + emoji.unicode,
     visible: false,

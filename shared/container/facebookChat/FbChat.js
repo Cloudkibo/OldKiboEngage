@@ -23,7 +23,7 @@ var callonce=false;
 class FbChat extends Component {
  constructor(props, context) {
 
-    if(props.userdetails.accountVerified == "No"){
+    if(props.userdetails.accountVerified === "No"){
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
