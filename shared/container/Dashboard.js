@@ -155,7 +155,117 @@ callSocket(){
           <div className="page-content-wrapper">
             <div className="page-content">
                 <h1>Dashboard</h1>
-                <p>Hi  {this.props.userdetails.firstname} ! Welcome to Dashboard</p>
+                {/*<p>Hi  {this.props.userdetails.firstname} ! Welcome to Dashboard</p>*/}
+
+                <div className="row">
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div className="dashboard-stat2 ">
+                                    <div className="display">
+                                        <div className="number">
+                                            <h3 className="font-green-sharp">
+                                                <span data-counter="counterup" data-value="3">3</span>
+                                                <small className="font-green-sharp"></small>
+                                            </h3>
+                                            <small>Assigned</small>
+                                        </div>
+                                        <div className="icon">
+                                            <i className="icon-pie-chart"></i>
+                                        </div>
+                                    </div>
+                                    <div className="progress-info">
+                                        {/*<div className="progress">
+                                            <span style={styles.w1} className="progress-bar progress-bar-success green-sharp">
+                                                <span className="sr-only">76% progress</span>
+                                            </span>
+                                        </div>
+                                        <div className="status">
+                                            <div className="status-title"> progress </div>
+                                            <div className="status-number"> 76% </div>
+                                        </div>*/}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div className="dashboard-stat2 ">
+                                    <div className="display">
+                                        <div className="number">
+                                            <h3 className="font-red-haze">
+                                                <span data-counter="counterup" data-value="14">14</span>
+                                            </h3>
+                                            <small>Abandoned</small>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="icon-like"></i>
+                                        </div>
+                                    </div>
+                                    <div className="progress-info">
+                                        {/*<div className="progress">
+                                            <span style={styles.w2} className="progress-bar progress-bar-success red-haze">
+                                                <span className="sr-only">85% change</span>
+                                            </span>
+                                        </div>
+                                        <div className="status">
+                                            <div className="status-title"> change </div>
+                                            <div className="status-number"> 85% </div>
+                                        </div>*/}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div className="dashboard-stat2 ">
+                                    <div className="display">
+                                        <div className="number">
+                                            <h3 className="font-blue-sharp">
+                                                <span data-counter="counterup" data-value="17">17</span>
+                                            </h3>
+                                            <small>Resolved</small>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="icon-basket"></i>
+                                        </div>
+                                    </div>
+                                    <div className="progress-info">
+                                        {/*<div className="progress">
+                                            <span style={styles.w3} className="progress-bar progress-bar-success blue-sharp">
+                                                <span className="sr-only">45% grow</span>
+                                            </span>
+                                        </div>
+                                        <div className="status">
+                                            <div className="status-title"> grow </div>
+                                            <div className="status-number"> 45% </div>
+                                        </div>*/}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div className="dashboard-stat2 ">
+                                    <div className="display">
+                                        <div className="number">
+                                            <h3 className="font-purple-soft">
+                                                <span data-counter="counterup" data-value="276">6</span>
+                                            </h3>
+                                            <small>Facebook Customers</small>
+                                        </div>
+                                        <div className="icon">
+                                            <i className="icon-user"></i>
+                                        </div>
+                                    </div>
+                                    <div className="progress-info">
+                                        {/*<div className="progress">
+                                            <span style={styles.w4} className="progress-bar progress-bar-success purple-soft">
+                                                <span className="sr-only">56% change</span>
+                                            </span>
+                                        </div>
+                                        <div className="status">
+                                            <div className="status-title"> change </div>
+                                            <div className="status-number"> 57% </div>
+                                        </div>*/}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
 
             </div>
           </div>
@@ -169,6 +279,20 @@ callSocket(){
   }
 }
 
+const styles = { 
+  w1 : {
+    width: '76%',
+  },
+  w2 : {
+    width: '85%',
+  },
+  w3 : {
+    width: '45%',
+  },
+  w4 : {
+    width: '57%',
+  }
+};
 
 
 function mapStateToProps(state) {
