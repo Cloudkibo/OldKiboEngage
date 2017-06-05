@@ -4217,3 +4217,22 @@ export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession,fbch
   };
 
 }
+
+export function getmetaurl(url,usertoken) {
+ 
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getmetaurl`, {
+      method: 'post',
+      body: JSON.stringify({
+        url : url,
+       
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': usertoken,
+
+      }),
+    }).then((res) => res.json()).then(res => {console.log(res)});
+  };
+
+}

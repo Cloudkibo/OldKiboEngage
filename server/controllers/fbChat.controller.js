@@ -5,7 +5,7 @@ import request from 'request';
 import Buffer from 'Buffer';
 import path from 'path';
 import fs from 'fs';
-
+var og = require('open-graph');
 var logger = require('../logger/logger');
 var socket = require('../routes/socket');
 var  headers =  {
@@ -830,4 +830,15 @@ export function resolvechatsessionfb(req, res) {
            request.post(options, callback);
 
   }
+
+
+export function getmetaurl(req,res){
+  var url = req.body.url;
+  console.log(url);
+  og(url, function(err, meta){
+  console.log(meta);
+  res.status(200).json({'url_meta':meta});
+});
+
+}
 

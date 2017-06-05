@@ -62,7 +62,7 @@ export class ChatArea extends Component {
 
 
         };
-        get_preview();
+        
        this.onChange = this.onChange.bind(this);
         this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
         this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
@@ -1359,9 +1359,9 @@ render () {
       <div style={{'float':'left'}}>
             
              <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle} />
-             <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.left.wrapperNoColor: styles.left.wrapper}>
+             <div style={data.message != undefined && data.message.length === 2 && isEmoji(data.message)?styles.left.emojionly:(data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image")? styles.left.wrapperNoColor: styles.left.wrapper}>
              { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? 
-             <div> <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> </div> :
+             <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p>:
              <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
              }
               {data.attachments && data.attachments.length >0  &&
@@ -1455,7 +1455,7 @@ render () {
 
 
             }
-          <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
+          <div style={data.message != undefined && data.message.length === 2 && isEmoji(data.message)? styles.right.wrapperNoColor:data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
 
               { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? 
              <div> <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> </div> :
@@ -1798,6 +1798,19 @@ const styles = {
       position: 'relative',
       display: 'inline-block',
     },
+    emojionly: {
+      borderRadius: 15,
+      minHeight: 20,
+      justifyContent: 'flex-end',
+      boxSizing: 'border-box',
+      maxWidth: '80%',
+      clear:'both',
+      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginBottom: 15,*/
+      marginLeft: '1em',
+      position: 'relative',
+      display: 'inline-block',
+    },
 
     wrapperNoColor: {
       borderRadius: 15,
@@ -1825,7 +1838,6 @@ const styles = {
     },
     textEmoji: {
       color: 'black',
-      ...textStyle,
       fontSize: 40,
     }
   },
