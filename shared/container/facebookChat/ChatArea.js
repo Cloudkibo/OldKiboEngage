@@ -13,94 +13,11 @@ import ReactPlayer from 'react-player'
 var emojiMap = require('react-emoji-picker/lib/emojiMap');
 import { FileUpload } from 'redux-file-upload';
 import ReactTooltip from 'react-tooltip';
-import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
-var geturl = function(payload){
-//  console.log('payload');
-//  console.log(payload);
- return   `https://maps.googleapis.com/maps/api/staticmap?center=${payload.coordinates.lat},${payload.coordinates.long}&zoom=13&scale=false&size=400x200&maptype=roadmap&format=png&key=AIzaSyDDTb4NWqigQmW_qCVmSAkmZIIs3tp1x8Q&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C${payload.coordinates.lat},${payload.coordinates.long}`
-}
+import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
+import { geturl, getmainURL, get_preview, handleDate,
+showDate, handleAgentName, formatAMPM, displayDate,
+getEmojiURL, isEmoji } from './utility';
 
-var get_preview = function(){
-var detectedUrl = 'https://en.wikipedia.org/wiki/Artificial_neural_network'
-fetch(detectedUrl)
-        .then(response => response.text())
-        .then(text => { console.log(text)});
-}
-
-var getmainURL = function(payload){
-//  console.log('payload');
-//  console.log(payload);
-  return `https://www.google.com/maps/place/${payload.coordinates.lat},${payload.coordinates.long}/`
-}
-
-var handleDate = function(d){
-if(d){
-
-var c = new Date(Number(d));
-//alert(c)
-return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
-}
-}
-
-var showDate = function(prev,next){
-  var p = new Date(Number(prev));
-  var n = new Date(Number(next));
-
-  if(n.getMinutes() - p.getMinutes() > 10 ||   n.getDay() != p.getDay() || n.getMonth() != p.getMonth() || n.getFullYear() != p.getFullYear()){
-   return "true";
-
-  }
-  else{
-    return "false";
-  }
-}
-
-var handleAgentName = function(agents,senderid){
-  var agname = agents.filter((c) => c._id == senderid);
-  if(agname.length > 0){
-    return agname[0].firstname + ' ' + agname[0].lastname
-  }
-  else
-  {
-    console.log('undefined' + senderid);
-    return 'undefined'
-  }
-}
-function formatAMPM(date) {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
-  return strTime;
-}
-var displayDate = function(x){
-  var today = new Date();
-  var n = new Date(Number(x))
-  var days = ["SUN","MON","TUES","WED","THU","FRI","SAT"];
-  var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
-  var s = '';
-  if(today.getFullYear() == n.getFullYear()){
-      if(today.getMonth() == n.getMonth()){
-          if(today.getDay() == n.getDay()){
-              s =  formatAMPM(n);
-          }
-          else{
-            s = days[n.getDay()] + "," + formatAMPM(n);
-          }
-      }
-      else{
-        s =  days[n.getDay()] + ' ' + month[n.getMonth()]  + "," + formatAMPM(n)
-      }
-  }
-  else{
-    s =  days[n.getDay()] + ' ' + month[n.getMonth()] + n.getDay() +n.getFullYear() + "," + formatAMPM(n);
-  }
- // alert(s);
-  return s;
-}
 var getSuggestions = function(value,cr) {
   console.log(cr);
   const languages = cr
@@ -196,6 +113,7 @@ getagentname(){
   }
   return agent;
 }
+
 handleChange(e){
 
 }
@@ -1147,6 +1065,8 @@ onFileSubmit()
 
         }
 
+
+
 onSuggestionSelected({suggestionValue,method = 'click'})
 {
   console.log("current value of input is  :" + this.state.value)
@@ -1194,6 +1114,7 @@ updateState(e) {
 }
 
 setEmoji(emoji) {
+  console.log(emoji)
   this.setState({
     value: this.state.value + emoji.unicode,
     visible: false,
@@ -1439,7 +1360,10 @@ render () {
             
              <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle} />
              <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.left.wrapperNoColor: styles.left.wrapper}>
+             { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? 
+             <div> <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> </div> :
              <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
+             }
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
@@ -1533,7 +1457,10 @@ render () {
             }
           <div style={data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image"? styles.right.wrapperNoColor: styles.right.wrapper}>
 
-              <p style={styles.right.text}>{ ReactEmoji.emojify(data.message) }</p>
+              { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? 
+             <div> <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> </div> :
+             <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
+             }
               {data.attachments && data.attachments.length >0  &&
                  data.attachments.map((da,index) => (
                        (da.type == "image"?
@@ -1896,6 +1823,11 @@ const styles = {
       color: 'black',
       ...textStyle,
     },
+    textEmoji: {
+      color: 'black',
+      ...textStyle,
+      fontSize: 40,
+    }
   },
   right: {
     container: {
@@ -1944,6 +1876,11 @@ const styles = {
       color: 'white',
       ...textStyle,
     },
+    textEmoji: {
+      color: 'black',
+      ...textStyle,
+      fontSize: 40,
+    }
   },
   bottom: {
     flexDirection: 'row',
