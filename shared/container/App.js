@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { updateChatList } from '../redux/actions/actions';
-import { notify } from '../services/notify';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {updateChatList} from '../redux/actions/actions';
+import {notify} from '../services/notify';
 
 class App extends Component {
 
@@ -11,8 +11,8 @@ class App extends Component {
     this.getSocketmessage = this.getSocketmessage.bind(this);
   }
 
-  componentDidMount () {
-    
+  componentDidMount() {
+
     this.props.route.socket.on('customer_joined', this.alertme);
     this.props.route.socket.on('send:fbcustomer', (data) => {
       notify('facebook customer joined');
@@ -28,7 +28,7 @@ class App extends Component {
     });
   }
 
-  getSocketmessage(message){
+  getSocketmessage(message) {
     this.props.updateChatList(message);
   }
 
@@ -57,4 +57,4 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(mapStateToProps,{updateChatList})(App);
+export default connect(mapStateToProps, {updateChatList})(App);

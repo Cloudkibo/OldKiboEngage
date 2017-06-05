@@ -1,16 +1,37 @@
 import ChatListItem from './ChatListItem';
-import React, { PropTypes,Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import {removeDuplicates,updatesubgrouplist,getcustomersubgroups,getsessionsfromsocket,removeDuplicatesWebChat,updatechatstatus,previousChat,getteams,getTeamAgents,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getmobilesessions,updateAgentList,getuserchats,getresponses,getcustomers,setsocketid,filterChat,selectCustomerChat}  from '../../redux/actions/actions'
+import React, {PropTypes, Component} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
+import {
+  removeDuplicates,
+  updatesubgrouplist,
+  getcustomersubgroups,
+  getsessionsfromsocket,
+  removeDuplicatesWebChat,
+  updatechatstatus,
+  previousChat,
+  getteams,
+  getTeamAgents,
+  getspecificuserchats_mobile,
+  updateChatList,
+  getchatsfromsocket,
+  getmobilesessions,
+  updateAgentList,
+  getuserchats,
+  getresponses,
+  getcustomers,
+  setsocketid,
+  filterChat,
+  selectCustomerChat
+}  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import {bindActionCreators} from 'redux';
+import {browserHistory} from 'react-router'
 
 import io from 'socket.io-client';
 var callMobileChatSessions
@@ -18,321 +39,315 @@ var callOnce
 var callSocketChat
 class Chat extends Component {
 
- constructor(props, context) {
+  constructor(props, context) {
 
-   var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59';
-   var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx';
-   var companyid = props.userdetails.uniqueid;
-   props.getcustomersubgroups(appid,appsecret,companyid);
-      //call action to get user teams
-    callMobileChatSessions =  false;
+    var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59';
+    var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx';
+    var companyid = props.userdetails.uniqueid;
+    props.getcustomersubgroups(appid, appsecret, companyid);
+    //call action to get user teams
+    callMobileChatSessions = false;
     callOnce = false;
     callSocketChat = false
-    if(props.userdetails.accountVerified == "No"){
-    browserHistory.push('/notverified');
-   }
+    if (props.userdetails.accountVerified == "No") {
+      browserHistory.push('/notverified');
+    }
     const usertoken = auth.getToken();
-    if(usertoken != null)
-    {
+    if (usertoken != null) {
 
-        console.log(usertoken);
-       //for webclients no need to fetch sessions and customer list from server
+      console.log(usertoken);
+      //for webclients no need to fetch sessions and customer list from server
 
-       //but for mobile clients we will fetch list of sessions and customers from server
-        props.getmobilesessions(usertoken);
-        props.getuserchats(usertoken); //get mobile userchats
+      //but for mobile clients we will fetch list of sessions and customers from server
+      props.getmobilesessions(usertoken);
+      props.getuserchats(usertoken); //get mobile userchats
 
-        props.getresponses(usertoken);
+      props.getresponses(usertoken);
 
       // get groups list and agents
-        props.getteams(usertoken);
-        props.getTeamAgents(usertoken);
+      props.getteams(usertoken);
+      props.getTeamAgents(usertoken);
 
 
-      }
+    }
 
-        super(props, context);
-        this.create_agentsession = this.create_agentsession.bind(this);
-        this.getupdatedSessions = this.getupdatedSessions.bind(this);
-        this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
-        this.getupdatedChats = this.getupdatedChats.bind(this);
-        this.getSessionInfo = this.getSessionInfo.bind(this);
-        this.getSocketmessage = this.getSocketmessage.bind(this);
-        this.syncdata = this.syncdata.bind(this);
-        this.state = {
-          subgroup: 'all'
-        };
+    super(props, context);
+    this.create_agentsession = this.create_agentsession.bind(this);
+    this.getupdatedSessions = this.getupdatedSessions.bind(this);
+    this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
+    this.getupdatedChats = this.getupdatedChats.bind(this);
+    this.getSessionInfo = this.getSessionInfo.bind(this);
+    this.getSocketmessage = this.getSocketmessage.bind(this);
+    this.syncdata = this.syncdata.bind(this);
+    this.state = {
+      subgroup: 'all'
+    };
 
 
   }
 
-syncdata(){
- // alert('You are connected to socket. Joining now!');
-  //this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
-  this.props.route.socket.emit('getOnlineAgentList');
-  //this.props.route.socket.emit('returnMySocketId');
-  this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
+  syncdata() {
+    // alert('You are connected to socket. Joining now!');
+    //this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
+    this.props.route.socket.emit('getOnlineAgentList');
+    //this.props.route.socket.emit('returnMySocketId');
+    this.props.route.socket.emit('getuserchats', this.props.userdetails.uniqueid);
 
-}
-updateOnlineAgents(data){
-  console.log('updating updateOnlineAgents');
-  this.props.updateAgentList(data);
-  this.forceUpdate();
-}
- create_agentsession(socketid){
+  }
+
+  updateOnlineAgents(data) {
+    console.log('updating updateOnlineAgents');
+    this.props.updateAgentList(data);
+    this.forceUpdate();
+  }
+
+  create_agentsession(socketid) {
     console.log('your socket id is : ' + socketid);
     this.props.setsocketid(socketid);
     //this.refs.agentsocketfield.value = socketid;
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
-  getSocketmessage(message){
-    console.log('socket called for message');
-   console.log(message);
-   if(this.props.customerchat_selected){
-   if((this.props.customerchat_selected.request_id != message.request_id)  && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes'){
-       const usertoken = auth.getToken();
-      /*** call api to update status field of chat message received from mobile to 'delivered'
-      ***/
-      var messages = [];
-      messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
-       if(messages.length > 0){
-      //   alert('New message arrived chat!');
-        // highlight chat box
 
-        this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
-        this.props.updateChatList(message,this.props.new_message_arrived_rid);
-         message.status = 'delivered';
+  getSocketmessage(message) {
+    console.log('socket called for message');
+    console.log(message);
+    if (this.props.customerchat_selected) {
+      if ((this.props.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
+        const usertoken = auth.getToken();
+        /*** call api to update status field of chat message received from mobile to 'delivered'
+         ***/
+        var messages = [];
+        messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
+        if (messages.length > 0) {
+          //   alert('New message arrived chat!');
+          // highlight chat box
+
+          this.props.updatechatstatus(messages, message.from, usertoken, this.props.mobileuserchat);
+          this.props.updateChatList(message, this.props.new_message_arrived_rid);
+          message.status = 'delivered';
+
+        }
+      }
+
+      else if ((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no') {
+        // alert(' i m called2')
+        console.log("Chat Not Selected");
+        this.props.userchats.push(message);
+
+        this.props.updateChatList(message, this.props.new_message_arrived_rid);
+        //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+        this.forceUpdate();
+      }
+      else if ((this.props.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no') {
+        // alert(' i m called2')
+        console.log("Chat Selected");
+        this.props.userchats.push(message);
+
+        //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
+        //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+        //this.forceUpdate();
+      }
+
 
     }
-   }
-
-    else if((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no'){
-     // alert(' i m called2')
-     console.log("Chat Not Selected");
-     this.props.userchats.push(message);
-
-     this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-     this.forceUpdate();
-  }
-  else if((this.props.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no'){
-   // alert(' i m called2')
-   console.log("Chat Selected");
-   this.props.userchats.push(message);
-
-   //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
-   //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-   //this.forceUpdate();
-}
-
-
- }
- else if(!this.props.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent'){
-     const usertoken = auth.getToken();
+    else if (!this.props.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent') {
+      const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
-      ***/
+       ***/
       var messages = [];
-      messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
-       if(messages.length > 0){
-      //   alert('New message arrived!');
-     this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
-     this.props.updateChatList(message,this.props.new_message_arrived_rid);
-     message.status = 'delivered';
+      messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
+      if (messages.length > 0) {
+        //   alert('New message arrived!');
+        this.props.updatechatstatus(messages, message.from, usertoken, this.props.mobileuserchat);
+        this.props.updateChatList(message, this.props.new_message_arrived_rid);
+        message.status = 'delivered';
       }
 
       //this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
-      this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
+      this.props.removeDuplicates(this.props.mobileuserchat, 'uniqueid');
 
 
- }
+    }
 
-    else if(!this.props.customerchat_selected  && message.fromMobile == 'no' ){
-    // alert(' i m called');
+    else if (!this.props.customerchat_selected && message.fromMobile == 'no') {
+      // alert(' i m called');
 
-     this.props.userchats.push(message);
-     this.props.updateChatList(message,this.props.new_message_arrived_rid);
-    // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+      this.props.userchats.push(message);
+      this.props.updateChatList(message, this.props.new_message_arrived_rid);
+      // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
 
-   }
-
-
+    }
 
 
-
-
-   this.forceUpdate();
+    this.forceUpdate();
 
   }
 
 
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
-getSessionInfo(message){
+  getSessionInfo(message) {
 
-  //update the status of session
-  for(var i=0; i< this.props.customerchat.length;i++){
-    if(this.props.customerchat[i].request_id == message[0].request_id){
-       this.props.customerchat[i].status = "assigned";
-       this.props.customerchat[i].agent_ids.push({'id' : this.props.userdetails._id,'type' : 'agent'});
-       break;
+    //update the status of session
+    for (var i = 0; i < this.props.customerchat.length; i++) {
+      if (this.props.customerchat[i].request_id == message[0].request_id) {
+        this.props.customerchat[i].status = "assigned";
+        this.props.customerchat[i].agent_ids.push({'id': this.props.userdetails._id, 'type': 'agent'});
+        break;
+      }
     }
-  }
 
-  if(this.props.customerchat_selected.request_id == message[0].request_id){
+    if (this.props.customerchat_selected.request_id == message[0].request_id) {
       this.props.customerchat_selected.status = "assigned";
-       this.props.customerchat_selected.agent_ids.push({'id' : this.props.userdetails._id,'type' : 'agent'});
+      this.props.customerchat_selected.agent_ids.push({'id': this.props.userdetails._id, 'type': 'agent'});
 
+    }
+
+
+    this.props.previousChat(message, this.props.chatlist);
+    this.forceUpdate();
   }
 
-
-   this.props.previousChat(message,this.props.chatlist);
-   this.forceUpdate();
-  }
-
-componentWillReceiveProps(props) {
-  // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
-  const usertoken = auth.getToken();
-  if(props.customerchat  && callMobileChatSessions == false && props.serverresponse && props.serverresponse == 'received'){
-     this.props.route.socket.emit('getCustomerSessionsListFirst',props.customerchat,props.userdetails.uniqueid);
+  componentWillReceiveProps(props) {
+    // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
+    const usertoken = auth.getToken();
+    if (props.customerchat && callMobileChatSessions == false && props.serverresponse && props.serverresponse == 'received') {
+      this.props.route.socket.emit('getCustomerSessionsListFirst', props.customerchat, props.userdetails.uniqueid);
 
       callMobileChatSessions = true
       this.forceUpdate();
+    }
+    if (props.userchats && callSocketChat == false) {
+      this.props.route.socket.emit('getuserchats', this.props.userdetails.uniqueid);
+      callSocketChat = true
+    }
+
   }
-  if(props.userchats && callSocketChat == false){
-     this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-     callSocketChat = true
+
+  componentDidMount() {
+    //get online agents list
+    callMobileChatSessions = false
+    callSocketChat = false;
+
+    //alert('componentDidMount is called');
+    const usertoken = auth.getToken();
+    this.props.route.socket.emit('getOnlineAgentList');
+    this.props.route.socket.emit('returnMySocketId');
+    // this.props.route.socket.emit('getCustomerSessionsList');
+
+    this.props.route.socket.on('send:message', this.getSocketmessage);
+    this.props.route.socket.on('informAgent', this.getSessionInfo);
+    this.props.route.socket.on('getmysocketid', this.create_agentsession);
+    this.props.route.socket.on('customer_joined', this.getupdatedSessions);
+    this.props.route.socket.on('updateOnlineAgentList', this.updateOnlineAgents);
+    this.props.route.socket.on('returnCustomerSessionsList', this.getupdatedSessions);
+    this.props.route.socket.on('returnUserChat', this.getupdatedChats);
+    this.props.route.socket.on('syncdata', this.syncdata);
+
+
   }
 
-}
 
-componentDidMount(){
-       //get online agents list
-       callMobileChatSessions = false
-       callSocketChat = false;
-
-       //alert('componentDidMount is called');
-       const usertoken = auth.getToken();
-        this.props.route.socket.emit('getOnlineAgentList');
-        this.props.route.socket.emit('returnMySocketId');
-       // this.props.route.socket.emit('getCustomerSessionsList');
-
-        this.props.route.socket.on('send:message',this.getSocketmessage);
-        this.props.route.socket.on('informAgent',this.getSessionInfo);
-        this.props.route.socket.on('getmysocketid',this.create_agentsession);
-        this.props.route.socket.on('customer_joined',this.getupdatedSessions);
-        this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
-        this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
-        this.props.route.socket.on('returnUserChat',this.getupdatedChats);
-        this.props.route.socket.on('syncdata',this.syncdata);
-
-
-}
-
-
-
-
-   getupdatedSessions(data)
-  {
+  getupdatedSessions(data) {
     const usertoken = auth.getToken();
     // not asking from server to give updated sessions
-   // alert('updating session list');
+    // alert('updating session list');
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
 
 
-     this.props.getsessionsfromsocket(data, this.props.customerchat_selected);
-     this.forceUpdate();
+    this.props.getsessionsfromsocket(data, this.props.customerchat_selected);
+    this.forceUpdate();
   }
 
-   getupdatedChats(data)
-  {
+  getupdatedChats(data) {
     //const usertoken = auth.getToken();
     // not asking from server to give updated sessions
 
     //this.props.getcustomers(usertoken);
     //this.props.getsessions(usertoken);
     //this.props.getuserchats(usertoken);
-   // alert('getupdatedChats is called' + data.length);
-  if(this.props.userchats){
-    this.props.getchatsfromsocket(this.props.userchats,data);
-  }
-  else{
-    this.props.getchatsfromsocket([],data);
-  }
+    // alert('getupdatedChats is called' + data.length);
+    if (this.props.userchats) {
+      this.props.getchatsfromsocket(this.props.userchats, data);
+    }
+    else {
+      this.props.getchatsfromsocket([], data);
+    }
 
-        //this.props.mobileuserchat.push(message);
+    //this.props.mobileuserchat.push(message);
     /*  alert(this.props.userchats.length);
-      this.props.userchats.push(data);*/
-      //this.props.getchatsfromsocket(this.props.userchats,'uniqueid');
-     // alert(this.props.userchats.length);
-      this.props.previousChat(data,this.props.chatlist);
+     this.props.userchats.push(data);*/
+    //this.props.getchatsfromsocket(this.props.userchats,'uniqueid');
+    // alert(this.props.userchats.length);
+    this.props.previousChat(data, this.props.chatlist);
 
     this.forceUpdate();
   }
 
 
-   handleChange(){
-     //alert(e.target.value);
-     this.setState({ subgroup: this.refs.grouplist.value });
-     this.props.filterChat(this.refs.status.value,this.refs.agentList.value,this.refs.grouplist.value,this.refs.subgrouplist.value,this.props.customerchatold);
-     if(this.state.subgroup.value !== 'all') {
-       this.props.updatesubgrouplist(this.refs.grouplist.value);
-     }
-     this.forceUpdate();
-     //this.props.filterbystatus(e.target.value,this.props.customerchatold);
-     //this.forceUpdate();
+  handleChange() {
+    //alert(e.target.value);
+    this.setState({subgroup: this.refs.grouplist.value});
+    this.props.filterChat(this.refs.status.value, this.refs.agentList.value, this.refs.grouplist.value, this.refs.subgrouplist.value, this.props.customerchatold);
+    if (this.state.subgroup.value !== 'all') {
+      this.props.updatesubgrouplist(this.refs.grouplist.value);
+    }
+    this.forceUpdate();
+    //this.props.filterbystatus(e.target.value,this.props.customerchatold);
+    //this.forceUpdate();
 
 
+  }
+
+  /*
+   handleChangeDepartment(e){
+   //alert(e.target.value);
+   this.props.filterbyDept(e.target.value,this.props.customerchatold);
+   this.forceUpdate();
+
+
+   }
+   handleChangeSubgroup(e){
+   //lert(e.target.value);
+   this.props.filterbySubgroup(e.target.value,this.props.customerchatold);
+   this.forceUpdate();
+
+
+   }
+
+   handleChangeAgents(e){
+   alert(e.target.value);
+   this.props.filterbyAgent(e.target.value,this.props.customerchatold);
+   this.forceUpdate();
+
+
+   }
+   */
+  handleSession(id, platform, e) {
+    console.log(id);
+    e.preventDefault();
+    const usertoken = auth.getToken();
+
+    this.refs.sessionid.value = id;
+    // alert(this.refs.sessionid.value);
+
+    //retrieve chat history for mobile clients Only
+    if (platform == "mobile") {
+
+      this.props.getspecificuserchats_mobile(this.refs.sessionid.value, this.props.userdetails.uniqueid, usertoken)
+      //this.forceUpdate()
     }
 
-/*
-    handleChangeDepartment(e){
-     //alert(e.target.value);
-     this.props.filterbyDept(e.target.value,this.props.customerchatold);
-     this.forceUpdate();
+    // when the user clicks on session,reset unread message Count to zero and also remove Red Background Color from Chatlist item
+    // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
 
-
-    }
-     handleChangeSubgroup(e){
-     //lert(e.target.value);
-     this.props.filterbySubgroup(e.target.value,this.props.customerchatold);
-     this.forceUpdate();
-
-
-    }
-
-    handleChangeAgents(e){
-    alert(e.target.value);
-     this.props.filterbyAgent(e.target.value,this.props.customerchatold);
-     this.forceUpdate();
-
-
-    }
-*/
-     handleSession(id,platform,e){
-      console.log(id);
-      e.preventDefault();
-      const usertoken = auth.getToken();
-
-      this.refs.sessionid.value = id;
-     // alert(this.refs.sessionid.value);
-
-      //retrieve chat history for mobile clients Only
-        if(platform == "mobile"){
-
-            this.props.getspecificuserchats_mobile(this.refs.sessionid.value,this.props.userdetails.uniqueid,usertoken)
-            //this.forceUpdate()
-        }
-
-      // when the user clicks on session,reset unread message Count to zero and also remove Red Background Color from Chatlist item
-     // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
-
-      this.props.selectCustomerChat(id,this.props.customerchat,this.props.new_message_arrived_rid);
+    this.props.selectCustomerChat(id, this.props.customerchat, this.props.new_message_arrived_rid);
     //  this.forceUpdate();
 
-    }
+  }
 
 
   render() {
@@ -341,40 +356,40 @@ componentDidMount(){
 
     return (
       <div className="vbox viewport">
-        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
+        <AuthorizedHeader name={this.props.userdetails.firstname} user={this.props.userdetails}/>
         <div className="page-container hbox space-between">
-          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
+          <SideBar isAdmin={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
-            <div className="vbox viewport" style={{'overflow':'hidden'}}>
+            <div className="vbox viewport" style={{'overflow': 'hidden'}}>
               <article>
-              <header style={{'border':'0px'}}>
-                <h3>Chat </h3>
-              </header>
-              <div>
-                <div style={{display: 'inline-block', marginRight: '50px'}}>
-                  <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
-                    <label>Status:</label>
-                  </div>
-                  <div style={{display: 'inline-block', float: 'left'}}>
-             		    <select  ref = "status" onChange={this.handleChange.bind(this)}   >
-                      <option value="all">All</option>
-                      <option value="new">New</option>
-                      <option value="assigned">Assigned</option>
-                      <option value="resolved">Resolved</option>
-                    </select>
-                  </div>
+                <header style={{'border': '0px'}}>
+                  <h3>Chat </h3>
+                </header>
+                <div>
+                  <div style={{display: 'inline-block', marginRight: '50px'}}>
+                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                      <label>Status:</label>
+                    </div>
+                    <div style={{display: 'inline-block', float: 'left'}}>
+                      <select ref="status" onChange={this.handleChange.bind(this)}>
+                        <option value="all">All</option>
+                        <option value="new">New</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="resolved">Resolved</option>
+                      </select>
+                    </div>
                   </div>
                   <div style={{display: 'inline-block', marginRight: '50px'}}>
                     <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
                       <label>Agent:</label>
                     </div>
                     <div style={{display: 'inline-block', float: 'left'}}>
-                      <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
-                       <option value="all">All</option>
+                      <select ref="agentList" onChange={this.handleChange.bind(this)}>
+                        <option value="all">All</option>
                         {
-                          this.props.agents && this.props.agents.map((agent,i) =>
+                          this.props.agents && this.props.agents.map((agent, i) =>
                             <option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
-                            )
+                          )
                         }
                       </select>
                     </div>
@@ -384,13 +399,13 @@ componentDidMount(){
                       <label>Group:</label>
                     </div>
                     <div style={{display: 'inline-block', float: 'left'}}>
-                      <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
+                      <select ref="grouplist" onChange={this.handleChange.bind(this)}>
                         <option value="all">All</option>
-                         {
-                            this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                              <option value={group._id}>{group.deptname}</option>
-                           )
-                         }
+                        {
+                          this.props.groupdetails && this.props.groupdetails.map((group, i) =>
+                            <option value={group._id}>{group.deptname}</option>
+                          )
+                        }
                       </select>
                     </div>
                   </div>
@@ -399,111 +414,158 @@ componentDidMount(){
                       <label>Sub Group:</label>
                     </div>
                     <div style={{display: 'inline-block', float: 'left'}}>
-                      <select  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
-                         <option value="all">All</option>
-                           {
-                             this.state.subgroup == 'all' ?
-                             this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
-                               <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
-                              ) :
-                            this.props.filterlist && this.props.filterlist.map((subgroup,i) =>
+                      <select ref="subgrouplist" onChange={this.handleChange.bind(this)}>
+                        <option value="all">All</option>
+                        {
+                          this.state.subgroup == 'all' ?
+                            this.props.subgroups && this.props.subgroups.map((subgroup, i) =>
+                              <option
+                                value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' + subgroup.msg_channel_name}</option>
+                            ) :
+                            this.props.filterlist && this.props.filterlist.map((subgroup, i) =>
                               <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
                             )
-                           }
+                        }
                       </select>
                     </div>
                   </div>
                 </div>
               </article>
               { this.props.customerchatold && this.props.customerchatold.length > 0 ?
-              <section className="main hbox space-between">
-                <nav className="navclassSessionList" >
-                  <div className="anotherflx">
-                    <div className="headerchatarea" style={{'flexBasis':50}}>
-                      <input type="hidden" ref = "sessionid" />
-                    </div>
-                    <article>
-                      <div>
-                      {
-                      this.props.yoursocketid &&
-                      <input  type = "hidden" ref = "agentsocketfield" name="agentsocketfield" value={this.props.yoursocketid}/>
-                      }
-                      {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0  &&
-                        this.props.customerchatfiltered.map((customer, i) => (
-
-                          (this.props.new_message_arrived_rid ?
-
-                          <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  new_message_arrived_rid = {this.props.new_message_arrived_rid} customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
-                          :
-                          <ChatListItem userchat = {this.props.userchats.filter((ch) => ch.request_id == customer.request_id)} selectedsession =  {this.props.customerchat_selected}  customer={customer} key={i} onClickSession={this.handleSession.bind(this,customer.request_id,customer.platform)} group = {this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}  subgroup= {this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length-1])}  agents = {this.props.agents} team = {this.props.teamdetails}/>
-                        )
-
-
-                        ))
-                      }
+                <section className="main hbox space-between">
+                  <nav className="navclassSessionList">
+                    <div className="anotherflx">
+                      <div className="headerchatarea" style={{'flexBasis': 50}}>
+                        <input type="hidden" ref="sessionid"/>
                       </div>
-                    </article>
-                  </div>
-                </nav>
-                <article className="articleclassChat">
-                {this.refs.sessionid?
-                  <div>
-                {
-                  this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
-                  (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
-                  <CustomerChatView newChatClicked = "true" socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
-                  ):
-                  (
-                  this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected &&  this.refs.agentsocketfield&& this.props.onlineAgents && this.props.responses &&  this.props.customerchat_selected.platform == 'web' &&
-                  <CustomerChatView socket={ this.props.route.socket} {...this.props} sessiondetails = {this.props.customerchat_selected} socketid = {this.refs.agentsocketfield.value} onlineAg = {this.props.onlineAgents} mobileuserchat = {this.props.mobileuserchat} deptagents = {this.props.deptagents}/>
-                  )
+                      <article>
+                        <div>
+                          {
+                            this.props.yoursocketid &&
+                            <input type="hidden" ref="agentsocketfield" name="agentsocketfield"
+                                   value={this.props.yoursocketid}/>
+                          }
+                          {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 &&
+                          this.props.customerchatfiltered.map((customer, i) => (
 
-               }
-               </div>:
-               <p>Click on session to view Chat messages</p>
-                }
+                            (this.props.new_message_arrived_rid ?
 
-                </article>
-              </section>
-              :
-              <p> No Customer is online currently.</p>
-            }
+                                <ChatListItem
+                                  userchat={this.props.userchats.filter((ch) => ch.request_id == customer.request_id)}
+                                  selectedsession={this.props.customerchat_selected}
+                                  new_message_arrived_rid={this.props.new_message_arrived_rid} customer={customer}
+                                  key={i}
+                                  onClickSession={this.handleSession.bind(this, customer.request_id, customer.platform)}
+                                  group={this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}
+                                  subgroup={this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length - 1])}
+                                  agents={this.props.agents} team={this.props.teamdetails}/>
+                                :
+                                <ChatListItem
+                                  userchat={this.props.userchats.filter((ch) => ch.request_id == customer.request_id)}
+                                  selectedsession={this.props.customerchat_selected} customer={customer} key={i}
+                                  onClickSession={this.handleSession.bind(this, customer.request_id, customer.platform)}
+                                  group={this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}
+                                  subgroup={this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length - 1])}
+                                  agents={this.props.agents} team={this.props.teamdetails}/>
+                            )
+
+
+                          ))
+                          }
+                        </div>
+                      </article>
+                    </div>
+                  </nav>
+                  <article className="articleclassChat">
+                    {this.refs.sessionid ?
+                      <div>
+                        {
+                          this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
+                            (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected && this.refs.agentsocketfield && this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
+                              <CustomerChatView newChatClicked="true" socket={ this.props.route.socket} {...this.props}
+                                                sessiondetails={this.props.customerchat_selected}
+                                                socketid={this.refs.agentsocketfield.value}
+                                                onlineAg={this.props.onlineAgents}
+                                                mobileuserchat={this.props.mobileuserchat}
+                                                deptagents={this.props.deptagents}/>
+                            ) :
+                            (
+                              this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected && this.refs.agentsocketfield && this.props.onlineAgents && this.props.responses && this.props.customerchat_selected.platform == 'web' &&
+                              <CustomerChatView socket={ this.props.route.socket} {...this.props}
+                                                sessiondetails={this.props.customerchat_selected}
+                                                socketid={this.refs.agentsocketfield.value}
+                                                onlineAg={this.props.onlineAgents}
+                                                mobileuserchat={this.props.mobileuserchat}
+                                                deptagents={this.props.deptagents}/>
+                            )
+
+                        }
+                      </div> :
+                      <p>Click on session to view Chat messages</p>
+                    }
+
+                  </article>
+                </section>
+                :
+                <p> No Customer is online currently.</p>
+              }
 
             </div>
 
-       </div>
+          </div>
+        </div>
       </div>
-      </div>
-  )
+    )
   }
 }
 
 function mapStateToProps(state) {
 
   return {
-          teamdetails:(state.dashboard.teamdetails),
-          userdetails:(state.dashboard.userdetails),
-          errorMessage:(state.dashboard.errorMessage),
-          agents:(state.dashboard.agents),
-          deptagents:(state.dashboard.deptagents),
-          customerchat :(state.dashboard.customerchat),
-          customerchatfiltered :(state.dashboard.customerchatfiltered),
-          customerchatold :(state.dashboard.customerchatold),
-          chatlist :(state.dashboard.chatlist),
- 		      subgroups :(state.dashboard.subgroups),
-          customers:(state.dashboard.customers),
-          customerchat_selected :(state.dashboard.customerchat_selected),
-          new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
-          userchats :(state.dashboard.userchats),
-          responses :(state.dashboard.responses),
-          onlineAgents:(state.dashboard.onlineAgents),
-          yoursocketid :(state.dashboard.yoursocketid),
-          mobileuserchat : (state.dashboard.mobileuserchat),
-          serverresponse : (state.dashboard.serverresponse) ,
-          teamagents : (state.dashboard.teamagents),
-          groupdetails :(state.dashboard.groupdetails),
-          filterlist :(state.widget.filterlist),
-                    };
+    teamdetails: (state.dashboard.teamdetails),
+    userdetails: (state.dashboard.userdetails),
+    errorMessage: (state.dashboard.errorMessage),
+    agents: (state.dashboard.agents),
+    deptagents: (state.dashboard.deptagents),
+    customerchat: (state.dashboard.customerchat),
+    customerchatfiltered: (state.dashboard.customerchatfiltered),
+    customerchatold: (state.dashboard.customerchatold),
+    chatlist: (state.dashboard.chatlist),
+    subgroups: (state.dashboard.subgroups),
+    customers: (state.dashboard.customers),
+    customerchat_selected: (state.dashboard.customerchat_selected),
+    new_message_arrived_rid: (state.dashboard.new_message_arrived_rid),
+    userchats: (state.dashboard.userchats),
+    responses: (state.dashboard.responses),
+    onlineAgents: (state.dashboard.onlineAgents),
+    yoursocketid: (state.dashboard.yoursocketid),
+    mobileuserchat: (state.dashboard.mobileuserchat),
+    serverresponse: (state.dashboard.serverresponse),
+    teamagents: (state.dashboard.teamagents),
+    groupdetails: (state.dashboard.groupdetails),
+    filterlist: (state.widget.filterlist),
+  };
 }
 
-export default connect(mapStateToProps,{removeDuplicates,updatesubgrouplist,getcustomersubgroups,removeDuplicatesWebChat,updatechatstatus,getmobilesessions,getteams,getTeamAgents,previousChat,getspecificuserchats_mobile,updateChatList,getchatsfromsocket,getsessionsfromsocket,getresponses,setsocketid,updateAgentList,getuserchats,getcustomers,selectCustomerChat,filterChat})(Chat);
+export default connect(mapStateToProps, {
+  removeDuplicates,
+  updatesubgrouplist,
+  getcustomersubgroups,
+  removeDuplicatesWebChat,
+  updatechatstatus,
+  getmobilesessions,
+  getteams,
+  getTeamAgents,
+  previousChat,
+  getspecificuserchats_mobile,
+  updateChatList,
+  getchatsfromsocket,
+  getsessionsfromsocket,
+  getresponses,
+  setsocketid,
+  updateAgentList,
+  getuserchats,
+  getcustomers,
+  selectCustomerChat,
+  filterChat
+})(Chat);

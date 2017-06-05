@@ -1,18 +1,15 @@
 import * as ActionTypes from '../constants/constants';
 import Config from '../../../server/config';
 import fetch from 'isomorphic-fetch';
-import { CALL_API } from '../middleware/api'
-import Router from 'react-router';
 import cookie from 'react-cookie';
-import RouterContainer from '../../services/RouterContainer';
-import { browserHistory } from 'react-router'
+import {browserHistory} from 'react-router';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
 
 function requestLogin(creds) {
   return {
-    type: ActionTypes.LOGIN_REQUEST ,
+    type: ActionTypes.LOGIN_REQUEST,
     isFetching: true,
     isAuthenticated: false,
     creds
@@ -68,50 +65,50 @@ export function loginUser(creds) {
   console.log(creds);
   let config = {
     method: 'post',
-    headers: { 'Content-Type':'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      'email' :    creds.email,
-      'password'  :creds.password,
-      'website' :  creds.website
+      'email': creds.email,
+      'password': creds.password,
+      'website': creds.website
 
     })
-}
+  }
 
-return dispatch => {
-  // We dispatch requestLogin to kickoff the call to the API
-  dispatch(requestLogin(creds))
-  return fetch(`${baseURL}/api/getlogin`, config)
+  return dispatch => {
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(requestLogin(creds))
+    return fetch(`${baseURL}/api/getlogin`, config)
       .then(response =>
-    response.json()
-      .then(user => ({ user, response }))
-).then(({ user, response }) =>  {
-    if (!response.ok) {
-    // If there was a problem, we want to
-    // dispatch the error condition
-    dispatch(loginError(user.message))
-    return Promise.reject(user)
-  }
-else {
-    // If login was successful, set the token in local storage
-      cookie.save('token', user.token.token, { path: '/' });
-      console.log(cookie.load('token'));
-      browserHistory.push('/dashboard')
+        response.json()
+          .then(user => ({user, response}))
+      ).then(({user, response}) => {
+        if (!response.ok) {
+          // If there was a problem, we want to
+          // dispatch the error condition
+          dispatch(loginError(user.message))
+          return Promise.reject(user)
+        }
+        else {
+          // If login was successful, set the token in local storage
+          cookie.save('token', user.token.token, {path: '/'});
+          console.log(cookie.load('token'));
+          browserHistory.push('/dashboard')
 
-      // Dispatch the success action
-    //  dispatch(receiveLogin(user))
+          // Dispatch the success action
+          //  dispatch(receiveLogin(user))
+        }
+      }).catch(err => console.log("Error: ", err))
   }
-}).catch(err => console.log("Error: ", err))
-}
 }
 
 
 //forgot password
 
-export function showForgotPassword(msg){
+export function showForgotPassword(msg) {
 
   return {
     type: ActionTypes.ADD_FORGOTPASSWORD_WARNINGS,
-    errormessage : msg,
+    errormessage: msg,
 
   };
 }
@@ -119,17 +116,17 @@ export function showForgotPassword(msg){
 
 export function forgotpassword(creds) {
   console.log(creds);
-     return (dispatch) => {
+  return (dispatch) => {
     fetch(`${baseURL}/api/forgotpassword`, {
-        method: 'post',
-        headers: new Headers({
-           'Content-Type':'application/json'
-        }),
-       body: JSON.stringify({
-      'email' :    creds.email,
-      'website' :  creds.website
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify({
+        'email': creds.email,
+        'website': creds.website
 
-    })
+      })
 
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showForgotPassword(res)));
   };
@@ -139,47 +136,45 @@ export function forgotpassword(creds) {
 
 export function resetpassword(creds) {
   console.log(creds);
-     return (dispatch) => {
+  return (dispatch) => {
     fetch(`${baseURL}/api/changepassword`, {
-        method: 'post',
-        headers: new Headers({
-           'Content-Type':'application/json'
-        }),
-       body: JSON.stringify({
-      'token' :    creds.token,
-      'password' :  creds.password
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify({
+        'token': creds.token,
+        'password': creds.password
 
-    })
+      })
 
-    }).then((res) => res.json()).then((res) => res).then(res =>{
+    }).then((res) => res.json()).then((res) => res).then(res => {
 
-    cookie.remove('token', { path: '/' });
-    dispatch(setjoinedState('notjoined'));
-    dispatch(showForgotPassword(res))
+      cookie.remove('token', {path: '/'});
+      dispatch(setjoinedState('notjoined'));
+      dispatch(showForgotPassword(res))
     });
   };
 
 }
 
 
-
-
 // verify password reset token
 
-export function showTokenResponse(status){
+export function showTokenResponse(status) {
   var s = '';
-  if(status == 200){
-    console.log('status is '+ status);
+  if (status == 200) {
+    console.log('status is ' + status);
     s = 'Successfully verified.';
 
   }
-  else{
+  else {
     s = 'Not verified';
   }
 
   return {
     type: ActionTypes.SHOW_TOKEN_RESPONSE,
-    errormessage : s,
+    errormessage: s,
 
   };
 
@@ -193,9 +188,7 @@ export function verifyPasswordResettoken(token) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showTokenResponse(res.statusCode))
-
-
-      );
+    );
   };
 }
 
@@ -203,7 +196,7 @@ export function verifyPasswordResettoken(token) {
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
-    cookie.remove('token', { path: '/' });
+    cookie.remove('token', {path: '/'});
     dispatch(receiveLogout())
 
     dispatch(setjoinedState('notjoined'));
@@ -218,7 +211,7 @@ export function showSignupResponse(res) {
   console.log(res);
   return {
     type: ActionTypes.ADD_WARNINGS,
-    signup : res,
+    signup: res,
 
   };
 }
@@ -231,9 +224,6 @@ export function showUsername(user) {
 
   };
 }
-
-
-
 
 
 export function showSpecificChat(chat) {
@@ -250,23 +240,23 @@ export function fetchSpecificChat(data) {
     fetch(`${baseURL}/api/userchats/getSpecificChat`, {
       method: 'post',
       body: JSON.stringify({
-          request_id: group.request_id,
-          companyid: group.companyid,
+        request_id: group.request_id,
+        companyid: group.companyid,
 
       }),
       headers: new Headers({
-         'Authorization': data.usertoken,
+        'Authorization': data.usertoken,
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-          console.log(res.statusCode);
-          if(res.statusCode != 200){
-            dispatch(showSpecificChat_Error(res.message));
-          }
-          else{
-            dispatch(showSpecificChat(res.message))
-          }
+        console.log(res.statusCode);
+        if (res.statusCode != 200) {
+          dispatch(showSpecificChat_Error(res.message));
         }
+        else {
+          dispatch(showSpecificChat(res.message))
+        }
+      }
     );
   };
 }
@@ -281,46 +271,44 @@ export function showSpecificChat_Error(chat_error) {
 }
 
 
-
 export function signupuser(user) {
   console.log(user);
   return (dispatch) => {
     fetch(`${baseURL}/api/signupUser`, {
       method: 'post',
-        body: JSON.stringify({
-        'firstname' :user.firstname,
-        'lastname'  :user.lastname,
-        'email'     :user.email,
-        'phone'     :user.phone,
-        'password'   : user.password,
-        'companyName':user.companyName,
-        'website' : user.website,
-        'token'   : user.token,
+      body: JSON.stringify({
+        'firstname': user.firstname,
+        'lastname': user.lastname,
+        'email': user.email,
+        'phone': user.phone,
+        'password': user.password,
+        'companyName': user.companyName,
+        'website': user.website,
+        'token': user.token,
       }),
-        headers: new Headers({
+      headers: new Headers({
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res.signup).then((res) => {
-          if (res.token == '') {
+        if (res.token == '') {
           // If there was a problem, we want to
           // dispatch the error condition
           dispatch(showSignupResponse(res));
 
         }
-      else {
-              // If signup was successful, set the token in local storage
-            cookie.save('token', res.token, { path: '/' });
-            console.log(cookie.load('token'));
-            browserHistory.push('/dashboard');
-            window.location.reload();
-          }
+        else {
+          // If signup was successful, set the token in local storage
+          cookie.save('token', res.token, {path: '/'});
+          console.log(cookie.load('token'));
+          browserHistory.push('/dashboard');
+          window.location.reload();
         }
-          );
+      }
+    );
 
 
   }
 }
-
 
 
 /****** get user details ***/
@@ -328,19 +316,19 @@ export function getuser(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getuser`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token,
         'Pragma': 'no-cache'
       }),
     }).then((res) => res.json()).then((res) => res).then(res => {
-     if(res.status == 200){
-            dispatch(showUsername(res.info));
-     }
-     else{
-        cookie.remove('token', { path: '/' });
+      if (res.status == 200) {
+        dispatch(showUsername(res.info));
+      }
+      else {
+        cookie.remove('token', {path: '/'});
         browserHistory.push('/login');
-     }
+      }
     });
   };
 }
@@ -356,8 +344,8 @@ export function getusergroups(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getgroups`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -366,20 +354,20 @@ export function getusergroups(token) {
 }
 
 //this is without-token version of getting grouplist for Chat widget
-export function getcustomergroups(appid,appsecret,companyid){
+export function getcustomergroups(appid, appsecret, companyid) {
 
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomergroups/`, {
-        method: 'post',
-        body: JSON.stringify({
-          appid: appid,
-          appsecret : appsecret,
-          clientid:companyid,
+      method: 'post',
+      body: JSON.stringify({
+        appid: appid,
+        appsecret: appsecret,
+        clientid: companyid,
 
 
       })
-        ,
-        headers: new Headers({
+      ,
+      headers: new Headers({
         'Content-Type': 'application/json',
       }),
 
@@ -391,14 +379,14 @@ export function getspecificsession(requestid) {
   console.log('requestid is ' + requestid);
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomersession/`, {
-        method: 'post',
-        body: JSON.stringify({
-          request_id: requestid,
+      method: 'post',
+      body: JSON.stringify({
+        request_id: requestid,
 
 
       })
-        ,
-        headers: new Headers({
+      ,
+      headers: new Headers({
         'Content-Type': 'application/json',
       }),
 
@@ -408,14 +396,14 @@ export function getspecificsession(requestid) {
 export function getspecificcustomer(customerid) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomerdetails/`, {
-        method: 'post',
-        body: JSON.stringify({
-          customerid: customerid,
+      method: 'post',
+      body: JSON.stringify({
+        customerid: customerid,
 
 
       })
-        ,
-        headers: new Headers({
+      ,
+      headers: new Headers({
         'Content-Type': 'application/json',
       }),
 
@@ -447,7 +435,7 @@ export function showGroups(groups) {
   };
 }
 
-export function showCustomerGroups(groups){
+export function showCustomerGroups(groups) {
   return {
     type: ActionTypes.ADD_CUSTOMER_GROUPS,
     groups,
@@ -455,7 +443,7 @@ export function showCustomerGroups(groups){
   };
 }
 
-export function showCustomerSession(specificsession){
+export function showCustomerSession(specificsession) {
   return {
     type: ActionTypes.ADD_CUSTOMER_SESSION,
     specificsession,
@@ -464,7 +452,7 @@ export function showCustomerSession(specificsession){
   };
 }
 
-export function showCustomerDetails(specificcustomer){
+export function showCustomerDetails(specificcustomer) {
   return {
     type: ActionTypes.ADD_CUSTOMER_DETAILS,
     specificcustomer,
@@ -473,7 +461,7 @@ export function showCustomerDetails(specificcustomer){
   };
 }
 export function addGroup(group) {
- // console.log(group);
+  // console.log(group);
   return {
     type: ActionTypes.ADD_GROUP,
     deptname: group.deptname,
@@ -483,75 +471,73 @@ export function addGroup(group) {
 }
 
 
-export function creategroup(group,customers) {
+export function creategroup(group, customers) {
 
   return (dispatch) => {
     fetch(`${baseURL}/api/creategroup`, {
       method: 'post',
       body: JSON.stringify({
-          deptname: group.name,
-          deptdescription: group.description,
-          deptagents:group.deptagents,
-          customers:customers,
+        deptname: group.name,
+        deptdescription: group.description,
+        deptagents: group.deptagents,
+        customers: customers,
 
       }),
 
       headers: new Headers({
-         'Authorization': group.usertoken,
+        'Authorization': group.usertoken,
         'Content-Type': 'application/json',
       }),
 
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-          if(res.statusCode != 200){
+        if (res.statusCode != 200) {
           dispatch(creategroupError(res.message));
         }
-        else{
-           dispatch(showGroups(res.message))
-            }
-          alert(res.message);
+        else {
+          dispatch(showGroups(res.message))
         }
+        alert(res.message);
+      }
     );
   };
 }
 
 
-export function editGroup(group,customers) {
+export function editGroup(group, customers) {
 //  console.log('editGroup action called');
- // console.log(group.deptagents);
+  // console.log(group.deptagents);
 //  console.log(group);
   //alert(group)
   return (dispatch) => {
     fetch(`${baseURL}/api/editgroup`, {
       method: 'post',
       body: JSON.stringify({
-        dept :{
-          _id:group.id,
+        dept: {
+          _id: group.id,
           deptname: group.name,
           deptdescription: group.desc,
         },
         deptagents: group.deptagents,
-        customers : customers
+        customers: customers
 
       })
       ,
       headers: new Headers({
-         'Authorization': group.token,
+        'Authorization': group.token,
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-         console.log(res.statusCode);
-         alert(res.message);
-         browserHistory.push('/groups');
+        console.log(res.statusCode);
+        alert(res.message);
+        browserHistory.push('/groups');
         // dispatch(editgroupError(res.message));
 
 
-        }
+      }
     );
   };
 }
-
-
 
 
 export function addSelectedGroup(group) {
@@ -563,10 +549,8 @@ export function addSelectedGroup(group) {
 }
 
 
-
-
-export function getGroupRequest(group,usertoken) {
-  console.log('getGroupRequest is called '+ group);
+export function getGroupRequest(group, usertoken) {
+  console.log('getGroupRequest is called ' + group);
   return (dispatch) => {
     return fetch(`${baseURL}/api/getGroup?id=${group}`, {
       method: 'get',
@@ -579,9 +563,6 @@ export function getGroupRequest(group,usertoken) {
 }
 
 
-
-
-
 export function deleteGroup(group) {
   return {
     type: ActionTypes.DELETE_GROUP,
@@ -590,36 +571,30 @@ export function deleteGroup(group) {
 }
 
 
-export function deletegroup(group,usertoken,customers) {
-  if(confirm("Do you want to delete this group?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteGroup?id=${group._id}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-        group : group,
-        customers : customers,
+export function deletegroup(group, usertoken, customers) {
+  if (confirm("Do you want to delete this group?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/deleteGroup?id=${group._id}`, {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({
+          group: group,
+          customers: customers,
 
-      }),
+        }),
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteGroup(group)));
-  };
+      }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteGroup(group)));
+    };
+  }
+  else {
+    browserHistory.push('/groups');
+
+  }
+
 }
-else{
-  browserHistory.push('/groups');
-
-}
-
-}
-
-
-
-
-
 
 
 /***************************************************************************************************/
@@ -633,18 +608,18 @@ export function showInvitedAgents(invitedagents) {
 
   };
 }
-export function getinvitedagents(usertoken){
+export function getinvitedagents(usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getinvitedagents`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': usertoken,
 
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showInvitedAgents(res)));
   };
 }
-export function getAgentRequest(id,usertoken) {
+export function getAgentRequest(id, usertoken) {
   console.log(id)
   return {
     type: ActionTypes.ADD_SELECTED_AGENT,
@@ -689,8 +664,8 @@ export function inviteAgentResponse(res) {
   alert(res.message);
   return {
     type: ActionTypes.INVITE_AGENT_RESPONSE,
-    message:res.message,
-    inviteurl:res.url,
+    message: res.message,
+    inviteurl: res.url,
   }
 }
 
@@ -700,8 +675,8 @@ export function getAgents(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getagents`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token,
         'Pragma': 'no-cache'
       }),
@@ -714,8 +689,8 @@ export function getDeptAgents(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/deptagents`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token,
         'Pragma': 'no-cache'
       }),
@@ -727,7 +702,7 @@ export function getDeptAgents(token) {
 /****** get user details ***/
 
 
-export function editAgent(id,role,token) {
+export function editAgent(id, role, token) {
   console.log('editAgent action called');
   alert(role)
   return (dispatch) => {
@@ -735,35 +710,8 @@ export function editAgent(id,role,token) {
       method: 'post',
       body: JSON.stringify({
 
-          personid:id,
-          role: role
-
-      })
-      ,
-      headers: new Headers({
-         'Authorization': token,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
-        if(res.message === 'success')
-          dispatch(editagentError('User is successfully updated.'));
-        else
-          dispatch(editagentError('User not updated. Please try again.'));
-
-
-        }
-    );
-  };
-}
-
-export function inviteagent(email,token) {
-  console.log('invite agent action called');
-  return (dispatch) => {
-    fetch(`${baseURL}/api/inviteAgent`, {
-      method: 'post',
-      body: JSON.stringify({
-        email : email
+        personid: id,
+        role: role
 
       })
       ,
@@ -773,10 +721,37 @@ export function inviteagent(email,token) {
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-         dispatch(inviteAgentResponse(res));
+        if (res.message === 'success')
+          dispatch(editagentError('User is successfully updated.'));
+        else
+          dispatch(editagentError('User not updated. Please try again.'));
 
 
-        }
+      }
+    );
+  };
+}
+
+export function inviteagent(email, token) {
+  console.log('invite agent action called');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/inviteAgent`, {
+      method: 'post',
+      body: JSON.stringify({
+        email: email
+
+      })
+      ,
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+        dispatch(inviteAgentResponse(res));
+
+
+      }
     );
   };
 }
@@ -790,49 +765,46 @@ export function joinCompanyResponse(inviteDetails) {
 
 
 export function getInviteEmail(token) {
- console.log('getInviteEmail is called '+ token);
+  console.log('getInviteEmail is called ' + token);
   return (dispatch) => {
     return fetch(`${baseURL}/api/invitetoken?id=${token}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) =>{
+    }).then((res) => res.json()).then((res) => res).then((res) => {
       console.log(res.statusCode);
-          if(res.statusCode == 200){
+      if (res.statusCode == 200) {
 
-            dispatch(joinCompanyResponse(res.body));
+        dispatch(joinCompanyResponse(res.body));
 
-          }
-          else{
-            browserHistory.push('/joincompanyfailure')
-          }
+      }
+      else {
+        browserHistory.push('/joincompanyfailure')
+      }
     })
 
-      };
+  };
 }
 
 export function verifyEmail(token) {
- console.log('verifyEmail is called '+ token);
+  console.log('verifyEmail is called ' + token);
   return (dispatch) => {
     return fetch(`${baseURL}/api/verifytoken?id=${token}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) =>{
+    }).then((res) => res.json()).then((res) => res).then((res) => {
       console.log(res.statusCode);
-          if(res.statusCode != 200){
+      if (res.statusCode != 200) {
 
-            browserHistory.push('/verificationfailure')
-          }
+        browserHistory.push('/verificationfailure')
+      }
     })
 
-      };
+  };
 }
-
-
-
 
 
 export function deleteAGENT(agent) {
@@ -841,24 +813,23 @@ export function deleteAGENT(agent) {
     agent,
   };
 }
-export function deleteagent(agent,usertoken) {
-  console.log('deleteagent Action is called '+ agent._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this agent?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteAgent?id=${agent._id}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteAGENT(agent)));
-  };
-}
-else{
-  browserHistory.push('/agents');
+export function deleteagent(agent, usertoken) {
+  console.log('deleteagent Action is called ' + agent._id + 'your token : ' + usertoken);
+  if (confirm("Do you want to delete this agent?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/deleteAgent?id=${agent._id}`, {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+      }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteAGENT(agent)));
+    };
+  }
+  else {
+    browserHistory.push('/agents');
 
-}
+  }
 
 }
 
@@ -877,32 +848,32 @@ export function editTeam(team) {
     fetch(`${baseURL}/api/editteam`, {
       method: 'post',
       body: JSON.stringify({
-        team :{
-          _id:team.id,
+        team: {
+          _id: team.id,
           groupname: team.name,
           groupdescription: team.desc,
-          status : team.status,
+          status: team.status,
         },
         teamagents: team.teamagents
 
       })
       ,
       headers: new Headers({
-         'Authorization': team.token,
+        'Authorization': team.token,
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-         console.log(res.statusCode);
-      //   alert(res.message);
-         browserHistory.push('/teams');
+        console.log(res.statusCode);
+        //   alert(res.message);
+        browserHistory.push('/teams');
 
-        }
+      }
     );
   };
 }
 
 
-export function getTeamRequest(team,usertoken) {
+export function getTeamRequest(team, usertoken) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/getTeam?id=${team}`, {
       method: 'get',
@@ -922,57 +893,55 @@ export function deleteTEAM(team) {
 
 }
 
-export function deleteteam(team,id,usertoken) {
-  if(confirm("Do you want to delete this Team?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteTeam?id=${id}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteTEAM(team)));
-  };
-}
-else{
-  browserHistory.push('/teams');
+export function deleteteam(team, id, usertoken) {
+  if (confirm("Do you want to delete this Team?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/deleteTeam?id=${id}`, {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+      }).then((res) => res.json()).then((res) => res).then(res => dispatch(deleteTEAM(team)));
+    };
+  }
+  else {
+    browserHistory.push('/teams');
+
+  }
 
 }
 
-}
+export function jointeam(team, userid, usertoken) {
 
-export function jointeam(team,userid,usertoken) {
+  if (confirm("Do you want to join this Team?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/joinTeam`, {
+        method: 'post',
+        body: JSON.stringify({
+          groupid: team.get('_id'),
+          agentid: userid,
 
-  if(confirm("Do you want to join this Team?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/joinTeam`, {
-      method: 'post',
-      body: JSON.stringify({
-            groupid : team.get('_id'),
-            agentid : userid,
+        }),
 
-      }),
-
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-   }).then((res) => res.json()).then((res) => res).then((res) => {
-         console.log(res.statusCode);
-         if(res.statusCode == 200){
-           alert("You have joined the team");
-         }else{
-         alert("Failed to join the team");
-         }
-         console.log("Team Joining", res.message);
-         browserHistory.push('/dashboard');
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+      }).then((res) => res.json()).then((res) => res).then((res) => {
+        console.log(res.statusCode);
+        if (res.statusCode == 200) {
+          alert("You have joined the team");
+        } else {
+          alert("Failed to join the team");
+        }
+        console.log("Team Joining", res.message);
+        browserHistory.push('/dashboard');
 
         }
-    );
-  };
-}
+      );
+    };
+  }
 }
 
 
@@ -980,8 +949,8 @@ export function getTeamAgents(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/teamagents`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token,
         'Pragma': 'no-cache'
       }),
@@ -995,32 +964,32 @@ export function createteamError(message) {
     message,
   }
 }
-export function createTeam(team,usertoken) {
+export function createTeam(team, usertoken) {
 //  console.log('createTeam is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/createteam`, {
       method: 'post',
 
       body: JSON.stringify({
-          groupname: team.groupname,
-          groupdescription: team.groupdescription,
-          status : team.status,
+        groupname: team.groupname,
+        groupdescription: team.groupdescription,
+        status: team.status,
 
 
       }),
 
       headers: new Headers({
-         'Authorization': usertoken,
+        'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
 
     }).then((res) => res.json()).then((res) => res).then((res) => {
-     // dispatch(createteamError(res))
-     console.log("Response", res);
-    // alert("Response", res);
-     browserHistory.push('/teams');
+      // dispatch(createteamError(res))
+      console.log("Response", res);
+      // alert("Response", res);
+      browserHistory.push('/teams');
       }
-     );
+    );
   };
 }
 
@@ -1036,8 +1005,8 @@ export function getteams(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getteams`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1046,13 +1015,12 @@ export function getteams(token) {
 }
 
 
-
 /*************************************************************************************************/
 /*                      Subgroup Related Actions                                                  */
 
 /*************************************************************************************************/
 
-export function createSubgroup(subgroup,usertoken,customers){
+export function createSubgroup(subgroup, usertoken, customers) {
   console.log(subgroup);
   console.log(usertoken);
   console.log('create message subgroup is called');
@@ -1060,25 +1028,24 @@ export function createSubgroup(subgroup,usertoken,customers){
     fetch(`${baseURL}/api/createSubgroup`, {
       method: 'post',
       headers: new Headers({
-         'Authorization': usertoken,
+        'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      subgroup : subgroup,
-      customers:customers,
+        subgroup: subgroup,
+        customers: customers,
       }),
- }).then((res) => res.json()).then((res) => res).then((res) => {
+    }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
         browserHistory.push('/subgroups');
 
-        }
+      }
     );
   };
 }
 
 
-
-export function editSubgroup(subgroup,usertoken,customers){
+export function editSubgroup(subgroup, usertoken, customers) {
   console.log(subgroup);
   console.log(usertoken);
   console.log('edit message subgroup is called');
@@ -1090,8 +1057,8 @@ export function editSubgroup(subgroup,usertoken,customers){
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      subgroup : subgroup,
-      customers:customers,
+        subgroup: subgroup,
+        customers: customers,
       })
 
       ,
@@ -1099,14 +1066,14 @@ export function editSubgroup(subgroup,usertoken,customers){
 
         browserHistory.push('/subgroups');
 
-        }
+      }
     );
   };
 }
 
 
-export function updatesubgrouplist(id){
-   return {
+export function updatesubgrouplist(id) {
+  return {
     type: ActionTypes.FILTER_SUBGROUPS,
     id,
 
@@ -1131,19 +1098,19 @@ export function showCustomerSubgroups(subgroups) {
 }
 
 /*** get subgroups ***/
-export function getcustomersubgroups(appid,appsecret,companyid){
+export function getcustomersubgroups(appid, appsecret, companyid) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomersubgroups/`, {
-        method: 'post',
-        body: JSON.stringify({
-          appid: appid,
-          appsecret : appsecret,
-          clientid:companyid,
+      method: 'post',
+      body: JSON.stringify({
+        appid: appid,
+        appsecret: appsecret,
+        clientid: companyid,
 
 
       })
-        ,
-        headers: new Headers({
+      ,
+      headers: new Headers({
         'Content-Type': 'application/json',
       }),
 
@@ -1154,8 +1121,8 @@ export function getsubgroups(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsubgroups`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1164,14 +1131,13 @@ export function getsubgroups(token) {
 }
 
 
-export function getSessionDetailsRequest(id,usertoken)
-{
+export function getSessionDetailsRequest(id, usertoken) {
   return {
     type: ActionTypes.ADD_SELECTED_SESSIONSUMMARY,
     id,
   };
 }
-export function getSubgroupRequest(id,usertoken) {
+export function getSubgroupRequest(id, usertoken) {
   console.log(id)
   return {
     type: ActionTypes.ADD_SELECTED_SUBGROUP,
@@ -1183,31 +1149,30 @@ export function deleteSUBGROUP(subgroup) {
   alert('Subgroup deleted successfully');
   return {
     type: ActionTypes.DELETE_SUBGROUP,
-   subgroup,
+    subgroup,
   };
 }
-export function deletesubgroup(subgroup,usertoken,customers) {
-  console.log('deletesubgroup Action is called '+ subgroup._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this subgroup?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteSubgroup?id=${subgroup._id}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-      subgroup : subgroup,
-      customers:customers,
-      })
-    }).then((res) => res).then(res => dispatch(deleteSUBGROUP(subgroup)));
-  };
-}
-else{
-  browserHistory.push('/subgroups');
+export function deletesubgroup(subgroup, usertoken, customers) {
+  console.log('deletesubgroup Action is called ' + subgroup._id + 'your token : ' + usertoken);
+  if (confirm("Do you want to delete this subgroup?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/deleteSubgroup?id=${subgroup._id}`, {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({
+          subgroup: subgroup,
+          customers: customers,
+        })
+      }).then((res) => res).then(res => dispatch(deleteSUBGROUP(subgroup)));
+    };
+  }
+  else {
+    browserHistory.push('/subgroups');
 
-}
+  }
 
 }
 
@@ -1226,39 +1191,36 @@ export function showResponse(response) {
 }
 
 
-export function createResponse(cr){
+export function createResponse(cr) {
   console.log(cr);
   console.log('create canned response is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/createResponse`, {
       method: 'post',
-       body: JSON.stringify({
-          shortcode : cr.shortcode,
-          message:    cr.message,
-          companyid :  cr.companyid
-      }) ,
+      body: JSON.stringify({
+        shortcode: cr.shortcode,
+        message: cr.message,
+        companyid: cr.companyid
+      }),
       headers: new Headers({
-         'Authorization': cr.usertoken,
+        'Authorization': cr.usertoken,
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
-          if(res.statusCode != 200){
-         browserHistory.push('/cannedresponses');
+        if (res.statusCode != 200) {
+          browserHistory.push('/cannedresponses');
         }
-        else{
-           browserHistory.push('/cannedresponses');
-            }
+        else {
+          browserHistory.push('/cannedresponses');
         }
+      }
     );
   };
 }
 
 
-
-
-
-export function editResponse(response,usertoken){
+export function editResponse(response, usertoken) {
   console.log(response);
   console.log(usertoken);
   console.log('edit response is called');
@@ -1270,7 +1232,7 @@ export function editResponse(response,usertoken){
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      response : response
+        response: response
       })
 
       ,
@@ -1278,7 +1240,7 @@ export function editResponse(response,usertoken){
         console.log(res.statusCode);
         browserHistory.push('/cannedresponses');
 
-        }
+      }
     );
   };
 }
@@ -1297,8 +1259,8 @@ export function getresponses(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getresponses`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1307,7 +1269,7 @@ export function getresponses(token) {
 }
 
 
-export function getResponseRequest(id,usertoken) {
+export function getResponseRequest(id, usertoken) {
   console.log(id)
   return {
     type: ActionTypes.ADD_SELECTED_RESPONSE,
@@ -1320,87 +1282,82 @@ export function deleteRESPONSE(response) {
   alert(response._id);
   return {
     type: ActionTypes.DELETE_RESPONSE,
-   response,
+    response,
   };
 }
-export function deleteresponse(response,usertoken) {
-  console.log('deleteresponse Action is called '+ response._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this canned response?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteResponse?id=${response._id}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res).then(res => dispatch(deleteRESPONSE(response)));
-  };
-}
-else{
-  browserHistory.push('/cannedresponses');
+export function deleteresponse(response, usertoken) {
+  console.log('deleteresponse Action is called ' + response._id + 'your token : ' + usertoken);
+  if (confirm("Do you want to delete this canned response?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/deleteResponse?id=${response._id}`, {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+      }).then((res) => res).then(res => dispatch(deleteRESPONSE(response)));
+    };
+  }
+  else {
+    browserHistory.push('/cannedresponses');
+
+  }
 
 }
-
-}
-
-
-
 
 
 /***************** Chat Actions ********************/
 
-export function getsessionsfromsocket(customerchat,selected_chat){
+export function getsessionsfromsocket(customerchat, selected_chat) {
   var customer_not_left = false;
-  if(selected_chat)
-  {
-        for(var i=0;i<customerchat.length;i++){
-          if(customerchat[i].request_id == selected_chat.request_id){
-              selected_chat = customerchat[i];
-              customer_not_left = true;
-              break;
-          }
-        }
-}
+  if (selected_chat) {
+    for (var i = 0; i < customerchat.length; i++) {
+      if (customerchat[i].request_id == selected_chat.request_id) {
+        selected_chat = customerchat[i];
+        customer_not_left = true;
+        break;
+      }
+    }
+  }
   var current_chat;
-  if(customer_not_left == true){
-      current_chat = selected_chat;
+  if (customer_not_left == true) {
+    current_chat = selected_chat;
 
   }
 
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
-    customerchat_selected:  current_chat,
+    customerchat_selected: current_chat,
 
   };
 }
 
-export function getsessionsfromserver(customerchat){
+export function getsessionsfromserver(customerchat) {
 // add a filter here to filter only mobile clients sessions
-customerchat = customerchat.filter((c) => c.platform == "mobile")
+  customerchat = customerchat.filter((c) => c.platform == "mobile")
 
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
     customerchat,
-    serverresponse : 'received',
+    serverresponse: 'received',
 
   };
 }
 
-export function showChatSummary(sessions){
+export function showChatSummary(sessions) {
   return {
     type: ActionTypes.SHOW_CHAT_SUMMARY,
-    sessionsummary : sessions,
+    sessionsummary: sessions,
 
   };
 }
 export function showAllChat(customerchat) {
-/* var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
-                  {'id': '2','username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
-                  {'id': '3','username' : 'Joe','group' :'Payment','msg' :'Please confirm Payment status' }]
+  /* var customerchat = [{'id': '1','username' : 'John','group' :'IT','msg' :'I need help in software installation' },
+   {'id': '2','username' : 'Alice','group' :'Sales','msg' :'I didnt get my order yet' },
+   {'id': '3','username' : 'Joe','group' :'Payment','msg' :'Please confirm Payment status' }]
 
-*/
+   */
 
   return {
     type: ActionTypes.SHOW_ALL_CHAT,
@@ -1409,109 +1366,107 @@ export function showAllChat(customerchat) {
   };
 }
 
-export function showMyPickChatSessions(sessions,userid){
-  var mypickedsessions = sessions.filter((c) => c.status != "new" && c.agent_ids.length>0 && c.agent_ids[c.agent_ids.length-1].id == userid)
+export function showMyPickChatSessions(sessions, userid) {
+  var mypickedsessions = sessions.filter((c) => c.status != "new" && c.agent_ids.length > 0 && c.agent_ids[c.agent_ids.length - 1].id == userid)
   return {
     type: ActionTypes.SHOW_MY_PICKED_SESSIONS,
-    mypickedsessions : mypickedsessions,
+    mypickedsessions: mypickedsessions,
 
   };
 }
 
 
-export function showNewChatSessions(sessions){
+export function showNewChatSessions(sessions) {
   var newsessions = sessions.filter((c) => c.status == "new")
   return {
     type: ActionTypes.SHOW_NEW_SESSIONS,
-    newsessions : newsessions,
+    newsessions: newsessions,
 
   };
 }
 
-export function showAssignedChatSessions(sessions){
-  var assignedsessions = sessions.filter((c) => c.status == "assigned" && c.agent_ids.length>0)
+export function showAssignedChatSessions(sessions) {
+  var assignedsessions = sessions.filter((c) => c.status == "assigned" && c.agent_ids.length > 0)
   return {
     type: ActionTypes.SHOW_ASSIGNED_SESSIONS,
-    assignedsessions : assignedsessions,
+    assignedsessions: assignedsessions,
 
   };
 }
 
-export function showResolvedChatSessions(sessions){
-  var resolvedsessions = sessions.filter((c) => c.status == "resolved" && c.agent_ids.length>0)
+export function showResolvedChatSessions(sessions) {
+  var resolvedsessions = sessions.filter((c) => c.status == "resolved" && c.agent_ids.length > 0)
   return {
     type: ActionTypes.SHOW_RESOLVED_SESSIONS,
-    resolvedsessions : resolvedsessions,
+    resolvedsessions: resolvedsessions,
 
   };
 }
 
 
-
-export function getresolvedsessionsfromsocket(sessions,serversessions){
+export function getresolvedsessionsfromsocket(sessions, serversessions) {
   var resolvedsocketsessions = sessions.filter((c) => c.status == "resolved")
-  for(var j=0;j<resolvedsocketsessions.length-1;j++){
-     for(var i=0;i<serversessions.length-1;i++){
+  for (var j = 0; j < resolvedsocketsessions.length - 1; j++) {
+    for (var i = 0; i < serversessions.length - 1; i++) {
 
-      if(serversessions[i].request_id == resolvedsocketsessions[j].request_id){
-        serversessions.splice(i,1);
+      if (serversessions[i].request_id == resolvedsocketsessions[j].request_id) {
+        serversessions.splice(i, 1);
         break;
       }
     }
   }
   return {
     type: ActionTypes.SHOW_RESOLVED_SOCKET_SESSIONS,
-    resolvedsocketsessions : resolvedsocketsessions,
-    resolvedsessions : serversessions,
+    resolvedsocketsessions: resolvedsocketsessions,
+    resolvedsessions: serversessions,
   };
 }
 
-export function getnewsessionsfromsocket(sessions,serversessions){
+export function getnewsessionsfromsocket(sessions, serversessions) {
   var newsocketsessions = sessions.filter((c) => c.status == "new")
-  for(var j=0;j<newsocketsessions.length-1;j++){
-     for(var i=0;i<serversessions.length-1;i++){
+  for (var j = 0; j < newsocketsessions.length - 1; j++) {
+    for (var i = 0; i < serversessions.length - 1; i++) {
 
-      if(serversessions[i].request_id == newsocketsessions[j].request_id){
-        serversessions.splice(i,1);
+      if (serversessions[i].request_id == newsocketsessions[j].request_id) {
+        serversessions.splice(i, 1);
         break;
       }
     }
   }
   return {
     type: ActionTypes.SHOW_NEW_SOCKET_SESSIONS,
-    newsocketsessions : newsocketsessions,
-    newsessions : serversessions,
+    newsocketsessions: newsocketsessions,
+    newsessions: serversessions,
   };
 }
 
-export function getassignedsessionsfromsocket(sessions,serversessions){
+export function getassignedsessionsfromsocket(sessions, serversessions) {
   var assignedsocketsessions = sessions.filter((c) => c.status == "assigned")
-  for(var j=0;j<assignedsocketsessions.length-1;j++){
-     for(var i=0;i<serversessions.length-1;i++){
+  for (var j = 0; j < assignedsocketsessions.length - 1; j++) {
+    for (var i = 0; i < serversessions.length - 1; i++) {
 
-      if(serversessions[i].request_id == assignedsocketsessions[j].request_id){
-        serversessions.splice(i,1);
+      if (serversessions[i].request_id == assignedsocketsessions[j].request_id) {
+        serversessions.splice(i, 1);
         break;
       }
     }
   }
   return {
     type: ActionTypes.SHOW_ASSIGNED_SOCKET_SESSIONS,
-    assignedsocketsessions : assignedsocketsessions,
-    assignedsessions : serversessions,
+    assignedsocketsessions: assignedsocketsessions,
+    assignedsessions: serversessions,
   };
 }
-export function filterbystatus(status,customerchat) {
+export function filterbystatus(status, customerchat) {
 
   var filtered;
-  if(status == "all")
-  {
+  if (status == "all") {
     filtered = customerchat
   }
- else{
-   filtered = customerchat.filter((c) => c.status == status)
+  else {
+    filtered = customerchat.filter((c) => c.status == status)
 
- }
+  }
 
   console.log(filtered);
 
@@ -1525,16 +1480,15 @@ export function filterbystatus(status,customerchat) {
 }
 
 
-export function filterbyDept(id,customerchat) {
- var filtered;
-  if(id == "all")
-  {
+export function filterbyDept(id, customerchat) {
+  var filtered;
+  if (id == "all") {
     filtered = customerchat
   }
- else{
-  filtered = customerchat.filter((c) => c.departmentid == id)
+  else {
+    filtered = customerchat.filter((c) => c.departmentid == id)
 
- }
+  }
   console.log(filtered);
 
   console.log(customerchat);
@@ -1546,19 +1500,18 @@ export function filterbyDept(id,customerchat) {
   };
 }
 
-export function filterbySubgroup(id,customerchat) {
+export function filterbySubgroup(id, customerchat) {
 
   var filtered;
-  if(id == "all")
-  {
+  if (id == "all") {
     filtered = customerchat
   }
-  else{
+  else {
 
     filtered = customerchat.filter((c) => c.messagechannel == id)
 
   }
-    console.log(filtered);
+  console.log(filtered);
 
   console.log(customerchat);
   return {
@@ -1573,22 +1526,21 @@ export function filterbyAgent(id, customerchat) {
 
   console.log("In Filter Agent");
   var filtered;
-  if(id == "all")
-  {
+  if (id == "all") {
     filtered = customerchat
   }
-  else{
+  else {
 
     filtered = customerchat.filter((c) => {
       console.log(c.agent_ids);
-      if(c.agent_ids.length != 0){
-      return c.agent_ids[c.agent_ids.length-1].id == id;
+      if (c.agent_ids.length != 0) {
+        return c.agent_ids[c.agent_ids.length - 1].id == id;
       }
       // return id;
     });
 
   }
-    console.log("Filtered", filtered);
+  console.log("Filtered", filtered);
 
   console.log("unfiltered", customerchat);
   return {
@@ -1599,147 +1551,145 @@ export function filterbyAgent(id, customerchat) {
   };
 }
 
-export function updatefbstatus(id,fbchats){
-  for(var i=0;i<fbchats.length;i++){
-    if(fbchats[i].senderid == id){
+export function updatefbstatus(id, fbchats) {
+  for (var i = 0; i < fbchats.length; i++) {
+    if (fbchats[i].senderid == id) {
       fbchats[i].seen = true;
     }
   }
 
-  return{
+  return {
     fbchats: fbchats,
     type: ActionTypes.FB_CHAT_STATUS,
   }
 }
-export function selectFbCustomerChat(id,fbchat,profile_pic,selectedsession){
+export function selectFbCustomerChat(id, fbchat, profile_pic, selectedsession) {
   var newfbChat = []
-  var temp = fbchat.filter((c)=>c.senderid == id || c.recipientid == id);
-  for(var i=0;i<temp.length;i++){
-    if(temp[i].message){
-    newfbChat.push(
-      {
-        message: temp[i].message.text,
-        inbound: true,
-        backColor: '#3d83fa',
-        textColor: "white",
-        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
-        duration: 0,
-        timestamp:temp[i].timestamp,
-        senderid:temp[i].senderid,
-        recipientid:temp[i].recipientid,
-        mid:temp[i].message.mid,
-        attachments:temp[i].message.attachments,
-        seen:false
-      })
+  var temp = fbchat.filter((c) => c.senderid == id || c.recipientid == id);
+  for (var i = 0; i < temp.length; i++) {
+    if (temp[i].message) {
+      newfbChat.push(
+        {
+          message: temp[i].message.text,
+          inbound: true,
+          backColor: '#3d83fa',
+          textColor: "white",
+          avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+          duration: 0,
+          timestamp: temp[i].timestamp,
+          senderid: temp[i].senderid,
+          recipientid: temp[i].recipientid,
+          mid: temp[i].message.mid,
+          attachments: temp[i].message.attachments,
+          seen: false
+        })
+    }
   }
-  }
-  return{
+  return {
     fbchatSelected: newfbChat,
-    profile_pic:profile_pic,
-    fbsessionSelected:selectedsession,
+    profile_pic: profile_pic,
+    fbsessionSelected: selectedsession,
     type: ActionTypes.FB_CHAT_SELECTED,
   }
 }
 
 
-export function add_socket_fb_message(data,fbchats,id,fbsessions,order){
-console.log(id);
+export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
+  console.log(id);
 
-fbchats.push(data);
+  fbchats.push(data);
 
-var newfbChat = []
-var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
-console.log(temp.length)
-  for(var i=0;i<temp.length;i++){
-    if(temp[i].message){
-    newfbChat.push(
-      {
-        message: temp[i].message.text,
-        inbound: true,
-        backColor: '#3d83fa',
-        textColor: "white",
-        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
-        duration: 0,
-        timestamp:temp[i].timestamp,
-        senderid:temp[i].senderid,
-        recipientid:temp[i].recipientid,
-        mid:temp[i].message.mid,
-        attachments:temp[i].message.attachments,
-        seen:false,
-      })
-  }
+  var newfbChat = []
+  var temp = fbchats.filter((c) => c.senderid == id || c.recipientid == id);
+  console.log(temp.length)
+  for (var i = 0; i < temp.length; i++) {
+    if (temp[i].message) {
+      newfbChat.push(
+        {
+          message: temp[i].message.text,
+          inbound: true,
+          backColor: '#3d83fa',
+          textColor: "white",
+          avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+          duration: 0,
+          timestamp: temp[i].timestamp,
+          senderid: temp[i].senderid,
+          recipientid: temp[i].recipientid,
+          mid: temp[i].message.mid,
+          attachments: temp[i].message.attachments,
+          seen: false,
+        })
+    }
   }
 // removing duplicates
-    var newArray = [];
-     var lookupObject  = {};
+  var newArray = [];
+  var lookupObject = {};
 
-     for(var i in newfbChat) {
-        lookupObject[newfbChat[i]['mid']] = newfbChat[i];
-     }
+  for (var i in newfbChat) {
+    lookupObject[newfbChat[i]['mid']] = newfbChat[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
-
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
 
 
 //update last message field
-var newArrayC = []
-for(var i=0;i< fbsessions.length;i++){
-  var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
-  var lastmessage = selectedchat[selectedchat.length-1];
-  console.log('lastmessage');
-  console.log(lastmessage);
-  var newfbsession = fbsessions[i];
-  if(!newfbsession.lastmessage){
-    console.log('newfbsession.lastmessage was not defined');
-    newfbsession['lastmessage'] = lastmessage;
-    console.log(newfbsession);
+  var newArrayC = []
+  for (var i = 0; i < fbsessions.length; i++) {
+    var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+    var lastmessage = selectedchat[selectedchat.length - 1];
+    console.log('lastmessage');
+    console.log(lastmessage);
+    var newfbsession = fbsessions[i];
+    if (!newfbsession.lastmessage) {
+      console.log('newfbsession.lastmessage was not defined');
+      newfbsession['lastmessage'] = lastmessage;
+      console.log(newfbsession);
+    }
+    else {
+      newfbsession.lastmessage = lastmessage;
+
+    }
+    newArrayC.push(newfbsession);
   }
-  else{
-    newfbsession.lastmessage = lastmessage;
 
-  }
-  newArrayC.push(newfbsession);
-}
+  var sorted = orderByDate(newArrayC, 'timestamp', Number(order));
 
-var sorted = orderByDate(newArrayC,'timestamp',Number(order));
-
-   return{
+  return {
     fbchatSelected: newArray,
-    fbchats:fbchats,
-    fbsessions:sorted,
+    fbchats: fbchats,
+    fbsessions: sorted,
     type: ActionTypes.FB_CHAT_ADDED,
   }
 
 
 }
 
-export function sortSessionsList(fbsessions,order){
+export function sortSessionsList(fbsessions, order) {
 
-  var sorted = orderByDate(fbsessions,'timestamp',Number(order));
+  var sorted = orderByDate(fbsessions, 'timestamp', Number(order));
 
-   return{
-    fbsessions:sorted,
-    order:order,
+  return {
+    fbsessions: sorted,
+    order: order,
     type: ActionTypes.FB_SORT_SESSIONS,
 
   }
 }
-export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
-  if(new_message_arrived_rid && new_message_arrived_rid.length > 0)
-  {
+export function selectCustomerChat(id, customerchat, new_message_arrived_rid) {
+  if (new_message_arrived_rid && new_message_arrived_rid.length > 0) {
 
-    for(var i = new_message_arrived_rid.length - 1; i >= 0; i--){
-      if(new_message_arrived_rid[i] == id){
+    for (var i = new_message_arrived_rid.length - 1; i >= 0; i--) {
+      if (new_message_arrived_rid[i] == id) {
         //remove item from array
-          new_message_arrived_rid.splice(i, 1);
+        new_message_arrived_rid.splice(i, 1);
       }
     }
 
   }
-  else{
-    new_message_arrived_rid=[]
+  else {
+    new_message_arrived_rid = []
   }
   var customerchat_selected = customerchat.filter((c) => c.request_id == id)
   return {
@@ -1750,31 +1700,30 @@ export function selectCustomerChat(id,customerchat,new_message_arrived_rid){
 }
 
 
-
-export function getmypickedsessions(token,userid){
+export function getmypickedsessions(token, userid) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showMyPickChatSessions(res,userid)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showMyPickChatSessions(res, userid)));
   };
 }
 
 
 //get new sessions list
 
-export function getnewsessions(token){
+export function getnewsessions(token) {
   console.log(token);
 
 
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1782,22 +1731,22 @@ export function getnewsessions(token){
   };
 }
 
-export function chatmessageSent(res){
-    return {
+export function chatmessageSent(res) {
+  return {
     type: ActionTypes.CHAT_SENT_TO_AGENT,
-    status : res.status,
-  //  customerid,
+    status: res.status,
+    //  customerid,
 
   };
 }
 
 //send message to customer
-export function getchatfromAgent(chat){
- return (dispatch) => {
+export function getchatfromAgent(chat) {
+  return (dispatch) => {
     fetch(`${baseURL}/api/getchatfromagent`, {
-        method:'post',
-        body: JSON.stringify(chat),
-        headers: new Headers({
+      method: 'post',
+      body: JSON.stringify(chat),
+      headers: new Headers({
         'Content-Type': 'application/json',
 
       }),
@@ -1805,28 +1754,28 @@ export function getchatfromAgent(chat){
   };
 }
 //send messsage to agent
-export function sendmessageToAgent(chat){
- console.log('sendmessageToAgent');
- console.log(chat);
+export function sendmessageToAgent(chat) {
+  console.log('sendmessageToAgent');
+  console.log(chat);
   return (dispatch) => {
     fetch(`${baseURL}/api/getchat`, {
-        method:'post',
-        body: JSON.stringify(chat),
-        headers: new Headers({
+      method: 'post',
+      body: JSON.stringify(chat),
+      headers: new Headers({
         'Content-Type': 'application/json',
 
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatmessageSent(res)));
   };
 }
-export function getresolvedsessions(token){
+export function getresolvedsessions(token) {
   console.log(token);
 
 
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1835,16 +1784,14 @@ export function getresolvedsessions(token){
 }
 
 
-
-
-export function getassignedsessions(token){
+export function getassignedsessions(token) {
   console.log(token);
 
 
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1857,8 +1804,8 @@ export function getsessions(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1871,8 +1818,8 @@ export function getmobilesessions(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -1883,47 +1830,46 @@ export function getmobilesessions(token) {
 
 }
 
-export function previousChat(previouschat,chatlist){
-    var newchatlist = [...previouschat,...chatlist];
+export function previousChat(previouschat, chatlist) {
+  var newchatlist = [...previouschat, ...chatlist];
 
-    //removing duplicates
-    var newArray = [];
-     var lookupObject  = {};
+  //removing duplicates
+  var newArray = [];
+  var lookupObject = {};
 
-     for(var i in newchatlist) {
-        lookupObject[newchatlist[i]['uniqueid']] = newchatlist[i];
-     }
+  for (var i in newchatlist) {
+    lookupObject[newchatlist[i]['uniqueid']] = newchatlist[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
-    return {
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
+  return {
     type: ActionTypes.SHOW_CHAT_HISTORY,
     chatlist: newArray,
-  //  customerid,
+    //  customerid,
 
   };
 }
 
-export function getChatRequest(customerid,token,chlist){
-  var chatlist =[];
+export function getChatRequest(customerid, token, chlist) {
+  var chatlist = [];
 
-  if(chlist){
-      chatlist = chlist;
+  if (chlist) {
+    chatlist = chlist;
   }
- // var customerid = 1;
+  // var customerid = 1;
   console.log(chatlist);
   return {
     type: ActionTypes.SHOW_CHAT_HISTORY,
     chatlist,
-  //  customerid,
+    //  customerid,
 
   };
 }
 
 
-export function updateChatList(message,ch,id_not_added)
-{
+export function updateChatList(message, ch, id_not_added) {
   console.log("update chat list is called.");
   console.log(message);
   console.log(ch);
@@ -1931,33 +1877,33 @@ export function updateChatList(message,ch,id_not_added)
   console.log(message.request_id);
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
-  if(!id_not_added){
-    if(ch){
+  if (!id_not_added) {
+    if (ch) {
       console.log("this one");
       ch.push(new_message_arrived_rid);
     }
-    else{
-      ch =[];
+    else {
+      ch = [];
       ch.push(new_message_arrived_rid);
     }
   }
   else {
-    if(ch){
-      if(new_message_arrived_rid != id_not_added){
+    if (ch) {
+      if (new_message_arrived_rid != id_not_added) {
         console.log("message added");
         ch.push(new_message_arrived_rid);
       }
     }
-    else{
-      ch =[];
-      if(new_message_arrived_rid != id_not_added){
+    else {
+      ch = [];
+      if (new_message_arrived_rid != id_not_added) {
         ch.push(new_message_arrived_rid);
       }
     }
 
   }
 
-   return {
+  return {
     type: ActionTypes.ADD_CHAT_MESSAGE,
     message,
     ch,
@@ -1965,15 +1911,13 @@ export function updateChatList(message,ch,id_not_added)
   };
 }
 
-export function updateSessionList(customerchat)
-{
-   return {
+export function updateSessionList(customerchat) {
+  return {
     type: ActionTypes.ADD_SESSION,
     customerchat
 
   };
 }
-
 
 
 /********************** Notifications Actions ***********************************/
@@ -1984,49 +1928,45 @@ export function showNotifications(notifications) {
   };
 }
 
-export function uploadpicture(data,fname,token,picture) {
+export function uploadpicture(data, fname, token, picture) {
   //console.log(data);
   console.log(fname);
   var values = {
-       file: data,
-       fileName:fname,
-       oldprofile : picture
+    file: data,
+    fileName: fname,
+    oldprofile: picture
 
-     };
+  };
   return (dispatch) => {
     fetch(`${baseURL}/api/uploadpicture`, {
       method: 'post',
-        body: JSON.stringify(values),
-        headers: new Headers({
+      body: JSON.stringify(values),
+      headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
-
-
-      );
+    );
   };
 
 };
 
-export function showfilesuccess(res){
+export function showfilesuccess(res) {
   alert('file shared successfully');
 }
 
-export function uploadChatfile(fileData,usertoken) {
+export function uploadChatfile(fileData, usertoken) {
   console.log(fileData);
   return (dispatch) => {
     fetch(`${baseURL}/api/uploadchatfileAgent`, {
       method: 'post',
-        body : fileData,
-        headers: new Headers({
+      body: fileData,
+      headers: new Headers({
         'Authorization': usertoken,
 
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfilesuccess(res))
-
-
-      );
+    );
   };
 
 };
@@ -2037,8 +1977,8 @@ export function getnotifications(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getnotifications`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -2047,11 +1987,11 @@ export function getnotifications(token) {
 }
 
 
-export function confirmNotification(res){
-      console.log(res);
+export function confirmNotification(res) {
+  console.log(res);
   return {
     type: ActionTypes.CONFIRM_NOTIFICATION,
-    msg:'success',
+    msg: 'success',
 
   };
 }
@@ -2063,7 +2003,7 @@ export function createNotification(notification) {
       method: 'post',
       body: JSON.stringify({
         notification: notification.notification,
-        customers : notification.customers
+        customers: notification.customers
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2072,11 +2012,10 @@ export function createNotification(notification) {
       }),
     }).then((res) => res.json()).then(res => {
 
-        browserHistory.push('/notifications');
+      browserHistory.push('/notifications');
     });
   };
 }
-
 
 
 export function resendNotification(notification) {
@@ -2085,7 +2024,7 @@ export function resendNotification(notification) {
       method: 'post',
       body: JSON.stringify({
         notification: notification.notification,
-        customers : notification.customers
+        customers: notification.customers
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2093,44 +2032,41 @@ export function resendNotification(notification) {
 
       }),
     }).then((res) => res.json()).then(res => {
-        alert('Notification resent!')
-       // browserHistory.push('/notifications');
+      alert('Notification resent!')
+      // browserHistory.push('/notifications');
     });
   };
 }
 
 
-
-
 export function deleteNOTIFICATION(notification) {
   return {
     type: ActionTypes.DELETE_NOTIFICATION,
-   notification,
+    notification,
   };
 }
-export function deletenotification(notification,usertoken) {
-  console.log('deletenotification Action is called '+ notification._id + 'your token : '  + usertoken);
-  if(confirm("Do you want to delete this notification?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deleteNotification?id=${notification._id}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res).then(res => dispatch(deleteNOTIFICATION(notification)));
-  };
-}
-else{
-  browserHistory.push('/notifications');
+export function deletenotification(notification, usertoken) {
+  console.log('deletenotification Action is called ' + notification._id + 'your token : ' + usertoken);
+  if (confirm("Do you want to delete this notification?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/deleteNotification?id=${notification._id}`, {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+      }).then((res) => res).then(res => dispatch(deleteNOTIFICATION(notification)));
+    };
+  }
+  else {
+    browserHistory.push('/notifications');
+
+  }
 
 }
 
-}
 
-
-export function editNotification(notification,usertoken){
+export function editNotification(notification, usertoken) {
   console.log(notification);
   console.log(usertoken);
   console.log('edit notification is called');
@@ -2142,7 +2078,7 @@ export function editNotification(notification,usertoken){
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-      notification : notification
+        notification: notification
       })
 
       ,
@@ -2150,13 +2086,13 @@ export function editNotification(notification,usertoken){
         console.log(res.statusCode);
         browserHistory.push('/notifications');
 
-        }
+      }
     );
   };
 }
 
 
-export function getNotificationRequest(id,usertoken) {
+export function getNotificationRequest(id, usertoken) {
   console.log(id)
   return {
     type: ActionTypes.ADD_SELECTED_NOTIFICATION,
@@ -2193,8 +2129,8 @@ export function getcountryname(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getCountryName`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -2206,8 +2142,8 @@ export function getcustomers(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomers`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -2216,12 +2152,11 @@ export function getcustomers(token) {
 }
 
 
-
 export function confirmCustomer(customer) {
   return {
     type: ActionTypes.ADD_CUSTOMER,
-    customer :customer,
-    msg : 'success',
+    customer: customer,
+    msg: 'success',
 
   };
 }
@@ -2232,7 +2167,7 @@ export function createcustomer(customer) {
     fetch(`${baseURL}/api/createCustomer`, {
       method: 'post',
       body: JSON.stringify({
-        customer:customer,
+        customer: customer,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2243,17 +2178,17 @@ export function createcustomer(customer) {
 }
 
 
-export function  emailCustomer(customer) {
+export function emailCustomer(customer) {
   console.log(customer);
   return (dispatch) => {
     fetch(`${baseURL}/api/emailCustomer`, {
       method: 'post',
       body: JSON.stringify({
-        to : customer.emailMsg.to,
-        emailAdd : customer.emailMsg.emailAdd,
-        subject : customer.emailMsg.subject,
-        body : customer.emailMsg.body,
-        from : customer.emailMsg.from,
+        to: customer.emailMsg.to,
+        emailAdd: customer.emailMsg.emailAdd,
+        subject: customer.emailMsg.subject,
+        body: customer.emailMsg.body,
+        from: customer.emailMsg.from,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2262,11 +2197,11 @@ export function  emailCustomer(customer) {
       }),
     }).then((res) => res.json()).then(res => {
       console.log(res.statusCode);
-        if(res.statusCode == 200){
+      if (res.statusCode == 200) {
         alert('Email sent successfully.');
         browserHistory.push('/customers');
       }
-       else{
+      else {
         alert('Email not sent to customer.There might be some errors.');
         browserHistory.push('/customers');
       }
@@ -2275,20 +2210,18 @@ export function  emailCustomer(customer) {
 }
 
 
-
-
-export function  submitemail(customer) {
+export function submitemail(customer) {
   console.log(customer);
- return (dispatch) => {
+  return (dispatch) => {
     fetch(`${baseURL}/api/rescheduleEmail`, {
       method: 'post',
       body: JSON.stringify({
-        to : customer.emailMsg.to,
-        emailAdd : customer.emailMsg.emailAdd,
-        subject : customer.emailMsg.subject,
-        body : customer.emailMsg.body,
-        from : customer.emailMsg.from,
-        url : customer.emailMsg.url
+        to: customer.emailMsg.to,
+        emailAdd: customer.emailMsg.emailAdd,
+        subject: customer.emailMsg.subject,
+        body: customer.emailMsg.body,
+        from: customer.emailMsg.from,
+        url: customer.emailMsg.url
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2297,11 +2230,11 @@ export function  submitemail(customer) {
       }),
     }).then((res) => res.json()).then(res => {
       console.log(res.statusCode);
-        if(res.statusCode == 200){
+      if (res.statusCode == 200) {
         alert('Email sent successfully.');
         browserHistory.push('/dashboard');
       }
-       else{
+      else {
         alert('Email not sent to customer.There might be some errors.');
         browserHistory.push('/dashboard');
       }
@@ -2310,16 +2243,15 @@ export function  submitemail(customer) {
 }
 
 
-
-export function  updatereschedule(session,customer) {
+export function updatereschedule(session, customer) {
   return (dispatch) => {
     fetch(`${baseURL}/api/updatereschedule`, {
       method: 'post',
       body: JSON.stringify({
-        is_rescheduled : session.is_rescheduled,
-        rescheduled_by : session.rescheduled_by,
-        request_id : session.request_id,
-        companyid : session.companyid,
+        is_rescheduled: session.is_rescheduled,
+        rescheduled_by: session.rescheduled_by,
+        request_id: session.request_id,
+        companyid: session.companyid,
 
       }),
       headers: new Headers({
@@ -2328,14 +2260,14 @@ export function  updatereschedule(session,customer) {
 
       }),
     }).then((res) => res.json()).then(res => dispatch(submitemail(customer)));
- };
+  };
 }
 
 export function confirmSession(session) {
   return {
     type: ActionTypes.CREATE_SESSION,
     session,
-    msg : 'success',
+    msg: 'success',
 
   };
 }
@@ -2349,45 +2281,45 @@ export function addRoom(room) {
   };
 }
 
-export function updateAgentList(onlineAgents){
-     var newArray = [];
-     var lookupObject  = {};
+export function updateAgentList(onlineAgents) {
+  var newArray = [];
+  var lookupObject = {};
 
-     for(var i in onlineAgents) {
-        lookupObject[onlineAgents[i]['email']] = onlineAgents[i];
-     }
+  for (var i in onlineAgents) {
+    lookupObject[onlineAgents[i]['email']] = onlineAgents[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
   return {
-    type : ActionTypes.ONLINE_AGENTS,
-    onlineAgents:newArray,
+    type: ActionTypes.ONLINE_AGENTS,
+    onlineAgents: newArray,
   }
 }
 
 /***** session create ****/
-export function  createsession(session) {
+export function createsession(session) {
   console.log(session);
   return (dispatch) => {
     fetch(`${baseURL}/api/createsession`, {
       method: 'post',
-       headers: new Headers({
+      headers: new Headers({
         'Content-Type': 'application/json',
 
       }),
       body: JSON.stringify({
-          session : session
+        session: session
       }),
 
 
     }).then((res) => res.json()).then(res => {
-        console.log(res.statusCode);
-        if(res.statusCode == 201){
-       // alert('session created successfully.');
+      console.log(res.statusCode);
+      if (res.statusCode == 201) {
+        // alert('session created successfully.');
         dispatch(confirmSession(session));
       }
-       else{
+      else {
         alert('Session not created');
 
       }
@@ -2395,36 +2327,36 @@ export function  createsession(session) {
   };
 }
 
-export function savechatResponse(chat){
+export function savechatResponse(chat) {
   return {
-    type : ActionTypes.CHAT_SAVE_RESPONSE,
-    tempMessage : chat,
-    ismessageSaved : 'true',
+    type: ActionTypes.CHAT_SAVE_RESPONSE,
+    tempMessage: chat,
+    ismessageSaved: 'true',
   }
 }
-export function  savechat(chat) {
+export function savechat(chat) {
   console.log(chat);
   return (dispatch) => {
     fetch(`${baseURL}/api/savechat`, {
       method: 'post',
-       headers: new Headers({
+      headers: new Headers({
         'Content-Type': 'application/json',
 
       }),
       body: JSON.stringify({
-          chat:chat
+        chat: chat
       }),
 
 
     }).then((res) => res.json()).then(res => {
-        console.log(res.statusCode);
-        if(res.statusCode == 201){
+      console.log(res.statusCode);
+      if (res.statusCode == 201) {
         console.log('chat saved.');
         dispatch(savechatResponse(chat));
 
       }
-       else{
-         console.log('chat not saved.');
+      else {
+        console.log('chat not saved.');
 
       }
     });
@@ -2432,48 +2364,47 @@ export function  savechat(chat) {
 }
 
 
-
 /**** update chat status when the session is assigned to agent ***/
 
-export function updateSessionStatus(session){
+export function updateSessionStatus(session) {
 
   console.log('updateSessionStatus is called');
   return {
-    type : ActionTypes.UPDATE_SESSION_STATUS,
+    type: ActionTypes.UPDATE_SESSION_STATUS,
     session,
   }
 
 }
 
-export function assignToAgentResponse(session){
+export function assignToAgentResponse(session) {
 
   console.log('assignToAgentResponse is called');
-   return {
-    type : ActionTypes.ASSIGN_CHAT_TO_AGENT,
+  return {
+    type: ActionTypes.ASSIGN_CHAT_TO_AGENT,
     session,
   }
 }
-export function resolvesessionResponse(request_id,customerchat){
+export function resolvesessionResponse(request_id, customerchat) {
 
-  for(var i=0;i<customerchat.length;i++){
-    if(customerchat[i].request_id == request_id){
+  for (var i = 0; i < customerchat.length; i++) {
+    if (customerchat[i].request_id == request_id) {
       customerchat[i].status = 'resolved';
       break;
 
     }
   }
   console.log('resolvesession called');
-   return {
-    type : ActionTypes.RESOLVE_SESSION,
-    customerchat:customerchat,
+  return {
+    type: ActionTypes.RESOLVE_SESSION,
+    customerchat: customerchat,
 
   }
 }
 
-export function movedToMessageSubgroupResponse(session){
+export function movedToMessageSubgroupResponse(session) {
   console.log('assignToSubgroupResponse is called');
-   return {
-    type : ActionTypes.MOVE_TO_MESSAGESUBGROUP,
+  return {
+    type: ActionTypes.MOVE_TO_MESSAGESUBGROUP,
     session,
   }
 }
@@ -2483,12 +2414,12 @@ export function updatestatus(session) {
     fetch(`${baseURL}/api/pickchatsession`, {
       method: 'post',
       body: JSON.stringify({
-        request_id : session.request_id,
+        request_id: session.request_id,
 
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
-       'Authorization': session.usertoken,
+        'Authorization': session.usertoken,
       }),
     }).then((res) => res.json()).then(res => dispatch(updateSessionStatus(session)));
   };
@@ -2496,17 +2427,17 @@ export function updatestatus(session) {
 
 /**** update agent assignment table when the session is assigned to agent ***/
 
-export function assignToAgent(session,usertoken,agentemail,assignmentType) {
+export function assignToAgent(session, usertoken, agentemail, assignmentType) {
   return (dispatch) => {
     fetch(`${baseURL}/api/assignToAgent`, {
       method: 'post',
       body: JSON.stringify({
-        companyid : session.companyid,
-        sessionid : session.sessionid,
-        agentAssignment : session,
-        type : session.type,
-        agentemail:agentemail,
-        assignmentType:assignmentType,
+        companyid: session.companyid,
+        sessionid: session.sessionid,
+        agentAssignment: session,
+        type: session.type,
+        agentemail: agentemail,
+        assignmentType: assignmentType,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2518,14 +2449,14 @@ export function assignToAgent(session,usertoken,agentemail,assignmentType) {
 }
 
 //moved to message subgroup
-export function movedToMessageSubgroup(session,usertoken) {
+export function movedToMessageSubgroup(session, usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/movedToMessageSubgroup`, {
       method: 'post',
       body: JSON.stringify({
-        companyid : session.companyid,
-        sessionid : session.sessionid,
-        subgroupAssignment : session,
+        companyid: session.companyid,
+        sessionid: session.sessionid,
+        subgroupAssignment: session,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -2537,7 +2468,7 @@ export function movedToMessageSubgroup(session,usertoken) {
 }
 
 
-export function setsocketid(yoursocketid){
+export function setsocketid(yoursocketid) {
   return {
     type: ActionTypes.SET_SOCKET_ID,
     yoursocketid,
@@ -2546,23 +2477,23 @@ export function setsocketid(yoursocketid){
   };
 }
 
-export function getchatsfromsocket(originalArray,newchats){
+export function getchatsfromsocket(originalArray, newchats) {
 
-     var newchatlist = [...originalArray,...newchats];
+  var newchatlist = [...originalArray, ...newchats];
 
-     var newArray = [];
-     var lookupObject  = {};
-     var prop = 'uniqueid';
-     for(var i in newchatlist) {
-        lookupObject[newchatlist[i][prop]] = newchatlist[i];
-     }
+  var newArray = [];
+  var lookupObject = {};
+  var prop = 'uniqueid';
+  for (var i in newchatlist) {
+    lookupObject[newchatlist[i][prop]] = newchatlist[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
-   return {
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
+  return {
     type: ActionTypes.ADD_USER_CHATS,
-    userchats : newArray,
+    userchats: newArray,
     chatlist: newArray,
 
 
@@ -2581,7 +2512,7 @@ export function showuserchat(userchats) {
 export function showuserchatspecific(userchats) {
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC,
-    userchathistory : userchats,
+    userchathistory: userchats,
 
 
   };
@@ -2591,12 +2522,14 @@ var sortBy = (function () {
 
   //cached privated objects
   var _toString = Object.prototype.toString,
-      //the default parser function
-      _parser = function (x) { return x; },
-      //gets the item to be sorted
-      _getItem = function (x) {
-        return this.parser((x !== null && typeof x === "object" && x[this.prop]) || x);
-      };
+    //the default parser function
+    _parser = function (x) {
+      return x;
+    },
+    //gets the item to be sorted
+    _getItem = function (x) {
+      return this.parser((x !== null && typeof x === "object" && x[this.prop]) || x);
+    };
 
   // Creates a method for sorting the Array
   // @array: the Array of elements
@@ -2620,10 +2553,10 @@ var sortBy = (function () {
 
 }());
 export function showuserchatspecific_mobile(userchats) {
-  var sort_us = sortBy(userchats, { desc: false, prop: "datetime" });//userchats.sort(sortFunction);​
+  var sort_us = sortBy(userchats, {desc: false, prop: "datetime"});//userchats.sort(sortFunction);​
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
-    mobileuserchat : sort_us,
+    mobileuserchat: sort_us,
 
 
   };
@@ -2633,8 +2566,8 @@ export function getuserchats(token) {
   return (dispatch) => {
     //uncomment for mobile sessions
     fetch(`${baseURL}/api/getuserchats`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -2645,35 +2578,34 @@ export function getuserchats(token) {
 
 
 //mark session resolve
-export function resolvesession(request_id,usertoken,customerchat) {
-  if(confirm("Are you sure,you want to mark session resolved?")){
-  return (dispatch) => {
-    fetch(`${baseURL}/api/resolvechatsession`, {
-      method: 'post',
-      body: JSON.stringify({
-        request_id : request_id,
-       }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'Authorization': usertoken,
+export function resolvesession(request_id, usertoken, customerchat) {
+  if (confirm("Are you sure,you want to mark session resolved?")) {
+    return (dispatch) => {
+      fetch(`${baseURL}/api/resolvechatsession`, {
+        method: 'post',
+        body: JSON.stringify({
+          request_id: request_id,
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': usertoken,
 
-      }),
-    }).then((res) => res.json()).then(res => dispatch(resolvesessionResponse(request_id,customerchat)));
-  };
+        }),
+      }).then((res) => res.json()).then(res => dispatch(resolvesessionResponse(request_id, customerchat)));
+    };
+  }
 }
-}
-
 
 
 //for fetching history of mobile clients
-export function getspecificuserchats_mobile(request_id,companyid,usertoken) {
+export function getspecificuserchats_mobile(request_id, companyid, usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getspecificuserchats`, {
       method: 'post',
       body: JSON.stringify({
-        request_id : request_id,
-        companyid : companyid,
-       }),
+        request_id: request_id,
+        companyid: companyid,
+      }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
@@ -2689,14 +2621,14 @@ export function getspecificuserchats_mobile(request_id,companyid,usertoken) {
 // for session summary page
 
 
-export function getspecificuserchats(request_id,companyid,usertoken) {
+export function getspecificuserchats(request_id, companyid, usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getspecificuserchats`, {
       method: 'post',
       body: JSON.stringify({
-        request_id : request_id,
-        companyid : companyid,
-       }),
+        request_id: request_id,
+        companyid: companyid,
+      }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
@@ -2706,7 +2638,6 @@ export function getspecificuserchats(request_id,companyid,usertoken) {
   };
 
 }
-
 
 
 /************* My Profile functions***/
@@ -2724,8 +2655,8 @@ export function getmyusergroups(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getmyusergroups`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -2734,56 +2665,54 @@ export function getmyusergroups(token) {
 }
 
 //update profile
-export function showUpdateProfile(msg){
+export function showUpdateProfile(msg) {
   console.log(msg);
   return {
     type: ActionTypes.ADD_UPDATE_PROFILE_WARNINGS,
-    errormessage : msg,
+    errormessage: msg,
 
   };
 }
 
 //update profile
-export function showUpdateSettings(msg){
+export function showUpdateSettings(msg) {
   console.log(msg);
   return {
     type: ActionTypes.ADD_UPDATE_SETTINGS,
-    errormessage : msg,
-    companysettings:msg.company,
+    errormessage: msg,
+    companysettings: msg.company,
 
   };
 }
-export function showCreatePage(msg){
+export function showCreatePage(msg) {
   console.log(msg);
   return {
     type: ActionTypes.ADD_UPDATE_PROFILE_WARNINGS,
-    errormessage : msg,
+    errormessage: msg,
 
   };
 }
-export function updateprofile(user,token) {
+export function updateprofile(user, token) {
   console.log(user);
   return (dispatch) => {
     fetch(`${baseURL}/api/updateprofile`, {
       method: 'post',
-        body: JSON.stringify({
-        'firstname' :user.firstname,
-        'lastname'  :user.lastname,
-        'phone'     :user.phone,
-        'country'     :user.country,
-        'state'     :user.state,
-        'city'     :user.city,
+      body: JSON.stringify({
+        'firstname': user.firstname,
+        'lastname': user.lastname,
+        'phone': user.phone,
+        'country': user.country,
+        'state': user.state,
+        'city': user.city,
 
 
       }),
-        headers: new Headers({
+      headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
-
-
-      );
+    );
   };
 }
 
@@ -2796,63 +2725,59 @@ export function verifyaccount(token) {
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateProfile(res))
-
-
-      );
+    );
   };
 }
 
-export function changepassword(user,token) {
-     return (dispatch) => {
+export function changepassword(user, token) {
+  return (dispatch) => {
     fetch(`${baseURL}/api/changenewpassword`, {
-        method: 'post',
-        headers: new Headers({
-           'Content-Type':'application/json',
-            'Authorization': token,
-        }),
-       body: JSON.stringify({
-       'email' : user.email,
-       'password' : user.password,
-       'newpassword' :user.newpassword
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+      body: JSON.stringify({
+        'email': user.email,
+        'password': user.password,
+        'newpassword': user.newpassword
 
-    })
+      })
 
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showUpdateProfile(res)));
   };
 
 }
 
-export function createPage(fbpage,token) {
+export function createPage(fbpage, token) {
   console.log(fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/createfbPage`, {
       method: 'post',
       body: JSON.stringify({
-        fbpage:fbpage,
+        fbpage: fbpage,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showCreatePage(res))
-
-
-      );
+    );
   };
 }
 
-export function updatesettings(file,companyprofile,token,logoAlready) {
- var fileData = new FormData();
-  if(logoAlready == true){
-        fileData.append('companyprofile',JSON.stringify(companyprofile));
+export function updatesettings(file, companyprofile, token, logoAlready) {
+  var fileData = new FormData();
+  if (logoAlready == true) {
+    fileData.append('companyprofile', JSON.stringify(companyprofile));
 
   }
-  else{
-  fileData.append('file', file);
-  fileData.append('filename', file.name);
-  fileData.append('filetype', file.type);
-  fileData.append('filesize', file.size);
-  fileData.append('companyprofile',JSON.stringify(companyprofile));
+  else {
+    fileData.append('file', file);
+    fileData.append('filename', file.name);
+    fileData.append('filetype', file.type);
+    fileData.append('filesize', file.size);
+    fileData.append('companyprofile', JSON.stringify(companyprofile));
   }
   console.log(fileData);
 
@@ -2860,13 +2785,13 @@ export function updatesettings(file,companyprofile,token,logoAlready) {
     fetch(`${baseURL}/api/updatesettings`, {
 
       method: 'post',
-      body:fileData,
-        headers: new Headers({
+      body: fileData,
+      headers: new Headers({
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showUpdateSettings(res))
-      );
-  };
+    );
+};
 
 
 export function showcompanyprofile(companysettings) {
@@ -2877,12 +2802,12 @@ export function showcompanyprofile(companysettings) {
 
   };
 }
-export function getcompanysettings(token,id) {
+export function getcompanysettings(token, id) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getcompanyprofile`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token,
         'Id': id,
 
@@ -2893,19 +2818,19 @@ export function getcompanysettings(token,id) {
 
 /*********** filter abandoned sessions ***********/
 
-export function filterAbandonedSession( groupID, subgroupID, newsessions) {
+export function filterAbandonedSession(groupID, subgroupID, newsessions) {
   var newsessionsfiltered;
 
-  if(groupID !== 'all' && subgroupID !== 'all'){
-    newsessionsfiltered = newsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  if (groupID !== 'all' && subgroupID !== 'all') {
+    newsessionsfiltered = newsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(groupID !== 'all' && subgroupID == 'all'){
+  else if (groupID !== 'all' && subgroupID == 'all') {
     newsessionsfiltered = newsessions.filter((c) => c.departmentid == groupID);
   }
-  else if(groupID == 'all' && subgroupID !== 'all'){
+  else if (groupID == 'all' && subgroupID !== 'all') {
     newsessionsfiltered = newsessions.filter((c) => c.departmentid == groupID);
   }
-  else if(groupID == 'all' && subgroupID == 'all'){
+  else if (groupID == 'all' && subgroupID == 'all') {
     newsessionsfiltered = newsessions;
   }
 
@@ -2923,52 +2848,52 @@ export function filterAbandonedSession( groupID, subgroupID, newsessions) {
 export function filterAssignedSession(medium, groupID, subgroupID, agentID, assignedsessions) {
   var assignedsessionsfiltered;
 
-  if(medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  if (medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID);
+  else if (medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.departmentid == groupID);
   }
-  else if(medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all'){
+  else if (medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all') {
     assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.departmentid == groupID);
   }
-  else if(medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium);
+  else if (medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium);
   }
-  else if(medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all'){
+  else if (medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all') {
     assignedsessionsfiltered = assignedsessions.filter((c) => c.platform == medium);
   }
-  else if(medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  else if (medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID);
   }
-  else if(medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all'){
+  else if (medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all') {
     assignedsessionsfiltered = assignedsessions.filter((c) => c.departmentid == groupID);
   }
-  else if(medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all'){
-    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  else if (medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all') {
+    assignedsessionsfiltered = assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID);
   }
-  else if(medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all'){
+  else if (medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all') {
     assignedsessionsfiltered = assignedsessions;
   }
 
@@ -2982,31 +2907,31 @@ export function filterAssignedSession(medium, groupID, subgroupID, agentID, assi
 
 /*********** filter resolved sessions ***********/
 
-export function filterResolvedSession( groupID, subgroupID, agentID, resolvedsessions) {
+export function filterResolvedSession(groupID, subgroupID, agentID, resolvedsessions) {
   var resolvedsessionsfiltered;
 
-  if(groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all'){
-    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  if (groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all') {
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(groupID !== 'all' && subgroupID !== 'all' && agentID == 'all'){
-    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (groupID !== 'all' && subgroupID !== 'all' && agentID == 'all') {
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(groupID !== 'all' && subgroupID == 'all' && agentID !== 'all'){
-    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  else if (groupID !== 'all' && subgroupID == 'all' && agentID !== 'all') {
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID);
   }
-  else if(groupID !== 'all' && subgroupID == 'all' && agentID == 'all'){
+  else if (groupID !== 'all' && subgroupID == 'all' && agentID == 'all') {
     resolvedsessionsfiltered = resolvedsessions.filter((c) => c.departmentid == groupID);
   }
-  else if(groupID == 'all' && subgroupID !== 'all' && agentID !== 'all'){
-    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (groupID == 'all' && subgroupID !== 'all' && agentID !== 'all') {
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(groupID == 'all' && subgroupID !== 'all' && agentID == 'all'){
-    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (groupID == 'all' && subgroupID !== 'all' && agentID == 'all') {
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(groupID == 'all' && subgroupID == 'all' && agentID !== 'all'){
-    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  else if (groupID == 'all' && subgroupID == 'all' && agentID !== 'all') {
+    resolvedsessionsfiltered = resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID);
   }
-  else if(groupID == 'all' && subgroupID == 'all' && agentID == 'all'){
+  else if (groupID == 'all' && subgroupID == 'all' && agentID == 'all') {
     resolvedsessionsfiltered = resolvedsessions;
   }
 
@@ -3022,100 +2947,100 @@ export function filterResolvedSession( groupID, subgroupID, agentID, resolvedses
 
 export function filterSessionSummary(status, medium, agentID, groupID, subgroupID, sessionsummary) {
   var sessionsummaryfiltered;
-  if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID);
+  else if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID);
   }
-  else if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.platform == medium);
+  else if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium);
   }
-  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+  else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.departmentid == groupID);
   }
-  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+  else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.platform == medium);
   }
-  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID);
+  else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.departmentid == groupID);
   }
-  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status);
+  else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status);
   }
-  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+  else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.departmentid == groupID);
   }
-  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+  else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary.filter((c) => c.status == status);
   }
-  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.departmentid == groupID);
+  else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.departmentid == groupID);
   }
-  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.platform == medium);
+  else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium);
   }
-  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+  else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.departmentid == groupID);
   }
-  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+  else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary.filter((c) => c.platform == medium);
   }
-  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID);
   }
-  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID);
   }
-  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+  else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary.filter((c) => c.departmentid == groupID);
   }
-  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
-    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+    sessionsummaryfiltered = sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+  else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
     sessionsummaryfiltered = sessionsummary;
   }
 
@@ -3131,52 +3056,52 @@ export function filterSessionSummary(status, medium, agentID, groupID, subgroupI
 
 export function filterChat(status, agentID, groupID, subgroupID, customerchat) {
   var customerchatfiltered;
-  if(status !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  if (status !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.departmentid == groupID);
+  else if (status !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.departmentid == groupID);
   }
-  else if(status !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.status == status);
+  else if (status !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status);
   }
-  else if(status !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+  else if (status !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
     customerchatfiltered = customerchat.filter((c) => c.status == status && c.departmentid == groupID);
   }
-  else if(status !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.status == status && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.status == status && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+  else if (status !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
     customerchatfiltered = customerchat.filter((c) => c.status == status);
   }
-  else if(status == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.departmentid == groupID);
+  else if (status == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID);
   }
-  else if(status == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length >0).filter((c) => c.agent_ids[c.agent_ids.length-1].id == agentID);
+  else if (status == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID);
   }
-  else if(status == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all'){
+  else if (status == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
     customerchatfiltered = customerchat.filter((c) => c.departmentid == groupID);
   }
-  else if(status == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all'){
-    customerchatfiltered = customerchat.filter((c) => c.messagechannel[c.messagechannel.length-1] == subgroupID);
+  else if (status == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+    customerchatfiltered = customerchat.filter((c) => c.messagechannel[c.messagechannel.length - 1] == subgroupID);
   }
-  else if(status == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all'){
+  else if (status == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
     customerchatfiltered = customerchat;
   }
 
@@ -3189,8 +3114,8 @@ export function filterChat(status, agentID, groupID, subgroupID, customerchat) {
 }
 
 /****** High Charts
-**/
-export function subgroupwisestats(subgroupwisestats){
+ **/
+export function subgroupwisestats(subgroupwisestats) {
   return {
     type: ActionTypes.SUBGROUP_STATS,
     subgroupwisestats,
@@ -3198,80 +3123,80 @@ export function subgroupwisestats(subgroupwisestats){
   };
 }
 
-export function platformwisestats(platformwisestats){
+export function platformwisestats(platformwisestats) {
   return {
     type: ActionTypes.PLATFORM_STATS,
-   platformwisestats,
+    platformwisestats,
 
   };
 }
 
-export function deptwisestats(deptwisestats){
+export function deptwisestats(deptwisestats) {
   return {
-  type: ActionTypes.DEPT_STATS,
-   deptwisestats,
+    type: ActionTypes.DEPT_STATS,
+    deptwisestats,
 
   };
 }
 
 
-export function pagewisestats(pagewisestats){
+export function pagewisestats(pagewisestats) {
   return {
-  type: ActionTypes.PAGE_STATS,
-   pagewisestats,
+    type: ActionTypes.PAGE_STATS,
+    pagewisestats,
 
   };
 }
 
-export function countrywisestats(countrywisestats){
+export function countrywisestats(countrywisestats) {
   return {
-  type: ActionTypes.COUNTRY_STATS,
-  countrywisestats,
+    type: ActionTypes.COUNTRY_STATS,
+    countrywisestats,
 
   };
 }
 
 
-export function mobilewisestats(mobilewisestats){
+export function mobilewisestats(mobilewisestats) {
   return {
-  type: ActionTypes.MOBILE_STATS,
-  mobilewisestats,
+    type: ActionTypes.MOBILE_STATS,
+    mobilewisestats,
 
   };
 }
 
 
-export function agentwisestats(agentwisestats){
+export function agentwisestats(agentwisestats) {
   return {
-  type: ActionTypes.AGENT_STATS,
-  agentwisestats,
+    type: ActionTypes.AGENT_STATS,
+    agentwisestats,
 
   };
 }
 
 
-export function agentwisenotifications(agentwisenotifications){
+export function agentwisenotifications(agentwisenotifications) {
   return {
-  type: ActionTypes.AGENT_NOTIFICATIONS,
-  agentwisenotifications,
+    type: ActionTypes.AGENT_NOTIFICATIONS,
+    agentwisenotifications,
 
   };
 }
 
-export function customerstats(customerwisestats){
+export function customerstats(customerwisestats) {
   return {
-  type: ActionTypes.CUSTOMER_STATS,
-  customerwisestats,
+    type: ActionTypes.CUSTOMER_STATS,
+    customerwisestats,
 
   };
 }
 
-export function getsubgroupwisestats(departmentid,token) {
+export function getsubgroupwisestats(departmentid, token) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getsubgroupwisecalls`, {
       method: 'post',
       body: JSON.stringify({
-        departmentid:departmentid,
+        departmentid: departmentid,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -3386,11 +3311,8 @@ export function getagentwisenotifications(token) {
 }
 
 
-
-
-
 /**** News related actions*****/
-export function createnews(news,usertoken) {
+export function createnews(news, usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/createnews`, {
       method: 'post',
@@ -3404,12 +3326,12 @@ export function createnews(news,usertoken) {
       }),
     }).then((res) => res.json()).then(res => {
 
-        console.log(res);
+      console.log(res);
     });
   };
 }
 
-export function showNews(news,userid) {
+export function showNews(news, userid) {
   news = news.filter((c) => c.target == userid && c.unread == "true");
   return {
     type: ActionTypes.ADD_NEWS,
@@ -3418,30 +3340,30 @@ export function showNews(news,userid) {
   };
 }
 
-export function getnews(userid,usertoken) {
+export function getnews(userid, usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getnews`, {
       method: 'post',
       body: JSON.stringify({
-        target : userid
+        target: userid
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showNews(res,userid)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showNews(res, userid)));
   };
 }
 
 
-export function updatenews(news,usertoken){
-   return (dispatch) => {
+export function updatenews(news, usertoken) {
+  return (dispatch) => {
     fetch(`${baseURL}/api/updatenews`, {
       method: 'post',
       body: JSON.stringify({
-        newsid : news._id,
-        unread : "false",
+        newsid: news._id,
+        unread: "false",
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -3449,81 +3371,80 @@ export function updatenews(news,usertoken){
 
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-         browserHistory.push(news.url);
+        browserHistory.push(news.url);
         // dispatch(editgroupError(res.message));
 
 
-        }
+      }
     );
   };
 }
 
 
-
-export function UpdateChatStatusUI(messages,mobileuserchat) {
-   //alert('called')
-  for(var i = 0;i<messages.length;i++){
+export function UpdateChatStatusUI(messages, mobileuserchat) {
+  //alert('called')
+  for (var i = 0; i < messages.length; i++) {
     var obj = messages[i];
 
-    for(var j=0;j<mobileuserchat.length;j++){
-        if(obj.uniqueid == mobileuserchat[j].uniqueid){
+    for (var j = 0; j < mobileuserchat.length; j++) {
+      if (obj.uniqueid == mobileuserchat[j].uniqueid) {
         //  alert('setting status')
-          mobileuserchat[j].status = obj.status;
-          break;
-        }
+        mobileuserchat[j].status = obj.status;
+        break;
+      }
     }
   }
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
-    mobileuserchat : mobileuserchat,
+    mobileuserchat: mobileuserchat,
 
 
   };
 }
-export function downloadfile(body,usertoken){
-   fetch(`${baseURL}/api/downloadchatfile`, {
-      method: 'post',
-      body: JSON.stringify({
-          uniqueid : body.uniqueid,
+export function downloadfile(body, usertoken) {
+  fetch(`${baseURL}/api/downloadchatfile`, {
+    method: 'post',
+    body: JSON.stringify({
+      uniqueid: body.uniqueid,
 
-      }),
+    }),
 
-      headers: new Headers({
-       'Authorization': usertoken,
-       'Content-Type': 'application/json',
-       'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
-       'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
-       'kibo-client-id': 'cd89f71715f2014725163952',
+    headers: new Headers({
+      'Authorization': usertoken,
+      'Content-Type': 'application/json',
+      'kibo-app-id': '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+      'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+      'kibo-client-id': 'cd89f71715f2014725163952',
 
 
-      }),
+    }),
 
-    })
+  })
 }
-export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
+export function updatechatstatus(messages, customerid, usertoken, mobileuserchat) {
 
   return (dispatch) => {
     fetch(`${baseURL}/api/updatechatstatus`, {
       method: 'post',
       body: JSON.stringify({
-          messages: messages,
-          customerid: customerid,
+        messages: messages,
+        customerid: customerid,
 
 
       }),
 
       headers: new Headers({
-         'Authorization': usertoken,
+        'Authorization': usertoken,
         'Content-Type': 'application/json',
       }),
 
     }).then((res) => res.json()).then((res) => res).then((res) => {
         console.log(res.statusCode);
 
-        if(res.statusCode == 201 && mobileuserchat){
-           dispatch(UpdateChatStatusUI(messages,mobileuserchat))
+        if (res.statusCode == 201 && mobileuserchat) {
+          dispatch(UpdateChatStatusUI(messages, mobileuserchat))
         }
-        }
+      }
     );
   };
 }
@@ -3532,45 +3453,45 @@ export function updatechatstatus(messages,customerid,usertoken,mobileuserchat) {
 /***** function to remove duplicate chat messages from UI *******/
 
 export function removeDuplicates(originalArray, prop) {
-     var newArray = [];
-     var lookupObject  = {};
+  var newArray = [];
+  var lookupObject = {};
 
-     for(var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-     }
+  for (var i in originalArray) {
+    lookupObject[originalArray[i][prop]] = originalArray[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_MOBILE,
-    mobileuserchat : newArray,
+    mobileuserchat: newArray,
 
 
   };
- }
+}
 
- export function removeDuplicatesWebChat(originalArray, prop) {
-     var newArray = [];
-     var lookupObject  = {};
+export function removeDuplicatesWebChat(originalArray, prop) {
+  var newArray = [];
+  var lookupObject = {};
 
-     for(var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-     }
+  for (var i in originalArray) {
+    lookupObject[originalArray[i][prop]] = originalArray[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
   return {
     type: ActionTypes.ADD_USER_CHATS_SPECIFIC_WEB,
-    userchats : newArray,
+    userchats: newArray,
 
 
   };
- }
+}
 
 
- /***** Facebook actions ***/
+/***** Facebook actions ***/
 export function showFbPages(fbpages) {
   console.log('showFbpages');
   console.log(fbpages);
@@ -3586,8 +3507,8 @@ export function getfbpages(token) {
   console.log(token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbpages`, {
-        method: 'get',
-        headers: new Headers({
+      method: 'get',
+      headers: new Headers({
         'Authorization': token
 
       }),
@@ -3605,7 +3526,7 @@ export function addSelectedPage(fbpage) {
 }
 
 
-export function getfbpage(usertoken,pageid) {
+export function getfbpage(usertoken, pageid) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/getfbpage?id=${pageid}`, {
       method: 'get',
@@ -3616,25 +3537,22 @@ export function getfbpage(usertoken,pageid) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedPage(res)));
   };
 }
-export function editPage(fbpage,token) {
+export function editPage(fbpage, token) {
   console.log(fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/editfbPage`, {
       method: 'post',
       body: JSON.stringify({
-        fbpage:fbpage,
+        fbpage: fbpage,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': token,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showCreatePage(res))
-
-
-      );
+    );
   };
 }
-
 
 
 export function deletePage(fbpage) {
@@ -3644,23 +3562,22 @@ export function deletePage(fbpage) {
     fbpage,
   };
 }
-export function deletefbpage(fbpage,usertoken) {
-  if(confirm("Are you sure you want to remove this page?"))
-  {
-  return (dispatch) => {
-    return fetch(`${baseURL}/api/deletefbpage?id=${fbpage.pageid}`, {
-      method: 'delete',
-      headers: new Headers({
-        'Authorization': usertoken,
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res).then(res => dispatch(deletePage(fbpage)));
-  };
-}
-else{
-  browserHistory.push('/cannedresponses');
+export function deletefbpage(fbpage, usertoken) {
+  if (confirm("Are you sure you want to remove this page?")) {
+    return (dispatch) => {
+      return fetch(`${baseURL}/api/deletefbpage?id=${fbpage.pageid}`, {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': usertoken,
+          'Content-Type': 'application/json',
+        }),
+      }).then((res) => res).then(res => dispatch(deletePage(fbpage)));
+    };
+  }
+  else {
+    browserHistory.push('/cannedresponses');
 
-}
+  }
 
 }
 /***** Facebook actions ***/
@@ -3684,21 +3601,21 @@ export function showFbSessions(fbsessions) {
 
 function orderByDateFbChats(arr, dateProp) {
   return arr.slice().sort(function (a, b) {
-      return a[dateProp] - b[dateProp] ;
-   
+    return a[dateProp] - b[dateProp];
+
     }
   );
 }
 export function showFbChats(fbchats) {
-  var sorted = orderByDateFbChats(fbchats,'timestamp');
+  var sorted = orderByDateFbChats(fbchats, 'timestamp');
   return {
     type: ActionTypes.ADD_FB_CHATS,
-    fbchats:sorted,
+    fbchats: sorted,
 
   };
 }
 
-export function getfbCustomers(usertoken){
+export function getfbCustomers(usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbCustomers`, {
       method: 'get',
@@ -3708,63 +3625,61 @@ export function getfbCustomers(usertoken){
         'Authorization': usertoken,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showFbCustomers(res))
-
-
-      );
+    );
   };
 }
 
-function orderByDate(arr, dateProp,order=0) {
+function orderByDate(arr, dateProp, order = 0) {
   return arr.slice().sort(function (a, b) {
     console.log(a['lastmessage'][dateProp]);
-    if(order==0)
-      return b['lastmessage'][dateProp] - a['lastmessage'][dateProp] ;
-    else{
-      return a['lastmessage'][dateProp] - b['lastmessage'][dateProp] ;
+    if (order == 0)
+      return b['lastmessage'][dateProp] - a['lastmessage'][dateProp];
+    else {
+      return a['lastmessage'][dateProp] - b['lastmessage'][dateProp];
     }
   });
 }
-export function appendlastmessage(fbsessions,fbchats){
+export function appendlastmessage(fbsessions, fbchats) {
 
-var newArray = []
-var newfbChat=[]
-for(var i=0;i< fbsessions.length;i++){
-  var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
-  var lastmessage = selectedchat[selectedchat.length-1];
-  var newfbsession = fbsessions[i];
-  newfbsession.lastmessage = lastmessage;
-  newArray.push(newfbsession);
-}
-
-var sorted = orderByDate(newArray,'timestamp');
-var choosen_session = sorted.filter((c) => c.status != "resolved")[0];
-var newfbChat = []
-  var temp = fbchats.filter((c)=>c.senderid == choosen_session.user_id.user_id || c.recipientid == choosen_session.user_id.user_id);
-  for(var i=0;i<temp.length;i++){
-    if(temp[i].message){
-    newfbChat.push(
-      {
-        message: temp[i].message.text,
-        inbound: true,
-        backColor: '#3d83fa',
-        textColor: "white",
-        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
-        duration: 0,
-        timestamp:temp[i].timestamp,
-        senderid:temp[i].senderid,
-        recipientid:temp[i].recipientid,
-        mid:temp[i].message.mid,
-        attachments:temp[i].message.attachments,
-        seen:false
-      })
-  }
+  var newArray = []
+  var newfbChat = []
+  for (var i = 0; i < fbsessions.length; i++) {
+    var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+    var lastmessage = selectedchat[selectedchat.length - 1];
+    var newfbsession = fbsessions[i];
+    newfbsession.lastmessage = lastmessage;
+    newArray.push(newfbsession);
   }
 
-return {
+  var sorted = orderByDate(newArray, 'timestamp');
+  var choosen_session = sorted.filter((c) => c.status != "resolved")[0];
+  var newfbChat = []
+  var temp = fbchats.filter((c) => c.senderid == choosen_session.user_id.user_id || c.recipientid == choosen_session.user_id.user_id);
+  for (var i = 0; i < temp.length; i++) {
+    if (temp[i].message) {
+      newfbChat.push(
+        {
+          message: temp[i].message.text,
+          inbound: true,
+          backColor: '#3d83fa',
+          textColor: "white",
+          avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+          duration: 0,
+          timestamp: temp[i].timestamp,
+          senderid: temp[i].senderid,
+          recipientid: temp[i].recipientid,
+          mid: temp[i].message.mid,
+          attachments: temp[i].message.attachments,
+          seen: false
+        })
+    }
+  }
+
+  return {
     type: ActionTypes.ADD_LASTMESSAGE_FB_SESSION,
     fbchatSelected: newfbChat,
-    profile_pic:choosen_session.user_id.profile_pic,
-    fbsessionSelected:choosen_session,
+    profile_pic: choosen_session.user_id.profile_pic,
+    fbsessionSelected: choosen_session,
     sorted,
 
   };
@@ -3772,29 +3687,29 @@ return {
 }
 
 
-export function updatelastmessage(fbsessions,fbchats){
+export function updatelastmessage(fbsessions, fbchats) {
 
-var newArray = []
-var newfbChat=[]
-for(var i=0;i< fbsessions.length;i++){
-  var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
-  var lastmessage = selectedchat[selectedchat.length-1];
-  var newfbsession = fbsessions[i];
-  newfbsession.lastmessage = lastmessage;
-  newArray.push(newfbsession);
-}
+  var newArray = []
+  var newfbChat = []
+  for (var i = 0; i < fbsessions.length; i++) {
+    var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+    var lastmessage = selectedchat[selectedchat.length - 1];
+    var newfbsession = fbsessions[i];
+    newfbsession.lastmessage = lastmessage;
+    newArray.push(newfbsession);
+  }
 
-var sorted = orderByDate(newArray,'timestamp');
+  var sorted = orderByDate(newArray, 'timestamp');
 
 
-return {
+  return {
     type: ActionTypes.UPDATE_LASTMESSAGE_FB_SESSION,
     sorted,
 
   };
 
 }
-export function getfbSessions(usertoken){
+export function getfbSessions(usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbSessions`, {
       method: 'get',
@@ -3804,13 +3719,11 @@ export function getfbSessions(usertoken){
         'Authorization': usertoken,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showFbSessions(res))
-
-
-      );
+    );
   };
 }
 
-export function getfbChats(usertoken){
+export function getfbChats(usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbChats`, {
       method: 'get',
@@ -3820,112 +3733,110 @@ export function getfbChats(usertoken){
         'Authorization': usertoken,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showFbChats(res))
-
-
-      );
+    );
   };
 }
 
 // update customer list
-export function updateCustomerList(data,customerlist,selectedchat){
+export function updateCustomerList(data, customerlist, selectedchat) {
   console.log('selectedchat');
   console.log(selectedchat);
   customerlist.push(data);
-   var newArray = [];
-     var lookupObject  = {};
+  var newArray = [];
+  var lookupObject = {};
 
-     for(var i in customerlist) {
-        lookupObject[customerlist[i]['user_id']['user_id']] = customerlist[i];
-     }
+  for (var i in customerlist) {
+    lookupObject[customerlist[i]['user_id']['user_id']] = customerlist[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
-     if(!selectedchat.user_id){
-      console.log('user_id not defined');
-      console.log(newArray[0]);
-      return{
-        type:ActionTypes.ADD_NEW_FB_CUSTOMER,
-        fbsessions:newArray,
-        fbsessionSelected:newArray[0],
-      }
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
+  if (!selectedchat.user_id) {
+    console.log('user_id not defined');
+    console.log(newArray[0]);
+    return {
+      type: ActionTypes.ADD_NEW_FB_CUSTOMER,
+      fbsessions: newArray,
+      fbsessionSelected: newArray[0],
     }
-      else{
-        return{
-        type:ActionTypes.ADD_NEW_FB_CUSTOMER,
-        fbsessions:newArray,
+  }
+  else {
+    return {
+      type: ActionTypes.ADD_NEW_FB_CUSTOMER,
+      fbsessions: newArray,
 
-      }
-      }
+    }
+  }
 }
 
-export function updatefbsessionlist(data,customerlist,currentSession,fbchat,fbchatSelected){
+export function updatefbsessionlist(data, customerlist, currentSession, fbchat, fbchatSelected) {
   var resetcurrent = false;
-  for(var i =0;i<customerlist.length;i++){
-    if(customerlist[i].pageid.pageid == data.pageid && customerlist[i].user_id.user_id == data.user_id){
+  for (var i = 0; i < customerlist.length; i++) {
+    if (customerlist[i].pageid.pageid == data.pageid && customerlist[i].user_id.user_id == data.user_id) {
       customerlist[i].status = data.status;
       customerlist[i].agent_ids.push(data.agentid);
       break;
     }
   }
 
-  if(currentSession.pageid.pageid == data.pageid && currentSession.user_id.user_id == data.user_id){
-     currentSession.status = data.status;
-     currentSession.agent_ids.push(data.agentid);
+  if (currentSession.pageid.pageid == data.pageid && currentSession.user_id.user_id == data.user_id) {
+    currentSession.status = data.status;
+    currentSession.agent_ids.push(data.agentid);
   }
 
-  if(currentSession.status == "resolved"){
+  if (currentSession.status == "resolved") {
     // we need to reset currentSession to the first (new/assigned session in the list) session
-    var newfbChat=[];
-    for(var j=0;j<customerlist.length;j++){
-      if(customerlist[j].status != "resolved"){
+    var newfbChat = [];
+    for (var j = 0; j < customerlist.length; j++) {
+      if (customerlist[j].status != "resolved") {
         var newcurrentSession = customerlist[j];
 
-        var temp = fbchat.filter((c)=>c.senderid == currentSession.user_id.user_id || c.recipientid == currentSession.user_id.user_id);
-        for(var i=0;i<temp.length;i++){
-        if(temp[i].message){
-                newfbChat.push(
-                  {
-                    message: temp[i].message.text,
-                    inbound: true,
-                    backColor: '#3d83fa',
-                    textColor: "white",
-                    avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
-                    duration: 0,
-                    timestamp:temp[i].timestamp,
-                    senderid:temp[i].senderid,
-                    recipientid:temp[i].recipientid,
-                    mid:temp[i].message.mid,
-                    attachments:temp[i].message.attachments,
-                    seen:false
-                  })
-              }
+        var temp = fbchat.filter((c) => c.senderid == currentSession.user_id.user_id || c.recipientid == currentSession.user_id.user_id);
+        for (var i = 0; i < temp.length; i++) {
+          if (temp[i].message) {
+            newfbChat.push(
+              {
+                message: temp[i].message.text,
+                inbound: true,
+                backColor: '#3d83fa',
+                textColor: "white",
+                avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+                duration: 0,
+                timestamp: temp[i].timestamp,
+                senderid: temp[i].senderid,
+                recipientid: temp[i].recipientid,
+                mid: temp[i].message.mid,
+                attachments: temp[i].message.attachments,
+                seen: false
+              })
           }
-           break;
         }
-
-
+        break;
       }
-      resetcurrent = true;
+
 
     }
+    resetcurrent = true;
 
-   return{
-    type:ActionTypes.ADD_NEW_FB_CUSTOMER,
-    fbsessions:customerlist,
-    fbsessionSelected: resetcurrent == true?newcurrentSession:currentSession,
-    fbchatSelected: resetcurrent == true?newfbChat:fbchatSelected,
+  }
+
+  return {
+    type: ActionTypes.ADD_NEW_FB_CUSTOMER,
+    fbsessions: customerlist,
+    fbsessionSelected: resetcurrent == true ? newcurrentSession : currentSession,
+    fbchatSelected: resetcurrent == true ? newfbChat : fbchatSelected,
   }
 }
 //send chat to facebook customer
 
 //send message to customer
-export function getfbchatfromAgent(chat){
- return (dispatch) => {
+export function getfbchatfromAgent(chat) {
+  return (dispatch) => {
     fetch(`${baseURL}/api/sendfbchat`, {
-        method:'post',
-        body: JSON.stringify(chat),
-        headers: new Headers({
+      method: 'post',
+      body: JSON.stringify(chat),
+      headers: new Headers({
         'Content-Type': 'application/json',
 
       }),
@@ -3934,23 +3845,23 @@ export function getfbchatfromAgent(chat){
 }
 
 
-export function fbchatmessageSent(res){
-    return {
+export function fbchatmessageSent(res) {
+  return {
     type: ActionTypes.FBCHAT_SENT_TO_AGENT,
-    status : res.status,
-  //  customerid,
+    status: res.status,
+    //  customerid,
 
   };
 }
 
-export function showfbfilesuccess(chat,fbchats,id){
+export function showfbfilesuccess(chat, fbchats, id) {
   console.log('showfbfilesuccess');
   console.log(fbchats.length);
   fbchats.push(chat.chatmsg);
   var newfbChat = []
-  var temp = fbchats.filter((c)=>c.senderid == id || c.recipientid == id );
-    for(var i=0;i<temp.length;i++){
-      if(temp[i].message){
+  var temp = fbchats.filter((c) => c.senderid == id || c.recipientid == id);
+  for (var i = 0; i < temp.length; i++) {
+    if (temp[i].message) {
       newfbChat.push(
         {
           message: temp[i].message.text,
@@ -3959,102 +3870,100 @@ export function showfbfilesuccess(chat,fbchats,id){
           textColor: "white",
           avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
           duration: 0,
-          timestamp:temp[i].timestamp,
-          senderid:temp[i].senderid,
-          recipientid:temp[i].recipientid,
-          mid:temp[i].message.mid,
-          attachments:temp[i].message.attachments,
-          seen:false,
+          timestamp: temp[i].timestamp,
+          senderid: temp[i].senderid,
+          recipientid: temp[i].recipientid,
+          mid: temp[i].message.mid,
+          attachments: temp[i].message.attachments,
+          seen: false,
         })
     }
-    }
+  }
 
-    // removing duplicates
-    var newArray = [];
-     var lookupObject  = {};
+  // removing duplicates
+  var newArray = [];
+  var lookupObject = {};
 
-     for(var i in newfbChat) {
-        lookupObject[newfbChat[i]['mid']] = newfbChat[i];
-     }
+  for (var i in newfbChat) {
+    lookupObject[newfbChat[i]['mid']] = newfbChat[i];
+  }
 
-     for(i in lookupObject) {
-         newArray.push(lookupObject[i]);
-     }
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
 
- // removing duplicates from fbchats
-    var newArrayfb = [];
-     var lookupObject  = {};
+  // removing duplicates from fbchats
+  var newArrayfb = [];
+  var lookupObject = {};
 
-     for(var i in fbchats) {
-        lookupObject[fbchats[i]['message']['mid']] = fbchats[i];
-     }
+  for (var i in fbchats) {
+    lookupObject[fbchats[i]['message']['mid']] = fbchats[i];
+  }
 
-     for(i in lookupObject) {
-         newArrayfb.push(lookupObject[i]);
-     }
-     return{
-      fbchatSelected: newArray,
-      fbchats:newArrayfb,
-      type: ActionTypes.FB_CHAT_ADDED,
-    }
+  for (i in lookupObject) {
+    newArrayfb.push(lookupObject[i]);
+  }
+  return {
+    fbchatSelected: newArray,
+    fbchats: newArrayfb,
+    type: ActionTypes.FB_CHAT_ADDED,
+  }
 
 }
 
-export function uploadFbChatfile(fileData,usertoken,fbchats,id) {
+export function uploadFbChatfile(fileData, usertoken, fbchats, id) {
   console.log(fileData);
   return (dispatch) => {
     fetch(`${baseURL}/api/uploadchatfilefb`, {
       method: 'post',
-        body : fileData,
-        headers: new Headers({
+      body: fileData,
+      headers: new Headers({
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfbfilesuccess(res,fbchats,id))
-
-
-      );
+    }).then((res) => res.json()).then((res) => res).then((res) => dispatch(showfbfilesuccess(res, fbchats, id))
+    );
   };
 
 };
 
 
-export function updatefileuploadStatus(status){
-  return{
-    showFileUploading:status,
-    type:ActionTypes.SHOW_FILE_UPLOAD_INDICATOR,
+export function updatefileuploadStatus(status) {
+  return {
+    showFileUploading: status,
+    type: ActionTypes.SHOW_FILE_UPLOAD_INDICATOR,
   }
 }
 /*** reseting joined state ***/
-export function setjoinedState(stateVar){
-   return{
-      userjoinedroom:stateVar,
-      type: ActionTypes.JOINED_MEETING,
-    }
+export function setjoinedState(stateVar) {
+  return {
+    userjoinedroom: stateVar,
+    type: ActionTypes.JOINED_MEETING,
+  }
 }
 
 
-export function showCompanylogo(res){
-   return{
-      companylogo:res.logourl,
-      type: ActionTypes.COMPANY_LOGO,
-    }
+export function showCompanylogo(res) {
+  return {
+    companylogo: res.logourl,
+    type: ActionTypes.COMPANY_LOGO,
+  }
 }
 //this is without-token version of getting grouplist for Chat widget
-export function getcompanylogo(appid,appsecret,companyid){
+export function getcompanylogo(appid, appsecret, companyid) {
 
   return (dispatch) => {
     fetch(`${baseURL}/api/getcompanylogo/`, {
-        method: 'post',
-        body: JSON.stringify({
-          appid: appid,
-          appsecret : appsecret,
-          clientid:companyid,
+      method: 'post',
+      body: JSON.stringify({
+        appid: appid,
+        appsecret: appsecret,
+        clientid: companyid,
 
 
       })
-        ,
-        headers: new Headers({
+      ,
+      headers: new Headers({
         'Content-Type': 'application/json',
       }),
 
@@ -4064,92 +3973,88 @@ export function getcompanylogo(appid,appsecret,companyid){
 }
 
 
-
 /******* chat bot actions*****/
-export function chatbotChatAdd(message){
+export function chatbotChatAdd(message) {
   console.log(message);
-   return{
-      message:message,
-      type: ActionTypes.BOT_RESPONSE,
-    }
+  return {
+    message: message,
+    type: ActionTypes.BOT_RESPONSE,
+  }
 }
 
-export function chatbotsession(sessionid){
+export function chatbotsession(sessionid) {
 
-   return{
-      chatbotsessionid:sessionid,
-      type: ActionTypes.BOT_SESSION,
-    }
+  return {
+    chatbotsessionid: sessionid,
+    type: ActionTypes.BOT_SESSION,
+  }
 }
-export function chatbotResponse(res,username){
+export function chatbotResponse(res, username) {
   console.log(res);
   var newresp;
-  if(res.result.parameters && res.result.parameters.username){
-      newresp = res.result.speech.replace('chatbotuser', username);
+  if (res.result.parameters && res.result.parameters.username) {
+    newresp = res.result.speech.replace('chatbotuser', username);
   }
-  else{
+  else {
     newresp = res.result.speech
   }
   var message = {
-                      lang:'en',
-                      sessionId: res.sessionId ,
-                      from: 'Kitt',
-                      msg:newresp,
-                      timestamp:res.timestamp,
+    lang: 'en',
+    sessionId: res.sessionId,
+    from: 'Kitt',
+    msg: newresp,
+    timestamp: res.timestamp,
 
 
   }
-   return{
-      message:message,
-      type: ActionTypes.BOT_RESPONSE,
-    }
+  return {
+    message: message,
+    type: ActionTypes.BOT_RESPONSE,
+  }
 }
 
 
-
-export function testingPractice(data){
+export function testingPractice(data) {
   return data;
 }
-export function sendchatToBot(message,username='')
-{
-   return (dispatch) => {
+export function sendchatToBot(message, username = '') {
+  return (dispatch) => {
     fetch('https://api.api.ai/v1/query', {
-        method: 'post',
-        headers:new Headers({
-          'Authorization':' Bearer 7f81f5b6921f4749a0ec86c23407a4fe',
-          'Content-Type': 'application/json'
-        }),
-        body: JSON.stringify({
-                      query: message.query,
-                      lang: message.lang,
-                      sessionId: message.sessionId,
-                      from: message.from,
-                      msg: message.msg,
-                      timestamp: message.timestamp,
+      method: 'post',
+      headers: new Headers({
+        'Authorization': ' Bearer 7f81f5b6921f4749a0ec86c23407a4fe',
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify({
+        query: message.query,
+        lang: message.lang,
+        sessionId: message.sessionId,
+        from: message.from,
+        msg: message.msg,
+        timestamp: message.timestamp,
 
-})
+      })
 
 
-    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res,username)));
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res, username)));
   };
 
 
 }
 
 
-
-export function assignToAgentFB(session,usertoken,agentemail,assignmentType) {
+export function assignToAgentFB(session, usertoken, agentemail, assignmentType) {
   return (dispatch) => {
     fetch(`${baseURL}/api/assignToAgentFB`, {
       method: 'post',
       body: JSON.stringify({
-        companyid : session.companyid,
-        pageid:session.pageid,
-        user_id:session.userid,
-        agentAssignment : session,
-        type : session.type,
-        agentemail:agentemail,
-        assignmentType:assignmentType,
+        companyid: session.companyid,
+        pageid: session.pageid,
+        user_id: session.userid,
+        agentAssignment: session,
+        type: session.type,
+        agentemail: agentemail,
+        assignmentType: assignmentType,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -4160,79 +4065,81 @@ export function assignToAgentFB(session,usertoken,agentemail,assignmentType) {
   };
 }
 
-export function resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat){
+export function resolvefbsessionResponse(fbsessionSelected, fbsession, fbchat) {
 
-     var fbsessionSelected = fbsession.filter((c) => c.status!= 'resolved')[0]
-      var newfbChat = []
-      if(fbsessionSelected){
+  var fbsessionSelected = fbsession.filter((c) => c.status != 'resolved')[0]
+  var newfbChat = []
+  if (fbsessionSelected) {
 
-      var temp = fbchat.filter((c)=>c.senderid == fbsessionSelected.user_id.user_id || c.recipientid == fbsessionSelected.user_id.user_id);
-      for(var i=0;i<temp.length;i++){
-        if(temp[i].message){
-                newfbChat.push(
-                  {
-                    message: temp[i].message.text,
-                    inbound: true,
-                    backColor: '#3d83fa',
-                    textColor: "white",
-                    avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
-                    duration: 0,
-                    timestamp:temp[i].timestamp,
-                    senderid:temp[i].senderid,
-                    recipientid:temp[i].recipientid,
-                    mid:temp[i].message.mid,
-                    attachments:temp[i].message.attachments,
-                    seen:false
-                  })
-              }
-          }
+    var temp = fbchat.filter((c) => c.senderid == fbsessionSelected.user_id.user_id || c.recipientid == fbsessionSelected.user_id.user_id);
+    for (var i = 0; i < temp.length; i++) {
+      if (temp[i].message) {
+        newfbChat.push(
+          {
+            message: temp[i].message.text,
+            inbound: true,
+            backColor: '#3d83fa',
+            textColor: "white",
+            avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0S6AEV5W-gd92f62a7969-512',
+            duration: 0,
+            timestamp: temp[i].timestamp,
+            senderid: temp[i].senderid,
+            recipientid: temp[i].recipientid,
+            mid: temp[i].message.mid,
+            attachments: temp[i].message.attachments,
+            seen: false
+          })
+      }
     }
-   return{
+  }
+  return {
 
-      fbsessionSelected:fbsessionSelected,
-      fbchatSelected:newfbChat,
-      type: ActionTypes.FILTER_RESOLVED_SESSION_FB,
-    }
+    fbsessionSelected: fbsessionSelected,
+    fbchatSelected: newfbChat,
+    type: ActionTypes.FILTER_RESOLVED_SESSION_FB,
+  }
 }
 
 //mark session resolve
-export function resolvesessionfb(data,usertoken,fbsessionSelected,fbsession,fbchat) {
+export function resolvesessionfb(data, usertoken, fbsessionSelected, fbsession, fbchat) {
   console.log('resolvesessionfb');
   console.log(data);
- 
+
   return (dispatch) => {
     fetch(`${baseURL}/api/resolvechatsessionfb`, {
       method: 'post',
       body: JSON.stringify({
-        companyid : data.companyid,
-        pageid:data.pageid,
-        user_id:data.userid,
+        companyid: data.companyid,
+        pageid: data.pageid,
+        user_id: data.userid,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(resolvefbsessionResponse(fbsessionSelected,fbsession,fbchat)));
+    }).then((res) => res.json()).then(res => dispatch(resolvefbsessionResponse(fbsessionSelected, fbsession, fbchat)));
   };
 
 }
 
-export function getmetaurl(url,usertoken) {
- 
+export function getmetaurl(url, usertoken) {
+
   return (dispatch) => {
     fetch(`${baseURL}/api/getmetaurl`, {
       method: 'post',
       body: JSON.stringify({
-        url : url,
-       
+        url: url,
+
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => {console.log(res)});
+    }).then((res) => res.json()).then(res => {
+      console.log(res)
+    });
   };
 
 }
