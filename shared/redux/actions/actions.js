@@ -1581,7 +1581,8 @@ export function selectFbCustomerChat(id, fbchat, profile_pic, selectedsession) {
           recipientid: temp[i].recipientid,
           mid: temp[i].message.mid,
           attachments: temp[i].message.attachments,
-          seen: false
+          seen: false,
+          urlmeta:temp[i].urlmeta,
         })
     }
   }
@@ -1618,6 +1619,7 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
           mid: temp[i].message.mid,
           attachments: temp[i].message.attachments,
           seen: false,
+          urlmeta:temp[i].urlmeta,
         })
     }
   }
@@ -3670,7 +3672,8 @@ export function appendlastmessage(fbsessions, fbchats) {
           recipientid: temp[i].recipientid,
           mid: temp[i].message.mid,
           attachments: temp[i].message.attachments,
-          seen: false
+          seen: false,
+          urlmeta: temp[i].urlmeta,
         })
     }
   }
@@ -3808,7 +3811,8 @@ export function updatefbsessionlist(data, customerlist, currentSession, fbchat, 
                 recipientid: temp[i].recipientid,
                 mid: temp[i].message.mid,
                 attachments: temp[i].message.attachments,
-                seen: false
+                seen: false,
+                urlmeta:temp[i].urlmeta,
               })
           }
         }
@@ -3876,6 +3880,7 @@ export function showfbfilesuccess(chat, fbchats, id) {
           mid: temp[i].message.mid,
           attachments: temp[i].message.attachments,
           seen: false,
+          urlmeta:temp[i].urlmeta,
         })
     }
   }
@@ -4087,7 +4092,8 @@ export function resolvefbsessionResponse(fbsessionSelected, fbsession, fbchat) {
             recipientid: temp[i].recipientid,
             mid: temp[i].message.mid,
             attachments: temp[i].message.attachments,
-            seen: false
+            seen: false,
+            urlmeta:temp[i].urlmeta,
           })
       }
     }

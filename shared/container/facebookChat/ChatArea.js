@@ -1363,77 +1363,77 @@ export class ChatArea extends Component {
                   <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> :
                   <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
                 }
+             </div>
+                
                 {data.attachments && data.attachments.length > 0 &&
-                data.attachments.map((da, index) => (
-                  (da.type == "image" ?
-                      (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png' ?
-                        <div style={styles.imagestyle, {'width':'32px',
-                          'height':'32px'}}>
-                          <img src={da.payload.url} style={{
-                            'width': '32px',
-                            'height': '32px'
-                          }}/>
-                        </div> :
-                        (da.payload.url.indexOf('.gif') != -1 ?
-                            <div style={styles.imagestyle,{'width': '170px',
-                              backgroundImage: `url(${da.payload.url})`,
-                              width: 170,
-                              height: 120,
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center center',
-                              backgroundRepeat: 'no-repeat',
-                              borderRadius:'1.3em',
-                              boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)'
-                            }}>
-
+                    data.attachments.map((da, index) => (
+                      (da.type == "image" ?
+                          (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png' ?
+                            <div style={styles.imagestyle, {'width':'32px',
+                              'height':'32px'}}>
+                              <img src={da.payload.url} style={{
+                                'width': '32px',
+                                'height': '32px'
+                              }}/>
                             </div> :
-                            <div style={styles.imagestyle,{
-                              backgroundImage: `url(${da.payload.url})`,
-                              width: 170,
-                              height: 170,
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center center',
-                              backgroundRepeat: 'no-repeat',
-                              boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-                              borderRadius:'1.3em'}}>
+                            (da.payload.url.indexOf('.gif') != -1 ?
+                                <div style={styles.imagestyle,{'width': '170px',
+                                  backgroundImage: `url(${da.payload.url})`,
+                                  width: 170,
+                                  height: 120,
+                                  backgroundSize: 'cover',
+                                  backgroundPosition: 'center center',
+                                  backgroundRepeat: 'no-repeat',
+                                  borderRadius:'1.3em',
+                                  boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)'
+                                }}>
 
-                            </div>
-                        ))
-                      :
-                      <div style={styles.imagestyle}>
-                        {
-                          da.type == "video" ?
-                            <ReactPlayer url={da.payload.url} controls={true} width="100%" height="242"
-                                         onPlay={this.onTestURL.bind(this, da.payload.url)}/> :
-                            (da.type == "audio" ?
-                              <ReactPlayer url={da.payload.url} controls={true} width="100%" height="30"
-                                           onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/> :
-                              (da.type == "location" ?
-                                <div>
-                                  <p> {da.title} </p>
-                                  <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
+                                </div> :
+                                <div style={styles.imagestyle,{
+                                  backgroundImage: `url(${da.payload.url})`,
+                                  width: 170,
+                                  height: 170,
+                                  backgroundSize: 'cover',
+                                  backgroundPosition: 'center center',
+                                  backgroundRepeat: 'no-repeat',
+                                  boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+                                  borderRadius:'1.3em'}}>
+
                                 </div>
-                                :
-                                (da.type == "fallback" ?
+                            ))
+                          :
+                          <div style={styles.imagestyle}>
+                            {
+                              da.type == "video" ?
+                                <ReactPlayer url={da.payload.url} controls={true} width="100%" height="242"
+                                             onPlay={this.onTestURL.bind(this, da.payload.url)}/> :
+                                (da.type == "audio" ?
+                                  <ReactPlayer url={da.payload.url} controls={true} width="100%" height="30"
+                                               onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/> :
+                                  (da.type == "location" ?
                                     <div>
                                       <p> {da.title} </p>
-                                      <ReactPlayer url={data.message} controls={true} width="100%" height="242"
-                                                   onPlay={this.onTestURL.bind(this, da.url)}/>
+                                      <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
+                                    </div>
+                                    :
+                                    (da.type == "fallback" && data.urlmeta?
+                                        <div>
+                                          <p> {'Hello'} </p>
+                                          
+                                        </div> :
+                                        <a href={da.payload.url} target="_blank"
+                                           style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
+                                    )))
+                            }
+                          </div>
 
-                                    </div> :
-                                    <a href={da.payload.url} target="_blank"
-                                       style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
-                                )))
-                        }
-                      </div>
-
-                  )
+                      )
 
 
-                ))
+                    ))
 
                 }
-              </div>
+              
             </div>
           </div> :
           <div key={index} ref={index} id={'chatmsg' + index} style={{'textAlign': 'right', 'clear': 'both'}}>
