@@ -38,6 +38,7 @@ class FbChat extends Component {
 
       console.log(usertoken);
       props.getfbSessions(usertoken);
+   
       // props.getfbCustomers(usertoken);
       props.getfbChats(usertoken);
 

@@ -110,9 +110,13 @@ export function chatwebhook(req, res) {
 			   							 function callbackC(error, response, bodyC) {
 			   							 
                         // if the attachment contains url then extract meta data of url first
-                        var text_to_test = linkify(event.message.text);
-                        logger.serverLog('info', 'This is the result of linkify '+ text_to_test );
-                        if(text_to_test != ''){
+                        var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                        var testUrl = event.message.text.match(urlRegex),
+                              onlyUrl = testUrl && testUrl[0];
+                         
+
+                        logger.serverLog('info', 'This is the result of linkify '+ onlyUrl );
+                        if(onlyUrl != null){
                           console.log('url Found in text' + text_to_test);
                           logger.serverLog('info', 'url Found in text '+ text_to_test );
                           // now the url is found fetch the meta data of url
