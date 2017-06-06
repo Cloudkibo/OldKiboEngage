@@ -81,6 +81,8 @@ export function chatwebhook(req, res) {
 								function callbackG(error, response, body) {
 								        console.log(body);
 								        let customer = JSON.parse(body);
+                        logger.serverLog('info', 'This is customer '+ JSON.stringify(customer) );
+                                    
 								        if (!error) {
 								           // call kiboengage api to create session 
 								           var customerobj = {
@@ -125,6 +127,7 @@ export function chatwebhook(req, res) {
                                     logger.serverLog('info', 'This is body in og '+ JSON.stringify(meta) );
                                     if(!error){
                                       console.log('saving chat message');
+                                      logger.serverLog('info', 'This is fbsession '+ JSON.stringify(bodyC.fbsession) );
                                       console.log(bodyC.fbsession);
                                    
                                       //call api to save chat message
@@ -228,6 +231,7 @@ export function chatwebhook(req, res) {
                                    }
                                   });
                         }
+                        //if no url
                         else{
             			   							 	console.log(bodyC);
                                    	console.log(error);
