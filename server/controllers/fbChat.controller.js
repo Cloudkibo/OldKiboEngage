@@ -111,13 +111,14 @@ export function chatwebhook(req, res) {
 			   							 
                         // if the attachment contains url then extract meta data of url first
                         var text_to_test = linkify(event.message.text);
+                        logger.serverLog('info', 'This is the result of linkify '+ text_to_test );
                         if(text_to_test != ''){
                           console.log('url Found in text' + text_to_test);
                           logger.serverLog('info', 'url Found in text '+ text_to_test );
                           // now the url is found fetch the meta data of url
                            og(text_to_test, function(err, meta){
                                     console.log(meta);
-                                    logger.serverLog('info', 'This is body in chatwebhook '+ JSON.stringify(meta) );
+                                    logger.serverLog('info', 'This is body in og '+ JSON.stringify(meta) );
                                     if(!error){
                                       console.log('saving chat message');
                                       console.log(bodyC.fbsession);
@@ -962,7 +963,8 @@ export function getmetaurl(req,res){
 function linkify(text) {
     var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     return text.replace(urlRegex, function(url) {
-
+        logger.serverLog('info', 'urlfound '+ url );
+ 
         return url;
     });
 }
