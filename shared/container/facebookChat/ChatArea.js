@@ -1498,8 +1498,10 @@ export class ChatArea extends Component {
                                         </div>
                                          :
                                          (da.payload &&
+                                         <div style={styles.left.wrapper}>
                                         <a href={da.payload.url} target="_blank"
                                            style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
+                                        </div>
                                         )
                                     )))
                             )
