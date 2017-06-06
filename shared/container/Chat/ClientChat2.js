@@ -1,6 +1,6 @@
 import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
-import {showAllChat, getcompanylogo}  from '../../redux/actions/actions'
+import {showAllChat, getcompanylogo}  from '../../redux/actions/actions';
 import ClientChatView2 from './ClientChatView2';
 
 class ClientChat2 extends Component {
@@ -13,8 +13,6 @@ class ClientChat2 extends Component {
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
     props.getcompanylogo(appid, appsecret, props.params.id);
     super(props, context);
-
-
   }
 
   handleChange(e) {

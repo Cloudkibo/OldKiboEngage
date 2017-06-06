@@ -27,8 +27,6 @@ class ClientChatView2 extends Component {
     this.scrollToBottom();
     //var username = prompt("Hi! I am Kitt. Whats your good name?");
     this.refs.username.value = '';
-
-
   }
 
   componentWillReceiveProps(props) {
@@ -209,7 +207,7 @@ class ClientChatView2 extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
