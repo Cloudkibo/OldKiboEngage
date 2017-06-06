@@ -23,7 +23,7 @@ import ReactTooltip from 'react-tooltip';
 import {
   geturl, getmainURL, get_preview, handleDate,
   showDate, handleAgentName, formatAMPM, displayDate,
-  getEmojiURL, isEmoji
+  getEmojiURL, isEmoji,getmetaurl
 } from './utility';
 
 var getSuggestions = function (value, cr) {
@@ -1357,26 +1357,35 @@ export class ChatArea extends Component {
             <div style={{'float': 'left'}}>
 
               <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle}/>
+              {data.message && 
               <div
                 style={data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? styles.left.emojionly : (data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image") ? styles.left.wrapperNoColor : styles.left.wrapper}>
                 { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ?
                   <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> :
                   <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
                 }
+               
              </div>
+
+
+           }
+
                 
                 {data.attachments && data.attachments.length > 0 &&
                     data.attachments.map((da, index) => (
                       (da.type == "image" ?
                           (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png' ?
+                            <div style={styles.left.wrapperNoColor}>
                             <div style={styles.imagestyle, {'width':'32px',
                               'height':'32px'}}>
                               <img src={da.payload.url} style={{
                                 'width': '32px',
                                 'height': '32px'
                               }}/>
+                            </div>
                             </div> :
                             (da.payload.url.indexOf('.gif') != -1 ?
+                                <div style={styles.left.wrapperNoColor}>
                                 <div style={styles.imagestyle,{'width': '170px',
                                   backgroundImage: `url(${da.payload.url})`,
                                   width: 170,
@@ -1387,8 +1396,9 @@ export class ChatArea extends Component {
                                   borderRadius:'1.3em',
                                   boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)'
                                 }}>
-
+                                </div>
                                 </div> :
+                                <div style={styles.left.wrapperNoColor}>
                                 <div style={styles.imagestyle,{
                                   backgroundImage: `url(${da.payload.url})`,
                                   width: 170,
@@ -1400,32 +1410,100 @@ export class ChatArea extends Component {
                                   borderRadius:'1.3em'}}>
 
                                 </div>
+                                </div>
                             ))
                           :
-                          <div style={styles.imagestyle}>
-                            {
+                         
+                            (
                               da.type == "video" ?
-                                <ReactPlayer url={da.payload.url} controls={true} width="100%" height="242"
-                                             onPlay={this.onTestURL.bind(this, da.payload.url)}/> :
+                                 <div style={styles.left.wrapper}>
+                                   <div style={styles.imagestyle}>
+                                      <ReactPlayer url={da.payload.url} controls={true} width="100%" height="242"
+                                             onPlay={this.onTestURL.bind(this, da.payload.url)}/>
+                                             </div>
+                                             </div> :
                                 (da.type == "audio" ?
+                                  <div style={styles.left.wrapper}>
+                                   <div style={styles.imagestyle}>
                                   <ReactPlayer url={da.payload.url} controls={true} width="100%" height="30"
-                                               onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/> :
+                                               onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>
+                                               </div>
+                                               </div> :
                                   (da.type == "location" ?
+                                   <div style={styles.left.wrapper}>
+                                   <div style={styles.imagestyle}>
                                     <div>
                                       <p> {da.title} </p>
                                       <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                                     </div>
+                                    </div>
+                                    </div>
                                     :
                                     (da.type == "fallback" && data.urlmeta?
-                                        <div>
-                                          <p> {'Hello'} </p>
-                                          
-                                        </div> :
+                                        <div style={{clear:'both', display:'block'}}>
+                                        <div style={styles.left.wrapperforURL}>
+                                        <table style={{maxWidth:'300px'}}>
+                                        {data.urlmeta.type && data.urlmeta.type == "video"?
+                                          <tbody>
+
+                                          <tr>
+                                              <td colspan="2">
+                                                <ReactPlayer url={data.urlmeta.url} controls={true} width="100%" height="242"
+                                                />
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                              <div>
+                                               <a href={getmetaurl(data.message)} target="_blank">
+                                           
+                                               <span style={styles.urltitle}>{da.title}</span>
+                                               </a>
+                                               <br/>
+                                                <span>{data.urlmeta.description}</span>
+                                              </div>
+                                              </td>
+                                        </tr>
+                                        </tbody>
+                                        :
+                                        <tbody>
+
+                                        <tr>
+                                          <td>
+                                             <div style={{width:72,height:72}}>
+                                            {data.urlmeta.image && 
+                                            <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                            }
+                                        </div>
+                                        </td>
+                                          <td>
+                                          <div>
+                                           <a href={getmetaurl(data.message)} target="_blank">
+                                       
+                                           <span style={styles.urltitle}>{da.title}</span>
+                                           </a>
+
+                                           <br/>
+                                           {data.urlmeta.description &&
+                                            <span>{data.urlmeta.description}</span>
+                                          }
+                                          </div>
+                                          </td>
+                                        </tr>
+                                        </tbody>
+                                      }
+                                        </table>
+                                       
+                                        </div>
+                                        </div>
+                                         :
+                                         (da.payload &&
                                         <a href={da.payload.url} target="_blank"
                                            style={styles.left.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
+                                        )
                                     )))
-                            }
-                          </div>
+                            )
+                         
 
                       )
 
@@ -1458,6 +1536,9 @@ export class ChatArea extends Component {
 
 
             }
+            {
+              data.message &&
+             
             <div
               style={data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? styles.right.wrapperNoColor : data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image" ? styles.right.wrapperNoColor : styles.right.wrapper}>
 
@@ -1465,11 +1546,13 @@ export class ChatArea extends Component {
                 <div><p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p></div> :
                 <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
               }
+              </div>
+            }
               {data.attachments && data.attachments.length > 0 &&
               data.attachments.map((da, index) => (
                 (da.type == "image" ?
                     (da.payload.url.split("?")[0] == 'https://scontent.xx.fbcdn.net/v/t39.1997-6/851557_369239266556155_759568595_n.png' ?
-
+                      <div style={styles.right.wrapperNoColor}>
                       <div style={styles.imagestyle,{
                         'width':'32px',
                         'height':'32px'}}>
@@ -1477,8 +1560,10 @@ export class ChatArea extends Component {
                           'width': '32px',
                           'height': '32px'
                         }}/>
+                      </div>
                       </div> :
                       (da.payload.url.indexOf('.gif') != -1 ?
+                          <div style={styles.right.wrapperNoColor}>
                           <div style={styles.imagestyle,{'width': '170px',
                             backgroundImage: `url(${da.payload.url})`,
                             width: 170,
@@ -1490,7 +1575,9 @@ export class ChatArea extends Component {
                             borderRadius:'1.3em',
                           }}>
 
-                          </div> :
+                          </div> 
+                          </div>:
+                          <div style={styles.right.wrapperNoColor}>
                           <div style={styles.imagestyle,{
                             backgroundImage: `url(${da.payload.url})`,
                             width: 170,
@@ -1502,10 +1589,12 @@ export class ChatArea extends Component {
                             borderRadius:'1.3em'}}>
 
                           </div>
+                          </div>
                       ))
 
 
                     :
+                    <div style={styles.right.wrapper}>
                     <div style={styles.imagestyle}>
                       {
                         da.type == "video" ?
@@ -1525,6 +1614,7 @@ export class ChatArea extends Component {
                             ))
                       }
                     </div>
+                    </div>
                 )
               ))
               }
@@ -1532,7 +1622,7 @@ export class ChatArea extends Component {
             </div>
 
 
-          </div>
+         
 
       )
     })
@@ -1859,6 +1949,20 @@ const styles = {
       position: 'relative',
       display: 'inline-block',
     },
+      wrapperforURL: {
+      borderRadius: 15,
+      backgroundColor: '#f0f0f0',
+      minHeight: 20,
+      justifyContent: 'flex-end',
+      marginBottom: 15,
+      boxSizing: 'border-box',
+      maxWidth: '80%',
+      clear: 'both',
+      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginLeft: '3em',
+      position: 'relative',
+      display: 'inline-block',
+    },
     emojionly: {
       borderRadius: 15,
       minHeight: 20,
@@ -2040,6 +2144,12 @@ const styles = {
     position: 'relative',
     display: 'inline-block',
     cursor: 'pointer',
+  },
+  urltitle:{
+    color: 'rgba(0, 0, 0, 1)',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    marginTop: '6px',
   }
 };
 
