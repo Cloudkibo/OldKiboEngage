@@ -46,8 +46,8 @@ class FbChat extends Component {
       // get groups list and agents
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
-      var url = 'https://en.wikipedia.org/wiki/Artificial_neural_network';
-      props.getmetaurl(url, usertoken);
+     
+      //props.getmetaurl(url, usertoken);
       callonce = true;
 
     }
