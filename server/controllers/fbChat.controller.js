@@ -117,10 +117,10 @@ export function chatwebhook(req, res) {
 
                         logger.serverLog('info', 'This is the result of linkify '+ onlyUrl );
                         if(onlyUrl != null){
-                          console.log('url Found in text' + text_to_test);
-                          logger.serverLog('info', 'url Found in text '+ text_to_test );
+                          console.log('url Found in text' + onlyUrl);
+                          logger.serverLog('info', 'url Found in text '+ onlyUrl );
                           // now the url is found fetch the meta data of url
-                           og(text_to_test, function(err, meta){
+                           og(onlyUrl, function(err, meta){
                                     console.log(meta);
                                     logger.serverLog('info', 'This is body in og '+ JSON.stringify(meta) );
                                     if(!error){
