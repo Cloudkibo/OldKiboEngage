@@ -115,6 +115,10 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/pages/css/style-revolution-slider.css" rel="stylesheet"><!-- metronic revo slider styles -->
         <link href="assets/frontend/layout/css/style-responsive.css" rel="stylesheet">
         <link href="assets/frontend/layout/css/themes/red.css" rel="stylesheet" id="style-color">
+        <!-- UIkit CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.24/css/uikit.min.css" />
+
+
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"   rel="stylesheet">
@@ -197,6 +201,9 @@ Demo.init(); // init demo features
 });
 </script>
              <script src="/dist/bundle.js"></script>
+                     <!-- jQuery is required -->
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.24/js/uikit-icons.min.js"></script>
          </body>
     </html>
   `;
