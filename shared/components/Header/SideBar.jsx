@@ -139,7 +139,7 @@ class SideBar extends Component
   return (
     
   	<div>
-        <div className="page-sidebar navbar-collapse collapse">
+        <div className="page-sidebar navbar-collapse collapse" style={{background: '#03363D'}}>
 
             <ul className="page-sidebar-menu page-sidebar-menu-closed page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
               <li className="sidebar-toggler-wrapper">
