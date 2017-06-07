@@ -174,7 +174,7 @@ class SideBar extends Component
 
                <li className={this.state.assignedchatsessions} onClick={() => this.props.updateActive("assignedchatsessions")}>
                 <Link to='/assignedchatsessions'>
-                  <i className="fa fa-chain">
+                  <i className="icon-link">
                   </i>
                   <span className="title">
                     Assigned Chat Sessions
@@ -186,7 +186,7 @@ class SideBar extends Component
 
               <li className={this.state.abandonedchatsessions} onClick={() => this.props.updateActive("abandonedchatsessions")}>
                 <Link to='/abandonedchatsessions'>
-                  <i className="fa fa-chain-broken">
+                  <i className="icon-link">
                   </i>
                   <span className="title">
                      Abandoned Chat Sessions
@@ -198,7 +198,7 @@ class SideBar extends Component
 
                <li className={this.state.resolvedchatsessions} onClick={() => this.props.updateActive("resolvedchatsessions")}>
                 <Link to="/resolvedchatsessions">
-                  <i className="fa fa-check">
+                  <i className="icon-check">
                   </i>
                   <span className="title">
                      Resolved Chat Sessions
@@ -212,7 +212,7 @@ class SideBar extends Component
 
               <li className={this.state.summarychatsessions} onClick={() => this.props.updateActive("summarychatsessions")}>
                 <Link to="/summarychatsessions">
-                  <i className="fa fa-phone-square">
+                  <i className="icon-phone">
                   </i>
                   <span className="title">
                      Summary of Chat Sessions
@@ -224,7 +224,7 @@ class SideBar extends Component
 
               <li className={this.state.customers} onClick={() => this.props.updateActive("customers")}>
                 <Link to="/customers">
-                  <i className="fa fa-user">
+                  <i className="icon-user">
                   </i>
                   <span className="title">
                      Customer Directory
@@ -236,7 +236,7 @@ class SideBar extends Component
 
               <li className={this.state.FBcustomers} onClick={() => this.props.updateActive("FBcustomers")}>
                 <Link to="/FBcustomers">
-                  <i className="fa fa-users">
+                  <i className="icon-people">
                   </i>
                   <span className="title">
                      Facebook Customers
@@ -249,7 +249,7 @@ class SideBar extends Component
                {this.props.isAdmin == "Yes"?
               <li className={this.state.agents} onClick={() => this.props.updateActive("agents")}>
                 <Link to= '/agents'>
-                  <i className="fa fa-user">
+                  <i className="icon-user-following">
                   </i>
                   <span className="title">
                      Agents
@@ -263,7 +263,7 @@ class SideBar extends Component
 
                <li className={this.state.invitedagents} onClick={() => this.props.updateActive("invitedagents")}>
                 <Link to= '/invitedagents'>
-                  <i className="fa fa-user">
+                  <i className="icon-user-follow">
                   </i>
                   <span className="title">
                      Invited Agents
@@ -275,7 +275,7 @@ class SideBar extends Component
 
                <li className={this.state.groups} onClick={() => this.props.updateActive("groups")}>
                 <Link to='/groups'>
-                  <i className="fa fa-group">
+                  <i className="icon-people">
                   </i>
                   <span className="title">
                      Groups
@@ -286,7 +286,7 @@ class SideBar extends Component
               </li>
               <li className={this.state.subgroups} onClick={() => this.props.updateActive("subgroups")}>
                 <Link to="/subgroups">
-                  <i className="fa fa-envelope-square">
+                  <i className="icon-envelope">
                   </i>
                   <span className="title">
                      Sub Groups
@@ -298,7 +298,7 @@ class SideBar extends Component
 
             <li className={this.state.teams} onClick={() => this.props.updateActive("teams")}>
                 <Link to='/teams'>
-                  <i className="fa fa-group">
+                  <i className="icon-people">
                   </i>
                   <span className="title">
                      Teams
@@ -310,7 +310,7 @@ class SideBar extends Component
 
               <li className={this.state.notifications} onClick={() => this.props.updateActive("notifications")}>
                 <Link to='/notifications'>
-                  <i className="fa fa-bell">
+                  <i className="icon-bell">
                   </i>
                   <span className="title">
                    Notifications
@@ -322,7 +322,7 @@ class SideBar extends Component
 
               <li className={this.state.widgetcode} onClick={() => this.props.updateActive("widgetcode")}>
                 <Link to='/widgetcode'>
-                  <i className="fa fa-chain">
+                  <i className="icon-tag">
                   </i>
                   <span className="title">
                     Widget
@@ -334,7 +334,7 @@ class SideBar extends Component
 
               <li className={this.state.reports} onClick={() => this.props.updateActive("reports")}>
                 <Link to="/reports">
-                  <i className="fa fa-bar-chart-o">
+                  <i className="icon-chart">
                   </i>
                   <span className="title">
                      Reports
@@ -347,7 +347,7 @@ class SideBar extends Component
 
                <li className={this.state.cannedresponses} onClick={() => this.props.updateActive("cannedresponses")}>
                 <Link to="/cannedresponses">
-                  <i className="fa fa-envelope-square">
+                  <i className="icon-envelope">
                   </i>
                   <span className="title">
                      Canned Response
@@ -360,7 +360,7 @@ class SideBar extends Component
             {(this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes')?
               <li className={this.state.instructionsforintegratingfacebook} onClick={() => this.props.updateActive("instructionsforintegratingfacebook")}>
                 <Link to="/instructionsforintegratingfacebook">
-                  <i className="fa fa-info-circle">
+                  <i className="icon-info">
                   </i>
                   <span className="title">
                     Facebook Integration
@@ -375,7 +375,7 @@ class SideBar extends Component
              { (this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
               <li className={this.state.fbpages} onClick={() => this.props.updateActive("fbpages")}>
                 <Link to="/fbpages">
-                  <i className="fa fa-facebook">
+                  <i className="icon-social-facebook">
                   </i>
                   <span className="title">
                     Facebook Pages
@@ -390,7 +390,7 @@ class SideBar extends Component
                 {(this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
                   <li  className={this.state.fbchat} onClick={() => this.props.updateActive("fbchat")}>
                 <Link to="/fbchat">
-                  <i className="fa fa-facebook">
+                  <i className="icon-speech">
                   </i>
                   <span className="title">
                     Facebook Chat
@@ -405,7 +405,7 @@ class SideBar extends Component
             {this.props.isAdmin == "Yes"?
               <li className={this.state.companyprofile} onClick={() => this.props.updateActive("companyprofile")}>
                 <Link to="/companyprofile">
-                  <i className="fa fa-cogs">
+                  <i className="icon-settings">
                   </i>
                   <span className="title">
                     Company Settings
