@@ -117,6 +117,7 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/themes/red.css" rel="stylesheet" id="style-color">
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"   rel="stylesheet">
          <link rel="stylesheet" href="/css/rrui.css"/>
         <link rel="stylesheet" href="/css/styleuu.css"/>
       

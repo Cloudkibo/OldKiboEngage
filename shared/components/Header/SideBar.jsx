@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import auth from '../../services/auth';
 import Logout from '../../container/Auth/Logout';
 import moment from 'moment'
-import { getnews,updatenews}  from '../../redux/actions/actions'
+import { getnews,updatenews, updateActive}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
 
 
@@ -14,7 +14,124 @@ class SideBar extends Component
 
 
     super(props, context);
+    this.state = {
+      dashboard: '',
+      chat: '',
+      assignedchatsessions: '',
+      abandonedchatsessions: '',
+      resolvedchatsessions: '',
+      summarychatsessions: '',
+      customers: '',
+      FBcustomers: '',
+      agents: '',
+      invitedagents: '',
+      groups: '',
+      subgroups: '',
+      teams: '',
+      notifications: '',
+      widgetcode: '',
+      reports: '',
+      cannedresponses: '',
+      instructionsforintegratingfacebook: '',
+      fbpages: '',
+      fbchat: '',
+      companysettings: '',
+    };
 
+  }
+
+  componentDidMount(){
+
+  //  alert("I was mounted", this.props.active);
+   this.setState({
+      dashboard: '',
+      chat: '',
+      assignedchatsessions: '',
+      abandonedchatsessions: '',
+      resolvedchatsessions: '',
+      summarychatsessions: '',
+      customers: '',
+      FBcustomers: '',
+      agents: '',
+      invitedagents: '',
+      groups: '',
+      subgroups: '',
+      teams: '',
+      notifications: '',
+      widgetcode: '',
+      reports: '',
+      cannedresponses: '',
+      instructionsforintegratingfacebook: '',
+      fbpages: '',
+      fbchat: '',
+      companysettings: '',
+    });
+   switch (this.props.active) {
+     case 'chat':
+      this.setState({chat: ' active open '});  
+       break;
+     case 'dashboard':
+      this.setState({dashboard: ' active open '});  
+       break;
+    case 'assignedchatsessions':
+      this.setState({assignedchatsessions: ' active open '});  
+       break;
+    case 'resolvedchatsessions':
+      this.setState({resolvedchatsessions: ' active open '});  
+       break;
+    case 'abandonedchatsessions':
+      this.setState({abandonedchatsessions: ' active open '});  
+       break;
+      case 'summarychatsessions':
+      this.setState({summarychatsessions: ' active open '});  
+       break;
+       case 'customers':
+      this.setState({customers: ' active open '});  
+       break;
+       case 'FBcustomers':
+      this.setState({FBcustomers: ' active open '});  
+       break;
+       case 'agents':
+      this.setState({agents: ' active open '});  
+       break;
+       case 'invitedagents':
+      this.setState({invitedagents: ' active open '});  
+       break;
+       case 'groups':
+      this.setState({groups: ' active open '});  
+       break;
+       case 'subgroups':
+      this.setState({subgroups: ' active open '});  
+       break;case 'teams':
+      this.setState({teams: ' active open '});  
+       break;
+       case 'notifications':
+      this.setState({notifications: ' active open '});  
+       break;
+       case 'widgetcode':
+      this.setState({widgetcode: ' active open '});  
+       break;case 'reports':
+      this.setState({reports: ' active open '});  
+       break;
+       case 'cannedresponses':
+      this.setState({cannedresponses: ' active open '});  
+       break;
+       case 'instructionsforintegratingfacebook':
+      this.setState({instructionsforintegratingfacebook: ' active open '});  
+       break;
+       case 'fbpages':
+      this.setState({fbpages: ' active open '});  
+       break;
+       case 'fbchat':
+      this.setState({fbchat: ' active open '});  
+       break;
+       case 'companyprofile':
+      this.setState({companyprofile: ' active open '});  
+       break;
+   
+     default:
+       break;
+   }
   }
 
   render()
@@ -32,9 +149,9 @@ class SideBar extends Component
                   
                 </li>
 
-              <li className="start">
+              <li className={"start" + this.state.dashboard} onClick={() => this.props.updateActive("dashboard")}>
                <Link to='/dashboard'>
-                  <i className="fa fa-dashboard">
+                  <i className="icon-grid">
                   </i>
                   <span className="title">
                     Dashboard
@@ -43,9 +160,9 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-               <li className="">
+               <li className={this.state.chat} onClick={() => this.props.updateActive("chat")}>
                 <Link to="/chat">
-                  <i className="fa fa-comments-o">
+                  <i className="icon-bubble">
                   </i>
                   <span className="title">
                      Chat
@@ -55,7 +172,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-               <li className="">
+               <li className={this.state.assignedchatsessions} onClick={() => this.props.updateActive("assignedchatsessions")}>
                 <Link to='/assignedchatsessions'>
                   <i className="fa fa-chain">
                   </i>
@@ -67,7 +184,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
+              <li className={this.state.abandonedchatsessions} onClick={() => this.props.updateActive("abandonedchatsessions")}>
                 <Link to='/abandonedchatsessions'>
                   <i className="fa fa-chain-broken">
                   </i>
@@ -79,7 +196,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-               <li className="">
+               <li className={this.state.resolvedchatsessions} onClick={() => this.props.updateActive("resolvedchatsessions")}>
                 <Link to="/resolvedchatsessions">
                   <i className="fa fa-check">
                   </i>
@@ -93,7 +210,7 @@ class SideBar extends Component
 
 
 
-              <li className="">
+              <li className={this.state.summarychatsessions} onClick={() => this.props.updateActive("summarychatsessions")}>
                 <Link to="/summarychatsessions">
                   <i className="fa fa-phone-square">
                   </i>
@@ -105,7 +222,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
+              <li className={this.state.customers} onClick={() => this.props.updateActive("customers")}>
                 <Link to="/customers">
                   <i className="fa fa-user">
                   </i>
@@ -117,7 +234,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
+              <li className={this.state.FBcustomers} onClick={() => this.props.updateActive("FBcustomers")}>
                 <Link to="/FBcustomers">
                   <i className="fa fa-users">
                   </i>
@@ -130,7 +247,7 @@ class SideBar extends Component
               </li>
 
                {this.props.isAdmin == "Yes"?
-              <li className="">
+              <li className={this.state.agents} onClick={() => this.props.updateActive("agents")}>
                 <Link to= '/agents'>
                   <i className="fa fa-user">
                   </i>
@@ -144,7 +261,7 @@ class SideBar extends Component
                 :<li></li>
                 }
 
-               <li className="">
+               <li className={this.state.invitedagents} onClick={() => this.props.updateActive("invitedagents")}>
                 <Link to= '/invitedagents'>
                   <i className="fa fa-user">
                   </i>
@@ -156,7 +273,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-               <li className="">
+               <li className={this.state.groups} onClick={() => this.props.updateActive("groups")}>
                 <Link to='/groups'>
                   <i className="fa fa-group">
                   </i>
@@ -167,7 +284,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              <li className="">
+              <li className={this.state.subgroups} onClick={() => this.props.updateActive("subgroups")}>
                 <Link to="/subgroups">
                   <i className="fa fa-envelope-square">
                   </i>
@@ -179,7 +296,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-            <li className="">
+            <li className={this.state.teams} onClick={() => this.props.updateActive("teams")}>
                 <Link to='/teams'>
                   <i className="fa fa-group">
                   </i>
@@ -191,7 +308,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
+              <li className={this.state.notifications} onClick={() => this.props.updateActive("notifications")}>
                 <Link to='/notifications'>
                   <i className="fa fa-bell">
                   </i>
@@ -203,7 +320,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
+              <li className={this.state.widgetcode} onClick={() => this.props.updateActive("widgetcode")}>
                 <Link to='/widgetcode'>
                   <i className="fa fa-chain">
                   </i>
@@ -215,7 +332,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className="">
+              <li className={this.state.reports} onClick={() => this.props.updateActive("reports")}>
                 <Link to="/reports">
                   <i className="fa fa-bar-chart-o">
                   </i>
@@ -228,7 +345,7 @@ class SideBar extends Component
               </li>
 
 
-               <li className="">
+               <li className={this.state.cannedresponses} onClick={() => this.props.updateActive("cannedresponses")}>
                 <Link to="/cannedresponses">
                   <i className="fa fa-envelope-square">
                   </i>
@@ -241,7 +358,7 @@ class SideBar extends Component
               </li>
 
             {(this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes')?
-              <li className="">
+              <li className={this.state.instructionsforintegratingfacebook} onClick={() => this.props.updateActive("instructionsforintegratingfacebook")}>
                 <Link to="/instructionsforintegratingfacebook">
                   <i className="fa fa-info-circle">
                   </i>
@@ -256,7 +373,7 @@ class SideBar extends Component
                 :<li></li>
                 }
              { (this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
-              <li className="">
+              <li className={this.state.fbpages} onClick={() => this.props.updateActive("fbpages")}>
                 <Link to="/fbpages">
                   <i className="fa fa-facebook">
                   </i>
@@ -271,7 +388,7 @@ class SideBar extends Component
                 :<li></li>
                 }
                 {(this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
-                  <li  className="">
+                  <li  className={this.state.fbchat} onClick={() => this.props.updateActive("fbchat")}>
                 <Link to="/fbchat">
                   <i className="fa fa-facebook">
                   </i>
@@ -286,7 +403,7 @@ class SideBar extends Component
 
 
             {this.props.isAdmin == "Yes"?
-              <li className="">
+              <li className={this.state.companyprofile} onClick={() => this.props.updateActive("companyprofile")}>
                 <Link to="/companyprofile">
                   <i className="fa fa-cogs">
                   </i>
@@ -323,6 +440,7 @@ function mapStateToProps(state) {
     userdetails:(state.dashboard.userdetails),
     news : (state.dashboard.news),
     companysettings:(state.dashboard.companysettings),
+    active:(state.dashboard.active),
   };
 }
-export default connect(mapStateToProps,{ getnews,updatenews})(SideBar);
+export default connect(mapStateToProps,{ getnews,updatenews, updateActive})(SideBar);
