@@ -28,7 +28,8 @@ const dashboardState = {
   userchats: [],
   chatlist: [],
   componentVisible: 'true',
-  fbsessionSelected: {}
+  fbsessionSelected: {},
+  active: 'active bar',
 };
 const widgetState = {groupdetails: [], subgroups: [], chatbotlist: []}
 const signup = (state = initialState, action) => {
@@ -90,6 +91,12 @@ const dashboard = (state = dashboardState, action) => {
         ...state, errorMessageProfile: '',
         invitedagents: action.invitedagents,
         errorMessage: '',
+      }
+
+  case ActionTypes.UPDATE_ACTIVE:
+      return {
+        ...state,
+        active: action.payload,
       }
 
     case ActionTypes.ADD_SELECTED_AGENT :

@@ -570,6 +570,13 @@ export function deleteGroup(group) {
   };
 }
 
+export function updateActive(active) {
+  // alert("Update.active was called");
+  return {
+    type: ActionTypes.UPDATE_ACTIVE,
+    payload: active,
+  };
+}
 
 export function deletegroup(group, usertoken, customers) {
   if (confirm("Do you want to delete this group?")) {

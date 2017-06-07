@@ -41,7 +41,7 @@ class AuthorizedHeader extends Component
         <div className="page-header-inner">
           <div className = "page-logo" >
               <a href = '/' >
-                <h4> KiboEngage </h4>
+                <h4 style={{color: 'white'}}> KiboEngage </h4>
               </a>
 
           </div >
