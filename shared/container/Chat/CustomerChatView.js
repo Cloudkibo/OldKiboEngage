@@ -10,7 +10,9 @@ import { updateChatList,removeDuplicatesWebChat}  from '../../redux/actions/acti
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
 import {savechat,updatechatstatus,downloadfile,getchatfromAgent}  from '../../redux/actions/actions'
-import { FileUpload } from 'redux-file-upload'
+import { FileUpload } from 'redux-file-upload';
+import SweetAlert from 'sweetalert-react';
+
 
 //var DownloadButton = require('downloadbutton')
 
@@ -934,7 +936,7 @@ else{
   var agentemail = []
   var agentids = []
   if(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib == -1){
-    alert("Please select a team from the dropdown menu");
+    this.setState({ show: true });
     return;
   }
 
@@ -1235,6 +1237,12 @@ const { value, suggestions } = this.state;
 
       <div>
            <div className="table-responsive">
+      <SweetAlert
+        show={this.state.show}
+        title="Alert"
+        text="Please select a team from the dropdown menu"
+        onConfirm={() => this.setState({ show: false })}
+      />
              <table className="table table-colored">
              <tbody>
              <tr>

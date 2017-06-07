@@ -122,9 +122,10 @@ const renderFullPage = (html, initialState) => {
         <link href="assets/frontend/layout/css/custom.css" rel="stylesheet">
         <link href="assets/frontend/layout/css/cropper.css"   rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"   rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
          <link rel="stylesheet" href="/css/rrui.css"/>
         <link rel="stylesheet" href="/css/styleuu.css"/>
-      
+        
         
   </head>
       <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed ">
