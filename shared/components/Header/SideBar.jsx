@@ -5,7 +5,7 @@ import Logout from '../../container/Auth/Logout';
 import moment from 'moment'
 import { getnews,updatenews, updateActive}  from '../../redux/actions/actions'
 import { connect } from 'react-redux';
-
+import ReactTooltip from 'react-tooltip';
 
 class SideBar extends Component
 {
@@ -139,6 +139,7 @@ class SideBar extends Component
   return (
     
   	<div>
+    <ReactTooltip />
         <div className="page-sidebar navbar-collapse collapse" style={{background: '#03363D'}}>
 
             <ul className="page-sidebar-menu page-sidebar-menu-closed page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
@@ -149,7 +150,7 @@ class SideBar extends Component
                   
                 </li>
 
-              <li className={"start" + this.state.dashboard} onClick={() => this.props.updateActive("dashboard")}>
+              <li data-tip="Dashboard" className={"start" + this.state.dashboard} onClick={() => this.props.updateActive("dashboard")}>
                <Link to='/dashboard'>
                   <i className="icon-grid">
                   </i>
@@ -160,7 +161,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-               <li className={this.state.chat} onClick={() => this.props.updateActive("chat")}>
+               <li data-tip="Chat" className={this.state.chat} onClick={() => this.props.updateActive("chat")}>
                 <Link to="/chat">
                   <i className="icon-bubble">
                   </i>
@@ -172,7 +173,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-               <li className={this.state.assignedchatsessions} onClick={() => this.props.updateActive("assignedchatsessions")}>
+               <li data-tip="Assigned Chat Sessions" className={this.state.assignedchatsessions} onClick={() => this.props.updateActive("assignedchatsessions")}>
                 <Link to='/assignedchatsessions'>
                   <i className="icon-link">
                   </i>
@@ -184,7 +185,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className={this.state.abandonedchatsessions} onClick={() => this.props.updateActive("abandonedchatsessions")}>
+              <li data-tip="Abandoned Chat Sessions" className={this.state.abandonedchatsessions} onClick={() => this.props.updateActive("abandonedchatsessions")}>
                 <Link to='/abandonedchatsessions'>
                   <i className="icon-link">
                   </i>
@@ -196,7 +197,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-               <li className={this.state.resolvedchatsessions} onClick={() => this.props.updateActive("resolvedchatsessions")}>
+               <li data-tip="Resolved Chat Sessions" className={this.state.resolvedchatsessions} onClick={() => this.props.updateActive("resolvedchatsessions")}>
                 <Link to="/resolvedchatsessions">
                   <i className="icon-check">
                   </i>
@@ -210,7 +211,7 @@ class SideBar extends Component
 
 
 
-              <li className={this.state.summarychatsessions} onClick={() => this.props.updateActive("summarychatsessions")}>
+              <li data-tip="Summary of Chat Sessions" className={this.state.summarychatsessions} onClick={() => this.props.updateActive("summarychatsessions")}>
                 <Link to="/summarychatsessions">
                   <i className="icon-phone">
                   </i>
@@ -222,7 +223,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className={this.state.customers} onClick={() => this.props.updateActive("customers")}>
+              <li data-tip="Customer Directory" className={this.state.customers} onClick={() => this.props.updateActive("customers")}>
                 <Link to="/customers">
                   <i className="icon-user">
                   </i>
@@ -234,7 +235,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className={this.state.FBcustomers} onClick={() => this.props.updateActive("FBcustomers")}>
+              <li data-tip="Facebook Customers" className={this.state.FBcustomers} onClick={() => this.props.updateActive("FBcustomers")}>
                 <Link to="/FBcustomers">
                   <i className="icon-people">
                   </i>
@@ -247,7 +248,7 @@ class SideBar extends Component
               </li>
 
                {this.props.isAdmin == "Yes"?
-              <li className={this.state.agents} onClick={() => this.props.updateActive("agents")}>
+              <li data-tip="Agents" className={this.state.agents} onClick={() => this.props.updateActive("agents")}>
                 <Link to= '/agents'>
                   <i className="icon-user-following">
                   </i>
@@ -261,7 +262,7 @@ class SideBar extends Component
                 :<li></li>
                 }
 
-               <li className={this.state.invitedagents} onClick={() => this.props.updateActive("invitedagents")}>
+               <li data-tip="Invited Agents" className={this.state.invitedagents} onClick={() => this.props.updateActive("invitedagents")}>
                 <Link to= '/invitedagents'>
                   <i className="icon-user-follow">
                   </i>
@@ -273,7 +274,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-               <li className={this.state.groups} onClick={() => this.props.updateActive("groups")}>
+               <li data-tip="Groups" className={this.state.groups} onClick={() => this.props.updateActive("groups")}>
                 <Link to='/groups'>
                   <i className="icon-people">
                   </i>
@@ -284,7 +285,7 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
-              <li className={this.state.subgroups} onClick={() => this.props.updateActive("subgroups")}>
+              <li data-tip="Sub Groups" className={this.state.subgroups} onClick={() => this.props.updateActive("subgroups")}>
                 <Link to="/subgroups">
                   <i className="icon-envelope">
                   </i>
@@ -296,7 +297,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-            <li className={this.state.teams} onClick={() => this.props.updateActive("teams")}>
+            <li data-tip="Teams" className={this.state.teams} onClick={() => this.props.updateActive("teams")}>
                 <Link to='/teams'>
                   <i className="icon-people">
                   </i>
@@ -308,7 +309,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className={this.state.notifications} onClick={() => this.props.updateActive("notifications")}>
+              <li data-tip="Notifications" className={this.state.notifications} onClick={() => this.props.updateActive("notifications")}>
                 <Link to='/notifications'>
                   <i className="icon-bell">
                   </i>
@@ -320,7 +321,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className={this.state.widgetcode} onClick={() => this.props.updateActive("widgetcode")}>
+              <li data-tip="Widget" className={this.state.widgetcode} onClick={() => this.props.updateActive("widgetcode")}>
                 <Link to='/widgetcode'>
                   <i className="icon-tag">
                   </i>
@@ -332,7 +333,7 @@ class SideBar extends Component
                 </Link>
               </li>
 
-              <li className={this.state.reports} onClick={() => this.props.updateActive("reports")}>
+              <li data-tip="Reports" className={this.state.reports} onClick={() => this.props.updateActive("reports")}>
                 <Link to="/reports">
                   <i className="icon-chart">
                   </i>
@@ -345,7 +346,7 @@ class SideBar extends Component
               </li>
 
 
-               <li className={this.state.cannedresponses} onClick={() => this.props.updateActive("cannedresponses")}>
+               <li data-tip="Canned Response" className={this.state.cannedresponses} onClick={() => this.props.updateActive("cannedresponses")}>
                 <Link to="/cannedresponses">
                   <i className="icon-envelope">
                   </i>
@@ -358,7 +359,7 @@ class SideBar extends Component
               </li>
 
             {(this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes')?
-              <li className={this.state.instructionsforintegratingfacebook} onClick={() => this.props.updateActive("instructionsforintegratingfacebook")}>
+              <li data-tip="Facebook Integration" className={this.state.instructionsforintegratingfacebook} onClick={() => this.props.updateActive("instructionsforintegratingfacebook")}>
                 <Link to="/instructionsforintegratingfacebook">
                   <i className="icon-info">
                   </i>
@@ -373,7 +374,7 @@ class SideBar extends Component
                 :<li></li>
                 }
              { (this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
-              <li className={this.state.fbpages} onClick={() => this.props.updateActive("fbpages")}>
+              <li data-tip="Facebook Pages" className={this.state.fbpages} onClick={() => this.props.updateActive("fbpages")}>
                 <Link to="/fbpages">
                   <i className="icon-social-facebook">
                   </i>
@@ -388,7 +389,7 @@ class SideBar extends Component
                 :<li></li>
                 }
                 {(this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes') ?
-                  <li  className={this.state.fbchat} onClick={() => this.props.updateActive("fbchat")}>
+                  <li data-tip="Facebook Chat" className={this.state.fbchat} onClick={() => this.props.updateActive("fbchat")}>
                 <Link to="/fbchat">
                   <i className="icon-speech">
                   </i>
@@ -403,7 +404,7 @@ class SideBar extends Component
 
 
             {this.props.isAdmin == "Yes"?
-              <li className={this.state.companyprofile} onClick={() => this.props.updateActive("companyprofile")}>
+              <li data-tip="Company Settings" className={this.state.companyprofile} onClick={() => this.props.updateActive("companyprofile")}>
                 <Link to="/companyprofile">
                   <i className="icon-settings">
                   </i>
