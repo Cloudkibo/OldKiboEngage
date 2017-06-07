@@ -8,7 +8,8 @@ import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
 import {getsessions,getcustomers,getcustomersubgroups,filterSessionSummary, updatesubgrouplist} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class SessionSummary extends Component {
 
@@ -36,12 +37,17 @@ class SessionSummary extends Component {
         }
       }
     super(props, context);
-    this.getupdatedSessions = this.getupdatedSessions.bind(this);
     this.state ={
       loading:true,
-      subgroup: 'all'
+      subgroup: 'all',
+      summarySessionsData: [],
+      totalLength: 0,
+      sessionsummaryfiltered: props.sessionsummary,
     };
-
+    this.getupdatedSessions = this.getupdatedSessions.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
+    this.filterSessionSummary = this.filterSessionSummary.bind(this);
 
   }
 
@@ -53,23 +59,373 @@ class SessionSummary extends Component {
     this.forceUpdate();
   }
 
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.state.sessionsummaryfiltered.length){
+      limit = this.state.sessionsummaryfiltered.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.state.sessionsummaryfiltered[i];
+    }
+    this.setState({summarySessionsData: sessionData});
+  }
+
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
   componentDidMount(){
     //const usertoken = auth.getToken();
     //this.props.getsessions();
    //    this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
-     if(this.props.sessionsummaryfiltered){
+     if(this.state.sessionsummaryfiltered){
         this.setState({loading:false});
       }
+
+      this.displayData(0);
+      this.setState({totalLength: this.state.sessionsummaryfiltered.length});
   }
 
   handleChange(){
      //alert(e.target.value);
      this.setState({ subgroup: this.refs.teamlist.value });
-     this.props.filterSessionSummary(this.refs.status.value, this.refs.client.value, this.refs.agentList.value, this.refs.teamlist.value, this.refs.channellist.value, this.props.sessionsummary);
+     this.filterSessionSummary(this.refs.status.value, this.refs.client.value, this.refs.agentList.value, this.refs.teamlist.value, this.refs.channellist.value, this.props.sessionsummary);
      if(this.state.subgroup.value !== 'all') {
        this.props.updatesubgrouplist(this.refs.teamlist.value);
      }
      this.forceUpdate();
+  }
+
+  filterSessionSummary(status, medium, agentID, groupID, subgroupID, sessionsummary) {
+    var sessionsummaryfiltered;
+    if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.platform == medium),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status && c.platform == medium && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status && c.platform == medium),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.status == status),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status !== 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.status == status),
+      },
+      () => {
+        this.displayData(0);
+        console.log(this.state.sessionsummaryfiltered.length);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.platform == medium && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium !== 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.platform == medium),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID !== 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID !== 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary.filter((c) => c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
+    else if (status == 'all' && medium == 'all' && agentID == 'all' && groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        sessionsummaryfiltered: sessionsummary,
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
+      }
+      );
+    }
   }
 
     componentWillReceiveProps(nextprops){
@@ -88,18 +444,7 @@ class SessionSummary extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Summary of Chat Sessions </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/summarychatsessions">Summary of Chat Sessions </Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -196,7 +541,7 @@ class SessionSummary extends Component {
                   <p> Loading Session Summary... </p>:
                   <br/>
               }
-             { this.props.sessionsummaryfiltered && this.props.sessionsummaryfiltered.length > 0 ?
+             { this.state.sessionsummaryfiltered && this.state.sessionsummaryfiltered.length > 0 ?
                <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
@@ -218,8 +563,8 @@ class SessionSummary extends Component {
 
                     <tbody>
                       {
-                        this.props.sessionsummaryfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
-                        this.props.sessionsummaryfiltered.map((session, i) => (
+                        this.state.sessionsummaryfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
+                        this.state.summarySessionsData.map((session, i) => (
                             session.agent_ids.length>0?
                            <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} customers={this.props.customers.filter((c) => c._id == session.customerid)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)} viewoption = "true"/>
                            :
@@ -232,6 +577,17 @@ class SessionSummary extends Component {
 
                      </tbody>
                     </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p>Currently, there is not any chat sessions to show its summary.</p>
                 }

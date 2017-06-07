@@ -35,9 +35,6 @@ class Customers extends Component {
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
-
-
-
   }
 
 

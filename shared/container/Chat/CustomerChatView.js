@@ -937,7 +937,7 @@ else{
     alert("Please select a team from the dropdown menu");
     return;
   }
-  
+
 
   for(var i=0;i<this.props.teamagents.length;i++){
     if(this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib){
@@ -1253,9 +1253,9 @@ const { value, suggestions } = this.state;
 
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
-                        
+
                         <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
-                  
+
                         {this.props.sessiondetails.platform == "web"?
 
                          (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
@@ -1343,7 +1343,7 @@ const { value, suggestions } = this.state;
                           <label>Current Status - {this.props.sessiondetails.status}</label>
                           <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
                           <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
-                         
+
                           <br/>
                           <label>{
                             (this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid).length > 0) ? this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname : ''}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
@@ -1405,7 +1405,7 @@ const { value, suggestions } = this.state;
 
                                (this.props.userdetails.firstname === chat.from?
                                     <li className="right clearfix agentChatBox" style={{'marginLeft':'180px','width':'400px'}}>
-                                 
+
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">

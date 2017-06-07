@@ -12,6 +12,7 @@ import {createResponse}  from '../../redux/actions/actions';
 import CannedResponseCreate from './CannedResponseCreate';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class CannedResponses extends Component {
 
@@ -31,14 +32,13 @@ class CannedResponses extends Component {
     super(props, context);
     this.state = {
       showCR: false,
+      responsesData: [],
+      totalLength: 0,
     };
      this.handleClick = this.handleClick.bind(this);
      this.add = this.add.bind(this);
-
-
-
-
-
+     this.handlePageClick = this.handlePageClick.bind(this);
+     this.displayData = this.displayData.bind(this);
   }
  handleClick(e) {
 
@@ -59,7 +59,32 @@ class CannedResponses extends Component {
     });
  }
 
+ componentDidMount(){
+   this.displayData(0);
+   this.setState({totalLength: this.props.responses.length});
+ }
 
+ displayData(n){
+   let offset = n*6;
+   console.log("Offset: " + offset);
+   let sessionData = [];
+   let limit;
+   if ((offset + 6) > this.props.responses.length){
+     limit = this.props.responses.length;
+   }
+   else {
+     limit = offset + 6;
+   }
+   for (var i=offset; i<limit; i++){
+     sessionData[i] = this.props.responses[i];
+   }
+   this.setState({responsesData: sessionData});
+ }
+
+ handlePageClick(data){
+   console.log(data.selected);
+   this.displayData(data.selected);
+ }
 
   render() {
     console.log(this.props.userdetails.firstname)
@@ -74,18 +99,7 @@ class CannedResponses extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Canned Response Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/cannedresponses">Canned Response Management</Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -114,6 +128,7 @@ class CannedResponses extends Component {
                      <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                       }
                 { this.props.responses && this.props.responses.length > 0 ?
+                  <div>
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -131,14 +146,26 @@ class CannedResponses extends Component {
                     <tbody>
                       {
                         this.props.responses &&
-                        this.props.responses.map((response, i) => (
+                        this.state.responsesData.map((response, i) => (
 
                           <ResponseListItem response={response} key={response._id}  onDelete={() => this.props.deleteresponse(response,token)} userdetails={this.props.userdetails}/>
 
                         ))
                       }
                      </tbody>
-                    </table> :
+                    </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
+                    </div> :
                     <p> Currently, there is no canned response to show. </p>
                 }
 

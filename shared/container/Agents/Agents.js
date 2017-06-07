@@ -10,7 +10,8 @@ import InviteAgent from './InviteAgent';
 import {inviteagent,getAgents} from '../../redux/actions/actions'
 import {deleteagent} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class Agents extends Component {
 
@@ -24,13 +25,16 @@ class Agents extends Component {
     super(props, context);
     this.state = {
       showInviteAgent :  false,
+      agentsData: [],
+      totalLength: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.cancelInvite = this.cancelInvite.bind(this);
     this.add = this.add.bind(this);
     props.getAgents(usertoken);
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
 
 
   }
@@ -49,6 +53,34 @@ class Agents extends Component {
       });
       e.preventDefault();
   }
+
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.props.agents.length){
+      limit = this.props.agents.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.props.agents[i];
+    }
+    this.setState({agentsData: sessionData});
+  }
+
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({ totalLength: this.props.agents.length });
+  }
+
   cancelInvite(e){
 
       this.setState({
@@ -71,18 +103,7 @@ class Agents extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Agents Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/agents"> Agents Management</Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -129,7 +150,7 @@ class Agents extends Component {
 
                     <tbody>
                       {
-                        this.props.agents.map((agent, i) => (
+                        this.state.agentsData.map((agent, i) => (
 
                           <AgentListItem agent={agent} key={agent._id}  onDelete={() => this.props.deleteagent(agent,token)}/>
 
@@ -137,6 +158,17 @@ class Agents extends Component {
                       }
                      </tbody>
                     </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p>Currently, there is no agent to show.</p>
                 }
