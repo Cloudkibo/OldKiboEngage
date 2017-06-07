@@ -152,7 +152,7 @@ onChangeCurrentPassword(event) {
                 <form onSubmit={this.onSubmit} className ="css-form">
                                               <div className="form-group">
                                                 <label htmlFor="cpwd">Current Password</label>
-                                                <input type="password"  className="form-control " ref = "cpwd" required placeholder="Enter current password" onChange={this.onChangeCurrentPassword}/>
+                                                <input type="password" style={{maxWidth: 350,}}  className="form-control " ref = "cpwd" required placeholder="Enter current password" onChange={this.onChangeCurrentPassword}/>
                                               {
                                                 this.state.cpwdErr == ""?
                                                 <span>Enter password</span>:<span></span>
@@ -168,7 +168,7 @@ onChangeCurrentPassword(event) {
 
                                               <div className="form-group">
                                                 <label>New Password</label>
-                                                <input type="password"  className="form-control "  ref = "npwd" required placeholder="Enter new password" onChange={this.onChangeNewPassword}/>
+                                                <input type="password" style={{maxWidth: 350,}}  className="form-control "  ref = "npwd" required placeholder="Enter new password" onChange={this.onChangeNewPassword}/>
                                               </div>
 
 
@@ -186,7 +186,7 @@ onChangeCurrentPassword(event) {
                                               <div className="form-group">
                                               <br/>
                                                 <label>Confirm Password</label>
-                                                <input type="password"  className="form-control "  ref = "confirm_npwd" required placeholder="Enter confirm password" onChange={this.onChangeConfirmPassword}/>
+                                                <input type="password" style={{maxWidth: 350,}}  className="form-control "  ref = "confirm_npwd" required placeholder="Enter confirm password" onChange={this.onChangeConfirmPassword}/>
                                                  <span>{this.state.doesMatch}</span>
                                               </div>
 

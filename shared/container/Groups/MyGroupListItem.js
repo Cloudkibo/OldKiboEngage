@@ -17,7 +17,7 @@ function MyGroupListItem(props) {
       <td>{handleDate(props.group.creationdate)}</td>
      
       <td>
-        <Link to={`/group/${props.group._id}/'profile'`} className="btn blue-madison"  >
+        <Link to={`/group/${props.group._id}/'profile'`} className="btn green btn-send"  > 
          View
         </Link>
        

@@ -116,46 +116,46 @@ class MyProfile extends Component {
                 <form onSubmit={this.onSubmit} className ="css-form">
                                               <div className="form-group">
                                                 <label htmlFor="username">First Name</label>
-                                                <input type="text"  className="form-control " ref = "fname" required placeholder="First Name" defaultValue={this.props.userdetails.firstname}/>
+                                                <input type="text"  className="form-control " style={{maxWidth: 350,}} ref = "fname" required placeholder="First Name" defaultValue={this.props.userdetails.firstname}/>
                                               </div>
                                               <div className="form-group">
                                                 <label>Last Name</label>
-                                                <input type="text"  className="form-control "  ref = "lname" required placeholder="Last Name" defaultValue={this.props.userdetails.lastname}/>
+                                                <input type="text"  className="form-control " style={{maxWidth: 350,}} ref = "lname" required placeholder="Last Name" defaultValue={this.props.userdetails.lastname}/>
                                               </div>
                                               <div className="form-group">
                                                 <label>Email</label>
-                                                <input type="email"  className="form-control "  ref = "email" required placeholder="Email Address" value={this.props.userdetails.email} disabled/>
+                                                <input type="email"  className="form-control " style={{maxWidth: 350,}} ref = "email" required placeholder="Email Address" value={this.props.userdetails.email} disabled/>
                                               </div>
 
                                              <div className="form-group">
                                                 <label>Role</label>
-                                                <input type="email"  className="form-control"  ref = "role" required  value={myRole} disabled/>
+                                                <input type="email"  className="form-control" style={{maxWidth: 350,}} ref = "role" required  value={myRole} disabled/>
                                               </div>
 
                                               <div className="form-group">
                                               <label>Phone</label>
-                                              <input type="text" className="form-control" ref="phone" required placeholder="Phone" defaultValue={this.props.userdetails.phone}/>
+                                              <input type="text" className="form-control" style={{maxWidth: 350,}} ref="phone" required placeholder="Phone" defaultValue={this.props.userdetails.phone}/>
                                               </div>
                                               <div className="form-group">
                                               <label>City</label>
-                                              <input type="text" className="form-control " ref="city"  placeholder="City" defaultValue={this.props.userdetails.city}/>
+                                              <input type="text" className="form-control " style={{maxWidth: 350,}} ref="city"  placeholder="City" defaultValue={this.props.userdetails.city}/>
                                               </div>
                                               <div className="form-group">
                                               <label>State</label>
-                                              <input type="text" className="form-control" ref="state"  placeholder="State" defaultValue={this.props.userdetails.state}/>
+                                              <input type="text" className="form-control" style={{maxWidth: 350,}} ref="state"  placeholder="State" defaultValue={this.props.userdetails.state}/>
                                               </div>
                                               <div className="form-group">
                                               <label>Country</label>
-                                              <input type="text" className="form-control " ref="country"  placeholder="Country" defaultValue={this.props.userdetails.country}/>
+                                              <input type="text" className="form-control " style={{maxWidth: 350,}} ref="country"  placeholder="Country" defaultValue={this.props.userdetails.country}/>
                                               </div>
                                               <div className="form-group">
                                               <label>Domain Name</label>
-                                              <input type="text" className="form-control" ref="cdname" value={this.props.userdetails.website} disabled/>
+                                              <input type="text" className="form-control" style={{maxWidth: 350,}} ref="cdname" value={this.props.userdetails.website} disabled/>
                                               </div>
 
                                               <div className="form-group">
                                               <label>Company Name</label>
-                                              <input type="text" className="form-control" ref="cname" value={this.props.userdetails.companyName} disabled/>
+                                              <input type="text" className="form-control" style={{maxWidth: 350,}} ref="cname" value={this.props.userdetails.companyName} disabled/>
                                               </div>
                                               <div className="form-actions">
                                                       <button type="submit" className="btn green btn-send" onClick = {this.onSubmit}>Save</button>
