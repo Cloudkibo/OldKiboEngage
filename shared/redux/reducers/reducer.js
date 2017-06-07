@@ -510,7 +510,16 @@ const dashboard = (state = dashboardState, action) => {
       return {
          ...state, errorMessageProfile: '',
         errorMessage: '',
+        loadingurl:action.loadingurl,
         urlMeta:action.urlMeta,
+      }
+    case ActionTypes.LOADING_META_URL:
+      return {
+         ...state, errorMessageProfile: '',
+        errorMessage: '',
+        loadingurl:action.loadingurl,
+        urlLoading:action.urlLoading,
+        
       }
     case ActionTypes.FB_CHAT_SELECTED:
       return {
@@ -519,6 +528,8 @@ const dashboard = (state = dashboardState, action) => {
         fbsessionSelected: action.fbsessionSelected,
         errorMessage: '',
         profile_pic: action.profile_pic,
+        loadingurl:false,
+        urlLoading:'',
 
 
       };
@@ -548,6 +559,8 @@ const dashboard = (state = dashboardState, action) => {
         ...state, errorMessageProfile: '',
         status: action.status,
         errorMessage: '',
+        loadingurl:action.loadingurl,
+        urlLoading:action.urlLoading,
 
 
       };

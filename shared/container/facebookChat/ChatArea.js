@@ -800,7 +800,6 @@ export class ChatArea extends Component {
   }
 
   onChange(event, {newValue}) {
-
     if (newValue.length >= 640) {
       this.setState({
         longtextwarning: 'Message is exceeding 640 character limit.'
@@ -814,10 +813,11 @@ export class ChatArea extends Component {
     this.setState({
       value: newValue
     });
-    var isURL = getmetaurl(this.state.value)
+    var isURL = getmetaurl(newValue)
+    
     if(isURL!=null){
       if(isURL != this.state.prevURL){
-            this.props.fetchurlmeta(isURL);
+           this.props.fetchurlmeta(isURL);
             this.setState({
               prevURL: isURL
             })
@@ -827,6 +827,7 @@ export class ChatArea extends Component {
       this.setState(
       {
         urlmeta:{},
+        prevURL:''
       })
     }
   }
@@ -846,8 +847,9 @@ export class ChatArea extends Component {
 
     console.log('handleMessageSubmit' + e.which)
 
-    if (e.which === 13 && this.state.value != "") {
-      if (this.props.fbsessionSelected.status == "new") {
+    if (e.which === 13 && this.state.value != "" && this.props.loadingurl == false) {
+
+     if (this.props.fbsessionSelected.status == "new") {
         this.autoassignChat();
       }
       var index = this.props.fbsessionSelected.agent_ids.length - 1
@@ -965,7 +967,7 @@ export class ChatArea extends Component {
           this.props.getfbchatfromAgent(saveMsg);
 
       
-          this.setState({urlmeta:{}});
+          this.setState({urlmeta:{},prevURL:''});
           this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder);
           socket.emit('broadcast_fbmessage', saveMsg);
 
@@ -1967,7 +1969,8 @@ export class ChatArea extends Component {
                     left: '0',
                     width: '100%',
                     height: '2.5em',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                   
                   }} className="fa fa-file-o"></i>
                   <p style={{
                     position: 'absolute',
@@ -1975,7 +1978,8 @@ export class ChatArea extends Component {
                     left: '0',
                     width: '100%',
                     textAlign: 'center',
-                    fontSize: '10px'
+                    fontSize: '10px',
+                     bottom:-10,
                   }}>GIF</p>
                 </i>
               </div>
@@ -2045,7 +2049,11 @@ export class ChatArea extends Component {
 
           </div>
           {
-            JSON.stringify(this.state.urlmeta) != '{}' &&
+           this.props.loadingurl == true && this.props.urlLoading == this.state.prevURL &&
+           <p> Fetching URL meta</p> 
+          }
+          {
+            JSON.stringify(this.state.urlmeta) != '{}' && this.props.loadingurl == false &&
             <div style={{clear:'both', display:'block'}}>
                                         <div style={styles.left.wrapperforURL}>
                                         <table style={{maxWidth:'300px'}}>
@@ -2411,6 +2419,8 @@ function mapStateToProps(state) {
     showFileUploading: state.dashboard.showFileUploading,
     sessionsortorder: state.dashboard.sessionsortorder,
     urlMeta:state.dashboard.urlMeta,
+    loadingurl:state.dashboard.loadingurl,
+    urlLoading:state.dashboard.urlLoading,
   };
 }
 

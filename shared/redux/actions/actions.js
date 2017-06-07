@@ -3860,6 +3860,8 @@ export function fbchatmessageSent(res) {
   return {
     type: ActionTypes.FBCHAT_SENT_TO_AGENT,
     status: res.status,
+    loadingurl:false,
+    urlLoading:'',
     //  customerid,
 
   };
@@ -4141,12 +4143,22 @@ export function metaurlReceived(meta){
    return {
 
     urlMeta: meta,
+    loadingurl:false,
     type: ActionTypes.GET_META_URL,
+  }
+}
+export function loadingurlmeta(url){
+   return {
+
+    urlLoading: url,
+    loadingurl:true,
+    type: ActionTypes.LOADING_META_URL,
   }
 }
 export function fetchurlmeta(url) {
 
   return (dispatch) => {
+    dispatch(loadingurlmeta(url));
     fetch(`${baseURL}/api/fetchurlmeta`, {
       method: 'post',
       body: JSON.stringify({
