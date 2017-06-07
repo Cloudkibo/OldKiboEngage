@@ -8,7 +8,8 @@ import auth from '../../services/auth';
 import ResolvedSessionListItem from './ResolvedSessionListItem';
 import {filterResolvedSession,getresolvedsessions,getcustomersubgroups,getcustomers,getresolvedsessionsfromsocket,updatesubgrouplist} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class ResolvedSessions extends Component {
 
@@ -38,12 +39,16 @@ class ResolvedSessions extends Component {
       }
     super(props, context);
     this.state = {
-      subgroup: 'all'
+      subgroup: 'all',
+      resolvedSessionsData: [],
+      totalLength: 0,
+      resolvedsessionsfiltered: props.resolvedsessions,
     };
     this.getupdatedSessions = this.getupdatedSessions.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
+    this.filterResolvedSession = this.filterResolvedSession.bind(this);
   }
 
   getupdatedSessions(data)
@@ -57,15 +62,122 @@ class ResolvedSessions extends Component {
   handleChange(){
      //alert(e.target.value);
      this.setState({ subgroup: this.refs.teamlist.value });
-     this.props.filterResolvedSession(this.refs.teamlist.value, this.refs.channellist.value, this.refs.agentList.value, this.props.resolvedsessions);
+     this.filterResolvedSession(this.refs.teamlist.value, this.refs.channellist.value, this.refs.agentList.value, this.props.resolvedsessions);
      if(this.state.subgroup.value !== 'all') {
        this.props.updatesubgrouplist(this.refs.teamlist.value);
      }
      this.forceUpdate();
   }
 
+  filterResolvedSession(groupID, subgroupID, agentID, resolvedsessions) {
+    if (groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (groupID !== 'all' && subgroupID !== 'all' && agentID == 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (groupID !== 'all' && subgroupID == 'all' && agentID !== 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (groupID !== 'all' && subgroupID == 'all' && agentID == 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions.filter((c) => c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (groupID == 'all' && subgroupID !== 'all' && agentID !== 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (groupID == 'all' && subgroupID !== 'all' && agentID == 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions.filter((c) => c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (groupID == 'all' && subgroupID == 'all' && agentID !== 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (groupID == 'all' && subgroupID == 'all' && agentID == 'all') {
+      this.setState({
+        resolvedsessionsfiltered: resolvedsessions,
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.resolvedsessionsfiltered.length });
+      }
+      );
+    }
+  }
+
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.state.resolvedsessionsfiltered.length){
+      limit = this.state.resolvedsessionsfiltered.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.state.resolvedsessionsfiltered[i];
+    }
+    this.setState({resolvedSessionsData: sessionData});
+  }
+
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
   componentDidMount(){
        this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
+       this.displayData(0);
+       this.setState({totalLength: this.state.resolvedsessionsfiltered.length});
   }
   render() {
     const token = auth.getToken()
@@ -77,18 +189,7 @@ class ResolvedSessions extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Resolved Chat Sessions </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/resolvedchatsessions">Resolved Chat Sessions </Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -160,7 +261,7 @@ class ResolvedSessions extends Component {
                        </table>
               </div>
 
-             { this.props.resolvedsessionsfiltered && this.props.resolvedsessionsfiltered.length > 0 ?
+             { this.state.resolvedsessionsfiltered && this.state.resolvedsessionsfiltered.length > 0 ?
                <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
@@ -191,8 +292,8 @@ class ResolvedSessions extends Component {
 
 
                       {
-                        this.props.resolvedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
-                        this.props.resolvedsessionsfiltered.map((session, i) => (
+                        this.state.resolvedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
+                        this.state.resolvedSessionsData.map((session, i) => (
 
                           <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
@@ -200,6 +301,17 @@ class ResolvedSessions extends Component {
                       }
                      </tbody>
                     </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p>Currently, there is not any resolved chat sessions to show.</p>
                 }

@@ -4,7 +4,7 @@ import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents, getnews, getcustomers, getfbSessions} from '../redux/actions/actions'
 import {getusergroups, getnewsessions, getassignedsessions} from '../redux/actions/actions'
-import {getsubgroups, updateAgentList, setjoinedState, getcompanysettings} from '../redux/actions/actions'
+import {getsubgroups, getfbpages, getinvitedagents, getfbCustomers, getnotifications, getsessions, getresolvedsessions, getresolvedsessionsfromsocket, getnewsessionsfromsocket, getassignedsessionsfromsocket, updateAgentList, setjoinedState, getcompanysettings} from '../redux/actions/actions'
 import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import SideBar from '../components/Header/SideBar';
@@ -31,8 +31,9 @@ class Dashboard extends Component {
     this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
     this.create_agentsession = this.create_agentsession.bind(this);
     this.callSocket = this.callSocket.bind(this);
-
-
+    this.getupdatedSessions = this.getupdatedSessions.bind(this);
+    this.getabandonedSessions = this.getabandonedSessions.bind(this);
+    this.getresolvedSessions = this.getresolvedSessions.bind(this);
   }
 
   create_agentsession() {
@@ -40,6 +41,29 @@ class Dashboard extends Component {
     dontCall = true;
     this.props.setjoinedState('joined');
 
+  }
+
+  getupdatedSessions(data)
+  {
+    const usertoken = auth.getToken();
+    this.props.getassignedsessionsfromsocket(data,this.props.assignedsessions);
+
+    this.forceUpdate();
+  }
+
+  getabandonedSessions(data) {
+    const usertoken = auth.getToken();
+    this.props.getnewsessionsfromsocket(data, this.props.newsessions);
+
+    this.forceUpdate();
+  }
+
+  getresolvedSessions(data)
+  {
+    const usertoken = auth.getToken();
+    this.props.getresolvedsessionsfromsocket(data,this.props.resolvedsessions);
+
+    this.forceUpdate();
   }
 
   componentWillMount() {
@@ -56,7 +80,12 @@ class Dashboard extends Component {
       this.props.getassignedsessions(usertoken);
       this.props.getcustomers(usertoken);
       this.props.getfbSessions(usertoken);
-
+      this.props.getresolvedsessions(usertoken);
+      this.props.getsessions(usertoken);
+      this.props.getnotifications(usertoken);
+      this.props.getfbCustomers(usertoken);
+      this.props.getinvitedagents(usertoken);
+      this.props.getfbpages(usertoken);
     }
 
 
@@ -99,7 +128,10 @@ class Dashboard extends Component {
   componentDidMount() {
     //dontCall = false;
     //this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
-    this.props.route.socket.on('agentjoined', this.create_agentsession)
+    this.props.route.socket.on('agentjoined', this.create_agentsession);
+    this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
+    this.props.route.socket.on('customer_left', this.getabandonedSessions);
+    this.props.route.socket.on('returnCustomerSessionsList',this.getresolvedSessions);
 
 
   }
@@ -891,7 +923,11 @@ function mapStateToProps(state) {
     assignedsessions: (state.dashboard.assignedsessions),
     customers: (state.dashboard.customers),
     fbsessions: (state.dashboard.fbsessions),
-
+    resolvedsessions: (state.dashboard.resolvedsessions),
+    notifications:(state.dashboard.notifications),
+    fbcustomers: (state.dashboard.fbcustomers),
+    invitedagents: (state.dashboard.invitedagents),
+    fbpages: (state.dashboard.fbpages),
   }
 }
 
@@ -910,4 +946,10 @@ export default connect(mapStateToProps, {
   getcompanysettings,
   getnewsessions,
   getassignedsessions,
+  getresolvedsessions,
+  getsessions,
+  getnotifications,
+  getfbCustomers,
+  getinvitedagents,
+  getfbpages,
 })(ReactTimeout(Dashboard));

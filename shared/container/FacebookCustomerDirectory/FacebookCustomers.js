@@ -9,7 +9,7 @@ import FBCustomerListItem from './FBCustomerListItem';
 import {getfbCustomers} from '../../redux/actions/actions'
 import { browserHistory } from 'react-router'
 const PureRenderMixin = require('react-addons-pure-render-mixin');
-import Immutable from 'immutable';
+import ReactPaginate from 'react-paginate';
 import { bindActionCreators } from 'redux';
 
 class FacebookCustomers extends Component {
@@ -26,9 +26,12 @@ class FacebookCustomers extends Component {
   this.state = {
     data: props.fbcustomers,
     filteredData: props.fbcustomers,
+    totalLength: 0,
   };
   this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   this.filterData = this.filterData.bind(this);
+  this.handlePageClick = this.handlePageClick.bind(this);
+  this.displayData = this.displayData.bind(this);
 }
 
 filterData(event) {
@@ -46,13 +49,31 @@ filterData(event) {
   });
 }
 
-componentWillReceiveProps(props){
-  if(props.fbcustomers){
-    this.setState({
-      data: Immutable.fromJS(props.fbcustomers).toList(),
-      filteredData: Immutable.fromJS(props.fbcustomers).toList()
-    });
+componentDidMount(){
+  this.displayData(0);
+  this.setState({totalLength: this.props.fbcustomers.length});
+}
+
+displayData(n){
+  let offset = n*6;
+  console.log("Offset: " + offset);
+  let sessionData = [];
+  let limit;
+  if ((offset + 6) > this.props.fbcustomers.length){
+    limit = this.props.fbcustomers.length;
   }
+  else {
+    limit = offset + 6;
+  }
+  for (var i=offset; i<limit; i++){
+    sessionData[i] = this.props.fbcustomers[i];
+  }
+  this.setState({filteredData: sessionData});
+}
+
+handlePageClick(data){
+  console.log(data.selected);
+  this.displayData(data.selected);
 }
 
 render() {
@@ -66,17 +87,7 @@ render() {
         <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
         <div className="page-content-wrapper">
           <div className="page-content">
-            <h3 className ="page-title"> Facebook Customer Directory </h3>
-            <ul className="page-breadcrumb breadcrumb">
-              <li>
-                <i className="fa fa-home"/>
-                <Link to="/dashboard"> Dashboard </Link>
-                <i className="fa fa-angle-right"/>
-              </li>
-              <li>
-                <Link to="/FBcustomers"> Facebook Customer Directory </Link>
-              </li>
-            </ul>
+
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -113,6 +124,17 @@ render() {
                   }
                 </tbody>
               </table>
+              <ReactPaginate previousLabel={"previous"}
+                             nextLabel={"next"}
+                             breakLabel={<a href="">...</a>}
+                             breakClassName={"break-me"}
+                             pageCount={Math.ceil(this.state.totalLength/6)}
+                             marginPagesDisplayed={1}
+                             pageRangeDisplayed={6}
+                             onPageChange={this.handlePageClick}
+                             containerClassName={"pagination"}
+                             subContainerClassName={"pages pagination"}
+                             activeClassName={"active"} />
               </div> :
               <p>Currently, there is no Facebook Customer to show.</p>
               }

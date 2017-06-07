@@ -10,6 +10,7 @@ import {getfbpages} from '../../redux/actions/actions';
 import {deletefbpage} from '../../redux/actions/actions';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class FbPages extends Component {
 
@@ -27,14 +28,40 @@ class FbPages extends Component {
         props.getfbpages(usertoken)
       }
     super(props, context);
-
-
-
-
-
+    this.state = {
+      pagesData: [],
+      totalLength: 0,
+    };
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
   }
 
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({totalLength: this.props.fbpages.length});
+  }
 
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.props.fbpages.length){
+      limit = this.props.fbpages.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.props.fbpages[i];
+    }
+    this.setState({pagesData: sessionData});
+  }
+
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
 
   render() {
     console.log(this.props.userdetails.firstname)
@@ -49,18 +76,7 @@ class FbPages extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Facebook Pages Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/fbpages">Facebook Pages Management</Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -92,6 +108,7 @@ class FbPages extends Component {
                     }
 
                 { this.props.fbpages && this.props.responses && this.props.fbpages.length > 0 ?
+                  <div>
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
@@ -108,14 +125,26 @@ class FbPages extends Component {
 
                     <tbody>
                       {
-                        this.props.fbpages.map((fbpage, i) => (
+                        this.state.pagesData.map((fbpage, i) => (
 
                           <FbPageItem page={fbpage} key={fbpage._id}  onDelete={() => this.props.deletefbpage(fbpage,token)} userdetails={this.props.userdetails}/>
 
                         ))
                       }
                      </tbody>
-                    </table> :
+                    </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
+                    </div> :
                     <p>Currently, there is no Facebook Page to show.</p>
                 }
 

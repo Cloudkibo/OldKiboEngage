@@ -8,7 +8,7 @@ import auth from '../../services/auth';
 import SubgroupListItem from './SubGroupListItem';
 import {getsubgroups} from '../../redux/actions/actions'
 import {deletesubgroup,getcustomers} from '../../redux/actions/actions'
-
+import ReactPaginate from 'react-paginate';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
@@ -30,13 +30,41 @@ class SubGroups extends Component {
         props.getcustomers(usertoken);
       }
     super(props, context);
+    this.state = {
+      subgroupsData: [],
+      totalLength: 0,
+    };
 
-
-
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
   }
 
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.props.subgroups.length){
+      limit = this.props.subgroups.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.props.subgroups[i];
+    }
+    this.setState({subgroupsData: sessionData});
+  }
 
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({totalLength: this.props.subgroups.length});
+  }
 
   render() {
     console.log(this.props.userdetails.firstname)
@@ -49,18 +77,7 @@ class SubGroups extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Sub-Groups Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/subgroups">SubGroups Management</Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -102,14 +119,25 @@ class SubGroups extends Component {
 
                     <tbody>
                       {
-                        this.props.groupdetails && this.props.subgroups.map((subgroup, i) => (
+                        this.props.groupdetails && this.state.subgroupsData.map((subgroup, i) => (
 
                           <SubgroupListItem subgroup={subgroup} key={subgroup._id} group = {this.props.groupdetails.filter((group) => group._id == subgroup.groupid)}  onDelete={() => this.props.deletesubgroup(subgroup,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails={this.props.userdetails}/>
 
                         ))
                       }
                      </tbody>
-                    </table> 
+                    </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div>:
                     <p>Currently, there is no subgroup to show.</p>
                 }
