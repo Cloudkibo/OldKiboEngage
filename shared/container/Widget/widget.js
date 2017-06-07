@@ -7,9 +7,13 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import AlertContainer from 'react-alert'
 
 class Widget extends Component {
+
+  
 
  constructor(props, context) {
       //call action to get user teams
@@ -37,55 +41,46 @@ class Widget extends Component {
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
 
        <div className="page-container hbox space-between">
+        
 
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Widget </h3>
-                 <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/widget">Widget</Link>
-                  </li>
+            <AlertContainer ref={a => this.msg = a}  offset={14} position= 'bottom right' theme='light' time={5000} transition='scale' />
 
-            </ul>
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
-                    Widget
-                </div>
+              <div className="uk-card uk-card-default uk-card-body uk-text-center" style={{background: '#FFC341', color: 'white'}}>
+                  <img src="https://cdn.dribbble.com/users/25514/screenshots/2016747/flat-news-app-icon-design-ramotion.gif" alt="widget_intro_image" style={{maxWidth:250, maxHeight:250, padding:0, margin: 0}}/>
+                  <h2 className="uk-card-title uk-align-center" style={{color:'white', fontSize:35, marginTop: -25}}>Add KiboEnage Widget</h2>
+                  <p className="uk-align-center" style={{fontSize: 15, color: 'white'}}>{"To embed the widget on your website, you need to put this line before </head> tag or before </body> tag of HTML of your website's each page."}</p>
+                  <div className="uk-alert-danger" style={{padding: 5, fontSize: 15, marginTop:-10}} ref={node => node && node.setAttribute('uk-alert', '')}> &lt;script src='https://kiboengage.kibosupport.com/scripts/widgetapp.js' &gt; &lt;/script&gt;</div>
+                    <CopyToClipboard text={"<script src='https://kiboengage.kibosupport.com/scripts/widgetapp.js' ></script>"}
+                    onCopy={() => this.setState({copied: true})}>
+                    <button  onClick={() => {this.msg.success('Copied!!!')}} className="uk-button uk-button-small uk-button-primary" style={{margin:5}}>Copy</button>
+                  </CopyToClipboard>
+                  
+
+          <p className="uk-align-center" style={{fontSize: 15, color: 'white'}}>{"Then you must have to put a button on your page with our onclick function. Example of button is given below."}</p>
+                  <div className="uk-alert-danger" style={{padding: 5, fontSize: 15, marginTop:-10}} ref={node => node && node.setAttribute('uk-alert', '')}>&lt;button onclick="loadKiboEngageWidget('{this.props.userdetails.uniqueid}')"&gt; Live Help &lt;/button&gt;</div>
+                   <CopyToClipboard text={"<button onclick=\"loadKiboEngageWidget('"+ this.props.userdetails.uniqueid +"')\"> Live Help </button>"}
+                    onCopy={() => this.setState({copied: true})}>
+                    <button onClick={() => {this.msg.success('Copied!!!')}} className="uk-button uk-button-small uk-button-primary" style={{margin:5}}>Copy</button>
+                  </CopyToClipboard>
+                   
+
+              <p className="uk-align-center" style={{fontSize: 15, color: 'white'}}>Note: You can use any css desgin for the button. You can also use &lt;a&gt; tag if you don't want button.
+                        Just remember to do the function call as shown above.<br/>The&nbsp;<b>onclick="loadKiboWidget('{this.props.userdetails.uniqueid}')&nbsp;</b>contains your unique client id. Never alter this function and its value.</p>
+
               </div>
-          <div className="portlet-body">
-                  <div className="note note-success">
-                        <h4 className="block">Code for client site</h4>
-                        To embed the widget on your website, you need to put this line before &lt;/head&gt; tag or
-                        before &lt;/body&gt; tag of HTML of your website's each page.
-                        <br/><br/>
-                        <center><code className="codeBox">
-                            &lt;script src='https://kiboengage.kibosupport.com/scripts/widgetapp.js' &gt; &lt;/script&gt;
-                                </code>
-                        </center>
-                        <br/>Then you must have to put a button on your page with our onclick function. Example of button is given below.<br/><br/>
-                       <center>
-                          <code className="codeBox">&lt;button onclick="loadKiboEngageWidget('{this.props.userdetails.uniqueid}')"&gt; Live Help &lt;/button&gt;
-                          </code>
-                        </center><br/>
-                        Note: You can use any css desgin for the button. You can also use &lt;a&gt; tag if you don't want button.
-                        Just remember to do the function call as shown above.<br/>The&nbsp;<b>onclick="loadKiboWidget('{this.props.userdetails.uniqueid}')&nbsp;</b>contains your unique client id. Never alter this function and its value.<br/>
-            </div>
-          </div>
+                 
+           
+          
            </div>           
 
         
        </div>
       </div>
       </div>
-      </div>
+      
   )
   }
 }
