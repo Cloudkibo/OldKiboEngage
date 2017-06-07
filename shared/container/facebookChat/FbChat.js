@@ -66,6 +66,7 @@ class FbChat extends Component {
   getfbCustomer(data) {
     console.log('new fb customer is received');
     console.log(data);
+    this.props.route.socket.emit('logClient',{msg:'new fb customer is received ',data:data} );
     if (this.props.fbsessions) {
       this.props.updateCustomerList(data, this.props.fbsessions, this.props.fbsessionSelected);
       this.forceUpdate();
@@ -85,6 +86,7 @@ class FbChat extends Component {
     //alert('new fbmessage')
     console.log('new fb message is received');
     console.log(data);
+    this.props.route.socket.emit('logClient',{msg:'new fb message is received',data:data} );
     console.log(this.props.fbsessionSelected);
     if (this.props.fbsessionSelected && this.props.fbchats) {
       if (!this.props.fbsessionSelected.user_id) {

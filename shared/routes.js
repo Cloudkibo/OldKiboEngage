@@ -79,9 +79,21 @@ import FacebookIntegrationInstructions from './container/FacebookIntegrationInst
 import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
 let socket = io('');
-
+let disconnected = false;
 socket.on('verified', () => {
   location.reload();
+});
+socket.on('connect', () => {
+  console.log('reconnecting');  
+  if(disconnected === true){
+    location.reload();
+  }
+ // location.reload();
+});
+socket.on('disconnect', () => {
+  console.log('disconnecting');  
+  disconnected = true;
+ // location.reload();
 });
 
 console.log('entered into routes');
