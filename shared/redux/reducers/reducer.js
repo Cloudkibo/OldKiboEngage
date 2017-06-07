@@ -506,7 +506,12 @@ const dashboard = (state = dashboardState, action) => {
 
       };
 
-
+    case ActionTypes.GET_META_URL:
+      return {
+         ...state, errorMessageProfile: '',
+        errorMessage: '',
+        urlMeta:action.urlMeta,
+      }
     case ActionTypes.FB_CHAT_SELECTED:
       return {
         ...state, errorMessageProfile: '',

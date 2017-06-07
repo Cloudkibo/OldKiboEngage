@@ -4136,10 +4136,18 @@ export function resolvesessionfb(data, usertoken, fbsessionSelected, fbsession, 
 
 }
 
-export function getmetaurl(url, usertoken) {
+
+export function metaurlReceived(meta){
+   return {
+
+    urlMeta: meta,
+    type: ActionTypes.GET_META_URL,
+  }
+}
+export function fetchurlmeta(url) {
 
   return (dispatch) => {
-    fetch(`${baseURL}/api/getmetaurl`, {
+    fetch(`${baseURL}/api/fetchurlmeta`, {
       method: 'post',
       body: JSON.stringify({
         url: url,
@@ -4147,11 +4155,11 @@ export function getmetaurl(url, usertoken) {
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
-        'Authorization': usertoken,
+    
 
       }),
     }).then((res) => res.json()).then(res => {
-      console.log(res)
+     dispatch(metaurlReceived(res.url_meta));
     });
   };
 

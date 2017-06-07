@@ -626,15 +626,14 @@ export function sendTextMessage(req,res) {
                messageData= { text:req.body.message.text }
               }
               else{
+                console.log(req.body.message.attachment);
                 messageData ={
                             'attachment':{
                               'type': 'image',
                               'payload':
                               {
                                 'url':req.body.message.attachments[0].payload.url,
-                                'sticker_id': req.body.message.sticker_id,
-                             
-
+                               
                               }
                             }
                           }
@@ -961,7 +960,7 @@ export function resolvechatsessionfb(req, res) {
   }
 
 
-export function getmetaurl(req,res){
+export function fetchurlmeta(req,res){
   var url = req.body.url;
   console.log(url);
   og(url, function(err, meta){

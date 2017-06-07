@@ -9,7 +9,7 @@ import {
   resolvesessionfb,
   uploadFbChatfile,
   createnews,
-  assignToAgentFB
+  assignToAgentFB,fetchurlmeta,
 } from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
 import auth from '../../services/auth';
@@ -65,6 +65,8 @@ export class ChatArea extends Component {
       longtextwarning: '',
       agentinTeam: false,
       showthisdiv: false,
+      urlmeta:{},
+      prevURL:'',
 
 
     };
@@ -654,8 +656,14 @@ export class ChatArea extends Component {
 
   }
 
-  componentWillUpdate() {
+
+  componentWillReceiveProps(props){
     //this.scrollToTop();
+    if((props.urlMeta && !this.props.urlMeta) || (props.urlMeta != this.props.urlMeta)){
+      this.setState({
+        urlmeta:props.urlMeta
+      })
+    }
   }
 
   componentDidMount() {
@@ -792,6 +800,7 @@ export class ChatArea extends Component {
   }
 
   onChange(event, {newValue}) {
+
     if (newValue.length >= 640) {
       this.setState({
         longtextwarning: 'Message is exceeding 640 character limit.'
@@ -805,6 +814,21 @@ export class ChatArea extends Component {
     this.setState({
       value: newValue
     });
+    var isURL = getmetaurl(this.state.value)
+    if(isURL!=null){
+      if(isURL != this.state.prevURL){
+            this.props.fetchurlmeta(isURL);
+            this.setState({
+              prevURL: isURL
+            })
+      }
+    }
+    else{
+      this.setState(
+      {
+        urlmeta:{},
+      })
+    }
   }
 
   onSuggestionsUpdateRequested({value}) {
@@ -856,42 +880,92 @@ export class ChatArea extends Component {
               break;
             }
           }
+          var saveMsg,data;
+          if(JSON.stringify(this.state.urlmeta) != '{}'){
+            saveMsg = {
+                        senderid: this.props.userdetails._id,
+                        recipientid: this.props.senderid,
+                        companyid: this.props.userdetails.uniqueid,
+                        timestamp: Date.now(),
+                        message: {
+                          mid: unique_id,
+                          seq: 1,
+                          text: this.state.value,
+                          pageid: pageid,
+                          urlmeta:this.state.urlmeta,
 
-          var saveMsg = {
-            senderid: this.props.userdetails._id,
-            recipientid: this.props.senderid,
-            companyid: this.props.userdetails.uniqueid,
-            timestamp: Date.now(),
-            message: {
-              mid: unique_id,
-              seq: 1,
-              text: this.state.value,
-            },
+                          }
+                      }
+          data = {
+                      senderid: this.props.userdetails._id,
+                      recipientid: this.props.senderid,
+                      companyid: this.props.userdetails.uniqueid,
+                      seen: false,
+                      message: {
+                        text: this.state.value,
+                        mid: unique_id,
+                        attachments: [{
+                          type: 'fallback',
+                          url:this.state.prevURL,
+                          payload: {
+                           
+                          }
 
-            pageid: pageid
+                        }]
+                      },
+                      inbound: true,
+                      backColor: '#3d83fa',
+                      textColor: "white",
+                      avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+                      duration: 0,
+                      timestamp: Date.now(),
+                      urlmeta:this.state.urlmeta,
 
+
+                    }
           }
+          else{
+                 saveMsg = {
+                    senderid: this.props.userdetails._id,
+                    recipientid: this.props.senderid,
+                    companyid: this.props.userdetails.uniqueid,
+                    timestamp: Date.now(),
+                    message: {
+                      mid: unique_id,
+                      seq: 1,
+                      text: this.state.value,
+                     
+                    },
+
+                    pageid: pageid,
+                    urlmeta:this.state.urlmeta,
+
+                  }
+              data = {
+                      senderid: this.props.userdetails._id,
+                      recipientid: this.props.senderid,
+                      companyid: this.props.userdetails.uniqueid,
+                      seen: false,
+                      message: {
+                        text: this.state.value,
+                        mid: unique_id,
+                      },
+                      inbound: true,
+                      backColor: '#3d83fa',
+                      textColor: "white",
+                      avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+                      duration: 0,
+                      timestamp: Date.now(),
+                      urlmeta:this.state.urlmeta,
+
+
+                    }
+        }
 
           this.props.getfbchatfromAgent(saveMsg);
 
-          var data = {
-            senderid: this.props.userdetails._id,
-            recipientid: this.props.senderid,
-            companyid: this.props.userdetails.uniqueid,
-            seen: false,
-            message: {
-              text: this.state.value,
-              mid: unique_id,
-            },
-            inbound: true,
-            backColor: '#3d83fa',
-            textColor: "white",
-            avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
-            duration: 0,
-            timestamp: Date.now(),
-
-
-          }
+      
+          this.setState({urlmeta:{}});
           this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder);
           socket.emit('broadcast_fbmessage', saveMsg);
 
@@ -1361,7 +1435,7 @@ export class ChatArea extends Component {
               <div
                 style={data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? styles.left.emojionly : (data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image") ? styles.left.wrapperNoColor : styles.left.wrapper}>
                 { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ?
-                  <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> :
+                  <p style={styles.left.textEmoji}>{ReactEmoji.emojify(data.message) }</p> :
                   <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
                 }
                
@@ -1596,27 +1670,104 @@ export class ChatArea extends Component {
 
 
                     :
-                    <div style={styles.right.wrapper}>
-                    <div style={styles.imagestyle}>
-                      {
+                       (
                         da.type == "video" ?
+                           <div style={styles.right.wrapper}>
+                              <div style={styles.imagestyle}>
+                  
                           <ReactPlayer url={da.payload.url} controls={true} width="250" height="242"
-                                       onPlay={this.onTestURL.bind(this, da.payload.url)}/> :
+                                       onPlay={this.onTestURL.bind(this, da.payload.url)}/>
+                                       </div>
+                                       </div> :
                           (da.type == "audio" ?
+                             <div style={styles.right.wrapper}>
+                                 <div style={styles.imagestyle}>
+                  
                             <ReactPlayer url={da.payload.url} controls={true} width="250" height="30"
-                                         onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/> :
+                                         onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/> 
+                                         </div>
+                                         </div>:
                             (da.type == "location" ?
+                             <div style={styles.right.wrapper}>
+                                 <div style={styles.imagestyle}>
+                  
                                 <div>
                                   <p> {da.title} </p>
                                   <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                                 </div>
+                                </div>
+                                </div>
                                 :
+
+                                 (da.type == "fallback" && data.urlmeta?
+                                  <div style={{clear:'both', display:'block'}}>
+                                        <div style={styles.right.wrapperforURL}>
+                                            <table style={{maxWidth:'300px'}}>
+                                                {data.urlmeta.type && data.urlmeta.type == "video"?
+                                                  <tbody>
+
+                                                  <tr>
+                                                      <td colspan="2">
+                                                        <ReactPlayer url={data.urlmeta.url} controls={true} width="100%" height="242"
+                                                        />
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td>
+                                                      <div>
+                                                       <a href={getmetaurl(data.message)} target="_blank">
+                                                   
+                                                       <span style={styles.urltitle}>{da.title}</span>
+                                                       </a>
+                                                       <br/>
+                                                        <span>{data.urlmeta.description}</span>
+                                                      </div>
+                                                      </td>
+                                                </tr>
+                                                </tbody>
+                                                :
+                                                <tbody>
+
+                                                <tr>
+                                                  <td>
+                                                     <div style={{width:72,height:72}}>
+                                                    {data.urlmeta.image && 
+                                                    <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                                    }
+                                                </div>
+                                                </td>
+                                                  <td>
+                                                  <div>
+                                                   <a href={getmetaurl(data.message)} target="_blank">
+                                               
+                                                   <span style={styles.urltitle}>{da.title}</span>
+                                                   </a>
+
+                                                   <br/>
+                                                   {data.urlmeta.description &&
+                                                    <span>{data.urlmeta.description}</span>
+                                                  }
+                                                  </div>
+                                                  </td>
+                                                </tr>
+                                                </tbody>
+                                              }
+                                                </table>
+                                               </div>
+                                               </div> 
+                                       
+                                       
+                                        :
+                                  <div style={styles.right.wrapper}>
+                                     <div style={styles.imagestyle}>
+                         
                                 <a href={da.payload.url} target="_blank"
                                    style={styles.right.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
-                            ))
-                      }
-                    </div>
-                    </div>
+                                </div>
+                                </div>
+                            )))
+                      )
+                 
                 )
               ))
               }
@@ -1893,7 +2044,65 @@ export class ChatArea extends Component {
             </div>
 
           </div>
+          {
+            JSON.stringify(this.state.urlmeta) != '{}' &&
+            <div style={{clear:'both', display:'block'}}>
+                                        <div style={styles.left.wrapperforURL}>
+                                        <table style={{maxWidth:'300px'}}>
+                                        {this.state.urlmeta.type && this.state.urlmeta.type == "video"?
+                                          <tbody>
 
+                                          <tr>
+                                              <td colspan="2">
+                                                <ReactPlayer url={this.state.urlmeta.url} controls={true} width="100%" height="242"
+                                                />
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                              <div>
+                                               <a href={this.state.urlmeta.url} target="_blank">
+                                           
+                                               <span style={styles.urltitle}>{this.state.urlmeta.title}</span>
+                                               </a>
+                                               <br/>
+                                                <span>{this.state.urlmeta.description}</span>
+                                              </div>
+                                              </td>
+                                        </tr>
+                                        </tbody>
+                                        :
+                                        <tbody>
+
+                                        <tr>
+                                          <td>
+                                             <div style={{width:72,height:72}}>
+                                            {this.state.urlmeta.image && 
+                                            <img src={this.state.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                            }
+                                        </div>
+                                        </td>
+                                          <td>
+                                          <div>
+                                           <a href={getmetaurl(this.state.value)} target="_blank">
+                                       
+                                           <span style={styles.urltitle}>{this.state.urlmeta.title}</span>
+                                           </a>
+
+                                           <br/>
+                                           {this.state.urlmeta.description &&
+                                            <span>{this.state.urlmeta.description}</span>
+                                          }
+                                          </div>
+                                          </td>
+                                        </tr>
+                                        </tbody>
+                                      }
+                                        </table>
+                                       
+                                        </div>
+                                        </div>
+          }
 
           {
             this.props.showFileUploading && this.props.showFileUploading == true &&
@@ -1958,7 +2167,6 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '80%',
       clear: 'both',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
       marginLeft: '3em',
@@ -2029,6 +2237,21 @@ const styles = {
       marginLeft: '1em',
       position: 'relative',
       display: 'inline-block',
+    },
+
+     wrapperforURL: {
+      borderRadius: 15,
+       minHeight: 20,
+      justifyContent: 'flex-end',
+      marginBottom: 15,
+      boxSizing: 'border-box',
+      maxWidth: '55%',
+      clear: 'both',
+      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginLeft: '1em',
+      position: 'relative',
+      display: 'inline-block',
+      textAlign:'left',
     },
 
     wrapperNoColor: {
@@ -2187,6 +2410,7 @@ function mapStateToProps(state) {
     status: state.dashboard.status,
     showFileUploading: state.dashboard.showFileUploading,
     sessionsortorder: state.dashboard.sessionsortorder,
+    urlMeta:state.dashboard.urlMeta,
   };
 }
 
@@ -2197,5 +2421,6 @@ export default connect(mapStateToProps, {
   resolvesessionfb,
   uploadFbChatfile,
   createnews,
-  assignToAgentFB
+  assignToAgentFB,
+  fetchurlmeta,
 })(ChatArea);
