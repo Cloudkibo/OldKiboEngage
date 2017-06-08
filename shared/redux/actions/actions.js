@@ -1606,7 +1606,14 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   console.log(id);
 
   fbchats.push(data);
-
+  for(var i=0;i<fbsessions.length;i++){
+   if(fbsessions[i].user_id.user_id == data.senderid && fbsessions[i].pageid.pageid == data.recipientid && fbsessions[i].status == "resolved"){
+        fbsessions[i].status = "assigned";
+        console.log('reopening the fbsession');
+        break;
+   }
+  
+  }
   var newfbChat = []
   var temp = fbchats.filter((c) => c.senderid == id || c.recipientid == id);
   console.log(temp.length)
@@ -1643,7 +1650,7 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   }
 
 
-//update last message field
+//update last message field 
   var newArrayC = []
   for (var i = 0; i < fbsessions.length; i++) {
     var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
