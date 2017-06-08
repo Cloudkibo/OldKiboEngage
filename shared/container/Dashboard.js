@@ -11,7 +11,7 @@ import SideBar from '../components/Header/SideBar';
 import auth from '../services/auth';
 import ReactTimeout from 'react-timeout'
 import {browserHistory} from 'react-router'
-
+import {printlogs} from '../services/clientlogging';
 //const socket = io('');
 var dontCall = false;
 var is_routed = false;
@@ -24,7 +24,7 @@ class Dashboard extends Component {
 
     if (usertoken != null) {
 
-     // console.log(usertoken);
+      printlogs('info',usertoken);
       props.getcompanysettings(usertoken, props.userdetails.uniqueid);
     }
     super(props, context);
