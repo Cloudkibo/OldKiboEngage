@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-
+import ReactTooltip from 'react-tooltip';
+import SweetAlert from 'sweetalert-react';
 var handleDate = function(d){
 var c = new Date(d);
 return c.toDateString();
@@ -24,16 +25,19 @@ function AgentListItem(props) {
   
 
     <tr className = "odd">
+    
       <td>{props.agent.firstname +' '+ props.agent.lastname} </td>
       <td>{props.agent.email}</td>
       <td>{handleDate(props.agent.date)}</td>
       <td>{role}</td>
      
       <td>
-      <Link to={`/editagent/${props.agent._id}`} className="btn blue-madison" >
-        Change Role
+      <ReactTooltip />
+      <Link data-tip="Edit Role" to={`/editagent/${props.agent._id}`} style={{padding:25}}>
+        <img src="/img/edit.svg" style={{maxWidth:25, maxHeight:25}} />
       </Link>
-      <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+      
+      <img onClick={props.onDelete}  data-tip="Delete Agent" src="/img/trash.png" style={{maxWidth:25, maxHeight:25}} />
 
       </td>
 

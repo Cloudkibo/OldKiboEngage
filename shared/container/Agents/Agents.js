@@ -104,15 +104,10 @@ class Agents extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
-                   Agents
-                </div>
-              </div>
+            <div className=" uk-card uk-card-default uk-card-body">
+             <h3 className="uk-card-title">Agents</h3>
 
-           <div className="portlet-body">
+           <div>
              <div className="table-toolbar">
                  <div className="btn-team">
                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Invite Agent
@@ -134,7 +129,7 @@ class Agents extends Component {
                       </div>
                 }
                <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid} website = {this.props.userdetails.website}/>
-
+               <br />
                 { this.props.agents && this.props.agents.length > 0 ?
                   <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
