@@ -9,8 +9,7 @@ import CustomerListItem from './CustomerListItem';
 import {getcustomers} from '../../redux/actions/actions'
 import { browserHistory } from 'react-router'
 const PureRenderMixin = require('react-addons-pure-render-mixin');
-import Immutable from 'immutable';
-
+import ReactPaginate from 'react-paginate';
 import { bindActionCreators } from 'redux';
 
 class Customers extends Component {
@@ -30,33 +29,76 @@ class Customers extends Component {
       }
     super(props, context);
     this.state = {
-      data: Immutable.List(),
-      filteredData: Immutable.List(),
+      data: props.customers,
+      filteredData: props.customers,
+      customersData: [],
+      totalLength: 0,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
   }
 
 
 filterData(event) {
     event.preventDefault();
-    const regex = new RegExp(event.target.value, 'i');
-    const filtered = this.state.data.filter(function(datum) {
-      return (datum.get('customerID').search(regex) > -1);
-    });
+    var filtered= [];
+    console.log(this.state.data);
+    for(var i=0; i<this.state.data.length; i++){
+        if(this.state.data[i].customerID.toLowerCase().includes(event.target.value)){
+          filtered.push(this.state.data[i]);
+        }
+    }
 
     this.setState({
       filteredData: filtered,
-    });
+    },
+    () => {
+      this.displayData(0);
+      this.setState({ totalLength: this.state.filteredData.length });
+      console.log(this.state.filteredData);
+    }
+
+    );
   }
- componentWillReceiveProps(props){
+
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.state.filteredData.length){
+      limit = this.state.filteredData.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.state.filteredData[i];
+    }
+    this.setState({
+      customersData: sessionData,
+    });
+    }
+
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({ totalLength: this.state.filteredData.length });
+  }
+
+ /*componentWillReceiveProps(props){
     if(props.customers){
        this.setState({
       data: Immutable.fromJS(props.customers).toList(),
       filteredData: Immutable.fromJS(props.customers).toList()
     });
     }
-  }
+  }*/
   render() {
     console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
@@ -72,18 +114,7 @@ filterData(event) {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Customer Directory Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/customers">Customer Directory Management</Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -123,7 +154,7 @@ filterData(event) {
 
                     <tbody>
                       {
-                        this.props.customers && filteredData && filteredData.map((customer, i) => (
+                        this.props.customers && filteredData && this.state.customersData.map((customer, i) => (
 
                           <CustomerListItem customer={customer} />
 
@@ -132,6 +163,17 @@ filterData(event) {
                      </tbody>
                     </table>
                     </div>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p>Currently, there is no customer to show.</p>
                 }

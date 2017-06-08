@@ -4,7 +4,7 @@ import {getuser} from '../redux/actions/actions'
 import {getAgents} from '../redux/actions/actions'
 import {getDeptAgents, getnews, getcustomers, getfbSessions} from '../redux/actions/actions'
 import {getusergroups, getnewsessions, getassignedsessions} from '../redux/actions/actions'
-import {getsubgroups, getfbpages, getinvitedagents, getfbCustomers, getnotifications, getsessions, getresolvedsessions, getresolvedsessionsfromsocket, getnewsessionsfromsocket, getassignedsessionsfromsocket, updateAgentList, setjoinedState, getcompanysettings} from '../redux/actions/actions'
+import {getsubgroups, getteams, getTeamAgents, getfbpages, getinvitedagents, getfbCustomers, getnotifications, getsessions, getresolvedsessions, getresolvedsessionsfromsocket, getnewsessionsfromsocket, getassignedsessionsfromsocket, updateAgentList, setjoinedState, getcompanysettings} from '../redux/actions/actions'
 import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import SideBar from '../components/Header/SideBar';
@@ -86,6 +86,8 @@ class Dashboard extends Component {
       this.props.getfbCustomers(usertoken);
       this.props.getinvitedagents(usertoken);
       this.props.getfbpages(usertoken);
+      this.props.getteams(usertoken);
+      this.props.getTeamAgents(usertoken);
     }
 
 
@@ -928,6 +930,8 @@ function mapStateToProps(state) {
     fbcustomers: (state.dashboard.fbcustomers),
     invitedagents: (state.dashboard.invitedagents),
     fbpages: (state.dashboard.fbpages),
+    teamagents: (state.dashboard.teamagents),
+    teamdetails: (state.dashboard.teamdetails),
   }
 }
 
@@ -952,4 +956,6 @@ export default connect(mapStateToProps, {
   getfbCustomers,
   getinvitedagents,
   getfbpages,
+  getteams,
+  getTeamAgents,
 })(ReactTimeout(Dashboard));
