@@ -95,7 +95,7 @@ export class ChatArea extends Component {
     this.autoassignChat = this.autoassignChat.bind(this);
     this.getagentname = this.getagentname.bind(this);
     this.getteamname = this.getteamname.bind(this);
-
+    this.urlWithEmoji = this.urlWithEmoji.bind(this);
   }
 
   getteamname() {
@@ -814,7 +814,7 @@ export class ChatArea extends Component {
       value: newValue
     });
     var isURL = getmetaurl(newValue)
-    
+
     if(isURL!=null){
       if(isURL != this.state.prevURL){
            this.props.fetchurlmeta(isURL);
@@ -893,11 +893,11 @@ export class ChatArea extends Component {
                           mid: unique_id,
                           seq: 1,
                           text: this.state.value,
-                          
-                         
+
+
 
                           },
-                        pageid: pageid,  
+                        pageid: pageid,
                         urlmeta:this.state.urlmeta,
                       }
           data = {
@@ -908,7 +908,7 @@ export class ChatArea extends Component {
                       message: {
                         text: this.state.value,
                         mid: unique_id,
-                       
+
                       },
                       inbound: true,
                       backColor: '#3d83fa',
@@ -931,7 +931,7 @@ export class ChatArea extends Component {
                       mid: unique_id,
                       seq: 1,
                       text: this.state.value,
-                     
+
                     },
 
                     pageid: pageid,
@@ -961,7 +961,7 @@ export class ChatArea extends Component {
 
           this.props.getfbchatfromAgent(saveMsg);
 
-      
+
           this.setState({urlmeta:{},prevURL:''});
           this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder);
           socket.emit('broadcast_fbmessage', saveMsg);
@@ -1398,6 +1398,22 @@ export class ChatArea extends Component {
     return this.naturalHeight;
   }
 
+  urlWithEmoji(text){
+    var msg = text.split(' ');
+    console.log(msg);
+    var returnTxt = ["", ""];
+    for (var i=0; i<msg.length; i++){
+      if(msg[i].startsWith('http')){
+        returnTxt[0] = returnTxt[0].concat(msg[i]);
+      }
+      else {
+        returnTxt[1] = returnTxt[1].concat(msg[i]);
+     }
+    }
+    console.log(returnTxt);
+    return returnTxt;
+  }
+
   render() {
     // only show previous messages if they exist.
     // display messages of active channel
@@ -1428,20 +1444,27 @@ export class ChatArea extends Component {
             <div style={{'float': 'left'}}>
 
               <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle}/>
-              {data.message && 
+              {data.message &&
               <div
                 style={data.message.length === 2 && isEmoji(data.message) ? styles.left.emojionly : (data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image") ? styles.left.wrapperNoColor : styles.left.wrapper}>
                 { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ?
                   <p style={styles.left.textEmoji}>{ReactEmoji.emojify(data.message) }</p> :
-                  <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
+                  <p style={styles.left.text}>
+                    { data.message.split(' ').map((msg, i) => (
+                      msg.startsWith(' http') ?
+                        msg + ' ':
+                        ReactEmoji.emojify(msg + ' ')
+                      ))
+                    }
+                  </p>
                 }
-               
+
              </div>
 
 
            }
 
-                
+
                 {data.attachments && data.attachments.length > 0 &&
                     data.attachments.map((da, index) => (
                       (da.type == "image" ?
@@ -1484,7 +1507,7 @@ export class ChatArea extends Component {
                                 </div>
                             ))
                           :
-                         
+
                             (
                               da.type == "video" ?
                                  <div style={styles.left.wrapper}>
@@ -1527,7 +1550,7 @@ export class ChatArea extends Component {
                                               <td>
                                               <div>
                                                <a href={getmetaurl(data.message)} target="_blank">
-                                           
+
                                                <span style={styles.urltitle}>{da.title}</span>
                                                </a>
                                                <br/>
@@ -1542,15 +1565,15 @@ export class ChatArea extends Component {
                                         <tr>
                                           <td>
                                              <div style={{width:72,height:72}}>
-                                            {data.urlmeta.image && 
-                                            <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                            {data.urlmeta.image &&
+                                            <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>
                                             }
                                         </div>
                                         </td>
                                           <td>
                                           <div>
                                            <a href={getmetaurl(data.message)} target="_blank">
-                                       
+
                                            <span style={styles.urltitle}>{da.title}</span>
                                            </a>
 
@@ -1564,7 +1587,7 @@ export class ChatArea extends Component {
                                         </tbody>
                                       }
                                         </table>
-                                       
+
                                         </div>
                                         </div>
                                          :
@@ -1576,7 +1599,7 @@ export class ChatArea extends Component {
                                         )
                                     )))
                             )
-                         
+
 
                       )
 
@@ -1584,7 +1607,7 @@ export class ChatArea extends Component {
                     ))
 
                 }
-              
+
             </div>
           </div> :
           <div key={index} ref={index} id={'chatmsg' + index} style={{'textAlign': 'right', 'clear': 'both'}}>
@@ -1611,13 +1634,20 @@ export class ChatArea extends Component {
             }
             {
               data.message &&
-             
+
             <div
               style={data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? styles.right.wrapperNoColor : data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image" ? styles.right.wrapperNoColor : styles.right.wrapper}>
 
               { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ?
                 <div><p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p></div> :
-                <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
+                <p style={styles.left.text}>
+                { data.message.split(' ').map((msg, i) => (
+                  msg.startsWith('http') ?
+                    msg + ' ' :
+                    ReactEmoji.emojify(msg + ' ')
+                  ))
+                }
+                </p>
               }
               </div>
             }
@@ -1639,7 +1669,7 @@ export class ChatArea extends Component {
                                                       <td>
                                                       <div>
                                                        <a href={getmetaurl(data.message)} target="_blank">
-                                                   
+
                                                        <span style={styles.urltitle}>{data.urlmeta.title}</span>
                                                        </a>
                                                        <br/>
@@ -1655,14 +1685,14 @@ export class ChatArea extends Component {
                                                   <td>
                                                      <div style={{width:72,height:72}}>
                                                     {data.urlmeta.image &&  data.urlmeta.image.url &&
-                                                    <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                                    <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>
                                                     }
                                                 </div>
                                                 </td>
                                                   <td>
                                                   <div>
                                                    <a href={getmetaurl(data.message)} target="_blank">
-                                               
+
                                                    <span style={styles.urltitle}>{data.urlmeta.title}</span>
                                                    </a>
 
@@ -1677,7 +1707,7 @@ export class ChatArea extends Component {
                                               }
                                                 </table>
                                                </div>
-                                               </div> 
+                                               </div>
                                              }
               {data.attachments && data.attachments.length > 0 &&
               data.attachments.map((da, index) => (
@@ -1706,7 +1736,7 @@ export class ChatArea extends Component {
                             borderRadius:'1.3em',
                           }}>
 
-                          </div> 
+                          </div>
                           </div>:
                           <div style={styles.right.wrapperNoColor}>
                           <div style={styles.imagestyle,{
@@ -1729,7 +1759,7 @@ export class ChatArea extends Component {
                         da.type == "video" ?
                            <div style={styles.right.wrapper}>
                               <div style={styles.imagestyle}>
-                  
+
                           <ReactPlayer url={da.payload.url} controls={true} width="250" height="242"
                                        onPlay={this.onTestURL.bind(this, da.payload.url)}/>
                                        </div>
@@ -1737,15 +1767,15 @@ export class ChatArea extends Component {
                           (da.type == "audio" ?
                              <div style={styles.right.wrapper}>
                                  <div style={styles.imagestyle}>
-                  
+
                             <ReactPlayer url={da.payload.url} controls={true} width="250" height="30"
-                                         onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/> 
+                                         onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>
                                          </div>
                                          </div>:
                             (da.type == "location" ?
                              <div style={styles.right.wrapper}>
                                  <div style={styles.imagestyle}>
-                  
+
                                 <div>
                                   <p> {da.title} </p>
                                   <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
@@ -1756,14 +1786,14 @@ export class ChatArea extends Component {
                                (da.payload &&
                                   <div style={styles.right.wrapper}>
                                      <div style={styles.imagestyle}>
-                         
+
                                 <a href={da.payload.url} target="_blank"
                                    style={styles.right.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
                                 </div>
                                 </div>
                             )))
                       )
-                 
+
                 )
               ))
               }
@@ -1771,7 +1801,7 @@ export class ChatArea extends Component {
             </div>
 
 
-         
+
 
       )
     })
@@ -1964,7 +1994,7 @@ export class ChatArea extends Component {
                     width: '100%',
                     height: '2.5em',
                     textAlign: 'center',
-                   
+
                   }} className="fa fa-file-o"></i>
                   <p style={{
                     position: 'absolute',
@@ -2044,7 +2074,7 @@ export class ChatArea extends Component {
           </div>
           {
            this.props.loadingurl == true && this.props.urlLoading == this.state.prevURL &&
-           <p> Fetching URL meta</p> 
+           <p> Fetching URL meta</p>
           }
           {
             JSON.stringify(this.state.urlmeta) != '{}' && this.props.loadingurl == false &&
@@ -2064,7 +2094,7 @@ export class ChatArea extends Component {
                                               <td>
                                               <div>
                                                <a href={this.state.urlmeta.url} target="_blank">
-                                           
+
                                                <span style={styles.urltitle}>{this.state.urlmeta.title}</span>
                                                </a>
                                                <br/>
@@ -2079,15 +2109,15 @@ export class ChatArea extends Component {
                                         <tr>
                                           <td>
                                              <div style={{width:72,height:72}}>
-                                            {this.state.urlmeta.image && 
-                                            <img src={this.state.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                            {this.state.urlmeta.image &&
+                                            <img src={this.state.urlmeta.image.url}  style={{width:72,height:72}}/>
                                             }
                                         </div>
                                         </td>
                                           <td>
                                           <div>
                                            <a href={getmetaurl(this.state.value)} target="_blank">
-                                       
+
                                            <span style={styles.urltitle}>{this.state.urlmeta.title}</span>
                                            </a>
 
@@ -2101,7 +2131,7 @@ export class ChatArea extends Component {
                                         </tbody>
                                       }
                                         </table>
-                                       
+
                                         </div>
                                         </div>
           }
