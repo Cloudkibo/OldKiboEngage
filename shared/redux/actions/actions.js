@@ -3758,6 +3758,7 @@ export function getfbChats(usertoken) {
 export function updateCustomerList(data, customerlist, selectedchat) {
   //console.log('selectedchat');
   //console.log(selectedchat);
+  data.lastmessage ={};
   customerlist.push(data);
   var newArray = [];
   var lookupObject = {};
