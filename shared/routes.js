@@ -80,10 +80,6 @@ import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
 let socket = io('');
 
-socket.on('verified', () => {
-  location.reload();
-});
-
 console.log('entered into routes');
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {

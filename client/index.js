@@ -1,5 +1,6 @@
 import React from 'react';
 import routes from '../shared/routes';
+import { initiateSocket } from '../shared/socket';
 import DevTools from '../shared/container/DevTools/DevTools';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -9,6 +10,8 @@ import { configureStore } from '../shared/redux/store/configureStore';
 const store = configureStore(window.__INITIAL_STATE__);
 const history = browserHistory;
 const dest = document.getElementById('root');
+
+initiateSocket(store);
 
 render((
   <Provider store={store}>

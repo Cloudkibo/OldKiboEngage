@@ -1,8 +1,6 @@
 import {combineReducers} from 'redux'
 import * as ActionTypes from '../constants/constants';
-import {push} from 'react-router-redux';
-import store from '../store/configureStore'
-
+import { internalState } from './internalstate.reducer';
 
 function removeDuplicates(originalArray, prop) {
   var newArray = [];
@@ -1049,8 +1047,9 @@ const appReducer = combineReducers({
   auth,
   dashboard,
   signup,
-  widget
-})
+  widget,
+  internalState,
+});
 
 
 export default appReducer;
