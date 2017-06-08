@@ -1753,6 +1753,7 @@ export class ChatArea extends Component {
                                 </div>
                                 </div>
                                :
+                               (da.payload &&
                                   <div style={styles.right.wrapper}>
                                      <div style={styles.imagestyle}>
                          
@@ -1760,7 +1761,7 @@ export class ChatArea extends Component {
                                    style={styles.right.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
                                 </div>
                                 </div>
-                            ))
+                            )))
                       )
                  
                 )
