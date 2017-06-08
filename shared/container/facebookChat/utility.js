@@ -1,3 +1,5 @@
+import {printlogs} from '../../services/clientlogging';
+
 export function getmetaurl(text){
    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
    var onlyUrl =''
@@ -7,14 +9,14 @@ export function getmetaurl(text){
                         
 }
 export function geturl(payload) {
-  //  console.log('payload');
-  //  console.log(payload);
+  // printlogs('log','payload');
+  // printlogs('log',payload);
   return `https://maps.googleapis.com/maps/api/staticmap?center=${payload.coordinates.lat},${payload.coordinates.long}&zoom=13&scale=false&size=400x200&maptype=roadmap&format=png&key=AIzaSyDDTb4NWqigQmW_qCVmSAkmZIIs3tp1x8Q&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C${payload.coordinates.lat},${payload.coordinates.long}`
 }
 
 export function getmainURL(payload) {
-//  console.log('payload');
-//  console.log(payload);
+// printlogs('log','payload');
+// printlogs('log',payload);
   return `https://www.google.com/maps/place/${payload.coordinates.lat},${payload.coordinates.long}/`
 }
 
@@ -33,10 +35,10 @@ export function isEmoji(str) {
 
 
   if (str.match(ranges.join('|')) || str.match(regex)) {
-  //  console.log('isEmoji called returning true' + str)
+  // printlogs('log','isEmoji called returning true' + str)
     return true;
   } else {
-    //console.log('isEmoji called returning false' + str)
+    ////console.log('isEmoji called returning false' + str)
     return false;
   }
 }
@@ -47,7 +49,7 @@ export function get_preview() {
   fetch(detectedUrl)
     .then(response => response.text())
     .then(text => {
-      console.log(text)
+     printlogs('log',text)
     });
 }
 
@@ -75,7 +77,7 @@ export function handleAgentName(agents, senderid) {
     return agname[0].firstname + ' ' + agname[0].lastname
   }
   else {
-    console.log('undefined' + senderid);
+   printlogs('log','undefined' + senderid);
     return 'undefined'
   }
 }

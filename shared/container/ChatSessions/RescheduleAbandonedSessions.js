@@ -19,11 +19,11 @@ class RescheduleAbandonedSessions extends Component {
    }
 
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getcompanysettings(usertoken,props.userdetails.uniqueid);
 
       }
@@ -52,7 +52,7 @@ class RescheduleAbandonedSessions extends Component {
   }
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
     return (
       <div className="vbox viewport">
 
@@ -132,7 +132,7 @@ RescheduleAbandonedSessions.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),

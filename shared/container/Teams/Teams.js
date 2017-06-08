@@ -23,11 +23,11 @@ class Teams extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getteams(usertoken);
         props.getTeamAgents(usertoken);
 
@@ -75,7 +75,7 @@ class Teams extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
     const { filteredData } = this.state;
    /* if(this.props.errorMessage){
       this.props.getteams(token);
@@ -181,7 +181,7 @@ Teams.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),

@@ -15,7 +15,7 @@ class AddNotification extends Component {
   constructor(props, context) {
        //call action to get user teams 
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     super(props, context);
     
     this.addNotifications = this.addNotifications.bind(this);
@@ -41,7 +41,7 @@ class AddNotification extends Component {
 
       var notification = {'uniqueid' : unique_id,'title' : title.value,'description':desc.value,'companyid' : companyid,'agent_id' : this.props.userdetails._id,'hasImage' : 'false'}
       var customers = this.props.customers;
-      console.log(notification);
+      //console.log(notification);
      //sending notification on socket
 
       var message = {
@@ -167,7 +167,7 @@ class AddNotification extends Component {
 
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   
    return {
     channels:(state.dashboard.channels),

@@ -16,12 +16,12 @@ class GroupEditView extends Component {
   constructor(props, context) {
       //call action to get user groups
     const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
 
-        console.log(usertoken);
-        console.log(props.params.id);
+        //console.log(usertoken);
+        //console.log(props.params.id);
       //  props.getcustomers(usertoken);
       //  props.getDeptAgents(usertoken);
         props.getGroupRequest(props.params.id,usertoken);

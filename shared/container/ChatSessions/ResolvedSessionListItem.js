@@ -11,7 +11,7 @@ var handleDate = function(d){
 function ResolvedSessionListItem(props) {
 var ag = []
 var ch=[]
-console.log(props.agent);
+//console.log(props.agent);
 
   {
          props.subgroups &&

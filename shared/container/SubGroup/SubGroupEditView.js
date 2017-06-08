@@ -14,12 +14,12 @@ class SubgroupEditView extends Component {
   constructor(props, context) {
        //call action to get user teams 
     const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(props.params.id);
+        //console.log(usertoken);
+        //console.log(props.params.id);
         props.getSubgroupRequest(props.params.id,usertoken);
         props.getcustomers(usertoken);
       }
@@ -179,7 +179,7 @@ SubgroupEditView.propTypes = {
   
 };
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   
    return {
     

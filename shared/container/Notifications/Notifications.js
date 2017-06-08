@@ -22,11 +22,11 @@ class Notifications extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getnotifications(usertoken);
         props.getcustomers(usertoken);
       }
@@ -42,7 +42,7 @@ class Notifications extends Component {
 
   displayData(n){
     let offset = n*6;
-    console.log("Offset: " + offset);
+    //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
     if ((offset + 6) > this.props.notifications.length){
@@ -58,7 +58,7 @@ class Notifications extends Component {
   }
 
   handlePageClick(data){
-    console.log(data.selected);
+    //console.log(data.selected);
     this.displayData(data.selected);
   }
 
@@ -68,10 +68,10 @@ class Notifications extends Component {
   }
 
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
-    console.log(this.props.notifications);
+    //console.log(token)
+    //console.log(this.props.notifications);
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -158,7 +158,7 @@ Notifications.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),

@@ -13,7 +13,7 @@ class SubgroupCreate extends Component {
   constructor(props, context) {
        //call action to get user teams
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(!props.customers){
           props.getcustomers(usertoken);
       }
@@ -168,8 +168,8 @@ class SubgroupCreate extends Component {
 
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.agent);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.agent);
 
    return {
     groupdetails:(state.dashboard.groupdetails),

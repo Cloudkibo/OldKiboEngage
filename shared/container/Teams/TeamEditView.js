@@ -14,12 +14,12 @@ class TeamEditView extends Component {
   constructor(props, context) {
       //call action to get user teams
     const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
 
-        console.log(usertoken);
-        console.log(props.params.id);
+        //console.log(usertoken);
+        //console.log(props.params.id);
         props.getTeamAgents(usertoken);
         props.getTeamRequest(props.params.id,usertoken);
       }
@@ -57,7 +57,7 @@ class TeamEditView extends Component {
           ag.push(this.props.newagents[i].agentid);
         }
       }
-      console.log(ag);
+      //console.log(ag);
       this.props.editTeam({name :nameRef.value,desc:descRef.value, status: status.value,id:idRef.value,token:usertoken,teamagents: ag});
      this.forceUpdate();
     }
@@ -86,15 +86,15 @@ class TeamEditView extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("component will receive props is called.");
+    //console.log("component will receive props is called.");
     if(!this.props.team || this.props.team.status !== nextProps.team.status){
-      console.log("inside if");
+      //console.log("inside if");
       this.setState({
         status: nextProps.team.status
       });
       this.forceUpdate();
     }
-    console.log(this.state.status);
+    //console.log(this.state.status);
   }
 
    removeAgent(id,e){

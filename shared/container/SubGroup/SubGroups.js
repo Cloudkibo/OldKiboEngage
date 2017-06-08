@@ -20,12 +20,12 @@ class SubGroups extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
       // alert('subgroups');
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getsubgroups(usertoken);
         props.getcustomers(usertoken);
       }
@@ -41,7 +41,7 @@ class SubGroups extends Component {
 
   displayData(n){
     let offset = n*6;
-    console.log("Offset: " + offset);
+    //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
     if ((offset + 6) > this.props.subgroups.length){
@@ -57,7 +57,7 @@ class SubGroups extends Component {
   }
 
   handlePageClick(data){
-    console.log(data.selected);
+    //console.log(data.selected);
     this.displayData(data.selected);
   }
 
@@ -67,7 +67,7 @@ class SubGroups extends Component {
   }
 
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
     return (
       <div className="vbox viewport">
@@ -158,7 +158,7 @@ SubGroups.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),

@@ -13,12 +13,12 @@ class TeamDetailView extends Component {
   constructor(props, context) {
       //call action to get user teams 
     const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(props.params.id);
+        //console.log(usertoken);
+        //console.log(props.params.id);
         props.getTeamAgents(usertoken);
         props.getTeamRequest(props.params.id,usertoken);
        

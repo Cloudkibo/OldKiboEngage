@@ -18,11 +18,11 @@ class MyPickedSessions extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
        
-        console.log(usertoken);
+        //console.log(usertoken);
       //  props.getsessions(usertoken);
         props.getmypickedsessions(usertoken,props.userdetails._id);
         props.getcustomers(usertoken);
@@ -35,9 +35,9 @@ class MyPickedSessions extends Component {
  
 
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
      return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -110,7 +110,7 @@ MyPickedSessions.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),

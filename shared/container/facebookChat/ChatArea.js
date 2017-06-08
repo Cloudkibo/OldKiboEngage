@@ -26,8 +26,10 @@ import {
   getEmojiURL, isEmoji,getmetaurl
 } from './utility';
 
+import {printlogs} from '../../services/clientlogging';
+
 var getSuggestions = function (value, cr) {
-  console.log(cr);
+ printlogs('log',cr);
   const languages = cr
 
   const inputValue = value.trim().toLowerCase();
@@ -632,7 +634,7 @@ export class ChatArea extends Component {
   }
 
   onTestURL(e) {
-    console.log(e)
+   printlogs('log',e)
     var Video_EXTENSIONS = /\.(mp4|ogg|webm|quicktime)($|\?)/i;
 
     var truef = Video_EXTENSIONS.test(e)
@@ -644,7 +646,7 @@ export class ChatArea extends Component {
   }
 
   onTestURLAudio(e) {
-    console.log(e)
+   printlogs('log',e)
     var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx|mp4)($|\?)/i;
 
 
@@ -735,31 +737,14 @@ export class ChatArea extends Component {
 
 
   scrollToBottom(fbchatlist) {
-    /*const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
-     console.log(node);
-     console.log(node.offsetTop)
-
-     node.parentNode.scrollTop = node.offsetTop + 1100;*/
-    // const node = ReactDOM.findDOMNode(this.messagesEnd);
-    //node.scrollIntoView({behavior: "smooth"});
-    //alert(this.props.fbchatSelected.length-1);
-    //console.log(this.refs[this.props.fbchatSelected.length-1])
-    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
-    //alert(this.props.fbchatSelected.length);
-
-    console.log('scrollToBottom called');
+    printlogs('log','scrollToBottom called');
     const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length - 1]);
     if (target) {
-      /*   scrollIntoViewIfNeeded(target, false, {
-       duration: 150
-       });*/
+     
       target.scrollIntoView({behavior: "smooth"});
 
     }
-    //target.parentNode.scrollTop = target.offsetTop;
-    // target.scrollTop = target.scrollHeight;
-
-
+   
   }
 
 
@@ -779,7 +764,7 @@ export class ChatArea extends Component {
       files = e.target.files;
     }
 
-    console.log(e.target.files[0]);
+   printlogs('log',e.target.files[0]);
 
     this.setState({
       userfile: e.target.files[0]
@@ -793,7 +778,7 @@ export class ChatArea extends Component {
       this.onFileSubmit();
 
     };
-    console.log(reader.result);
+   printlogs('log',reader.result);
     reader.readAsDataURL(files[0]);
 
 
@@ -834,7 +819,7 @@ export class ChatArea extends Component {
 
   onSuggestionsUpdateRequested({value}) {
     var v = value.split(" ");
-    console.log(v)
+   printlogs('log',v)
 
     this.setState({
       suggestions: getSuggestions(v[v.length - 1], this.props.responses)
@@ -845,7 +830,7 @@ export class ChatArea extends Component {
     const {socket, dispatch} = this.props;
     var sendmessage = true;
 
-    console.log('handleMessageSubmit' + e.which)
+   printlogs('log','handleMessageSubmit' + e.which)
 
     if (e.which === 13 && this.state.value != "" && this.props.loadingurl == false) {
 
@@ -980,8 +965,8 @@ export class ChatArea extends Component {
     const usertoken = auth.getToken();
     var fileData = new FormData();
     this.refs.selectFile.value = null;
-    console.log('on onFileSubmit');
-    console.log(this.state.userfile);
+   printlogs('log','on onFileSubmit');
+   printlogs('log',this.state.userfile);
 
 
     if (this.state.userfile && this.state.userfile != '') {
@@ -997,7 +982,7 @@ export class ChatArea extends Component {
       }
 
       if (sendmessage == true) {
-        console.log(this.state.userfile)
+       printlogs('log',this.state.userfile)
 
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
@@ -1097,7 +1082,7 @@ export class ChatArea extends Component {
         pageid: pageid
       }
 
-      console.log(saveMsg);
+     printlogs('log',saveMsg);
 
       this.props.getfbchatfromAgent(saveMsg);
 
@@ -1138,13 +1123,13 @@ export class ChatArea extends Component {
 
 
   onSuggestionSelected({suggestionValue, method = 'click'}) {
-    console.log("current value of input is  :" + this.state.value)
+   printlogs('log',"current value of input is  :" + this.state.value)
     var v = this.state.value.split(" ");
     var prevVal = "";
     for (var i = 0; i < v.length - 1; i++) {
       prevVal = prevVal + " " + v[i]
     }
-    console.log("current value of input is  :" + prevVal)
+   printlogs('log',"current value of input is  :" + prevVal)
     if (prevVal == "") {
       this.setState({
         value: suggestionValue
@@ -1183,7 +1168,7 @@ export class ChatArea extends Component {
   }
 
   setEmoji(emoji) {
-    console.log(emoji);
+   printlogs('log',emoji);
     this.setState({
       value: this.state.value + emoji.unicode,
       visible: false,
@@ -1194,7 +1179,7 @@ export class ChatArea extends Component {
 
 
   sendGIF(gif) {
-    console.log(gif);
+   printlogs('log',gif);
     const {socket, dispatch} = this.props;
     var sendmessage = true;
     if (this.props.fbsessionSelected.status == "new") {
@@ -1244,7 +1229,7 @@ export class ChatArea extends Component {
         pageid: pageid
       }
 
-      console.log(saveMsg);
+     printlogs('log',saveMsg);
 
       this.props.getfbchatfromAgent(saveMsg);
 
@@ -1340,7 +1325,7 @@ export class ChatArea extends Component {
         pageid: pageid
       }
 
-      console.log(saveMsg);
+     printlogs('log',saveMsg);
 
       this.props.getfbchatfromAgent(saveMsg);
 
@@ -1400,7 +1385,7 @@ export class ChatArea extends Component {
 
   urlWithEmoji(text){
     var msg = text.split(' ');
-    console.log(msg);
+   printlogs('log',msg);
     var returnTxt = ["", ""];
     for (var i=0; i<msg.length; i++){
       if(msg[i].startsWith('http')){
@@ -1410,7 +1395,7 @@ export class ChatArea extends Component {
         returnTxt[1] = returnTxt[1].concat(msg[i]);
      }
     }
-    console.log(returnTxt);
+   printlogs('log',returnTxt);
     return returnTxt;
   }
 

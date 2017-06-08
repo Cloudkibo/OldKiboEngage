@@ -21,12 +21,12 @@ class AgentEditView extends Component {
 
   componentWillMount(){
      const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(this.props.params.id);
+        //console.log(usertoken);
+        //console.log(this.props.params.id);
         this.props.getAgentRequest(this.props.params.id,usertoken);
       }
 
@@ -190,8 +190,8 @@ AgentEditView.propTypes = {
   
 };
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.agent);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.agent);
   
    return {
     

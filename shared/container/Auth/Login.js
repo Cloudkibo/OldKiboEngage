@@ -86,8 +86,8 @@ Login.propTypes = {
   errorMessage: PropTypes.string
 }
 function mapStateToProps(state) {
-  console.log('mapStateToProps function called');
-  console.log(state.auth.errorMessage)
+  //console.log('mapStateToProps function called');
+  //console.log(state.auth.errorMessage)
   return {errorMessage: (state.auth.errorMessage)};
 }
 export default connect(mapStateToProps, { loginUser })(Login);

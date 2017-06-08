@@ -18,11 +18,11 @@ class Chat extends Component {
  constructor(props, context) {
       //call action to get user teams 
     const usertoken = auth.getToken();
-     console.log('componentWillMount is called');
+     //console.log('componentWillMount is called');
     if(usertoken != null)
     {
        
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getcustomers(usertoken);
         props.getsessions(usertoken);
         props.getuserchats(usertoken);
@@ -39,12 +39,12 @@ class Chat extends Component {
     
   }
 updateOnlineAgents(data){
-  console.log('updating updateOnlineAgents');
+  //console.log('updating updateOnlineAgents');
   this.props.updateAgentList(data);
   this.forceUpdate();
 }
  create_agentsession(socketid){
-    console.log('your socket id is : ' + socketid);
+    //console.log('your socket id is : ' + socketid);
     this.props.setsocketid(socketid);
     //this.refs.agentsocketfield.value = socketid;
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
@@ -73,7 +73,7 @@ componentDidMount(){
   }
  
   componentWillUpdate(){
-      console.log('calling componentWillUpdate');
+      //console.log('calling componentWillUpdate');
     //   this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid});
     //   this.props.route.socket.on('agentjoined',this.create_agentsession)
          this.props.route.socket.on('getmysocketid',this.create_agentsession);
@@ -128,7 +128,7 @@ componentDidMount(){
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
     
     return (
       <div>
@@ -284,10 +284,10 @@ componentDidMount(){
 }
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.teamdetails);
-  console.log(state.dashboard.errorMessage);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.userdetails);
+  //console.log(state.dashboard.teamdetails);
+  //console.log(state.dashboard.errorMessage);
 
   return {
           teamdetails:(state.dashboard.teamdetails),

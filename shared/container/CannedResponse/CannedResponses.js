@@ -22,11 +22,11 @@ class CannedResponses extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getresponses(usertoken)
       }
     super(props, context);
@@ -66,7 +66,7 @@ class CannedResponses extends Component {
 
  displayData(n){
    let offset = n*6;
-   console.log("Offset: " + offset);
+   //console.log("Offset: " + offset);
    let sessionData = [];
    let limit;
    if ((offset + 6) > this.props.responses.length){
@@ -82,15 +82,15 @@ class CannedResponses extends Component {
  }
 
  handlePageClick(data){
-   console.log(data.selected);
+   //console.log(data.selected);
    this.displayData(data.selected);
  }
 
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
-    console.log(this.props.responses);
+    //console.log(token)
+    //console.log(this.props.responses);
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -185,7 +185,7 @@ CannedResponses.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),

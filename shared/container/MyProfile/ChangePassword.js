@@ -101,7 +101,7 @@ onChangeCurrentPassword(event) {
                          'password' : this.refs.cpwd.value,
                          'newpassword' :this.refs.npwd.value                    
                   }
-                  console.log(user);
+                  //console.log(user);
 
                   this.props.changepassword(user,usertoken);
         
@@ -116,7 +116,7 @@ onChangeCurrentPassword(event) {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
     
     return (
       <div className="vbox viewport">

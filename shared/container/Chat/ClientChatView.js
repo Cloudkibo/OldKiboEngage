@@ -15,7 +15,7 @@ import * as ReactDOM from 'react-dom';
 class ClientChatView extends Component {
 
   constructor(props, context) {
-    //    console.log(props.customerid);
+    //    //console.log(props.customerid);
        props.getChatRequest(props.customerid);
        super(props, context);
        this.handleMessageSubmit= this.handleMessageSubmit.bind(this);
@@ -33,8 +33,8 @@ class ClientChatView extends Component {
         win.focus();
  }
   getAgentSocket(data){
-    console.log(data)
-    console.log('agent socket id is : ' + data.data.agentsocket);
+    //console.log(data)
+    //console.log('agent socket id is : ' + data.data.agentsocket);
     // agentid,agentname and agentemail will now be array fields
     this.refs.agentid.value='';
     this.refs.agentname.value = '';
@@ -240,8 +240,8 @@ class ClientChatView extends Component {
       call.visitoremail = this.props.sessiondetails.email.trim();
       call.request_id = this.props.sessiondetails.session_id;
       call.url = meetingURLString;
-      console.log(call);
-      console.log(meetingURLString);
+      //console.log(call);
+      //console.log(meetingURLString);
       socket.emit('connecttocall', {room: this.props.sessiondetails.companyid, stanza: call});
 
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.sessiondetails.companyid+'&agentemail='+this.refs.agentemail.value.trim()+'&agentname='+this.refs.agentname.value.trim()+'&visitorname='+this.props.sessiondetails.customerName+'&visitoremail='+this.props.sessiondetails.email+'&request_id='+this.props.sessiondetails.session_id;

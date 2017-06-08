@@ -93,7 +93,7 @@ class ResetPassword extends Component {
 
 }
 function mapStateToProps(state) {
-  console.log('mapStateToProps function called');
+  //console.log('mapStateToProps function called');
    return {errorMessage: (state.auth.errorMessage)};
 }
 export default connect(mapStateToProps, { resetpassword,verifyPasswordResettoken })(ResetPassword);

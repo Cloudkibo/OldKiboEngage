@@ -56,7 +56,7 @@ componentDidMount(){
 
 displayData(n){
   let offset = n*6;
-  console.log("Offset: " + offset);
+  //console.log("Offset: " + offset);
   let sessionData = [];
   let limit;
   if ((offset + 6) > this.props.fbcustomers.length){
@@ -72,14 +72,14 @@ displayData(n){
 }
 
 handlePageClick(data){
-  console.log(data.selected);
+  //console.log(data.selected);
   this.displayData(data.selected);
 }
 
 render() {
   const token = auth.getToken()
   const { filteredData } = this.state;
-  console.log(filteredData);
+  //console.log(filteredData);
   return (
     <div className="vbox viewport">
       <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>

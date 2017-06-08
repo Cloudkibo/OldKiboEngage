@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {updateChatList} from '../redux/actions/actions';
 import {notify} from '../services/notify';
+import {printlogs} from '../services/clientlogging';
 
 class App extends Component {
 
@@ -19,20 +20,20 @@ class App extends Component {
       notify('facebook customer joined');
     });
     this.props.route.socket.on('disconnect', () => {
-        console.log('disconnecting');  
+        printlogs('log','disconnecting');  
         this.setState({'connected':false});
        // location.reload();
       });
 
      this.props.route.socket.on('connect', () => {
-        console.log('disconnecting');  
+        printlogs('log','connecting');  
         this.setState({'connected':true});
        // location.reload();
       });
 
     this.props.route.socket.on('updateFBsessions', (data) => {
-      console.log('updateFBsessions desktop notify');
-      console.log(data);
+      printlogs('log','updateFBsessions desktop notify');
+      printlogs('log',data);
       if (data.status === 'assigned') {
         notify(`${data.username } of Facebook Page ${data.pageTitle} has been assigned to ${data.agentname}`);
       } else {

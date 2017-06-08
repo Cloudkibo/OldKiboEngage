@@ -24,8 +24,8 @@ class NotificationView extends Component {
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(this.props.params.id);
+        //console.log(usertoken);
+        //console.log(this.props.params.id);
         this.props.getNotificationRequest(this.props.params.id,usertoken);
       }
   }

@@ -20,11 +20,11 @@ class InvitedAgents extends Component {
    }
 
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
       //  props.getsessions(usertoken);
         props.getinvitedagents(usertoken);
 
@@ -45,7 +45,7 @@ class InvitedAgents extends Component {
 
   displayData(n){
     let offset = n*6;
-    console.log("Offset: " + offset);
+    //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
     if ((offset + 6) > this.props.invitedagents.length){
@@ -61,13 +61,13 @@ class InvitedAgents extends Component {
   }
 
   handlePageClick(data){
-    console.log(data.selected);
+    //console.log(data.selected);
     this.displayData(data.selected);
   }
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
      return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -142,7 +142,7 @@ InvitedAgents.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),

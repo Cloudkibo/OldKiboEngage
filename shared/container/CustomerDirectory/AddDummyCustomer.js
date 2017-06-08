@@ -32,7 +32,7 @@ class AddCustomer extends Component {
     if (name.value && email.value && companyid)
      {
       var customer = {'name' : name.value,'email':email.value,'country' : country.value,'phone' : phone.value,'companyid' : companyid,isMobileClient : 'false'}
-      console.log(customer);
+      //console.log(customer);
       this.props.createcustomer(customer);
      
     }
@@ -129,7 +129,7 @@ class AddCustomer extends Component {
 
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   
    return {
     errorMessage:(state.dashboard.errorMessage),

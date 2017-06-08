@@ -17,7 +17,7 @@ class ClientChat extends Component {
 
  constructor(props, context) {
      const { dispatch} =props;
-     console.log('componentWillMount is called');
+     //console.log('componentWillMount is called');
         props.showAllChat();
         super(props, context);
   

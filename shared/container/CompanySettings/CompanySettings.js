@@ -25,11 +25,11 @@ class CompanySettings extends Component {
    }
 
     const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
+    //console.log('componentWillMount is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getcompanysettings(usertoken,props.userdetails.uniqueid);
       }
 
@@ -76,7 +76,7 @@ class CompanySettings extends Component {
       var fileData = new FormData();
 
       if(this.props.userdetails.isAdmin === "Yes"){
-       console.log(this.state.userfile)
+       //console.log(this.state.userfile)
        if(this.state.src == '' )
        {
        var companyprofile = {
@@ -102,7 +102,7 @@ class CompanySettings extends Component {
                     'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value,
                     'widgetlogoURL': this.props.companysettings.widgetlogoURL
                   }
-                  console.log(companyprofile);
+                  //console.log(companyprofile);
                   this.props.updatesettings(this.state.userfile,companyprofile,usertoken,true);
 
               }
@@ -132,7 +132,7 @@ class CompanySettings extends Component {
                     'enableFacebook':this.refs.allowFacebook.options[this.refs.allowFacebook.selectedIndex].value,
 
                   }
-                  console.log(companyprofile);
+                  //console.log(companyprofile);
                   this.props.updatesettings(this.state.userfile,companyprofile,usertoken,false);
 
               }
@@ -152,7 +152,7 @@ class CompanySettings extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
 
     return (
       <div className="vbox viewport">

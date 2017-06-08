@@ -21,11 +21,11 @@ class Customers extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getcustomers(usertoken)
       }
     super(props, context);
@@ -58,12 +58,12 @@ filterData(event) {
     }
   }
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
     const { filteredData } = this.state;
 
-    console.log(this.props.notifications);
+    //console.log(this.props.notifications);
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -152,7 +152,7 @@ Customers.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),

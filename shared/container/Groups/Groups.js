@@ -25,11 +25,11 @@ class Groups extends Component {
    }
 
     const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
+    //console.log('componentWillMount is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getusergroups(usertoken);
         props.getcustomers(usertoken);
       }
@@ -50,11 +50,11 @@ class Groups extends Component {
 
 componentDidMount(){
      const usertoken = auth.getToken();
-     console.log('componentWillMount is called');
+     //console.log('componentWillMount is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         this.props.getusergroups(usertoken);
         this.props.getDeptAgents(usertoken);
 
@@ -73,7 +73,7 @@ componentDidMount(){
 
   displayData(n){
     let offset = n*6;
-    console.log("Offset: " + offset);
+    //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
     if ((offset + 6) > this.props.groupdetails.length){
@@ -89,7 +89,7 @@ componentDidMount(){
   }
 
   handlePageClick(data){
-    console.log(data.selected);
+    //console.log(data.selected);
     this.displayData(data.selected);
   }
 
@@ -118,7 +118,7 @@ componentDidMount(){
  }
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
 
     return (
       <div className="vbox viewport">
@@ -207,10 +207,10 @@ Groups.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.groupdetails);
-  console.log(state.dashboard.errorMessage);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.userdetails);
+  //console.log(state.dashboard.groupdetails);
+  //console.log(state.dashboard.errorMessage);
 
   return {
           groupdetails:(state.dashboard.groupdetails),

@@ -24,11 +24,11 @@ class SessionSummary extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
       //  props.getsessions(usertoken);
         props.getsessions(usertoken);
         if(!props.customers)
@@ -61,7 +61,7 @@ class SessionSummary extends Component {
 
   displayData(n){
     let offset = n*6;
-    console.log("Offset: " + offset);
+    //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
     if ((offset + 6) > this.state.sessionsummaryfiltered.length){
@@ -77,7 +77,7 @@ class SessionSummary extends Component {
   }
 
   handlePageClick(data){
-    console.log(data.selected);
+    //console.log(data.selected);
     this.displayData(data.selected);
   }
 
@@ -261,7 +261,7 @@ class SessionSummary extends Component {
       },
       () => {
         this.displayData(0);
-        console.log(this.state.sessionsummaryfiltered.length);
+        //console.log(this.state.sessionsummaryfiltered.length);
         this.setState({ totalLength: this.state.sessionsummaryfiltered.length });
       }
       );
@@ -436,7 +436,7 @@ class SessionSummary extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
      return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -608,8 +608,8 @@ SessionSummary.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.sessionsummaryfiltered);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.sessionsummaryfiltered);
   return {
           subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),

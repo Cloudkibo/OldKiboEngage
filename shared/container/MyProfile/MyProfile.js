@@ -20,11 +20,11 @@ class MyProfile extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
+    //console.log('componentWillMount is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getuser(usertoken);
       }
 
@@ -39,7 +39,7 @@ class MyProfile extends Component {
 
   onSubmit(event)
     {
-      console.log("onSubmit is called");
+      //console.log("onSubmit is called");
        const usertoken = auth.getToken();
 
       event.preventDefault();
@@ -60,7 +60,7 @@ class MyProfile extends Component {
                     'country':country.value,
 
                   }
-                  console.log(user);
+                  //console.log(user);
 
                   this.props.updateprofile(user,usertoken);
                 }
@@ -72,7 +72,7 @@ class MyProfile extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token);
+    //console.log(token);
     var myRole = '';
     if(this.props.userdetails.isAdmin == 'Yes'){
       myRole = 'admin';

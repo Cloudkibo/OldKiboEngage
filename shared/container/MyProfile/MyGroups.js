@@ -20,11 +20,11 @@ class MyGroups extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
+    //console.log('componentWillMount is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getmyusergroups(usertoken);
       }
 
@@ -41,7 +41,7 @@ class MyGroups extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
 
     return (
       <div className="vbox viewport">

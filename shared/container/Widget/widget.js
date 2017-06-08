@@ -22,7 +22,7 @@ class Widget extends Component {
    }
 
      const usertoken = auth.getToken();
-     console.log('componentWillMount is called');
+     //console.log('componentWillMount is called');
      super(props, context);
 
    
@@ -34,7 +34,7 @@ class Widget extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
 
     return (
       <div className="vbox viewport">

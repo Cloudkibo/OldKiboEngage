@@ -21,7 +21,7 @@ class Agents extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     super(props, context);
     this.state = {
       showInviteAgent :  false,
@@ -56,7 +56,7 @@ class Agents extends Component {
 
   displayData(n){
     let offset = n*6;
-    console.log("Offset: " + offset);
+    //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
     if ((offset + 6) > this.props.agents.length){
@@ -72,7 +72,7 @@ class Agents extends Component {
   }
 
   handlePageClick(data){
-    console.log(data.selected);
+    //console.log(data.selected);
     this.displayData(data.selected);
   }
 
@@ -91,10 +91,10 @@ class Agents extends Component {
 
 
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
-    console.log(this.props.agents);
+    //console.log(token)
+    //console.log(this.props.agents);
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -189,10 +189,10 @@ Agents.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.agents);
-  console.log(state.dashboard.errorMessage);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.userdetails);
+  //console.log(state.dashboard.agents);
+  //console.log(state.dashboard.errorMessage);
 
   return {
           agents:(state.dashboard.agents),

@@ -3699,7 +3699,7 @@ text-align: left;
   order: 3;
     flex-shrink: 0;
     flex-basis: 50px;
-    z-index:100000000;
+    z-index:99999999;
 
 
 }

@@ -24,6 +24,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import {browserHistory} from 'react-router'
 
+import {printlogs} from '../../services/clientlogging';
 
 var callonce = false;
 
@@ -36,7 +37,7 @@ class FbChat extends Component {
     const usertoken = auth.getToken();
     if (usertoken != null) {
 
-      console.log(usertoken);
+     printlogs('log',usertoken);
       props.getfbSessions(usertoken);
    
       // props.getfbCustomers(usertoken);
@@ -64,8 +65,8 @@ class FbChat extends Component {
   }
 
   getfbCustomer(data) {
-    console.log('new fb customer is received');
-    console.log(data);
+   printlogs('log','new fb customer is received');
+   printlogs('log',data);
     this.props.route.socket.emit('logClient',{msg:'new fb customer is received ',data:data} );
     if (this.props.fbsessions) {
       this.props.updateCustomerList(data, this.props.fbsessions, this.props.fbsessionSelected);
@@ -84,10 +85,10 @@ class FbChat extends Component {
 
   getfbMessage(data) {
     //alert('new fbmessage')
-    console.log('new fb message is received');
-    console.log(data);
+   printlogs('log','new fb message is received');
+   printlogs('log',data);
     this.props.route.socket.emit('logClient',{msg:'new fb message is received',data:data} );
-    console.log(this.props.fbsessionSelected);
+   printlogs('log',this.props.fbsessionSelected);
     if (this.props.fbsessionSelected && this.props.fbchats) {
       if (!this.props.fbsessionSelected.user_id) {
         data.seen = false;
