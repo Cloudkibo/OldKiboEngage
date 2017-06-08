@@ -919,7 +919,8 @@ const dashboard = (state = dashboardState, action) => {
         fbchatSelected: action.fbchatSelected,
         profile_pic: action.profile_pic,
         fbsessionSelected: action.fbsessionSelected,
-
+        loadingurl:false,
+        urlLoading:'',
       };
     case ActionTypes.FB_SORT_SESSIONS:
       return {

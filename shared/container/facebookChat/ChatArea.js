@@ -893,10 +893,12 @@ export class ChatArea extends Component {
                           mid: unique_id,
                           seq: 1,
                           text: this.state.value,
-                          pageid: pageid,
-                          urlmeta:this.state.urlmeta,
+                          
+                         
 
-                          }
+                          },
+                        pageid: pageid,  
+                        urlmeta:this.state.urlmeta,
                       }
           data = {
                       senderid: this.props.userdetails._id,
@@ -906,14 +908,7 @@ export class ChatArea extends Component {
                       message: {
                         text: this.state.value,
                         mid: unique_id,
-                        attachments: [{
-                          type: 'fallback',
-                          url:this.state.prevURL,
-                          payload: {
-                           
-                          }
-
-                        }]
+                       
                       },
                       inbound: true,
                       backColor: '#3d83fa',
@@ -1626,6 +1621,64 @@ export class ChatArea extends Component {
               }
               </div>
             }
+
+            {data.urlmeta && JSON.stringify(data.urlmeta) !='{}' &&
+                                  <div style={{clear:'both', display:'block'}}>
+                                        <div style={styles.right.wrapperforURL}>
+                                            <table style={{maxWidth:'300px'}}>
+                                                {data.urlmeta.type && data.urlmeta.type == "video" && data.urlmeta.url?
+                                                  <tbody>
+
+                                                  <tr>
+                                                      <td colspan="2">
+                                                        <ReactPlayer url={data.urlmeta.url} controls={true} width="100%" height="242"
+                                                        />
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td>
+                                                      <div>
+                                                       <a href={getmetaurl(data.message)} target="_blank">
+                                                   
+                                                       <span style={styles.urltitle}>{data.urlmeta.title}</span>
+                                                       </a>
+                                                       <br/>
+                                                        <span>{data.urlmeta.description}</span>
+                                                      </div>
+                                                      </td>
+                                                </tr>
+                                                </tbody>
+                                                :
+                                                <tbody>
+
+                                                <tr>
+                                                  <td>
+                                                     <div style={{width:72,height:72}}>
+                                                    {data.urlmeta.image &&  data.urlmeta.image.url &&
+                                                    <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                                    }
+                                                </div>
+                                                </td>
+                                                  <td>
+                                                  <div>
+                                                   <a href={getmetaurl(data.message)} target="_blank">
+                                               
+                                                   <span style={styles.urltitle}>{data.urlmeta.title}</span>
+                                                   </a>
+
+                                                   <br/>
+                                                   {data.urlmeta.description &&
+                                                    <span>{data.urlmeta.description}</span>
+                                                  }
+                                                  </div>
+                                                  </td>
+                                                </tr>
+                                                </tbody>
+                                              }
+                                                </table>
+                                               </div>
+                                               </div> 
+                                             }
               {data.attachments && data.attachments.length > 0 &&
               data.attachments.map((da, index) => (
                 (da.type == "image" ?
@@ -1699,67 +1752,7 @@ export class ChatArea extends Component {
                                 </div>
                                 </div>
                                 </div>
-                                :
-
-                                 (da.type == "fallback" && data.urlmeta?
-                                  <div style={{clear:'both', display:'block'}}>
-                                        <div style={styles.right.wrapperforURL}>
-                                            <table style={{maxWidth:'300px'}}>
-                                                {data.urlmeta.type && data.urlmeta.type == "video"?
-                                                  <tbody>
-
-                                                  <tr>
-                                                      <td colspan="2">
-                                                        <ReactPlayer url={data.urlmeta.url} controls={true} width="100%" height="242"
-                                                        />
-                                                      </td>
-                                                  </tr>
-                                                  <tr>
-                                                      <td>
-                                                      <div>
-                                                       <a href={getmetaurl(data.message)} target="_blank">
-                                                   
-                                                       <span style={styles.urltitle}>{da.title}</span>
-                                                       </a>
-                                                       <br/>
-                                                        <span>{data.urlmeta.description}</span>
-                                                      </div>
-                                                      </td>
-                                                </tr>
-                                                </tbody>
-                                                :
-                                                <tbody>
-
-                                                <tr>
-                                                  <td>
-                                                     <div style={{width:72,height:72}}>
-                                                    {data.urlmeta.image && 
-                                                    <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>  
-                                                    }
-                                                </div>
-                                                </td>
-                                                  <td>
-                                                  <div>
-                                                   <a href={getmetaurl(data.message)} target="_blank">
-                                               
-                                                   <span style={styles.urltitle}>{da.title}</span>
-                                                   </a>
-
-                                                   <br/>
-                                                   {data.urlmeta.description &&
-                                                    <span>{data.urlmeta.description}</span>
-                                                  }
-                                                  </div>
-                                                  </td>
-                                                </tr>
-                                                </tbody>
-                                              }
-                                                </table>
-                                               </div>
-                                               </div> 
-                                       
-                                       
-                                        :
+                               :
                                   <div style={styles.right.wrapper}>
                                      <div style={styles.imagestyle}>
                          
@@ -1767,7 +1760,7 @@ export class ChatArea extends Component {
                                    style={styles.right.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
                                 </div>
                                 </div>
-                            )))
+                            ))
                       )
                  
                 )
