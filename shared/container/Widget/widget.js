@@ -48,10 +48,10 @@ class Widget extends Component {
             <div className="page-content">
             <AlertContainer ref={a => this.msg = a}  offset={14} position= 'bottom right' theme='light' time={5000} transition='scale' />
 
-              <div className="uk-card uk-card-default uk-card-body uk-text-center" style={{background: '#FFC341', color: 'white'}}>
-                  <img src="https://cdn.dribbble.com/users/25514/screenshots/2016747/flat-news-app-icon-design-ramotion.gif" alt="widget_intro_image" style={{maxWidth:250, maxHeight:250, padding:0, margin: 0}}/>
-                  <h2 className="uk-card-title uk-align-center" style={{color:'white', fontSize:35, marginTop: -25}}>Add KiboEnage Widget</h2>
-                  <p className="uk-align-center" style={{fontSize: 15, color: 'white'}}>{"To embed the widget on your website, you need to put this line before </head> tag or before </body> tag of HTML of your website's each page."}</p>
+              <div className=" uk-text-center" style={{color: 'black'}}>
+                  <img src="https://winnerweb.com.br/assets/images/home/icons/cpanel.png" alt="widget_intro_image" style={{maxWidth:150, maxHeight:150, padding:0, margin: 0}}/>
+                  <h2 className="uk-card-title uk-align-center" style={{ fontSize:35}}>Add KiboEngage Widget</h2>
+                  <p className="uk-align-center" style={{fontSize: 15}}>{"To embed the widget on your website, you need to put this line before </head> tag or before </body> tag of HTML of your website's each page."}</p>
                   <div className="uk-alert-danger" style={{padding: 5, fontSize: 15, marginTop:-10}} ref={node => node && node.setAttribute('uk-alert', '')}> &lt;script src='https://kiboengage.kibosupport.com/scripts/widgetapp.js' &gt; &lt;/script&gt;</div>
                     <CopyToClipboard text={"<script src='https://kiboengage.kibosupport.com/scripts/widgetapp.js' ></script>"}
                     onCopy={() => this.setState({copied: true})}>
@@ -59,7 +59,7 @@ class Widget extends Component {
                   </CopyToClipboard>
                   
 
-          <p className="uk-align-center" style={{fontSize: 15, color: 'white'}}>{"Then you must have to put a button on your page with our onclick function. Example of button is given below."}</p>
+          <p className="uk-align-center" style={{fontSize: 15}}>{"Then you must have to put a button on your page with our onclick function. Example of button is given below."}</p>
                   <div className="uk-alert-danger" style={{padding: 5, fontSize: 15, marginTop:-10}} ref={node => node && node.setAttribute('uk-alert', '')}>&lt;button onclick="loadKiboEngageWidget('{this.props.userdetails.uniqueid}')"&gt; Live Help &lt;/button&gt;</div>
                    <CopyToClipboard text={"<button onclick=\"loadKiboEngageWidget('"+ this.props.userdetails.uniqueid +"')\"> Live Help </button>"}
                     onCopy={() => this.setState({copied: true})}>
@@ -67,7 +67,7 @@ class Widget extends Component {
                   </CopyToClipboard>
                    
 
-              <p className="uk-align-center" style={{fontSize: 15, color: 'white'}}>Note: You can use any css desgin for the button. You can also use &lt;a&gt; tag if you don't want button.
+              <p className="uk-align-center" style={{fontSize: 15}}>Note: You can use any css desgin for the button. You can also use &lt;a&gt; tag if you don't want button.
                         Just remember to do the function call as shown above.<br/>The&nbsp;<b>onclick="loadKiboWidget('{this.props.userdetails.uniqueid}')&nbsp;</b>contains your unique client id. Never alter this function and its value.</p>
 
               </div>
