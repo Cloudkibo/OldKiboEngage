@@ -167,7 +167,7 @@ class CompanySettings extends Component {
               <div className="row">
                 <div className="col-md-12">
                     <h3 className ="page-title">Company Settings </h3>
-                     <ul className="page-breadcrumb breadcrumb">
+                     <ul className="uk-breadcrumb">
                       <li>
                         <i className="fa fa-home"/>
                         <Link to="/dashboard"> Dashboard </Link>
@@ -361,7 +361,8 @@ class CompanySettings extends Component {
                                                 this.props.companysettings.widgetlogoURL?
 
                                                 <div className="col-md-9">
-                                                  <img ref="widgetlogo"  src={this.props.companysettings.widgetlogoURL} style={{'width':'200px','height':'200px'}} />
+                                                
+                                                  <img ref="widgetlogo"  src={this.props.companysettings.widgetlogoURL } style={{'width':'200px','height':'200px'}} />
                                                 </div>:<div className="hide"></div>
                                               }
                                                 <div>
@@ -428,7 +429,7 @@ class CompanySettings extends Component {
                                                  <div className = "alert alert-success"><span>{this.props.errorMessageProfile.message}</span></div>
                                               }
 
-                                              <div className="form-actions">
+                                              <div className="form-actions" style={{background: 'white'}}>
                                                       <button type="submit" className="btn green btn-send" onClick={this.onSubmit}>Save</button>
                                                       <Link to='/dashboard' className="btn default"> Back </Link>
                                               </div>
