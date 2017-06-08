@@ -101,6 +101,7 @@
     "socket.io-client": "^1.0.6",
     "socketio-jwt": "^2.0.2",
     "superagent": "^2.1.0",
+    "sweetalert-react": "^0.4.10",
     "tai-password-strength": "^1.0.4",
     "validator": "^5.4.0",
     "winston": "^1.0.1",
