@@ -122,7 +122,7 @@ const dashboard = (state = dashboardState, action) => {
 
       };
     case ActionTypes.ADD_USER_DETAILS:
-      console.log(action.user.firstname)
+      //console.log(action.user.firstname)
       return {
         ...state, errorMessageProfile: '',
         userdetails: action.user,
@@ -132,7 +132,7 @@ const dashboard = (state = dashboardState, action) => {
 
       };
     case ActionTypes.ADD_AGENTS:
-      console.log(action.agents)
+      //console.log(action.agents)
       return {
 
         ...state, errorMessageProfile: '',
@@ -142,7 +142,7 @@ const dashboard = (state = dashboardState, action) => {
 
 
     case ActionTypes.ADD_DEPTAGENTS:
-      console.log(action.agents)
+      //console.log(action.agents)
       return {
         ...state, errorMessageProfile: '',
         deptagents: action.agents,
@@ -168,7 +168,7 @@ const dashboard = (state = dashboardState, action) => {
 
       }
     case ActionTypes.ADD_GROUPS:
-      console.log(action.groups)
+      //console.log(action.groups)
       return {
         ...state, errorMessageProfile: '',
         errorMessage: '',
@@ -197,7 +197,7 @@ const dashboard = (state = dashboardState, action) => {
       };
 
     case ActionTypes.ADD_NEW_RESPONSE:
-      // console.log(action.response)
+      // //console.log(action.response)
       return {
         ...state, errorMessageProfile: '',
         responses: [action.response, ...state.responses],
@@ -210,7 +210,7 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: '',
       };
     case ActionTypes.ADD_GROUP:
-      console.log(action.deptname);
+      //console.log(action.deptname);
       return {
         ...state, errorMessageProfile: '',
         groupdetails: [{
@@ -601,9 +601,9 @@ const dashboard = (state = dashboardState, action) => {
       }
       var cc = []
       if (state.userchats) {
-        console.log('state.userchats' + state.userchats.length)
+        //console.log('state.userchats' + state.userchats.length)
         cc = removeDuplicates([...state.userchats, action.message], 'uniqueid')
-        console.log('state.userchats' + cc.length)
+        //console.log('state.userchats' + cc.length)
       }
       else {
         cc = [action.message]

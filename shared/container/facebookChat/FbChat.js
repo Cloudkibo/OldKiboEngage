@@ -164,8 +164,6 @@ class FbChat extends Component {
   render() {
     const token = auth.getToken()
 
-    console.log(token)
-
     return (
       <div className="vbox viewport">
         <AuthorizedHeader name={this.props.userdetails.firstname} user={this.props.userdetails}/>

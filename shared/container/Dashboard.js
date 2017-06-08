@@ -24,7 +24,7 @@ class Dashboard extends Component {
 
     if (usertoken != null) {
 
-      console.log(usertoken);
+     // console.log(usertoken);
       props.getcompanysettings(usertoken, props.userdetails.uniqueid);
     }
     super(props, context);
@@ -120,7 +120,7 @@ class Dashboard extends Component {
   }
 
   updateOnlineAgents(data) {
-    console.log('updating updateOnlineAgents');
+   // console.log('updating updateOnlineAgents');
     this.props.updateAgentList(data);
     //this.forceUpdate();
   }
@@ -173,7 +173,7 @@ class Dashboard extends Component {
     //console.log(this.props.userdetails)
     const token = auth.getToken();
     const username = this.props.userdetails.firstname;
-    console.log(username)
+    //console.log(username)
     return (
       <div className="vbox viewport">
         {
@@ -908,7 +908,7 @@ const styles = {
 
 
 function mapStateToProps(state) {
-  console.log(state);
+  //console.log(state);
   return {
     userdetails: (state.dashboard.userdetails),
     agents: (state.dashboard.agents),

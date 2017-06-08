@@ -1430,7 +1430,7 @@ export class ChatArea extends Component {
               <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle}/>
               {data.message && 
               <div
-                style={data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? styles.left.emojionly : (data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image") ? styles.left.wrapperNoColor : styles.left.wrapper}>
+                style={data.message.length === 2 && isEmoji(data.message) ? styles.left.emojionly : (data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image") ? styles.left.wrapperNoColor : styles.left.wrapper}>
                 { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ?
                   <p style={styles.left.textEmoji}>{ReactEmoji.emojify(data.message) }</p> :
                   <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
