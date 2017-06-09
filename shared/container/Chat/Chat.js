@@ -499,6 +499,7 @@ class Chat extends Component {
                             )
 
                         }
+                      
                       </div> :
                       <p>Click on session to view Chat messages</p>
                     }
