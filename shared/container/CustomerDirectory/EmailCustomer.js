@@ -73,7 +73,7 @@ class EmailCustomer extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Customer Directory Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -87,12 +87,9 @@ class EmailCustomer extends Component {
                
          
             
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-envelope"/>
+            <div className="uk-card uk-card-body uk-card-default uk-width-1-2@m">
+              <div className="uk-card-title">
                    Send Email
-                </div> 
               </div>    
         
            <div className="portlet-body form">
@@ -128,10 +125,10 @@ class EmailCustomer extends Component {
                 </div>
 
               
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
+                <div className="col-md-6">
+                  <div className="col-md-offset-6 col-md-6">
                     <button className="btn green" onClick={this.emailcustomer}>
                       <i className="fa fa-pencil"/>
                        Submit
@@ -139,8 +136,8 @@ class EmailCustomer extends Component {
 
                     </div>
                </div> 
-                <div className="col-md-9">
-                  <div className="col-md-9">
+                <div className="col-md-6">
+                  <div>
                     <Link to="/customers" className="btn green">
                       <i className="fa fa-times"/>
                        Back
