@@ -56,22 +56,10 @@ class FbChat extends Component {
 
     super(props, context);
     //fb related
-    this.getfbCustomer = this.getfbCustomer.bind(this);
     this.getfbMessage = this.getfbMessage.bind(this);
-    this.updateFbsessionlist = this.updateFbsessionlist.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
 
-  }
-
-  getfbCustomer(data) { // todo all actions
-   printlogs('log','new fb customer is received');
-   printlogs('log',data);
-    this.props.route.socket.emit('logClient',{msg:'new fb customer is received ',data:data} );
-    if (this.props.fbsessions) {
-      this.props.updateCustomerList(data, this.props.fbsessions, this.props.fbsessionSelected);
-      this.forceUpdate();
-    }
   }
 
   handleChange(e) {
@@ -81,8 +69,7 @@ class FbChat extends Component {
   getfbMessage(data) {
     //alert('new fbmessage')
    printlogs('log','new fb message is received');
-   printlogs('log',data);
-    this.props.route.socket.emit('logClient',{msg:'new fb message is received',data:data} );
+   printlogs('log',data)
    printlogs('log',this.props.fbsessionSelected);
     if (this.props.fbsessionSelected && this.props.fbchats) {
       if (!this.props.fbsessionSelected.user_id) {
@@ -108,11 +95,6 @@ class FbChat extends Component {
 
 
   componentDidMount() {
-    const usertoken = auth.getToken();
-
-    //fb related
-    // todo discuss with zarmeen
-    this.props.route.socket.on('send:fbcustomer', this.getfbCustomer);
 
   }
 
@@ -216,7 +198,8 @@ class FbChat extends Component {
                     {
 
                       this.props.fbchatSelected && this.props.fbsessions && this.props.fbsessionSelected &&
-                      <ChatArea messages={this.props.fbchatSelected} socket={ this.props.route.socket} {...this.props}
+                      <ChatArea messages={this.props.fbchatSelected}
+                                socket={ null } {...this.props}
                                 responses={this.props.responses}
                                 username={this.props.fbsessionSelected.user_id.first_name + ' ' + this.props.fbsessionSelected.user_id.last_name}
                                 userprofilepic={this.props.profile_pic}

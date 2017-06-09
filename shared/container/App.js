@@ -6,14 +6,9 @@ class App extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.getSocketmessage = this.getSocketmessage.bind(this);
   }
 
   componentDidMount() {
-  }
-
-  getSocketmessage(message) {
-    this.props.updateChatList(message);
   }
 
   render() {

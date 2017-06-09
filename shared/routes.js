@@ -79,25 +79,9 @@ import FacebookIntegrationInstructions from './container/FacebookIntegrationInst
 import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
 
-// todo import socketio module here for props
-let socket = io('');
+import { returnSocket } from './socket';
 
-  // todo merge - move this logic to socket module
-let disconnected = false;
-
-socket.on('connect', () => {
-  console.log('reconnecting');
-  if(disconnected === true){
-    location.reload();
-  }
- // location.reload();
-});
-socket.on('disconnect', () => {
-  console.log('disconnecting');
-  disconnected = true;
- // location.reload();
-});
-
+let socket = returnSocket();
 
 console.log('entered into routes');
 function requireAuth(nextState, replace) {
@@ -106,7 +90,7 @@ function requireAuth(nextState, replace) {
     replace({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }
-    })
+    });
   }
 }
 
@@ -116,14 +100,13 @@ function redirectAuthUsers(nextState, replace) {
     replace({
       pathname: '/dashboard',
       state: { nextPathname: nextState.location.pathname }
-    })
-
+    });
   }
 }
 
 const routes = (
   // todo remove socket.io from here
-   <Route path="/" component={App} socket = {socket}>
+   <Route path="/" component={App}>
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />
     <Route path="/signup" component={SignupContainer} onEnter={redirectAuthUsers} />
@@ -133,7 +116,7 @@ const routes = (
     <Route path="joincompany/:id" component={JoinCompany}/>
     <Route path="/join" component={JoinPage}/>
     <Route path="/joincompanyfailure" component={JoinCompanyFailure} />
-    <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} socket = {socket}/>
+    <Route path="/dashboard" component={Dashboard} onEnter={requireAuth}/>
     <Route path="/agents" component={Agents} onEnter={requireAuth} />
 
     <Route path="/creategroup" component={GroupCreateView} onEnter={requireAuth}/>
@@ -165,11 +148,11 @@ const routes = (
     <Route path="/resetpasswordfailure" component={ResetPasswordFailure}/>
     <Route path="/changepassword" component={ChangePassword} onEnter={requireAuth}/>
     <Route path="/chat" component={Chat} onEnter={requireAuth}  socket = {socket}/>
-    <Route path="/fbchat" component={FbChat} onEnter={requireAuth}  socket = {socket}/>
+    <Route path="/fbchat" component={FbChat} onEnter={requireAuth} />
     <Route path="/clientchat" component={ClientChat}  socket = {socket}/>
 
     <Route path="/notifications" component={Notifications} onEnter={requireAuth} />
-    <Route path="/addnotification" component={AddNotification} onEnter={requireAuth}  socket = {socket} />
+    <Route path="/addnotification" component={AddNotification} onEnter={requireAuth} />
     <Route path="/notification/:id" component={NotificationView}  onEnter={requireAuth}/>
     <Route path="/editnotification/:id" component={EditNotification}  onEnter={requireAuth}/>
      <Route path="/customers" component={Customers} onEnter={requireAuth} />
@@ -182,10 +165,10 @@ const routes = (
      <Route path="/companyprofile" component={CompanySettings}  onEnter={requireAuth}/>
      <Route path="/changeavatar" component={ChangeAvatar}  onEnter={requireAuth}/>
      <Route path="/mypickedchatsessions"  component={MyPickedSessions}  onEnter={requireAuth}/>
-     <Route path="/assignedchatsessions"  component={AssignedSessions}  socket={socket} onEnter={requireAuth}/>
-     <Route path="/abandonedchatsessions"  component={NewSessions}  socket={socket} onEnter={requireAuth}/>
-     <Route path="/resolvedchatsessions"  component={ResolvedSessions}  socket={socket} onEnter={requireAuth}/>
-     <Route path="/summarychatsessions"  component={SessionSummary}  socket={socket} onEnter={requireAuth}/>
+     <Route path="/assignedchatsessions"  component={AssignedSessions} onEnter={requireAuth}/>
+     <Route path="/abandonedchatsessions"  component={NewSessions} onEnter={requireAuth}/>
+     <Route path="/resolvedchatsessions"  component={ResolvedSessions} onEnter={requireAuth}/>
+     <Route path="/summarychatsessions"  component={SessionSummary} onEnter={requireAuth}/>
      <Route path="/reports"  component={Reports}  onEnter={requireAuth}/>
      <Route path="/fbpagescreate"  component={CreateFbPage}  onEnter={requireAuth}/>
     <Route path="/fbpages"  component={FbPages}  onEnter={requireAuth}/>

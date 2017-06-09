@@ -13,7 +13,7 @@ import ReactTimeout from 'react-timeout';
 import {browserHistory} from 'react-router';
 import { joinMeetingForAgent } from '../socket';
 import {printlogs} from '../services/clientlogging';
-//const socket = io('');
+
 var is_routed = false;
 var fetchnews = false;
 

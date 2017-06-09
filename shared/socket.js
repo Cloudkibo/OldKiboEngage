@@ -1,9 +1,12 @@
 import io from 'socket.io-client';
 
-import { setSocketStatus, setUserJoinedRoom } from './redux/actions/socketio.actions';
-import { setjoinedState, updateCustomerList, updatefbsessionlist,
-getassignedsessionsfromsocket, getnewsessionsfromsocket, getresolvedsessionsfromsocket } from './redux/actions/actions';
-import { notify } from './services/notify';
+import {setSocketStatus, setUserJoinedRoom} from './redux/actions/socketio.actions';
+import {
+  setjoinedState, updateCustomerList, updatefbsessionlist, previousChat,
+  getassignedsessionsfromsocket, getnewsessionsfromsocket, getresolvedsessionsfromsocket,
+  setsocketid, getsessionsfromsocket, updateAgentList, getchatsfromsocket,
+} from './redux/actions/actions';
+import {notify} from './services/notify';
 
 const socket = io('');
 let store;
@@ -15,6 +18,7 @@ export function initiateSocket(storeObj) {
 
 socket.on('customer_joined', (data) => {
   notify('A customer has joined.');
+  store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
 });
 
 socket.on('send:fbcustomer', (data) => {
@@ -46,25 +50,56 @@ socket.on('agentjoined', () => {
 });
 
 socket.on('returnCustomerSessionsList', (data) => {
+  console.log(data);
+  // todo discuss this very important with Zarmeen
+  store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
   store.dispatch(getassignedsessionsfromsocket(data, store.getState().dashboard.assignedsessions));
+  store.dispatch(getresolvedsessionsfromsocket(data, store.getState().dashboard.resolvedsessions));
 });
 
 socket.on('customer_left', (data) => {
   store.dispatch(getnewsessionsfromsocket(data, store.getState().dashboard.newsessions));
 });
 
-socket.on('returnCustomerSessionsList', (data) => {
-  store.dispatch(getresolvedsessionsfromsocket(data, store.getState().dashboard.resolvedsessions));
+socket.on('send:fbcustomer', (data) => {
+  socket.emit('logClient', {msg: 'new fb customer is received ', data: data});
+  if (store.getState().dashboard.fbsessions) {
+    store.dispatch(updateCustomerList(data, store.getState().dashboard.fbsessions, store.getState().dashboard.fbsessionSelected));
+  }
 });
+
+socket.on('getmysocketid', (socketid) => {
+  setsocketid(socketid);
+});
+
+socket.on('updateOnlineAgentList', (data) => {
+  store.dispatch(updateAgentList(data));
+});
+
+socket.on('returnUserChat', (data) => {
+  if (store.getState().dashboard.userchats) {
+    store.dispatch(getchatsfromsocket(store.getState().dashboard.userchats, data));
+  }
+  else {
+    store.dispatch(getchatsfromsocket([], data))
+  }
+  store.dispatch(previousChat(data, store.getState().dashboard.chatlist));
+});
+
+let disconnected = false;
 
 socket.on('connect', () => {
   console.log('connected to socket server called from socket.js');
   store.dispatch(setSocketStatus(true));
+  if(disconnected === true){
+    location.reload();
+  }
 });
 
 socket.on('disconnect', () => {
   console.log('disconnected from socket server called from socket.js');
   store.dispatch(setSocketStatus(false));
+  disconnected = true;
 });
 
 socket.on('verified', () => {
@@ -86,4 +121,24 @@ export function joinMeetingForAgent() {
   });
 }
 
+export function sendNotification(message) {
+  socket.emit('send:notification', message);
+}
 
+export function initiateChatComponent() {
+  socket.emit('getOnlineAgentList');
+  socket.emit('returnMySocketId');
+  // socket.emit('getCustomerSessionsList');
+}
+
+export function updateSessionStatusFb(data) {
+  socket.emit('updatesessionstatusFB', data);
+}
+
+export function broadCastFb(data) {
+  socket.emit('broadcast_fbmessage', data);
+}
+
+export function returnSocket() {
+  return socket;
+}

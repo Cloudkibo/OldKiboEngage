@@ -23,7 +23,9 @@ import {
   setsocketid,
   filterChat,
   selectCustomerChat
-}  from '../../redux/actions/actions'
+}  from '../../redux/actions/actions';
+
+import {initiateChatComponent} from '../../socket';
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import CustomerChatView from './CustomerChatView';
@@ -36,7 +38,7 @@ import {printlogs} from '../../services/clientlogging';
 
 import io from 'socket.io-client';
 
-import { } from '../../socket';
+import {} from '../../socket';
 
 var callMobileChatSessions;
 var callOnce;
@@ -59,7 +61,7 @@ class Chat extends Component {
     const usertoken = auth.getToken();
     if (usertoken != null) {
 
-      printlogs('log',usertoken);
+      printlogs('log', usertoken);
       //for webclients no need to fetch sessions and customer list from server
 
       //but for mobile clients we will fetch list of sessions and customers from server
@@ -76,13 +78,8 @@ class Chat extends Component {
     }
 
     super(props, context);
-    this.create_agentsession = this.create_agentsession.bind(this);
-    this.getupdatedSessions = this.getupdatedSessions.bind(this);
-    this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
-    this.getupdatedChats = this.getupdatedChats.bind(this);
     this.getSessionInfo = this.getSessionInfo.bind(this);
     this.getSocketmessage = this.getSocketmessage.bind(this);
-    this.syncdata = this.syncdata.bind(this);
     this.state = {
       subgroup: 'all'
     };
@@ -90,22 +87,9 @@ class Chat extends Component {
 
   }
 
-  updateOnlineAgents(data) {
-    printlogs('log','updating updateOnlineAgents');
-    this.props.updateAgentList(data);
-    this.forceUpdate();
-  }
-
-  create_agentsession(socketid) { // complete actions
-    printlogs('log','your socket id is : ' + socketid);
-    this.props.setsocketid(socketid);
-    //this.refs.agentsocketfield.value = socketid;
-    //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
-  }
-
   getSocketmessage(message) {
-    printlogs('log','socket called for message');
-    printlogs('log',message);
+    printlogs('log', 'socket called for message');
+    printlogs('log', message);
     if (this.props.customerchat_selected) {
       if ((this.props.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
         const usertoken = auth.getToken();
@@ -126,7 +110,7 @@ class Chat extends Component {
 
       else if ((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no') {
         // alert(' i m called2')
-        printlogs('log',"Chat Not Selected");
+        printlogs('log', "Chat Not Selected");
         this.props.userchats.push(message);
 
         this.props.updateChatList(message, this.props.new_message_arrived_rid);
@@ -135,7 +119,7 @@ class Chat extends Component {
       }
       else if ((this.props.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no') {
         // alert(' i m called2')
-        printlogs('log',"Chat Selected");
+        printlogs('log', "Chat Selected");
         this.props.userchats.push(message);
 
         //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
@@ -180,21 +164,19 @@ class Chat extends Component {
   getSessionInfo(message) {
 
     // state being updated
-    //update the status of session
+    // update the status of session
     for (var i = 0; i < this.props.customerchat.length; i++) {
       if (this.props.customerchat[i].request_id == message[0].request_id) {
         this.props.customerchat[i].status = "assigned";
-        this.props.customerchat[i].agent_ids.push({'id': this.props.userdetails._id, 'type': 'agent'});
+        this.props.customerchat[i].agent_ids.push({'id': this.props.userdetails._id, type: 'agent'});
         break;
       }
     }
 
     if (this.props.customerchat_selected.request_id == message[0].request_id) {
       this.props.customerchat_selected.status = "assigned";
-      this.props.customerchat_selected.agent_ids.push({'id': this.props.userdetails._id, 'type': 'agent'});
-
+      this.props.customerchat_selected.agent_ids.push({'id': this.props.userdetails._id, type: 'agent'});
     }
-
 
     this.props.previousChat(message, this.props.chatlist);
     this.forceUpdate();
@@ -221,59 +203,12 @@ class Chat extends Component {
     callMobileChatSessions = false
     callSocketChat = false;
 
-    //alert('componentDidMount is called');
-    const usertoken = auth.getToken();
-    // todo discuss with zarmeen
-    this.props.route.socket.emit('getOnlineAgentList');
-    this.props.route.socket.emit('returnMySocketId');
-    // this.props.route.socket.emit('getCustomerSessionsList');
+    initiateChatComponent();
+
+    // todo discuss with zarmeen as following are very complex and may not follow redux rules
 
     this.props.route.socket.on('send:message', this.getSocketmessage); // half UI and half actions
     this.props.route.socket.on('informAgent', this.getSessionInfo); // can be separated
-    this.props.route.socket.on('getmysocketid', this.create_agentsession); // 227
-    this.props.route.socket.on('customer_joined', this.getupdatedSessions);
-    this.props.route.socket.on('updateOnlineAgentList', this.updateOnlineAgents); // 226
-    this.props.route.socket.on('returnCustomerSessionsList', this.getupdatedSessions);
-    this.props.route.socket.on('returnUserChat', this.getupdatedChats);
-  }
-
-
-  getupdatedSessions(data) { // actions
-    const usertoken = auth.getToken();
-    // not asking from server to give updated sessions
-    // alert('updating session list');
-    //this.props.getcustomers(usertoken);
-    //this.props.getsessions(usertoken);
-    //this.props.getuserchats(usertoken);
-
-
-    this.props.getsessionsfromsocket(data, this.props.customerchat_selected);
-    this.forceUpdate();
-  }
-
-  getupdatedChats(data) { //actions
-    //const usertoken = auth.getToken();
-    // not asking from server to give updated sessions
-
-    //this.props.getcustomers(usertoken);
-    //this.props.getsessions(usertoken);
-    //this.props.getuserchats(usertoken);
-    // alert('getupdatedChats is called' + data.length);
-    if (this.props.userchats) {
-      this.props.getchatsfromsocket(this.props.userchats, data);
-    }
-    else {
-      this.props.getchatsfromsocket([], data);
-    }
-
-    //this.props.mobileuserchat.push(message);
-    /*  alert(this.props.userchats.length);
-     this.props.userchats.push(data);*/
-    //this.props.getchatsfromsocket(this.props.userchats,'uniqueid');
-    // alert(this.props.userchats.length);
-    this.props.previousChat(data, this.props.chatlist);
-
-    this.forceUpdate();
   }
 
 
@@ -316,7 +251,7 @@ class Chat extends Component {
    }
    */
   handleSession(id, platform, e) {
-    printlogs('log',id);
+    printlogs('log', id);
     e.preventDefault();
     const usertoken = auth.getToken();
 
@@ -341,7 +276,7 @@ class Chat extends Component {
 
   render() {
     const token = auth.getToken()
-    printlogs('log',token)
+    printlogs('log', token)
 
     return (
       <div className="vbox viewport">

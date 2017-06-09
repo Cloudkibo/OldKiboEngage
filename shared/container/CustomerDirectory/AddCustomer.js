@@ -457,7 +457,7 @@ class AddCustomer extends Component {
     // socket.on('joined',this.create_session)
     var usertoken = auth.getToken();
     this.props.getcountryname(usertoken);
-    // todo discuss with zarmeen
+
     this.props.route.socket.on('empty', this.noagent);
 
     this.props.route.socket.on('joined', this.create_session)
