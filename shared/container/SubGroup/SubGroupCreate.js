@@ -64,7 +64,7 @@ class SubgroupCreate extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">SubGroups Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -81,12 +81,11 @@ class SubgroupCreate extends Component {
                       }
 
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
+            <div className="uk-card uk-card-body uk-card-default uk-width-1-2@m">
+              <div className="uk-card-title">
+                
                    Create Subgroup
-                </div>
+                
               </div>
 
            <div className="portlet-body form">
@@ -111,7 +110,7 @@ class SubgroupCreate extends Component {
                   <label className="control-label col-md-3"> Select Group </label>
                   <div className="col-md-9">
                   {
-                        <select  ref = "groupid" onChange={this.handleChange.bind(this)}   >
+                        <select className="uk-select"  ref = "groupid" onChange={this.handleChange.bind(this)}   >
                           {
                            this.props.groupdetails &&
 
@@ -126,10 +125,10 @@ class SubgroupCreate extends Component {
                       </div>
                 </div>
 
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
+                <div className="col-md-6">
+                  <div className="col-md-offset-6 col-md-6">
                     <button className="btn green" onClick={this.createSubgroup}>
                       <i className="fa fa-pencil"/>
                        Submit
@@ -137,8 +136,8 @@ class SubgroupCreate extends Component {
 
                     </div>
                </div>
-                <div className="col-md-9">
-                  <div className="col-md-9">
+                <div className="col-md-6">
+                  <div className="col-md-6">
                     <Link to="/subgroups" className="btn green">
                       <i className="fa fa-times"/>
                        Back
