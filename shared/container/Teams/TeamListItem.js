@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import ReactTooltip from 'react-tooltip';
 
 var handleDate = function(d){
 var c = new Date(d);
@@ -26,17 +27,20 @@ for(var i=0;i<props.teamagents.length;i++){
        <td>{props.team.status}</td>
 
       <td>
+      <ReactTooltip />
       {
         props.userdetails._id == props.team.createdby._id?
         <span>
-        <Link to={`/team/${props.team.get_id}`} className="btn blue-madison" >
-         View
+        <Link data-tip="View Team"  to={`/team/${props.team._id}`} style={{padding: 5}}>
+         <img src="/img/view.svg" style={{maxWidth: 25, maxHeight: 25}} />
         </Link>
+       
+        <Link data-tip="Edit Team" to={`/editteam/${props.team._id}`} style={{padding: 5}} >
+        <img src="/img/edit.svg" style={{maxWidth: 25, maxHeight: 25}} />
 
-        <Link to={`/editteam/${props.team._id}`} className="btn blue-madison" >
-         Edit
         </Link>
-        <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+        
+        <img data-tip="Delete Team" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={props.onDelete} />
         </span> :
          <span>
          {

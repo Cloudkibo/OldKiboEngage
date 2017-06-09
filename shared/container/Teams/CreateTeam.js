@@ -50,7 +50,7 @@ class CreateTeam extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">Teams Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -72,12 +72,10 @@ class CreateTeam extends Component {
                 }
 
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
+            <div className="uk-card uk-card-default uk-card-body uk-width-1-2@m">
+              <div className="uk-card-title">
+     
                    Create Team
-                </div>
               </div>
 
            <div className="portlet-body form">
@@ -101,7 +99,7 @@ class CreateTeam extends Component {
                  <div className="form-group">
                   <label className="control-label col-md-3"> Status </label>
                   <div className="col-md-9">
-                        <select  ref = "statuslist" >
+                        <select className="uk-select"  ref = "statuslist" >
                           <option value="public"> public  </option>
                           <option value="private"> private </option>
                         </select>
@@ -111,10 +109,10 @@ class CreateTeam extends Component {
                   </div>
                 </div>
 
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
+                <div className="col-md-6">
+                  <div className="col-md-offset-6 col-md-6">
                     <button className="btn green" onClick={this.createTeam}>
                       <i className="fa fa-pencil"/>
                        Submit
@@ -122,8 +120,8 @@ class CreateTeam extends Component {
 
                     </div>
                </div>
-                <div className="col-md-9">
-                  <div className="col-md-9">
+                <div className="col-md-6">
+                  <div>
                     <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back

@@ -46,7 +46,7 @@ class TeamDetailView extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Team Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -58,13 +58,9 @@ class TeamDetailView extends Component {
   
             </ul>
              {this.props.team &&
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
-                    {this.props.team.groupname} - Team
-                </div> 
-              </div>    
+            <div  className="uk-card uk-center uk-card-default uk-card-body uk-width-1-2@m">
+               <h3 className="uk-card-title">{this.props.team.groupname} - Team</h3>
+             
         
            <div className="portlet-body form">
             <form className="form-horizontal form-row-seperated">
@@ -118,7 +114,7 @@ class TeamDetailView extends Component {
                    </div>
                 </div>
 
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
                 <div className="col-md-3">
                   <div className="col-md-offset-9 col-md-9">
                     <Link to="/teams" className="btn green">
