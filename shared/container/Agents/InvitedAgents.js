@@ -8,7 +8,8 @@ import auth from '../../services/auth';
 import InviteAgentListItem from './InviteAgentListItem';
 import {getinvitedagents} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class InvitedAgents extends Component {
 
@@ -19,23 +20,54 @@ class InvitedAgents extends Component {
    }
 
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
       //  props.getsessions(usertoken);
         props.getinvitedagents(usertoken);
 
       }
     super(props, context);
+    this.state = {
+      agentsData: [],
+      totalLength: 0,
+    };
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
+  }
 
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({totalLength: this.props.invitedagents.length});
+  }
 
+  displayData(n){
+    let offset = n*6;
+    //console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.props.invitedagents.length){
+      limit = this.props.invitedagents.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.props.invitedagents[i];
+    }
+    this.setState({agentsData: sessionData});
+  }
+
+  handlePageClick(data){
+    //console.log(data.selected);
+    this.displayData(data.selected);
   }
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
      return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -43,18 +75,7 @@ class InvitedAgents extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Invited Support Agents </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/agents">Agents</Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -80,7 +101,7 @@ class InvitedAgents extends Component {
                     <tbody>
                       {
                         this.props.invitedagents &&
-                           this.props.invitedagents.map((invitee, i) => (
+                           this.state.agentsData.map((invitee, i) => (
 
                           <InviteAgentListItem invitee={invitee} key={invitee._id} />
                         ))
@@ -89,7 +110,19 @@ class InvitedAgents extends Component {
 
 
                      </tbody>
-                    </table></div> :
+                    </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
+                    </div> :
                     <p>Currently, there is no invited agent to show.</p>
                 }
 
@@ -109,7 +142,7 @@ InvitedAgents.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),

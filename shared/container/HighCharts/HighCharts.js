@@ -77,7 +77,7 @@ var getAverageCallTime =  function(allCallsList){
         var averageWaitMin = ((sum/count)/(1000*60)%60).toFixed(0);
         var averageWaitSec = ((sum/count)/(1000)%60).toFixed(0);
         var averageCallTime;
-        //console.log(averageCallMin)
+        ////console.log(averageCallMin)
         if(averageCallMin == 'NaN')
           averageCallTime = 'No Calls (last 8 hrs)';
         else
@@ -93,18 +93,18 @@ var getAverageWaitTime =  function(allCallsList){
         var sumForCall = 0;
 
         var data = allCallsList;
-        //console.log(allCallsList)
+        ////console.log(allCallsList)
         for(var index in data){
-          //console.log((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2))
+          ////console.log((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2))
           if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) < 8){
 
-            //console.log(data[index].picktime)
+            ////console.log(data[index].picktime)
             if(data[index].picktime != undefined){
               count += 1;
               sum += (new Date(data[index].picktime)).getTime() - (new Date(data[index].requesttime)).getTime();
 
             }
-           //console.log(data[index].endtime)
+           ////console.log(data[index].endtime)
             if(data[index].endtime != undefined){
               countForCall += 1;
               sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
@@ -115,18 +115,18 @@ var getAverageWaitTime =  function(allCallsList){
 
 
         var averageCallHour = ((sumForCall/countForCall)/(1000*60*60)%60).toFixed(0);
-        //console.log(averageCallHour)
+        ////console.log(averageCallHour)
         var averageCallMin = ((sumForCall/countForCall)/(1000*60)%60).toFixed(0);
-        //console.log(averageCallMin)
+        ////console.log(averageCallMin)
         var averageCallSec = ((sumForCall/countForCall)/(1000)%60).toFixed(0);
-        //console.log(averageCallSec)
+        ////console.log(averageCallSec)
         var averageWaitHour = ((sum/count)/(1000*60*60)%60).toFixed(0);
-        //console.log(averageWaitHour)
+        ////console.log(averageWaitHour)
         var averageWaitMin = ((sum/count)/(1000*60)%60).toFixed(0);
-        //console.log(averageWaitMin)
+        ////console.log(averageWaitMin)
         var averageWaitSec = ((sum/count)/(1000)%60).toFixed(0);
         var averageWaitTime;
-        //console.log(averageWaitMin)
+        ////console.log(averageWaitMin)
         if(averageWaitMin == 'NaN')
           averageWaitTime = 'No Visitors (last 8 hrs)';
         else
@@ -141,9 +141,9 @@ var getAverageWaitMin = function(allCallsList,days){
         var countForCall = 0;
         var sumForCall = 0;
 
-        //console.log(allCallsList);
+        ////console.log(allCallsList);
         var data = allCallsList;
-        //console.log(data)
+        ////console.log(data)
         for(var index in data){
           if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) < days*24){
 
@@ -158,7 +158,7 @@ var getAverageWaitMin = function(allCallsList,days){
               sumForCall += (new Date(data[index].endtime)).getTime() - (new Date(data[index].picktime)).getTime();
 
             }
-          //console.log('Wait ' + count +' '+ sum + ' '+ sumForCall +' '+ countForCall)
+          ////console.log('Wait ' + count +' '+ sum + ' '+ sumForCall +' '+ countForCall)
           }
         }
 
@@ -181,7 +181,7 @@ var getAverageCallMin =  function(allCallsList,days){
         var data = allCallsList;
 
         for(var index in data){
-          //console.log((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2))
+          ////console.log((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2))
 
           if((((new Date()).getTime() - (new Date(data[index].requesttime)).getTime())/(1000*60*60)%60).toFixed(2) <= days*24){
             if(data[index].picktime != undefined){
@@ -219,13 +219,13 @@ class HighCharts extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
 
     super(props, context);
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getplatformwisestats(usertoken);
         props.getdeptwisestats(usertoken);
         props.getpagewisestats(usertoken);
@@ -1334,10 +1334,10 @@ refreshData4(e){
 
   render() {
 
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
-   // console.log(this.props.subgroups);
+    //console.log(token)
+   // //console.log(this.props.subgroups);
      return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -1616,7 +1616,7 @@ HighCharts.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           subgroupwisestats : state.dashboard.subgroupwisestats,
           deptwisestats : state.dashboard.deptwisestats,

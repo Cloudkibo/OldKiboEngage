@@ -9,7 +9,7 @@ import NotificationListItem from './NotificationListItem';
 import {getnotifications} from '../../redux/actions/actions'
 import {deletenotification} from '../../redux/actions/actions'
 import {getcustomers} from '../../redux/actions/actions'
-
+import ReactPaginate from 'react-paginate';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
@@ -22,28 +22,56 @@ class Notifications extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getnotifications(usertoken);
         props.getcustomers(usertoken);
       }
     super(props, context);
+    this.state = {
+      notificationsData: [],
+      totalLength: 0,
+    };
 
-
-
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
   }
 
+  displayData(n){
+    let offset = n*6;
+    //console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.props.notifications.length){
+      limit = this.props.notifications.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.props.notifications[i];
+    }
+    this.setState({notificationsData: sessionData});
+  }
 
+  handlePageClick(data){
+    //console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({totalLength: this.props.notifications.length});
+  }
 
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
-    console.log(this.props.notifications);
+    //console.log(token)
+    //console.log(this.props.notifications);
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -52,18 +80,7 @@ class Notifications extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Notifications Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/notifications">Notifications Management</Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -102,7 +119,7 @@ class Notifications extends Component {
                     <tbody>
                       {
                         this.props.agents && this.props.notifications &&
-                        this.props.notifications.map((notification, i) => (
+                        this.state.notificationsData.map((notification, i) => (
 
                           <NotificationListItem notification={notification}  agent = {this.props.agents.filter((agent) => agent._id == notification.agent_id)}  onDelete={() => this.props.deletenotification(notification,token)}/>
 
@@ -110,6 +127,17 @@ class Notifications extends Component {
                       }
                      </tbody>
                     </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p> Currently, there is no notification to show. </p>
                 }
@@ -130,7 +158,7 @@ Notifications.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),

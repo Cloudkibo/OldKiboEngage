@@ -10,6 +10,7 @@ import { Link } from 'react-router';
 
 
 
+
 class AgentEditView extends Component {
   constructor(props, context) {
        //call action to get user teams 
@@ -21,12 +22,12 @@ class AgentEditView extends Component {
 
   componentWillMount(){
      const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(this.props.params.id);
+        //console.log(usertoken);
+        //console.log(this.props.params.id);
         this.props.getAgentRequest(this.props.params.id,usertoken);
       }
 
@@ -89,14 +90,13 @@ class AgentEditView extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Agents Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
-                               <Link to="/agents"> Agents Management</Link>
+                    <Link to="/agents"> Agents Management</Link>
                   </li>               
   
             </ul>
@@ -106,21 +106,16 @@ class AgentEditView extends Component {
                       }
          
              {this.props.agent &&
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
-                   Update Agent Role 
-                </div> 
-              </div>    
+            <div className="uk-card uk-card-default uk-card-body">
+            <h3 className="uk-card-title">Edit Agent Role</h3>
         
-           <div className="portlet-body form">
+           <div className="portlet-body">
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
                 <div className="form-group">
                   <label className="control-label col-md-3"> Name </label>
                    <div className="col-md-9">
-                         <input className="form-control" type='text' value={ag[0].firstname + ' '+ ag[0].lastname} ref = "name"/>
+                         <input className="form-control" style={{maxWidth: 240}} type='text' value={ag[0].firstname + ' '+ ag[0].lastname} ref = "name"/>
                          <input className="form-control" type='hidden'   value = {ag[0]._id} ref = "id"/>
             
 
@@ -136,7 +131,7 @@ class AgentEditView extends Component {
                  <div className="form-group">
                   <label className="control-label col-md-3"> Change Role </label>
                   <div className="col-md-9">   
-                        <select  ref = "roles" onChange={this.handleChange.bind(this)}   >
+                        <select  className="uk-select" style={{maxWidth: 240}} ref = "roles" onChange={this.handleChange.bind(this)}   >
                           <option value="Agent">Agent</option>
                           <option value="Admin">Admin</option>
                           <option value="Supervisor">Supervisor</option>
@@ -145,20 +140,20 @@ class AgentEditView extends Component {
                       </div>
                 </div>
             
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" onClick={this.editAgent}>
-                      <i className="fa fa-pencil"/>
+                    <button className="uk-button uk-button-primary uk-button-small" onClick={this.editAgent}>
+                      <i className="fa fa-pencil"/> {"   "}
                        Submit
                     </button>
 
                     </div>
                </div> 
-                <div className="col-md-9">
-                  <div className="col-md-9">
-                    <Link to="/agents" className="btn green">
+                <div className="col-md-8">
+                  <div className="col-md-3">
+                    <Link to="/agents" className="uk-button uk-button-default uk-button-small">
                       <i className="fa fa-times"/>
                        Back
                     </Link>
@@ -190,8 +185,8 @@ AgentEditView.propTypes = {
   
 };
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.agent);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.agent);
   
    return {
     

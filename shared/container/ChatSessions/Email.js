@@ -13,13 +13,13 @@ class Email extends Component {
   constructor(props, context) {
        //call action to get user teams 
    /* const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
    
     if(usertoken != null)
      {
        
         
-        console.log(props.params.id);
+        //console.log(props.params.id);
         props.getCustomerRequest(props.params.id);
       }*/
        super(props, context);
@@ -134,7 +134,7 @@ class Email extends Component {
 
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   
    return {
     channels:(state.dashboard.channels),

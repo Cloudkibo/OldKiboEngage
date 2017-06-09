@@ -16,6 +16,7 @@ import {
 } from '../../redux/actions/actions'
 import {bindActionCreators} from 'redux';
 import {browserHistory} from 'react-router'
+import ReactPaginate from 'react-paginate';
 
 class NewSessions extends Component {
 
@@ -31,10 +32,10 @@ class NewSessions extends Component {
     props.getcustomersubgroups(appid, appsecret, companyid);
 
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if (usertoken != null) {
 
-      console.log(usertoken);
+      //console.log(usertoken);
       //  props.getsessions(usertoken);
       props.getnewsessions(usertoken);
       if (!props.customers) {
@@ -43,12 +44,16 @@ class NewSessions extends Component {
     }
     super(props, context);
     this.state = {
-      subgroup: 'all'
+      subgroup: 'all',
+      newSessionsData: [],
+      totalLength: 0,
+      newsessionsfiltered: props.newsessions,
     };
     this.getupdatedSessions = this.getupdatedSessions.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
+    this.filterAbandonedSession = this.filterAbandonedSession.bind(this);
   }
 
   getupdatedSessions(data) {
@@ -62,20 +67,87 @@ class NewSessions extends Component {
   handleChange() {
     //alert(e.target.value);
     this.setState({subgroup: this.refs.teamlist.value});
-    this.props.filterAbandonedSession(this.refs.teamlist.value, this.refs.channellist.value, this.props.newsessions);
+    this.filterAbandonedSession(this.refs.teamlist.value, this.refs.channellist.value, this.props.newsessions);
     if (this.state.subgroup.value !== 'all') {
       this.props.updatesubgrouplist(this.refs.teamlist.value);
     }
     this.forceUpdate();
   }
 
+  filterAbandonedSession(groupID, subgroupID, newsessions) {
+    if (groupID !== 'all' && subgroupID !== 'all') {
+      this.setState({
+        newsessionsfiltered: newsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.newsessionsfiltered.length });
+      }
+    );
+    }
+    else if (groupID !== 'all' && subgroupID == 'all') {
+      this.setState({
+        newsessionsfiltered: newsessions.filter((c) => c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.newsessionsfiltered.length });
+      }
+    );
+    }
+    else if (groupID == 'all' && subgroupID !== 'all') {
+      this.state({
+        newsessionsfiltered: newsessions.filter((c) => c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.newsessionsfiltered.length });
+      }
+    );
+    }
+    else if (groupID == 'all' && subgroupID == 'all') {
+      this.setState({
+        newsessionsfiltered: newsessions,
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.newsessionsfiltered.length });
+      }
+    );
+    }
+  }
+
+  displayData(n){
+    let offset = n*6;
+    //console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.state.newsessionsfiltered.length){
+      limit = this.state.newsessionsfiltered.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<offset+6; i++){
+      sessionData[i] = this.state.newsessionsfiltered[i];
+    }
+    this.setState({newSessionsData: sessionData});
+  }
+
+  handlePageClick(data){
+    //console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
   componentDidMount() {
     this.props.route.socket.on('customer_left', this.getupdatedSessions);
+    this.displayData(0);
+    this.setState({ totalLength: this.state.newsessionsfiltered.length });
   }
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
     return (
       <div className="vbox viewport">
         <AuthorizedHeader name={this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -83,18 +155,6 @@ class NewSessions extends Component {
           <SideBar isAdmin={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className="page-title">Abandoned Chat Sessions </h3>
-              <ul className="page-breadcrumb breadcrumb">
-                <li>
-                  <i className="fa fa-home"/>
-                  <Link to="/dashboard"> Dashboard </Link>
-                  <i className="fa fa-angle-right"/>
-                </li>
-                <li>
-                  <Link to="/abandonedchatsessions">Abandoned Chat Sessions </Link>
-                </li>
-
-              </ul>
               <div className="portlet box grey-cascade">
                 <div className="portlet-title">
                   <div className="caption">
@@ -150,7 +210,7 @@ class NewSessions extends Component {
                     </table>
                   </div>
 
-                  { this.props.newsessionsfiltered && this.props.newsessionsfiltered.length > 0 ?
+                  { this.state.newsessionsfiltered && this.state.newsessionsfiltered.length > 0 ?
                     <div className="table-responsive">
                       <table id="sample_3" className="table table-striped table-bordered table-hover dataTable">
                         <thead>
@@ -184,8 +244,8 @@ class NewSessions extends Component {
 
 
                         {
-                          this.props.newsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails &&
-                          this.props.newsessionsfiltered.map((session, i) => (
+                          this.state.newsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails &&
+                          this.state.newSessionsData.map((session, i) => (
 
                             <NewSessionListItem session={session} key={session.request_id}
                                                 subgroups={this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length - 1])}
@@ -196,6 +256,17 @@ class NewSessions extends Component {
                         }
                         </tbody>
                       </table>
+                      <ReactPaginate previousLabel={"previous"}
+                                     nextLabel={"next"}
+                                     breakLabel={<a href="">...</a>}
+                                     breakClassName={"break-me"}
+                                     pageCount={Math.ceil(this.state.totalLength/6)}
+                                     marginPagesDisplayed={1}
+                                     pageRangeDisplayed={6}
+                                     onPageChange={this.handlePageClick}
+                                     containerClassName={"pagination"}
+                                     subContainerClassName={"pages pagination"}
+                                     activeClassName={"active"} />
                     </div> :
                     <p>Currently, there is not any abandoned chat sessions to show.</p>
                   }
@@ -217,7 +288,7 @@ NewSessions.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
     subgroups: (state.dashboard.subgroups),
     userdetails: (state.dashboard.userdetails),

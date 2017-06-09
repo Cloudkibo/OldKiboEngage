@@ -40,8 +40,9 @@ class AuthorizedHeader extends Component
       <div  className = "page-header navbar" style={{background:'#30AABC'}} >
         <div className="page-header-inner">
           <div className = "page-logo" >
+              
               <a href = '/' >
-                <h4 style={{color: 'white'}}> KiboEngage </h4>
+                <h4 style={{color: 'white'}}> <img src="http://vimirlab.com/skin/frontend/vimirlab/default/img/preloader.gif" alt="logo_animation" style={{maxWidth: 20, maxHeight:20}}/> KiboEngage </h4>
               </a>
 
           </div >

@@ -3,6 +3,7 @@ import Config from '../../../server/config';
 import fetch from 'isomorphic-fetch';
 import cookie from 'react-cookie';
 import {browserHistory} from 'react-router';
+import {printlogs} from '../../services/clientlogging';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${Config.port}`) : '';
 
@@ -27,7 +28,7 @@ function receiveLogin(user) {
 }
 
 function loginError(message) {
-  console.log(message);
+  printlogs('log',message);
   return {
     type: ActionTypes.LOGIN_FAILURE,
     isFetching: false,
@@ -62,7 +63,7 @@ function receiveLogout() {
 // Calls the API to get a token and
 // dispatches actions along the way
 export function loginUser(creds) {
-  console.log(creds);
+  printlogs('log',creds);
   let config = {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
@@ -91,7 +92,7 @@ export function loginUser(creds) {
         else {
           // If login was successful, set the token in local storage
           cookie.save('token', user.token.token, {path: '/'});
-          console.log(cookie.load('token'));
+          printlogs('log',cookie.load('token'));
           browserHistory.push('/dashboard')
 
           // Dispatch the success action
@@ -115,7 +116,7 @@ export function showForgotPassword(msg) {
 
 
 export function forgotpassword(creds) {
-  console.log(creds);
+  printlogs('log',creds);
   return (dispatch) => {
     fetch(`${baseURL}/api/forgotpassword`, {
       method: 'post',
@@ -135,7 +136,7 @@ export function forgotpassword(creds) {
 
 
 export function resetpassword(creds) {
-  console.log(creds);
+  printlogs('log',creds);
   return (dispatch) => {
     fetch(`${baseURL}/api/changepassword`, {
       method: 'post',
@@ -164,7 +165,7 @@ export function resetpassword(creds) {
 export function showTokenResponse(status) {
   var s = '';
   if (status == 200) {
-    console.log('status is ' + status);
+    printlogs('log','status is ' + status);
     s = 'Successfully verified.';
 
   }
@@ -208,7 +209,7 @@ export function logoutUser() {
 /*************** signup actions ***********/
 
 export function showSignupResponse(res) {
-  console.log(res);
+  printlogs('log',res);
   return {
     type: ActionTypes.ADD_WARNINGS,
     signup: res,
@@ -217,7 +218,7 @@ export function showSignupResponse(res) {
 }
 
 export function showUsername(user) {
-  console.log(user);
+  printlogs('log',user);
   return {
     type: ActionTypes.ADD_USER_DETAILS,
     user,
@@ -227,7 +228,7 @@ export function showUsername(user) {
 
 
 export function showSpecificChat(chat) {
-  console.log(chat);
+  printlogs('log',chat);
   return {
     type: ActionTypes.SHOW_SPECIFIC_CHAT,
     chat,
@@ -249,7 +250,7 @@ export function fetchSpecificChat(data) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         if (res.statusCode != 200) {
           dispatch(showSpecificChat_Error(res.message));
         }
@@ -262,7 +263,7 @@ export function fetchSpecificChat(data) {
 }
 
 export function showSpecificChat_Error(chat_error) {
-  console.log(chat_error);
+  printlogs('log',chat_error);
   return {
     type: ActionTypes.SHOW_SPECIFIC_CHAT_ERROR,
     chat_error,
@@ -272,7 +273,7 @@ export function showSpecificChat_Error(chat_error) {
 
 
 export function signupuser(user) {
-  console.log(user);
+  printlogs('log',user);
   return (dispatch) => {
     fetch(`${baseURL}/api/signupUser`, {
       method: 'post',
@@ -299,7 +300,7 @@ export function signupuser(user) {
         else {
           // If signup was successful, set the token in local storage
           cookie.save('token', res.token, {path: '/'});
-          console.log(cookie.load('token'));
+          printlogs('log',cookie.load('token'));
           browserHistory.push('/dashboard');
           window.location.reload();
         }
@@ -313,7 +314,7 @@ export function signupuser(user) {
 
 /****** get user details ***/
 export function getuser(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getuser`, {
       method: 'get',
@@ -341,7 +342,7 @@ export function getuser(token) {
 
 /****** get user details ***/
 export function getusergroups(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getgroups`, {
       method: 'get',
@@ -376,7 +377,7 @@ export function getcustomergroups(appid, appsecret, companyid) {
 }
 
 export function getspecificsession(requestid) {
-  console.log('requestid is ' + requestid);
+  printlogs('log','requestid is ' + requestid);
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomersession/`, {
       method: 'post',
@@ -411,7 +412,7 @@ export function getspecificcustomer(customerid) {
   };
 }
 export function creategroupError(message) {
-  console.log(message);
+  printlogs('log',message);
   return {
     type: ActionTypes.CREATEGROUP_FAILURE,
     message,
@@ -419,7 +420,7 @@ export function creategroupError(message) {
 }
 
 export function editgroupError(message) {
-  console.log(message);
+  printlogs('log',message);
   return {
     type: ActionTypes.EDITGROUP_RESPONSE,
     message,
@@ -427,7 +428,7 @@ export function editgroupError(message) {
 }
 
 export function showGroups(groups) {
-  console.log(groups);
+  printlogs('log',groups);
   return {
     type: ActionTypes.ADD_GROUPS,
     groups,
@@ -461,7 +462,7 @@ export function showCustomerDetails(specificcustomer) {
   };
 }
 export function addGroup(group) {
-  // console.log(group);
+  // printlogs('log',group);
   return {
     type: ActionTypes.ADD_GROUP,
     deptname: group.deptname,
@@ -490,7 +491,7 @@ export function creategroup(group, customers) {
       }),
 
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         if (res.statusCode != 200) {
           dispatch(creategroupError(res.message));
         }
@@ -505,9 +506,9 @@ export function creategroup(group, customers) {
 
 
 export function editGroup(group, customers) {
-//  console.log('editGroup action called');
-  // console.log(group.deptagents);
-//  console.log(group);
+//  printlogs('log','editGroup action called');
+  // printlogs('log',group.deptagents);
+//  printlogs('log',group);
   //alert(group)
   return (dispatch) => {
     fetch(`${baseURL}/api/editgroup`, {
@@ -528,7 +529,7 @@ export function editGroup(group, customers) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         alert(res.message);
         browserHistory.push('/groups');
         // dispatch(editgroupError(res.message));
@@ -541,7 +542,7 @@ export function editGroup(group, customers) {
 
 
 export function addSelectedGroup(group) {
-  //console.log(group)
+  //printlogs('log',group)
   return {
     type: ActionTypes.ADD_SELECTED_GROUP,
     group,
@@ -550,7 +551,7 @@ export function addSelectedGroup(group) {
 
 
 export function getGroupRequest(group, usertoken) {
-  console.log('getGroupRequest is called ' + group);
+  printlogs('log','getGroupRequest is called ' + group);
   return (dispatch) => {
     return fetch(`${baseURL}/api/getGroup?id=${group}`, {
       method: 'get',
@@ -627,14 +628,14 @@ export function getinvitedagents(usertoken) {
   };
 }
 export function getAgentRequest(id, usertoken) {
-  console.log(id)
+  printlogs('log',id)
   return {
     type: ActionTypes.ADD_SELECTED_AGENT,
     id,
   };
 }
 export function showAgents(agents) {
-  console.log(agents);
+  printlogs('log',agents);
   return {
     type: ActionTypes.ADD_AGENTS,
     agents,
@@ -643,7 +644,7 @@ export function showAgents(agents) {
 }
 
 export function showDeptAgents(agents) {
-  console.log(agents);
+  printlogs('log',agents);
   return {
     type: ActionTypes.ADD_DEPTAGENTS,
     agents,
@@ -653,7 +654,7 @@ export function showDeptAgents(agents) {
 
 
 export function showTeamAgents(agents) {
-  console.log(agents);
+  printlogs('log',agents);
   return {
     type: ActionTypes.ADD_TEAMAGENTS,
     agents,
@@ -661,7 +662,7 @@ export function showTeamAgents(agents) {
   };
 }
 export function editagentError(message) {
-  console.log(message);
+  printlogs('log',message);
   return {
     type: ActionTypes.EDITAGENT_RESPONSE,
     message,
@@ -679,7 +680,7 @@ export function inviteAgentResponse(res) {
 
 /****** get user details ***/
 export function getAgents(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getagents`, {
       method: 'get',
@@ -693,7 +694,7 @@ export function getAgents(token) {
 
 /****** get user details ***/
 export function getDeptAgents(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/deptagents`, {
       method: 'get',
@@ -710,7 +711,7 @@ export function getDeptAgents(token) {
 
 
 export function editAgent(id, role, token) {
-  console.log('editAgent action called');
+  printlogs('log','editAgent action called');
   alert(role)
   return (dispatch) => {
     fetch(`${baseURL}/api/editagent`, {
@@ -727,7 +728,7 @@ export function editAgent(id, role, token) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         if (res.message === 'success')
           dispatch(editagentError('User is successfully updated.'));
         else
@@ -740,7 +741,7 @@ export function editAgent(id, role, token) {
 }
 
 export function inviteagent(email, token) {
-  console.log('invite agent action called');
+  printlogs('log','invite agent action called');
   return (dispatch) => {
     fetch(`${baseURL}/api/inviteAgent`, {
       method: 'post',
@@ -754,7 +755,7 @@ export function inviteagent(email, token) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         dispatch(inviteAgentResponse(res));
 
 
@@ -772,7 +773,7 @@ export function joinCompanyResponse(inviteDetails) {
 
 
 export function getInviteEmail(token) {
-  console.log('getInviteEmail is called ' + token);
+  printlogs('log','getInviteEmail is called ' + token);
   return (dispatch) => {
     return fetch(`${baseURL}/api/invitetoken?id=${token}`, {
       method: 'get',
@@ -780,7 +781,7 @@ export function getInviteEmail(token) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-      console.log(res.statusCode);
+      printlogs('log',res.statusCode);
       if (res.statusCode == 200) {
 
         dispatch(joinCompanyResponse(res.body));
@@ -795,7 +796,7 @@ export function getInviteEmail(token) {
 }
 
 export function verifyEmail(token) {
-  console.log('verifyEmail is called ' + token);
+  printlogs('log','verifyEmail is called ' + token);
   return (dispatch) => {
     return fetch(`${baseURL}/api/verifytoken?id=${token}`, {
       method: 'get',
@@ -803,7 +804,7 @@ export function verifyEmail(token) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-      console.log(res.statusCode);
+      printlogs('log',res.statusCode);
       if (res.statusCode != 200) {
 
         browserHistory.push('/verificationfailure')
@@ -821,7 +822,7 @@ export function deleteAGENT(agent) {
   };
 }
 export function deleteagent(agent, usertoken) {
-  console.log('deleteagent Action is called ' + agent._id + 'your token : ' + usertoken);
+  printlogs('log','deleteagent Action is called ' + agent._id + 'your token : ' + usertoken);
   if (confirm("Do you want to delete this agent?")) {
     return (dispatch) => {
       return fetch(`${baseURL}/api/deleteAgent?id=${agent._id}`, {
@@ -843,7 +844,7 @@ export function deleteagent(agent, usertoken) {
 
 /************************* Team Related Actions (old groups) ************/
 export function addSelectedTeam(team) {
-  console.log(team);
+  printlogs('log',team);
   return {
     type: ActionTypes.ADD_SELECTED_TEAM,
     team,
@@ -870,7 +871,7 @@ export function editTeam(team) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         //   alert(res.message);
         browserHistory.push('/teams');
 
@@ -936,13 +937,13 @@ export function jointeam(team, userid, usertoken) {
           'Content-Type': 'application/json',
         }),
       }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         if (res.statusCode == 200) {
           alert("You have joined the team");
         } else {
           alert("Failed to join the team");
         }
-        console.log("Team Joining", res.message);
+        printlogs('log',"Team Joining", res.message);
         browserHistory.push('/dashboard');
 
         }
@@ -953,7 +954,7 @@ export function jointeam(team, userid, usertoken) {
 
 
 export function getTeamAgents(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/teamagents`, {
       method: 'get',
@@ -972,7 +973,7 @@ export function createteamError(message) {
   }
 }
 export function createTeam(team, usertoken) {
-//  console.log('createTeam is called');
+//  printlogs('log','createTeam is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/createteam`, {
       method: 'post',
@@ -992,7 +993,7 @@ export function createTeam(team, usertoken) {
 
     }).then((res) => res.json()).then((res) => res).then((res) => {
       // dispatch(createteamError(res))
-      console.log("Response", res);
+      printlogs('log',"Response", res);
       // alert("Response", res);
       browserHistory.push('/teams');
       }
@@ -1009,7 +1010,7 @@ export function showTeams(teams) {
 }
 
 export function getteams(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getteams`, {
       method: 'get',
@@ -1028,9 +1029,9 @@ export function getteams(token) {
 /*************************************************************************************************/
 
 export function createSubgroup(subgroup, usertoken, customers) {
-  console.log(subgroup);
-  console.log(usertoken);
-  console.log('create message subgroup is called');
+  printlogs('log',subgroup);
+  printlogs('log',usertoken);
+  printlogs('log','create message subgroup is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/createSubgroup`, {
       method: 'post',
@@ -1043,7 +1044,7 @@ export function createSubgroup(subgroup, usertoken, customers) {
         customers: customers,
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         browserHistory.push('/subgroups');
 
       }
@@ -1053,9 +1054,9 @@ export function createSubgroup(subgroup, usertoken, customers) {
 
 
 export function editSubgroup(subgroup, usertoken, customers) {
-  console.log(subgroup);
-  console.log(usertoken);
-  console.log('edit message subgroup is called');
+  printlogs('log',subgroup);
+  printlogs('log',usertoken);
+  printlogs('log','edit message subgroup is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/editSubgroup`, {
       method: 'post',
@@ -1087,7 +1088,7 @@ export function updatesubgrouplist(id) {
   };
 }
 export function showSubgroups(subgroups) {
-  console.log(subgroups);
+  printlogs('log',subgroups);
   return {
     type: ActionTypes.ADD_SUBGROUPS,
     subgroups,
@@ -1096,7 +1097,7 @@ export function showSubgroups(subgroups) {
 }
 
 export function showCustomerSubgroups(subgroups) {
-  console.log(subgroups);
+  printlogs('log',subgroups);
   return {
     type: ActionTypes.ADD_CUSTOMER_SUBGROUPS,
     subgroups,
@@ -1125,7 +1126,7 @@ export function getcustomersubgroups(appid, appsecret, companyid) {
   };
 }
 export function getsubgroups(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsubgroups`, {
       method: 'get',
@@ -1145,7 +1146,7 @@ export function getSessionDetailsRequest(id, usertoken) {
   };
 }
 export function getSubgroupRequest(id, usertoken) {
-  console.log(id)
+  printlogs('log',id)
   return {
     type: ActionTypes.ADD_SELECTED_SUBGROUP,
     id,
@@ -1160,7 +1161,7 @@ export function deleteSUBGROUP(subgroup) {
   };
 }
 export function deletesubgroup(subgroup, usertoken, customers) {
-  console.log('deletesubgroup Action is called ' + subgroup._id + 'your token : ' + usertoken);
+  printlogs('log','deletesubgroup Action is called ' + subgroup._id + 'your token : ' + usertoken);
   if (confirm("Do you want to delete this subgroup?")) {
     return (dispatch) => {
       return fetch(`${baseURL}/api/deleteSubgroup?id=${subgroup._id}`, {
@@ -1189,7 +1190,7 @@ export function deletesubgroup(subgroup, usertoken, customers) {
 /*********************************************************************************************/
 
 export function showResponse(response) {
-  console.log(response);
+  printlogs('log',response);
   return {
     type: ActionTypes.ADD_NEW_RESPONSE,
     response,
@@ -1199,8 +1200,8 @@ export function showResponse(response) {
 
 
 export function createResponse(cr) {
-  console.log(cr);
-  console.log('create canned response is called');
+  printlogs('log',cr);
+  printlogs('log','create canned response is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/createResponse`, {
       method: 'post',
@@ -1214,7 +1215,7 @@ export function createResponse(cr) {
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         if (res.statusCode != 200) {
           browserHistory.push('/cannedresponses');
         }
@@ -1228,9 +1229,9 @@ export function createResponse(cr) {
 
 
 export function editResponse(response, usertoken) {
-  console.log(response);
-  console.log(usertoken);
-  console.log('edit response is called');
+  printlogs('log',response);
+  printlogs('log',usertoken);
+  printlogs('log','edit response is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/editResponse`, {
       method: 'post',
@@ -1244,7 +1245,7 @@ export function editResponse(response, usertoken) {
 
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         browserHistory.push('/cannedresponses');
 
       }
@@ -1253,7 +1254,7 @@ export function editResponse(response, usertoken) {
 }
 
 export function showResponses(responses) {
-  console.log(responses);
+  printlogs('log',responses);
   return {
     type: ActionTypes.ADD_RESPONSES,
     responses,
@@ -1263,7 +1264,7 @@ export function showResponses(responses) {
 
 /*** get subgroups ***/
 export function getresponses(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getresponses`, {
       method: 'get',
@@ -1277,7 +1278,7 @@ export function getresponses(token) {
 
 
 export function getResponseRequest(id, usertoken) {
-  console.log(id)
+  printlogs('log',id)
   return {
     type: ActionTypes.ADD_SELECTED_RESPONSE,
     id,
@@ -1293,7 +1294,7 @@ export function deleteRESPONSE(response) {
   };
 }
 export function deleteresponse(response, usertoken) {
-  console.log('deleteresponse Action is called ' + response._id + 'your token : ' + usertoken);
+  printlogs('log','deleteresponse Action is called ' + response._id + 'your token : ' + usertoken);
   if (confirm("Do you want to delete this canned response?")) {
     return (dispatch) => {
       return fetch(`${baseURL}/api/deleteResponse?id=${response._id}`, {
@@ -1475,9 +1476,9 @@ export function filterbystatus(status, customerchat) {
 
   }
 
-  console.log(filtered);
+  printlogs('log',filtered);
 
-  console.log(customerchat);
+  printlogs('log',customerchat);
   return {
     type: ActionTypes.FILTER_BY_STATUS,
     filtered,
@@ -1496,9 +1497,9 @@ export function filterbyDept(id, customerchat) {
     filtered = customerchat.filter((c) => c.departmentid == id)
 
   }
-  console.log(filtered);
+  printlogs('log',filtered);
 
-  console.log(customerchat);
+  printlogs('log',customerchat);
   return {
     type: ActionTypes.FILTER_BY_DEPT,
     filtered,
@@ -1518,9 +1519,9 @@ export function filterbySubgroup(id, customerchat) {
     filtered = customerchat.filter((c) => c.messagechannel == id)
 
   }
-  console.log(filtered);
+  printlogs('log',filtered);
 
-  console.log(customerchat);
+  printlogs('log',customerchat);
   return {
     type: ActionTypes.FILTER_BY_SUBGROUP,
     filtered,
@@ -1531,7 +1532,7 @@ export function filterbySubgroup(id, customerchat) {
 
 export function filterbyAgent(id, customerchat) {
 
-  console.log("In Filter Agent");
+  printlogs('log',"In Filter Agent");
   var filtered;
   if (id == "all") {
     filtered = customerchat
@@ -1539,7 +1540,7 @@ export function filterbyAgent(id, customerchat) {
   else {
 
     filtered = customerchat.filter((c) => {
-      console.log(c.agent_ids);
+      printlogs('log',c.agent_ids);
       if (c.agent_ids.length != 0) {
         return c.agent_ids[c.agent_ids.length - 1].id == id;
       }
@@ -1547,9 +1548,9 @@ export function filterbyAgent(id, customerchat) {
     });
 
   }
-  console.log("Filtered", filtered);
+  printlogs('log',"Filtered", filtered);
 
-  console.log("unfiltered", customerchat);
+  printlogs('log',"unfiltered", customerchat);
   return {
     type: ActionTypes.FILTER_BY_AGENT,
     filtered,
@@ -1603,13 +1604,20 @@ export function selectFbCustomerChat(id, fbchat, profile_pic, selectedsession) {
 
 
 export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
-  console.log(id);
+  printlogs('log',id);
 
   fbchats.push(data);
-
+  for(var i=0;i<fbsessions.length;i++){
+   if(fbsessions[i].user_id.user_id == data.senderid && fbsessions[i].pageid.pageid == data.recipientid && fbsessions[i].status == "resolved"){
+        fbsessions[i].status = "assigned";
+        printlogs('log','reopening the fbsession');
+        break;
+   }
+  
+  }
   var newfbChat = []
   var temp = fbchats.filter((c) => c.senderid == id || c.recipientid == id);
-  console.log(temp.length)
+  printlogs('log',temp.length)
   for (var i = 0; i < temp.length; i++) {
     if (temp[i].message) {
       newfbChat.push(
@@ -1643,18 +1651,18 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   }
 
 
-//update last message field
+//update last message field 
   var newArrayC = []
   for (var i = 0; i < fbsessions.length; i++) {
     var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
     var lastmessage = selectedchat[selectedchat.length - 1];
-    console.log('lastmessage');
-    console.log(lastmessage);
+    printlogs('log','lastmessage');
+    printlogs('log',lastmessage);
     var newfbsession = fbsessions[i];
     if (!newfbsession.lastmessage) {
-      console.log('newfbsession.lastmessage was not defined');
+      printlogs('log','newfbsession.lastmessage was not defined');
       newfbsession['lastmessage'] = lastmessage;
-      console.log(newfbsession);
+      printlogs('log',newfbsession);
     }
     else {
       newfbsession.lastmessage = lastmessage;
@@ -1710,7 +1718,7 @@ export function selectCustomerChat(id, customerchat, new_message_arrived_rid) {
 
 
 export function getmypickedsessions(token, userid) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
       method: 'get',
@@ -1726,7 +1734,7 @@ export function getmypickedsessions(token, userid) {
 //get new sessions list
 
 export function getnewsessions(token) {
-  console.log(token);
+  printlogs('log',token);
 
 
   return (dispatch) => {
@@ -1764,8 +1772,8 @@ export function getchatfromAgent(chat) {
 }
 //send messsage to agent
 export function sendmessageToAgent(chat) {
-  console.log('sendmessageToAgent');
-  console.log(chat);
+  printlogs('log','sendmessageToAgent');
+  printlogs('log',chat);
   return (dispatch) => {
     fetch(`${baseURL}/api/getchat`, {
       method: 'post',
@@ -1778,7 +1786,7 @@ export function sendmessageToAgent(chat) {
   };
 }
 export function getresolvedsessions(token) {
-  console.log(token);
+  printlogs('log',token);
 
 
   return (dispatch) => {
@@ -1794,7 +1802,7 @@ export function getresolvedsessions(token) {
 
 
 export function getassignedsessions(token) {
-  console.log(token);
+  printlogs('log',token);
 
 
   return (dispatch) => {
@@ -1810,7 +1818,7 @@ export function getassignedsessions(token) {
 
 /*** get session for Chat Summary Page ***/
 export function getsessions(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
       method: 'get',
@@ -1824,7 +1832,7 @@ export function getsessions(token) {
 
 // for fetching mobile clients sesions
 export function getmobilesessions(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getsessions`, {
       method: 'get',
@@ -1868,7 +1876,7 @@ export function getChatRequest(customerid, token, chlist) {
     chatlist = chlist;
   }
   // var customerid = 1;
-  console.log(chatlist);
+  printlogs('log',chatlist);
   return {
     type: ActionTypes.SHOW_CHAT_HISTORY,
     chatlist,
@@ -1879,16 +1887,16 @@ export function getChatRequest(customerid, token, chlist) {
 
 
 export function updateChatList(message, ch, id_not_added) {
-  console.log("update chat list is called.");
-  console.log(message);
-  console.log(ch);
-  console.log(id_not_added);
-  console.log(message.request_id);
+  printlogs('log',"update chat list is called.");
+  printlogs('log',message);
+  printlogs('log',ch);
+  printlogs('log',id_not_added);
+  printlogs('log',message.request_id);
   // id_not_added is the request_id of the customer with whom agent is already having chat
   var new_message_arrived_rid = message.request_id;
   if (!id_not_added) {
     if (ch) {
-      console.log("this one");
+      printlogs('log',"this one");
       ch.push(new_message_arrived_rid);
     }
     else {
@@ -1899,7 +1907,7 @@ export function updateChatList(message, ch, id_not_added) {
   else {
     if (ch) {
       if (new_message_arrived_rid != id_not_added) {
-        console.log("message added");
+        printlogs('log',"message added");
         ch.push(new_message_arrived_rid);
       }
     }
@@ -1938,8 +1946,8 @@ export function showNotifications(notifications) {
 }
 
 export function uploadpicture(data, fname, token, picture) {
-  //console.log(data);
-  console.log(fname);
+  //printlogs('log',data);
+  printlogs('log',fname);
   var values = {
     file: data,
     fileName: fname,
@@ -1965,7 +1973,7 @@ export function showfilesuccess(res) {
 }
 
 export function uploadChatfile(fileData, usertoken) {
-  console.log(fileData);
+  printlogs('log',fileData);
   return (dispatch) => {
     fetch(`${baseURL}/api/uploadchatfileAgent`, {
       method: 'post',
@@ -1983,7 +1991,7 @@ export function uploadChatfile(fileData, usertoken) {
 
 /*** get notifications ***/
 export function getnotifications(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getnotifications`, {
       method: 'get',
@@ -1997,7 +2005,7 @@ export function getnotifications(token) {
 
 
 export function confirmNotification(res) {
-  console.log(res);
+  printlogs('log',res);
   return {
     type: ActionTypes.CONFIRM_NOTIFICATION,
     msg: 'success',
@@ -2055,7 +2063,7 @@ export function deleteNOTIFICATION(notification) {
   };
 }
 export function deletenotification(notification, usertoken) {
-  console.log('deletenotification Action is called ' + notification._id + 'your token : ' + usertoken);
+  printlogs('log','deletenotification Action is called ' + notification._id + 'your token : ' + usertoken);
   if (confirm("Do you want to delete this notification?")) {
     return (dispatch) => {
       return fetch(`${baseURL}/api/deleteNotification?id=${notification._id}`, {
@@ -2076,9 +2084,9 @@ export function deletenotification(notification, usertoken) {
 
 
 export function editNotification(notification, usertoken) {
-  console.log(notification);
-  console.log(usertoken);
-  console.log('edit notification is called');
+  printlogs('log',notification);
+  printlogs('log',usertoken);
+  printlogs('log','edit notification is called');
   return (dispatch) => {
     fetch(`${baseURL}/api/editNotification`, {
       method: 'post',
@@ -2092,7 +2100,7 @@ export function editNotification(notification, usertoken) {
 
       ,
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
         browserHistory.push('/notifications');
 
       }
@@ -2102,7 +2110,7 @@ export function editNotification(notification, usertoken) {
 
 
 export function getNotificationRequest(id, usertoken) {
-  console.log(id)
+  printlogs('log',id)
   return {
     type: ActionTypes.ADD_SELECTED_NOTIFICATION,
     id,
@@ -2112,7 +2120,7 @@ export function getNotificationRequest(id, usertoken) {
 /******************* Customer Directory ****************/
 
 export function getCustomerRequest(id) {
-  console.log(id)
+  printlogs('log',id)
   return {
     type: ActionTypes.ADD_SELECTED_CUSTOMER,
     id,
@@ -2127,7 +2135,7 @@ export function showcustomers(customers) {
 }
 
 export function showcountryname(countryinfo) {
-  console.log(countryinfo);
+  printlogs('log',countryinfo);
   return {
     type: ActionTypes.SHOW_COUNTRY_NAME,
     countryinfo,
@@ -2135,7 +2143,7 @@ export function showcountryname(countryinfo) {
 }
 
 export function getcountryname(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getCountryName`, {
       method: 'get',
@@ -2148,7 +2156,7 @@ export function getcountryname(token) {
 }
 
 export function getcustomers(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getcustomers`, {
       method: 'get',
@@ -2188,7 +2196,7 @@ export function createcustomer(customer) {
 
 
 export function emailCustomer(customer) {
-  console.log(customer);
+  printlogs('log',customer);
   return (dispatch) => {
     fetch(`${baseURL}/api/emailCustomer`, {
       method: 'post',
@@ -2205,7 +2213,7 @@ export function emailCustomer(customer) {
 
       }),
     }).then((res) => res.json()).then(res => {
-      console.log(res.statusCode);
+      printlogs('log',res.statusCode);
       if (res.statusCode == 200) {
         alert('Email sent successfully.');
         browserHistory.push('/customers');
@@ -2220,7 +2228,7 @@ export function emailCustomer(customer) {
 
 
 export function submitemail(customer) {
-  console.log(customer);
+  printlogs('log',customer);
   return (dispatch) => {
     fetch(`${baseURL}/api/rescheduleEmail`, {
       method: 'post',
@@ -2238,7 +2246,7 @@ export function submitemail(customer) {
 
       }),
     }).then((res) => res.json()).then(res => {
-      console.log(res.statusCode);
+      printlogs('log',res.statusCode);
       if (res.statusCode == 200) {
         alert('Email sent successfully.');
         browserHistory.push('/dashboard');
@@ -2309,7 +2317,7 @@ export function updateAgentList(onlineAgents) {
 
 /***** session create ****/
 export function createsession(session) {
-  console.log(session);
+  printlogs('log',session);
   return (dispatch) => {
     fetch(`${baseURL}/api/createsession`, {
       method: 'post',
@@ -2323,7 +2331,7 @@ export function createsession(session) {
 
 
     }).then((res) => res.json()).then(res => {
-      console.log(res.statusCode);
+      printlogs('log',res.statusCode);
       if (res.statusCode == 201) {
         // alert('session created successfully.');
         dispatch(confirmSession(session));
@@ -2344,7 +2352,7 @@ export function savechatResponse(chat) {
   }
 }
 export function savechat(chat) {
-  console.log(chat);
+  printlogs('log',chat);
   return (dispatch) => {
     fetch(`${baseURL}/api/savechat`, {
       method: 'post',
@@ -2358,14 +2366,14 @@ export function savechat(chat) {
 
 
     }).then((res) => res.json()).then(res => {
-      console.log(res.statusCode);
+      printlogs('log',res.statusCode);
       if (res.statusCode == 201) {
-        console.log('chat saved.');
+        printlogs('log','chat saved.');
         dispatch(savechatResponse(chat));
 
       }
       else {
-        console.log('chat not saved.');
+        printlogs('log','chat not saved.');
 
       }
     });
@@ -2377,7 +2385,7 @@ export function savechat(chat) {
 
 export function updateSessionStatus(session) {
 
-  console.log('updateSessionStatus is called');
+  printlogs('log','updateSessionStatus is called');
   return {
     type: ActionTypes.UPDATE_SESSION_STATUS,
     session,
@@ -2387,7 +2395,7 @@ export function updateSessionStatus(session) {
 
 export function assignToAgentResponse(session) {
 
-  console.log('assignToAgentResponse is called');
+  printlogs('log','assignToAgentResponse is called');
   return {
     type: ActionTypes.ASSIGN_CHAT_TO_AGENT,
     session,
@@ -2402,7 +2410,7 @@ export function resolvesessionResponse(request_id, customerchat) {
 
     }
   }
-  console.log('resolvesession called');
+  printlogs('log','resolvesession called');
   return {
     type: ActionTypes.RESOLVE_SESSION,
     customerchat: customerchat,
@@ -2411,7 +2419,7 @@ export function resolvesessionResponse(request_id, customerchat) {
 }
 
 export function movedToMessageSubgroupResponse(session) {
-  console.log('assignToSubgroupResponse is called');
+  printlogs('log','assignToSubgroupResponse is called');
   return {
     type: ActionTypes.MOVE_TO_MESSAGESUBGROUP,
     session,
@@ -2571,7 +2579,7 @@ export function showuserchatspecific_mobile(userchats) {
   };
 }
 export function getuserchats(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     //uncomment for mobile sessions
     fetch(`${baseURL}/api/getuserchats`, {
@@ -2653,7 +2661,7 @@ export function getspecificuserchats(request_id, companyid, usertoken) {
 
 // My Groups
 export function showMyGroups(mygroups) {
-  console.log(mygroups);
+  printlogs('log',mygroups);
   return {
     type: ActionTypes.ADD_MY_GROUPS,
     mygroups,
@@ -2661,7 +2669,7 @@ export function showMyGroups(mygroups) {
   };
 }
 export function getmyusergroups(token) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getmyusergroups`, {
       method: 'get',
@@ -2675,7 +2683,7 @@ export function getmyusergroups(token) {
 
 //update profile
 export function showUpdateProfile(msg) {
-  console.log(msg);
+  printlogs('log',msg);
   return {
     type: ActionTypes.ADD_UPDATE_PROFILE_WARNINGS,
     errormessage: msg,
@@ -2685,7 +2693,7 @@ export function showUpdateProfile(msg) {
 
 //update profile
 export function showUpdateSettings(msg) {
-  console.log(msg);
+  printlogs('log',msg);
   return {
     type: ActionTypes.ADD_UPDATE_SETTINGS,
     errormessage: msg,
@@ -2694,7 +2702,7 @@ export function showUpdateSettings(msg) {
   };
 }
 export function showCreatePage(msg) {
-  console.log(msg);
+  printlogs('log',msg);
   return {
     type: ActionTypes.ADD_UPDATE_PROFILE_WARNINGS,
     errormessage: msg,
@@ -2702,7 +2710,7 @@ export function showCreatePage(msg) {
   };
 }
 export function updateprofile(user, token) {
-  console.log(user);
+  printlogs('log',user);
   return (dispatch) => {
     fetch(`${baseURL}/api/updateprofile`, {
       method: 'post',
@@ -2759,7 +2767,7 @@ export function changepassword(user, token) {
 }
 
 export function createPage(fbpage, token) {
-  console.log(fbpage);
+  printlogs('log',fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/createfbPage`, {
       method: 'post',
@@ -2788,7 +2796,7 @@ export function updatesettings(file, companyprofile, token, logoAlready) {
     fileData.append('filesize', file.size);
     fileData.append('companyprofile', JSON.stringify(companyprofile));
   }
-  console.log(fileData);
+  printlogs('log',fileData);
 
   return (dispatch) =>
     fetch(`${baseURL}/api/updatesettings`, {
@@ -2804,7 +2812,7 @@ export function updatesettings(file, companyprofile, token, logoAlready) {
 
 
 export function showcompanyprofile(companysettings) {
-  console.log(companysettings);
+  printlogs('log',companysettings);
   return {
     type: ActionTypes.COMPANY_PROFILE,
     companysettings,
@@ -2812,7 +2820,7 @@ export function showcompanyprofile(companysettings) {
   };
 }
 export function getcompanysettings(token, id) {
-  console.log(token);
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getcompanyprofile`, {
       method: 'get',
@@ -3335,7 +3343,7 @@ export function createnews(news, usertoken) {
       }),
     }).then((res) => res.json()).then(res => {
 
-      console.log(res);
+      printlogs('log',res);
     });
   };
 }
@@ -3448,7 +3456,7 @@ export function updatechatstatus(messages, customerid, usertoken, mobileuserchat
       }),
 
     }).then((res) => res.json()).then((res) => res).then((res) => {
-        console.log(res.statusCode);
+        printlogs('log',res.statusCode);
 
         if (res.statusCode == 201 && mobileuserchat) {
           dispatch(UpdateChatStatusUI(messages, mobileuserchat))
@@ -3502,8 +3510,8 @@ export function removeDuplicatesWebChat(originalArray, prop) {
 
 /***** Facebook actions ***/
 export function showFbPages(fbpages) {
-  console.log('showFbpages');
-  console.log(fbpages);
+  printlogs('log','showFbpages');
+  printlogs('log',fbpages);
   return {
     type: ActionTypes.ADD_FB_PAGES,
     fbpages,
@@ -3512,8 +3520,8 @@ export function showFbPages(fbpages) {
 }
 
 export function getfbpages(token) {
-  console.log('getfbpages is called');
-  console.log(token);
+  printlogs('log','getfbpages is called');
+  printlogs('log',token);
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbpages`, {
       method: 'get',
@@ -3547,7 +3555,7 @@ export function getfbpage(usertoken, pageid) {
   };
 }
 export function editPage(fbpage, token) {
-  console.log(fbpage);
+  printlogs('log',fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/editfbPage`, {
       method: 'post',
@@ -3640,7 +3648,7 @@ export function getfbCustomers(usertoken) {
 
 function orderByDate(arr, dateProp, order = 0) {
   return arr.slice().sort(function (a, b) {
-    console.log(a['lastmessage'][dateProp]);
+    printlogs('log',a['lastmessage'][dateProp]);
     if (order == 0)
       return b['lastmessage'][dateProp] - a['lastmessage'][dateProp];
     else {
@@ -3749,8 +3757,9 @@ export function getfbChats(usertoken) {
 
 // update customer list
 export function updateCustomerList(data, customerlist, selectedchat) {
-  console.log('selectedchat');
-  console.log(selectedchat);
+  printlogs('log','selectedchat');
+  printlogs('log',selectedchat);
+  data.lastmessage ={};
   customerlist.push(data);
   var newArray = [];
   var lookupObject = {};
@@ -3763,8 +3772,8 @@ export function updateCustomerList(data, customerlist, selectedchat) {
     newArray.push(lookupObject[i]);
   }
   if (!selectedchat.user_id) {
-    console.log('user_id not defined');
-    console.log(newArray[0]);
+    printlogs('log','user_id not defined');
+    printlogs('log',newArray[0]);
     return {
       type: ActionTypes.ADD_NEW_FB_CUSTOMER,
       fbsessions: newArray,
@@ -3860,14 +3869,16 @@ export function fbchatmessageSent(res) {
   return {
     type: ActionTypes.FBCHAT_SENT_TO_AGENT,
     status: res.status,
+    loadingurl:false,
+    urlLoading:'',
     //  customerid,
 
   };
 }
 
 export function showfbfilesuccess(chat, fbchats, id) {
-  console.log('showfbfilesuccess');
-  console.log(fbchats.length);
+  printlogs('log','showfbfilesuccess');
+  printlogs('log',fbchats.length);
   fbchats.push(chat.chatmsg);
   var newfbChat = []
   var temp = fbchats.filter((c) => c.senderid == id || c.recipientid == id);
@@ -3924,7 +3935,7 @@ export function showfbfilesuccess(chat, fbchats, id) {
 }
 
 export function uploadFbChatfile(fileData, usertoken, fbchats, id) {
-  console.log(fileData);
+  printlogs('log',fileData);
   return (dispatch) => {
     fetch(`${baseURL}/api/uploadchatfilefb`, {
       method: 'post',
@@ -3987,7 +3998,7 @@ export function getcompanylogo(appid, appsecret, companyid) {
 
 /******* chat bot actions*****/
 export function chatbotChatAdd(message) {
-  console.log(message);
+  printlogs('log',message);
   return {
     message: message,
     type: ActionTypes.BOT_RESPONSE,
@@ -4002,7 +4013,7 @@ export function chatbotsession(sessionid) {
   }
 }
 export function chatbotResponse(res, username) {
-  console.log(res);
+  printlogs('log',res);
   var newresp;
   if (res.result.parameters && res.result.parameters.username) {
     newresp = res.result.speech.replace('chatbotuser', username);
@@ -4115,8 +4126,8 @@ export function resolvefbsessionResponse(fbsessionSelected, fbsession, fbchat) {
 
 //mark session resolve
 export function resolvesessionfb(data, usertoken, fbsessionSelected, fbsession, fbchat) {
-  console.log('resolvesessionfb');
-  console.log(data);
+  printlogs('log','resolvesessionfb');
+  printlogs('log',data);
 
   return (dispatch) => {
     fetch(`${baseURL}/api/resolvechatsessionfb`, {
@@ -4136,10 +4147,28 @@ export function resolvesessionfb(data, usertoken, fbsessionSelected, fbsession, 
 
 }
 
-export function getmetaurl(url, usertoken) {
+
+export function metaurlReceived(meta){
+   return {
+
+    urlMeta: meta,
+    loadingurl:false,
+    type: ActionTypes.GET_META_URL,
+  }
+}
+export function loadingurlmeta(url){
+   return {
+
+    urlLoading: url,
+    loadingurl:true,
+    type: ActionTypes.LOADING_META_URL,
+  }
+}
+export function fetchurlmeta(url) {
 
   return (dispatch) => {
-    fetch(`${baseURL}/api/getmetaurl`, {
+    dispatch(loadingurlmeta(url));
+    fetch(`${baseURL}/api/fetchurlmeta`, {
       method: 'post',
       body: JSON.stringify({
         url: url,
@@ -4147,11 +4176,11 @@ export function getmetaurl(url, usertoken) {
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
-        'Authorization': usertoken,
+    
 
       }),
     }).then((res) => res.json()).then(res => {
-      console.log(res)
+     dispatch(metaurlReceived(res.url_meta));
     });
   };
 

@@ -9,7 +9,7 @@ import {
   resolvesessionfb,
   uploadFbChatfile,
   createnews,
-  assignToAgentFB
+  assignToAgentFB,fetchurlmeta,
 } from '../../redux/actions/actions'
 import ReactEmoji from 'react-emoji'
 import auth from '../../services/auth';
@@ -26,8 +26,10 @@ import {
   getEmojiURL, isEmoji,getmetaurl
 } from './utility';
 
+import {printlogs} from '../../services/clientlogging';
+
 var getSuggestions = function (value, cr) {
-  console.log(cr);
+ printlogs('log',cr);
   const languages = cr
 
   const inputValue = value.trim().toLowerCase();
@@ -65,6 +67,8 @@ export class ChatArea extends Component {
       longtextwarning: '',
       agentinTeam: false,
       showthisdiv: false,
+      urlmeta:{},
+      prevURL:'',
 
 
     };
@@ -93,7 +97,7 @@ export class ChatArea extends Component {
     this.autoassignChat = this.autoassignChat.bind(this);
     this.getagentname = this.getagentname.bind(this);
     this.getteamname = this.getteamname.bind(this);
-
+    this.urlWithEmoji = this.urlWithEmoji.bind(this);
   }
 
   getteamname() {
@@ -630,7 +634,7 @@ export class ChatArea extends Component {
   }
 
   onTestURL(e) {
-    console.log(e)
+   printlogs('log',e)
     var Video_EXTENSIONS = /\.(mp4|ogg|webm|quicktime)($|\?)/i;
 
     var truef = Video_EXTENSIONS.test(e)
@@ -642,7 +646,7 @@ export class ChatArea extends Component {
   }
 
   onTestURLAudio(e) {
-    console.log(e)
+   printlogs('log',e)
     var AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx|mp4)($|\?)/i;
 
 
@@ -654,8 +658,14 @@ export class ChatArea extends Component {
 
   }
 
-  componentWillUpdate() {
+
+  componentWillReceiveProps(props){
     //this.scrollToTop();
+    if((props.urlMeta && !this.props.urlMeta) || (props.urlMeta != this.props.urlMeta)){
+      this.setState({
+        urlmeta:props.urlMeta
+      })
+    }
   }
 
   componentDidMount() {
@@ -727,31 +737,14 @@ export class ChatArea extends Component {
 
 
   scrollToBottom(fbchatlist) {
-    /*const node = ReactDOM.findDOMNode(this.refs['chatmsg'+(this.props.messages.length-1)]);
-     console.log(node);
-     console.log(node.offsetTop)
-
-     node.parentNode.scrollTop = node.offsetTop + 1100;*/
-    // const node = ReactDOM.findDOMNode(this.messagesEnd);
-    //node.scrollIntoView({behavior: "smooth"});
-    //alert(this.props.fbchatSelected.length-1);
-    //console.log(this.refs[this.props.fbchatSelected.length-1])
-    // this.refs[this.props.fbchatSelected.length-1].scrollIntoView({behavior: "smooth",block:"end"});
-    //alert(this.props.fbchatSelected.length);
-
-    console.log('scrollToBottom called');
+    printlogs('log','scrollToBottom called');
     const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length - 1]);
     if (target) {
-      /*   scrollIntoViewIfNeeded(target, false, {
-       duration: 150
-       });*/
+     
       target.scrollIntoView({behavior: "smooth"});
 
     }
-    //target.parentNode.scrollTop = target.offsetTop;
-    // target.scrollTop = target.scrollHeight;
-
-
+   
   }
 
 
@@ -771,7 +764,7 @@ export class ChatArea extends Component {
       files = e.target.files;
     }
 
-    console.log(e.target.files[0]);
+   printlogs('log',e.target.files[0]);
 
     this.setState({
       userfile: e.target.files[0]
@@ -785,7 +778,7 @@ export class ChatArea extends Component {
       this.onFileSubmit();
 
     };
-    console.log(reader.result);
+   printlogs('log',reader.result);
     reader.readAsDataURL(files[0]);
 
 
@@ -805,11 +798,28 @@ export class ChatArea extends Component {
     this.setState({
       value: newValue
     });
+    var isURL = getmetaurl(newValue)
+
+    if(isURL!=null){
+      if(isURL != this.state.prevURL){
+           this.props.fetchurlmeta(isURL);
+            this.setState({
+              prevURL: isURL
+            })
+      }
+    }
+    else{
+      this.setState(
+      {
+        urlmeta:{},
+        prevURL:''
+      })
+    }
   }
 
   onSuggestionsUpdateRequested({value}) {
     var v = value.split(" ");
-    console.log(v)
+   printlogs('log',v)
 
     this.setState({
       suggestions: getSuggestions(v[v.length - 1], this.props.responses)
@@ -820,10 +830,11 @@ export class ChatArea extends Component {
     const {socket, dispatch} = this.props;
     var sendmessage = true;
 
-    console.log('handleMessageSubmit' + e.which)
+   printlogs('log','handleMessageSubmit' + e.which)
 
-    if (e.which === 13 && this.state.value != "") {
-      if (this.props.fbsessionSelected.status == "new") {
+    if (e.which === 13 && this.state.value != "" && this.props.loadingurl == false) {
+
+     if (this.props.fbsessionSelected.status == "new") {
         this.autoassignChat();
       }
       var index = this.props.fbsessionSelected.agent_ids.length - 1
@@ -856,42 +867,87 @@ export class ChatArea extends Component {
               break;
             }
           }
+          var saveMsg,data;
+          if(JSON.stringify(this.state.urlmeta) != '{}'){
+            saveMsg = {
+                        senderid: this.props.userdetails._id,
+                        recipientid: this.props.senderid,
+                        companyid: this.props.userdetails.uniqueid,
+                        timestamp: Date.now(),
+                        message: {
+                          mid: unique_id,
+                          seq: 1,
+                          text: this.state.value,
 
-          var saveMsg = {
-            senderid: this.props.userdetails._id,
-            recipientid: this.props.senderid,
-            companyid: this.props.userdetails.uniqueid,
-            timestamp: Date.now(),
-            message: {
-              mid: unique_id,
-              seq: 1,
-              text: this.state.value,
-            },
 
-            pageid: pageid
 
+                          },
+                        pageid: pageid,
+                        urlmeta:this.state.urlmeta,
+                      }
+          data = {
+                      senderid: this.props.userdetails._id,
+                      recipientid: this.props.senderid,
+                      companyid: this.props.userdetails.uniqueid,
+                      seen: false,
+                      message: {
+                        text: this.state.value,
+                        mid: unique_id,
+
+                      },
+                      inbound: true,
+                      backColor: '#3d83fa',
+                      textColor: "white",
+                      avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+                      duration: 0,
+                      timestamp: Date.now(),
+                      urlmeta:this.state.urlmeta,
+
+
+                    }
           }
+          else{
+                 saveMsg = {
+                    senderid: this.props.userdetails._id,
+                    recipientid: this.props.senderid,
+                    companyid: this.props.userdetails.uniqueid,
+                    timestamp: Date.now(),
+                    message: {
+                      mid: unique_id,
+                      seq: 1,
+                      text: this.state.value,
+
+                    },
+
+                    pageid: pageid,
+                    urlmeta:this.state.urlmeta,
+
+                  }
+              data = {
+                      senderid: this.props.userdetails._id,
+                      recipientid: this.props.senderid,
+                      companyid: this.props.userdetails.uniqueid,
+                      seen: false,
+                      message: {
+                        text: this.state.value,
+                        mid: unique_id,
+                      },
+                      inbound: true,
+                      backColor: '#3d83fa',
+                      textColor: "white",
+                      avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
+                      duration: 0,
+                      timestamp: Date.now(),
+                      urlmeta:this.state.urlmeta,
+
+
+                    }
+        }
 
           this.props.getfbchatfromAgent(saveMsg);
 
-          var data = {
-            senderid: this.props.userdetails._id,
-            recipientid: this.props.senderid,
-            companyid: this.props.userdetails.uniqueid,
-            seen: false,
-            message: {
-              text: this.state.value,
-              mid: unique_id,
-            },
-            inbound: true,
-            backColor: '#3d83fa',
-            textColor: "white",
-            avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
-            duration: 0,
-            timestamp: Date.now(),
 
-
-          }
+          this.setState({urlmeta:{},prevURL:''});
           this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder);
           socket.emit('broadcast_fbmessage', saveMsg);
 
@@ -909,8 +965,8 @@ export class ChatArea extends Component {
     const usertoken = auth.getToken();
     var fileData = new FormData();
     this.refs.selectFile.value = null;
-    console.log('on onFileSubmit');
-    console.log(this.state.userfile);
+   printlogs('log','on onFileSubmit');
+   printlogs('log',this.state.userfile);
 
 
     if (this.state.userfile && this.state.userfile != '') {
@@ -926,7 +982,7 @@ export class ChatArea extends Component {
       }
 
       if (sendmessage == true) {
-        console.log(this.state.userfile)
+       printlogs('log',this.state.userfile)
 
         var today = new Date();
         var uid = Math.random().toString(36).substring(7);
@@ -1026,7 +1082,7 @@ export class ChatArea extends Component {
         pageid: pageid
       }
 
-      console.log(saveMsg);
+     printlogs('log',saveMsg);
 
       this.props.getfbchatfromAgent(saveMsg);
 
@@ -1067,13 +1123,13 @@ export class ChatArea extends Component {
 
 
   onSuggestionSelected({suggestionValue, method = 'click'}) {
-    console.log("current value of input is  :" + this.state.value)
+   printlogs('log',"current value of input is  :" + this.state.value)
     var v = this.state.value.split(" ");
     var prevVal = "";
     for (var i = 0; i < v.length - 1; i++) {
       prevVal = prevVal + " " + v[i]
     }
-    console.log("current value of input is  :" + prevVal)
+   printlogs('log',"current value of input is  :" + prevVal)
     if (prevVal == "") {
       this.setState({
         value: suggestionValue
@@ -1112,7 +1168,7 @@ export class ChatArea extends Component {
   }
 
   setEmoji(emoji) {
-    console.log(emoji);
+   printlogs('log',emoji);
     this.setState({
       value: this.state.value + emoji.unicode,
       visible: false,
@@ -1123,7 +1179,7 @@ export class ChatArea extends Component {
 
 
   sendGIF(gif) {
-    console.log(gif);
+   printlogs('log',gif);
     const {socket, dispatch} = this.props;
     var sendmessage = true;
     if (this.props.fbsessionSelected.status == "new") {
@@ -1173,7 +1229,7 @@ export class ChatArea extends Component {
         pageid: pageid
       }
 
-      console.log(saveMsg);
+     printlogs('log',saveMsg);
 
       this.props.getfbchatfromAgent(saveMsg);
 
@@ -1269,7 +1325,7 @@ export class ChatArea extends Component {
         pageid: pageid
       }
 
-      console.log(saveMsg);
+     printlogs('log',saveMsg);
 
       this.props.getfbchatfromAgent(saveMsg);
 
@@ -1327,6 +1383,22 @@ export class ChatArea extends Component {
     return this.naturalHeight;
   }
 
+  urlWithEmoji(text){
+    var msg = text.split(' ');
+   printlogs('log',msg);
+    var returnTxt = ["", ""];
+    for (var i=0; i<msg.length; i++){
+      if(msg[i].startsWith('http')){
+        returnTxt[0] = returnTxt[0].concat(msg[i]);
+      }
+      else {
+        returnTxt[1] = returnTxt[1].concat(msg[i]);
+     }
+    }
+   printlogs('log',returnTxt);
+    return returnTxt;
+  }
+
   render() {
     // only show previous messages if they exist.
     // display messages of active channel
@@ -1357,20 +1429,27 @@ export class ChatArea extends Component {
             <div style={{'float': 'left'}}>
 
               <img src={this.props.userprofilepic} width="25px" height="25px" style={styles.avatarstyle}/>
-              {data.message && 
+              {data.message &&
               <div
-                style={data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? styles.left.emojionly : (data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image") ? styles.left.wrapperNoColor : styles.left.wrapper}>
+                style={data.message.length === 2 && isEmoji(data.message) ? styles.left.emojionly : (data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image") ? styles.left.wrapperNoColor : styles.left.wrapper}>
                 { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ?
-                  <p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p> :
-                  <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
+                  <p style={styles.left.textEmoji}>{ReactEmoji.emojify(data.message) }</p> :
+                  <p style={styles.left.text}>
+                    { data.message.split(' ').map((msg, i) => (
+                      msg.startsWith(' http') ?
+                        msg + ' ':
+                        ReactEmoji.emojify(msg + ' ')
+                      ))
+                    }
+                  </p>
                 }
-               
+
              </div>
 
 
            }
 
-                
+
                 {data.attachments && data.attachments.length > 0 &&
                     data.attachments.map((da, index) => (
                       (da.type == "image" ?
@@ -1413,7 +1492,7 @@ export class ChatArea extends Component {
                                 </div>
                             ))
                           :
-                         
+
                             (
                               da.type == "video" ?
                                  <div style={styles.left.wrapper}>
@@ -1456,7 +1535,7 @@ export class ChatArea extends Component {
                                               <td>
                                               <div>
                                                <a href={getmetaurl(data.message)} target="_blank">
-                                           
+
                                                <span style={styles.urltitle}>{da.title}</span>
                                                </a>
                                                <br/>
@@ -1471,15 +1550,15 @@ export class ChatArea extends Component {
                                         <tr>
                                           <td>
                                              <div style={{width:72,height:72}}>
-                                            {data.urlmeta.image && 
-                                            <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>  
+                                            {data.urlmeta.image &&
+                                            <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>
                                             }
                                         </div>
                                         </td>
                                           <td>
                                           <div>
                                            <a href={getmetaurl(data.message)} target="_blank">
-                                       
+
                                            <span style={styles.urltitle}>{da.title}</span>
                                            </a>
 
@@ -1493,7 +1572,7 @@ export class ChatArea extends Component {
                                         </tbody>
                                       }
                                         </table>
-                                       
+
                                         </div>
                                         </div>
                                          :
@@ -1505,7 +1584,7 @@ export class ChatArea extends Component {
                                         )
                                     )))
                             )
-                         
+
 
                       )
 
@@ -1513,7 +1592,7 @@ export class ChatArea extends Component {
                     ))
 
                 }
-              
+
             </div>
           </div> :
           <div key={index} ref={index} id={'chatmsg' + index} style={{'textAlign': 'right', 'clear': 'both'}}>
@@ -1540,16 +1619,81 @@ export class ChatArea extends Component {
             }
             {
               data.message &&
-             
+
             <div
               style={data.message != undefined && data.message.length === 2 && isEmoji(data.message) ? styles.right.wrapperNoColor : data.attachments && data.attachments.length > 0 && data.attachments[0].type == "image" ? styles.right.wrapperNoColor : styles.right.wrapper}>
 
               { data.message != undefined && data.message.length === 2 && isEmoji(data.message) ?
                 <div><p style={styles.left.textEmoji}>{ ReactEmoji.emojify(data.message) }</p></div> :
-                <p style={styles.left.text}>{ ReactEmoji.emojify(data.message) }</p>
+                <p style={styles.left.text}>
+                { data.message.split(' ').map((msg, i) => (
+                  msg.startsWith('http') ?
+                    msg + ' ' :
+                    ReactEmoji.emojify(msg + ' ')
+                  ))
+                }
+                </p>
               }
               </div>
             }
+
+            {data.urlmeta && JSON.stringify(data.urlmeta) !='{}' &&
+                                  <div style={{clear:'both', display:'block'}}>
+                                        <div style={styles.right.wrapperforURL}>
+                                            <table style={{maxWidth:'300px'}}>
+                                                {data.urlmeta.type && data.urlmeta.type == "video" && data.urlmeta.url?
+                                                  <tbody>
+
+                                                  <tr>
+                                                      <td colspan="2">
+                                                        <ReactPlayer url={data.urlmeta.url} controls={true} width="100%" height="242"
+                                                        />
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td>
+                                                      <div>
+                                                       <a href={getmetaurl(data.message)} target="_blank">
+
+                                                       <span style={styles.urltitle}>{data.urlmeta.title}</span>
+                                                       </a>
+                                                       <br/>
+                                                        <span>{data.urlmeta.description}</span>
+                                                      </div>
+                                                      </td>
+                                                </tr>
+                                                </tbody>
+                                                :
+                                                <tbody>
+
+                                                <tr>
+                                                  <td>
+                                                     <div style={{width:72,height:72}}>
+                                                    {data.urlmeta.image &&  data.urlmeta.image.url &&
+                                                    <img src={data.urlmeta.image.url}  style={{width:72,height:72}}/>
+                                                    }
+                                                </div>
+                                                </td>
+                                                  <td>
+                                                  <div>
+                                                   <a href={getmetaurl(data.message)} target="_blank">
+
+                                                   <span style={styles.urltitle}>{data.urlmeta.title}</span>
+                                                   </a>
+
+                                                   <br/>
+                                                   {data.urlmeta.description &&
+                                                    <span>{data.urlmeta.description}</span>
+                                                  }
+                                                  </div>
+                                                  </td>
+                                                </tr>
+                                                </tbody>
+                                              }
+                                                </table>
+                                               </div>
+                                               </div>
+                                             }
               {data.attachments && data.attachments.length > 0 &&
               data.attachments.map((da, index) => (
                 (da.type == "image" ?
@@ -1577,7 +1721,7 @@ export class ChatArea extends Component {
                             borderRadius:'1.3em',
                           }}>
 
-                          </div> 
+                          </div>
                           </div>:
                           <div style={styles.right.wrapperNoColor}>
                           <div style={styles.imagestyle,{
@@ -1596,27 +1740,45 @@ export class ChatArea extends Component {
 
 
                     :
-                    <div style={styles.right.wrapper}>
-                    <div style={styles.imagestyle}>
-                      {
+                       (
                         da.type == "video" ?
+                           <div style={styles.right.wrapper}>
+                              <div style={styles.imagestyle}>
+
                           <ReactPlayer url={da.payload.url} controls={true} width="250" height="242"
-                                       onPlay={this.onTestURL.bind(this, da.payload.url)}/> :
+                                       onPlay={this.onTestURL.bind(this, da.payload.url)}/>
+                                       </div>
+                                       </div> :
                           (da.type == "audio" ?
+                             <div style={styles.right.wrapper}>
+                                 <div style={styles.imagestyle}>
+
                             <ReactPlayer url={da.payload.url} controls={true} width="250" height="30"
-                                         onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/> :
+                                         onPlay={this.onTestURLAudio.bind(this, da.payload.url)}/>
+                                         </div>
+                                         </div>:
                             (da.type == "location" ?
+                             <div style={styles.right.wrapper}>
+                                 <div style={styles.imagestyle}>
+
                                 <div>
                                   <p> {da.title} </p>
                                   <a href={getmainURL(da.payload)} target="_blank"><img src={geturl(da.payload)}/></a>
                                 </div>
-                                :
+                                </div>
+                                </div>
+                               :
+                               (da.payload &&
+                                  <div style={styles.right.wrapper}>
+                                     <div style={styles.imagestyle}>
+
                                 <a href={da.payload.url} target="_blank"
                                    style={styles.right.text}>{da.payload.url.split("?")[0].split("/")[da.payload.url.split("?")[0].split("/").length - 1]}  </a>
-                            ))
-                      }
-                    </div>
-                    </div>
+                                </div>
+                                </div>
+                            )))
+                      )
+
                 )
               ))
               }
@@ -1624,7 +1786,7 @@ export class ChatArea extends Component {
             </div>
 
 
-         
+
 
       )
     })
@@ -1816,7 +1978,8 @@ export class ChatArea extends Component {
                     left: '0',
                     width: '100%',
                     height: '2.5em',
-                    textAlign: 'center'
+                    textAlign: 'center',
+
                   }} className="fa fa-file-o"></i>
                   <p style={{
                     position: 'absolute',
@@ -1824,7 +1987,8 @@ export class ChatArea extends Component {
                     left: '0',
                     width: '100%',
                     textAlign: 'center',
-                    fontSize: '10px'
+                    fontSize: '10px',
+                     bottom:-10,
                   }}>GIF</p>
                 </i>
               </div>
@@ -1893,7 +2057,69 @@ export class ChatArea extends Component {
             </div>
 
           </div>
+          {
+           this.props.loadingurl == true && this.props.urlLoading == this.state.prevURL &&
+           <p> Fetching URL meta</p>
+          }
+          {
+            JSON.stringify(this.state.urlmeta) != '{}' && this.props.loadingurl == false &&
+            <div style={{clear:'both', display:'block'}}>
+                                        <div style={styles.left.wrapperforURL}>
+                                        <table style={{maxWidth:'300px'}}>
+                                        {this.state.urlmeta.type && this.state.urlmeta.type == "video"?
+                                          <tbody>
 
+                                          <tr>
+                                              <td colspan="2">
+                                                <ReactPlayer url={this.state.urlmeta.url} controls={true} width="100%" height="242"
+                                                />
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                              <div>
+                                               <a href={this.state.urlmeta.url} target="_blank">
+
+                                               <span style={styles.urltitle}>{this.state.urlmeta.title}</span>
+                                               </a>
+                                               <br/>
+                                                <span>{this.state.urlmeta.description}</span>
+                                              </div>
+                                              </td>
+                                        </tr>
+                                        </tbody>
+                                        :
+                                        <tbody>
+
+                                        <tr>
+                                          <td>
+                                             <div style={{width:72,height:72}}>
+                                            {this.state.urlmeta.image &&
+                                            <img src={this.state.urlmeta.image.url}  style={{width:72,height:72}}/>
+                                            }
+                                        </div>
+                                        </td>
+                                          <td>
+                                          <div>
+                                           <a href={getmetaurl(this.state.value)} target="_blank">
+
+                                           <span style={styles.urltitle}>{this.state.urlmeta.title}</span>
+                                           </a>
+
+                                           <br/>
+                                           {this.state.urlmeta.description &&
+                                            <span>{this.state.urlmeta.description}</span>
+                                          }
+                                          </div>
+                                          </td>
+                                        </tr>
+                                        </tbody>
+                                      }
+                                        </table>
+
+                                        </div>
+                                        </div>
+          }
 
           {
             this.props.showFileUploading && this.props.showFileUploading == true &&
@@ -1958,7 +2184,6 @@ const styles = {
       justifyContent: 'flex-end',
       marginBottom: 15,
       boxSizing: 'border-box',
-      maxWidth: '80%',
       clear: 'both',
       boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
       marginLeft: '3em',
@@ -2029,6 +2254,21 @@ const styles = {
       marginLeft: '1em',
       position: 'relative',
       display: 'inline-block',
+    },
+
+     wrapperforURL: {
+      borderRadius: 15,
+       minHeight: 20,
+      justifyContent: 'flex-end',
+      marginBottom: 15,
+      boxSizing: 'border-box',
+      maxWidth: '55%',
+      clear: 'both',
+      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
+      marginLeft: '1em',
+      position: 'relative',
+      display: 'inline-block',
+      textAlign:'left',
     },
 
     wrapperNoColor: {
@@ -2187,6 +2427,9 @@ function mapStateToProps(state) {
     status: state.dashboard.status,
     showFileUploading: state.dashboard.showFileUploading,
     sessionsortorder: state.dashboard.sessionsortorder,
+    urlMeta:state.dashboard.urlMeta,
+    loadingurl:state.dashboard.loadingurl,
+    urlLoading:state.dashboard.urlLoading,
   };
 }
 
@@ -2197,5 +2440,6 @@ export default connect(mapStateToProps, {
   resolvesessionfb,
   uploadFbChatfile,
   createnews,
-  assignToAgentFB
+  assignToAgentFB,
+  fetchurlmeta,
 })(ChatArea);

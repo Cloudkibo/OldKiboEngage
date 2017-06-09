@@ -15,11 +15,11 @@ class EditFbPage extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getfbpage(usertoken,props.params.id);
       }
     super(props, context);
@@ -172,7 +172,7 @@ class EditFbPage extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called.");
+  //console.log("mapStateToProps is called.");
 
   return {
     channels:(state.dashboard.channels),

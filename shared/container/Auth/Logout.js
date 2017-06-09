@@ -13,7 +13,7 @@ constructor(props, context) {
    onClick(event)
   {
     event.preventDefault();
-    console.log(this.props.roomid);
+    //console.log(this.props.roomid);
     socket.emit('leave meeting for agent', {room: this.props.roomid});
     this.props.logoutUser();
   }

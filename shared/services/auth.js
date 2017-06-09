@@ -14,13 +14,13 @@ logout(cb) {
 loggedIn() {
   var token = cookie.load('token')
   if(typeof token === 'undefined' || token === '') {
-    console.log('token' + token);
+  //  console.log('token' + token);
     return false
 
   }
   else{
-    console.log('calling in loggedIn() service')
-    console.log(token);
+   // console.log('calling in loggedIn() service')
+  //  console.log(token);
     return true
 
   }

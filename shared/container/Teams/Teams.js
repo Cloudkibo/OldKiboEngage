@@ -12,7 +12,7 @@ import {deleteteam,jointeam,getTeamAgents} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 const PureRenderMixin = require('react-addons-pure-render-mixin');
-import Immutable from 'immutable';
+import ReactPaginate from 'react-paginate';
 var NotificationSystem = require('react-notification-system');
 
 class Teams extends Component {
@@ -23,11 +23,11 @@ class Teams extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getteams(usertoken);
         props.getTeamAgents(usertoken);
 
@@ -35,16 +35,19 @@ class Teams extends Component {
     super(props, context);
 
      this.state = {
-      data: Immutable.List(),
-      filteredData: Immutable.List(),
+      data: props.teamdetails,
+      filteredData: props.teamdetails,
+      teamsData: [],
+      totalLength: 0,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
 
 
   }
 
-  componentWillReceiveProps(props){
+  /*componentWillReceiveProps(props){
     if(props.teamdetails){
        this.setState({
       data: Immutable.fromJS(props.teamdetails).toList(),
@@ -59,23 +62,62 @@ class Teams extends Component {
     });
 
    }
-  }
+ }*/
 
   filterData(event) {
     event.preventDefault();
-    const regex = new RegExp(event.target.value, 'i');
-    const filtered = this.state.data.filter(function(datum) {
-      return (datum.get('groupname').search(regex) > -1);
-    });
+    var filtered= [];
+    console.log(this.state.data);
+    for(var i=0; i<this.state.data.length; i++){
+        if(this.state.data[i].groupname.toLowerCase().includes(event.target.value)){
+          filtered.push(this.state.data[i]);
+        }
+    }
 
     this.setState({
       filteredData: filtered,
+    },
+    () => {
+      this.displayData(0);
+      this.setState({ totalLength: this.state.filteredData.length });
+      console.log(this.state.filteredData);
+    }
+
+    );
+  }
+
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.state.filteredData.length){
+      limit = this.state.filteredData.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.state.filteredData[i];
+    }
+    this.setState({
+      teamsData: sessionData,
     });
+    }
+
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({ totalLength: this.state.filteredData.length });
   }
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
     const { filteredData } = this.state;
    /* if(this.props.errorMessage){
       this.props.getteams(token);
@@ -92,7 +134,7 @@ class Teams extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">Teams Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -103,15 +145,11 @@ class Teams extends Component {
                   </li>
 
             </ul>
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-teams"/>
-                   Teams
-                </div>
-              </div>
+            <div className="uk-card uk-card-default uk-card-body">
+              <h3 className="uk-card-title">Teams</h3>
 
-           <div className="portlet-body">
+
+           <div >
              <div className="table-toolbar">
                  {this.props.userdetails.isAgent != "Yes" &&
                  <div className="btn-team">
@@ -152,15 +190,26 @@ class Teams extends Component {
 
                     <tbody>
                        {
-                        this.props.teamagents && filteredData && filteredData.map((team, i) => (
+                        this.props.teamagents && filteredData && this.state.teamsData.map((team, i) => (
 
-                          <TeamListItem team={team} key={team.get('_id')}  teamagents = {this.props.teamagents} onDelete={() => this.props.deleteteam(team,team.get('_id'),token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
+                          <TeamListItem team={team} key={team._id}  teamagents = {this.props.teamagents} onDelete={() => this.props.deleteteam(team,team._id,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
 
                         ))
                       }
                      </tbody>
                     </table>
                     </div>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p> Currently, there is no team to show. </p>
                 }
@@ -181,7 +230,7 @@ Teams.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           channels:(state.dashboard.channels),
           userdetails:(state.dashboard.userdetails),

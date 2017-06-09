@@ -1,34 +1,32 @@
-import React, { PropTypes,Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
-import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SessionListItem from './SessionListItem';
-import {getcustomersubgroups,updatesubgrouplist,filterAssignedSession,getassignedsessions,getcustomers,getassignedsessionsfromsocket} from '../../redux/actions/actions'
+import { getcustomersubgroups, updatesubgrouplist, filterAssignedSession, getassignedsessions, getcustomers, getassignedsessionsfromsocket } from '../../redux/actions/actions';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class AssignedSessions extends Component {
 
  constructor(props, context) {
-      //call action to get user groups
-    if(props.userdetails.accountVerified == "No"){
-    browserHistory.push('/notverified');
+      // call action to get user groups
+   if (props.userdetails.accountVerified === 'No') {
+     browserHistory.push('/notverified');
    }
 
-   var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59';
-   var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx';
-   var companyid = props.userdetails.uniqueid;
+   const appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59';
+   const appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx';
+   const companyid = props.userdetails.uniqueid;
    props.getcustomersubgroups(appid,appsecret,companyid);
-
-    const usertoken = auth.getToken();
-    console.log('constructor is called');
+   const usertoken = auth.getToken();
+    //console.log('constructor is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
       //  props.getsessions(usertoken);
         props.getassignedsessions(usertoken);
         if(!props.customers)
@@ -38,12 +36,16 @@ class AssignedSessions extends Component {
       }
     super(props, context);
     this.state = {
-      subgroup: 'all'
+      subgroup: 'all',
+      assignedSessionsData: [],
+      totalLength: 0,
+      assignedsessionsfiltered: props.assignedsessions,
     };
     this.getupdatedSessions = this.getupdatedSessions.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
+    this.filterAssignedSession = this.filterAssignedSession.bind(this);
   }
 
   getupdatedSessions(data)
@@ -55,23 +57,208 @@ class AssignedSessions extends Component {
   handleChange(){
      //alert(e.target.value);
      this.setState({ subgroup: this.refs.teamlist.value });
-     this.props.filterAssignedSession(this.refs.client.value, this.refs.teamlist.value, this.refs.channellist.value, this.refs.agentList.value, this.props.assignedsessions);
+     this.filterAssignedSession(this.refs.client.value, this.refs.teamlist.value, this.refs.channellist.value, this.refs.agentList.value, this.props.assignedsessions);
      if(this.state.subgroup.value !== 'all') {
        this.props.updatesubgrouplist(this.refs.teamlist.value);
      }
-     this.forceUpdate();
+  }
+
+  filterAssignedSession(medium, groupID, subgroupID, agentID, assignedsessions) {
+    if (medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id === agentID && c.platform === medium && c.departmentid === groupID && c.messagechannel[c.messagechannel.length - 1] === subgroupID)
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.platform == medium && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium !== 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.platform == medium && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium !== 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.platform == medium && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.platform == medium),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium !== 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.platform == medium),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({totalLength: this.state.assignedsessionsfiltered.length});
+      }
+      );
+    }
+    else if (medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium == 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.departmentid == groupID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium == 'all' && groupID !== 'all' && subgroupID == 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.departmentid == groupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID && c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium == 'all' && groupID == 'all' && subgroupID !== 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.messagechannel[c.messagechannel.length - 1] == subgroupID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID !== 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions.filter((c) => c.agent_ids.length > 0).filter((c) => c.agent_ids[c.agent_ids.length - 1].id == agentID),
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+    else if (medium == 'all' && groupID == 'all' && subgroupID == 'all' && agentID == 'all') {
+      this.setState({
+        assignedsessionsfiltered: assignedsessions,
+      },
+      () => {
+        this.displayData(0);
+        this.setState({ totalLength: this.state.assignedsessionsfiltered.length });
+      }
+      );
+    }
+  }
+
+  displayData(n){
+    let offset = n*6;
+    //console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.state.assignedsessionsfiltered.length){
+      limit = this.state.assignedsessionsfiltered.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.state.assignedsessionsfiltered[i];
+    }
+    this.setState({assignedSessionsData: sessionData});
+  }
+
+  handlePageClick(data){
+    //console.log(data.selected);
+    this.displayData(data.selected);
   }
 
   componentDidMount(){
+
         console.log("Pre page");
         // todo discuss with zarmeen, why force update
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
-        console.log("Pagination added from component did mount");
-
+        this.displayData(0);
+        this.setState({totalLength: this.state.assignedsessionsfiltered.length});
   }
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
      return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -79,18 +266,6 @@ class AssignedSessions extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Assigned Chat Sessions </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/assignedchatsessions">Assigned Chat Sessions </Link>
-                  </li>
-
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -129,8 +304,6 @@ class AssignedSessions extends Component {
                                        <option value={group._id}>{group.deptname}</option>
                                      )
                                 }
-
-
 
                              </select>
 
@@ -172,18 +345,18 @@ class AssignedSessions extends Component {
                        </table>
               </div>
 
-             { this.props.assignedsessionsfiltered && this.props.assignedsessionsfiltered.length > 0 ?
+             { this.state.assignedsessionsfiltered && this.state.assignedsessionsfiltered.length > 0 ?
                    <div className="table-responsive">
                    <table id ="sample_3" className="table table-condensed table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
-                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >SubGroup</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Agent Name</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Platform</th>
-                    <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Request Time</th>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Visitor Name </th>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Visitor Email</th>
+                     <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Group</th>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >SubGroup</th>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Agent Name</th>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Platform</th>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Request Time</th>
 
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Status</th>
 
@@ -203,8 +376,8 @@ class AssignedSessions extends Component {
 
 
                       {
-                        this.props.assignedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
-                        this.props.assignedsessionsfiltered.map((session, i) => (
+                        this.state.assignedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
+                        this.state.assignedSessionsData.map((session, i) => (
 
                           <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
@@ -212,6 +385,17 @@ class AssignedSessions extends Component {
                       }
                      </tbody>
                     </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p>Currently, there is not any assigned chat sessions to show.</p>
                 }
@@ -232,7 +416,7 @@ AssignedSessions.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   return {
           subgroups:(state.dashboard.subgroups),
           userdetails:(state.dashboard.userdetails),

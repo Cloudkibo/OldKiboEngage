@@ -6,6 +6,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import {getChatRequest, sendmessageToAgent}  from '../../redux/actions/actions'
 import {savechat}  from '../../redux/actions/actions'
+import {printlogs} from '../../services/clientlogging';
 
 import {updateChatList}  from '../../redux/actions/actions'
 import * as actions from '../../redux/actions/actions';
@@ -34,8 +35,8 @@ class ClientChatView extends Component {
   }
 
   getAgentSocket(data) {
-    console.log(data)
-    console.log('agent socket id is : ' + data.data.agentsocket);
+    printlogs('log',data)
+    printlogs('log','agent socket id is : ' + data.data.agentsocket);
     // agentid,agentname and agentemail will now be array fields
     this.refs.agentid.value = '';
     this.refs.agentname.value = '';
@@ -172,6 +173,7 @@ class ClientChatView extends Component {
       //generate unique id of message - this change is for mobile clients
       var today = new Date();
       var uid = Math.random().toString(36).substring(7);
+      
       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
       var saveChat = {}
@@ -242,8 +244,8 @@ class ClientChatView extends Component {
     call.visitoremail = this.props.sessiondetails.email.trim();
     call.request_id = this.props.sessiondetails.session_id;
     call.url = meetingURLString;
-    console.log(call);
-    console.log(meetingURLString);
+    printlogs('log',call);
+    printlogs('log',meetingURLString);
     socket.emit('connecttocall', {room: this.props.sessiondetails.companyid, stanza: call});
 
     var meetingURLString = 'https://api.cloudkibo.com/#/conference/' + unique_id + '?role=visitor&companyid=' + this.props.sessiondetails.companyid + '&agentemail=' + this.refs.agentemail.value.trim() + '&agentname=' + this.refs.agentname.value.trim() + '&visitorname=' + this.props.sessiondetails.customerName + '&visitoremail=' + this.props.sessiondetails.email + '&request_id=' + this.props.sessiondetails.session_id;

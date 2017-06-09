@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getusergroups} from '../../redux/actions/actions'
 import {creategroup} from '../../redux/actions/actions'
-import {deletegroup,getcustomers,getDeptAgents} from '../../redux/actions/actions'
-
+import {deletegroup,getcustomers,getDeptAgents} from '../../redux/actions/actions';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import GroupCreateView from './GroupCreateView';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -13,6 +12,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
+import ReactPaginate from 'react-paginate';
 var NotificationSystem = require('react-notification-system');
 
 
@@ -25,11 +25,11 @@ class Groups extends Component {
    }
 
     const usertoken = auth.getToken();
-    console.log('componentWillMount is called');
+    //console.log('componentWillMount is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         props.getusergroups(usertoken);
         props.getcustomers(usertoken);
       }
@@ -38,29 +38,30 @@ class Groups extends Component {
 
     this.state = {
       showAddGroup: false,
+      groupsData: [],
+      totalLength: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
   }
 
 componentDidMount(){
      const usertoken = auth.getToken();
-     console.log('componentWillMount is called');
+     //console.log('componentWillMount is called');
     if(usertoken != null)
     {
 
-        console.log(usertoken);
+        //console.log(usertoken);
         this.props.getusergroups(usertoken);
         this.props.getDeptAgents(usertoken);
 
         this.props.getcustomers(usertoken);
       }
-
-
-
-
+      this.displayData(0);
+      this.setState({totalLength: this.props.groupdetails.length});
 }
    handleClick(e) {
 
@@ -70,7 +71,27 @@ componentDidMount(){
       e.preventDefault();
   }
 
+  displayData(n){
+    let offset = n*6;
+    //console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.props.groupdetails.length){
+      limit = this.props.groupdetails.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.props.groupdetails[i];
+    }
+    this.setState({groupsData: sessionData});
+  }
 
+  handlePageClick(data){
+    //console.log(data.selected);
+    this.displayData(data.selected);
+  }
 
   add(name,description,deptagents) {
    // alert('called');
@@ -97,7 +118,7 @@ componentDidMount(){
  }
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
 
     return (
       <div className="vbox viewport">
@@ -109,18 +130,7 @@ componentDidMount(){
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Group Management </h3>
-                 <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/groups">Group Management </Link>
-                  </li>
 
-            </ul>
             <div className="portlet box grey-cascade">
               <div className="portlet-title">
                 <div className="caption">
@@ -158,14 +168,26 @@ componentDidMount(){
                     <tbody>
                       {
 
-                        this.props.groupdetails.map((group, i) => (
+                        this.state.groupsData.map((group, i) => (
 
                           <GroupListItem group={group} key={group._id}   onDelete={() => this.props.deletegroup(group,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails ={this.props.userdetails}/>
 
                         ))
                       }
                      </tbody>
-                    </table></div> :
+                    </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
+                    </div> :
                     <p>Currently, there is no group to show.</p>
 
                 }
@@ -185,10 +207,10 @@ Groups.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.groupdetails);
-  console.log(state.dashboard.errorMessage);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.userdetails);
+  //console.log(state.dashboard.groupdetails);
+  //console.log(state.dashboard.errorMessage);
 
   return {
           groupdetails:(state.dashboard.groupdetails),

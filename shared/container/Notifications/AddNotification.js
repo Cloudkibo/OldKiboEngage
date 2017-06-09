@@ -14,7 +14,7 @@ class AddNotification extends Component {
   constructor(props, context) {
     //call action to get user teams
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     super(props, context);
 
     this.addNotifications = this.addNotifications.bind(this);
@@ -45,8 +45,9 @@ class AddNotification extends Component {
         'hasImage': 'false'
       }
       var customers = this.props.customers;
-      console.log(notification);
-      //sending notification on socket
+
+      //console.log(notification);
+     //sending notification on socket
 
       var message = {
         sender: this.props.userdetails.firstname,
@@ -184,7 +185,6 @@ function mapStateToProps(state) {
     deptagents: (state.dashboard.deptagents),
     addednotification: (state.dashboard.addednotification),
     customers: (state.dashboard.customers),
-
   };
 }
 

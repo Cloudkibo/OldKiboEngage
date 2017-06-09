@@ -28,8 +28,8 @@ class EditNotification extends Component {
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(this.props.params.id);
+        //console.log(usertoken);
+        //console.log(this.props.params.id);
         this.props.getNotificationRequest(this.props.params.id,usertoken);
       }
   }
@@ -45,7 +45,7 @@ class EditNotification extends Component {
     if (title.value && desc.value)
      {
         var notification = {'title' : title.value,'description':desc.value,'companyid' : companyid,'agent_id' : this.props.userdetails._id}
-        console.log(notification);
+        //console.log(notification);
         this.props.editNotification(notification,usertoken);
      
     }

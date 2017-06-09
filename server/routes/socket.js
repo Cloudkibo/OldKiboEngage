@@ -8,7 +8,6 @@ var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagepushns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=qEtmHxK7uu4/vBxLfUZKgATa+h5z2MLI63Soky0QNxk=');
 var notificationHubService2 = azure.createNotificationHubService('KiboEngageProductionHub','Endpoint=sb://kiboengageproductionhub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=Hc1qWqbkLk4oGYJ9dN9vexUsIKk8hOeja5sEte89n9s=');
 var logger = require('../logger/logger');
-
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
@@ -186,7 +185,7 @@ function onConnect(io2, socket) {
   //require('../controllers/chat.controller').register(socket,io2);
 
   socket.on('logClient', function(data){
-    //logger.clientLog(data.level, "Client side log: "+ data.data);
+    logger.clientLog('info',data.msg + JSON.stringify(data.data) );
   });
 
 
@@ -902,6 +901,8 @@ exports.socketf = function (socketio) {
       onDisconnect(socketio, socket);
       console.info('[%s] DISCONNECTED', socket.address);
     });
+
+
 
     // Call onConnect.
     onConnect(socketio, socket);

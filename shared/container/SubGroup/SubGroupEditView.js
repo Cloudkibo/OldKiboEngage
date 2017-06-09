@@ -14,12 +14,12 @@ class SubgroupEditView extends Component {
   constructor(props, context) {
        //call action to get user teams 
     const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(props.params.id);
+        //console.log(usertoken);
+        //console.log(props.params.id);
         props.getSubgroupRequest(props.params.id,usertoken);
         props.getcustomers(usertoken);
       }
@@ -76,7 +76,7 @@ class SubgroupEditView extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">SubGroups Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -93,12 +93,11 @@ class SubgroupEditView extends Component {
                       }
          
              {this.props.subgroup &&
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
+            <div className="uk-card uk-card-body uk-card-default uk-width-1-2@m">
+              <div className="uk-card-title">
+        
                    Edit Subgroup Details
-                </div> 
+      
               </div>    
         
            <div className="portlet-body form">
@@ -126,7 +125,7 @@ class SubgroupEditView extends Component {
                  <div className="form-group">
                   <label className="control-label col-md-3"> Active </label>
                   <div className="col-md-9">   
-                        <select  ref = "status" defaultValue ={ag[0].activeStatus} onChange={this.handleChange.bind(this)}   >
+                        <select className="uk-select"  ref = "status" defaultValue ={ag[0].activeStatus} onChange={this.handleChange.bind(this)}   >
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                         </select>
@@ -134,10 +133,10 @@ class SubgroupEditView extends Component {
                       </div>
                 </div>
             
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
+                <div className="col-md-6">
+                  <div className="col-md-offset-6 col-md-6">
                     <button className="btn green" onClick={this.editSubgroup}>
                       <i className="fa fa-pencil"/>
                        Submit
@@ -145,8 +144,8 @@ class SubgroupEditView extends Component {
 
                     </div>
                </div> 
-                <div className="col-md-9">
-                  <div className="col-md-9">
+                <div className="col-md-6">
+                  <div >
                     <Link to="/subgroups" className="btn green">
                       <i className="fa fa-times"/>
                        Back
@@ -179,7 +178,7 @@ SubgroupEditView.propTypes = {
   
 };
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
   
    return {
     

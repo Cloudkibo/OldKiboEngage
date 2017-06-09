@@ -49,12 +49,12 @@ class SessionDetailView extends Component {
   constructor(props, context) {
       //call action to get user teams
     const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
 
-        console.log(usertoken);
-        console.log(props.params.id);
+        //console.log(usertoken);
+        //console.log(props.params.id);
         props.getSessionDetailsRequest(props.params.id);
         props.getspecificuserchats(props.params.id,props.userdetails.uniqueid,usertoken)
       }

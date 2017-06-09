@@ -295,15 +295,16 @@ class AddCustomer extends Component {
     // var companyid = getParameterByName('id');
     var companyid = props.params.id;
     var pathname = props.params.pathname;
-    console.log(pathname)
-    // console.log(fullurl)
-    console.log(companyid)
-    if (props.params.requestid) {
+
+    //console.log(pathname)
+   // //console.log(fullurl)
+    //console.log(companyid)
+    if(props.params.requestid){
       //alert(props.params.requestid);
       props.getspecificsession(props.params.requestid);
     }
-    //console.log(props.params.pathname);
-    // console.log(props.params.id);
+    ////console.log(props.params.pathname);
+
     this.addCustomers = this.addCustomers.bind(this);
     this.create_session = this.create_session.bind(this);
     this.noagent = this.noagent.bind(this);
@@ -565,11 +566,13 @@ class AddCustomer extends Component {
   }
 
   render() {
+
     console.log(Countries);
     {
       this.props.roomdetails &&
       browserHistory.push('/clientchat')
     }
+
     return (
 
       <div>
@@ -700,7 +703,7 @@ class AddCustomer extends Component {
 
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
+  //console.log("mapStateToProps is called");
 
   return {
 

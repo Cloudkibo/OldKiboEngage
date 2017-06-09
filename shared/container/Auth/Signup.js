@@ -57,7 +57,7 @@ class Signup extends React.Component {
                     'companyName': cname.value,
                     'website': cdnameRef.value
                   }
-                  console.log(user);
+                  //console.log(user);
 
                   this.props.signupuser(user)
                  // fnameRef.value = lnameRef.value = pwdRef.value = c_pwdRef.value = emailRef.value = phoneRef.value = cname.value = cdnameRef.value = '';
@@ -68,7 +68,7 @@ class Signup extends React.Component {
 
   handlePwdChange(event) {
     var result = strengthTester.check(event.target.value);
-    console.log("Password changed", result.strengthCode);
+    //console.log("Password changed", result.strengthCode);
     var text = "";
     var bar = 0;
     var color = 'red';
@@ -248,8 +248,8 @@ Signup.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps function called');
-  console.log(state.signup.signupwarnings);
+  //console.log('mapStateToProps function called');
+  //console.log(state.signup.signupwarnings);
   return {signupwarnings: (state.signup.signupwarnings)};
 }
 

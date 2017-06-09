@@ -10,7 +10,7 @@ import {createResponse}  from '../../redux/actions/actions';
 
 class CannedResponseCreate extends Component {
   constructor(props, context) {
-    console.log('constructor is called');
+    //console.log('constructor is called');
     super(props, context);
 
      //this.createcannedResponse = this.createcannedResponse.bind(this);
@@ -127,7 +127,7 @@ class CannedResponseCreate extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called.");
+  //console.log("mapStateToProps is called.");
 
   return {
     channels:(state.dashboard.channels),

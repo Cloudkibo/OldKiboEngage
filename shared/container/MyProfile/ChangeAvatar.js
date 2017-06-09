@@ -24,7 +24,7 @@ class ChangeAvatar extends Component {
    if(usertoken != null)
    {
 
-       console.log(usertoken);
+       //console.log(usertoken);
        props.getuser(usertoken);
      }
 
@@ -78,7 +78,7 @@ class ChangeAvatar extends Component {
   onSubmit(event)
     {
         const usertoken = auth.getToken();
-        console.log(this.state.image);
+        //console.log(this.state.image);
         if(this.state.image == null){
           alert('Please upload picture');
         }
@@ -95,7 +95,7 @@ class ChangeAvatar extends Component {
 
   render() {
     const token = auth.getToken()
-    console.log(token)
+    //console.log(token)
 
 
     return (

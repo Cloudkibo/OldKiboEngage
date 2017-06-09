@@ -10,7 +10,8 @@ import InviteAgent from './InviteAgent';
 import {inviteagent,getAgents} from '../../redux/actions/actions'
 import {deleteagent} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import ReactPaginate from 'react-paginate';
 
 class Agents extends Component {
 
@@ -20,17 +21,20 @@ class Agents extends Component {
     browserHistory.push('/notverified');
    }
     const usertoken = auth.getToken();
-    console.log('constructor is called');
+    //console.log('constructor is called');
     super(props, context);
     this.state = {
       showInviteAgent :  false,
+      agentsData: [],
+      totalLength: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.cancelInvite = this.cancelInvite.bind(this);
     this.add = this.add.bind(this);
     props.getAgents(usertoken);
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
 
 
   }
@@ -49,6 +53,34 @@ class Agents extends Component {
       });
       e.preventDefault();
   }
+
+  displayData(n){
+    let offset = n*6;
+    //console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.props.agents.length){
+      limit = this.props.agents.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.props.agents[i];
+    }
+    this.setState({agentsData: sessionData});
+  }
+
+  handlePageClick(data){
+    //console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({ totalLength: this.props.agents.length });
+  }
+
   cancelInvite(e){
 
       this.setState({
@@ -59,10 +91,10 @@ class Agents extends Component {
 
 
   render() {
-    console.log(this.props.userdetails.firstname)
+    //console.log(this.props.userdetails.firstname)
     const token = auth.getToken()
-    console.log(token)
-    console.log(this.props.agents);
+    //console.log(token)
+    //console.log(this.props.agents);
     return (
       <div className="vbox viewport">
        <AuthorizedHeader name = {this.props.userdetails.firstname} user={this.props.userdetails}/>
@@ -71,27 +103,11 @@ class Agents extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <h3 className ="page-title">Agents Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
-                  <li>
-                    <i className="fa fa-home"/>
-                    <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/>
-                  </li>
-                  <li>
-                               <Link to="/agents"> Agents Management</Link>
-                  </li>
 
-            </ul>
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
-                   Agents
-                </div>
-              </div>
+            <div className=" uk-card uk-card-default uk-card-body">
+             <h3 className="uk-card-title">Agents</h3>
 
-           <div className="portlet-body">
+           <div>
              <div className="table-toolbar">
                  <div className="btn-team">
                     <button id="sample_editable_1_new" className="btn green" onClick={this.handleClick}> Invite Agent
@@ -113,7 +129,7 @@ class Agents extends Component {
                       </div>
                 }
                <InviteAgent inviteAgent={this.add}  cancelInvite = {this.cancelInvite} showInviteAgent= {this.state.showInviteAgent} companyid = {this.props.userdetails.uniqueid} website = {this.props.userdetails.website}/>
-
+               <br />
                 { this.props.agents && this.props.agents.length > 0 ?
                   <div className="table-responsive">
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
@@ -129,7 +145,7 @@ class Agents extends Component {
 
                     <tbody>
                       {
-                        this.props.agents.map((agent, i) => (
+                        this.state.agentsData.map((agent, i) => (
 
                           <AgentListItem agent={agent} key={agent._id}  onDelete={() => this.props.deleteagent(agent,token)}/>
 
@@ -137,6 +153,17 @@ class Agents extends Component {
                       }
                      </tbody>
                     </table>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p>Currently, there is no agent to show.</p>
                 }
@@ -157,10 +184,10 @@ Agents.propTypes = {
   errorMessage: PropTypes.string,
 }
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.userdetails);
-  console.log(state.dashboard.agents);
-  console.log(state.dashboard.errorMessage);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.userdetails);
+  //console.log(state.dashboard.agents);
+  //console.log(state.dashboard.errorMessage);
 
   return {
           agents:(state.dashboard.agents),

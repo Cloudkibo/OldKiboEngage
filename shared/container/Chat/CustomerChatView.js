@@ -10,7 +10,10 @@ import { updateChatList,removeDuplicatesWebChat}  from '../../redux/actions/acti
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
 import {savechat,updatechatstatus,downloadfile,getchatfromAgent}  from '../../redux/actions/actions'
-import { FileUpload } from 'redux-file-upload'
+import { FileUpload } from 'redux-file-upload';
+import SweetAlert from 'sweetalert-react';
+import {printlogs} from '../../services/clientlogging';
+
 
 //var DownloadButton = require('downloadbutton')
 
@@ -27,7 +30,7 @@ var c = new Date(d);
 return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 }
 function getSuggestions(value,cr) {
-  console.log(cr);
+  printlogs('log',cr);
   const languages = cr
 
   const inputValue = value.trim().toLowerCase();
@@ -52,11 +55,11 @@ class CustomerChatView extends Component {
     // alert('calling constructor')
     //call action to get user teams
      const usertoken = auth.getToken();
-     console.log('constructor is called');
+     printlogs('log','constructor is called');
     if(usertoken != null)
      {
-        console.log(usertoken);
-        console.log(props.sessiondetails.customerid);
+        printlogs('log',usertoken);
+        printlogs('log',props.sessiondetails.customerid);
 
         props.getChatRequest(props.sessiondetails.customerid,usertoken,props.chatlist);
       }
@@ -124,7 +127,7 @@ onFileSubmit(event)
         var fileData = new FormData();
 
         if ( this.state.userfile ) {
-              console.log(this.state.userfile)
+              printlogs('log',this.state.userfile)
 
 
               var today = new Date();
@@ -204,8 +207,8 @@ connectToCall(e){
       call.visitoremail = this.refs.customeremail.value;
       call.request_id = this.props.sessiondetails.request_id;
       call.url = meetingURLString;
-      console.log(call);
-      console.log(meetingURLString);
+      printlogs('log',call);
+      printlogs('log',meetingURLString);
       this.props.route.socket.emit('connecttocall', {room: this.props.userdetails.uniqueid, stanza: call});
 
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
@@ -224,7 +227,7 @@ onChange(event, { newValue }) {
 
   onSuggestionsUpdateRequested({ value }) {
      var v = value.split(" ");
-     console.log(v)
+     printlogs('log',v)
 
     this.setState({
       suggestions: getSuggestions(v[v.length-1],this.props.responses)
@@ -233,14 +236,14 @@ onChange(event, { newValue }) {
 
 onSuggestionSelected({suggestionValue,method = 'click'})
 {
-  console.log("current value of input is  :" + this.state.value)
+  printlogs('log',"current value of input is  :" + this.state.value)
    var v = this.state.value.split(" ");
    var prevVal = "";
    for(var i = 0;i< v.length - 1;i++)
    {
     prevVal = prevVal + " " + v[i]
    }
-   console.log("current value of input is  :" + prevVal)
+   printlogs('log',"current value of input is  :" + prevVal)
   if(prevVal == ""){
    this.setState({
       value: suggestionValue
@@ -411,8 +414,8 @@ else{
 
 
    handleMessageSubmit(e) {
-    console.log('handleMessageSubmit' + e.which)
-    console.log(this.state.value)
+    printlogs('log','handleMessageSubmit' + e.which)
+    printlogs('log',this.state.value)
     callonce = "false";
     var messageVal = this.state.value
     const { socket,dispatch } = this.props;
@@ -934,10 +937,10 @@ else{
   var agentemail = []
   var agentids = []
   if(this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib == -1){
-    alert("Please select a team from the dropdown menu");
+    this.setState({ show: true });
     return;
   }
-  
+
 
   for(var i=0;i<this.props.teamagents.length;i++){
     if(this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib){
@@ -1235,6 +1238,12 @@ const { value, suggestions } = this.state;
 
       <div>
            <div className="table-responsive">
+      <SweetAlert
+        show={this.state.show}
+        title="Alert"
+        text="Please select a team from the dropdown menu"
+        onConfirm={() => this.setState({ show: false })}
+      />
              <table className="table table-colored">
              <tbody>
              <tr>
@@ -1253,9 +1262,9 @@ const { value, suggestions } = this.state;
 
                   <div className="input-group">
                   <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
-                        
+
                         <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
-                  
+
                         {this.props.sessiondetails.platform == "web"?
 
                          (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
@@ -1343,7 +1352,7 @@ const { value, suggestions } = this.state;
                           <label>Current Status - {this.props.sessiondetails.status}</label>
                           <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
                           <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
-                         
+
                           <br/>
                           <label>{
                             (this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid).length > 0) ? this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname : ''}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
@@ -1405,7 +1414,7 @@ const { value, suggestions } = this.state;
 
                                (this.props.userdetails.firstname === chat.from?
                                     <li className="right clearfix agentChatBox" style={{'marginLeft':'180px','width':'400px'}}>
-                                 
+
                                       <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
                                       </span>
                                       <div className="chat-body clearfix">

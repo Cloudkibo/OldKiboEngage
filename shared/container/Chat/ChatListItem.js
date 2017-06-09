@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import {printlogs} from '../../services/clientlogging';
 
 function ChatListItem(props) {
 
@@ -115,7 +116,7 @@ for(var i = 0;i< unread.length;i++){
 }
 
 
-//console.log(unread);
+//printlogs('log',unread);
 var handleDate = function(d){
 var c = new Date(d);
 var res = c.getHours() + ":" + c.getMinutes() + " " + c.toDateString()

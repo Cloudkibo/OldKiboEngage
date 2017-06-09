@@ -28,7 +28,7 @@ class GroupCreateView extends Component {
   appendAgent(id,e){
    // alert(id);
     var flag = 0;
-    console.log(this.props.newagents);
+    //console.log(this.props.newagents);
     for(var j = 0;j<this.props.newagents.length;j++)
     {
       if(this.props.newagents[j]._id == id)

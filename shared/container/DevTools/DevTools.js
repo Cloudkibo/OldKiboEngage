@@ -7,6 +7,7 @@ export default createDevTools(
   <DockMonitor
     toggleVisibilityKey="ctrl-h"
     changePositionKey="ctrl-w"
+    style={{zIndex:999999999}}
   >
     <LogMonitor />
   </DockMonitor>

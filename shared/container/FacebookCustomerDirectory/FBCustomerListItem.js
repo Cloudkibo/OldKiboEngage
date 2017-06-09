@@ -7,8 +7,8 @@ function FBCustomerListItem(props) {
 
   return (
     <tr className = "odd">
-      <td>{props.customer.get('first_name') + " " + props.customer.get('last_name')}</td>
-      <td>{props.customer.get('email') ? props.customer.get('email') : "N/A" }</td>
+      <td>{props.customer.first_name + " " + props.customer.last_name}</td>
+      <td>{props.customer.email ? props.customer.email : "N/A" }</td>
     </tr>
   );
 }

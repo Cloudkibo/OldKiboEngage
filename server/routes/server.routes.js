@@ -135,5 +135,5 @@ router.post('/uploadchatfile', multipartyMiddleware, ChatController.uploadchatfi
 router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadchatfileAgent);
 router.post('/uploadchatfilefb',multipartyMiddleware, FbChatController.uploadchatfilefb);
 router.post('/updatesettings',multipartyMiddleware, UserController.updatesettings);
-router.route('/getmetaurl').post(FbChatController.getmetaurl);
+router.route('/fetchurlmeta').post(FbChatController.fetchurlmeta);
 export default router;

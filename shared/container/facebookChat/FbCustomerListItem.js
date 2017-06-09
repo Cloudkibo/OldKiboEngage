@@ -84,9 +84,7 @@ for(var i = 0;i< props.userchat.length;i++){
   }
 }
 
-//console.log('thisChat' + thisChat)
 
-//console.log(unread);
 var handleDate = function(d){
 var c = new Date(Number(d));
 var res = c.toDateString()

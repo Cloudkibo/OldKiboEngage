@@ -14,12 +14,12 @@ class ResponseEditView extends Component {
   constructor(props, context) {
        //call action to get user teams 
     const usertoken = auth.getToken();
-     console.log('constructor is called');
+     //console.log('constructor is called');
     if(usertoken != null)
      {
        
-        console.log(usertoken);
-        console.log(props.params.id);
+        //console.log(usertoken);
+        //console.log(props.params.id);
         props.getResponseRequest(props.params.id,usertoken);
       }
 
@@ -41,7 +41,7 @@ class ResponseEditView extends Component {
     if (shortcode.value &&  msg.value)
      {
       var response = {'_id' : idRef.value,'shortcode' : "/" + shortcode.value,'message':msg.value,'companyid' : companyid.value}
-      console.log(response);
+      //console.log(response);
       this.props.editResponse(response,usertoken);
      
     }
@@ -162,8 +162,8 @@ ResponseEditView.propTypes = {
   
 };
 function mapStateToProps(state) {
-  console.log("mapStateToProps is called");
-  console.log(state.dashboard.response);
+  //console.log("mapStateToProps is called");
+  //console.log(state.dashboard.response);
   
    return {
     userdetails :(state.dashboard.userdetails),
