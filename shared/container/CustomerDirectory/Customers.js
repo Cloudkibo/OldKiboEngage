@@ -115,12 +115,10 @@ filterData(event) {
           <div className="page-content-wrapper">
             <div className="page-content">
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
+      
                    Customers
-                </div>
               </div>
 
            <div className="portlet-body">
