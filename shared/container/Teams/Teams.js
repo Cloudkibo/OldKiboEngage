@@ -12,7 +12,7 @@ import {deleteteam,jointeam,getTeamAgents} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 const PureRenderMixin = require('react-addons-pure-render-mixin');
-import Immutable from 'immutable';
+import ReactPaginate from 'react-paginate';
 var NotificationSystem = require('react-notification-system');
 
 class Teams extends Component {
@@ -35,16 +35,19 @@ class Teams extends Component {
     super(props, context);
 
      this.state = {
-      data: Immutable.List(),
-      filteredData: Immutable.List(),
+      data: props.teamdetails,
+      filteredData: props.teamdetails,
+      teamsData: [],
+      totalLength: 0,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.displayData = this.displayData.bind(this);
 
 
   }
 
-  componentWillReceiveProps(props){
+  /*componentWillReceiveProps(props){
     if(props.teamdetails){
        this.setState({
       data: Immutable.fromJS(props.teamdetails).toList(),
@@ -59,18 +62,57 @@ class Teams extends Component {
     });
 
    }
-  }
+ }*/
 
   filterData(event) {
     event.preventDefault();
-    const regex = new RegExp(event.target.value, 'i');
-    const filtered = this.state.data.filter(function(datum) {
-      return (datum.get('groupname').search(regex) > -1);
-    });
+    var filtered= [];
+    console.log(this.state.data);
+    for(var i=0; i<this.state.data.length; i++){
+        if(this.state.data[i].groupname.toLowerCase().includes(event.target.value)){
+          filtered.push(this.state.data[i]);
+        }
+    }
 
     this.setState({
       filteredData: filtered,
+    },
+    () => {
+      this.displayData(0);
+      this.setState({ totalLength: this.state.filteredData.length });
+      console.log(this.state.filteredData);
+    }
+
+    );
+  }
+
+  displayData(n){
+    let offset = n*6;
+    console.log("Offset: " + offset);
+    let sessionData = [];
+    let limit;
+    if ((offset + 6) > this.state.filteredData.length){
+      limit = this.state.filteredData.length;
+    }
+    else {
+      limit = offset + 6;
+    }
+    for (var i=offset; i<limit; i++){
+      sessionData[i] = this.state.filteredData[i];
+    }
+    this.setState({
+      teamsData: sessionData,
     });
+    }
+
+  handlePageClick(data){
+    console.log(data.selected);
+    this.displayData(data.selected);
+  }
+
+  componentDidMount(){
+    this.displayData(0);
+    this.setState({ totalLength: this.state.filteredData.length });
   }
 
   render() {
@@ -105,6 +147,7 @@ class Teams extends Component {
             </ul>
             <div className="uk-card uk-card-default uk-card-body">
               <h3 className="uk-card-title">Teams</h3>
+
 
            <div >
              <div className="table-toolbar">
@@ -147,15 +190,26 @@ class Teams extends Component {
 
                     <tbody>
                        {
-                        this.props.teamagents && filteredData && filteredData.map((team, i) => (
+                        this.props.teamagents && filteredData && this.state.teamsData.map((team, i) => (
 
-                          <TeamListItem team={team} key={team.get('_id')}  teamagents = {this.props.teamagents} onDelete={() => this.props.deleteteam(team,team.get('_id'),token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
+                          <TeamListItem team={team} key={team._id}  teamagents = {this.props.teamagents} onDelete={() => this.props.deleteteam(team,team._id,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
 
                         ))
                       }
                      </tbody>
                     </table>
                     </div>
+                    <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={Math.ceil(this.state.totalLength/6)}
+                                   marginPagesDisplayed={1}
+                                   pageRangeDisplayed={6}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
                     </div> :
                     <p> Currently, there is no team to show. </p>
                 }
