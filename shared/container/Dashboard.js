@@ -9,8 +9,9 @@ import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
 import SideBar from '../components/Header/SideBar';
 import auth from '../services/auth';
-import ReactTimeout from 'react-timeout'
-import {browserHistory} from 'react-router'
+import ReactTimeout from 'react-timeout';
+import {browserHistory} from 'react-router';
+import { joinMeetingForAgent } from '../socket';
 import {printlogs} from '../services/clientlogging';
 //const socket = io('');
 var dontCall = false;
@@ -38,9 +39,8 @@ class Dashboard extends Component {
 
   create_agentsession() {
     // alert('joined socket');
+    // todo socket.io discuss with zarmeen, handling of component level variable should be separate
     dontCall = true;
-    this.props.setjoinedState('joined');
-
   }
 
   getupdatedSessions(data)
@@ -89,36 +89,22 @@ class Dashboard extends Component {
       this.props.getteams(usertoken);
       this.props.getTeamAgents(usertoken);
     }
-
-
   }
 
   componentWillReceiveProps(props) {
     if (props.userdetails && props.userdetails.accountVerified == "No" && is_routed == false) {
       is_routed = true;
       browserHistory.push('/notverified');
-
-
     }
 
     if (props.userdetails.uniqueid && props.userjoinedroom == 'notjoined') {
       this.props.setjoinedState('joining');
 
-
       //  alert('calling room join')
-      this.props.route.socket.emit('create or join meeting for agent', {
-        room: props.userdetails.uniqueid,
-        agentEmail: props.userdetails.email,
-        agentName: props.userdetails.firstname + ' ' + props.userdetails.lastname,
-        agentId: props.userdetails._id
-      });
-
-
+      joinMeetingForAgent();
       //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
-      //this.forceUpdate();
+      // this.forceUpdate();
     }
-
-
   }
 
   updateOnlineAgents(data) {
@@ -131,11 +117,12 @@ class Dashboard extends Component {
     //dontCall = false;
     //this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
     this.props.route.socket.on('agentjoined', this.create_agentsession);
+
+    // todo discuss the following as well
     this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
     this.props.route.socket.on('customer_left', this.getabandonedSessions);
     this.props.route.socket.on('returnCustomerSessionsList',this.getresolvedSessions);
-
-
+    
   }
 
   callSocket() {
@@ -143,12 +130,7 @@ class Dashboard extends Component {
       this.props.setjoinedState('joining');
 
       // alert('calling meeting')
-      this.props.route.socket.emit('create or join meeting for agent', {
-        room: this.props.userdetails.uniqueid,
-        agentEmail: this.props.userdetails.email,
-        agentName: this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-        agentId: this.props.userdetails._id
-      });
+      joinMeetingForAgent();
 
 
       //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications

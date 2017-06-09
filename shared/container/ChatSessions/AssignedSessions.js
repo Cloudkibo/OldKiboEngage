@@ -50,9 +50,7 @@ class AssignedSessions extends Component {
 
   getupdatedSessions(data)
   {
-    const usertoken = auth.getToken();
     this.props.getassignedsessionsfromsocket(data,this.props.assignedsessions);
-
     this.forceUpdate();
   }
 
@@ -251,6 +249,9 @@ class AssignedSessions extends Component {
   }
 
   componentDidMount(){
+
+        console.log("Pre page");
+        // todo discuss with zarmeen, why force update
         this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.displayData(0);
         this.setState({totalLength: this.state.assignedsessionsfiltered.length});

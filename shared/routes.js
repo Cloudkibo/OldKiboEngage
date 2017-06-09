@@ -79,6 +79,8 @@ import FacebookIntegrationInstructions from './container/FacebookIntegrationInst
 import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
 let socket = io('');
+
+  // todo merge - move this logic to socket module
 let disconnected = false;
 socket.on('verified', () => {
   location.reload();
@@ -95,6 +97,7 @@ socket.on('disconnect', () => {
   disconnected = true;
  // location.reload();
 });
+
 
 console.log('entered into routes');
 function requireAuth(nextState, replace) {
@@ -119,6 +122,7 @@ function redirectAuthUsers(nextState, replace) {
 }
 
 const routes = (
+  // todo remove socket.io from here
    <Route path="/" component={App} socket = {socket}>
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />

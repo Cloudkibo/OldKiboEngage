@@ -58,6 +58,7 @@ class NewSessions extends Component {
 
   getupdatedSessions(data) {
     const usertoken = auth.getToken();
+    // todo is this forceUpdate necessary?
     this.props.getnewsessionsfromsocket(data, this.props.newsessions);
 
     this.forceUpdate();

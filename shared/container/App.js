@@ -1,59 +1,28 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {updateChatList} from '../redux/actions/actions';
-import {notify} from '../services/notify';
-import {printlogs} from '../services/clientlogging';
+import {printlogs} from '../services/clientlogging'; // todo print logs, use them in socket module
 
 class App extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.alertme = this.alertme.bind(this);
     this.getSocketmessage = this.getSocketmessage.bind(this);
-    this.state = {'connected':true};
+    this.state = {'connected':true}; // todo merge - let's make it depend on redux and not component state
   }
 
   componentDidMount() {
-
-    this.props.route.socket.on('customer_joined', this.alertme);
-    this.props.route.socket.on('send:fbcustomer', (data) => {
-      notify('facebook customer joined');
-    });
-    this.props.route.socket.on('disconnect', () => {
-        printlogs('log','disconnecting');  
-        this.setState({'connected':false});
-       // location.reload();
-      });
-
-     this.props.route.socket.on('connect', () => {
-        printlogs('log','connecting');  
-        this.setState({'connected':true});
-       // location.reload();
-      });
-
-    this.props.route.socket.on('updateFBsessions', (data) => {
-      printlogs('log','updateFBsessions desktop notify');
-      printlogs('log',data);
-      if (data.status === 'assigned') {
-        notify(`${data.username } of Facebook Page ${data.pageTitle} has been assigned to ${data.agentname}`);
-      } else {
-        notify(`${data.username} of Facebook Page ${data.pageTitle} has been resolved by ${data.agentname}`);
-      }
-    });
   }
 
   getSocketmessage(message) {
     this.props.updateChatList(message);
   }
 
-  alertme(data) {
-    notify('customer joined a session');
-  }
-
   render() {
     return (
 
       <div>
+      { /* make it use the connection information coming from redux through props and not internal state */ }
         {this.state.connected == false &&
           <div style={{
                 background: '#F44336',
