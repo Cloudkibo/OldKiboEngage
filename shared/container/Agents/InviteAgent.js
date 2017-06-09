@@ -39,13 +39,8 @@ cancelInvite()
 
     return (
       <div className={cls}>
-      <div className="portlet box blue" style={{width: 80 + '%'}}>
-          <div className="portlet-title">
-            <div className="caption">
-              <i className="fa fa-user"/>
-                Invite an Agent
-            </div>
-          </div>
+      <div  className="uk-card uk-card-default uk-card-body uk-width-1-2@m" style={{width: 80 + '%'}}>
+             <h3 className="uk-card-title">Invite An Agent</h3>
       <div className="portlet-body ">
       <div className="form">
         <div className="form-body">
@@ -64,14 +59,15 @@ cancelInvite()
 
                   <div className="input-group">
                     <label>Email Address</label>
-                    <input type='text' name='email'ref ="emailinp"
+
+                    <input type='text' className="uk-input" placeholder="agentemail@example.com" name='email'ref ="emailinp"
 
                    />
                     </div>
           </div>
 
     
-          <div className="form-actions">
+          <div>
               <button className="btn blue"  type ="submit" onClick={this.onSubmit}> Submit </button>
               <button className="btn default"  onClick={this.cancelInvite}> Cancel </button>
          </div>
@@ -80,6 +76,7 @@ cancelInvite()
       </div>
       </div>
       </div>
+      
     );
   }
 }
