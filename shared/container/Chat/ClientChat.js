@@ -12,12 +12,13 @@ import auth from '../../services/auth';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 
+import {printlogs} from '../../services/clientlogging';
 
 class ClientChat extends Component {
 
  constructor(props, context) {
      const { dispatch} =props;
-     //console.log('componentWillMount is called');
+     printlogs('log','componentWillMount is called');
         props.showAllChat();
         super(props, context);
   

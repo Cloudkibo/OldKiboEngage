@@ -4,7 +4,7 @@ export function printlogs(type,message){
 	//console.warn(message); //gives the warn message with the exclamation mark in front of it
 	//console.info(message); //gives an info message with an 'i' in front of the message
 
-	var showlogs = true;
+	var showlogs = false;
 	if(showlogs == true){
 		//print only 
 		if(type == 'error'){

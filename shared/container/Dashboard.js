@@ -958,4 +958,6 @@ export default connect(mapStateToProps, {
   getfbpages,
   getteams,
   getTeamAgents,
+  getassignedsessionsfromsocket,
+  getresolvedsessionsfromsocket,
 })(ReactTimeout(Dashboard));

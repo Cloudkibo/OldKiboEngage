@@ -12,6 +12,7 @@ import moment from 'moment';
 import {savechat,updatechatstatus,downloadfile,getchatfromAgent}  from '../../redux/actions/actions'
 import { FileUpload } from 'redux-file-upload';
 import SweetAlert from 'sweetalert-react';
+import {printlogs} from '../../services/clientlogging';
 
 
 //var DownloadButton = require('downloadbutton')
@@ -29,7 +30,7 @@ var c = new Date(d);
 return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
 }
 function getSuggestions(value,cr) {
-  //console.log(cr);
+  printlogs('log',cr);
   const languages = cr
 
   const inputValue = value.trim().toLowerCase();
@@ -54,11 +55,11 @@ class CustomerChatView extends Component {
     // alert('calling constructor')
     //call action to get user teams
      const usertoken = auth.getToken();
-     //console.log('constructor is called');
+     printlogs('log','constructor is called');
     if(usertoken != null)
      {
-        //console.log(usertoken);
-        //console.log(props.sessiondetails.customerid);
+        printlogs('log',usertoken);
+        printlogs('log',props.sessiondetails.customerid);
 
         props.getChatRequest(props.sessiondetails.customerid,usertoken,props.chatlist);
       }
@@ -126,7 +127,7 @@ onFileSubmit(event)
         var fileData = new FormData();
 
         if ( this.state.userfile ) {
-              //console.log(this.state.userfile)
+              printlogs('log',this.state.userfile)
 
 
               var today = new Date();
@@ -206,8 +207,8 @@ connectToCall(e){
       call.visitoremail = this.refs.customeremail.value;
       call.request_id = this.props.sessiondetails.request_id;
       call.url = meetingURLString;
-      //console.log(call);
-      //console.log(meetingURLString);
+      printlogs('log',call);
+      printlogs('log',meetingURLString);
       this.props.route.socket.emit('connecttocall', {room: this.props.userdetails.uniqueid, stanza: call});
 
       var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.refs.customername.value+'&visitoremail='+this.refs.customeremail.value+'&request_id='+this.props.sessiondetails.request_id;
@@ -226,7 +227,7 @@ onChange(event, { newValue }) {
 
   onSuggestionsUpdateRequested({ value }) {
      var v = value.split(" ");
-     //console.log(v)
+     printlogs('log',v)
 
     this.setState({
       suggestions: getSuggestions(v[v.length-1],this.props.responses)
@@ -235,14 +236,14 @@ onChange(event, { newValue }) {
 
 onSuggestionSelected({suggestionValue,method = 'click'})
 {
-  //console.log("current value of input is  :" + this.state.value)
+  printlogs('log',"current value of input is  :" + this.state.value)
    var v = this.state.value.split(" ");
    var prevVal = "";
    for(var i = 0;i< v.length - 1;i++)
    {
     prevVal = prevVal + " " + v[i]
    }
-   //console.log("current value of input is  :" + prevVal)
+   printlogs('log',"current value of input is  :" + prevVal)
   if(prevVal == ""){
    this.setState({
       value: suggestionValue
@@ -413,8 +414,8 @@ else{
 
 
    handleMessageSubmit(e) {
-    //console.log('handleMessageSubmit' + e.which)
-    //console.log(this.state.value)
+    printlogs('log','handleMessageSubmit' + e.which)
+    printlogs('log',this.state.value)
     callonce = "false";
     var messageVal = this.state.value
     const { socket,dispatch } = this.props;

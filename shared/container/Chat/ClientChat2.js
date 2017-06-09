@@ -2,12 +2,13 @@ import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
 import {showAllChat, getcompanylogo}  from '../../redux/actions/actions';
 import ClientChatView2 from './ClientChatView2';
+import {printlogs} from '../../services/clientlogging';
 
 class ClientChat2 extends Component {
 
   constructor(props, context) {
     const {dispatch} = props;
-    //console.log('componentWillMount is called');
+    printlogs('log','componentWillMount is called');
     props.showAllChat();
     var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59'
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'

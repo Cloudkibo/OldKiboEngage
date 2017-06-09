@@ -2,6 +2,8 @@ import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
 import {chatbotsession, sendchatToBot, chatbotChatAdd}  from '../../redux/actions/actions'
 import * as ReactDOM from 'react-dom';
+import {printlogs} from '../../services/clientlogging';
+
 var handleDate = function (d) {
   var c = new Date(d);
   return c.getHours() + ':' + c.getMinutes() + ' ' + c.toDateString();

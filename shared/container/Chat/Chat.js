@@ -32,6 +32,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import {bindActionCreators} from 'redux';
 import {browserHistory} from 'react-router'
+import {printlogs} from '../../services/clientlogging';
 
 var callMobileChatSessions
 var callOnce
@@ -54,7 +55,7 @@ class Chat extends Component {
     const usertoken = auth.getToken();
     if (usertoken != null) {
 
-      //console.log(usertoken);
+      printlogs('log',usertoken);
       //for webclients no need to fetch sessions and customer list from server
 
       //but for mobile clients we will fetch list of sessions and customers from server
@@ -95,21 +96,21 @@ class Chat extends Component {
   }
 
   updateOnlineAgents(data) {
-    //console.log('updating updateOnlineAgents');
+    printlogs('log','updating updateOnlineAgents');
     this.props.updateAgentList(data);
     this.forceUpdate();
   }
 
   create_agentsession(socketid) {
-    //console.log('your socket id is : ' + socketid);
+    printlogs('log','your socket id is : ' + socketid);
     this.props.setsocketid(socketid);
     //this.refs.agentsocketfield.value = socketid;
     //alert('setting agentsocket value :' + this.refs.agentsocketfield.value);
   }
 
   getSocketmessage(message) {
-    //console.log('socket called for message');
-    //console.log(message);
+    printlogs('log','socket called for message');
+    printlogs('log',message);
     if (this.props.customerchat_selected) {
       if ((this.props.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
         const usertoken = auth.getToken();
@@ -130,7 +131,7 @@ class Chat extends Component {
 
       else if ((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no') {
         // alert(' i m called2')
-        //console.log("Chat Not Selected");
+        printlogs('log',"Chat Not Selected");
         this.props.userchats.push(message);
 
         this.props.updateChatList(message, this.props.new_message_arrived_rid);
@@ -139,7 +140,7 @@ class Chat extends Component {
       }
       else if ((this.props.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no') {
         // alert(' i m called2')
-        //console.log("Chat Selected");
+        printlogs('log',"Chat Selected");
         this.props.userchats.push(message);
 
         //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
@@ -326,7 +327,7 @@ class Chat extends Component {
    }
    */
   handleSession(id, platform, e) {
-    //console.log(id);
+    printlogs('log',id);
     e.preventDefault();
     const usertoken = auth.getToken();
 
@@ -351,7 +352,7 @@ class Chat extends Component {
 
   render() {
     const token = auth.getToken()
-    //console.log(token)
+    printlogs('log',token)
 
     return (
       <div className="vbox viewport">
