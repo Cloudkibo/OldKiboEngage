@@ -1,38 +1,34 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
 function ResponseListItem(props) {
 
-     
+
   return (
-   
-    <tr className = "odd">
+
+    <tr className="odd">
       <td>{props.response.shortcode} </td>
       <td>{props.response.message}</td>
-      { props.userdetails.isAgent == "Yes"?
-                    <br/> :
-                    <td>
-                      <Link to={`/editresponse/${props.response._id}`} className="btn blue-madison" >
-                      Edit
-                      </Link>
-                      <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+      {
+        props.userdetails.isAgent == "Yes" ?
+        <br/> :
+        <td>
+          <Link to={`/editresponse/${props.response._id}`} className="btn blue-madison">
+            Edit
+          </Link>
+          <button className="btn blue-madison" onClick={props.onDelete}> Delete</button>
+        </td>
+      }
 
-                    </td>
-    
-                
-                    
-                    
-                 }
-      
     </tr>
-    
+
   );
 }
 
 ResponseListItem.propTypes = {
   onDelete: PropTypes.func.isRequired,
- 
+
 };
 
 export default ResponseListItem;
