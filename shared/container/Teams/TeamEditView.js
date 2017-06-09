@@ -124,7 +124,7 @@ class TeamEditView extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">Team Management  </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -137,15 +137,14 @@ class TeamEditView extends Component {
             </ul>
 
              {this.props.team &&
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
+            <div className="uk-card uk-card-default uk-card-body uk-width-1-2@m">
+              <h3 className="uk-card-title">
+          
                     {this.props.team.groupname} - Team
-                </div>
-              </div>
+                
+              </h3>
 
-           <div className="portlet-body form">
+           <div className=" form">
             <form className="form-horizontal form-row-seperated">
               <div className="form-body">
                 <div className="form-group">
@@ -167,7 +166,7 @@ class TeamEditView extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3"> Active </label>
                   <div className="col-md-9">
-                        <select  ref = "status" value ={this.state.status ? this.state.status:this.props.team.status} onChange={this.handleChange}>
+                        <select className="uk-select"  ref = "status" value ={this.state.status ? this.state.status:this.props.team.status} onChange={this.handleChange}>
                           <option value="public"> public  </option>
                           <option value="private"> private </option>
                         </select>
@@ -217,10 +216,10 @@ class TeamEditView extends Component {
                    </div>
                 </div>
 
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
+                <div className="col-md-6">
+                  <div className="col-md-offset-6">
                     <button className="btn green" onClick={this.editTeamDetail} type="submit">
                       <i className="fa fa-pencil"/>
                        Submit
@@ -228,8 +227,8 @@ class TeamEditView extends Component {
 
                     </div>
                </div>
-                <div className="col-md-9">
-                  <div className="col-md-9">
+                <div className="col-md-6">
+                  <div >
                     <Link to="/teams" className="btn green">
                       <i className="fa fa-times"/>
                        Back

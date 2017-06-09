@@ -92,7 +92,7 @@ class Teams extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">Teams Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -103,15 +103,10 @@ class Teams extends Component {
                   </li>
 
             </ul>
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-teams"/>
-                   Teams
-                </div>
-              </div>
+            <div className="uk-card uk-card-default uk-card-body">
+              <h3 className="uk-card-title">Teams</h3>
 
-           <div className="portlet-body">
+           <div >
              <div className="table-toolbar">
                  {this.props.userdetails.isAgent != "Yes" &&
                  <div className="btn-team">
