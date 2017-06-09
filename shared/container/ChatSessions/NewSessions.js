@@ -49,19 +49,11 @@ class NewSessions extends Component {
       totalLength: 0,
       newsessionsfiltered: props.newsessions,
     };
-    this.getupdatedSessions = this.getupdatedSessions.bind(this);
+
     this.handleChange = this.handleChange.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.filterAbandonedSession = this.filterAbandonedSession.bind(this);
-  }
-
-  getupdatedSessions(data) {
-    const usertoken = auth.getToken();
-    // todo is this forceUpdate necessary?
-    this.props.getnewsessionsfromsocket(data, this.props.newsessions);
-
-    this.forceUpdate();
   }
 
   handleChange() {
@@ -140,7 +132,6 @@ class NewSessions extends Component {
   }
 
   componentDidMount() {
-    this.props.route.socket.on('customer_left', this.getupdatedSessions);
     this.displayData(0);
     this.setState({ totalLength: this.state.newsessionsfiltered.length });
   }

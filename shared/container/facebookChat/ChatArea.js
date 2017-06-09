@@ -27,6 +27,7 @@ import {
 } from './utility';
 
 import {printlogs} from '../../services/clientlogging';
+import { updateSessionStatusFb, broadCastFb } from '../../socket';
 
 var getSuggestions = function (value, cr) {
  printlogs('log',cr);
@@ -130,13 +131,13 @@ export class ChatArea extends Component {
 
   assignSessionToTeam(e) {
 
-    const {socket, dispatch} = this.props;
+    const { dispatch } = this.props;
 
     // local changes
     this.props.fbsessionSelected.status = "assigned";
     this.props.fbsessionSelected.agent_ids.push({
       'id': this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,
-      'type': 'group'
+      'type': 'group',
     });
 
 
@@ -224,7 +225,7 @@ export class ChatArea extends Component {
       this.props.assignToAgentFB(assignment, usertoken, agentemail, 'group');
 
       //update session status on socket
-      socket.emit('updatesessionstatusFB', {
+      updateSessionStatusFb({
         'pageid': this.props.fbsessionSelected.pageid.pageid,
         'user_id': this.props.fbsessionSelected.user_id.user_id,
         'status': 'assigned',
@@ -265,7 +266,7 @@ export class ChatArea extends Component {
 
 
   autoassignChat() {
-    const {socket, dispatch} = this.props;
+    const { dispatch} = this.props;
     var agentemail = []
     var teammembers = []
     //create array of teammembers
@@ -352,7 +353,7 @@ export class ChatArea extends Component {
     this.props.assignToAgentFB(assignment, usertoken, agentemail, 'agent');
 
     //update session status on socket
-    socket.emit('updatesessionstatusFB', {
+    updateSessionStatusFb({
       'pageid': this.props.fbsessionSelected.pageid.pageid,
       'user_id': this.props.fbsessionSelected.user_id.user_id,
       'status': 'assigned',
@@ -371,7 +372,7 @@ export class ChatArea extends Component {
   }
 
   assignSessionToAgent(e) {
-    const {socket, dispatch} = this.props;
+    const {dispatch} = this.props;
     var agentemail = [];
     var teammembers = [];
     if (this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib == -1) {
@@ -466,7 +467,7 @@ export class ChatArea extends Component {
       this.props.assignToAgentFB(assignment, usertoken, agentemail, 'agent');
 
       //update session status on socket
-      socket.emit('updatesessionstatusFB', {
+      updateSessionStatusFb({
         'pageid': this.props.fbsessionSelected.pageid.pageid,
         'user_id': this.props.fbsessionSelected.user_id.user_id,
         'status': 'assigned',
@@ -505,7 +506,7 @@ export class ChatArea extends Component {
 
   resolveSession(e) {
     // Only assigned agent can resolve session
-    const {socket, dispatch} = this.props;
+    const { dispatch} = this.props;
     var agentingroup = false
     if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == "group") {
       for (var i = 0; i < this.props.teamagents.length; i++) {
@@ -614,7 +615,7 @@ export class ChatArea extends Component {
 
         //update session status on socket
         //update session status on socket
-        socket.emit('updatesessionstatusFB', {
+        updateSessionStatusFb({
           'pageid': this.props.fbsessionSelected.pageid.pageid,
           'user_id': this.props.fbsessionSelected.user_id.user_id,
           'status': 'resolved',
@@ -623,7 +624,6 @@ export class ChatArea extends Component {
           'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
           'username': this.props.fbsessionSelected.user_id.first_name + ' ' + this.props.fbsessionSelected.user_id.last_name,
           'agentname': this.props.userdetails.firstname + ' ' + this.props.userdetails.lastname,
-
         });
 
 
@@ -740,11 +740,11 @@ export class ChatArea extends Component {
     printlogs('log','scrollToBottom called');
     const target = ReactDOM.findDOMNode(this.refs[fbchatlist.length - 1]);
     if (target) {
-     
+
       target.scrollIntoView({behavior: "smooth"});
 
     }
-   
+
   }
 
 
@@ -827,7 +827,7 @@ export class ChatArea extends Component {
   }
 
   handleMessageSubmit(e) {
-    const {socket, dispatch} = this.props;
+    const {dispatch} = this.props;
     var sendmessage = true;
 
    printlogs('log','handleMessageSubmit' + e.which)
@@ -949,7 +949,7 @@ export class ChatArea extends Component {
 
           this.setState({urlmeta:{},prevURL:''});
           this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder);
-          socket.emit('broadcast_fbmessage', saveMsg);
+          broadCastFb(saveMsg);
 
           // this.scrollToBottom();
           this.forceUpdate();
@@ -960,7 +960,7 @@ export class ChatArea extends Component {
 
 
   onFileSubmit() {
-    const {socket, dispatch} = this.props;
+    const { dispatch} = this.props;
     var sendmessage = true;
     const usertoken = auth.getToken();
     var fileData = new FormData();
@@ -1037,7 +1037,7 @@ export class ChatArea extends Component {
   }
 
   sendThumbsUp() {
-    const {socket, dispatch} = this.props;
+    const { dispatch} = this.props;
     var sendmessage = true;
     if (this.props.fbsessionSelected.status == "new") {
       this.autoassignChat();
@@ -1112,7 +1112,7 @@ export class ChatArea extends Component {
 
       }
       this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder)
-      socket.emit('broadcast_fbmessage', saveMsg);
+      broadCastFb(saveMsg);
     }
     // this.scrollToBottom();
 
@@ -1180,7 +1180,7 @@ export class ChatArea extends Component {
 
   sendGIF(gif) {
    printlogs('log',gif);
-    const {socket, dispatch} = this.props;
+    const {dispatch} = this.props;
     var sendmessage = true;
     if (this.props.fbsessionSelected.status == "new") {
       this.autoassignChat();
@@ -1259,7 +1259,7 @@ export class ChatArea extends Component {
 
       }
       this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder)
-      socket.emit('broadcast_fbmessage', saveMsg);
+      broadCastFb(saveMsg);
     }
 // this.scrollToBottom();
 
@@ -1277,7 +1277,7 @@ export class ChatArea extends Component {
   }
 
   sendSticker(sticker) {
-    const {socket, dispatch} = this.props;
+    const {dispatch} = this.props;
     var sendmessage = true;
     if (this.props.fbsessionSelected.status == "new") {
       this.autoassignChat();
@@ -1355,7 +1355,7 @@ export class ChatArea extends Component {
 
       }
       this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder)
-      socket.emit('broadcast_fbmessage', saveMsg);
+      broadCastFb(saveMsg);
 
 // this.scrollToBottom();
 

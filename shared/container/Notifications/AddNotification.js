@@ -2,12 +2,10 @@ import React, {Component, PropTypes} from 'react';
 import auth from '../../services/auth';
 import {createNotification}  from '../../redux/actions/actions'
 import {connect} from 'react-redux';
-import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
-import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import {Link} from 'react-router';
-import {browserHistory} from 'react-router'
 import {bindActionCreators} from 'redux';
+import {sendNotification} from '../../socket';
 
 
 class AddNotification extends Component {
@@ -43,11 +41,12 @@ class AddNotification extends Component {
         'companyid': companyid,
         'agent_id': this.props.userdetails._id,
         'hasImage': 'false'
-      }
+      };
+
       var customers = this.props.customers;
 
       //console.log(notification);
-     //sending notification on socket
+      //sending notification on socket
 
       var message = {
         sender: this.props.userdetails.firstname,
@@ -55,19 +54,13 @@ class AddNotification extends Component {
         msg: desc.value,
         time: moment.utc().format('lll'),
         uniqueid: unique_id,
+      };
 
-
-      }
-
-      // todo discuss with zarmeen
-      this.props.route.socket.emit('send:notification', message);
+      sendNotification(message);
 
 
       this.props.createNotification({notification, usertoken, customers});
-
-
     }
-
   }
 
   render() {

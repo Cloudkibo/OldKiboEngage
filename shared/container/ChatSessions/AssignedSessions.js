@@ -41,17 +41,10 @@ class AssignedSessions extends Component {
       totalLength: 0,
       assignedsessionsfiltered: props.assignedsessions,
     };
-    this.getupdatedSessions = this.getupdatedSessions.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.filterAssignedSession = this.filterAssignedSession.bind(this);
-  }
-
-  getupdatedSessions(data)
-  {
-    this.props.getassignedsessionsfromsocket(data,this.props.assignedsessions);
-    this.forceUpdate();
   }
 
   handleChange(){
@@ -251,8 +244,6 @@ class AssignedSessions extends Component {
   componentDidMount(){
 
         console.log("Pre page");
-        // todo discuss with zarmeen, why force update
-        this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
         this.displayData(0);
         this.setState({totalLength: this.state.assignedsessionsfiltered.length});
   }

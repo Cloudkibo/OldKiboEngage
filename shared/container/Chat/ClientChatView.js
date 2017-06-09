@@ -87,7 +87,7 @@ class ClientChatView extends Component {
      this.props.sendmessageToAgent(hellomsg);
      }*/
 
-    // todo discuss with zarmeen
+    // todo don't change here
     socket.on('send:message', message => this.props.updateChatList(message));
     socket.on('send:getAgent', this.getAgentSocket);
     socket.on('connecttocall', this.connectCall);
@@ -173,7 +173,7 @@ class ClientChatView extends Component {
       //generate unique id of message - this change is for mobile clients
       var today = new Date();
       var uid = Math.random().toString(36).substring(7);
-      
+
       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
       var saveChat = {}

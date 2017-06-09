@@ -44,20 +44,10 @@ class ResolvedSessions extends Component {
       totalLength: 0,
       resolvedsessionsfiltered: props.resolvedsessions,
     };
-    this.getupdatedSessions = this.getupdatedSessions.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.filterResolvedSession = this.filterResolvedSession.bind(this);
-  }
-
-  getupdatedSessions(data)
-  {
-    const usertoken = auth.getToken();
-    // todo is it important to do forceUpdate?
-    this.props.getresolvedsessionsfromsocket(data,this.props.resolvedsessions);
-
-    this.forceUpdate();
   }
 
   handleChange(){
@@ -176,7 +166,6 @@ class ResolvedSessions extends Component {
   }
 
   componentDidMount(){
-       this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
        this.displayData(0);
        this.setState({totalLength: this.state.resolvedsessionsfiltered.length});
   }
