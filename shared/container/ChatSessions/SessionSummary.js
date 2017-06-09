@@ -48,6 +48,7 @@ class SessionSummary extends Component {
   getupdatedSessions(data)
   {
     const usertoken = auth.getToken();
+    // todo discuss with zarmeen, this is function is not called
     this.props.getassignedsessionsfromsocket(data,this.props.assignedsessions);
 
     this.forceUpdate();

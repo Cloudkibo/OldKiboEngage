@@ -38,7 +38,7 @@ class FbChat extends Component {
 
       console.log(usertoken);
       props.getfbSessions(usertoken);
-   
+
       // props.getfbCustomers(usertoken);
       props.getfbChats(usertoken);
 
@@ -47,7 +47,7 @@ class FbChat extends Component {
       // get groups list and agents
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
-     
+
       //props.getmetaurl(url, usertoken);
       callonce = true;
 
@@ -63,22 +63,8 @@ class FbChat extends Component {
 
   }
 
-  getfbCustomer(data) {
-    console.log('new fb customer is received');
-    console.log(data);
-    if (this.props.fbsessions) {
-      this.props.updateCustomerList(data, this.props.fbsessions, this.props.fbsessionSelected);
-      this.forceUpdate();
-    }
-  }
-
   handleChange(e) {
     this.props.sortSessionsList(this.props.fbsessions, e.target.value);
-  }
-
-  updateFbsessionlist(data) {
-    this.props.updatefbsessionlist(data, this.props.fbsessions, this.props.fbsessionSelected, this.props.fbchats, this.props.fbchatSelected);
-    this.forceUpdate();
   }
 
   getfbMessage(data) {
@@ -113,9 +99,8 @@ class FbChat extends Component {
     const usertoken = auth.getToken();
 
     //fb related
+    // todo discuss with zarmeen
     this.props.route.socket.on('send:fbcustomer', this.getfbCustomer);
-    this.props.route.socket.on('send:fbmessage', this.getfbMessage);
-    this.props.route.socket.on('updateFBsessions', this.updateFbsessionlist);
 
   }
 

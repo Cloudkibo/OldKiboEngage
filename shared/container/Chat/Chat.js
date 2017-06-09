@@ -33,10 +33,14 @@ import auth from '../../services/auth';
 import {bindActionCreators} from 'redux';
 import {browserHistory} from 'react-router'
 
+
 import io from 'socket.io-client';
-var callMobileChatSessions
-var callOnce
-var callSocketChat
+
+import { } from '../../socket';
+
+var callMobileChatSessions;
+var callOnce;
+var callSocketChat;
 class Chat extends Component {
 
   constructor(props, context) {
@@ -83,15 +87,6 @@ class Chat extends Component {
       subgroup: 'all'
     };
 
-
-  }
-
-  syncdata() {
-    // alert('You are connected to socket. Joining now!');
-    //this.props.route.socket.emit('create or join meeting for agent', {room: this.props.userdetails.uniqueid,agentEmail : this.props.userdetails.email,agentName : this.props.userdetails.firstname+' ' + this.props.userdetails.lastname,agentId:this.props.userdetails._id});
-    this.props.route.socket.emit('getOnlineAgentList');
-    //this.props.route.socket.emit('returnMySocketId');
-    this.props.route.socket.emit('getuserchats', this.props.userdetails.uniqueid);
 
   }
 
@@ -166,8 +161,6 @@ class Chat extends Component {
       //this.props.mobileuserchat.push(message);
       this.props.userchats.push(message);
       this.props.removeDuplicates(this.props.mobileuserchat, 'uniqueid');
-
-
     }
 
     else if (!this.props.customerchat_selected && message.fromMobile == 'no') {
@@ -178,10 +171,7 @@ class Chat extends Component {
       // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
 
     }
-
-
     this.forceUpdate();
-
   }
 
 
@@ -232,6 +222,7 @@ class Chat extends Component {
 
     //alert('componentDidMount is called');
     const usertoken = auth.getToken();
+    // todo discuss with zarmeen
     this.props.route.socket.emit('getOnlineAgentList');
     this.props.route.socket.emit('returnMySocketId');
     // this.props.route.socket.emit('getCustomerSessionsList');
@@ -243,9 +234,6 @@ class Chat extends Component {
     this.props.route.socket.on('updateOnlineAgentList', this.updateOnlineAgents);
     this.props.route.socket.on('returnCustomerSessionsList', this.getupdatedSessions);
     this.props.route.socket.on('returnUserChat', this.getupdatedChats);
-    this.props.route.socket.on('syncdata', this.syncdata);
-
-
   }
 
 

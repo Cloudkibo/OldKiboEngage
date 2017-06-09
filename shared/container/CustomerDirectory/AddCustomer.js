@@ -1,18 +1,23 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import auth from '../../services/auth';
 import {createcustomer}  from '../../redux/actions/actions'
 import {getcustomergroups}  from '../../redux/actions/actions'
-import {getcustomersubgroups,getcompanylogo,getspecificsession,getspecificcustomer}  from '../../redux/actions/actions'
+import {
+  getcustomersubgroups,
+  getcompanylogo,
+  getspecificsession,
+  getspecificcustomer
+}  from '../../redux/actions/actions'
 import {getcountryname} from '../../redux/actions/actions';
 import {updatesubgrouplist}  from '../../redux/actions/actions'
 import {createsession}  from '../../redux/actions/actions'
 import {addRoom} from '../../redux/actions/actions'
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
-import { Link } from 'react-router';
-import { browserHistory } from 'react-router'
+import {Link} from 'react-router';
+import {browserHistory} from 'react-router'
 
 const Countries = [
   {name: 'Afghanistan', code: 'AF'},
@@ -261,171 +266,171 @@ const Countries = [
 ];
 
 /*import io from 'socket.io-client'
-let socket = io('')*/
+ let socket = io('')*/
 
 function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-
 
 
 var call_customer_details;
 class AddCustomer extends Component {
-   constructor(props, context) {
+  constructor(props, context) {
     var usertoken = auth.getToken();
     var appid = '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59'
     var appsecret = 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx'
-    props.getcustomergroups(appid,appsecret,props.params.id);
-    props.getcustomersubgroups(appid,appsecret,props.params.id);
-    props.getcompanylogo(appid,appsecret,props.params.id);
+    props.getcustomergroups(appid, appsecret, props.params.id);
+    props.getcustomersubgroups(appid, appsecret, props.params.id);
+    props.getcompanylogo(appid, appsecret, props.params.id);
     super(props, context);
     call_customer_details = false;
-   // var pathname = getParameterByName('pathname');
+    // var pathname = getParameterByName('pathname');
     //var fullurl = getParameterByName('fullurl');
-   // var companyid = getParameterByName('id');
+    // var companyid = getParameterByName('id');
     var companyid = props.params.id;
     var pathname = props.params.pathname;
     console.log(pathname)
-   // console.log(fullurl)
+    // console.log(fullurl)
     console.log(companyid)
-    if(props.params.requestid){
+    if (props.params.requestid) {
       //alert(props.params.requestid);
       props.getspecificsession(props.params.requestid);
     }
     //console.log(props.params.pathname);
-   // console.log(props.params.id);
+    // console.log(props.params.id);
     this.addCustomers = this.addCustomers.bind(this);
     this.create_session = this.create_session.bind(this);
     this.noagent = this.noagent.bind(this);
   }
-  noagent(data){
+
+  noagent(data) {
     alert('We are offline now.We will contact you soon');
 
 
     //creating abandoned session
-      const name = this.refs.name;
-      const email = this.refs.email;
-      const country = this.refs.country;
-      const phone = this.refs.phone;
-     // var companyid = getParameterByName('id');
-     // var pathname = getParameterByName('pathname');
-     /* var fullurl = getParameterByName('fullurl'); */
+    const name = this.refs.name;
+    const email = this.refs.email;
+    const country = this.refs.country;
+    const phone = this.refs.phone;
+    // var companyid = getParameterByName('id');
+    // var pathname = getParameterByName('pathname');
+    /* var fullurl = getParameterByName('fullurl'); */
 
     var companyid = this.props.params.id;
     var pathname = this.props.params.pathname;
-  //    var pathname = "";
-      var fullurl = "";
+    //    var pathname = "";
+    var fullurl = "";
 
 
-     var session = {
-                        'email' : email.value,
-                        'customerID' : email.value,
-                        'departmentid': this.refs.grouplist.value,
-                        'messagechannel' : this.refs.channellist.value,
-                        'requesttime' : Date.now(),
-                        'fullurl' :  fullurl,
-                        'currentPage' : pathname,
-                        'phone' :  phone.value,
-                        'browser' : 'Chrome',
-                        'ipAddress':'192.168.1.2',
-                        'agent_ids':'',
-                        'country' : country.value,
-                        'companyid' : companyid,
-                        'session_id' : data.request_id,
-                        'platform': 'web',
-                        'customerName' : name.value,
-                        'isMobile' : "false",
-                        'status' : 'new',
-                        'socketid' : data.socketid,
+    var session = {
+      'email': email.value,
+      'customerID': email.value,
+      'departmentid': this.refs.grouplist.value,
+      'messagechannel': this.refs.channellist.value,
+      'requesttime': Date.now(),
+      'fullurl': fullurl,
+      'currentPage': pathname,
+      'phone': phone.value,
+      'browser': 'Chrome',
+      'ipAddress': '192.168.1.2',
+      'agent_ids': '',
+      'country': country.value,
+      'companyid': companyid,
+      'session_id': data.request_id,
+      'platform': 'web',
+      'customerName': name.value,
+      'isMobile': "false",
+      'status': 'new',
+      'socketid': data.socketid,
 
-                         }
+    }
 
 
     this.props.createsession(session); //added to create abandoned session
     browserHistory.push('/');
   }
-create_session(data){
-      const name = this.refs.name;
-      const email = this.refs.email;
-      const country = this.refs.country;
-      const phone = this.refs.phone;
-     // var companyid = getParameterByName('id');
-     // var pathname = getParameterByName('pathname');
-     /* var fullurl = getParameterByName('fullurl'); */
+
+  create_session(data) {
+    const name = this.refs.name;
+    const email = this.refs.email;
+    const country = this.refs.country;
+    const phone = this.refs.phone;
+    // var companyid = getParameterByName('id');
+    // var pathname = getParameterByName('pathname');
+    /* var fullurl = getParameterByName('fullurl'); */
 
     var companyid = this.props.params.id;
     var pathname = this.props.params.pathname;
-  //    var pathname = "";
-      var fullurl = "";
+    //    var pathname = "";
+    var fullurl = "";
 
 
-      var session = {
-                      'email' : email.value,
-                      'departmentid': this.refs.grouplist.value,
-                      'messagechannel' : this.refs.channellist.value,
-                      'requesttime' : Date.now(),
-                      'fullurl' :  fullurl,
-                      'customerID' : email.value, //new field added
-                      'currentPage' : pathname,
-                      'phone' :  phone.value,
-                      'browser' : 'Chrome',
-                      'ipAddress':'192.168.1.2',
-                      'agent_ids':'',
-                      'country' : country.value,
-                      'companyid' : companyid,
-                      'session_id' : data.request_id,
-                      'platform': 'web',
-                      'customerName' : name.value,
-                      'isMobile' : "false",
-                      'status' : 'new',
-                      'socketid' : data.socketid,
+    var session = {
+      'email': email.value,
+      'departmentid': this.refs.grouplist.value,
+      'messagechannel': this.refs.channellist.value,
+      'requesttime': Date.now(),
+      'fullurl': fullurl,
+      'customerID': email.value, //new field added
+      'currentPage': pathname,
+      'phone': phone.value,
+      'browser': 'Chrome',
+      'ipAddress': '192.168.1.2',
+      'agent_ids': '',
+      'country': country.value,
+      'companyid': companyid,
+      'session_id': data.request_id,
+      'platform': 'web',
+      'customerName': name.value,
+      'isMobile': "false",
+      'status': 'new',
+      'socketid': data.socketid,
 
-                         }
+    }
 
 
-
-        this.props.createsession(session);
-        this.props.addRoom(data);
+    this.props.createsession(session);
+    this.props.addRoom(data);
 
 
   }
 
 
-   componentWillReceiveProps(props) {
+  componentWillReceiveProps(props) {
 
     // bind the channel list of first group on load
-    if(props.groupdetails  && props.groupdetails.length > 0 && props.subgroups.length > 0 && !props.params.requestid && call_customer_details == false ){
+    if (props.groupdetails && props.groupdetails.length > 0 && props.subgroups.length > 0 && !props.params.requestid && call_customer_details == false) {
       //alert(props.groupdetails[0]._id);
       this.props.updatesubgrouplist(props.groupdetails[0]._id);
-       call_customer_details = true;
+      call_customer_details = true;
       this.forceUpdate();
     }
-    else if(props.specificsession && props.channels && props.groupdetails  && call_customer_details == false){
-     /* var dept_name = '';
-      for(var i = 0;i< props.groupdetails.length;i++){
-        if(props.groupdetails[i]._id == props.specificsession.departmentid)
-        {
-            dept_name = props.groupdetails[i].deptname;
-        }
-      }*/
+    else if (props.specificsession && props.channels && props.groupdetails && call_customer_details == false) {
+      /* var dept_name = '';
+       for(var i = 0;i< props.groupdetails.length;i++){
+       if(props.groupdetails[i]._id == props.specificsession.departmentid)
+       {
+       dept_name = props.groupdetails[i].deptname;
+       }
+       }*/
       this.refs.grouplist.value = props.specificsession.departmentid;
       this.props.updatesubgrouplist(props.specificsession.departmentid);
       this.props.getspecificcustomer(props.specificsession.customerid);
 
       call_customer_details = true;
-     // this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
+      // this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
 
-     // this.forceUpdate();
+      // this.forceUpdate();
     }
-    if(props.specificcustomer){
+    if (props.specificcustomer) {
       this.refs.grouplist.value = props.specificsession.departmentid;
-      this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length -1];
+      this.refs.channellist.value = props.specificsession.messagechannel[props.specificsession.messagechannel.length - 1];
       //alert(this.refs.channellist.value)
       this.refs.name.value = props.specificcustomer.name;
       this.refs.email.value = props.specificcustomer.email;
@@ -434,42 +439,44 @@ create_session(data){
       this.forceUpdate()
     }
 
-    if(this.props.companylogo && this.props.companylogo!= ''){
-     // alert(props.companylogo);
-      this.refs.logo.src = this.props.companylogo.substr(1,this.props.companylogo.length);
-     // this.forceUpdate();
+    if (this.props.companylogo && this.props.companylogo != '') {
+      // alert(props.companylogo);
+      this.refs.logo.src = this.props.companylogo.substr(1, this.props.companylogo.length);
+      // this.forceUpdate();
     }
 
-    if(props.countryname){
+    if (props.countryname) {
       this.refs.country.value = props.countryname;
       this.forceUpdate();
     }
 
-    }
-   componentDidMount() {
-  // socket.on('joined',this.create_session)
+  }
+
+  componentDidMount() {
+    // socket.on('joined',this.create_session)
     var usertoken = auth.getToken();
     this.props.getcountryname(usertoken);
-    this.props.route.socket.on('empty',this.noagent);
+    // todo discuss with zarmeen
+    this.props.route.socket.on('empty', this.noagent);
 
-   this.props.route.socket.on('joined',this.create_session)
+    this.props.route.socket.on('joined', this.create_session)
 
-   if(this.props.specificsession){
-     //  this.props.getspecificcustomer(this.props.specificsession.customerid);
+    if (this.props.specificsession) {
+      //  this.props.getspecificcustomer(this.props.specificsession.customerid);
 
     }
 
-      }
+  }
 
   addCustomers(e) {
     e.preventDefault();
-   // var companyid = getParameterByName('id');
+    // var companyid = getParameterByName('id');
 
-   // var pathname = getParameterByName('pathname');
+    // var pathname = getParameterByName('pathname');
     /*var fullurl = getParameterByName('fullurl');
-       */
+     */
 //    var companyid = this.props.params.id;
-   // var pathname = "";
+    // var pathname = "";
     var companyid = this.props.params.id;
     var pathname = this.props.params.pathname;
     var fullurl = "";
@@ -481,225 +488,241 @@ create_session(data){
     const btn = this.refs.btn
 
     //Code used for creating dummy customers
-     if (name.value === "" || name.value == null) {
+    if (name.value === "" || name.value == null) {
 
-        return alert('Name is required.');
+      return alert('Name is required.');
+    }
+    else if (email.value === "" || email.value == null) {
+
+      return alert('Email is required.');
+    }
+    else {
+      var requesttime = Date.now();
+
+      btn.disabled = true;
+
+      var today = new Date();
+      var uid = Math.random().toString(36).substring(7);
+      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+      var chArray = []
+      chArray.push(this.refs.channellist.value);
+      var agIds = []
+      var customerid = {
+        'customerID': email.value,
+        'name': name.value,
+        'email': email.value,
+        'country': country.value,
+        'phone': phone.value,
+        'companyid': companyid,
+        'isMobileClient': "false"
       }
-      else if (email.value === "" || email.value == null) {
+      var socketsession = {
+        customerid: customerid,
+        departmentid: this.refs.grouplist.value,
+        platform: "web",
+        agent_ids: agIds,
+        group: this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
+        messagechannel: chArray,
+        channelname: this.refs.channellist.options[this.refs.channellist.selectedIndex].text,
+        fullurl: fullurl,
+        currentPage: pathname,
+        phone: phone.value,
+        requesttime: Date.now(),
+        status: "new",
+        browser: 'Chrome',
+        ipAddress: '192.168.1.2',
+        is_rescheduled: "false",
+        initiator: 'visitor',
+        companyid: companyid,
+        room: companyid,
+        request_id: unique_id,
+        webrtc_browser: 'true',
+        msg: 'User joined session',
+      };
+      //    socket.emit('join meeting',socketsession);
+      this.props.route.socket.emit('join meeting', socketsession);
 
-        return alert('Email is required.');
-      }
-      else
-        {
-            var requesttime = Date.now();
-
-            btn.disabled=true;
-
-            var today = new Date();
-            var uid = Math.random().toString(36).substring(7);
-            var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-            var chArray = []
-            chArray.push(this.refs.channellist.value);
-            var agIds = []
-            var customerid = {'customerID' : email.value,'name' : name.value,'email' : email.value,'country' : country.value,'phone' : phone.value,'companyid' : companyid,'isMobileClient':"false"}
-            var socketsession =  {
-                    customerid : customerid,
-                    departmentid : this.refs.grouplist.value,
-                    platform : "web",
-                    agent_ids : agIds,
-                    group:this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text,
-                    messagechannel : chArray,
-                    channelname: this.refs.channellist.options[this.refs.channellist.selectedIndex].text,
-                    fullurl :  fullurl,
-                    currentPage : pathname,
-                    phone :  phone.value,
-                    requesttime:Date.now(),
-                    status : "new",
-                    browser : 'Chrome',
-                    ipAddress:'192.168.1.2',
-                    is_rescheduled:"false",
-                    initiator : 'visitor',
-                    companyid : companyid,
-                    room: companyid,
-                    request_id : unique_id,
-                    webrtc_browser :'true',
-                    msg : 'User joined session',
-             };
-        //    socket.emit('join meeting',socketsession);
-           this.props.route.socket.emit('join meeting',socketsession);
-
-         //  this.props.route.socket.on('customer_joined',data => create_session(data));
+      //  this.props.route.socket.on('customer_joined',data => create_session(data));
 
 
-
-        }
+    }
 
 
     //code for actual customers joining live help
   }
 
 
-  handleChange(e){
+  handleChange(e) {
     //alert(this.refs.grouplist.options[this.refs.grouplist.selectedIndex].text);
-     this.props.updatesubgrouplist(e.target.value);
-      this.forceUpdate();
+    this.props.updatesubgrouplist(e.target.value);
+    this.forceUpdate();
 
-    }
-    handleChannelChange(e){
-     //alert(e.target.value);
+  }
 
-    }
+  handleChannelChange(e) {
+    //alert(e.target.value);
+
+  }
+
   render() {
     console.log(Countries);
-   {this.props.roomdetails &&
-    browserHistory.push('/clientchat')}
+    {
+      this.props.roomdetails &&
+      browserHistory.push('/clientchat')
+    }
     return (
 
       <div>
 
-       <div>
-       <div className="widgetheader">
-          <div style={{'paddingTop':'2em'}}>
+        <div>
+          <div className="widgetheader">
+            <div style={{'paddingTop': '2em'}}>
 
-              <h3 className ="page-title widgettitle">KiboEngage Chat Widget </h3>
+              <h3 className="page-title widgettitle">KiboEngage Chat Widget </h3>
               {this.props.companylogo && this.props.companylogo != '' &&
-               <img ref="logo" src="" style={{'width':'50px','height':'50px'}} className="pull-left"/>
+              <img ref="logo" src="" style={{'width': '50px', 'height': '50px'}} className="pull-left"/>
               }
 
             </div>
-        </div>
-          <div className="page-content-wrapper clear-fix" style={{'display':'flex','justifyContent':'center'}}>
+          </div>
+          <div className="page-content-wrapper clear-fix" style={{'display': 'flex', 'justifyContent': 'center'}}>
             <div className="page-content">
 
-                {this.props.errorMessage &&
+              {this.props.errorMessage &&
 
-                     <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
-                      }
+              <div className="alert alert-danger"><span>{this.props.errorMessage}</span></div>
+              }
 
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
+              <div className="portlet box grey-cascade">
+                <div className="portlet-title">
+                  <div className="caption">
                     <i className="fa fa-user"/>
-                  Welcome to Live Help
-                </div>
-              </div>
-
-           <div className="portlet-body form">
-            <form className="form-horizontal form-row-seperated">
-              <div className="form-body">
-                <div className="form-group">
-                  <label className="control-label col-md-3"> Name </label>
-                   <div className="col-md-9">
-                         <input className="form-control input-medium" type='text'  ref = "name" />
-                   </div>
+                    Welcome to Live Help
+                  </div>
                 </div>
 
-                 <div className="form-group">
-                  <label className="control-label col-md-3"> Email</label>
-                   <div className="col-md-9">
-                            <input className="form-control input-medium" type='email'  ref = "email" />
-                </div>
-                </div>
-
-                  <div className="form-group">
-                  <label className="control-label col-md-3"> Country </label>
-                  <div className="col-md-9">
-                        <select  ref = "country" defaultValue ={this.props.countryname} className="form-control input-sm">
-                          {
-                            Countries.map((c,i) =>
-                              <option value={c.name} >{c.name}</option>
-                              )
-                          }
-                        </select>
-
+                <div className="portlet-body form">
+                  <form className="form-horizontal form-row-seperated">
+                    <div className="form-body">
+                      <div className="form-group">
+                        <label className="control-label col-md-3"> Name </label>
+                        <div className="col-md-9">
+                          <input className="form-control input-medium" type='text' ref="name"/>
+                        </div>
                       </div>
-                </div>
-                  <div className="form-group">
-                  <label className="control-label col-md-3"> Phone</label>
-                   <div className="col-md-9">
-                            <input className="form-control input-medium" type='text'  ref = "phone" />
-                </div>
-                </div>
-                <div className="form-group">
 
-                   <label className="control-label col-md-3"> Choose Group</label>
-                   <div className="col-md-9">
-                  <select  ref = "grouplist" onChange={this.handleChange.bind(this)}   >
-                          {
-                          this.props.groupdetails && this.props.groupdetails.map((group,i) =>
-                            <option value={group._id} >{group.deptname}</option>
+                      <div className="form-group">
+                        <label className="control-label col-md-3"> Email</label>
+                        <div className="col-md-9">
+                          <input className="form-control input-medium" type='email' ref="email"/>
+                        </div>
+                      </div>
 
-                            )
-                         }
+                      <div className="form-group">
+                        <label className="control-label col-md-3"> Country </label>
+                        <div className="col-md-9">
+                          <select ref="country" defaultValue={this.props.countryname} className="form-control input-sm">
+                            {
+                              Countries.map((c, i) =>
+                                <option value={c.name}>{c.name}</option>
+                              )
+                            }
+                          </select>
 
-                      </select>
-                  </div>
-                 </div>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label className="control-label col-md-3"> Phone</label>
+                        <div className="col-md-9">
+                          <input className="form-control input-medium" type='text' ref="phone"/>
+                        </div>
+                      </div>
+                      <div className="form-group">
 
-                <div className="form-group">
-                   <label className="control-label col-md-3"> Choose SubGroup</label>
-                   <div className="col-md-9">
-                   <select  ref = "channellist" onChange={this.handleChannelChange.bind(this)}   >
-                          {
-                          this.props.filterlist && this.props.filterlist.map((subgroup,i) =>
-                            <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+                        <label className="control-label col-md-3"> Choose Group</label>
+                        <div className="col-md-9">
+                          <select ref="grouplist" onChange={this.handleChange.bind(this)}>
+                            {
+                              this.props.groupdetails && this.props.groupdetails.map((group, i) =>
+                                <option value={group._id}>{group.deptname}</option>
+                              )
+                            }
 
-                            )
-                         }
+                          </select>
+                        </div>
+                      </div>
 
-                   </select>
-                  </div>
-                 </div>
+                      <div className="form-group">
+                        <label className="control-label col-md-3"> Choose SubGroup</label>
+                        <div className="col-md-9">
+                          <select ref="channellist" onChange={this.handleChannelChange.bind(this)}>
+                            {
+                              this.props.filterlist && this.props.filterlist.map((subgroup, i) =>
+                                <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+                              )
+                            }
 
-              <div className="form-actions fluid">
-              <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
-                    <button className="btn green" ref = "btn" onClick={this.addCustomers}>
-                      <i className="fa fa-pencil"/>
-                       Submit
-                    </button>
+                          </select>
+                        </div>
+                      </div>
 
+                      <div className="form-actions fluid">
+                        <div className="row">
+                          <div className="col-md-3">
+                            <div className="col-md-offset-9 col-md-9">
+                              <button className="btn green" ref="btn" onClick={this.addCustomers}>
+                                <i className="fa fa-pencil"/>
+                                Submit
+                              </button>
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
-               </div>
 
-               </div>
+                  </form>
+
+
+                </div>
               </div>
-              </div>
-
-          </form>
 
 
-
+            </div>
           </div>
-          </div>
-
-
-       </div>
-       </div>
+        </div>
       </div>
-      </div>
-      )
-     }
+    )
+  }
 }
-
 
 
 function mapStateToProps(state) {
   console.log("mapStateToProps is called");
 
-   return {
+  return {
 
-    groupdetails :(state.widget.groupdetails),
-    subgroups :(state.widget.subgroups),
-    filterlist :(state.widget.filterlist),
-    sessiondetails : (state.widget.sessiondetails),
-    specificsession : (state.widget.specificsession),
-    roomdetails :(state.widget.roomdetails),
-    specificcustomer : (state.widget.specificcustomer),
-    countryname : (state.dashboard.countryname),
-    companylogo:(state.widget.companylogo),
+    groupdetails: (state.widget.groupdetails),
+    subgroups: (state.widget.subgroups),
+    filterlist: (state.widget.filterlist),
+    sessiondetails: (state.widget.sessiondetails),
+    specificsession: (state.widget.specificsession),
+    roomdetails: (state.widget.roomdetails),
+    specificcustomer: (state.widget.specificcustomer),
+    countryname: (state.dashboard.countryname),
+    companylogo: (state.widget.companylogo),
   };
 }
-export default connect(mapStateToProps,{getcustomergroups,getcompanylogo,getspecificcustomer,getspecificsession,getcustomersubgroups,updatesubgrouplist,createsession,addRoom,getcountryname})(AddCustomer);
+export default connect(mapStateToProps, {
+  getcustomergroups,
+  getcompanylogo,
+  getspecificcustomer,
+  getspecificsession,
+  getcustomersubgroups,
+  updatesubgrouplist,
+  createsession,
+  addRoom,
+  getcountryname
+})(AddCustomer);

@@ -103,6 +103,7 @@ function redirectAuthUsers(nextState, replace) {
 }
 
 const routes = (
+  // todo remove socket.io from here
    <Route path="/" component={App} socket = {socket}>
     <IndexRoute component={Intro} onEnter={redirectAuthUsers} />
     <Route path="/login" component={LoginContainer} onEnter={redirectAuthUsers} />

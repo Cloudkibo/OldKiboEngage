@@ -49,6 +49,7 @@ class ResolvedSessions extends Component {
   getupdatedSessions(data)
   {
     const usertoken = auth.getToken();
+    // todo is it important to do forceUpdate?
     this.props.getresolvedsessionsfromsocket(data,this.props.resolvedsessions);
 
     this.forceUpdate();
