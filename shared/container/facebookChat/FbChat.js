@@ -63,8 +63,8 @@ class FbChat extends Component {
 
 
   }
-  
-  getfbCustomer(data) {
+
+  getfbCustomer(data) { // todo all actions
    printlogs('log','new fb customer is received');
    printlogs('log',data);
     this.props.route.socket.emit('logClient',{msg:'new fb customer is received ',data:data} );

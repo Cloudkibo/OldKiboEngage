@@ -78,22 +78,22 @@ import Widget from './container/Widget/widget'
 import FacebookIntegrationInstructions from './container/FacebookIntegrationInstructions/FacebookIntegrationInstructions';
 import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
+
+// todo import socketio module here for props
 let socket = io('');
 
   // todo merge - move this logic to socket module
 let disconnected = false;
-socket.on('verified', () => {
-  location.reload();
-});
+
 socket.on('connect', () => {
-  console.log('reconnecting');  
+  console.log('reconnecting');
   if(disconnected === true){
     location.reload();
   }
  // location.reload();
 });
 socket.on('disconnect', () => {
-  console.log('disconnecting');  
+  console.log('disconnecting');
   disconnected = true;
  // location.reload();
 });

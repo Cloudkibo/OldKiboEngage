@@ -96,7 +96,7 @@ class Chat extends Component {
     this.forceUpdate();
   }
 
-  create_agentsession(socketid) {
+  create_agentsession(socketid) { // complete actions
     printlogs('log','your socket id is : ' + socketid);
     this.props.setsocketid(socketid);
     //this.refs.agentsocketfield.value = socketid;
@@ -117,8 +117,8 @@ class Chat extends Component {
           //   alert('New message arrived chat!');
           // highlight chat box
 
-          this.props.updatechatstatus(messages, message.from, usertoken, this.props.mobileuserchat);
-          this.props.updateChatList(message, this.props.new_message_arrived_rid);
+          this.props.updatechatstatus(messages, message.from, usertoken, this.props.mobileuserchat); //actions
+          this.props.updateChatList(message, this.props.new_message_arrived_rid); //actions
           message.status = 'delivered';
 
         }
@@ -179,6 +179,7 @@ class Chat extends Component {
 
   getSessionInfo(message) {
 
+    // state being updated
     //update the status of session
     for (var i = 0; i < this.props.customerchat.length; i++) {
       if (this.props.customerchat[i].request_id == message[0].request_id) {
@@ -227,17 +228,17 @@ class Chat extends Component {
     this.props.route.socket.emit('returnMySocketId');
     // this.props.route.socket.emit('getCustomerSessionsList');
 
-    this.props.route.socket.on('send:message', this.getSocketmessage);
-    this.props.route.socket.on('informAgent', this.getSessionInfo);
-    this.props.route.socket.on('getmysocketid', this.create_agentsession);
+    this.props.route.socket.on('send:message', this.getSocketmessage); // half UI and half actions
+    this.props.route.socket.on('informAgent', this.getSessionInfo); // can be separated
+    this.props.route.socket.on('getmysocketid', this.create_agentsession); // 227
     this.props.route.socket.on('customer_joined', this.getupdatedSessions);
-    this.props.route.socket.on('updateOnlineAgentList', this.updateOnlineAgents);
+    this.props.route.socket.on('updateOnlineAgentList', this.updateOnlineAgents); // 226
     this.props.route.socket.on('returnCustomerSessionsList', this.getupdatedSessions);
     this.props.route.socket.on('returnUserChat', this.getupdatedChats);
   }
 
 
-  getupdatedSessions(data) {
+  getupdatedSessions(data) { // actions
     const usertoken = auth.getToken();
     // not asking from server to give updated sessions
     // alert('updating session list');
@@ -250,7 +251,7 @@ class Chat extends Component {
     this.forceUpdate();
   }
 
-  getupdatedChats(data) {
+  getupdatedChats(data) { //actions
     //const usertoken = auth.getToken();
     // not asking from server to give updated sessions
 

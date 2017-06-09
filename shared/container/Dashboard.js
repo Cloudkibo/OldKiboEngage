@@ -14,7 +14,6 @@ import {browserHistory} from 'react-router';
 import { joinMeetingForAgent } from '../socket';
 import {printlogs} from '../services/clientlogging';
 //const socket = io('');
-var dontCall = false;
 var is_routed = false;
 var fetchnews = false;
 
@@ -30,40 +29,8 @@ class Dashboard extends Component {
     }
     super(props, context);
     this.updateOnlineAgents = this.updateOnlineAgents.bind(this);
-    this.create_agentsession = this.create_agentsession.bind(this);
     this.callSocket = this.callSocket.bind(this);
-    this.getupdatedSessions = this.getupdatedSessions.bind(this);
-    this.getabandonedSessions = this.getabandonedSessions.bind(this);
-    this.getresolvedSessions = this.getresolvedSessions.bind(this);
-  }
 
-  create_agentsession() {
-    // alert('joined socket');
-    // todo socket.io discuss with zarmeen, handling of component level variable should be separate
-    dontCall = true;
-  }
-
-  getupdatedSessions(data)
-  {
-    const usertoken = auth.getToken();
-    this.props.getassignedsessionsfromsocket(data,this.props.assignedsessions);
-
-    this.forceUpdate();
-  }
-
-  getabandonedSessions(data) {
-    const usertoken = auth.getToken();
-    this.props.getnewsessionsfromsocket(data, this.props.newsessions);
-
-    this.forceUpdate();
-  }
-
-  getresolvedSessions(data)
-  {
-    const usertoken = auth.getToken();
-    this.props.getresolvedsessionsfromsocket(data,this.props.resolvedsessions);
-
-    this.forceUpdate();
   }
 
   componentWillMount() {
@@ -114,15 +81,6 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    //dontCall = false;
-    //this.props.route.socket.on('updateOnlineAgentList',this.updateOnlineAgents);
-    this.props.route.socket.on('agentjoined', this.create_agentsession);
-
-    // todo discuss the following as well
-    this.props.route.socket.on('returnCustomerSessionsList',this.getupdatedSessions);
-    this.props.route.socket.on('customer_left', this.getabandonedSessions);
-    this.props.route.socket.on('returnCustomerSessionsList',this.getresolvedSessions);
-    
   }
 
   callSocket() {
@@ -182,21 +140,21 @@ class Dashboard extends Component {
                       <div className="number">
                         <h3 className="font-green-sharp">
                           {
-                            this.props.customers ?
+                            this.props.resolvedsessions ?
                               <span data-counter="counterup"
-                                    data-value="{this.props.customers.length}">{this.props.customers.length}</span> :
+                                    data-value="{this.props.resolvedsessions.length}">{this.props.resolvedsessions.length}</span> :
                               <span data-counter="counterup" data-value="0">0</span>
                           }
                           <small className="font-green-sharp"></small>
                         </h3>
-                        <small>Customers</small>
+                        <small>Resolved</small>
                       </div>
                       <div className="icon">
                         <i className="icon-pie-chart"></i>
                       </div>
                     </div>
                     <div className="progress-info">
-                      {/* <div className="progress">
+                       <div className="progress">
                        <span style={styles.w1} className="progress-bar progress-bar-success green-sharp">
                        <span className="sr-only">76% progress</span>
                        </span>
@@ -204,7 +162,7 @@ class Dashboard extends Component {
                        <div className="status">
                        <div className="status-title"> progress </div>
                        <div className="status-number"> 76% </div>
-                       </div>*/}
+                       </div>
                     </div>
                   </div>
                 </div>

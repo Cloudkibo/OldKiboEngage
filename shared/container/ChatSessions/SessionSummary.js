@@ -51,6 +51,7 @@ class SessionSummary extends Component {
 
   }
 
+  // this function is not called from anywhere
   getupdatedSessions(data)
   {
     const usertoken = auth.getToken();

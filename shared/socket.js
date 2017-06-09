@@ -1,7 +1,8 @@
 import io from 'socket.io-client';
 
 import { setSocketStatus, setUserJoinedRoom } from './redux/actions/socketio.actions';
-import { setjoinedState, updateCustomerList, updatefbsessionlist } from './redux/actions/actions';
+import { setjoinedState, updateCustomerList, updatefbsessionlist,
+getassignedsessionsfromsocket, getnewsessionsfromsocket, getresolvedsessionsfromsocket } from './redux/actions/actions';
 import { notify } from './services/notify';
 
 const socket = io('');
@@ -44,6 +45,18 @@ socket.on('agentjoined', () => {
   store.dispatch(setjoinedState('joined'));
 });
 
+socket.on('returnCustomerSessionsList', (data) => {
+  store.dispatch(getassignedsessionsfromsocket(data, store.getState().dashboard.assignedsessions));
+});
+
+socket.on('customer_left', (data) => {
+  store.dispatch(getnewsessionsfromsocket(data, store.getState().dashboard.newsessions));
+});
+
+socket.on('returnCustomerSessionsList', (data) => {
+  store.dispatch(getresolvedsessionsfromsocket(data, store.getState().dashboard.resolvedsessions));
+});
+
 socket.on('connect', () => {
   console.log('connected to socket server called from socket.js');
   store.dispatch(setSocketStatus(true));
@@ -59,8 +72,8 @@ socket.on('verified', () => {
 });
 
 socket.on('syncdata', () => {
-  this.props.route.socket.emit('getOnlineAgentList');
-  this.props.route.socket.emit('getuserchats', store.getState().dashboard.userdetails.uniqueid);
+  socket.emit('getOnlineAgentList');
+  socket.emit('getuserchats', store.getState().dashboard.userdetails.uniqueid);
 });
 
 export function joinMeetingForAgent() {
@@ -73,13 +86,4 @@ export function joinMeetingForAgent() {
   });
 }
 
-export function sendSocketMessage(type, data) {
-  // console.log(`socket message called: ${JSON.stringify(data)}`);
-  // socket.emit('platform_room_message', {
-  //   phone: store.getState().connectInfo.number,
-  //   from_connection_id: store.getState().connectInfo.id,
-  //   to_connection_id: store.getState().connectInfo.mobileId,
-  //   type,
-  //   data,
-  // });
-}
+
