@@ -180,17 +180,14 @@ class ResolvedSessions extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
                   Resolved Chat Sessions
-                </div>
               </div>
 
            <div className="portlet-body">
            <div className="table-responsive">
-                    <table className="table">
+                    <table className="uk-table">
                      <tbody>
                      <tr>
                        <th className="col-md-1">Group</th>
@@ -200,7 +197,7 @@ class ResolvedSessions extends Component {
                      <tr>
                        <td className="col-md-1">
 
-                         <select  ref = "teamlist" onChange={this.handleChange.bind(this)}   >
+                         <select className="uk-select"  ref = "teamlist" onChange={this.handleChange.bind(this)}   >
                                   <option value="all">All</option>
                                  {
 
@@ -215,7 +212,7 @@ class ResolvedSessions extends Component {
 
                        </td>
                        <td className="col-md-1">
-                         <select  ref = "channellist" onChange={this.handleChange.bind(this)}   >
+                         <select className="uk-select"  ref = "channellist" onChange={this.handleChange.bind(this)}   >
                                     <option value="all">All</option>
                                   {
                                     this.state.subgroup == 'all' ?
@@ -233,7 +230,7 @@ class ResolvedSessions extends Component {
                        </td>
                        <td className="col-md-1">
 
-                         <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
+                         <select className="uk-select"  ref = "agentList" onChange={this.handleChange.bind(this)}   >
                                <option value="all">All</option>
 
                                 {
@@ -253,7 +250,7 @@ class ResolvedSessions extends Component {
 
              { this.state.resolvedsessionsfiltered && this.state.resolvedsessionsfiltered.length > 0 ?
                <div className="table-responsive">
-                   <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                   <table id ="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
