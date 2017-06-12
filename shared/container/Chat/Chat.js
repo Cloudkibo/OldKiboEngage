@@ -252,6 +252,7 @@ class Chat extends Component {
    */
   handleSession(id, platform, e) {
     printlogs('log', id);
+    alert(id);
     e.preventDefault();
     const usertoken = auth.getToken();
 

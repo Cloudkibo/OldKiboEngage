@@ -4,7 +4,7 @@ import {setSocketStatus, setUserJoinedRoom} from './redux/actions/socketio.actio
 import {
   setjoinedState, updateCustomerList, updatefbsessionlist, previousChat,
   getassignedsessionsfromsocket, getnewsessionsfromsocket, getresolvedsessionsfromsocket,
-  setsocketid, getsessionsfromsocket, updateAgentList, getchatsfromsocket,
+  setsocketid, getsessionsfromsocket, updateAgentList, getchatsfromsocket, add_socket_fb_message,
 } from './redux/actions/actions';
 import {notify} from './services/notify';
 
@@ -30,6 +30,29 @@ socket.on('send:fbcustomer', (data) => {
   }
 });
 
+socket.on('send:fbmessage',(data) => {
+
+   //printlogs('log','new fb message is received');
+   //printlogs('log',data)
+   //printlogs('log',this.props.fbsessionSelected);
+    if (store.getState().dashboard.fbsessionSelected && store.getState().dashboard.fbchats) {
+      if (!store.getState().dashboard.fbsessionSelected.user_id) {
+        data.seen = false;
+      }
+      else if (store.getState().dashboard.fbsessionSelected.user_id && data.senderid != store.getState().dashboard.fbsessionSelected.user_id.user_id) {
+
+        data.seen = false;
+      }
+      else {
+        data.seen = true;
+      }
+      store.dispatch(add_socket_fb_message(data, store.getState().dashboard.fbchats, store.getState().dashboard.fbsessionSelected.user_id.user_id, store.getState().dashboard.fbsessions, store.getState().dashboard.sessionsortorder));
+
+    }
+
+  //  this.forceUpdate();
+
+});
 socket.on('updateFBsessions', (data) => {
   if (data.status === 'assigned') {
     notify(`${data.username } of Facebook Page ${data.pageTitle} has been assigned to ${data.agentname}`);
@@ -143,3 +166,5 @@ export function broadCastFb(data) {
 export function returnSocket() {
   return socket;
 }
+
+

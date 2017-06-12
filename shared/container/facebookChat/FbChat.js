@@ -56,7 +56,7 @@ class FbChat extends Component {
 
     super(props, context);
     //fb related
-    this.getfbMessage = this.getfbMessage.bind(this);
+    //this.getfbMessage = this.getfbMessage.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
 
@@ -66,28 +66,7 @@ class FbChat extends Component {
     this.props.sortSessionsList(this.props.fbsessions, e.target.value);
   }
 
-  getfbMessage(data) {
-    //alert('new fbmessage')
-   printlogs('log','new fb message is received');
-   printlogs('log',data)
-   printlogs('log',this.props.fbsessionSelected);
-    if (this.props.fbsessionSelected && this.props.fbchats) {
-      if (!this.props.fbsessionSelected.user_id) {
-        data.seen = false;
-      }
-      else if (this.props.fbsessionSelected.user_id && data.senderid != this.props.fbsessionSelected.user_id.user_id) {
 
-        data.seen = false;
-      }
-      else {
-        data.seen = true;
-      }
-      this.props.add_socket_fb_message(data, this.props.fbchats, this.props.fbsessionSelected.user_id.user_id, this.props.fbsessions, this.props.sessionsortorder);
-
-    }
-
-    this.forceUpdate();
-  }
 
   syncdata() {
 
@@ -231,7 +210,8 @@ class FbChat extends Component {
 }
 
 function mapStateToProps(state) {
-
+ console.log('updating state of fbchat');
+ console.log(JSON.stringify(state.dashboard.fbsessions));
   return {
     teamdetails: (state.dashboard.teamdetails),
     userdetails: (state.dashboard.userdetails),
@@ -281,4 +261,6 @@ export default connect(mapStateToProps, {
   getresponses,
   selectFbCustomerChat,
   getmetaurl
+},null,{
+  pure: false
 })(FbChat);
