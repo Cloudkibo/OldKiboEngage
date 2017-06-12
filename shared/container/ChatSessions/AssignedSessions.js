@@ -257,12 +257,9 @@ class AssignedSessions extends Component {
          <SideBar isAdmin ={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
-                  Assigned Chat Sessions
-                </div>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
+                          Assigned Chat Sessions
               </div>
 
            <div className="portlet-body">
@@ -278,7 +275,7 @@ class AssignedSessions extends Component {
                      <tr>
                      <td className="col-md-1">
 
-                       <select  ref = "client" onChange={this.handleChange.bind(this)}   >
+                       <select className="uk-select"  ref = "client" onChange={this.handleChange.bind(this)}   >
                                <option value="all">All</option>
                                <option value="mobile">Mobile</option>
                                <option value="web">Web</option>
@@ -287,7 +284,7 @@ class AssignedSessions extends Component {
                      </td>
                        <td className="col-md-1">
 
-                         <select  ref = "teamlist" onChange={this.handleChange.bind(this)}   >
+                         <select  className="uk-select" ref = "teamlist" onChange={this.handleChange.bind(this)}   >
                                   <option value="all">All</option>
                                  {
 
@@ -300,7 +297,7 @@ class AssignedSessions extends Component {
 
                        </td>
                        <td className="col-md-1">
-                         <select  ref = "channellist" onChange={this.handleChange.bind(this)}   >
+                         <select className="uk-select"  ref = "channellist" onChange={this.handleChange.bind(this)}   >
                                     <option value="all">All</option>
                                   {
                                     this.state.subgroup == 'all' ?
@@ -318,7 +315,7 @@ class AssignedSessions extends Component {
                        </td>
                        <td className="col-md-1">
 
-                         <select  ref = "agentList" onChange={this.handleChange.bind(this)}   >
+                         <select className="uk-select" ref = "agentList" onChange={this.handleChange.bind(this)}   >
                                <option value="all">All</option>
 
                                 {
@@ -338,7 +335,7 @@ class AssignedSessions extends Component {
 
              { this.state.assignedsessionsfiltered && this.state.assignedsessionsfiltered.length > 0 ?
                    <div className="table-responsive">
-                   <table id ="sample_3" className="table table-condensed table-striped table-bordered table-hover dataTable">
+                   <table id ="sample_3" className="uk-table uk-table-divider uk-table-striped uk-table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Visitor Name </th>
