@@ -46,11 +46,10 @@ class CannedResponseCreate extends Component {
           <div className="page-content-wrapper">
              <div className="page-content">
                <h3 className ="page-title">Canned Response Management </h3>
-               <ul className="page-breadcrumb breadcrumb">
+               <ul className="uk-breadcrumb">
                    <li>
                      <i className="fa fa-home"/>
                      <Link to="/dashboard"> Dashboard </Link>
-                     <i className="fa fa-angle-right"/>
                    </li>
                    <li>
                       <Link to="/cannedresponses">Canned Response Management</Link>
@@ -61,12 +60,9 @@ class CannedResponseCreate extends Component {
                    <div className = "alert alert-danger"><span>{this.props.errorMessage}</span></div>
                     }
 
-                <div className="portlet box grey-cascade">
-                  <div className="portlet-title">
-                    <div className="caption">
-                      <i className="fa fa-group"/>
+                <div className="uk-card uk-card-default uk-card-body  uk-width-1-2@m">
+                  <div className="uk-card-title">
                       Create Canned Response
-                    </div>
                   </div>
 
                   <div className="portlet-body form">
@@ -91,10 +87,10 @@ class CannedResponseCreate extends Component {
                             <textarea className="form-control" type='text' rows='4' ref="msg" placeholder="Hi,how can we help you?"/>
                           </div>
                         </div>
-                        <div className="form-actions fluid">
+                        <div className="form-actions fluid" style={{background:'white'}}>
                           <div className="row">
-                            <div className="col-md-3">
-                              <div className="col-md-offset-9 col-md-9">
+                            <div className="col-md-6">
+                              <div className="col-md-offset-6 col-md-6">
                                 <button className="btn green"  onClick={this.addResponse}>
                                   <i className="fa fa-pencil"/>
                                   Submit
@@ -102,8 +98,8 @@ class CannedResponseCreate extends Component {
 
                               </div>
                             </div>
-                            <div className="col-md-9">
-                              <div className="col-md-9">
+                            <div className="col-md-6">
+                              <div >
                                 <Link to="/cannedresponses" className="btn green">
                                   <i className="fa fa-times"/>
                                   Back

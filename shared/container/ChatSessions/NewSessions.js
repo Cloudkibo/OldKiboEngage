@@ -146,12 +146,11 @@ class NewSessions extends Component {
           <SideBar isAdmin={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="page-content">
-              <div className="portlet box grey-cascade">
-                <div className="portlet-title">
-                  <div className="caption">
-                    <i className="fa fa-user"/>
+              <div className="uk-card uk-card-body uk-card-default">
+                <div className="uk-card-title">
+                  
                     Abandoned Chat Sessions
-                  </div>
+            
                 </div>
 
                 <div className="portlet-body">
@@ -165,7 +164,7 @@ class NewSessions extends Component {
                       <tr>
                         <td className="col-md-1">
 
-                          <select ref="teamlist" onChange={this.handleChange.bind(this)}>
+                          <select className="uk-select" ref="teamlist" onChange={this.handleChange.bind(this)}>
                             <option value="all">All</option>
                             {
 
@@ -179,7 +178,7 @@ class NewSessions extends Component {
 
                         </td>
                         <td className="col-md-1">
-                          <select ref="channellist" onChange={this.handleChange.bind(this)}>
+                          <select className="uk-select" ref="channellist" onChange={this.handleChange.bind(this)}>
                             <option value="all">All</option>
                             {
                               this.state.subgroup == 'all' ?
@@ -203,7 +202,7 @@ class NewSessions extends Component {
 
                   { this.state.newsessionsfiltered && this.state.newsessionsfiltered.length > 0 ?
                     <div className="table-responsive">
-                      <table id="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                      <table id="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                         <thead>
                         <tr>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Visitor Name</th>

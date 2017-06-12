@@ -60,7 +60,7 @@ class RescheduleResolvedSessions extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Reschedule Resolved Chat Sessions </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -71,12 +71,11 @@ class RescheduleResolvedSessions extends Component {
                   </li>               
   
             </ul>
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
+                
                   Reschedule Resolved Chat Sessions
-                </div> 
+            
               </div>    
         
            <div className="portlet-body">
@@ -97,7 +96,7 @@ class RescheduleResolvedSessions extends Component {
                 <div className="caption"><i className="fa fa-gift"></i>Perview Email</div>
                
               </div>
-            <div class="portlet-body">
+            <div class="portlet-body uk-code">
               Hello {this.props.params.name},<br/><br/>{this.state.emailtemp}<br/><br/>
               Here is the link to join the chat: <br/>
               {this.state.url}

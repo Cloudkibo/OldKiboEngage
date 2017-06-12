@@ -26,7 +26,7 @@ function NotificationListItem(props) {
       <td>{handleDate(props.notification.datetime)}</td>
       <td>{getAgentName(props.agent)}</td>
        <td>
-         <Link to={`/notification/${props.notification._id}`} className="btn blue-madison" >
+         <Link to={`/notification/${props.notification._id}`} className="btn green" >
          View
         </Link>
         {/*<Link to={`/editnotification/${props.notification._id}`} className="btn blue-madison" >

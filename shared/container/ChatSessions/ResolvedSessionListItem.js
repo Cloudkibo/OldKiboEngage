@@ -64,7 +64,7 @@ var ch=[]
       {
         props.viewoption &&
 
-         <Link to={`/chatsessionview/${props.session.request_id}`} className="btn blue-madison" >
+         <Link to={`/chatsessionview/${props.session.request_id}`} className="uk-button uk-button-primary" >
          View Details
         </Link>
 
@@ -72,7 +72,7 @@ var ch=[]
       {
         // only web sessions can be rescheduled
       props.session.platform == "web" &&
-      <Link to={`/rescheduleresolvedsession/${props.session.request_id}/${props.session.customerid.name}/${props.session.customerid.email}`} className="btn blue-madison" >
+      <Link to={`/rescheduleresolvedsession/${props.session.request_id}/${props.session.customerid.name}/${props.session.customerid.email}`} className="uk-button uk-button-primary" >
         Reschedule
       </Link>
       }
