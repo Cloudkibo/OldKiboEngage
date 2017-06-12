@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import ReactTooltip from 'react-tooltip';
 
 function ResponseListItem(props) {
 
@@ -13,11 +14,11 @@ function ResponseListItem(props) {
       { props.userdetails.isAgent == "Yes"?
                     <br/> :
                     <td>
-                      <Link to={`/editresponse/${props.response._id}`} className="btn blue-madison" >
-                      Edit
+                     <ReactTooltip />
+                      <Link data-tip="Edit" to={`/editresponse/${props.response._id}`} >
+                      <img src="/img/edit.svg" style={{maxWidth: 25, maxHeight: 25 }} /> 
                       </Link>
-                      <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
-
+                      <img data-tip="Delete" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25 }} onClick={props.onDelete}/> 
                     </td>
     
                 
