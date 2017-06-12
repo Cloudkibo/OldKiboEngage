@@ -406,19 +406,17 @@ class Chat extends Component {
                       <div>
                         {
                           this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
-                            (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected && this.refs.agentsocketfield && this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
+                            (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected  && this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
                               <CustomerChatView newChatClicked="true" socket={ this.props.route.socket} {...this.props}
                                                 sessiondetails={this.props.customerchat_selected}
-                                                socketid={this.refs.agentsocketfield.value}
                                                 onlineAg={this.props.onlineAgents}
                                                 mobileuserchat={this.props.mobileuserchat}
                                                 deptagents={this.props.deptagents}/>
                             ) :
                             (
-                              this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected && this.refs.agentsocketfield && this.props.onlineAgents && this.props.responses && this.props.customerchat_selected.platform == 'web' &&
+                              this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected  && this.props.onlineAgents && this.props.responses && this.props.customerchat_selected.platform == 'web' &&
                               <CustomerChatView socket={ this.props.route.socket} {...this.props}
                                                 sessiondetails={this.props.customerchat_selected}
-                                                socketid={this.refs.agentsocketfield.value}
                                                 onlineAg={this.props.onlineAgents}
                                                 mobileuserchat={this.props.mobileuserchat}
                                                 deptagents={this.props.deptagents}/>

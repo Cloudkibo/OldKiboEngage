@@ -1401,7 +1401,7 @@ const { value, suggestions } = this.state;
            <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
           <br/>
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
-          <input type="hidden" defaultValue = {this.props.socketid} ref = "agentsocket"/>
+          <input type="hidden" defaultValue = {'soket of agent'} ref = "agentsocket"/>
 
           <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>

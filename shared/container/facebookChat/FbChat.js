@@ -210,8 +210,6 @@ class FbChat extends Component {
 }
 
 function mapStateToProps(state) {
- console.log('updating state of fbchat');
- console.log(JSON.stringify(state.dashboard.fbsessions));
   return {
     teamdetails: (state.dashboard.teamdetails),
     userdetails: (state.dashboard.userdetails),
