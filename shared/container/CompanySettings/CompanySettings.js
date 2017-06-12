@@ -180,12 +180,11 @@ class CompanySettings extends Component {
                     </ul>
 
 
-            <div className="portlet box green-meadow">
-            <div className="portlet-title">
-              <div className="caption">
-                <i className="fa fa-cogs"/>
+            <div className="uk-card uk-card-body uk-card-default uk-width-5-6@m">
+            <div className="uk-card-title">
+              <img src="https://api.icons8.com/download/6142582549cd9be6efe4dba5480c08396158a086/iOS7/PNG/256/Very_Basic/settings-256.png" style={{maxWidth:150, maxHeight:150}}/>
                    Company settings
-              </div>
+              
             </div>
             <div className="portlet-body form">
 
@@ -223,7 +222,7 @@ class CompanySettings extends Component {
                                                 <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "isdomainemail" defaultValue={this.props.companysettings.isdomainemail}>
+                                                <select  className="form-control uk-select"  ref = "isdomainemail" defaultValue={this.props.companysettings.isdomainemail}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
@@ -238,7 +237,7 @@ class CompanySettings extends Component {
                                                 <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "allowemailnotification" defaultValue={this.props.companysettings.allowemailnotification}>
+                                                <select  className="form-control uk-select"  ref = "allowemailnotification" defaultValue={this.props.companysettings.allowemailnotification}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
@@ -274,7 +273,7 @@ class CompanySettings extends Component {
                                                 <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "allowsmsnotification" defaultValue={this.props.companysettings.allowsmsnotification}>
+                                                <select  className="form-control uk-select"  ref = "allowsmsnotification" defaultValue={this.props.companysettings.allowsmsnotification}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
@@ -288,7 +287,7 @@ class CompanySettings extends Component {
                                                 <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "allowFacebook" defaultValue={this.props.companysettings.enableFacebook?this.props.companysettings.enableFacebook:"Yes"}>
+                                                <select  className="form-control uk-select"  ref = "allowFacebook" defaultValue={this.props.companysettings.enableFacebook?this.props.companysettings.enableFacebook:"Yes"}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
@@ -303,7 +302,7 @@ class CompanySettings extends Component {
                                                 <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "showsummary" defaultValue={this.props.companysettings.showsummary}>
+                                                <select  className="form-control uk-select"  ref = "showsummary" defaultValue={this.props.companysettings.showsummary}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
@@ -317,7 +316,7 @@ class CompanySettings extends Component {
                                                 <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "allowChat" defaultValue={this.props.companysettings.allowChat}>
+                                                <select  className="form-control uk-select"  ref = "allowChat" defaultValue={this.props.companysettings.allowChat}>
                                                   <option value="Yes">Yes</option>
                                                   <option value="No">No</option>
                                                 </select>
@@ -332,7 +331,7 @@ class CompanySettings extends Component {
                                                 <div id="spinner1">
                                                 <div className="col-md-9">
                                                 <div className="input-group input-small">
-                                                <select  className="form-control"  ref = "widgetwindowtab" defaultValue={this.props.companysettings.widgetwindowtab}>
+                                                <select  className="form-control uk-select"  ref = "widgetwindowtab" defaultValue={this.props.companysettings.widgetwindowtab}>
                                                   <option value="window">Window</option>
                                                   <option value="tab">Tab</option>
                                                 </select>
