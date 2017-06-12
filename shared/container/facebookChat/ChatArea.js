@@ -877,8 +877,26 @@ export class ChatArea extends Component {
                         message: {
                           mid: unique_id,
                           seq: 1,
-                          text: this.state.value,
-
+                          //text: this.state.value,
+                          attachments:[{
+                                      "type":"template",
+                                      "payload":{
+                                      "template_type":"open_graph",
+                                        "elements":[
+                                           {
+                                            "url":this.state.prevURL,
+                                            "buttons":[
+                                              {
+                                                "type":"web_url",
+                                                "url":this.state.prevURL,
+                                                "title":"View More"
+                                              }              
+                                            ]      
+                                          }
+                                        ]
+                                      }
+                                 }]
+                
 
 
                           },

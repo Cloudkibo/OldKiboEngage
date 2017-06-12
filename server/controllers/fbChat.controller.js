@@ -626,19 +626,11 @@ export function sendTextMessage(req,res) {
                messageData= { text:req.body.message.text }
               }
               else{
-                console.log(req.body.message.attachment);
-                messageData ={
-                            'attachment':{
-                              'type': 'image',
-                              'payload':
-                              {
-                                'url':req.body.message.attachments[0].payload.url,
-                               
-                              }
-                            }
-                          }
+                messageData = {attachment:req.body.message.attachments[0]};
+                console.log('messageData');
+                console.log(messageData);
                 
-              }
+                  }
               var chatobj = req.body;
               console.log(chatobj);
                                 
