@@ -36,6 +36,7 @@ socket.on('updateFBsessions', (data) => {
   } else {
     notify(`${data.username} of Facebook Page ${data.pageTitle} has been resolved by ${data.agentname}`);
   }
+  console.log('inside UpdateFBSession Socket Message '+ data);
   store.dispatch(updatefbsessionlist(data,
     store.getState().dashboard.fbsessions,
     store.getState().dashboard.fbsessionSelected,

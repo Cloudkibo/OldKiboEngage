@@ -3,10 +3,12 @@ import {printlogs} from '../../services/clientlogging';
 export function getmetaurl(text){
    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
    var onlyUrl =''
-   var testUrl = text.match(urlRegex);
-   onlyUrl = testUrl && testUrl[0]; 
-   return onlyUrl;  
-                        
+   if(text) {
+     var testUrl = text.match(urlRegex);
+     onlyUrl = testUrl && testUrl[0];
+   }
+   return onlyUrl;
+
 }
 export function geturl(payload) {
   // printlogs('log','payload');
