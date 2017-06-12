@@ -61,7 +61,7 @@ class RescheduleAbandonedSessions extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">Reschedule Abandoned Chat Sessions </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
@@ -72,12 +72,11 @@ class RescheduleAbandonedSessions extends Component {
                   </li>
 
             </ul>
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
+            <div className="uk-card uk-card-body uk-card-default ">
+              <div className="uk-card-title">
+                
                   Reschedule Abandoned Chat Sessions
-                </div>
+                
               </div>
 
            <div className="portlet-body">
