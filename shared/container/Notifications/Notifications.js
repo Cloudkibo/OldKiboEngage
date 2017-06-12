@@ -81,12 +81,9 @@ class Notifications extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-envelope"/>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
                    Notifications
-                </div>
               </div>
 
            <div className="portlet-body">
@@ -103,7 +100,7 @@ class Notifications extends Component {
                       }
                 { this.props.notifications && this.props.notifications.length > 0 ?
                   <div className="table-responsive">
-                   <table id ="sample_3" style={{ tableLayout: 'fixed', wordWrap: 'break-word'}} className="table table-striped table-bordered table-hover dataTable">
+                   <table id ="sample_3" style={{ tableLayout: 'fixed', wordWrap: 'break-word'}} className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Title </th>
