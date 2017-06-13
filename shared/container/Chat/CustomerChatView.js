@@ -526,11 +526,12 @@ else{
 
    // check that agent is in this group
 
-   if(this.props.sessiondetails.agent_ids.type == "group")
+   if(this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == "group")
    {
     for(var i=0;i<this.props.teamagents.length;i++){
       if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id && this.props.userdetails._id == this.props.teamagents[i].agentid._id){
         agentingroup = true
+        console.log('agent in group true');
         break
       }
    }
@@ -544,8 +545,8 @@ else{
     alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
   }
 
-  else if(agentingroup == false && this.props.sessiondetails.agent_ids.type == "group"){
-    alert('You cannot resolve this session.Only agent assigned to this session can resolve this session')
+  else if(agentingroup == false && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == "group"){
+    alert('You cannot resolve this session.Only agents who are part of the assigned team can resolve this session')
   }
 
 
@@ -1272,6 +1273,8 @@ const { value, suggestions } = this.state;
                  <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10}} onClick = {this.moveToSubgroup}> Move </button>
 
                   <div className="uk-align-right" style={{margin: 15}}>
+                  <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
+                  <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
                    <select className="mySelect" style={{background: '#9b59b6', height:30, border: 0}}  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
                           {
                           this.props.subgroups && this.props.subgroups.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((subgroup,i) =>
@@ -1298,7 +1301,7 @@ const { value, suggestions } = this.state;
                         </select>
                       </div>
 
-                   
+
 
       </div>
            <div className="table-responsive">
@@ -1310,8 +1313,8 @@ const { value, suggestions } = this.state;
       />
              <table className="table table-colored">
              <tbody>
-           
-           
+
+
              {/*
                  <tr>
              <td className="col-md-4">
@@ -1320,49 +1323,48 @@ const { value, suggestions } = this.state;
                               </td>
 
               <td className="col-md-4">
-                
+
               </td>
 
 
 
               <td className="col-md-4">
-                
+
                 </td>
               <td className="col-md-1">
                 <button className="btn btn-primary" onClick = {this.picksession}> Pick Session </button>
               </td>
 
                  <td className="col-md-4">
-                
+
               </td>
 
               <td className="col-md-1">
-               
+
               </td>
 
               </tr>
-          
+
         */}
 
-             
+
 
               {/*
                 this.props.teamdetails && this.props.teamdetails.length >0?
                      <tr>
 
                          <td className="col-md-4">
-                           
+
                          </td>
 
                           <td className="col-md-4">
-                          
+
                           </td>
 
 
                           <td className="col-md-6">
                           <label>Current Status - {this.props.sessiondetails.status}</label>
-                          <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
-                          <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
+
 
                           <br/>
                           <label>{
