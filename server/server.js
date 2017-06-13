@@ -171,6 +171,8 @@ const renderFullPage = (html, initialState) => {
             <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
             <script src="scripts/widgetapp.js" type="text/javascript" ></script>
             <script src="scripts/widgetapp2.js" type="text/javascript" ></script>
+            <!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit.min.js"></script>
 
 
 

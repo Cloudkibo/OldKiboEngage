@@ -268,79 +268,69 @@ class Chat extends Component {
           <SideBar isAdmin={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="vbox viewport" style={{'overflow': 'hidden'}}>
-              <article className="uk-card uk-card-body uk-card-default">
-                  <h3 className="uk-card-title">Chat </h3>
-                <div>
-                  <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div>
-                      <label>Status:</label>
-                    </div>
-                    <div style={{display: 'inline-block', float: 'left'}}>
-                      <select className="uk-select" ref="status" onChange={this.handleChange.bind(this)}>
-                        <option value="all">All</option>
-                        <option value="new">New</option>
-                        <option value="assigned">Assigned</option>
-                        <option value="resolved">Resolved</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div>
-                      <label>Agent:</label>
-                    </div>
-                    <div style={{display: 'inline-block', float: 'left'}}>
-                      <select className="uk-select" ref="agentList" onChange={this.handleChange.bind(this)}>
-                        <option value="all">All</option>
-                        {
-                          this.props.agents && this.props.agents.map((agent, i) =>
-                            <option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
-                          )
-                        }
-                      </select>
-                    </div>
-                  </div>
-                  <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div>
-                      <label>Group:</label>
-                    </div>
-                    <div style={{display: 'inline-block', float: 'left'}}>
-                      <select className="uk-select" ref="grouplist" onChange={this.handleChange.bind(this)}>
-                        <option value="all">All</option>
-                        {
-                          this.props.groupdetails && this.props.groupdetails.map((group, i) =>
-                            <option value={group._id}>{group.deptname}</option>
-                          )
-                        }
-                      </select>
-                    </div>
-                  </div>
-                  <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div>
-                      <label>Sub Group:</label>
-                    </div>
-                    <div style={{display: 'inline-block', float: 'left'}}>
-                      <select className="uk-select" ref="subgrouplist" onChange={this.handleChange.bind(this)}>
-                        <option value="all">All</option>
-                        {
-                          this.state.subgroup == 'all' ?
-                            this.props.subgroups && this.props.subgroups.map((subgroup, i) =>
-                              <option
-                                value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' + subgroup.msg_channel_name}</option>
-                            ) :
-                            this.props.filterlist && this.props.filterlist.map((subgroup, i) =>
-                              <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
-                            )
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </div>
+          
+              <article>
+              
               </article>
               { this.props.customerchatold && this.props.customerchatold.length > 0 ?
                 <section className="main hbox space-between">
                   
                   <nav className="navclassSessionList">
                     <div className="anotherflx">
+                   <div  className="uk-inline">
+                      <button className="uk-button uk-button-primary" type="button">Filter</button>
+                      <div ref={node => node && node.setAttribute('uk-dropdown', '')} >
+                         <ul className="uk-nav uk-dropdown-nav">
+                                <li className="uk-active"><a href="#">Status</a></li>
+                                <li>
+                                   <select className="uk-select" ref="status" onChange={this.handleChange.bind(this)}>
+                                      <option value="all">All</option>
+                                      <option value="new">New</option>
+                                      <option value="assigned">Assigned</option>
+                                      <option value="resolved">Resolved</option>
+                                    </select>
+                                </li>
+                                <li class="uk-nav-header">Agents</li>
+                                <li>
+                                   <select className="uk-select" ref="agentList" onChange={this.handleChange.bind(this)}>
+                                        <option value="all">All</option>
+                                        {
+                                          this.props.agents && this.props.agents.map((agent, i) =>
+                                            <option value={agent._id}>{agent.firstname + ' ' + agent.lastname}</option>
+                                          )
+                                        }
+                                      </select>
+                                </li>
+                                <li class="uk-nav-header">Groups</li>
+                                <li>
+                                       <select className="uk-select" ref="grouplist" onChange={this.handleChange.bind(this)}>
+                                        <option value="all">All</option>
+                                        {
+                                          this.props.groupdetails && this.props.groupdetails.map((group, i) =>
+                                            <option value={group._id}>{group.deptname}</option>
+                                          )
+                                        }
+                                      </select>
+                                </li>
+                                <li class="uk-nav-header">Sub Groups</li>
+                                <li>
+                                    <select className="uk-select" ref="subgrouplist" onChange={this.handleChange.bind(this)}>
+                                      <option value="all">All</option>
+                                      {
+                                        this.state.subgroup == 'all' ?
+                                          this.props.subgroups && this.props.subgroups.map((subgroup, i) =>
+                                            <option
+                                              value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' + subgroup.msg_channel_name}</option>
+                                          ) :
+                                          this.props.filterlist && this.props.filterlist.map((subgroup, i) =>
+                                            <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+                                          )
+                                      }
+                                    </select>
+                                </li>
+                            </ul>
+                      </div>
+                  </div>
                       <div className="headerchatarea" style={{'flexBasis': 50}}>
                         <input type="hidden" ref="sessionid"/>
                       </div>
