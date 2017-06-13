@@ -268,17 +268,15 @@ class Chat extends Component {
           <SideBar isAdmin={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="vbox viewport" style={{'overflow': 'hidden'}}>
-              <article>
-                <header style={{'border': '0px'}}>
-                  <h3>Chat </h3>
-                </header>
+              <article className="uk-card uk-card-body uk-card-default">
+                  <h3 className="uk-card-title">Chat </h3>
                 <div>
                   <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                    <div>
                       <label>Status:</label>
                     </div>
                     <div style={{display: 'inline-block', float: 'left'}}>
-                      <select ref="status" onChange={this.handleChange.bind(this)}>
+                      <select className="uk-select" ref="status" onChange={this.handleChange.bind(this)}>
                         <option value="all">All</option>
                         <option value="new">New</option>
                         <option value="assigned">Assigned</option>
@@ -287,11 +285,11 @@ class Chat extends Component {
                     </div>
                   </div>
                   <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                    <div>
                       <label>Agent:</label>
                     </div>
                     <div style={{display: 'inline-block', float: 'left'}}>
-                      <select ref="agentList" onChange={this.handleChange.bind(this)}>
+                      <select className="uk-select" ref="agentList" onChange={this.handleChange.bind(this)}>
                         <option value="all">All</option>
                         {
                           this.props.agents && this.props.agents.map((agent, i) =>
@@ -302,11 +300,11 @@ class Chat extends Component {
                     </div>
                   </div>
                   <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                    <div>
                       <label>Group:</label>
                     </div>
                     <div style={{display: 'inline-block', float: 'left'}}>
-                      <select ref="grouplist" onChange={this.handleChange.bind(this)}>
+                      <select className="uk-select" ref="grouplist" onChange={this.handleChange.bind(this)}>
                         <option value="all">All</option>
                         {
                           this.props.groupdetails && this.props.groupdetails.map((group, i) =>
@@ -317,11 +315,11 @@ class Chat extends Component {
                     </div>
                   </div>
                   <div style={{display: 'inline-block', marginRight: '50px'}}>
-                    <div style={{display: 'inline-block', marginRight: '10px', float: 'left'}}>
+                    <div>
                       <label>Sub Group:</label>
                     </div>
                     <div style={{display: 'inline-block', float: 'left'}}>
-                      <select ref="subgrouplist" onChange={this.handleChange.bind(this)}>
+                      <select className="uk-select" ref="subgrouplist" onChange={this.handleChange.bind(this)}>
                         <option value="all">All</option>
                         {
                           this.state.subgroup == 'all' ?
@@ -340,12 +338,14 @@ class Chat extends Component {
               </article>
               { this.props.customerchatold && this.props.customerchatold.length > 0 ?
                 <section className="main hbox space-between">
+                  
                   <nav className="navclassSessionList">
                     <div className="anotherflx">
                       <div className="headerchatarea" style={{'flexBasis': 50}}>
                         <input type="hidden" ref="sessionid"/>
                       </div>
-                      <article>
+                      <article  style={{marginTop: -45}}>
+                  
                         <div>
                           {
                             this.props.yoursocketid &&
