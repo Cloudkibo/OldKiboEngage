@@ -48,11 +48,10 @@ class GroupDetailView extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Group Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
                                <Link to="/groups"> Group Management </Link>
@@ -60,12 +59,9 @@ class GroupDetailView extends Component {
   
             </ul>
              {this.props.group &&
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
+            <div className="uk-card uk-card-body uk-card-default  uk-width-1-2@m">
+              <div className="uk-card-title">
                     Group - {this.props.group.deptname} 
-                </div> 
               </div>    
         
            <div className="portlet-body form">
@@ -107,9 +103,9 @@ class GroupDetailView extends Component {
                    </div>
                 </div>
 
-              <div className="form-actions fluid">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
+              <div className="form-actions fluid" style={{background: 'white'}}>
+                <div className="col-md-6">
+                  <div className="col-md-offset-6 col-md-6">
                   {this.props.params.fromprofile?
                     <Link to="/myprofile" className="btn green">
                       <i className="fa fa-times"/>

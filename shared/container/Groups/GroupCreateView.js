@@ -149,7 +149,7 @@ class GroupCreateView extends Component {
                    Please, add at least one agent to the group to make it operational. Click on the name in the list to add agents.
                   </b>
           </div>
-          <div className="form-actions">
+          <div className="form-actions" style={{background: 'white'}}>
               <button className="btn blue"  onClick={this.addGroup}> Submit </button>
          </div>
         </div>
