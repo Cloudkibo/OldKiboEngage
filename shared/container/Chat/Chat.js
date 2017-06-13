@@ -286,20 +286,16 @@ class Chat extends Component {
           <SideBar isAdmin={this.props.userdetails.isAdmin}/>
           <div className="page-content-wrapper">
             <div className="vbox viewport" style={{'overflow': 'hidden'}}>
-          
-              <article>
-              
-              </article>
               { this.props.customerchatold && this.props.customerchatold.length > 0 ?
                 <section className="main hbox space-between">
                   
                   <nav className="navclassSessionList">
-                    <div className="anotherflx">
+                    <div className="anotherflx ">
                    <div  className="uk-inline">
                       <button className="uk-button uk-button-primary" type="button">Filter</button>
                       <div ref={node => node && node.setAttribute('uk-dropdown', '')} >
                          <ul className="uk-nav uk-dropdown-nav">
-                                <li className="uk-active"><a href="#">Status</a></li>
+                                <li className="uk-nav-header">Status</li>
                                 <li>
                                    <select className="uk-select" ref="status" onChange={this.handleChange.bind(this)}>
                                       <option value="all">All</option>
@@ -308,7 +304,7 @@ class Chat extends Component {
                                       <option value="resolved">Resolved</option>
                                     </select>
                                 </li>
-                                <li class="uk-nav-header">Agents</li>
+                                <li className="uk-nav-header">Agents</li>
                                 <li>
                                    <select className="uk-select" ref="agentList" onChange={this.handleChange.bind(this)}>
                                         <option value="all">All</option>
@@ -319,7 +315,8 @@ class Chat extends Component {
                                         }
                                       </select>
                                 </li>
-                                <li class="uk-nav-header">Groups</li>
+
+                                <li className="uk-nav-header">Groups</li>
                                 <li>
                                        <select className="uk-select" ref="grouplist" onChange={this.handleChange.bind(this)}>
                                         <option value="all">All</option>
@@ -330,7 +327,7 @@ class Chat extends Component {
                                         }
                                       </select>
                                 </li>
-                                <li class="uk-nav-header">Sub Groups</li>
+                                <li className="uk-nav-header">Sub Groups</li>
                                 <li>
                                     <select className="uk-select" ref="subgrouplist" onChange={this.handleChange.bind(this)}>
                                       <option value="all">All</option>
