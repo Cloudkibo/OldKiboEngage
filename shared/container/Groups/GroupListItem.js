@@ -18,16 +18,16 @@ function GroupListItem(props) {
       <td>{handleDate(props.group.creationdate)}</td>
      
       <td>
-        <Link to={`/group/${props.group._id}`} className="btn blue-madison" >
+        <Link to={`/group/${props.group._id}`} style={{margin: 2}} className="uk-button uk-button-primary uk-button-small" >
          View
         </Link>
          {
         (props.userdetails.isAdmin == "Yes" || props.userdetails.isSupervisor == "Yes") ?
         <span>
-        <Link to={`/editgroup/${props.group._id}`} className="btn blue-madison" >
+        <Link to={`/editgroup/${props.group._id}`} style={{margin: 2}} className="uk-button uk-button-primary uk-button-small" >
          Edit
         </Link>
-        <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+        <button className="uk-button uk-button-primary uk-button-small" style={{margin: 2}} onClick={props.onDelete}> Delete </button>
         </span> : <span></span>
 
         }
