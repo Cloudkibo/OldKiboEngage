@@ -4185,3 +4185,31 @@ export function fetchurlmeta(url) {
   };
 
 }
+
+export function updatechatsessionstatus(customerchat,customerchat_selected,userdetails,message)
+{ // state being updated
+    // update the status of session
+    for (var i = 0; i < customerchat.length; i++) {
+      if (customerchat[i].request_id == message[0].request_id) {
+        customerchat[i].status = "assigned";
+       customerchat[i].agent_ids.push({'id': userdetails._id, type: 'agent'});
+        break;
+      }
+    }
+
+    if (customerchat_selected.request_id == message[0].request_id) {
+      customerchat_selected.status = "assigned";
+      customerchat_selected.agent_ids.push({'id': userdetails._id, type: 'agent'});
+    }
+
+  return {
+
+    customerchat: customerchat,
+    customerchat_selected:customerchat_selected,
+    type: ActionTypes.UPDATE_CHATSESSION_STATUS,
+  }
+
+}
+
+
+

@@ -22,7 +22,8 @@ import {
   getcustomers,
   setsocketid,
   filterChat,
-  selectCustomerChat
+  selectCustomerChat,
+  updatechatsessionstatus
 }  from '../../redux/actions/actions';
 
 import {initiateChatComponent} from '../../socket';
@@ -78,7 +79,7 @@ class Chat extends Component {
     }
 
     super(props, context);
-    this.getSessionInfo = this.getSessionInfo.bind(this);
+   // this.getSessionInfo = this.getSessionInfo.bind(this);
     this.getSocketmessage = this.getSocketmessage.bind(this);
     this.state = {
       subgroup: 'all'
@@ -161,26 +162,7 @@ class Chat extends Component {
 
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
-  getSessionInfo(message) {
-
-    // state being updated
-    // update the status of session
-    for (var i = 0; i < this.props.customerchat.length; i++) {
-      if (this.props.customerchat[i].request_id == message[0].request_id) {
-        this.props.customerchat[i].status = "assigned";
-        this.props.customerchat[i].agent_ids.push({'id': this.props.userdetails._id, type: 'agent'});
-        break;
-      }
-    }
-
-    if (this.props.customerchat_selected.request_id == message[0].request_id) {
-      this.props.customerchat_selected.status = "assigned";
-      this.props.customerchat_selected.agent_ids.push({'id': this.props.userdetails._id, type: 'agent'});
-    }
-
-    this.props.previousChat(message, this.props.chatlist);
-    this.forceUpdate();
-  }
+  
 
   componentWillReceiveProps(props) {
     // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
@@ -208,7 +190,7 @@ class Chat extends Component {
     // todo discuss with zarmeen as following are very complex and may not follow redux rules
 
     this.props.route.socket.on('send:message', this.getSocketmessage); // half UI and half actions
-    this.props.route.socket.on('informAgent', this.getSessionInfo); // can be separated
+  //  this.props.route.socket.on('informAgent', this.getSessionInfo); // can be separated
   }
 
 
@@ -491,5 +473,6 @@ export default connect(mapStateToProps, {
   getuserchats,
   getcustomers,
   selectCustomerChat,
-  filterChat
+  filterChat,
+  updatechatsessionstatus
 })(Chat);

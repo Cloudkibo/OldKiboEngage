@@ -4,7 +4,7 @@ import {setSocketStatus, setUserJoinedRoom} from './redux/actions/socketio.actio
 import {
   setjoinedState, updateCustomerList, updatefbsessionlist, previousChat,
   getassignedsessionsfromsocket, getnewsessionsfromsocket, getresolvedsessionsfromsocket,
-  setsocketid, getsessionsfromsocket, updateAgentList, getchatsfromsocket, add_socket_fb_message,
+  setsocketid, getsessionsfromsocket, updateAgentList, getchatsfromsocket, add_socket_fb_message,updatechatsessionstatus,
 } from './redux/actions/actions';
 import {notify} from './services/notify';
 
@@ -66,6 +66,14 @@ socket.on('updateFBsessions', (data) => {
     store.getState().dashboard.fbchats,
     store.getState().dashboard.fbchatSelected));
 });
+
+
+
+socket.on('informAgent', (message)=> {
+
+    store.dispatch(updatechatsessionstatus(store.getState().dashboard.customerchat,store.getState().dashboard.customerchat_selected,store.getState().dashboard.userdetails,message));
+    store.dispatch(previousChat(message, store.getState().dashboard.chatlist));
+  });
 
 socket.on('agentjoined', () => {
   console.log('user joined room');

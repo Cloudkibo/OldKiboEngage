@@ -571,7 +571,14 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: '',
 
       };
+    case ActionTypes.UPDATE_CHATSESSION_STATUS:
+     return {
+        ...state, errorMessageProfile: '',
+        customerchat: action.customerchat,
+        errorMessage: '',
+        customerchat_selected:action.customerchat_selected,
 
+      };
     case ActionTypes.ONLINE_AGENTS:
       return {
         ...state, errorMessageProfile: '',
