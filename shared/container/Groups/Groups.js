@@ -131,12 +131,10 @@ componentDidMount(){
           <div className="page-content-wrapper">
             <div className="page-content">
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
                     Groups
-                </div>
+            
               </div>
           <div className="portlet-body">
              <div className="table-toolbar">
@@ -155,7 +153,7 @@ componentDidMount(){
               <GroupCreateView addGroup={this.add}  showAddGroup= {this.state.showAddGroup}/>
                 { this.props.groupdetails && this.props.customers && this.props.groupdetails.length > 0 ?
                   <div className="table-responsive">
-                   <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                   <table id ="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>

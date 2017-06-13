@@ -46,29 +46,25 @@ class MyPickedSessions extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">My Picked Chat Sessions </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
                                <Link to="/mypickedchatsessions">My Picked Chat Sessions </Link>
                   </li>               
   
             </ul>
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
                   My Picked Chat Sessions
-                </div> 
               </div>    
         
            <div className="portlet-body">
             
              { this.props.mypickedsessions &&
-                   <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                   <table id ="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
