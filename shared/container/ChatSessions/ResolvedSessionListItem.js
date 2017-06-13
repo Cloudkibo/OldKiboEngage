@@ -50,8 +50,8 @@ var ch=[]
       }
       {
 
-       props.agent && props.agent.length>0 ?
-        <td>{props.agent[0].firstname +' '+ props.agent[0].lastname}</td> :
+       props.agent  ?
+        <td>{props.agent}</td> :
        <td>-</td>
 
 

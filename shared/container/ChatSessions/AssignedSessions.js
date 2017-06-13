@@ -44,9 +44,29 @@ class AssignedSessions extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
+    this.getagentname = this.getagentname.bind(this);
     this.filterAssignedSession = this.filterAssignedSession.bind(this);
   }
 
+  getagentname(session){
+    var agentname ='-'
+    if(session.agent_ids && session.agent_ids.length>0){
+      if(session.agent_ids[session.agent_ids.length-1].type == 'group'){
+        var team = this.props.teamdetails.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)[0]
+        if(team){
+          agentname = team.groupname;
+        }
+      }
+        else{
+          var agent = this.props.agents.filter((c)=> c._id == session.agent_ids[session.agent_ids.length-1].id)[0]
+          if(agent){
+            agentname = agent.firstname + ' ' + agent.lastname;
+          }
+        }
+      
+    }
+    return agentname;
+  }
   handleChange(){
      //alert(e.target.value);
      this.setState({ subgroup: this.refs.teamlist.value });
@@ -357,7 +377,7 @@ class AssignedSessions extends Component {
                         this.props.assignedsocketsessions && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.props.assignedsocketsessions.map((session, i) => (
 
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <SessionListItem session={session} key={session.request_id} agent={this.getagentname(session)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
                         ))
                       }
@@ -367,7 +387,7 @@ class AssignedSessions extends Component {
                         this.state.assignedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.state.assignedSessionsData.map((session, i) => (
 
-                          <SessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)} subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <SessionListItem session={session} key={session.request_id} agent={this.getagentname(session)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
                         ))
                       }
@@ -417,7 +437,8 @@ function mapStateToProps(state) {
           assignedsessionsfiltered :(state.dashboard.assignedsessionsfiltered),
           customers:(state.dashboard.customers),
           assignedsocketsessions : (state.dashboard.assignedsocketsessions),
-          filterlist :(state.widget.filterlist)
+          filterlist :(state.widget.filterlist),
+          teamdetails: (state.dashboard.teamdetails),
            };
 
 }
