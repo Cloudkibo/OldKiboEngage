@@ -890,13 +890,13 @@ export class ChatArea extends Component {
                                                 "type":"web_url",
                                                 "url":this.state.prevURL,
                                                 "title":"View More"
-                                              }              
-                                            ]      
+                                              }
+                                            ]
                                           }
                                         ]
                                       }
                                  }]
-                
+
 
 
                           },
@@ -1454,7 +1454,7 @@ export class ChatArea extends Component {
                   <p style={styles.left.textEmoji}>{ReactEmoji.emojify(data.message) }</p> :
                   <p style={styles.left.text}>
                     { data.message.split(' ').map((msg, i) => (
-                      msg.startsWith(' http') ?
+                      msg.startsWith('http') ?
                         msg + ' ':
                         ReactEmoji.emojify(msg + ' ')
                       ))
