@@ -1237,31 +1237,11 @@ const { value, suggestions } = this.state;
      return (
 
       <div>
-           <div className="table-responsive">
-      <SweetAlert
-        show={this.state.show}
-        title="Alert"
-        text="Please select a team from the dropdown menu"
-        onConfirm={() => this.setState({ show: false })}
-      />
-             <table className="table table-colored">
-             <tbody>
-             <tr>
-                 <td className="col-md-4">
-                 <label className="control-label text-right">Assigned To</label>
-                 </td>
-                 <td className="col-md-4">
-                 </td>
-                 <td className="col-md-4">
-                 <label className="control-label text-right">Move To</label>
-                 </td>
-             </tr>
-             <tr>
-             <td className="col-md-4">
-
-
-                  <div className="input-group">
-                  <select  ref = "agentList" className="form-control" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3"   >
+      <div className="uk-card uk-padding-remove uk-card-body uk-card-hover uk-card-default" style={{background: '#9b59b6'}}>
+          <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick = {this.resolveSession}> Resolved </button>
+          <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Assign To Agent</button>
+            <div className="uk-align-right" style={{margin: 15}}>
+                  <select className="mySelect" style={{background: '#9b59b6', height:30, border: 0}}  ref = "agentList" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3" >
 
                         <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
 
@@ -1288,17 +1268,11 @@ const { value, suggestions } = this.state;
 
 
                  </div>
-              </td>
 
-              <td className="col-md-4">
-                <button className="btn btn-primary" onClick = {this.assignSessionToAgent}> Assign To Agent</button>
-              </td>
+                 <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10}} onClick = {this.moveToSubgroup}> Move </button>
 
-
-
-              <td className="col-md-4">
-                 <div className="input-group">
-                   <select  ref = "subgrouplist" className="form-control" onChange={this.handleChange.bind(this)}   >
+                  <div className="uk-align-right" style={{margin: 15}}>
+                   <select className="mySelect" style={{background: '#9b59b6', height:30, border: 0}}  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
                           {
                           this.props.subgroups && this.props.subgroups.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((subgroup,i) =>
                             <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
@@ -1308,43 +1282,80 @@ const { value, suggestions } = this.state;
 
                       </select>
                    </div>
-                </td>
+
+                   <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToTeam}> Assign To Team</button>
+
+                   <div className="uk-align-right" style={{margin: 15}}>
+                      <select className="mySelect" style={{background: '#9b59b6', height:30, border: 0}} ref = "teamlist" onChange={this.handleChange.bind(this)}>
+                            <option value={-1} data-attrib = {-1}>Select A Team</option>
+                            {
+                            this.props.teamdetails && this.props.teamdetails.map((team,i) =>
+                              <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
+
+                              )
+                            }
+
+                        </select>
+                      </div>
+
+                   
+
+      </div>
+           <div className="table-responsive">
+      <SweetAlert
+        show={this.state.show}
+        title="Alert"
+        text="Please select a team from the dropdown menu"
+        onConfirm={() => this.setState({ show: false })}
+      />
+             <table className="table table-colored">
+             <tbody>
+           
+           
              {/*
-              <td className="col-md-1">
-                <button className="btn btn-primary" onClick = {this.picksession}> Pick Session </button>
-              </td>*/}
+                 <tr>
+             <td className="col-md-4">
+
+
+                              </td>
 
               <td className="col-md-4">
-                <button className="btn btn-primary" onClick = {this.moveToSubgroup}> Move </button>
+                
+              </td>
+
+
+
+              <td className="col-md-4">
+                
+                </td>
+              <td className="col-md-1">
+                <button className="btn btn-primary" onClick = {this.picksession}> Pick Session </button>
+              </td>
+
+                 <td className="col-md-4">
+                
               </td>
 
               <td className="col-md-1">
-                <button className="btn btn-primary" onClick = {this.resolveSession}> Resolved </button>
+               
               </td>
 
               </tr>
+          
+        */}
 
-              {
+             
+
+              {/*
                 this.props.teamdetails && this.props.teamdetails.length >0?
                      <tr>
 
                          <td className="col-md-4">
-                           <div className="input-group">
-                             <select  ref = "teamlist" className="form-control" onChange={this.handleChange.bind(this)}>
-                                    <option value={-1} data-attrib = {-1}>Select A Team</option>
-                                    {
-                                    this.props.teamdetails && this.props.teamdetails.map((team,i) =>
-                                      <option value={team._id} data-attrib = {team._id}>{team.groupname}</option>
-
-                                      )
-                                   }
-
-                                </select>
-                             </div>
+                           
                          </td>
 
                           <td className="col-md-4">
-                          <button className="btn btn-primary" onClick = {this.assignSessionToTeam}> Assign To Team</button>
+                          
                           </td>
 
 
@@ -1374,7 +1385,7 @@ const { value, suggestions } = this.state;
                       </td>
                      </tr>
 
-             }
+             */}
                 {/*}
                     <tr>
 

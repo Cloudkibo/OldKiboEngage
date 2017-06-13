@@ -54,3 +54,13 @@
     -webkit-transform: scale(1.0);
   }
 }
+
+.mySelect{
+  background: transparent;
+  color: white;
+  height: 25px;
+}
+
+.mySelect > option {
+  background: #9b59b6;
+}
