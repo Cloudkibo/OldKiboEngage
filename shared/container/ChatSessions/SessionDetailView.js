@@ -122,10 +122,11 @@ var grpp = []
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">View Chat Session Details </h3>
-            <ul className="uk-breadcrumb">
+            <ul className="page-breadcrumb breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
+                    <i className="fa fa-angle-right"/>
                   </li>
                   <li>
                                <Link to="/summarychatsessions">Summary of Chat Sessions </Link>
@@ -134,7 +135,7 @@ var grpp = []
             </ul>
              {
               this.props.sessionsummarydetail &&
-            <div className="uk-card uk-card-body uk-card-default">
+            <div className="portlet box ">
 
            <div className="portlet-body">
                <div className="pull-left  form">
@@ -257,12 +258,12 @@ var grpp = []
               sessionsummarydetail[0].customerid.email && sessionsummarydetail[0].customerid.email != "N/A" &&
             <div style={{clear:'both'}}>
 
-                <div className="uk-card uk-card-body uk-card-default">
-                <div className="uk-card-title">
-                
-                
+                <div className="portlet box grey-cascade">
+                <div className="portlet-title">
+                <div className="caption">
+                    <i className="fa fa-email"/>
                    Send Email
-                
+                </div>
                 </div>
                 <div className="portlet-body">
                 <form className="form-horizontal form-row-seperated">
