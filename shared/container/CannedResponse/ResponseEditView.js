@@ -67,11 +67,10 @@ class ResponseEditView extends Component {
           <div className="page-content-wrapper">
             <div className="page-content"> 
               <h3 className ="page-title">Canned Response Management </h3>
-            <ul className="page-breadcrumb breadcrumb">
+            <ul className="uk-breadcrumb">
                   <li>
                     <i className="fa fa-home"/>
                     <Link to="/dashboard"> Dashboard </Link>
-                    <i className="fa fa-angle-right"/> 
                   </li>                  
                   <li>
                                <Link to="cannedresponses"> Canned Response Management</Link>
@@ -84,12 +83,9 @@ class ResponseEditView extends Component {
                       }
          
              {this.props.response &&
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-group"/>
+            <div className="uk-card uk-card-body uk-card-default  uk-width-1-2@m">
+              <div className="uk-card-title">
                    Edit Canned Response
-                </div> 
               </div>    
         
            <div className="portlet-body form">
@@ -117,10 +113,10 @@ class ResponseEditView extends Component {
                    </div>
                    </div> 
               
-              <div className="form-actions fluid">
+              <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
-                <div className="col-md-3">
-                  <div className="col-md-offset-9 col-md-9">
+                <div className="col-md-6">
+                  <div className="col-md-offset-6 col-md-6">
                     <button className="btn green" onClick={this.editResponse}>
                       <i className="fa fa-pencil"/>
                        Submit
@@ -128,8 +124,8 @@ class ResponseEditView extends Component {
 
                     </div>
                </div> 
-                <div className="col-md-9">
-                  <div className="col-md-9">
+                <div className="col-md-6">
+                  <div>
                     <Link to="/cannedresponses" className="btn green">
                       <i className="fa fa-times"/>
                        Back

@@ -48,8 +48,28 @@ class ResolvedSessions extends Component {
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.filterResolvedSession = this.filterResolvedSession.bind(this);
+    this.getagentname = this.getagentname.bind(this);
   }
 
+  getagentname(session){
+    var agentname ='-'
+    if(session.agent_ids && session.agent_ids.length>0){
+      if(session.agent_ids[session.agent_ids.length-1].type == 'group'){
+        var team = this.props.teamdetails.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)[0]
+        if(team){
+          agentname = team.groupname;
+        }
+      }
+        else{
+          var agent = this.props.agents.filter((c)=> c._id == session.agent_ids[session.agent_ids.length-1].id)[0]
+          if(agent){
+            agentname = agent.firstname + ' ' + agent.lastname;
+          }
+        }
+      
+    }
+    return agentname;
+  }
   handleChange(){
      //alert(e.target.value);
      this.setState({ subgroup: this.refs.teamlist.value });
@@ -272,7 +292,7 @@ class ResolvedSessions extends Component {
                         this.props.resolvedsocketsessions && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.props.resolvedsocketsessions.map((session, i) => (
 
-                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1])}   subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.getagentname(session)}   subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
                         ))
                       }
@@ -282,7 +302,7 @@ class ResolvedSessions extends Component {
                         this.state.resolvedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.state.resolvedSessionsData.map((session, i) => (
 
-                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.getagentname(session)}   subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
                         ))
                       }
@@ -332,7 +352,8 @@ function mapStateToProps(state) {
           customers:(state.dashboard.customers),
           resolvedsocketsessions : (state.dashboard.resolvedsocketsessions),
           resolvedsessionsfiltered: (state.dashboard.resolvedsessionsfiltered),
-          filterlist :(state.widget.filterlist)
+          filterlist :(state.widget.filterlist),
+          teamdetails: (state.dashboard.teamdetails),
            };
 
 }

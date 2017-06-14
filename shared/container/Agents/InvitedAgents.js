@@ -76,19 +76,16 @@ class InvitedAgents extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
 
-            <div className="portlet box grey-cascade">
-              <div className="portlet-title">
-                <div className="caption">
-                    <i className="fa fa-user"/>
+            <div className="uk-card uk-card-body uk-card-default">
+              <div className="uk-card-title">
                   Invited Agents
-                </div>
               </div>
 
            <div className="portlet-body">
 
              { this.props.invitedagents && this.props.invitedagents.length > 0 ?
                <div className="table-responsive">
-                   <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                   <table id ="sample_3" className="uk-table uktable-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Email</th>
