@@ -100,12 +100,12 @@ class CannedResponses extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
 
-              <div className="portlet box grey-cascade">
-                <div className="portlet-title">
-                  <div className="caption">
-                    <i className="fa fa-user"/>
+              <div className="uk-card uk-card-body uk-card-default">
+                <div className="uk-card-title">
+                  
+                  
                     Canned Response
-                  </div>
+                  
                 </div>
 
                 <div className="portlet-body">
@@ -129,7 +129,7 @@ class CannedResponses extends Component {
                   }
                   { this.props.responses && this.props.responses.length > 0 ?
                     <div>
-                      <table id="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                      <table id="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                         <thead>
                         <tr>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Short Code</th>
