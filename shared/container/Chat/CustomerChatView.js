@@ -300,7 +300,7 @@ else{
 
   componentDidMount() {
     const { socket,dispatch } = this.props;
-    //this.props.route.socket.on('send:message',this.getSocketmessage);
+    this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
    // this.props.route.socket.on('send:teammembers',this.getgroupmembers);
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
@@ -1237,7 +1237,7 @@ const { value, suggestions } = this.state;
 
      return (
 
-      <div>
+      <div style={{flex: 1}}>
       <div className="uk-card uk-padding-remove uk-card-body uk-card-hover uk-card-default" style={{background: '#9b59b6'}}>
           <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick = {this.resolveSession}> Resolved </button>
           <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Assign To Agent</button>
@@ -1304,7 +1304,7 @@ const { value, suggestions } = this.state;
 
 
       </div>
-           <div className="table-responsive">
+           <div className="table-responsive" style={{background: '#F5F5F5'}}>
       <SweetAlert
         show={this.state.show}
         title="Alert"
@@ -1403,7 +1403,7 @@ const { value, suggestions } = this.state;
 
           </div>
 
-          <div className="panel-body">
+          <div className="panel-body" style={{background: '#F5F5F5'}}>
           {
             this.props.sessiondetails &&
           <div>
@@ -1420,59 +1420,63 @@ const { value, suggestions } = this.state;
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
-            <ul className="chat" style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1',width:600+'px'}}  ref="messageList">
+            <ul className="chat" style={{ margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1', background: '#F5F5F5'}}  ref="messageList">
 
                           {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
 
                                (this.props.userdetails.firstname === chat.from?
-                                    <li className="right clearfix agentChatBox" style={{'marginLeft':'180px','width':'400px'}}>
-
-                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
-                                      </span>
+                                    <li className="pull-right clearfix agentChatBox" style={{marginTop: -10, background: '#F5F5F5', border: 0}}>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong>
-                                            <small className=" text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
-                                            </small>
+                                            <p  className="pull-right text-muted">{chat.from}</p>
+                                       
                                         </div>
                                        {
                                         (chat.type == 'file')?
 
-                                       <p  className='chatmsg' style={{'marginLeft':'0px'}}>
+                                       <p  className='pull-right chatmsg' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white'}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
-                                       <p className="chatmsg" style={{'marginLeft':'0px'}}>
+                                       <p className="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white'}}>
                                             {chat.msg}
                                        </p>
                                      }
+                                          <small className="pull-right text-muted">
+                                              {handleDate(chat.datetime)}
+                                            </small>
                                      </div>
                                    </li>
 
                                    :
-                                    <li className="left clearfix userChatBox">
-                                      <span className="chat-img pull-left userChat">
+                                    <li className="left userChatBox" style={{border: 0}}>
+                                  
+                                      <div>
+                                      {
+                                        /*
+                                          <span className="chat-img pull-left userChat">
                                       {chat.from.substr(0,1)}
                                       </span>
-                                      <div className="chat-body clearfix">
-                                        <div>
-                                            <strong className="primary-font">{chat.customername?chat.customername:chat.from}</strong>
-                                            <small className="pull-right text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}                                            </small>
+                                        */
+                                      }
+                                      
+                                        <div style={{marginBottom: -10}}>
+                                            <p className="text-muted">{chat.customername?chat.customername:chat.from}</p>
+                                            
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg'>
+                                         <p  className='pull-right chatmsg' style={{background: 'white',padding: 10, marginBottom: 0, marginTop: 0}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p className="chatmsg">
+                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0}}>
                                             {chat.msg}
                                        </p>
                                      }
+                                     <small className="text-muted" style={{marginLeft: 5, marginTop: -250}}>{handleDate(chat.datetime)}</small>
                                      </div>
                                    </li>
 
