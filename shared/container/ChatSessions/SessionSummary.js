@@ -46,17 +46,36 @@ class SessionSummary extends Component {
       subgroup: 'all',
       summarySessionsData: [],
       totalLength: 0,
-      sessionsummaryfiltered: props.sessionsummary,
+      sessionsummaryfiltered: null,
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.filterSessionSummary = this.filterSessionSummary.bind(this);
-
+    this.getagentname = this.getagentname.bind(this);
   }
 
-
+  getagentname(session){
+    var agentname ='-'
+    if(session.agent_ids && session.agent_ids.length>0){
+      if(session.agent_ids[session.agent_ids.length-1].type == 'group'){
+        var team = this.props.teamdetails.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)[0]
+        if(team){
+          agentname = team.groupname;
+        }
+      }
+        else{
+          var agent = this.props.agents.filter((c)=> c._id == session.agent_ids[session.agent_ids.length-1].id)[0]
+          if(agent){
+            agentname = agent.firstname + ' ' + agent.lastname;
+          }
+        }
+      
+    }
+    return agentname;
+  }
   displayData(n) {
+    if(this.state.sessionsummaryfiltered != null){
     let offset = n * 6;
     //console.log("Offset: " + offset);
     let sessionData = [];
@@ -72,6 +91,7 @@ class SessionSummary extends Component {
     }
     this.setState({summarySessionsData: sessionData});
   }
+  }
 
   handlePageClick(data) {
     //console.log(data.selected);
@@ -81,12 +101,7 @@ class SessionSummary extends Component {
   componentDidMount() {
     //const usertoken = auth.getToken();
 
-    if (this.state.sessionsummaryfiltered) {
-      this.setState({loading: false});
-    }
-
-    this.displayData(0);
-    this.setState({totalLength: this.state.sessionsummaryfiltered.length});
+   
   }
 
   handleChange() {
@@ -424,10 +439,14 @@ class SessionSummary extends Component {
     }
   }
 
-  componentWillReceiveProps(nextprops) {
-    if (nextprops.sessionsummaryfiltered) {
-      this.setState({loading: false});
-    }
+  componentWillReceiveProps(props) {
+    if(props.sessionsummary){
+      this.setState({sessionsummaryfiltered: props.sessionsummary,loading: false,totalLength: props.sessionsummary.length});
+      this.displayData(0);
+      console.log('updating props') 
+       }
+
+   
   }
 
   render() {
@@ -561,7 +580,7 @@ class SessionSummary extends Component {
                           this.state.summarySessionsData.map((session, i) => (
                             session.agent_ids.length > 0 ?
                               <SessionListItem session={session} key={session.request_id}
-                                               agent={this.props.agents.filter((c) => c._id == session.agent_ids[session.agent_ids.length - 1].id)}
+                                               agent={this.getagentname(session)} 
                                                customers={this.props.customers.filter((c) => c._id == session.customerid)}
                                                subgroups={this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length - 1])}
                                                groups={this.props.groupdetails.filter((c) => c._id == session.departmentid)}
@@ -625,7 +644,8 @@ function mapStateToProps(state) {
     customerchat: (state.dashboard.customerchat),
     sessionsummary: (state.dashboard.sessionsummary),
     sessionsummaryfiltered: (state.dashboard.sessionsummaryfiltered),
-    filterlist: (state.widget.filterlist)
+    filterlist: (state.widget.filterlist),
+    teamdetails: (state.dashboard.teamdetails),
   };
 
 }
@@ -636,7 +656,8 @@ function mapDispatchToProps(dispatch) {
     getcustomers: getcustomers,
     getcustomersubgroups: getcustomersubgroups,
     filterSessionSummary: filterSessionSummary,
-    updatesubgrouplist: updatesubgrouplist
+    updatesubgrouplist: updatesubgrouplist,
+
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SessionSummary);
