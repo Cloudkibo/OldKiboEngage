@@ -46,7 +46,7 @@ class SessionSummary extends Component {
       subgroup: 'all',
       summarySessionsData: [],
       totalLength: 0,
-      sessionsummaryfiltered: null,
+      sessionsummaryfiltered: props.sessionsummary,
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -57,7 +57,7 @@ class SessionSummary extends Component {
 
   getagentname(session){
     var agentname ='-'
-    if(session.agent_ids && session.agent_ids.length>0){
+    if(session.agent_ids && session.agent_ids.length>0 && session.status == "assigned"){
       if(session.agent_ids[session.agent_ids.length-1].type == 'group'){
         var team = this.props.teamdetails.filter((c) => c._id == session.agent_ids[session.agent_ids.length-1].id)[0]
         if(team){
@@ -72,10 +72,14 @@ class SessionSummary extends Component {
         }
       
     }
+    else if(session.status == "new"){
+      agentname = 'Not assigned'
+    }
     return agentname;
   }
   displayData(n) {
-    if(this.state.sessionsummaryfiltered != null){
+    console.log('displayData called');
+    console.log(this.state.sessionsummaryfiltered)
     let offset = n * 6;
     //console.log("Offset: " + offset);
     let sessionData = [];
@@ -90,7 +94,7 @@ class SessionSummary extends Component {
       sessionData[i] = this.state.sessionsummaryfiltered[i];
     }
     this.setState({summarySessionsData: sessionData});
-  }
+  
   }
 
   handlePageClick(data) {
@@ -100,7 +104,30 @@ class SessionSummary extends Component {
 
   componentDidMount() {
     //const usertoken = auth.getToken();
-
+    console.log('compoent did mount called');
+     if(this.props.sessionsummary){
+       this.setState({sessionsummaryfiltered: this.props.sessionsummary,totalLength: this.props.sessionsummary.length,loading:false});
+       this.displayData(0);
+       console.log('displayData');
+       console.log(this.state.sessionsummaryfiltered)
+    
+     // this.setState({sessionsummaryfiltered: this.props.sessionsummary,loading: false,totalLength: this.props.sessionsummary.length});
+     // this.displayData(0);
+     // console.log('updating props') 
+       }
+   
+  }
+   componentWillReceiveProps(props) {
+    //const usertoken = auth.getToken();
+     if(props.sessionsummary){
+       this.setState({sessionsummaryfiltered: props.sessionsummary,totalLength: props.sessionsummary.length,loading:false});
+       this.displayData(0);
+       console.log('displayData');
+       console.log(this.state.sessionsummaryfiltered)
+     // this.setState({sessionsummaryfiltered: this.props.sessionsummary,loading: false,totalLength: this.props.sessionsummary.length});
+     // this.displayData(0);
+     // console.log('updating props') 
+       }
    
   }
 
@@ -439,7 +466,7 @@ class SessionSummary extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  /*componentWillReceiveProps(props) {
     if(props.sessionsummary){
       this.setState({sessionsummaryfiltered: props.sessionsummary,loading: false,totalLength: props.sessionsummary.length});
       this.displayData(0);
@@ -448,7 +475,7 @@ class SessionSummary extends Component {
 
    
   }
-
+*/
   render() {
     const token = auth.getToken()
     //console.log(token)
@@ -554,7 +581,7 @@ class SessionSummary extends Component {
                       <p> Loading Session Summary... </p> :
                       <br/>
                   }
-                  { this.state.sessionsummaryfiltered && this.state.sessionsummaryfiltered.length > 0 ?
+                  { this.state.sessionsummaryfiltered && this.state.summarySessionsData && this.state.sessionsummaryfiltered.length > 0 ?
                     <div className="table-responsive">
                       <table id="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                         <thead>
@@ -576,7 +603,7 @@ class SessionSummary extends Component {
 
                         <tbody>
                         {
-                          this.state.sessionsummaryfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
+                          this.state.sessionsummaryfiltered && this.state.summarySessionsData &&this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                           this.state.summarySessionsData.map((session, i) => (
                             session.agent_ids.length > 0 ?
                               <SessionListItem session={session} key={session.request_id}
@@ -590,7 +617,8 @@ class SessionSummary extends Component {
                                                customers={this.props.customers.filter((c) => c._id == session.customerid)}
                                                subgroups={this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length - 1])}
                                                groups={this.props.groupdetails.filter((c) => c._id == session.departmentid)}
-                                               viewoption="true"/>
+                                               viewoption="true"
+                                               agent={this.getagentname(session)}/>
 
                           ))
                         }
@@ -610,7 +638,10 @@ class SessionSummary extends Component {
                                      subContainerClassName={"pages pagination"}
                                      activeClassName={"active"}/>
                     </div> :
+                    (
+                      this.state.loading == false &&
                     <p>Currently, there is not any chat sessions to show its summary.</p>
+                    )
                   }
 
 
