@@ -162,7 +162,7 @@ class Chat extends Component {
 
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
-  
+
 
   componentWillReceiveProps(props) {
     // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
@@ -270,7 +270,7 @@ class Chat extends Component {
             <div className="vbox viewport" style={{'overflow': 'hidden'}}>
               { this.props.customerchatold && this.props.customerchatold.length > 0 ?
                 <section className="main hbox space-between">
-                  
+
                   <nav className="navclassSessionList">
                     <div className="anotherflx ">
                    <div  className="uk-inline">
@@ -332,7 +332,7 @@ class Chat extends Component {
                         <input type="hidden" ref="sessionid"/>
                       </div>
                       <article  style={{marginTop: -45}}>
-                  
+
                         <div>
                           {
                             this.props.yoursocketid &&
@@ -392,7 +392,7 @@ class Chat extends Component {
                             )
 
                         }
-                      
+
                       </div> :
                       <p>Click on session to view Chat messages</p>
                     }
