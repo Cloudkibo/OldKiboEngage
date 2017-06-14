@@ -79,8 +79,6 @@ class Chat extends Component {
     }
 
     super(props, context);
-   // this.getSessionInfo = this.getSessionInfo.bind(this);
-    this.getSocketmessage = this.getSocketmessage.bind(this);
     this.state = {
       subgroup: 'all'
     };
@@ -88,81 +86,8 @@ class Chat extends Component {
 
   }
 
-  getSocketmessage(message) {
-    printlogs('log', 'socket called for message');
-    printlogs('log', message);
-    if (this.props.customerchat_selected) {
-      if ((this.props.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
-        const usertoken = auth.getToken();
-        /*** call api to update status field of chat message received from mobile to 'delivered'
-         ***/
-        var messages = [];
-        messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
-        if (messages.length > 0) {
-          //   alert('New message arrived chat!');
-          // highlight chat box
-
-          this.props.updatechatstatus(messages, message.from, usertoken, this.props.mobileuserchat); //actions
-          this.props.updateChatList(message, this.props.new_message_arrived_rid); //actions
-          message.status = 'delivered';
-
-        }
-      }
-
-      else if ((this.props.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no') {
-        // alert(' i m called2')
-        printlogs('log', "Chat Not Selected");
-        this.props.userchats.push(message);
-
-        this.props.updateChatList(message, this.props.new_message_arrived_rid);
-        //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-        this.forceUpdate();
-      }
-      else if ((this.props.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no') {
-        // alert(' i m called2')
-        printlogs('log', "Chat Selected");
-        this.props.userchats.push(message);
-
-        //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
-        //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-        //this.forceUpdate();
-      }
-
-
-    }
-    else if (!this.props.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent') {
-      const usertoken = auth.getToken();
-      /*** call api to update status field of chat message received from mobile to 'delivered'
-       ***/
-      var messages = [];
-      messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
-      if (messages.length > 0) {
-        //   alert('New message arrived!');
-        this.props.updatechatstatus(messages, message.from, usertoken, this.props.mobileuserchat);
-        this.props.updateChatList(message, this.props.new_message_arrived_rid);
-        message.status = 'delivered';
-      }
-
-      //this.props.mobileuserchat.push(message);
-      this.props.userchats.push(message);
-      this.props.removeDuplicates(this.props.mobileuserchat, 'uniqueid');
-    }
-
-    else if (!this.props.customerchat_selected && message.fromMobile == 'no') {
-      // alert(' i m called');
-
-      this.props.userchats.push(message);
-      this.props.updateChatList(message, this.props.new_message_arrived_rid);
-      // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-
-    }
-    this.forceUpdate();
-  }
-
 
 //this code was for fetching previous chat messages when the agent is assigned a chat message
-
-  
 
   componentWillReceiveProps(props) {
     // this will ensure that mobile sessions are completely fetched from server before merging it with socket sesisons
@@ -189,7 +114,7 @@ class Chat extends Component {
 
     // todo discuss with zarmeen as following are very complex and may not follow redux rules
 
-    this.props.route.socket.on('send:message', this.getSocketmessage); // half UI and half actions
+    //this.props.route.socket.on('send:message', this.getSocketmessage); // half UI and half actions
   //  this.props.route.socket.on('informAgent', this.getSessionInfo); // can be separated
   }
 
@@ -270,7 +195,7 @@ class Chat extends Component {
             <div className="vbox viewport" style={{'overflow': 'hidden'}}>
               { this.props.customerchatold && this.props.customerchatold.length > 0 ?
                 <section className="main hbox space-between">
-                  
+
                   <nav className="navclassSessionList">
                     <div className="anotherflx ">
                    <div  className="uk-inline">
@@ -332,7 +257,7 @@ class Chat extends Component {
                         <input type="hidden" ref="sessionid"/>
                       </div>
                       <article  style={{marginTop: -45}}>
-                  
+
                         <div>
                           {
                             this.props.yoursocketid &&
@@ -392,7 +317,7 @@ class Chat extends Component {
                             )
 
                         }
-                      
+
                       </div> :
                       <p>Click on session to view Chat messages</p>
                     }

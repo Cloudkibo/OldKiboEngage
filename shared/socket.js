@@ -2,11 +2,22 @@ import io from 'socket.io-client';
 
 import {setSocketStatus, setUserJoinedRoom} from './redux/actions/socketio.actions';
 import {
-  setjoinedState, updateCustomerList, updatefbsessionlist, previousChat,
-  getassignedsessionsfromsocket, getnewsessionsfromsocket, getresolvedsessionsfromsocket,
-  setsocketid, getsessionsfromsocket, updateAgentList, getchatsfromsocket, add_socket_fb_message,updatechatsessionstatus,
+  setjoinedState,
+  updateCustomerList,
+  updatefbsessionlist,
+  previousChat,
+  getassignedsessionsfromsocket,
+  getnewsessionsfromsocket,
+  getresolvedsessionsfromsocket,
+  setsocketid,
+  getsessionsfromsocket,
+  updateAgentList,
+  getchatsfromsocket,
+  add_socket_fb_message,
+  updatechatsessionstatus,
 } from './redux/actions/actions';
 import {notify} from './services/notify';
+import auth from './services/auth';
 
 const socket = io('');
 let store;
@@ -30,25 +41,30 @@ socket.on('send:fbcustomer', (data) => {
   }
 });
 
-socket.on('send:fbmessage',(data) => {
+socket.on('send:fbmessage', (data) => {
 
-   //printlogs('log','new fb message is received');
-   //printlogs('log',data)
-   //printlogs('log',this.props.fbsessionSelected);
-    if (store.getState().dashboard.fbsessionSelected && store.getState().dashboard.fbchats) {
-      if (!store.getState().dashboard.fbsessionSelected.user_id) {
-        data.seen = false;
-      }
-      else if (store.getState().dashboard.fbsessionSelected.user_id && data.senderid != store.getState().dashboard.fbsessionSelected.user_id.user_id) {
-
-        data.seen = false;
-      }
-      else {
-        data.seen = true;
-      }
-      store.dispatch(add_socket_fb_message(data, store.getState().dashboard.fbchats, store.getState().dashboard.fbsessionSelected.user_id.user_id, store.getState().dashboard.fbsessions, store.getState().dashboard.sessionsortorder));
-
+  // printlogs('log','new fb message is received');
+  // printlogs('log',data)
+  // printlogs('log',this.props.fbsessionSelected);
+  if (store.getState().dashboard.fbsessionSelected && store.getState().dashboard.fbchats) {
+    if (!store.getState().dashboard.fbsessionSelected.user_id) {
+      data.seen = false;
     }
+    else if (store.getState().dashboard.fbsessionSelected.user_id && data.senderid != store.getState().dashboard.fbsessionSelected.user_id.user_id) {
+
+      data.seen = false;
+    }
+    else {
+      data.seen = true;
+    }
+
+    if(location.pathname !== '/fbchat') {
+      data.seen = false;
+    }
+
+    store.dispatch(add_socket_fb_message(data, store.getState().dashboard.fbchats, store.getState().dashboard.fbsessionSelected.user_id.user_id, store.getState().dashboard.fbsessions, store.getState().dashboard.sessionsortorder));
+
+  }
 
   //  this.forceUpdate();
 
@@ -59,7 +75,7 @@ socket.on('updateFBsessions', (data) => {
   } else {
     notify(`${data.username} of Facebook Page ${data.pageTitle} has been resolved by ${data.agentname}`);
   }
-  console.log('inside UpdateFBSession Socket Message '+ data);
+  console.log('inside UpdateFBSession Socket Message ' + data);
   store.dispatch(updatefbsessionlist(data,
     store.getState().dashboard.fbsessions,
     store.getState().dashboard.fbsessionSelected,
@@ -68,12 +84,78 @@ socket.on('updateFBsessions', (data) => {
 });
 
 
+socket.on('informAgent', (message) => {
+  store.dispatch(updatechatsessionstatus(store.getState().dashboard.customerchat, store.getState().dashboard.customerchat_selected, store.getState().dashboard.userdetails, message));
+  store.dispatch(previousChat(message, store.getState().dashboard.chatlist));
+});
 
-socket.on('informAgent', (message)=> {
+// todo work with zarmeen
+socket.on('send:message', (message) => {
+  if (store.getState().dashboard.customerchat_selected) {
+    if ((store.getState().dashboard.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
+      const usertoken = auth.getToken();
+      /*** call api to update status field of chat message received from mobile to 'delivered'
+       ***/
+      var messages = [];
+      messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
+      if (messages.length > 0) {
+        //   alert('New message arrived chat!');
+        // highlight chat box
 
-    store.dispatch(updatechatsessionstatus(store.getState().dashboard.customerchat,store.getState().dashboard.customerchat_selected,store.getState().dashboard.userdetails,message));
-    store.dispatch(previousChat(message, store.getState().dashboard.chatlist));
-  });
+        this.props.updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat); //actions
+        this.props.updateChatList(message, store.getState().dashboard.new_message_arrived_rid); //actions
+        message.status = 'delivered';
+
+      }
+    }
+
+    else if ((store.getState().dashboard.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no') {
+      // alert(' i m called2')
+      printlogs('log', "Chat Not Selected");
+      this.props.userchats.push(message);
+
+      this.props.updateChatList(message, this.props.new_message_arrived_rid);
+      //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+      this.forceUpdate();
+    }
+    else if ((this.props.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no') {
+      // alert(' i m called2')
+      printlogs('log', "Chat Selected");
+      this.props.userchats.push(message);
+
+      //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
+      //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+      //this.forceUpdate();
+    }
+  }
+  else if (!this.props.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent') {
+    const usertoken = auth.getToken();
+    /*** call api to update status field of chat message received from mobile to 'delivered'
+     ***/
+    var messages = [];
+    messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
+    if (messages.length > 0) {
+      //   alert('New message arrived!');
+      this.props.updatechatstatus(messages, message.from, usertoken, this.props.mobileuserchat);
+      this.props.updateChatList(message, this.props.new_message_arrived_rid);
+      message.status = 'delivered';
+    }
+
+    //this.props.mobileuserchat.push(message);
+    this.props.userchats.push(message);
+    this.props.removeDuplicates(this.props.mobileuserchat, 'uniqueid');
+  }
+
+  else if (!this.props.customerchat_selected && message.fromMobile == 'no') {
+    // alert(' i m called');
+
+    this.props.userchats.push(message);
+    this.props.updateChatList(message, this.props.new_message_arrived_rid);
+    // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
+
+  }
+  this.forceUpdate();
+});
 
 socket.on('agentjoined', () => {
   console.log('user joined room');
@@ -123,7 +205,7 @@ let disconnected = false;
 socket.on('connect', () => {
   console.log('connected to socket server called from socket.js');
   store.dispatch(setSocketStatus(true));
-  if(disconnected === true){
+  if (disconnected === true) {
     location.reload();
   }
 });
