@@ -719,20 +719,20 @@ export class ChatArea extends Component {
      }*/
     //this.scrollToBottom();
     //check if the status of the fbsession is changed
-    if ((prevProps.fbsessionSelected.agent_ids.length != this.props.fbsessionSelected.agent_ids.length) || (prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id)) {
+    /*if ((prevProps.fbsessionSelected.agent_ids.length != this.props.fbsessionSelected.agent_ids.length) || (prevProps.fbsessionSelected.user_id.user_id != this.props.fbsessionSelected.user_id.user_id)) {
 
       if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
         //check if the agent is in assigned team
         for (var i = 0; i < this.props.teamagents.length; i++) {
           if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
-
+            console.log('agentinTeam updated');
             this.setState({'agentinTeam': true})
             break;
 
           }
         }
       }
-    }
+    }*/
   }
 
 
@@ -834,11 +834,27 @@ export class ChatArea extends Component {
 
     if (e.which === 13 && this.state.value != "" && this.props.loadingurl == false) {
 
+
+      var agentinTeam;
+
+      if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
+        //check if the agent is in assigned team
+        for (var i = 0; i < this.props.teamagents.length; i++) {
+          if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
+            console.log('agentinTeam updated');
+            agentinTeam = true;
+            break;
+
+          }
+        }
+      }
+
      if (this.props.fbsessionSelected.status == "new") {
         this.autoassignChat();
       }
       var index = this.props.fbsessionSelected.agent_ids.length - 1
-      if (this.props.fbsessionSelected.status == "assigned" && ((this.props.fbsessionSelected.agent_ids[index].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[index].type == 'agent') || (this.state.agentinTeam == false && this.props.fbsessionSelected.agent_ids[index].type == 'group'))) {
+      if (this.props.fbsessionSelected.status == "assigned" && ((this.props.fbsessionSelected.agent_ids[index].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[index].type == 'agent') || (agentinTeam == false && this.props.fbsessionSelected.agent_ids[index].type == 'group'))) {
+        console.log(agentinTeam);
         sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
       }
@@ -986,15 +1002,43 @@ export class ChatArea extends Component {
    printlogs('log','on onFileSubmit');
    printlogs('log',this.state.userfile);
 
+   var agentinTeam;
+
+   if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
+     //check if the agent is in assigned team
+     for (var i = 0; i < this.props.teamagents.length; i++) {
+       if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
+         console.log('agentinTeam updated');
+         agentinTeam = true;
+         break;
+
+       }
+     }
+   }
 
     if (this.state.userfile && this.state.userfile != '') {
 
       this.props.updatefileuploadStatus(true);
+
+      var agentinTeam;
+
+      if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
+        //check if the agent is in assigned team
+        for (var i = 0; i < this.props.teamagents.length; i++) {
+          if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
+            console.log('agentinTeam updated');
+            agentinTeam = true;
+            break;
+
+          }
+        }
+      }
+
       if (this.props.fbsessionSelected.status == "new") {
         this.autoassignChat();
       }
 
-      if (this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'agent')) {
+      if (this.props.fbsessionSelected.status == "assigned" && ((this.props.fbsessionSelected.agent_ids[index].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[index].type == 'agent') || (agentinTeam == false && this.props.fbsessionSelected.agent_ids[index].type == 'group'))) {
         sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
       }
@@ -1057,10 +1101,25 @@ export class ChatArea extends Component {
   sendThumbsUp() {
     const { dispatch} = this.props;
     var sendmessage = true;
+
+    var agentinTeam;
+
+    if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
+      //check if the agent is in assigned team
+      for (var i = 0; i < this.props.teamagents.length; i++) {
+        if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
+          console.log('agentinTeam updated');
+          agentinTeam = true;
+          break;
+
+        }
+      }
+    }
+
     if (this.props.fbsessionSelected.status == "new") {
       this.autoassignChat();
     }
-    if (this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'agent')) {
+    if (this.props.fbsessionSelected.status == "assigned" && ((this.props.fbsessionSelected.agent_ids[index].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[index].type == 'agent') || (agentinTeam == false && this.props.fbsessionSelected.agent_ids[index].type == 'group'))) {
       sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
     }
@@ -1200,10 +1259,25 @@ export class ChatArea extends Component {
    printlogs('log',gif);
     const {dispatch} = this.props;
     var sendmessage = true;
+
+    var agentinTeam;
+
+    if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
+      //check if the agent is in assigned team
+      for (var i = 0; i < this.props.teamagents.length; i++) {
+        if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
+          console.log('agentinTeam updated');
+          agentinTeam = true;
+          break;
+
+        }
+      }
+    }
+
     if (this.props.fbsessionSelected.status == "new") {
       this.autoassignChat();
     }
-    if (this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'agent')) {
+    if (this.props.fbsessionSelected.status == "assigned" && ((this.props.fbsessionSelected.agent_ids[index].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[index].type == 'agent') || (agentinTeam == false && this.props.fbsessionSelected.agent_ids[index].type == 'group'))) {
       sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
     }
@@ -1297,10 +1371,25 @@ export class ChatArea extends Component {
   sendSticker(sticker) {
     const {dispatch} = this.props;
     var sendmessage = true;
+
+    var agentinTeam;
+
+    if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
+      //check if the agent is in assigned team
+      for (var i = 0; i < this.props.teamagents.length; i++) {
+        if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
+          console.log('agentinTeam updated');
+          agentinTeam = true;
+          break;
+
+        }
+      }
+    }
+
     if (this.props.fbsessionSelected.status == "new") {
       this.autoassignChat();
     }
-    if (this.props.fbsessionSelected.status == "assigned" && (this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'agent')) {
+    if (this.props.fbsessionSelected.status == "assigned" && ((this.props.fbsessionSelected.agent_ids[index].id != this.props.userdetails._id && this.props.fbsessionSelected.agent_ids[index].type == 'agent') || (agentinTeam == false && this.props.fbsessionSelected.agent_ids[index].type == 'group'))) {
       sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
 
     }
