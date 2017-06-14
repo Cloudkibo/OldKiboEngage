@@ -105,19 +105,32 @@ var hours = date.getHours();
 }
 
 
-
+ var difference = Math.abs(new Date().getTime() / 1000 - new Date(handleDate(props.customer.lastmessage.timestamp)).getTime() / 1000);
+//  alert("Meray" + props.customer.lastmessage.timestamp);
+ if(difference < 1){
+   difference =   '1 second ago';
+ }else if (difference < 60) {
+    difference =  Math.floor(difference) + ' seconds ago';
+} else if (difference < 3600) {
+    difference = Math.floor(difference / 60) + ' minutes ago';
+} else if (difference < 3600*24) {
+    difference = Math.floor(difference / 3600) + ' hours ago';
+} else if (difference < 3600*24*30) {
+   difference = Math.floor(difference / (3600*24)) + ' days ago';
+} else{
+  difference = Math.floor(difference / (3600*24*30)) + ' months ago';
+}
 
   return (
 
     (selected ?
-     <div className="list-group-item" style={{'width':'100%','backgroundColor' : 'rgba(195, 188, 188, 0.4)','height':'auto'}} onClick={props.onClickSession}>
-     <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
-    <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
-    <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
+     <div className="list-group-item uk-padding-small uk-border-rounded uk-padding-remove-bottom uk-card uk-card-body uk-card-default uk-card-hover" style={{'backgroundColor' : 'rgba(195, 188, 188, 0.4)'}} onClick={props.onClickSession}>
+     <img src={props.customer.user_id.profile_pic} style={{maxWidth: 35, maxHeight: 35}} className="uk-border-circle"/>
+    <span style={{margin: 15}}><b>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</b></span>
+    <span  style={changefont}>{difference}</span>
              
       <br/>
-    <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
-    <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
+     { /*<span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span> */}
 
       {(unreadCount == 0?
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
@@ -127,59 +140,59 @@ var hours = date.getHours();
        {
               agentname.length > 0?
               
-                 <span style={statusstyle} ><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
+             <span style={statusstyle} className="uk-align-right"><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {agentname[agentname.length-1]}</span>
               :
-                 <span style={statusstyle}><i className="fa fa-headphones"/>{props.customer.status}</span>
-              
+                 <span style={statusstyle}>{props.customer.status}</span>
             }
      
 
-
+            <span style={{marginLeft: 0}}><img src="https://2.bp.blogspot.com/-C2LnFyB5k8Y/WIXjq5JOcSI/AAAAAAAABaI/mpVFjigXXm08iewoD0-k8mnIMvQm31I1wCPcB/s1600/facebook-logn-shadow.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {props.customer.pageid.pageTitle}</span>
     </div>
     :
     unreadCount > 0 ?
-   ( <div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'auto'}} onClick={props.onClickSession}>
-    <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
+   ( <div className="list-group-item uk-padding-small uk-padding-remove-bottom uk-border-rounded uk-card uk-card-body uk-card-default uk-card-hover" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'auto'}} onClick={props.onClickSession}>
+    <img src={props.customer.user_id.profile_pic} style={{maxWidth: 35, maxHeight: 35}} className="uk-border-circle"/>
     <span className='badge' style={rightStyle}>{unreadCount}</span>
     
-    <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
-    <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
+    <span style={{margin: 15}}> <b>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</b></span>
+    <span  style={changefont}>{difference}</span>
              
       <br/>
-    <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
     
-    <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
+    { /* <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span> */}
     <br/> 
   {
           agentname.length > 0?
           
-             <span style={statusstyle} ><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
-          :
-             <span style={statusstyle}><i className="fa fa-headphones"/>{props.customer.status}</span>
+          <span style={statusstyle} className="uk-align-right"><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {agentname[agentname.length-1]}</span>
+              :
+                 <span style={statusstyle}>{props.customer.status}</span>
           
         }
 
-
+        <span style={{marginLeft: 0}}><img src="https://2.bp.blogspot.com/-C2LnFyB5k8Y/WIXjq5JOcSI/AAAAAAAABaI/mpVFjigXXm08iewoD0-k8mnIMvQm31I1wCPcB/s1600/facebook-logn-shadow.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {props.customer.pageid.pageTitle}</span>
    </div>
    )
    :
-    (<div className="list-group-item" style={{'width':'100%', 'cursor': 'pointer', 'height':'auto'}} onClick={props.onClickSession}>
-     <img src={props.customer.user_id.profile_pic} width="36" height="36" className="user-avatar" style={hleft}/>
-     <span className = 'list-group-item-heading' style={customername}>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</span>
-     <span  style={changefont}><i className="glyphicon glyphicon-calendar" style={{fontSize:10}}/>{handleDate(props.customer.lastmessage.timestamp)}</span>
+    (<div className="list-group-item uk-border-rounded uk-card-hover uk-card uk-card-body uk-card-default uk-padding-small uk-padding-remove-bottom uk-animation-toggle" style={{'cursor': 'pointer',  background: 'white', border: 0, margin:5}} onClick={props.onClickSession}>
+     <img src={props.customer.user_id.profile_pic} style={{maxWidth: 35, maxHeight: 35}} className="uk-border-circle"/>
+     <span style={{margin: 15}}><b>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</b></span>
+     <span  style={changefont}>{difference}</span>
              
       <br/>
-    <span><i className="fa fa-globe"/>{'Page: '+ props.customer.pageid.pageTitle}</span>
-    <span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span>
+    
+     { /*<span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span> */}
       <br/>
+    
        {
               agentname.length > 0?
               
-                 <span style={statusstyle} ><i className="fa fa-headphones"/>{props.customer.status == 'assigned'? props.customer.status + ' to ': props.customer.status + ' by '} {agentname[agentname.length-1]}</span>
+                 <span style={statusstyle} className="uk-align-right"><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {agentname[agentname.length-1]}</span>
               :
-                 <span style={statusstyle}><i className="fa fa-headphones"/>{props.customer.status}</span>
+                 <span style={statusstyle}>{props.customer.status}</span>
               
             }
+      <span style={{marginLeft: 0}}><img src="https://2.bp.blogspot.com/-C2LnFyB5k8Y/WIXjq5JOcSI/AAAAAAAABaI/mpVFjigXXm08iewoD0-k8mnIMvQm31I1wCPcB/s1600/facebook-logn-shadow.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {props.customer.pageid.pageTitle}</span>
     </div>
     ))
 
