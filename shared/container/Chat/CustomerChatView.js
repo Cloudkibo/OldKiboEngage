@@ -300,7 +300,7 @@ else{
 
   componentDidMount() {
     const { socket,dispatch } = this.props;
-    this.props.route.socket.on('send:message',this.getSocketmessage);
+    //this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
    // this.props.route.socket.on('send:teammembers',this.getgroupmembers);
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers

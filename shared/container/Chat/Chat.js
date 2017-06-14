@@ -267,7 +267,7 @@ class Chat extends Component {
                           {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 &&
                           this.props.customerchatfiltered.map((customer, i) => (
 
-                            (this.props.new_message_arrived_rid ?
+                            (this.props.new_message_arrived_rid && this.props.userchats?
 
                                 <ChatListItem
                                   userchat={this.props.userchats.filter((ch) => ch.request_id == customer.request_id)}

@@ -4209,5 +4209,12 @@ export function updatechatsessionstatus(customerchat, customerchat_selected, use
 
 }
 
+export function update_userchats_list(message,oldchatlist){
+  return {
+
+    userchats: oldchatlist.push(message),
+    type: ActionTypes.UPDATE_USERCHATS_LIST,
+  }
+}
 
 
