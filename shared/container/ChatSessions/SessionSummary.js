@@ -441,17 +441,16 @@ class SessionSummary extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
 
-              <div className="portlet box grey-cascade">
-                <div className="portlet-title">
-                  <div className="caption">
-                    <i className="fa fa-user"/>
+              <div className="uk-card uk-card-body uk-card-default">
+                <div className="uk-card-title">
+                  
                     Summary of Chat Sessions
-                  </div>
+              
                 </div>
 
                 <div className="portlet-body">
                   <div className="table-responsive">
-                    <table className="table">
+                    <table className="uk-table">
                       <tbody>
                       <tr>
                         <th className="col-md-1">Status</th>
@@ -463,7 +462,7 @@ class SessionSummary extends Component {
                       <tr>
                         <td className="col-md-1">
 
-                          <select ref="status" onChange={this.handleChange.bind(this)}>
+                          <select className="uk-select" ref="status" onChange={this.handleChange.bind(this)}>
                             <option value="all">All</option>
                             <option value="new">New</option>
                             <option value="assigned">Assigned</option>
@@ -473,7 +472,7 @@ class SessionSummary extends Component {
                         </td>
                         <td className="col-md-1">
 
-                          <select ref="client" onChange={this.handleChange.bind(this)}>
+                          <select className="uk-select" ref="client" onChange={this.handleChange.bind(this)}>
                             <option value="all">All</option>
                             <option value="mobile">Mobile</option>
                             <option value="web">Web</option>
@@ -482,7 +481,7 @@ class SessionSummary extends Component {
                         </td>
                         <td className="col-md-1">
 
-                          <select ref="agentList" onChange={this.handleChange.bind(this)}>
+                          <select className="uk-select" ref="agentList" onChange={this.handleChange.bind(this)}>
                             <option value="all">All</option>
 
                             {
@@ -496,7 +495,7 @@ class SessionSummary extends Component {
                         </td>
                         <td className="col-md-1">
 
-                          <select ref="teamlist" onChange={this.handleChange.bind(this)}>
+                          <select className="uk-select" ref="teamlist" onChange={this.handleChange.bind(this)}>
                             <option value="all">All</option>
                             {
 
@@ -510,7 +509,7 @@ class SessionSummary extends Component {
 
                         </td>
                         <td className="col-md-1">
-                          <select ref="channellist" onChange={this.handleChange.bind(this)}>
+                          <select className="uk-select" ref="channellist" onChange={this.handleChange.bind(this)}>
                             <option value="all">All</option>
                             {
                               this.state.subgroup == 'all' ?
@@ -538,7 +537,7 @@ class SessionSummary extends Component {
                   }
                   { this.state.sessionsummaryfiltered && this.state.sessionsummaryfiltered.length > 0 ?
                     <div className="table-responsive">
-                      <table id="sample_3" className="table table-striped table-bordered table-hover dataTable">
+                      <table id="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                         <thead>
                         <tr>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Visitor Name</th>
