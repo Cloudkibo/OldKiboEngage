@@ -902,6 +902,7 @@ export function deleteTEAM(team) {
 }
 
 export function deleteteam(team, id, usertoken) {
+  
   if (confirm("Do you want to delete this Team?")) {
     return (dispatch) => {
       return fetch(`${baseURL}/api/deleteTeam?id=${id}`, {
@@ -1613,7 +1614,7 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
         printlogs('log','reopening the fbsession');
         break;
    }
-  
+
   }
   var newfbChat = []
   var temp = fbchats.filter((c) => c.senderid == id || c.recipientid == id);
@@ -1651,7 +1652,7 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   }
 
 
-//update last message field 
+//update last message field
   var newArrayC = []
   for (var i = 0; i < fbsessions.length; i++) {
     var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
@@ -4176,7 +4177,7 @@ export function fetchurlmeta(url) {
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
-    
+
 
       }),
     }).then((res) => res.json()).then(res => {
@@ -4210,6 +4211,3 @@ export function updatechatsessionstatus(customerchat,customerchat_selected,userd
   }
 
 }
-
-
-

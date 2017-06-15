@@ -517,7 +517,7 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: '',
         loadingurl:action.loadingurl,
         urlLoading:action.urlLoading,
-        
+
       }
     case ActionTypes.FB_CHAT_SELECTED:
       return {
@@ -892,7 +892,7 @@ const dashboard = (state = dashboardState, action) => {
     case ActionTypes.DELETE_TEAM :
       return {
         ...state, errorMessageProfile: '',
-        teamdetails: state.teamdetails.filter((team) => team._id !== action.team.get('_id')),
+        teamdetails: state.teamdetails.filter((team) => team._id !== action.team._id),
         errorMessage: 'Team deleted successfully',
 
       };
