@@ -4210,9 +4210,13 @@ export function updatechatsessionstatus(customerchat, customerchat_selected, use
 }
 
 export function update_userchats_list(message,oldchatlist){
+  var new_array= [...oldchatlist,message];
+  console.log('update-userchats-list');
+  console.log(oldchatlist);
+
   return {
 
-    userchats: oldchatlist.push(message),
+    userchats: new_array ,
     type: ActionTypes.UPDATE_USERCHATS_LIST,
   }
 }

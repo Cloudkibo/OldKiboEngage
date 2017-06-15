@@ -215,7 +215,7 @@ connectToCall(e){
 
      // window.location.href = meetingURLString;
       var win = window.open(meetingURLString, '_blank');
-      win.focus();
+     // win.focus();
 
 }
 onChange(event, { newValue }) {
@@ -264,44 +264,11 @@ else{
   }
 
 
-  getSocketmessage(message){
-
-  //alert('message received');
-   //  const usertoken = auth.getToken();
-   //  this.props.getuserchats(usertoken);
-
-   //get updated chat messages from socket
-   //   this.props.route.socket.emit('getuserchats',this.props.userdetails.uniqueid);
-    if(this.refs.pltid.value === 'web' && this.refs.reqid.value === message.request_id){
-     //alert(this.props.customerchat_selected.platform);
-     this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
-     this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-   //   this.forceUpdate();
-
-     }
-
-     else{
-      //this.props.mobileuserchat.push(message);
-      this.props.userchats.push(message);
-      this.props.removeDuplicates(this.props.mobileuserchat,'uniqueid');
-   //   this.forceUpdate();
-     // alert(this.props.mobileuserchat.length);
-      const usertoken = auth.getToken();
-      /*** call api to update status field of chat message received from mobile to 'delivered'
-      ***/
-     /* var messages = [];
-      messages.push({'uniqueid' : message.uniqueid,'request_id' : message.request_id,'status' :'delivered'});
-       if(messages.length > 0){
-        this.props.updatechatstatus(messages,message.from,usertoken,this.props.mobileuserchat);
-      }*/
-     }
-     //this.forceUpdate();
-  }
-
+  
   componentDidMount() {
     const { socket,dispatch } = this.props;
-    this.props.route.socket.on('send:message',this.getSocketmessage);
-    this.props.route.socket.on('connecttocall',this.connectCall);
+   // this.props.route.socket.on('send:message',this.getSocketmessage);
+  //  this.props.route.socket.on('connecttocall',this.connectCall);
    // this.props.route.socket.on('send:teammembers',this.getgroupmembers);
    // this.props.route.socket.on('send:messageToSocket',this.getSocketmessageFromServer);//for mobile customers
   //  this.props.route.socket.on('customer_joined',data =>this.props.updateSessionList(data));

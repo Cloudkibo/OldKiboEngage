@@ -19,6 +19,7 @@ import {
   updatechatstatus,
   updateChatList,
   removeDuplicates,
+  removeDuplicatesWebChat,
 
 } from './redux/actions/actions';
 import {notify} from './services/notify';
@@ -73,6 +74,13 @@ socket.on('send:fbmessage', (data) => {
   }
 
   //  this.forceUpdate();
+
+});
+socket.on('connecttocall',(data) =>{
+   if(confirm("Other person is calling you to a call. Confirm to join."))
+        //window.location.href = data.url;
+        var win = window.open(data.url, '_blank');
+       // win.focus();
 
 });
 socket.on('updateFBsessions', (data) => {
