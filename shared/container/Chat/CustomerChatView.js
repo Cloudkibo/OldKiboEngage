@@ -70,7 +70,7 @@ class CustomerChatView extends Component {
         this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
         this.moveToSubgroup = this.moveToSubgroup.bind(this);
         this.resolveSession = this.resolveSession.bind(this)
-        this.getSocketmessage = this.getSocketmessage.bind(this);
+       // this.getSocketmessage = this.getSocketmessage.bind(this);
         this.autoassignChat = this.autoassignChat.bind(this);
         this.getSocketmessageFromServer = this.getSocketmessageFromServer.bind(this);
         this.connectToCall = this.connectToCall.bind(this);
