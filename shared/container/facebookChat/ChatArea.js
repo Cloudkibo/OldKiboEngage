@@ -838,7 +838,7 @@ export class ChatArea extends Component {
       var agentinTeam;
 
       if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
-        //check if the agent is in assigned team
+        
         for (var i = 0; i < this.props.teamagents.length; i++) {
           if (this.props.teamagents[i].groupid._id == this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].id && this.props.teamagents[i].agentid._id == this.props.userdetails._id) {
             console.log('agentinTeam updated');

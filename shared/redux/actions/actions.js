@@ -902,7 +902,7 @@ export function deleteTEAM(team) {
 }
 
 export function deleteteam(team, id, usertoken) {
-  
+
   if (confirm("Do you want to delete this Team?")) {
     return (dispatch) => {
       return fetch(`${baseURL}/api/deleteTeam?id=${id}`, {
@@ -4210,6 +4210,7 @@ export function updatechatsessionstatus(customerchat, customerchat_selected, use
   }
 
 }
+
 export function update_userchats_list(message,oldchatlist){
   var new_array= [...oldchatlist,message];
   console.log('update-userchats-list');
@@ -4221,5 +4222,3 @@ export function update_userchats_list(message,oldchatlist){
     type: ActionTypes.UPDATE_USERCHATS_LIST,
   }
 }
-
-
