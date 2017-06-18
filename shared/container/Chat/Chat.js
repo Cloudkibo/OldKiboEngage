@@ -295,7 +295,7 @@ class Chat extends Component {
                       </article>
                     </div>
                   </nav>
-                  <article className="articleclassChat">
+                  <article className="articleclassChat" style={{overflowY: 'hidden'}}>
                     {this.refs.sessionid ?
                       <div>
                         {

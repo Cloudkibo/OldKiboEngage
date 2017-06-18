@@ -1205,11 +1205,11 @@ const { value, suggestions } = this.state;
      return (
 
       <div style={{flex: 1}}>
-      <div className="uk-card uk-padding-remove uk-card-body uk-card-hover uk-card-default" style={{background: '#9b59b6'}}>
+      <div className="uk-card uk-padding-remove uk-card-body uk-card-hover uk-card-default" style={{background: '#03363D'}}>
           <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick = {this.resolveSession}> Resolved </button>
           <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Assign To Agent</button>
             <div className="uk-align-right" style={{margin: 15}}>
-                  <select className="mySelect" style={{background: '#9b59b6', height:30, border: 0}}  ref = "agentList" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3" >
+                  <select className="mySelect" style={{background: '#03363D', height:30, border: 0}}  ref = "agentList" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3" >
 
                         <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
 
@@ -1242,7 +1242,7 @@ const { value, suggestions } = this.state;
                   <div className="uk-align-right" style={{margin: 15}}>
                   <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
                   <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
-                   <select className="mySelect" style={{background: '#9b59b6', height:30, border: 0}}  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
+                   <select className="mySelect" style={{background: '#03363D', height:30, border: 0}}  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
                           {
                           this.props.subgroups && this.props.subgroups.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((subgroup,i) =>
                             <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
@@ -1256,7 +1256,7 @@ const { value, suggestions } = this.state;
                    <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToTeam}> Assign To Team</button>
 
                    <div className="uk-align-right" style={{margin: 15}}>
-                      <select className="mySelect" style={{background: '#9b59b6', height:30, border: 0}} ref = "teamlist" onChange={this.handleChange.bind(this)}>
+                      <select className="mySelect" style={{background: '#03363D', height:30, border: 0}} ref = "teamlist" onChange={this.handleChange.bind(this)}>
                             <option value={-1} data-attrib = {-1}>Select A Team</option>
                             {
                             this.props.teamdetails && this.props.teamdetails.map((team,i) =>
@@ -1456,52 +1456,58 @@ const { value, suggestions } = this.state;
                             this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
 
                                (this.props.userdetails.firstname === chat.from?
-                                   <li className="right clearfix agentChatBox" style={{'marginLeft':'180px','width':'400px'}}>
-                                      <span className="chat-img pull-right agentChat"> {chat.from.substr(0,1)}
-                                      </span>
+
+                                   <li className="pull-right clearfix agentChatBox" style={{marginTop: -10, background: '#F5F5F5', border: 0}}>
                                       <div className="chat-body clearfix">
                                         <div>
-                                            <strong className="pull-right primary-font">{chat.from}</strong>
-                                            <small className=" text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
-                                            </small>
+                                            <p className="pull-right text-muted">{chat.from}</p>
+                                            
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='chatmsg' style={{'marginLeft':'0px'}}>
+                                         <p  className='pull-right chatmsg' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p  className='chatmsg' style={{'marginLeft':'0px'}}>
+                                       <p  lassName="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5}}>
                                             {chat.msg}
                                        </p>
                                      }
+                                     <small className="pull-right text-muted">
+                                               {handleDate(chat.datetime)}
+                                            </small>
                                      </div>
                                    </li> :
 
-                                    <li className="left clearfix userChatBox">
-                                      <span className="chat-img pull-left userChat">
+                                    <li className="left userChatBox" style={{border: 0}}>
+                                     {
+                                       /*
+                                        <span className="chat-img pull-left userChat">
                                       {chat.from.substr(0,1)}
                                       </span>
-                                      <div className="chat-body clearfix">
+ 
+                                       */ 
+                                     }
                                         <div>
-                                            <strong className="primary-font">{chat.from}</strong>
-                                            <small className="pull-right text-muted">
-                                                <span className="glyphicon glyphicon-time"></span>{handleDate(chat.datetime)}
-                                            </small>
+                                        <div style={{marginBottom: -10}}>
+                                            <p className="text-muted">{chat.from}</p>
+                                            
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg'>
+                                         <p  className='pull-right chatmsg' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white'}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p className="chatmsg">
+                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0}}>
                                             {chat.msg}
                                        </p>
                                      }
+                                     <small className="text-muted"  style={{marginLeft: 5, marginTop: -250}}>
+                                                {handleDate(chat.datetime)}
+                                            </small>
                                      </div>
                                    </li>
 
@@ -1519,26 +1525,26 @@ const { value, suggestions } = this.state;
 
              <div className="panel-footer">
 
+
+              <div className="row">
+              <div className="col-md-10">
                   <Autosuggest  ref = "msg" suggestions={suggestions}
+                        onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
+                        getSuggestionValue={getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps} />
+                    </div>
+                    <div>
+                      <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
 
-                   onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
-                   getSuggestionValue={getSuggestionValue}
-                   renderSuggestion={renderSuggestion}
-
-
-
-                   inputProps={inputProps} />
-
+                  </div>
+                </div>
+                
 
                 </div>
                <br/>
 
-              <div className="row">
-
-
-
-
-              </div>
+      
 
             <div className="table-responsive">
                <table className="table table-colored">
