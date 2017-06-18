@@ -99,6 +99,39 @@ export class ChatArea extends Component {
     this.getagentname = this.getagentname.bind(this);
     this.getteamname = this.getteamname.bind(this);
     this.urlWithEmoji = this.urlWithEmoji.bind(this);
+    this.startcall = this.startcall.bind(this);
+  }
+
+  startcall(){
+    if(confirm('Are you sure you want to start a call with customer?')){
+      var today = new Date();
+      var uid = Math.random().toString(36).substring(7);
+      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+      var meetingURLStringToSend = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.props.fbsessionSelected.user_id.first_name+'&visitoremail='+this.props.fbsessionSelected.user_id.email+'&request_id='+this.props.fbsessionSelected.user_id.user_id+''+this.props.fbsessionSelected.pageid.pageid;
+
+      var saveMsg = {
+                    senderid: this.props.userdetails._id,
+                    recipientid: this.props.senderid,
+                    companyid: this.props.userdetails.uniqueid,
+                    timestamp: Date.now(),
+                    message: {
+                      mid: unique_id,
+                      seq: 1,
+                      text: meetingURLStringToSend,
+
+                    },
+
+                    pageid: this.props.fbsessionSelected.pageid.pageid,
+                    urlmeta:this.state.urlmeta,
+
+                  }
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.props.fbsessionSelected.user_id.first_name+'&visitoremail='+this.props.fbsessionSelected.user_id.email+'&request_id='+this.props.fbsessionSelected.user_id.user_id+''+this.props.fbsessionSelected.pageid.pageid;
+      this.props.getfbchatfromAgent(saveMsg);
+
+     // window.location.href = meetingURLString;
+      var win = window.open(meetingURLString, '_blank');
+    }
   }
 
   getteamname() {
@@ -2112,6 +2145,21 @@ export class ChatArea extends Component {
                     height: '2.5em',
                     textAlign: 'center'
                   }} className="fa fa-thumbs-up"></i>
+
+                </i>
+              </div>
+
+               <div style={{display: 'inline-block'}} data-tip="Start Call" onClick={this.startcall.bind(this)}>
+                <i style={styles.iconclass}>
+                  <i style={{
+                    fontSize: '25px',
+                    color: 'red',
+                    position: 'absolute',
+                    right: '0',
+                    width: '100%',
+                    height: '2.5em',
+                    textAlign: 'center'
+                  }} className="fa fa-phone"></i>
 
                 </i>
               </div>
