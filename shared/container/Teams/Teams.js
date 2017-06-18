@@ -39,11 +39,12 @@ class Teams extends Component {
       filteredData: props.teamdetails,
       teamsData: [],
       totalLength: 0,
+      selectedPage: 0,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
-
+    this.deleteTeam = this.deleteTeam.bind(this);
 
   }
 
@@ -91,14 +92,16 @@ class Teams extends Component {
     console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
-    if ((offset + 6) > this.state.filteredData.length){
-      limit = this.state.filteredData.length;
+    let index = 0;
+    if ((offset + 6) > this.props.teamdetails.length){
+      limit = this.props.teamdetails.length;
     }
     else {
       limit = offset + 6;
     }
     for (var i=offset; i<limit; i++){
-      sessionData[i] = this.state.filteredData[i];
+      sessionData[index] = this.props.teamdetails[i];
+      index++;
     }
     this.setState({
       teamsData: sessionData,
@@ -106,16 +109,38 @@ class Teams extends Component {
     }
 
   handlePageClick(data){
-    console.log(data.selected);
+    this.setState({selectedPage: data.selected});
     this.displayData(data.selected);
+  }
+
+  deleteTeam(team, id, token){
+    this.props.deleteteam(team, id, token);
+    let index;
+    for(var i=0; i<this.state.teamsData.length; i++){
+      if(this.state.teamsData[i]._id === id){
+        index = i;
+      }
+    }
+    this.state.teamsData.splice(index,1);
+    this.forceUpdate();
   }
 
   componentDidMount(){
     this.displayData(0);
-    this.setState({ totalLength: this.state.filteredData.length });
+    this.setState({ totalLength: this.props.teamdetails.length });
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.teamdetails.length == this.props.teamdetails.length -1){
+      console.log('componentDidUpdate');
+      this.displayData(this.state.selectedPage);
+      this.setState({ totalLength: this.props.teamdetails.length });
+    }
   }
 
   render() {
+    console.log(this.props.teamdetails);
+    console.log(this.state.teamsData);
     const token = auth.getToken()
     //console.log(token)
     const { filteredData } = this.state;
@@ -192,7 +217,7 @@ class Teams extends Component {
                        {
                         this.props.teamagents && filteredData && this.state.teamsData.map((team, i) => (
 
-                          <TeamListItem team={team} key={team._id}  teamagents = {this.props.teamagents} onDelete={() => this.props.deleteteam(team,team._id,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
+                          <TeamListItem team={team} key={team._id}  teamagents = {this.props.teamagents} onDelete={() => this.deleteTeam(team,team._id,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
 
                         ))
                       }

@@ -33,10 +33,12 @@ class SubGroups extends Component {
     this.state = {
       subgroupsData: [],
       totalLength: 0,
+      selectedPage: 0,
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
+    this.deleteSubGroup = this.deleteSubGroup.bind(this);
   }
 
   displayData(n){
@@ -44,6 +46,7 @@ class SubGroups extends Component {
     //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
+    let index = 0;
     if ((offset + 6) > this.props.subgroups.length){
       limit = this.props.subgroups.length;
     }
@@ -51,19 +54,40 @@ class SubGroups extends Component {
       limit = offset + 6;
     }
     for (var i=offset; i<limit; i++){
-      sessionData[i] = this.props.subgroups[i];
+      sessionData[index] = this.props.subgroups[i];
+      index++;
     }
     this.setState({subgroupsData: sessionData});
   }
 
   handlePageClick(data){
-    //console.log(data.selected);
+    this.setState({selectedPage: data.selected});
     this.displayData(data.selected);
+  }
+
+  deleteSubGroup(subgroup, token, customers){
+    this.props.deletesubgroup(subgroup, token, customers);
+    let index;
+    for(var i=0; i<this.state.subgroupsData.length; i++){
+      if(this.state.subgroupsData[i]._id === subgroup._id){
+        index = i;
+      }
+    }
+    this.state.subgroupsData.splice(index,1);
+    this.forceUpdate();
   }
 
   componentDidMount(){
     this.displayData(0);
     this.setState({totalLength: this.props.subgroups.length});
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.subgroups.length == this.props.subgroups.length -1){
+      console.log('componentDidUpdate');
+      this.displayData(this.state.selectedPage);
+      this.setState({totalLength: this.props.subgroups.length});
+    }
   }
 
   render() {
@@ -80,7 +104,7 @@ class SubGroups extends Component {
 
             <div className="uk-card uk-card-body uk-card-default ">
               <div className="uk-card-title">
-        
+
                    SubGroups
               </div>
 
@@ -119,7 +143,7 @@ class SubGroups extends Component {
                       {
                         this.props.groupdetails && this.state.subgroupsData.map((subgroup, i) => (
 
-                          <SubgroupListItem subgroup={subgroup} key={subgroup._id} group = {this.props.groupdetails.filter((group) => group._id == subgroup.groupid)}  onDelete={() => this.props.deletesubgroup(subgroup,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails={this.props.userdetails}/>
+                          <SubgroupListItem subgroup={subgroup} key={subgroup._id} group = {this.props.groupdetails.filter((group) => group._id == subgroup.groupid)}  onDelete={() => this.deleteSubGroup(subgroup,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails={this.props.userdetails}/>
 
                         ))
                       }

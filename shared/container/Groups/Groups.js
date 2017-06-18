@@ -40,12 +40,14 @@ class Groups extends Component {
       showAddGroup: false,
       groupsData: [],
       totalLength: 0,
+      selectedPage: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
+    this.deleteGroup = this.deleteGroup.bind(this);
   }
 
 componentDidMount(){
@@ -76,6 +78,7 @@ componentDidMount(){
     //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
+    let index = 0;
     if ((offset + 6) > this.props.groupdetails.length){
       limit = this.props.groupdetails.length;
     }
@@ -83,13 +86,14 @@ componentDidMount(){
       limit = offset + 6;
     }
     for (var i=offset; i<limit; i++){
-      sessionData[i] = this.props.groupdetails[i];
+      sessionData[index] = this.props.groupdetails[i];
+      index++;
     }
     this.setState({groupsData: sessionData});
   }
 
   handlePageClick(data){
-    //console.log(data.selected);
+    this.setState({selectedPage: data.selected});
     this.displayData(data.selected);
   }
 
@@ -105,6 +109,23 @@ componentDidMount(){
      this.setState({
       showAddGroup: false,
     });
+
+    this.forceUpdate();
+ }
+
+ deleteGroup(group, token, customers){
+   this.props.deletegroup(group, token, customers);
+   let index;
+   console.log(this.state.groupsData);
+   console.log(group);
+   for(var i=0; i<this.state.groupsData.length; i++){
+     if(this.state.groupsData[i]._id === group._id){
+       index = i;
+     }
+   }
+   this.state.groupsData.splice(index,1);
+   console.log(this.state.groupsData);
+   this.forceUpdate();
  }
 
  componentWillReceiveProps(props){
@@ -116,6 +137,15 @@ componentDidMount(){
 
   }
  }
+
+ componentDidUpdate(prevProps){
+   if(prevProps.groupdetails.length == this.props.groupdetails.length -1){
+     console.log('componentDidUpdate');
+     this.displayData(this.state.selectedPage);
+     this.setState({totalLength: this.props.groupdetails.length});
+   }
+ }
+
   render() {
     const token = auth.getToken()
     //console.log(token)
@@ -134,7 +164,7 @@ componentDidMount(){
             <div className="uk-card uk-card-body uk-card-default">
               <div className="uk-card-title">
                     Groups
-            
+
               </div>
           <div className="portlet-body">
              <div className="table-toolbar">
@@ -168,7 +198,7 @@ componentDidMount(){
 
                         this.state.groupsData.map((group, i) => (
 
-                          <GroupListItem group={group} key={group._id}   onDelete={() => this.props.deletegroup(group,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails ={this.props.userdetails}/>
+                          <GroupListItem group={group} key={group._id}   onDelete={() => this.deleteGroup(group,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails ={this.props.userdetails}/>
 
                         ))
                       }

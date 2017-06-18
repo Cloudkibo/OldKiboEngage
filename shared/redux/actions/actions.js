@@ -902,6 +902,7 @@ export function deleteTEAM(team) {
 }
 
 export function deleteteam(team, id, usertoken) {
+  
   if (confirm("Do you want to delete this Team?")) {
     return (dispatch) => {
       return fetch(`${baseURL}/api/deleteTeam?id=${id}`, {
@@ -1607,6 +1608,7 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   printlogs('log', id);
 
   fbchats.push(data);
+
   for (var i = 0; i < fbsessions.length; i++) {
     if (fbsessions[i].user_id.user_id == data.senderid && fbsessions[i].pageid.pageid == data.recipientid && fbsessions[i].status == "resolved") {
       fbsessions[i].status = "assigned";
@@ -4208,7 +4210,6 @@ export function updatechatsessionstatus(customerchat, customerchat_selected, use
   }
 
 }
-
 export function update_userchats_list(message,oldchatlist){
   var new_array= [...oldchatlist,message];
   console.log('update-userchats-list');

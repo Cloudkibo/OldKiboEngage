@@ -33,11 +33,13 @@ class CannedResponses extends Component {
       showCR: false,
       responsesData: [],
       totalLength: 0,
+      selectedPage: 0,
     };
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
+    this.deleteResponse = this.deleteResponse.bind(this);
   }
 
   handleClick(e) {
@@ -69,6 +71,7 @@ class CannedResponses extends Component {
     //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
+    let index = 0;
     if ((offset + 6) > this.props.responses.length) {
       limit = this.props.responses.length;
     }
@@ -76,13 +79,34 @@ class CannedResponses extends Component {
       limit = offset + 6;
     }
     for (var i = offset; i < limit; i++) {
-      sessionData[i] = this.props.responses[i];
+      sessionData[index] = this.props.responses[i];
+      index++;
     }
     this.setState({responsesData: sessionData});
   }
 
+  deleteResponse(response, token){
+    this.props.deleteresponse(response, token);
+    let index;
+    for(var i=0; i<this.state.responsesData.length; i++){
+      if(this.state.responsesData[i]._id === response._id){
+        index = i;
+      }
+    }
+    this.state.responsesData.splice(index,1);
+    this.forceUpdate();
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.responses.length == this.props.responses.length -1){
+      console.log('componentDidUpdate');
+      this.displayData(this.state.selectedPage);
+      this.setState({ totalLength: this.props.responses.length });
+    }
+  }
+
   handlePageClick(data) {
-    //console.log(data.selected);
+    this.setState({selectedPage: data.selected});
     this.displayData(data.selected);
   }
 
@@ -102,10 +126,10 @@ class CannedResponses extends Component {
 
               <div className="uk-card uk-card-body uk-card-default">
                 <div className="uk-card-title">
-                  
-                  
+
+
                     Canned Response
-                  
+
                 </div>
 
                 <div className="portlet-body">
@@ -149,7 +173,7 @@ class CannedResponses extends Component {
                           this.state.responsesData.map((response, i) => (
 
                             <ResponseListItem response={response} key={response._id}
-                                              onDelete={() => this.props.deleteresponse(response, token)}
+                                              onDelete={() => this.deleteResponse(response, token)}
                                               userdetails={this.props.userdetails}/>
 
                           ))

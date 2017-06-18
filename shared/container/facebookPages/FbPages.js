@@ -31,9 +31,11 @@ class FbPages extends Component {
     this.state = {
       pagesData: [],
       totalLength: 0,
+      selectedPage: 0,
     };
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
+    this.deleteFBPage = this.deleteFBPage.bind(this);
   }
 
   componentDidMount(){
@@ -46,6 +48,7 @@ class FbPages extends Component {
     //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
+    let index = 0;
     if ((offset + 6) > this.props.fbpages.length){
       limit = this.props.fbpages.length;
     }
@@ -53,14 +56,35 @@ class FbPages extends Component {
       limit = offset + 6;
     }
     for (var i=offset; i<limit; i++){
-      sessionData[i] = this.props.fbpages[i];
+      sessionData[index] = this.props.fbpages[i];
+      index++;
     }
     this.setState({pagesData: sessionData});
   }
 
+  deleteFBPage(page, token){
+    this.props.deletefbpage(page, token);
+    let index;
+    for(var i=0; i<this.state.pagesData.length; i++){
+      if(this.state.pagesData[i]._id === page._id){
+        index = i;
+      }
+    }
+    this.state.pagesData.splice(index,1);
+    this.forceUpdate();
+  }
+
   handlePageClick(data){
-    //console.log(data.selected);
+    this.setState({selectedPage: data.selected});
     this.displayData(data.selected);
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.fbpages.length == this.props.fbpages.length -1){
+      console.log('componentDidUpdate');
+      this.displayData(this.state.selectedPage);
+      this.setState({ totalLength: this.props.fbpages.length });
+    }
   }
 
   render() {
@@ -125,7 +149,7 @@ class FbPages extends Component {
                       {
                         this.state.pagesData.map((fbpage, i) => (
 
-                          <FbPageItem page={fbpage} key={fbpage._id}  onDelete={() => this.props.deletefbpage(fbpage,token)} userdetails={this.props.userdetails}/>
+                          <FbPageItem page={fbpage} key={fbpage._id}  onDelete={() => this.deleteFBPage(fbpage,token)} userdetails={this.props.userdetails}/>
 
                         ))
                       }

@@ -35,7 +35,7 @@ class Agents extends Component {
     props.getAgents(usertoken);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
-
+    this.deleteAgent = this.deleteAgent.bind(this);
 
   }
 
@@ -59,6 +59,7 @@ class Agents extends Component {
     //console.log("Offset: " + offset);
     let sessionData = [];
     let limit;
+    let index = 0;
     if ((offset + 6) > this.props.agents.length){
       limit = this.props.agents.length;
     }
@@ -66,7 +67,8 @@ class Agents extends Component {
       limit = offset + 6;
     }
     for (var i=offset; i<limit; i++){
-      sessionData[i] = this.props.agents[i];
+      sessionData[index] = this.props.agents[i];
+      index++;
     }
     this.setState({agentsData: sessionData});
   }
@@ -74,6 +76,18 @@ class Agents extends Component {
   handlePageClick(data){
     //console.log(data.selected);
     this.displayData(data.selected);
+  }
+
+  deleteAgent(agent,token){
+    this.props.deleteagent(agent, token);
+    let index;
+    for(var i=0; i<this.state.agentsData.length; i++){
+      if(this.state.agentsData[i]._id === agent._id){
+        index = i;
+      }
+    }
+    this.state.agentsData.splice(index,1);
+    this.forceUpdate();
   }
 
   componentDidMount(){
@@ -147,7 +161,7 @@ class Agents extends Component {
                       {
                         this.state.agentsData.map((agent, i) => (
 
-                          <AgentListItem agent={agent} key={agent._id}  onDelete={() => this.props.deleteagent(agent,token)}/>
+                          <AgentListItem agent={agent} key={agent._id}  onDelete={() => this.deleteAgent(agent,token)}/>
 
                         ))
                       }

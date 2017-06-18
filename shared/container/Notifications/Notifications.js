@@ -34,6 +34,7 @@ class Notifications extends Component {
     this.state = {
       notificationsData: [],
       totalLength: 0,
+      selectedPage: 0,
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -58,13 +59,21 @@ class Notifications extends Component {
   }
 
   handlePageClick(data){
-    //console.log(data.selected);
+    this.setState({selectedPage: data.selected});
     this.displayData(data.selected);
   }
 
   componentDidMount(){
     this.displayData(0);
     this.setState({totalLength: this.props.notifications.length});
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.notifications.length == this.props.notifications.length -1){
+      console.log('componentDidUpdate');
+      this.displayData(this.state.selectedPage);
+      this.setState({ totalLength: this.props.notifications.length });
+    }
   }
 
   render() {
