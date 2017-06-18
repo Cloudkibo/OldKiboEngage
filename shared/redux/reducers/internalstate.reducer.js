@@ -8,7 +8,7 @@
 import * as ActionTypes from '../constants/socketio.constants';
 
 const initialState = {
-  isSocketConnected: false,
+  isSocketConnected: true,
   userJoinedRoom: false,
 };
 

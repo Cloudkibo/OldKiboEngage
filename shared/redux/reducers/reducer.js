@@ -84,6 +84,15 @@ const dashboard = (state = dashboardState, action) => {
 
       };
 
+    case ActionTypes.UPDATE_USERCHATS_LIST:  
+       return {
+
+
+        ...state, errorMessageProfile: '',
+        userchats: action.userchats,
+        errorMessage: '',
+
+      };
     case ActionTypes.ADD_INVITED_AGENTS:
       return {
         ...state, errorMessageProfile: '',

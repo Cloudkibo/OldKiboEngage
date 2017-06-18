@@ -1906,28 +1906,28 @@ export class ChatArea extends Component {
 
           <div className="table-responsive">
             <table className="table  table-condensed table-striped" style={{'marginBottom': 0}}>
-              <tbody>
+              <tbody style={{background: '#1ABC9C'}}>
 
-              <tr className="table-bordered">
-                <td className="table-bordered col-md-3">
+              <tr className="table-bordered" style={{background: '#1ABC9C'}}>
+                <td className="table-bordered col-md-3" style={{background: '#1ABC9C', color: 'white'}}>
                   <label> Customer
                     : {this.props.fbsessionSelected.user_id.first_name + ' ' + this.props.fbsessionSelected.user_id.last_name}</label>
 
 
                 </td>
-                <td className="table-bordered col-md-2">
+                <td className="table-bordered col-md-2" style={{background: '#1ABC9C', color: 'white'}}>
                   <label> Page : {this.props.fbsessionSelected.pageid.pageTitle}</label>
 
                 </td>
-                <td className="table-bordered col-md-2">
+                <td className="table-bordered col-md-2" style={{background: '#1ABC9C', color: 'white'}}>
                   <label> Status : {this.props.fbsessionSelected.status}</label>
 
                 </td>
-                <td className="table-bordered col-md-3">
+                <td className="table-bordered col-md-3" style={{background: '#1ABC9C', color: 'white'}}>
                   <label> Agent : {this.getagentname()}</label>
 
                 </td>
-                <td className="table-bordered col-md-2">
+                <td className="table-bordered col-md-2" style={{background: '#1ABC9C', color: 'white'}}>
                   <label> Team : {this.getteamname()}</label>
 
                 </td>
@@ -1937,14 +1937,14 @@ export class ChatArea extends Component {
             </table>
 
             <table className="table  table-condensed table-striped" style={{'marginBottom': 0}}>
-              <tbody>
-              <tr>
+              <tbody style={{background: '#9B59B6'}}>
+              <tr style={{background: '#9B59B6'}}>
 
-                <td className="col-md-6">
+                <td className="col-md-6" style={{background: '#9B59B6'}}>
 
 
                   <div className="input-group">
-                    <select ref="agentList" className="form-control" onChange={this.handleChange.bind(this)}
+                    <select ref="agentList" className="mySelect" style={{background: '#9b59b6', height:30, border: 0, margin:15}}  onChange={this.handleChange.bind(this)}
                             aria-describedby="basic-addon3">
                       <option value={-1} data-attrib={-1} data-type={-1} data-name={-1} data-email={-1}>Select Agent
                       </option>
@@ -1963,9 +1963,9 @@ export class ChatArea extends Component {
                     <span className="input-group-btn">
 
                               { this.props.fbsessionSelected.agent_ids.length == 0 ?
-                                <button className="btn btn-primary" onClick={this.assignSessionToAgent}> Assign To
+                                <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToAgent}> Assign To
                                   Agent</button> :
-                                <button className="btn btn-primary" onClick={this.assignSessionToAgent}> Re-Assign To
+                                <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToAgent}> Re-Assign To
                                   Agent</button>
 
                               }
@@ -1974,9 +1974,9 @@ export class ChatArea extends Component {
                 </td>
 
 
-                <td className="col-md-6">
+                <td className="col-md-6" style={{background: '#9B59B6'}}>
                   <div className="input-group">
-                    <select ref="teamlist" className="form-control" onChange={this.handleChange.bind(this)}>
+                    <select ref="teamlist" className="mySelect" style={{background: '#9b59b6',margin: 15, marginLeft: 25, height:30, border: 0}}  onChange={this.handleChange.bind(this)}>
                       <option value={-1} data-attrib={-1}>Select Team</option>
                       {
                         this.props.teamdetails && this.props.teamdetails.map((team, i) =>
@@ -1989,17 +1989,17 @@ export class ChatArea extends Component {
 
                     <span className="input-group-btn">>
                       { this.props.fbsessionSelected.agent_ids.length == 0 ?
-                        <button className="btn btn-primary" onClick={this.assignSessionToTeam}> Assign To
+                        <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToTeam}> Assign To
                           Team</button> :
-                        <button className="btn btn-primary" onClick={this.assignSessionToTeam}> Re-Assign To
+                        <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToTeam}> Re-Assign To
                           Team</button>
                       }
                               </span>
                   </div>
 
                 </td>
-                <td className="col-md-2">
-                  <button className="btn btn-primary" onClick={this.resolveSession}> Resolved</button>
+                <td className="col-md-2" style={{background: '#9B59B6'}}>
+                  <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick={this.resolveSession}> Resolved</button>
                 </td>
 
               </tr>
