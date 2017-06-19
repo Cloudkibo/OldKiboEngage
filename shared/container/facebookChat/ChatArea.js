@@ -108,7 +108,7 @@ export class ChatArea extends Component {
       var uid = Math.random().toString(36).substring(7);
       var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
-      var meetingURLStringToSend = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&conf_type=facebook&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.props.fbsessionSelected.user_id.first_name+'&visitoremail='+this.props.fbsessionSelected.user_id.email+'&request_id='+this.props.fbsessionSelected.user_id.user_id+'$'+this.props.fbsessionSelected.pageid.pageid;
+      var meetingURLStringToSend = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=visitor&conf_type=facebook&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails._id+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.props.fbsessionSelected.user_id.first_name+'&visitoremail='+this.props.fbsessionSelected.user_id.user_id+'&request_id='+this.props.fbsessionSelected.user_id.user_id+'$'+this.props.fbsessionSelected.pageid.pageid;
 
       var saveMsg = {
                     senderid: this.props.userdetails._id,
@@ -126,7 +126,7 @@ export class ChatArea extends Component {
                     urlmeta:this.state.urlmeta,
 
                   }
-      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&conf_type=facebook&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails.email+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.props.fbsessionSelected.user_id.first_name+'&visitoremail='+this.props.fbsessionSelected.user_id.email+'&request_id='+this.props.fbsessionSelected.user_id.user_id+'$'+this.props.fbsessionSelected.pageid.pageid;
+      var meetingURLString = 'https://api.cloudkibo.com/#/conference/'+ unique_id +'?role=agent&conf_type=facebook&companyid='+this.props.userdetails.uniqueid+'&agentemail='+this.props.userdetails._id+'&agentname='+this.props.userdetails.firstname+'&visitorname='+this.props.fbsessionSelected.user_id.first_name+'&visitoremail='+this.props.fbsessionSelected.user_id.user_id+'&request_id='+this.props.fbsessionSelected.user_id.user_id+'$'+this.props.fbsessionSelected.pageid.pageid;
       this.props.getfbchatfromAgent(saveMsg);
 
      // window.location.href = meetingURLString;
