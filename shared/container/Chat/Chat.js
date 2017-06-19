@@ -191,13 +191,13 @@ class Chat extends Component {
         <AuthorizedHeader name={this.props.userdetails.firstname} user={this.props.userdetails}/>
         <div className="page-container hbox space-between">
           <SideBar isAdmin={this.props.userdetails.isAdmin}/>
-          <div className="page-content-wrapper">
+          <div className="page-content-wrapper"  style={{marginTop: -7}}>
             <div className="vbox viewport" style={{'overflow': 'hidden'}}>
               { this.props.customerchatold && this.props.customerchatold.length > 0 ?
                 <section className="main hbox space-between">
 
-                  <nav className="navclassSessionList">
-                    <div className="anotherflx ">
+                  <nav className="navclassSessionList" style={{border: 0, borderRight: 5}}>
+                    <div className="anotherflx " style={{border: 0, overflowX: 'hidden'}}>
                    <div  className="uk-inline">
                       <button className="uk-button uk-button-primary" type="button">Filter</button>
                       <div ref={node => node && node.setAttribute('uk-dropdown', '')} >
@@ -253,12 +253,12 @@ class Chat extends Component {
                             </ul>
                       </div>
                   </div>
-                      <div className="headerchatarea" style={{'flexBasis': 50}}>
+                      <div className="headerchatarea" style={{'flexBasis': 0, marginBottom: 0}}>
                         <input type="hidden" ref="sessionid"/>
                       </div>
-                      <article  style={{marginTop: -45}}>
+                      <article className="mychatSessionList"  style={{border: 0, margin: 0, marginRight: 0, marginTop: 25, overflowX: 'hidden'}}>
 
-                        <div>
+                        <div style={{paddingTop: 25}}>
                           {
                             this.props.yoursocketid &&
                             <input type="hidden" ref="agentsocketfield" name="agentsocketfield"
@@ -295,7 +295,7 @@ class Chat extends Component {
                       </article>
                     </div>
                   </nav>
-                  <article className="articleclassChat" style={{overflowY: 'hidden'}}>
+                  <article className="articleclassChat" style={{overflowY: 'hidden', borderLeft: 500, borderLeftColor: '#F3F3F3', borderLeftWidth: 1, borderLeftStyle: 'solid', borderTop: 0, borderBottom: 0}}>
                     {this.refs.sessionid ?
                       <div>
                         {

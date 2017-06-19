@@ -27,7 +27,23 @@ var newChatClicked = 'false'
 var previous_message_id = 0
 var handleDate = function(d){
 var c = new Date(d);
-return c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
+var time = c.getHours() + ':' + c.getMinutes()+ ' ' + c.toDateString();
+ var difference = Math.abs(new Date().getTime() / 1000 - c.getTime() / 1000);
+ if(difference < 1){
+   difference =   'now';
+ }else if (difference < 60) {
+    difference =  Math.floor(difference) + 's ago';
+} else if (difference < 3600) {
+    difference = Math.floor(difference / 60) + 'm ago';
+} else if (difference < 3600*24) {
+    difference = Math.floor(difference / 3600) + 'h ago';
+} else if (difference < 3600*24*30) {
+   difference = Math.floor(difference / (3600*24)) + 'd ago';
+} else{
+  difference = Math.floor(difference / (3600*24*30)) + 'mon ago';
+}
+
+  return difference;
 }
 function getSuggestions(value,cr) {
   printlogs('log',cr);
@@ -193,6 +209,7 @@ connectCall(data){
         win.focus();
  }
 connectToCall(e){
+  alert("Calling");
       var call= {};
       var today = new Date();
       var uid = Math.random().toString(36).substring(7);
@@ -299,6 +316,7 @@ else{
   }
 
   componentDidMount() {
+        
     const { socket,dispatch } = this.props;
     this.props.route.socket.on('send:message',this.getSocketmessage);
     this.props.route.socket.on('connecttocall',this.connectCall);
@@ -1304,7 +1322,7 @@ const { value, suggestions } = this.state;
 
 
       </div>
-           <div className="table-responsive" style={{background: '#F5F5F5'}}>
+           <div className="table-responsive" style={{background: 'white'}}>
       <SweetAlert
         show={this.state.show}
         title="Alert"
@@ -1403,16 +1421,22 @@ const { value, suggestions } = this.state;
 
           </div>
 
-          <div className="panel-body" style={{background: '#F5F5F5'}}>
+          <div className="panel-body" style={{background: 'white'}}>
           {
             this.props.sessiondetails &&
           <div>
-          <label>Customer Name :</label>
+          {
+            /*
+             <label>Customer Name :</label>
           <input value = {this.props.sessiondetails.customerid.customerID} ref="customername"/>
 
            <label>Email :</label>
            <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
-          <br/>
+           <br/>
+            */ 
+          }
+         
+          
           <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
           <input type="hidden" defaultValue = {'soket of agent'} ref = "agentsocket"/>
 
@@ -1420,17 +1444,18 @@ const { value, suggestions } = this.state;
           <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
           }
-            <ul className="chat" style={{ margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1', background: '#F5F5F5'}}  ref="messageList">
+            <ul className="chat" style={{ margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1', background: 'white'}}  ref="messageList">
 
                           {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
 
                                (this.props.userdetails.firstname === chat.from?
-                                    <li className="pull-right clearfix agentChatBox" style={{marginTop: -10, background: '#F5F5F5', border: 0}}>
+                                    <li className="pull-right clearfix agentChatBox" style={{marginTop: -10, background: 'white', border: 0}}>
                                       <div className="chat-body clearfix">
+                                        
+                                        <img src="img/user.png" className="uk-border-rounded pull-right" style={{maxWidth: 25, maxHeight:25, marginLeft: 5, marginTop: 25}}/>
                                         <div>
                                             <p  className="pull-right text-muted">{chat.from}</p>
-                                       
                                         </div>
                                        {
                                         (chat.type == 'file')?
@@ -1439,18 +1464,20 @@ const { value, suggestions } = this.state;
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
-                                       <p className="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white'}}>
+                                       <p className="pull-right chatmsg uk-border-rounded" style={{'marginLeft':'0px', marginBottom: 0, background: '#777777', color: 'white'}}>
                                             {chat.msg}
-                                       </p>
-                                     }
-                                          <small className="pull-right text-muted">
+                                            <br />
+                                            <small className="pull-right">
                                               {handleDate(chat.datetime)}
                                             </small>
+                                       </p>
+                                     }
+                                          
                                      </div>
                                    </li>
 
                                    :
-                                    <li className="left userChatBox" style={{border: 0}}>
+                                    <li className="left userChatBox" style={{border: 0, background: 'white'}}>
                                   
                                       <div>
                                       {
@@ -1467,16 +1494,18 @@ const { value, suggestions } = this.state;
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg' style={{background: 'white',padding: 10, marginBottom: 0, marginTop: 0}}>
+                                         <p  className='pull-right chatmsg' style={{background: '#F8F8F8',padding: 10, marginBottom: 0, marginTop: 0}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0}}>
+                                       <p className="chatmsg text-muted uk-border-rounded" style={{background: '#F8F8F8', padding: 10, marginBottom: 0, border: 1, borderColor: '#E0E0E0', borderStyle: 'solid'}}>
                                             {chat.msg}
+                                            <br/>
+                                             <small className="text-muted" style={{ marginTop: 25}}>{handleDate(chat.datetime)}</small>
                                        </p>
                                      }
-                                     <small className="text-muted" style={{marginLeft: 5, marginTop: -250}}>{handleDate(chat.datetime)}</small>
+                                    
                                      </div>
                                    </li>
 
@@ -1556,22 +1585,34 @@ const { value, suggestions } = this.state;
 
 
 
-             <div className="panel-footer">
+             <div className="panel-footer" style={{background: 'white'}}>
 
 
               <div className="row">
-              <div className="col-md-10">
+              <div className="col-md-2" style={{marginRight: -100}}>
+                  <div className="icon-phone call-button"  onClick ={this.connectToCall} style={{fontSize: 25, padding: 5}}></div>
+              </div>
+              <div className="col-md-8">
                   <Autosuggest  ref = "msg" suggestions={suggestions}
                         onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
                         getSuggestionValue={getSuggestionValue}
                         renderSuggestion={renderSuggestion}
-                        inputProps={inputProps} />
-                    </div>
-                    <div>
-                      <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
-
-                  </div>
+                        inputProps={inputProps}
+                        style={{border: 0}} 
+                        theme={ {
+      input: {
+        background: 'white',
+        border: 0,
+        color: 'black',
+      }
+      
+    }}/>
                 </div>
+                <div className="col-md-2">
+                    <div className="icon-paper-clip call-button pull-right" style={{fontSize: 25, padding: 5, marginRight: -100}} onClick={ this.onFileSubmit }></div>
+                    </div> 
+                    </div>
+
                 
 
                 </div>
