@@ -33,7 +33,12 @@ class GroupEditView extends Component {
 
 
   }
-
+  componentWillReceiveProps(nextprops){
+    if((this.props.group && nextprops.group && nextprops.group._id != this.props.group._id)){
+      this.refs.name.value = nextprops.group.deptname;
+      this.refs.desc.value = nextprops.group.deptdescription;
+    }
+  }
 
 
   editGroupDetail(e) {
@@ -46,7 +51,7 @@ class GroupEditView extends Component {
     if (nameRef.value && descRef.value && this.props.customers ) {
       //alert(nameRef.value);
       var mobilecustomers = this.props.customers.filter((c) => c.isMobileClient == "true")
-      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:idRef.value,token:usertoken,deptagents: this.props.newagents},mobilecustomers);
+      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:this.props.group._id,token:usertoken,deptagents: this.props.newagents},mobilecustomers);
 
     }
   }

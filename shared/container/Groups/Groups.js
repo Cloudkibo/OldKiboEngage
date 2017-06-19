@@ -65,6 +65,7 @@ componentDidMount(){
       this.displayData(0);
       this.setState({totalLength: this.props.groupdetails.length});
 }
+
    handleClick(e) {
 
       this.setState({
@@ -139,8 +140,8 @@ componentDidMount(){
  }
 
  componentDidUpdate(prevProps){
-   if(prevProps.groupdetails.length == this.props.groupdetails.length -1){
-     console.log('componentDidUpdate');
+   if(prevProps.groupdetails != this.props.groupdetails){
+    // console.log('componentDidUpdate');
      this.displayData(this.state.selectedPage);
      this.setState({totalLength: this.props.groupdetails.length});
    }

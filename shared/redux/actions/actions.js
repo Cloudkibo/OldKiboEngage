@@ -428,7 +428,7 @@ export function editgroupError(message) {
 }
 
 export function showGroups(groups) {
-  printlogs('log', groups);
+  //printlogs('log', groups);
   return {
     type: ActionTypes.ADD_GROUPS,
     groups,
@@ -498,7 +498,7 @@ export function creategroup(group, customers) {
         else {
           dispatch(showGroups(res.message))
         }
-        alert(res.message);
+      //  alert(res.message);
       }
     );
   };
@@ -712,7 +712,7 @@ export function getDeptAgents(token) {
 
 export function editAgent(id, role, token) {
   printlogs('log', 'editAgent action called');
-  alert(role)
+  //alert(role)
   return (dispatch) => {
     fetch(`${baseURL}/api/editagent`, {
       method: 'post',

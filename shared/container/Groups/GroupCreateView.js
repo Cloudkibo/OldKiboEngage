@@ -86,7 +86,7 @@ class GroupCreateView extends Component {
                     <span className="input-group-addon">
                       <i className="fa fa-chevron-right"/>
                     </span>
-                    <input className="form-control" placeholder="Enter team title"  ref="name" required = "required"/>
+                    <input className="form-control" placeholder="Enter Group title"  ref="name" required = "required"/>
                   </div>
           </div>
           <div className="form-group">

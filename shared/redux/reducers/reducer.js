@@ -180,8 +180,7 @@ const dashboard = (state = dashboardState, action) => {
         ...state, errorMessageProfile: '',
         errorMessage: '',
         groupdetails: action.groups,
-        newagents: [],
-
+        
 
       };
 
