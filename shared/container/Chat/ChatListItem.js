@@ -124,17 +124,17 @@ return res;
 }
   var difference = Math.abs(new Date().getTime() / 1000 - new Date(props.customer.requesttime).getTime() / 1000);
  if(difference < 1){
-   difference =   'now';
+   difference =   '1 second ago';
  }else if (difference < 60) {
-    difference =  Math.floor(difference) + 'sec';
+    difference =  Math.floor(difference) + ' seconds ago';
 } else if (difference < 3600) {
-    difference = Math.floor(difference / 60) + 'min';
+    difference = Math.floor(difference / 60) + ' minutes ago';
 } else if (difference < 3600*24) {
-    difference = Math.floor(difference / 3600) + 'hrs';
+    difference = Math.floor(difference / 3600) + ' hours ago';
 } else if (difference < 3600*24*30) {
-   difference = Math.floor(difference / (3600*24)) + 'days';
+   difference = Math.floor(difference / (3600*24)) + ' days ago';
 } else{
-  difference = Math.floor(difference / (3600*24*30)) + 'mon';
+  difference = Math.floor(difference / (3600*24*30)) + ' months ago';
 }
 
   return (
@@ -146,7 +146,7 @@ return res;
          {
           (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
 
-           <div className="uk-text-muted mySessionListItem" style={{padding: 10, margin:0, borderBottomWidth: 1, borderBottomColor: '#F3F3F3', borderBottomStyle: 'solid', borderTopWidth: 1, borderTopColor: 'white', borderTopStyle: 'solid', marginTop: -20}}>
+           <div className="list-group-item uk-card-hover uk-animation-toggle" style={{...changecc, border: 0, background: '#1CAF9A', color: 'white'}}>
 
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15, color: 'white'}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</p>
              <div className="uk-align-right">
@@ -183,7 +183,7 @@ return res;
           </div> :
 
 
-           <div className="uk-text-muted mySessionListItem" style={{padding: 10, margin:0, borderBottomWidth: 1, borderBottomColor: '#F3F3F3', borderBottomStyle: 'solid', borderTopWidth: 1, borderTopColor: 'white', borderTopStyle: 'solid', marginTop: -20}}>
+           <div className="list-group-item uk-card-hover uk-animation-toggle" style={{...changecc, background: 'white', border: 0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</p>
 
 

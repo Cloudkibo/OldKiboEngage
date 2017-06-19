@@ -37,7 +37,7 @@ class AuthorizedHeader extends Component
   {
     return (
     
-      <div  className = "page-header navbar" style={{background:'#37B8AF'}} >
+      <div  className = "page-header navbar" style={{background:'#30AABC'}} >
         <div className="page-header-inner">
           <div className = "page-logo" >
               
@@ -46,7 +46,7 @@ class AuthorizedHeader extends Component
               </a>
 
           </div >
-          <div className="top-menu" style={{background:'#37B8AF'}}>
+          <div className="top-menu" style={{background:'#30AABC'}}>
             <ul  className ="nav navbar-nav pull-right">
                     {this.props.news &&
                   <li className="dropdown dropdown-extended dropdown-notification" >
