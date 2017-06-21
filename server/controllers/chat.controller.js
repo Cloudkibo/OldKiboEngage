@@ -1064,3 +1064,87 @@ function sendpushToAllAgents(sessionid,pushTitle){
      }
        request.get(options, callback);
 }
+
+
+export function createforCloudkibo(req, res) {
+  logger.serverLog('info', 'Inside KiboEngage endpoint, req body = '+ JSON.stringify(req.body));
+  var allparams = req.body.allparam;
+  if(allparams.conf_type === 'facebook'){
+          var today = new Date();
+          var uid = Math.random().toString(36).substring(7);
+          var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+          var userid = req.body.request_id.split('$')[0]
+          var pageid = req.body.request_id.split('$')[1]
+          var messagebody= {
+                          mid: unique_id,
+                          seq: 1,
+                          text: req.body.msg,
+                        };
+
+          var saveMsg = {
+                        senderid: allparams.role == 'agent'?allparams.agentemail:allparams.visitoremail,
+                        recipientid: allparams.role == 'agent'?allparams.visitoremail:allparams.agentemail,
+                        companyid: req.body.companyid,
+                        timestamp: Date.now(),
+                        message: messagebody,
+
+                        pageid: pageid,
+                  
+                      }
+
+
+          //call kiboengage API to save chat message
+            var optionsChat = {
+            url: `${baseURL}/api/fbmessages/`,
+              rejectUnauthorized : false,
+              headers : headers,
+              json:saveMsg,
+
+          };
+
+          function callbackChat(error, response, body) {
+              console.log('inside callbackchat');
+              console.log(body);
+              console.log(error);
+
+              if(!error){
+
+                  ss.broadcastfbchat(saveMsg);
+                  return res.json(201,{status:'success'});           
+                }
+              }
+             request.post(optionsChat,callbackChat);  
+
+  }
+  else{
+    
+
+    var options = {
+      url: `${baseURL}/api/userchats/create`,
+      rejectUnauthorized : false,
+      headers,
+      json: req.body.chat,
+
+
+    };
+
+    function callback(error, response, body) {
+    
+       if(!error && response.statusCode == 201)
+       {
+         //  //console.log(body)
+            return res.status(201).json({statusCode : 201,message:'success'});
+       }
+       else
+       {
+           res.sendStatus(422);
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+   }
+        request.post(options, callback);
+  
+  }
+};
+

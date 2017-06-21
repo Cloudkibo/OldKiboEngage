@@ -1242,6 +1242,15 @@ exports.getfileChatfromAgent = function(data){
 
 }
 
+exports.broadcastfbchat = function(fbchat){
+   //broadcast facebook messages send by agent to other agents 
+        logger.serverLog('info','broadcast fb message is called ' + JSON.stringify(fbchat) );
+        fbchats.push(fbchat);
+        glob.to(data.companyid).emit('send:fbmessage',fbchat);
+
+  
+
+}
 exports.verifyThisAccount = function (email, uniqueid) {
   console.log(onlineAgents);
   console.log(uniqueid);

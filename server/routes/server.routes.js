@@ -11,6 +11,7 @@ import * as FbController from '../controllers/fbPages.controller';
 import * as FbChatController from '../controllers/fbChat.controller';
 var multiparty = require('connect-multiparty');
 var multipartyMiddleware = multiparty();
+var auth = require('../auth.service');
 
 const router = new Router();
 
@@ -136,4 +137,7 @@ router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadc
 router.post('/uploadchatfilefb',multipartyMiddleware, FbChatController.uploadchatfilefb);
 router.post('/updatesettings',multipartyMiddleware, UserController.updatesettings);
 router.route('/fetchurlmeta').post(FbChatController.fetchurlmeta);
+
+router.post('/chatfromCloudkibo', auth.isAuthorizedWebHookTrigger(), ChatController.createforCloudkibo);
+
 export default router;
