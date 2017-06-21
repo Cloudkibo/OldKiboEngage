@@ -1246,7 +1246,7 @@ exports.broadcastfbchat = function(fbchat){
    //broadcast facebook messages send by agent to other agents 
         logger.serverLog('info','broadcast fb message is called ' + JSON.stringify(fbchat) );
         fbchats.push(fbchat);
-        glob.to(data.companyid).emit('send:fbmessage',fbchat);
+        glob.to(fbchat.companyid).emit('send:fbmessage',fbchat);
 
   
 
