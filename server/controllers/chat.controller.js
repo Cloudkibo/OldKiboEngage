@@ -1124,7 +1124,7 @@ export function createforCloudkibo(req, res) {
       url: `${baseURL}/api/userchats/create`,
       rejectUnauthorized : false,
       headers,
-      json: req.body.chat,
+      json: req.body,
 
 
     };
@@ -1133,7 +1133,7 @@ export function createforCloudkibo(req, res) {
     
        if(!error && response.statusCode == 201)
        {
-         //  //console.log(body)
+            console.log(body)
             return res.status(201).json({statusCode : 201,message:'success'});
        }
        else
