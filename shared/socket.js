@@ -70,11 +70,8 @@ socket.on('send:fbmessage', (data) => {
     }
 
     store.dispatch(add_socket_fb_message(data, store.getState().dashboard.fbchats, store.getState().dashboard.fbsessionSelected.user_id.user_id, store.getState().dashboard.fbsessions, store.getState().dashboard.sessionsortorder));
-
   }
-
   //  this.forceUpdate();
-
 });
 socket.on('connecttocall',(data) =>{
    if(confirm("Other person is calling you to a call. Confirm to join."))
@@ -139,7 +136,7 @@ socket.on('send:message', (message) => {
        store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
        store.dispatch(updateChatList(message,store.getState().dashboard.new_message_arrived_rid,store.getState().dashboard.customerchat_selected.request_id));
        store.dispatch(removeDuplicatesWebChat(store.getState().userchats,'uniqueid'));
-   
+
 
       //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
       //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
@@ -162,7 +159,7 @@ socket.on('send:message', (message) => {
     //this.props.mobileuserchat.push(message);
     store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
     store.dispatch(removeDuplicates(store.getState().dashboard.mobileuserchat,'uniqueid'));
-      
+
  //   this.props.userchats.push(message);
  //   this.props.removeDuplicates(this.props.mobileuserchat, 'uniqueid');
   }
@@ -171,7 +168,7 @@ socket.on('send:message', (message) => {
     // alert(' i m called');
     store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
     store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid));
-    
+
    // this.props.userchats.push(message);
    // this.props.updateChatList(message, this.props.new_message_arrived_rid);
     // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
