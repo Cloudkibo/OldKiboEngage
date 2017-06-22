@@ -47,18 +47,20 @@ var agentname = []
 }
   return (
    
-    
+    props.session.customerid &&
+
       <tr className = "odd">
     
+      
       <td>{props.session.customerid.name?props.session.customerid.name : props.session.customerid.customerID} </td>
       <td>{props.session.customerid.email?props.session.customerid.email : "N/A"}</td>
       
+
       <td>{gname.length>0? gname[0].deptname:'-' }</td>
-      {
+      
         
       <td>{ch[0]?ch[0].msg_channel_name:'-'}</td>
-      }
-     
+      
       <td> {props.session.is_rescheduled ? props.session.is_rescheduled : "false" } </td>
       <td>{props.session.rescheduled_by?rescheduled_by_name[0] : "-"}</td>
       <td>{handleDate(props.session.requesttime)}</td>
@@ -80,6 +82,7 @@ var agentname = []
       </Link>
       }
       </td>
+    
     </tr>
 
     

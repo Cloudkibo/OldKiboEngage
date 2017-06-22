@@ -237,8 +237,8 @@ class ResolvedSessions extends Component {
                                   {
                                     this.state.subgroup == 'all' ?
                                     this.props.subgroups && this.props.subgroups.map((subgroup,i) =>
-                                         <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name}</option>
-                                    ) :
+                                              <option value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid).length>0?this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' +subgroup.msg_channel_name:subgroup._id+'-GroupDeleted'}</option>
+                                      ) :
                                     this.props.filterlist && this.props.filterlist.map((subgroup,i) =>
                                       <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
                                     )

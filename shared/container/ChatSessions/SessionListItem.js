@@ -39,11 +39,11 @@ function SessionListItem(props) {
 
    }*/
   return (
-
+    props.session.customerid &&
     <tr className="odd">
 
-      <td>{props.session.customerid.name ? props.session.customerid.name : props.session.customerid.customerID} </td>
-      <td>{props.session.customerid.email ? props.session.customerid.email : "N/A"}</td>
+      <td>{props.session.customerid && props.session.customerid.name ? props.session.customerid.name : props.session.customerid.customerID} </td>
+      <td>{props.session.customerid && props.session.customerid.email ? props.session.customerid.email : "N/A"}</td>
       <td>{gname.length > 0 ? gname[0].deptname : '-'}</td>
       {
         ch && ch.length > 0 ?
