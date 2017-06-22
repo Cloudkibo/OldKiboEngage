@@ -2228,7 +2228,7 @@ export function emailCustomer(customer) {
 }
 
 
-export function submitemail(customer) {
+export function submitemail(customer, redirect_url) {
   printlogs('log', customer);
   return (dispatch) => {
     fetch(`${baseURL}/api/rescheduleEmail`, {
@@ -2250,18 +2250,18 @@ export function submitemail(customer) {
       printlogs('log', res.statusCode);
       if (res.statusCode == 200) {
         alert('Email sent successfully.');
-        browserHistory.push('/dashboard');
+        browserHistory.push(redirect_url);
       }
       else {
         alert('Email not sent to customer.There might be some errors.');
-        browserHistory.push('/dashboard');
+        browserHistory.push(redirect_url);
       }
     });
   };
 }
 
 
-export function updatereschedule(session, customer) {
+export function updatereschedule(session, customer, redirect_url) {
   return (dispatch) => {
     fetch(`${baseURL}/api/updatereschedule`, {
       method: 'post',
@@ -2277,7 +2277,7 @@ export function updatereschedule(session, customer) {
         'Authorization': session.usertoken,
 
       }),
-    }).then((res) => res.json()).then(res => dispatch(submitemail(customer)));
+    }).then((res) => res.json()).then(res => dispatch(submitemail(customer, redirect_url)));
   };
 }
 
