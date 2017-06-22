@@ -159,6 +159,17 @@ const dashboard = (state = dashboardState, action) => {
 
       };
 
+      case ActionTypes.ADD_DEPTTEAMS:
+      //console.log(action.agents)
+      return {
+        ...state, errorMessageProfile: '',
+        deptteams: action.teams,
+        errorMessage: '',
+        newteams: [],
+
+
+      };
+
 
     case ActionTypes.ADD_NEWS:
       return {

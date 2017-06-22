@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getusergroups} from '../../redux/actions/actions'
 import {creategroup} from '../../redux/actions/actions'
-import {deletegroup,getcustomers,getDeptAgents} from '../../redux/actions/actions';
+import {deletegroup,getcustomers,getDeptAgents,getDeptTeams} from '../../redux/actions/actions';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import GroupCreateView from './GroupCreateView';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -58,7 +58,8 @@ componentDidMount(){
 
         //console.log(usertoken);
         this.props.getusergroups(usertoken);
-        this.props.getDeptAgents(usertoken);
+      //  this.props.getDeptAgents(usertoken);
+        this.props.getDeptTeams(usertoken);
 
         this.props.getcustomers(usertoken);
       }
@@ -98,11 +99,11 @@ componentDidMount(){
     this.displayData(data.selected);
   }
 
-  add(name,description,deptagents) {
+  add(name,description,teamagents) {
    // alert('called');
      const usertoken = auth.getToken();
      if(this.props.customers){
-        this.props.creategroup({ name,description,usertoken,deptagents },this.props.customers.filter((c) => c.isMobileClient == "true"));
+        this.props.creategroup({ name,description,usertoken,teamagents },this.props.customers.filter((c) => c.isMobileClient == "true"));
       }
       else{
         alert('Customers data not found!Please refresh this page');
@@ -247,15 +248,17 @@ function mapStateToProps(state) {
           errorMessage:(state.dashboard.errorMessage),
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
+          deptteams:(state.dashboard.deptteams),
           channels :(state.dashboard.channels),
           customers: (state.dashboard.customers),
           newagents: (state.dashboard.newagents),
+          newteams: (state.dashboard.newteams),
            };
 }
 
 
 function mapDispatchToProps(dispatch) {
 
-  return bindActionCreators({ deletegroup:deletegroup,getcustomers:getcustomers,getDeptAgents:getDeptAgents,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
+  return bindActionCreators({ deletegroup:deletegroup,getDeptTeams:getDeptTeams,getcustomers:getcustomers,getDeptAgents:getDeptAgents,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Groups);

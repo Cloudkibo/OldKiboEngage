@@ -14,24 +14,24 @@ class GroupCreateView extends Component {
   addGroup() {
     const nameRef = this.refs.name;
    const descRef = this.refs.desc;
-   if(this.props.newagents.length <1){
-    alert('Group cannot be created. Please add atleast one agent in the group.');
+   if(this.props.newteams.length <1){
+    alert('Group cannot be created. Please add atleast one team in the group.');
    }
    else{
     if (nameRef.value && descRef.value) {
-      this.props.addGroup(nameRef.value,descRef.value,this.props.newagents);
+      this.props.addGroup(nameRef.value,descRef.value,this.props.newteams);
       nameRef.value = descRef.value = '';
     }
   }
   }
 
-  appendAgent(id,e){
+  appendTeam(id,e){
    // alert(id);
     var flag = 0;
     //console.log(this.props.newagents);
-    for(var j = 0;j<this.props.newagents.length;j++)
+    for(var j = 0;j<this.props.newteams.length;j++)
     {
-      if(this.props.newagents[j]._id == id)
+      if(this.props.newteams[j]._id == id)
       {
           flag = 1;
           break;
@@ -39,23 +39,23 @@ class GroupCreateView extends Component {
     }
     if(flag == 0)
     {
-        this.props.newagents.push({"_id" :id});
+        this.props.newteams.push({"_id" :id});
     }
     else{
-      alert('Agent Already added in the team');
+      alert('Team Already added in the Group');
     }
      e.preventDefault();
      this.forceUpdate();
   }
 
-  removeAgent(id,e){
+  removeTeam(id,e){
    //alert(id);
 
-   for(var j = 0;j<this.props.newagents.length;j++)
+   for(var j = 0;j<this.props.newteams.length;j++)
    {
-     if(this.props.newagents[j]._id == id)
+     if(this.props.newteams[j]._id == id)
      {
-         this.props.newagents.splice(j,1);
+         this.props.newteams.splice(j,1);
          break;
      }
    }
@@ -100,17 +100,17 @@ class GroupCreateView extends Component {
           </div>
           <br/>
           <div className="form-group">
-           <label className="control-label col-md-3"> Fellow Agents </label>
+           <label className="control-label col-md-3"> Fellow Teams </label>
             <div className="col-md-9">
             <div className="select2-container select2-container-multi">
             <ul className="select2-choices">
 
             {
-             this.props.newagents &&
-                   this.props.newagents.map((agent, i)=> (
-                   this.props.agents.filter((ag) => ag._id == agent._id).map((ag,j) =>
+             this.props.newteams &&
+                   this.props.newteams.map((team, i)=> (
+                   this.props.teamdetails.filter((ag) => ag._id == team._id).map((ag,j) =>
                    (
-                   <li key ={i}>{ag.firstname + ' ' + ag.lastname}<i style={{ cursor: 'pointer'}} onClick = {this.removeAgent.bind(this,ag._id)} className="fa fa-times-circle" /></li>
+                   <li key ={i}>{ag.groupname}<i style={{ cursor: 'pointer'}} onClick = {this.removeTeam.bind(this,ag._id)} className="fa fa-times-circle" /></li>
                    ))
 
 
@@ -125,16 +125,16 @@ class GroupCreateView extends Component {
          <br/>
 
          <div className="form-group">
-           <label className="control-label col-md-3"> All Agents </label>
+           <label className="control-label col-md-3"> All Teams </label>
             <div className="col-md-9">
             <div className="select2-container select2-container-multi">
             <ul className="select2-choices">
             {
-             this.props.agents &&
-                  this.props.agents.map((agent, i) =>
+             this.props.teamdetails &&
+                  this.props.teamdetails.map((team, i) =>
                  (
                    <li  key ={i} className="select2-search-choice">
-                     <div><i style={{ cursor: 'pointer'}} onClick = {this.appendAgent.bind(this,agent._id)} className="fa fa-plus-circle" />{agent.firstname + ' ' + agent.lastname} </div></li>
+                     <div><i style={{ cursor: 'pointer'}} onClick = {this.appendTeam.bind(this,team._id)} className="fa fa-plus-circle" />{team.groupname} </div></li>
                  ))
            }
 
@@ -146,7 +146,7 @@ class GroupCreateView extends Component {
          <br/>
           <div className="form-group">
                   <b> Note:
-                   Please, add at least one agent to the group to make it operational. Click on the name in the list to add agents.
+                   Please, add at least one team to the group to make it operational. Click on the name in the list to add teams.
                   </b>
           </div>
           <div className="form-actions" style={{background: 'white'}}>
@@ -171,9 +171,10 @@ function mapStateToProps(state) {
 
     team: (state.dashboard.team),
     agents:(state.dashboard.agents),
+    teamdetails: (state.dashboard.teamdetails),
     deptagents:(state.dashboard.deptagents),
     errorMessage:(state.dashboard.errorMessage),
-    newagents:state.dashboard.newagents,
+    newteams:state.dashboard.newteams,
     channels :(state.dashboard.channels),
     customers : (state.dashboard.customers),
   };

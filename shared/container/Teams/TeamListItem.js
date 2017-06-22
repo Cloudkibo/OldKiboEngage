@@ -10,6 +10,9 @@ return c.toDateString();
 function TeamListItem(props) {
 var useringroup = false
 for(var i=0;i<props.teamagents.length;i++){
+  if(!props.teamagents[i].agentid){
+    alert(i);
+  }
   if(props.teamagents[i].agentid._id == props.userdetails._id && props.teamagents[i].groupid._id == props.team._id){
     useringroup = true
 

@@ -480,7 +480,7 @@ export function creategroup(group, customers) {
       body: JSON.stringify({
         deptname: group.name,
         deptdescription: group.description,
-        deptagents: group.deptagents,
+        teamagents: group.teamagents,
         customers: customers,
 
       }),
@@ -652,6 +652,15 @@ export function showDeptAgents(agents) {
   };
 }
 
+export function showDeptTeams(teams) {
+  printlogs('log', teams);
+  return {
+    type: ActionTypes.ADD_DEPTTEAMS,
+    teams,
+
+  };
+}
+
 
 export function showTeamAgents(agents) {
   printlogs('log', agents);
@@ -703,6 +712,21 @@ export function getDeptAgents(token) {
         'Pragma': 'no-cache'
       }),
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(showDeptAgents(res)));
+  };
+}
+
+
+/****** get user details ***/
+export function getDeptTeams(token) {
+  printlogs('log', token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/deptteams`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showDeptTeams(res)));
   };
 }
 

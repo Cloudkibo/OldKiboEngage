@@ -66,6 +66,7 @@ router.route('/assignToAgentFB').post(FbChatController.assignToAgentFB);
 router.route('/resolvechatsessionfb').post(FbChatController.resolvechatsessionfb);
 router.route('/getagents').get(UserController.getagents);
 router.route('/deptagents').get(UserController.deptagents);
+router.route('/deptteams').get(UserController.deptteams);
 
 router.route('/editgroup').post(GroupController.editgroup);
 router.route('/editagent').post(UserController.editagent);

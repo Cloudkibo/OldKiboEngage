@@ -84,7 +84,7 @@ export function getgroups(req, res) {
   //console.log(req.body);
   logger.serverLog('info', 'This is body in creategroup '+ JSON.stringify(req.body) );
   var options;
-  if(req.body.deptagents){  
+  if(req.body.teamagents){  
    options = {
       url: `${baseURL}/api/departments/kiboengage`,
       rejectUnauthorized : false,
@@ -94,7 +94,7 @@ export function getgroups(req, res) {
       json: {
            'deptname' : req.body.deptname,
            'deptdescription': req.body.deptdescription,
-           'deptagents' : req.body.deptagents,
+           'teamagents' : req.body.teamagents,
 
           }
       

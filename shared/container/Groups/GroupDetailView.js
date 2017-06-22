@@ -2,7 +2,7 @@ import GroupListItem from './GroupListItem';
 import React, { PropTypes,Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getGroupRequest,getDeptAgents}  from '../../redux/actions/actions'
+import { getGroupRequest,getDeptAgents,getDeptTeams}  from '../../redux/actions/actions'
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
@@ -19,7 +19,8 @@ class GroupDetailView extends Component {
        
         //console.log(usertoken);
         //console.log(props.params.id);
-         props.getDeptAgents(usertoken);
+         //props.getDeptAgents(usertoken);
+         props.getDeptTeams(usertoken);
         props.getGroupRequest(props.params.id,usertoken);
        
     
@@ -82,19 +83,18 @@ class GroupDetailView extends Component {
                 </div>
 
                  <div className="form-group">
-                  <label className="control-label col-md-3"> Fellow Agents </label>
+                  <label className="control-label col-md-3"> Fellow Teams </label>
                    <div className="col-md-9">
                    <ul>
                    {
-                    this.props.deptagents &&
-                         this.props.deptagents.filter((agent) => agent.deptid == this.props.group._id).map((agent, i)=> (
-                          this.props.agents.filter((ag) => ag._id == agent.agentid).map((ag,j) =>
-                          (
-                          <li>{ag.firstname + ' ' + ag.lastname}</li>
-                          ))
+                    this.props.deptteams && 
+                         this.props.deptteams.filter((team) => team.deptid._id == this.props.group._id).map((team, i)=> (
+                         
+                          <li>{team.teamid.groupname}</li>
+                          )
 
                           
-                   ))                                                    
+                   )                                                    
                         
 
                     
@@ -149,10 +149,12 @@ function mapStateToProps(state) {
     group: (state.dashboard.group),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
+    deptteams:(state.dashboard.deptteams),
+    teamdetails:(state.dashboard.teamdetails),
     groupdetails:(state.dashboard.groupdetails),
     userdetails:(state.dashboard.userdetails),
      channels :(state.dashboard.channels),
   };
 }
 
-export default connect(mapStateToProps,{ getGroupRequest,getDeptAgents})(GroupDetailView);
+export default connect(mapStateToProps,{ getGroupRequest,getDeptTeams,getDeptAgents})(GroupDetailView);
