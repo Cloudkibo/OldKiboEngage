@@ -37,7 +37,8 @@ export function getlogin (req,res) {
       }
     };
     function callback(error, response, body) {
-      ////console.log(response.statusCode);
+      console.log(response.statusCode);
+      console.log(body);
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
         ////console.log('api calling succeed')

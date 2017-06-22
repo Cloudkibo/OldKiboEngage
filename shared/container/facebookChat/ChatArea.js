@@ -1136,7 +1136,7 @@ export class ChatArea extends Component {
     var sendmessage = true;
 
     var agentinTeam;
-
+    var index = this.props.fbsessionSelected.agent_ids.length - 1;
     if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
       //check if the agent is in assigned team
       for (var i = 0; i < this.props.teamagents.length; i++) {
@@ -1294,7 +1294,7 @@ export class ChatArea extends Component {
     var sendmessage = true;
 
     var agentinTeam;
-
+    var index = this.props.fbsessionSelected.agent_ids.length - 1;
     if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
       //check if the agent is in assigned team
       for (var i = 0; i < this.props.teamagents.length; i++) {
@@ -1406,7 +1406,7 @@ export class ChatArea extends Component {
     var sendmessage = true;
 
     var agentinTeam;
-
+    var index = this.props.fbsessionSelected.agent_ids.length - 1;
     if (this.props.fbsessionSelected.agent_ids.length > 0 && this.props.fbsessionSelected.agent_ids[this.props.fbsessionSelected.agent_ids.length - 1].type == 'group') {
       //check if the agent is in assigned team
       for (var i = 0; i < this.props.teamagents.length; i++) {
