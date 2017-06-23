@@ -57,7 +57,7 @@ const dashboard = (state = dashboardState, action) => {
       var agentid = [];
       if (state.deptteams) {
         state.deptteams.filter((agent) => agent.deptid._id == action.group._id).map((agent, i) => (
-              agentid.push({"_id": agent.teamid_id})
+              agentid.push({"_id": agent.teamid._id})
             
         ));
       }
