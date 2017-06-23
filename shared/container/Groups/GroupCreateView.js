@@ -25,6 +25,15 @@ class GroupCreateView extends Component {
   }
   }
 
+  componentWillReceiveProps(props){
+    if(props.newteams && !this.props.newteams){
+      var id = props.teamdetails.filter((c)=>c.groupname == 'All' && c.companyid == props.userdetails.uniqueid)[0]._id;
+      props.newteams.push({"_id" :id});  
+
+    }
+    
+  }
+
   appendTeam(id,e){
    // alert(id);
     var flag = 0;
@@ -133,7 +142,7 @@ class GroupCreateView extends Component {
              this.props.teamdetails &&
                   this.props.teamdetails.map((team, i) =>
                  (
-                   <li  key ={i} className="select2-search-choice">
+                   <li  key ={i} className="select2-search-choice" ref={'team'+team._id}>
                      <div><i style={{ cursor: 'pointer'}} onClick = {this.appendTeam.bind(this,team._id)} className="fa fa-plus-circle" />{team.groupname} </div></li>
                  ))
            }
@@ -177,6 +186,7 @@ function mapStateToProps(state) {
     newteams:state.dashboard.newteams,
     channels :(state.dashboard.channels),
     customers : (state.dashboard.customers),
+    userdetails:(state.dashboard.userdetails),
   };
 }
 

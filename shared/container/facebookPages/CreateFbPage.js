@@ -119,6 +119,53 @@ class CreateFbPage extends Component {
                             </div>
                           </div>
                         </div>
+
+                         <div className="form-group">
+                           <label className="control-label col-md-3"> Fellow Teams </label>
+                            <div className="col-md-9">
+                            <div className="select2-container select2-container-multi">
+                            <ul className="select2-choices">
+
+                            {
+                             this.props.newfbteams &&
+                                   this.props.newfbteams.map((team, i)=> (
+                                   this.props.teamdetails.filter((ag) => ag._id == team._id).map((ag,j) =>
+                                   (
+                                   <li key ={i}>{ag.groupname}<i style={{ cursor: 'pointer'}} onClick = {this.removeTeam.bind(this,ag._id)} className="fa fa-times-circle" /></li>
+                                   ))
+
+
+                            ))
+
+
+                            }
+                            </ul>
+                            </div>
+                            </div>
+                         </div>
+                         <br/>
+
+                         <div className="form-group">
+                           <label className="control-label col-md-3"> All Teams </label>
+                            <div className="col-md-9">
+                            <div className="select2-container select2-container-multi">
+                            <ul className="select2-choices">
+                            {
+                             this.props.teamdetails &&
+                                  this.props.teamdetails.map((team, i) =>
+                                 (
+                                   <li  key ={i} className="select2-search-choice">
+                                     <div><i style={{ cursor: 'pointer'}} onClick = {this.appendTeam.bind(this,team._id)} className="fa fa-plus-circle" />{team.groupname} </div></li>
+                                 ))
+                           }
+
+
+                            </ul>
+                            </div>
+                            </div>
+                         </div>
+                         <br/>
+
                         <div className="form-actions fluid" style={{background: 'white'}}>
                           <div className="row">
                             <div className="col-md-6">
@@ -165,6 +212,7 @@ function mapStateToProps(state) {
     reponses:(state.dashboard.responses),
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
+    newfbteams:(state.dashboard.newfbteams),
   };
 }
 
