@@ -46,6 +46,47 @@ class EditFbPage extends Component {
 
     }
   }
+  
+  appendTeam(id,e){
+   // alert(id);
+    var flag = 0;
+    //console.log(this.props.newagents);
+    for(var j = 0;j<this.props.newfbteams.length;j++)
+    {
+      if(this.props.newfbteams[j]._id == id)
+      {
+          flag = 1;
+          break;
+      }
+    }
+    if(flag == 0)
+    {
+        this.props.newfbteams.push({"_id" :id});
+    }
+    else{
+      alert('Team Already added in the Page');
+    }
+     e.preventDefault();
+     this.forceUpdate();
+  }
+
+  removeTeam(id,e){
+   //alert(id);
+
+   for(var j = 0;j<this.props.newfbteams.length;j++)
+   {
+     if(this.props.newfbteams[j]._id == id)
+     {
+         this.props.newfbteams.splice(j,1);
+         break;
+     }
+   }
+
+ //  alert(this.props.newagents.length);
+   e.preventDefault();
+   this.forceUpdate();
+ }
+
 
   render() {
     //const cls = `form ${(this.props.showCR ? 'appear' : 'hide')}`;
@@ -133,6 +174,51 @@ class EditFbPage extends Component {
                                       </div>
                                     </div>
                                   </div>
+
+                                    <div className="form-group">
+                                      <label className="control-label col-md-3"> Fellow Teams </label>
+                                       <div className="col-md-9">
+                                       <div className="select2-container select2-container-multi">
+                       
+                                        {
+                                         this.props.newfbteams &&
+                                               this.props.newfbteams.map((team, i)=> (
+                                               this.props.teamdetails.filter((ag) => ag._id == team._id).map((ag,j) =>
+                                               (
+                                               <li key ={i}>{ag.groupname}<i style={{ cursor: 'pointer'}} onClick = {this.removeTeam.bind(this,ag._id)} className="fa fa-times-circle" /></li>
+                                               ))
+
+
+                                        ))
+
+                                        }
+
+                                       </div>
+                                       </div>
+                                    </div>
+
+
+                                   <div className="form-group">
+                                   <label className="control-label col-md-3"> All Teams </label>
+                                    <div className="col-md-9">
+                                    <div className="select2-container select2-container-multi">
+                                    <ul className="select2-choices">
+                                    {
+                                     this.props.teamdetails &&
+                                          this.props.teamdetails.map((team, i) =>
+                                         (
+                                           <li  key ={i} className="select2-search-choice">
+                                             <div><i style={{ cursor: 'pointer'}} onClick = {this.appendTeam.bind(this,team._id)} className="fa fa-plus-circle" />{team.groupname} </div></li>
+                                         ))
+                                   }
+
+
+                                    </ul>
+                                    </div>
+                                    </div>
+                                 </div>
+
+
                                   <div className="form-actions fluid" style={{background: 'white'}}>
                                     <div className="row">
                                       <div className="col-md-6">
@@ -181,6 +267,8 @@ function mapStateToProps(state) {
     agents:(state.dashboard.agents),
     deptagents:(state.dashboard.deptagents),
     fbpage:(state.dashboard.fbpage),
+    newfbteams:(state.dashboard.newfbteams),
+    fbteams:(state.dashboard.fbteams),
   };
 }
 

@@ -22,7 +22,7 @@ export function createfbPage(req, res) {
   //console.log('create Response is called');
   var token = req.headers.authorization;
   //console.log(req.body);
-  var cr = req.body.fbpage;
+  var cr = req.body;
   console.log('create fb page');
   console.log(cr);
    var options = {
@@ -32,7 +32,7 @@ export function createfbPage(req, res) {
                  'Authorization': `Bearer ${token}`,
 
                  },
-      json:req.body.fbpage,
+      json:req.body,
 
 
     };
@@ -52,6 +52,37 @@ export function createfbPage(req, res) {
    }
         request.post(options, callback);
 
+  }
+
+
+export function fbteams(req, res) {
+  ////console.log('get deptagents is called');
+  var token = req.headers.authorization;
+  ////console.log('token received is  : ' + token);
+  var options = {
+      url: `${baseURL}/api/fbpageteams/`,
+      rejectUnauthorized : false,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 }
+
+
+    };
+    function callback(error, response, body) {
+      if(!error  && response.statusCode == 200) {
+        var info = JSON.parse(body);
+       // ////console.log(info)
+
+        //////console.log(info);
+      return res.status(200).json(info);
+    }
+
+    else
+    {
+     return res.status(422).json({message:error});
+    }
+    }
+    request.get(options, callback);
   }
 
 

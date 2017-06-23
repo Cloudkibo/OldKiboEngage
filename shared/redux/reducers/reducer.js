@@ -28,6 +28,7 @@ const dashboardState = {
   componentVisible: 'true',
   fbsessionSelected: {},
   active: 'active bar',
+  newfbteams:[],
 };
 const widgetState = {groupdetails: [], subgroups: [], chatbotlist: []}
 const signup = (state = initialState, action) => {
@@ -54,12 +55,10 @@ const dashboard = (state = dashboardState, action) => {
 
     case ActionTypes.ADD_SELECTED_GROUP :
       var agentid = [];
-      if (state.deptagents) {
-        state.deptagents.filter((agent) => agent.deptid == action.group._id).map((agent, i) => (
-          state.agents.filter((ag) => ag._id == agent.agentid).map((ag, j) =>
-            (
-              agentid.push({"_id": ag._id})
-            ))
+      if (state.deptteams) {
+        state.deptteams.filter((agent) => agent.deptid._id == action.group._id).map((agent, i) => (
+              agentid.push({"_id": agent.teamid_id})
+            
         ));
       }
       ;
@@ -68,6 +67,7 @@ const dashboard = (state = dashboardState, action) => {
         ...state, errorMessageProfile: '',
         group: action.group,
         newagents: agentid,
+        newteams:agentid,
         errorMessage: '',
 
 
@@ -75,12 +75,22 @@ const dashboard = (state = dashboardState, action) => {
 
 
     case ActionTypes.ADD_SELECTED_PAGE :
+      var agentid = [];
+      if (state.fbteams) {
+        state.fbteams.filter((agent) => agent.pageid._id == action.fbpage._id).map((agent, i) => (
+            
+              agentid.push({"_id": agent.teamid._id})
+            
+        ));
+      };
+      
       return {
 
 
         ...state, errorMessageProfile: '',
         fbpage: action.fbpage,
         errorMessage: '',
+        newfbteams:agentid,
 
       };
 
@@ -159,6 +169,16 @@ const dashboard = (state = dashboardState, action) => {
 
       };
 
+      case ActionTypes.ADD_FBTEAMS:
+      //console.log(action.agents)
+      return {
+        ...state, errorMessageProfile: '',
+        fbteams: action.teams,
+        errorMessage: '',
+        newfbteams: [],
+
+
+      };
       case ActionTypes.ADD_DEPTTEAMS:
       //console.log(action.agents)
       return {

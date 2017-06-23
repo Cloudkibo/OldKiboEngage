@@ -661,6 +661,14 @@ export function showDeptTeams(teams) {
   };
 }
 
+export function showfbTeams(teams) {
+  printlogs('log', teams);
+  return {
+    type: ActionTypes.ADD_FBTEAMS,
+    teams,
+
+  };
+}
 
 export function showTeamAgents(agents) {
   printlogs('log', agents);
@@ -730,6 +738,19 @@ export function getDeptTeams(token) {
   };
 }
 
+/****** get user details ***/
+export function getfbTeams(token) {
+  printlogs('log', token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/fbteams`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showfbTeams(res)));
+  };
+}
 
 /****** get user details ***/
 
@@ -2791,13 +2812,14 @@ export function changepassword(user, token) {
 
 }
 
-export function createPage(fbpage, token) {
+export function createPage(fbpage, token,teamagents) {
   printlogs('log', fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/createfbPage`, {
       method: 'post',
       body: JSON.stringify({
         fbpage: fbpage,
+        teamagents:teamagents,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -3560,7 +3582,7 @@ export function getfbpages(token) {
 
 
 export function addSelectedPage(fbpage) {
-  alert(fbpage.pageid);
+ // alert(fbpage.pageid);
   return {
     type: ActionTypes.ADD_SELECTED_PAGE,
     fbpage,

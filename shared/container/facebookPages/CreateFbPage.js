@@ -31,11 +31,52 @@ class CreateFbPage extends Component {
     if (pageToken && pageid)
      {
        //this.props.addResponse("/" + shortcode.value,msg.value);
-       this.props.createPage({pageid,appid,pageToken,pageTitle,pageDescription,companyid},usertoken);
+       this.props.createPage({pageid,appid,pageToken,pageTitle,pageDescription,companyid},usertoken,this.props.newfbteams);
        //shortcode.value = message.value = '';
 
     }
   }
+
+  appendTeam(id,e){
+   // alert(id);
+    var flag = 0;
+    //console.log(this.props.newagents);
+    for(var j = 0;j<this.props.newfbteams.length;j++)
+    {
+      if(this.props.newfbteams[j]._id == id)
+      {
+          flag = 1;
+          break;
+      }
+    }
+    if(flag == 0)
+    {
+        this.props.newfbteams.push({"_id" :id});
+    }
+    else{
+      alert('Team Already added in the Page');
+    }
+     e.preventDefault();
+     this.forceUpdate();
+  }
+
+  removeTeam(id,e){
+   //alert(id);
+
+   for(var j = 0;j<this.props.newfbteams.length;j++)
+   {
+     if(this.props.newfbteams[j]._id == id)
+     {
+         this.props.newfbteams.splice(j,1);
+         break;
+     }
+   }
+
+ //  alert(this.props.newagents.length);
+   e.preventDefault();
+   this.forceUpdate();
+ }
+
 
   render() {
     //const cls = `form ${(this.props.showCR ? 'appear' : 'hide')}`;

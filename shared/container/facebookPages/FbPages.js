@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import FbPageItem from './FbPageItem';
-import {getfbpages} from '../../redux/actions/actions';
+import {getfbpages,getfbTeams} from '../../redux/actions/actions';
 import {deletefbpage} from '../../redux/actions/actions';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
@@ -25,7 +25,9 @@ class FbPages extends Component {
     {
 
         //console.log(usertoken);
-        props.getfbpages(usertoken)
+        props.getfbpages(usertoken);
+        props.getfbTeams(usertoken);
+
       }
     super(props, context);
     this.state = {
@@ -196,12 +198,13 @@ function mapStateToProps(state) {
           agents:(state.dashboard.agents),
           deptagents:(state.dashboard.deptagents),
           fbpages:(state.dashboard.fbpages),
-
+          newfbteams:(state.dashboard.newfbteams),
+          fbteams:(state.dashboard.fbteams),
            };
 
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getfbpages:getfbpages,deletefbpage:deletefbpage}, dispatch);
+  return bindActionCreators({getfbpages:getfbpages,deletefbpage:deletefbpage,getfbTeams:getfbTeams}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(FbPages);
