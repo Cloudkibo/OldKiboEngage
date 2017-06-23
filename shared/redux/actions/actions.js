@@ -519,7 +519,7 @@ export function editGroup(group, customers) {
           deptname: group.name,
           deptdescription: group.desc,
         },
-        deptagents: group.deptagents,
+        teamagents: group.teamagents,
         customers: customers
 
       })
