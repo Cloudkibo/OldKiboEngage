@@ -138,11 +138,11 @@ class SideBar extends Component
   {
   return (
     
-  	<div>
+    <div>
+        <div className="page-sidebar smallFix" style={{background: '#03363D'}}>
     <ReactTooltip />
-        <div className="page-sidebar navbar-collapse collapse" style={{background: '#03363D'}}>
 
-            <ul className="page-sidebar-menu page-sidebar-menu-closed page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
+            <ul className="page-sidebar-menu page-sidebar-menu-closed page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200" style={{flex: 1}}>
               <li className="sidebar-toggler-wrapper">
                   
                   <div className="sidebar-toggler">
