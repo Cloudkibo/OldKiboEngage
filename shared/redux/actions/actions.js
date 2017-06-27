@@ -2262,11 +2262,11 @@ export function emailCustomer(customer) {
       printlogs('log', res.statusCode);
       if (res.statusCode == 200) {
         alert('Email sent successfully.');
-        browserHistory.push('/customers');
+        browserHistory.push('/summarychatsessions');
       }
       else {
         alert('Email not sent to customer.There might be some errors.');
-        browserHistory.push('/customers');
+        browserHistory.push('/summarychatsessions');
       }
     });
   };
