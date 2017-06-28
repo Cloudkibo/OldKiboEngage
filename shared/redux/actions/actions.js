@@ -4061,6 +4061,22 @@ export function chatbotResponse(res, username) {
   }
 }
 
+export function chatbotResponse2(res, username, session) {
+  printlogs('log', res);
+  var message = {
+    lang: 'en',
+    sessionId: session,
+    from: 'Kitt',
+    msg: res.body,
+    timestamp: Date.now(),
+
+
+  }
+  return {
+    message: message,
+    type: ActionTypes.BOT_RESPONSE,
+  }
+}
 
 export function testingPractice(data) {
   return data;
@@ -4085,6 +4101,25 @@ export function sendchatToBot(message, username = '') {
 
 
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res, username)));
+  };
+
+
+}
+
+export function sendchatToBot2(message, username = '', sessionid = '') {
+  return (dispatch) => {
+    fetch('http://104.236.118.212:3000/query', {
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify({
+        query: message.query,
+
+      })
+
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse2(res, username, sessionid)));
   };
 
 
