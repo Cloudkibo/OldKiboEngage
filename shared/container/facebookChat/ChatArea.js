@@ -93,7 +93,9 @@ export class ChatArea extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.assignSessionToAgent = this.assignSessionToAgent.bind(this);
-    this.assignSessionToTeam = this.assignSessionToTeam.bind(this);
+
+    // this is removed due to new modifications -- Zarmeen//
+   // this.assignSessionToTeam = this.assignSessionToTeam.bind(this); 
     this.resolveSession = this.resolveSession.bind(this);
     this.autoassignChat = this.autoassignChat.bind(this);
     this.getagentname = this.getagentname.bind(this);
@@ -162,9 +164,11 @@ export class ChatArea extends Component {
 
   }
 
-  assignSessionToTeam(e) {
+ // No more in use -- Zarmeen
+ /* assignSessionToTeam(e) {
 
-    const { dispatch } = this.props;
+
+/*    const { dispatch } = this.props;
 
     // local changes
     this.props.fbsessionSelected.status = "assigned";
@@ -294,8 +298,9 @@ export class ChatArea extends Component {
       }
       this.forceUpdate();
     }
+    */
 
-  }
+  //}
 
 
   autoassignChat() {
@@ -1973,7 +1978,7 @@ export class ChatArea extends Component {
               <tbody style={{background: '#03363D'}}>
               <tr style={{background: '#03363D'}}>
 
-                <td className="col-md-6" style={{background: '#03363D'}}>
+                <td style={{background: '#03363D'}}>
 
 
                   <div className="input-group">
@@ -2007,7 +2012,7 @@ export class ChatArea extends Component {
                 </td>
 
 
-                <td className="col-md-6" style={{background: '#03363D'}}>
+              {/*  <td className="col-md-6" style={{background: '#03363D'}}>
                   <div className="input-group">
                     <select ref="teamlist" className="mySelect" style={{background: '#03363D',margin: 15, marginLeft: 25, height:30, border: 0}}  onChange={this.handleChange.bind(this)}>
                       <option value={-1} data-attrib={-1}>Select Team</option>
@@ -2031,7 +2036,9 @@ export class ChatArea extends Component {
                   </div>
 
                 </td>
-                <td className="col-md-2" style={{background: '#03363D'}}>
+                */
+              }
+                <td className="col-md-8" style={{background: '#03363D'}}>
                   <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick={this.resolveSession}> Resolved</button>
                 </td>
 

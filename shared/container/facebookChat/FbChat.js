@@ -16,6 +16,7 @@ import {
   add_socket_fb_message,
   getfbChats,
   getresponses,
+  getfbTeams,
   selectFbCustomerChat
 }  from '../../redux/actions/actions'
 
@@ -48,6 +49,7 @@ class FbChat extends Component {
       // get groups list and agents
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
+      props.getfbTeams(usertoken);
 
       //props.getmetaurl(url, usertoken);
       callonce = true;
@@ -59,7 +61,26 @@ class FbChat extends Component {
     //this.getfbMessage = this.getfbMessage.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
+    this.showSession = this.showSession.bind(this);
 
+  }
+  showSession(customer){
+    var get_teams_assigned_to_page = this.props.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
+    var is_agent_in_team = false;
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<this.props.teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == this.props.teamagents[j].groupid._id && this.props.teamagents[j].agentid._id == this.props.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+   return is_agent_in_team;
   }
 
   handleChange(e) {
@@ -155,7 +176,7 @@ class FbChat extends Component {
                         <div>
                           {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id &&
                           this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
-
+                              this.showSession(customer) == true &&
                               <FbCustomerListItem onClickSession={this.handleSession.bind(this, customer)}
                                                   userchat={this.props.fbchats.filter((ch) => ch.senderid == customer.user_id.user_id)}
                                                   customer={customer} selectedCustomer={this.props.fbsessionSelected}
@@ -240,6 +261,7 @@ function mapStateToProps(state) {
     teamagents: (state.dashboard.teamagents),
     componentVisible: state.dashboard.componentVisible,
     sessionsortorder: state.dashboard.sessionsortorder,
+    fbteams:(state.dashboard.fbteams),
 
   };
 }
@@ -258,7 +280,8 @@ export default connect(mapStateToProps, {
   updatefbstatus,
   getresponses,
   selectFbCustomerChat,
-  getmetaurl
+  getmetaurl,
+  getfbTeams,
 },null,{
   pure: false
 })(FbChat);

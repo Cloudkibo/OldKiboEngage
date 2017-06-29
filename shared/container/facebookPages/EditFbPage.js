@@ -38,6 +38,11 @@ class EditFbPage extends Component {
     const appid = this.refs.appid.value;
     var companyid = this.props.userdetails.uniqueid;
     const pageid = this.refs.pageid.value;
+    if(this.props.newfbteams.length == 0){
+          alert('Assign atleast one team to Page.');
+      
+    }
+    else{
     if (pageToken && pageid)
      {
        //this.props.addResponse("/" + shortcode.value,msg.value);
@@ -45,6 +50,7 @@ class EditFbPage extends Component {
        //shortcode.value = message.value = '';
 
     }
+  }
   }
   
   appendTeam(id,e){

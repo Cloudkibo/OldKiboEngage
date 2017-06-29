@@ -37,6 +37,16 @@ class CreateFbPage extends Component {
     }
   }
 
+ componentDidMount(){
+    if(this.props.newfbteams && this.props.newfbteams.length == 0){
+  
+      var id = this.props.teamdetails.filter((c)=>c.groupname == 'All' && c.companyid == this.props.userdetails.uniqueid)[0]._id;
+      this.props.newfbteams.push({"_id" :id});  
+       this.forceUpdate();
+   
+    }
+    
+  }
   appendTeam(id,e){
    // alert(id);
     var flag = 0;

@@ -973,7 +973,7 @@ export function jointeam(team, userid, usertoken) {
       return fetch(`${baseURL}/api/joinTeam`, {
         method: 'post',
         body: JSON.stringify({
-          groupid: team.get('_id'),
+          groupid: team._id,
           agentid: userid,
 
         }),
@@ -990,7 +990,7 @@ export function jointeam(team, userid, usertoken) {
             alert("Failed to join the team");
           }
           printlogs('log', "Team Joining", res.message);
-          browserHistory.push('/dashboard');
+          browserHistory.push('/teams');
 
         }
       );
