@@ -41,7 +41,7 @@ class EditFbPage extends Component {
     if (pageToken && pageid)
      {
        //this.props.addResponse("/" + shortcode.value,msg.value);
-       this.props.editPage({pageid,appid,pageToken,pageTitle,pageDescription,companyid},usertoken);
+       this.props.editPage({_id: this.props.fbpage._id,pageid,appid,pageToken,pageTitle,pageDescription,companyid},this.props.newfbteams,usertoken);
        //shortcode.value = message.value = '';
 
     }

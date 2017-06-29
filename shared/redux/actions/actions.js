@@ -3601,13 +3601,14 @@ export function getfbpage(usertoken, pageid) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedPage(res)));
   };
 }
-export function editPage(fbpage, token) {
+export function editPage(fbpage, teamagents,token) {
   printlogs('log', fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/editfbPage`, {
       method: 'post',
       body: JSON.stringify({
         fbpage: fbpage,
+        teamagents:teamagents,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',

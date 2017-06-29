@@ -162,7 +162,7 @@ export function editfbPage(req, res) {
   //console.log('create Response is called');
   var token = req.headers.authorization;
   //console.log(req.body);
-  var cr = req.body.fbpage;
+  var cr = req.body;
   var id = req.body.fbpage.pageid;
   console.log('edit fb page');
   console.log(cr);
@@ -173,7 +173,7 @@ export function editfbPage(req, res) {
                  'Authorization': `Bearer ${token}`,
 
                  },
-      json:req.body.fbpage,
+      json:req.body,
 
 
     };
