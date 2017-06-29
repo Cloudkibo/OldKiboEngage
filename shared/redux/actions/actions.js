@@ -973,7 +973,7 @@ export function jointeam(team, userid, usertoken) {
       return fetch(`${baseURL}/api/joinTeam`, {
         method: 'post',
         body: JSON.stringify({
-          groupid: team.get('_id'),
+          groupid: team._id,
           agentid: userid,
 
         }),
@@ -990,7 +990,7 @@ export function jointeam(team, userid, usertoken) {
             alert("Failed to join the team");
           }
           printlogs('log', "Team Joining", res.message);
-          browserHistory.push('/dashboard');
+          browserHistory.push('/teams');
 
         }
       );
@@ -1701,7 +1701,9 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   var newArrayC = []
   for (var i = 0; i < fbsessions.length; i++) {
     var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+    
     var lastmessage = selectedchat[selectedchat.length - 1];
+
     printlogs('log', 'lastmessage');
     printlogs('log', lastmessage);
     var newfbsession = fbsessions[i];
@@ -3601,13 +3603,14 @@ export function getfbpage(usertoken, pageid) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedPage(res)));
   };
 }
-export function editPage(fbpage, token) {
+export function editPage(fbpage, teamagents,token) {
   printlogs('log', fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/editfbPage`, {
       method: 'post',
       body: JSON.stringify({
         fbpage: fbpage,
+        teamagents:teamagents,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
