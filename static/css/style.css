@@ -3704,6 +3704,7 @@ text-align: left;
 
 }
 
+
 @media (max-width: 990px) {
     div.smallFix {
         background: red; 
@@ -3717,3 +3718,38 @@ text-align: left;
       display: none;
     }
 }
+
+
+
+.chatList{
+  border-bottom: 5;
+}
+.mychatSessionList{
+  height: 100%;
+  margin-top: 50px; 
+}
+
+.mySessionListItem{
+    background: white;
+}
+
+.mySessionListItem:hover{
+    background: whitesmoke;
+}
+.call-button{
+  color: grey;
+}
+.call-button:hover{
+  color: black;
+}
+
+
+.anotherflx >article {
+  order: 2;
+  overflow-y: auto;
+  height: 100%;
+    /*background:green;*/
+}
+
+.mychatSessionList::-webkit-scrollbar { width: 0 !important }
+.navclassSessionList::-webkit-scrollbar { width: 0 !important }

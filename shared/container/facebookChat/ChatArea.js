@@ -1970,14 +1970,14 @@ export class ChatArea extends Component {
             </table>
 
             <table className="table  table-condensed table-striped" style={{'marginBottom': 0}}>
-              <tbody style={{background: '#9B59B6'}}>
-              <tr style={{background: '#9B59B6'}}>
+              <tbody style={{background: '#03363D'}}>
+              <tr style={{background: '#03363D'}}>
 
-                <td className="col-md-6" style={{background: '#9B59B6'}}>
+                <td className="col-md-6" style={{background: '#03363D'}}>
 
 
                   <div className="input-group">
-                    <select ref="agentList" className="mySelect" style={{background: '#9b59b6', height:30, border: 0, margin:15}}  onChange={this.handleChange.bind(this)}
+                    <select ref="agentList" className="mySelect" style={{background: '#03363D', height:30, border: 0, margin:15}}  onChange={this.handleChange.bind(this)}
                             aria-describedby="basic-addon3">
                       <option value={-1} data-attrib={-1} data-type={-1} data-name={-1} data-email={-1}>Select Agent
                       </option>
@@ -2007,9 +2007,9 @@ export class ChatArea extends Component {
                 </td>
 
 
-                <td className="col-md-6" style={{background: '#9B59B6'}}>
+                <td className="col-md-6" style={{background: '#03363D'}}>
                   <div className="input-group">
-                    <select ref="teamlist" className="mySelect" style={{background: '#9b59b6',margin: 15, marginLeft: 25, height:30, border: 0}}  onChange={this.handleChange.bind(this)}>
+                    <select ref="teamlist" className="mySelect" style={{background: '#03363D',margin: 15, marginLeft: 25, height:30, border: 0}}  onChange={this.handleChange.bind(this)}>
                       <option value={-1} data-attrib={-1}>Select Team</option>
                       {
                         this.props.teamdetails && this.props.teamdetails.map((team, i) =>
@@ -2031,7 +2031,7 @@ export class ChatArea extends Component {
                   </div>
 
                 </td>
-                <td className="col-md-2" style={{background: '#9B59B6'}}>
+                <td className="col-md-2" style={{background: '#03363D'}}>
                   <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick={this.resolveSession}> Resolved</button>
                 </td>
 
