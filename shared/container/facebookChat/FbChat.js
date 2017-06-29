@@ -95,7 +95,9 @@ class FbChat extends Component {
 
 
   componentDidMount() {
-
+    if(!this.refs.chatwindow){
+      this.refs.no_session.value = "No sessions to display";
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -136,6 +138,7 @@ class FbChat extends Component {
     this.forceUpdate();
 
   }
+
 
 
   render() {
@@ -197,15 +200,18 @@ class FbChat extends Component {
 
                     {
 
-                      this.props.fbchatSelected && this.props.fbsessions && this.props.fbsessionSelected &&
+                      this.props.fbchatSelected && this.props.fbsessions && this.props.fbsessionSelected &&  this.showSession(this.props.fbsessionSelected) == true ?
                       <ChatArea messages={this.props.fbchatSelected}
                                 socket={ null } {...this.props}
                                 responses={this.props.responses}
                                 username={this.props.fbsessionSelected.user_id.first_name + ' ' + this.props.fbsessionSelected.user_id.last_name}
                                 userprofilepic={this.props.profile_pic}
                                 senderid={this.props.fbsessionSelected.user_id.user_id}
-                                userdetails={this.props.userdetails}/>
-
+                                userdetails={this.props.userdetails}
+                                ref = "chatwindow"
+                                />
+                     :
+                     <p ref="no_session"> No sessions to display</p>
 
                     }
 

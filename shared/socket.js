@@ -29,6 +29,24 @@ import {printlogs} from './services/clientlogging';
 const socket = io('');
 let store;
 
+function showSession(customer){
+    var get_teams_assigned_to_page = store.getState().dashboard.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
+    var is_agent_in_team = false;
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+   return is_agent_in_team;
+  }
 export function initiateSocket(storeObj) {
   store = storeObj;
   socket.connect();
@@ -39,8 +57,14 @@ socket.on('customer_joined', (data) => {
   store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
 });
 
+
+
 socket.on('send:fbcustomer', (data) => {
-  notify('facebook customer joined');
+  // we have to send notification to Agent only if the session is in FbPage to which the team (which agent has joined) is assigned//
+  if(showSession(data) == true){
+     notify('facebook customer joined');
+ 
+  }
   if (store.getState().dashboard.fbsessions) {
     store.dispatch(updateCustomerList(data,
       store.getState().dashboard.fbsessions,
