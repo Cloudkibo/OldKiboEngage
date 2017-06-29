@@ -95,7 +95,7 @@ class FbChat extends Component {
 
 
   componentDidMount() {
-    if(!this.refs.chatwindow){
+    if(!this.refs.chatwindow && this.refs.no_session){
       this.refs.no_session.value = "No sessions to display";
     }
   }

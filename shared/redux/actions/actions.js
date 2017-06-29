@@ -973,7 +973,7 @@ export function jointeam(team, userid, usertoken) {
       return fetch(`${baseURL}/api/joinTeam`, {
         method: 'post',
         body: JSON.stringify({
-          groupid: team._id,
+          groupid: team.get('_id'),
           agentid: userid,
 
         }),
@@ -990,7 +990,7 @@ export function jointeam(team, userid, usertoken) {
             alert("Failed to join the team");
           }
           printlogs('log', "Team Joining", res.message);
-          browserHistory.push('/teams');
+          browserHistory.push('/dashboard');
 
         }
       );
@@ -3601,14 +3601,13 @@ export function getfbpage(usertoken, pageid) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedPage(res)));
   };
 }
-export function editPage(fbpage, teamagents,token) {
+export function editPage(fbpage, token) {
   printlogs('log', fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/editfbPage`, {
       method: 'post',
       body: JSON.stringify({
         fbpage: fbpage,
-        teamagents:teamagents,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
