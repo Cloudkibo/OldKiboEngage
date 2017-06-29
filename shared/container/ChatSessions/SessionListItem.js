@@ -67,7 +67,7 @@ function SessionListItem(props) {
       {
         props.viewoption &&
         <td>
-          <Link to={`/chatsessionview/${props.session.request_id}`} className="uk-button uk-button-primary">
+          <Link to={`/chatsessionview/${props.session.request_id}`} className="uk-button uk-button-small uk-button-primary">
             View Details
           </Link>
         </td>
