@@ -30,8 +30,13 @@ const socket = io('');
 let store;
 
 function showSession(customer){
-    var get_teams_assigned_to_page = store.getState().dashboard.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
+    console.log('showSession called');
+    console.log(customer);
     var is_agent_in_team = false;
+   
+    if(store.getState().dashboard.fbteams)
+    {
+    var get_teams_assigned_to_page = store.getState().dashboard.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
     for(var i=0;i<get_teams_assigned_to_page.length;i++){
       for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
         if(get_teams_assigned_to_page[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
@@ -45,6 +50,7 @@ function showSession(customer){
       }
 
     }
+  }
    return is_agent_in_team;
   }
 export function initiateSocket(storeObj) {
