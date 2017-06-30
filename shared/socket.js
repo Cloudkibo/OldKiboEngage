@@ -82,10 +82,14 @@ export function initiateSocket(storeObj) {
   socket.connect();
 }
 
-socket.on('customer_joined', (data) => {
-  if(showSession_for_web(data) == true){
+socket.on('customer_joined', (data,currentsession) => {
+  console.log('customer_joined');
+  console.log(showSession_for_web(currentsession));
+  console.log(currentsession);
+  if(showSession_for_web(currentsession) == true){
   notify('A customer has joined.');
 }
+  console.log(data.length);
   store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
 });
 
@@ -241,6 +245,9 @@ socket.on('agentjoined', () => {
 
 socket.on('returnCustomerSessionsList', (data) => {
   console.log(data);
+  console.log('customer left')
+  console.log(data.length);
+
   // todo discuss this very important with Zarmeen
   store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
   store.dispatch(getassignedsessionsfromsocket(data, store.getState().dashboard.assignedsessions));
