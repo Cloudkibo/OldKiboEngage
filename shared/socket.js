@@ -53,13 +53,39 @@ function showSession(customer){
   }
    return is_agent_in_team;
   }
+
+   function showSession_for_web(customer){
+     var is_agent_in_team = false;
+   
+    if(store.getState().dashboard.deptteams)
+    {
+    var get_teams_assigned_to_group = store.getState().dashboard.deptteams.filter((c) => c.deptid._id == customer.departmentid);
+    for(var i=0;i<get_teams_assigned_to_group.length;i++){
+      for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
+        if(get_teams_assigned_to_group[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+  }
+   return is_agent_in_team;
+  }
+
 export function initiateSocket(storeObj) {
   store = storeObj;
   socket.connect();
 }
 
 socket.on('customer_joined', (data) => {
+  if(showSession_for_web(data) == true){
   notify('A customer has joined.');
+}
   store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
 });
 
