@@ -1987,7 +1987,7 @@ export class ChatArea extends Component {
                       <option value={-1} data-attrib={-1} data-type={-1} data-name={-1} data-email={-1}>Select Agent
                       </option>
                       {
-                        this.props.agents && this.props.agents.map((agent, i) =>
+                        this.props.list_of_agents && this.props.list_of_agents.map((agent, i) =>
                           <option value={agent.email} data-attrib={agent._id} data-type="agent"
                                   data-name={agent.firstname}
                                   data-email={agent.email}>{agent.firstname + ' ' + agent.lastname}</option>

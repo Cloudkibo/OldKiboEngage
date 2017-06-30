@@ -62,6 +62,7 @@ class FbChat extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.showSession = this.showSession.bind(this);
+    this.get_list_of_agents_in_team=this.get_list_of_agents_in_team.bind(this);
 
   }
   showSession(customer){
@@ -83,6 +84,38 @@ class FbChat extends Component {
    return is_agent_in_team;
   }
 
+  get_list_of_agents_in_team(customer){
+    var get_teams_assigned_to_page = this.props.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
+    var agents_in_teams = [];
+    console.log('length of teams');
+    console.log(get_teams_assigned_to_page.length);
+
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<this.props.teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == this.props.teamagents[j].groupid._id){
+          console.log('agent matched');
+
+          agents_in_teams.push(this.props.teamagents[j].agentid);
+        
+        }
+      }
+     
+    }
+
+   // removing duplicates
+  var newArray = [];
+  var lookupObject = {};
+
+  for (var i in agents_in_teams) {
+    lookupObject[agents_in_teams[i]['_id']] = agents_in_teams[i];
+  }
+
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  } 
+   return newArray;
+  }
+
   handleChange(e) {
     this.props.sortSessionsList(this.props.fbsessions, e.target.value);
   }
@@ -101,26 +134,14 @@ class FbChat extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.fbsessions && props.fbchats && props.fbsessions.length > 0) {
-      // alert(props.fbcustomers.length);
-
+    if (props.fbsessions && props.fbchats && props.fbsessions.length > 0 && props.fbteams && props.teamagents && props.userdetails) {
       // call action to append last messages
       if (!props.fbsessions[0].lastmessage) {
-        this.props.appendlastmessage(props.fbsessions, props.fbchats);
+        this.props.appendlastmessage(props.fbsessions, props.fbchats,props.fbteams,props.teamagents,props.userdetails);
       }
-      //this.refs.sessionid.value = props.fbsessions[0].user_id.user_id;
-      //callonce=false;
-
+    
 
     }
-
-    /*if(props.fbsessions && props.fbsessions[0].lastmessage && !this.props.fbsessions[0].lastmessage){
-     var choosen_session = props.fbsessions.filter((c) => c.status != "resolved")[0];
-     if(choosen_session)
-     {
-     this.props.selectFbCustomerChat(choosen_session.user_id.user_id,props.fbchats,choosen_session.user_id.profile_pic,choosen_session);
-     }
-     }*/
 
   }
 
@@ -209,6 +230,7 @@ class FbChat extends Component {
                                 senderid={this.props.fbsessionSelected.user_id.user_id}
                                 userdetails={this.props.userdetails}
                                 ref = "chatwindow"
+                                list_of_agents={this.get_list_of_agents_in_team(this.props.fbsessionSelected)}
                                 />
                      :
                      <p ref="no_session"> No sessions to display</p>

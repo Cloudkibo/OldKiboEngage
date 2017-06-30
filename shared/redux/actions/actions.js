@@ -3706,7 +3706,7 @@ function orderByDate(arr, dateProp, order = 0) {
     }
   });
 }
-export function appendlastmessage(fbsessions, fbchats) {
+export function appendlastmessage(fbsessions, fbchats,fbteams,teamagents,userdetails) {
 
   var newArray = []
   var newfbChat = []
@@ -3719,7 +3719,39 @@ export function appendlastmessage(fbsessions, fbchats) {
   }
 
   var sorted = orderByDate(newArray, 'timestamp');
-  var choosen_session = sorted.filter((c) => c.status != "resolved")[0];
+ 
+  var session_not_resolved = sorted.filter((c) => c.status != "resolved");
+ // we will chose the session to be selected by default in which agent is a member of team to which chat session is assigned
+  var choosen_session;
+  var choosen_session_found = false;
+  for(var z=0; z<session_not_resolved.length;z++)
+  {
+          var get_teams_assigned_to_page = fbteams.filter((c) => c.pageid._id == session_not_resolved[z].pageid._id);
+          var is_agent_in_team = false;
+          for(var i=0;i<get_teams_assigned_to_page.length;i++){
+            for(var j=0;j<teamagents.length;j++){
+              if(get_teams_assigned_to_page[i].teamid._id == teamagents[j].groupid._id && teamagents[j].agentid._id == userdetails._id ){
+                is_agent_in_team = true;
+                choosen_session = session_not_resolved[z];
+                choosen_session_found = true;
+                break;
+
+              }
+            }
+            if(is_agent_in_team == true){
+              break;
+            }
+
+          }
+          if(choosen_session_found == true){
+              break;
+            }
+  }
+  if(choosen_session_found == false){
+    choosen_session = session_not_resolved[0];
+  }
+
+
   var newfbChat = []
   var temp = fbchats.filter((c) => c.senderid == choosen_session.user_id.user_id || c.recipientid == choosen_session.user_id.user_id);
   for (var i = 0; i < temp.length; i++) {
