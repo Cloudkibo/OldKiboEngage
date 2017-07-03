@@ -126,7 +126,6 @@ function onDisconnect(io2, socket) {
       room = onlineWebClientsSession[j].companyid;
       req_id = onlineWebClientsSession[j].request_id;
       console.log(req_id);
-      onlineWebClientsSession.splice(j,1);
       
        // update abandoned sessions list if the session status is new
      
@@ -141,6 +140,8 @@ function onDisconnect(io2, socket) {
 
           socket.broadcast.to(room).emit('customer_left',customer_in_company_room);
         }
+    onlineWebClientsSession.splice(j,1);
+      
   console.log('customers online : ' + customer_in_company_room.length);
       //we will remove all the user chat from socket.io with this request id
       console.log('length of userchats before: '+ userchats.length)
