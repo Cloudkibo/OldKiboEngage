@@ -118,23 +118,45 @@ class Chat extends Component {
   }
 
   get_list_of_agents_in_team(customer){
-   /* var get_teams_assigned_to_page = this.props.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
+    var get_teams_assigned_to_group = this.props.deptteams.filter((c) => c.deptid._id == customer.departmentid);
     var agents_in_teams = [];
     console.log('length of teams');
-    console.log(get_teams_assigned_to_page.length);
+    console.log(get_teams_assigned_to_group.length);
 
-    for(var i=0;i<get_teams_assigned_to_page.length;i++){
-      for(var j=0;j<this.props.teamagents.length;j++){
-        if(get_teams_assigned_to_page[i].teamid._id == this.props.teamagents[j].groupid._id){
-          console.log('agent matched');
+    if(customer.platform == "mobile"){
+            for(var i=0;i<get_teams_assigned_to_group.length;i++){
+              for(var j=0;j<this.props.teamagents.length;j++){
+                if(get_teams_assigned_to_group[i].teamid._id == this.props.teamagents[j].groupid._id){
+                  console.log('agent matched');
 
-          agents_in_teams.push(this.props.teamagents[j].agentid);
-        
-        }
-      }
-     
+                  agents_in_teams.push(this.props.teamagents[j].agentid);
+                
+                }
+              }
+             
+            }
     }
 
+    //if the platform is web we will filter the items in online Agents list
+    else{
+            for(var i=0;i<get_teams_assigned_to_group.length;i++){
+              for(var j=0;j<this.props.teamagents.length;j++){
+                if(get_teams_assigned_to_group[i].teamid._id == this.props.teamagents[j].groupid._id){
+                  console.log('agent matched');
+                  // check if the agent is online
+                  for(var z =0;z<this.props.onlineAgents.length;z++){
+                    if(this.props.onlineAgents[z].agentId == this.props.teamagents[j].agentid._id){
+                      agents_in_teams.push(this.props.teamagents[j].agentid);
+                      break;
+                    }
+                  }
+                  
+                
+                }
+              }
+             
+            }
+    }
    // removing duplicates
   var newArray = [];
   var lookupObject = {};
@@ -146,9 +168,8 @@ class Chat extends Component {
   for (i in lookupObject) {
     newArray.push(lookupObject[i]);
   } 
-   return newArray;*/
+   return newArray;
   }
-
 
 //this code was for fetching previous chat messages when the agent is assigned a chat message
 
@@ -196,30 +217,6 @@ class Chat extends Component {
 
   }
 
-  /*
-   handleChangeDepartment(e){
-   //alert(e.target.value);
-   this.props.filterbyDept(e.target.value,this.props.customerchatold);
-   this.forceUpdate();
-
-
-   }
-   handleChangeSubgroup(e){
-   //lert(e.target.value);
-   this.props.filterbySubgroup(e.target.value,this.props.customerchatold);
-   this.forceUpdate();
-
-
-   }
-
-   handleChangeAgents(e){
-   alert(e.target.value);
-   this.props.filterbyAgent(e.target.value,this.props.customerchatold);
-   this.forceUpdate();
-
-
-   }
-   */
   handleSession(id, platform, e) {
     printlogs('log', id);
    // alert(id);
@@ -368,7 +365,8 @@ class Chat extends Component {
                                                 sessiondetails={this.props.customerchat_selected}
                                                 onlineAg={this.props.onlineAgents}
                                                 mobileuserchat={this.props.mobileuserchat}
-                                                deptagents={this.props.deptagents}/>
+                                                deptagents={this.props.deptagents}
+                                                list_of_agents_in_teams = {this.get_list_of_agents_in_team(this.props.customerchat_selected)}/>
                             ) :
                             (
                               this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected  && this.props.onlineAgents && this.props.responses && this.props.customerchat_selected.platform == 'web' &&
@@ -376,7 +374,8 @@ class Chat extends Component {
                                                 sessiondetails={this.props.customerchat_selected}
                                                 onlineAg={this.props.onlineAgents}
                                                 mobileuserchat={this.props.mobileuserchat}
-                                                deptagents={this.props.deptagents}/>
+                                                deptagents={this.props.deptagents}
+                                                list_of_agents_in_teams = {this.get_list_of_agents_in_team(this.props.customerchat_selected)}/>
                             )
 
                         }

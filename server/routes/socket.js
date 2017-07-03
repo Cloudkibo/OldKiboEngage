@@ -932,7 +932,7 @@ exports.getchat = function(data){
   if(data.fromMobile == 'no'){
      userchats.push(data);
   }
-  if(data.toagent){
+  /*if(data.toagent){
             console.log('sending point to point message to Agent');
             //find the socket id
             var socketids =[]
@@ -978,6 +978,7 @@ exports.getchat = function(data){
     }
     //broadcast message to all agents
     else{
+     */ 
         
             glob.to(data.companyid).emit('send:message',{
                                           to: data.to,
@@ -997,8 +998,8 @@ exports.getchat = function(data){
                                           status : 'sent',
                                           departmentid:data.departmentid,
                                         });
-    }
-
+  //  }
+  
 }
 
 
@@ -1064,7 +1065,7 @@ exports.getchatfromAgent = function(data){
 
 
     // this will replay agents own message on other workstations:
-    var socketids=[];
+  /*  var socketids=[];
     for(var i = 0;i < onlineAgentsCompany.length;i++)
                 {
                   if(onlineAgentsCompany[i].email == data.sendersEmail){
@@ -1099,7 +1100,7 @@ exports.getchatfromAgent = function(data){
 
                               });
                 } 
-// Logic for sending message to all group members
+// Logic for sending message to all other members
     if(data.teammembers && data.teammembers.length > 1 && data.sendersEmail){
       
       var socketids =[]
@@ -1183,7 +1184,28 @@ exports.getchatfromAgent = function(data){
 
 
     }
+*/
 
+//sending message to all other agents
+    console.log('sending message to other agents in company');
+    glob.to(data.companyid).emit('send:message',{
+                                to: data.to,
+                                socketid:data.socketid,
+                                from : data.from,
+                                visitoremail:data.visitoremail,
+                                datetime:data.datetime,
+                                msg: data.msg,
+                                time:data.time,
+                                uniqueid : data.uniqueid,
+                                type : data.type,
+                                request_id :data.request_id,
+                                messagechannel:data.messagechannel,
+                                companyid:data.companyid,
+                                is_seen:data.is_seen,
+                                departmentid:data.departmentid,
+                                fromMobile:data.fromMobile,
+
+                              });
 
 
 }

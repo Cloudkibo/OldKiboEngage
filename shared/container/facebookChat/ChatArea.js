@@ -1980,35 +1980,37 @@ export class ChatArea extends Component {
 
                 <td style={{background: '#03363D'}}>
 
+                  {
+                    this.props.userdetails.isAgent === "No" &&
+                        <div className="input-group">
+                          <select ref="agentList" className="mySelect" style={{background: '#03363D', height:30, border: 0, margin:15}}  onChange={this.handleChange.bind(this)}
+                                  aria-describedby="basic-addon3">
+                            <option value={-1} data-attrib={-1} data-type={-1} data-name={-1} data-email={-1}>Select Agent
+                            </option>
+                            {
+                              this.props.list_of_agents && this.props.list_of_agents.map((agent, i) =>
+                                <option value={agent.email} data-attrib={agent._id} data-type="agent"
+                                        data-name={agent.firstname}
+                                        data-email={agent.email}>{agent.firstname + ' ' + agent.lastname}</option>
+                              )
 
-                  <div className="input-group">
-                    <select ref="agentList" className="mySelect" style={{background: '#03363D', height:30, border: 0, margin:15}}  onChange={this.handleChange.bind(this)}
-                            aria-describedby="basic-addon3">
-                      <option value={-1} data-attrib={-1} data-type={-1} data-name={-1} data-email={-1}>Select Agent
-                      </option>
-                      {
-                        this.props.list_of_agents && this.props.list_of_agents.map((agent, i) =>
-                          <option value={agent.email} data-attrib={agent._id} data-type="agent"
-                                  data-name={agent.firstname}
-                                  data-email={agent.email}>{agent.firstname + ' ' + agent.lastname}</option>
-                        )
+                            }
 
+                          </select>
+
+
+                          <span className="input-group-btn">
+
+                                    { this.props.fbsessionSelected.agent_ids.length == 0 ?
+                                      <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToAgent}> Assign To
+                                        Agent</button> :
+                                      <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToAgent}> Re-Assign To
+                                        Agent</button>
+
+                                    }
+                                    </span>
+                        </div>
                       }
-
-                    </select>
-
-
-                    <span className="input-group-btn">
-
-                              { this.props.fbsessionSelected.agent_ids.length == 0 ?
-                                <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToAgent}> Assign To
-                                  Agent</button> :
-                                <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10, marginLeft: 5}} onClick={this.assignSessionToAgent}> Re-Assign To
-                                  Agent</button>
-
-                              }
-                              </span>
-                  </div>
                 </td>
 
 

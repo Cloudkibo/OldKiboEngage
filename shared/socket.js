@@ -162,6 +162,8 @@ socket.on('informAgent', (message) => {
 
 // todo work with zarmeen
 socket.on('send:message', (message) => {
+   console.log('send:message called');
+   console.log(message);
   if (store.getState().dashboard.customerchat_selected) {
     if ((store.getState().dashboard.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
       const usertoken = auth.getToken();
@@ -225,7 +227,6 @@ socket.on('send:message', (message) => {
   }
 
   else if (!store.getState().dashboard.customerchat_selected && message.fromMobile == 'no') {
-    // alert(' i m called');
     store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
     store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid));
 

@@ -386,7 +386,7 @@ else{
     callonce = "false";
     var messageVal = this.state.value
     const { socket,dispatch } = this.props;
-
+    var sendmessage = true;
 //self assigning session
 
      if (e.which === 13 && messageVal !="") {
@@ -397,11 +397,10 @@ else{
         }
 
        if(this.props.sessiondetails.status == "assigned" && (this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id != this.props.userdetails._id && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'agent')){
-          alert('You cannot send message to Customer. This chat session is already assigned');
-
+          sendmessage = confirm('This chat session is already assigned. Do you still wants to proceed?');
         }
 
-        else{
+        if(sendmessage == true){
         var teammembers = []
         //create array of teammembers
         if(this.props.sessiondetails.agent_ids.length > 0 && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
@@ -436,23 +435,22 @@ else{
                           'customerid' : this.props.sessiondetails.customerid,
                           'teammembers' : teammembers,
                           'sendersEmail' : this.props.userdetails.email,
+
                       }
         if(this.props.sessiondetails.platform == 'mobile'){
-          saveChat.fromMobile = 'yes'
+          saveChat.fromMobile = 'yes';
+          this.props.mobileuserchat.push(saveChat);
         }
-        this.props.savechat(saveChat);
         //socket.emit('send:message', saveChat);
 
-        // for mobile customers
-        if(this.props.sessiondetails.platform == 'mobile'){
-             this.props.mobileuserchat.push(saveChat);
-        }
-
+       
         //for web customers
         else{
+        saveChat.fromMobile = 'no';
         this.props.chatlist.push(saveChat);
         }
-
+         this.props.savechat(saveChat);
+       
 
         this.state.value ='';
         this.forceUpdate();
@@ -1029,37 +1027,35 @@ const { value, suggestions } = this.state;
 
       <div style={{flex: 1}}>
       <div className="uk-card uk-padding-remove uk-card-body uk-card-hover uk-card-default" style={{background: '#03363D'}}>
-          <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick = {this.resolveSession}> Resolved </button>
-          <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Assign To Agent</button>
+          <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick = {this.resolveSession}> Resolve </button>
+          {
+            this.props.userdetails.isAgent === "No" &&
+            <div>
+                {
+                  this.props.customerchat_selected.agent_ids.length == 0 ?
+                 <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Assign To Agent</button>:
+                 <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Re-assign To Agent</button>
+                 }
+           
             <div className="uk-align-right" style={{margin: 15}}>
                   <select className="mySelect" style={{background: '#03363D', height:30, border: 0}}  ref = "agentList" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3" >
 
                         <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
 
-                        {this.props.sessiondetails.platform == "web"?
-
-                         (this.props.onlineAg && this.props.onlineAg.map((agent,i) =>
-                            agent.agentId == this.props.userdetails._id?
-                            <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
-                            <option value={agent.email} data-attrib = {agent.agentId} data-type = "agent" data-name={agent.agentName} data-email={agent.email}>{agent.agentName}</option>
-
-                            ))
-                         :
-
-                          this.props.agents && this.props.agents.map((agent,i) =>
+                          {
+                            this.props.list_of_agents_in_teams && this.props.list_of_agents_in_teams.map((agent,i) =>
                             agent._id == this.props.userdetails._id?
                             <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
                             <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
-
-                            )
-
-                        }
-
+                           ) 
+                          }
+                          
                       </select>
 
 
                  </div>
-
+          </div>
+          }
                  <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10}} onClick = {this.moveToSubgroup}> Move </button>
 
                   <div className="uk-align-right" style={{margin: 15}}>
