@@ -29,18 +29,78 @@ import {printlogs} from './services/clientlogging';
 const socket = io('');
 let store;
 
+function showSession(customer){
+    console.log('showSession called');
+    console.log(customer);
+    var is_agent_in_team = false;
+   
+    if(store.getState().dashboard.fbteams)
+    {
+    var get_teams_assigned_to_page = store.getState().dashboard.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+  }
+   return is_agent_in_team;
+  }
+
+   function showSession_for_web(customer){
+     var is_agent_in_team = false;
+   
+    if(store.getState().dashboard.deptteams)
+    {
+    var get_teams_assigned_to_group = store.getState().dashboard.deptteams.filter((c) => c.deptid._id == customer.departmentid);
+    for(var i=0;i<get_teams_assigned_to_group.length;i++){
+      for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
+        if(get_teams_assigned_to_group[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+  }
+   return is_agent_in_team;
+  }
+
 export function initiateSocket(storeObj) {
   store = storeObj;
   socket.connect();
 }
 
-socket.on('customer_joined', (data) => {
+socket.on('customer_joined', (data,currentsession) => {
+  console.log('customer_joined');
+  console.log(showSession_for_web(currentsession));
+  console.log(currentsession);
+  if(showSession_for_web(currentsession) == true){
   notify('A customer has joined.');
+}
+  console.log(data.length);
   store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
 });
 
+
+
 socket.on('send:fbcustomer', (data) => {
-  notify('facebook customer joined');
+  // we have to send notification to Agent only if the session is in FbPage to which the team (which agent has joined) is assigned//
+  if(showSession(data) == true){
+     notify('facebook customer joined');
+ 
+  }
   if (store.getState().dashboard.fbsessions) {
     store.dispatch(updateCustomerList(data,
       store.getState().dashboard.fbsessions,
@@ -185,6 +245,9 @@ socket.on('agentjoined', () => {
 
 socket.on('returnCustomerSessionsList', (data) => {
   console.log(data);
+  console.log('customer left')
+  console.log(data.length);
+
   // todo discuss this very important with Zarmeen
   store.dispatch(getsessionsfromsocket(data, store.getState().dashboard.customerchat_selected));
   store.dispatch(getassignedsessionsfromsocket(data, store.getState().dashboard.assignedsessions));

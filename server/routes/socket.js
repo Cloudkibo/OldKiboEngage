@@ -126,7 +126,8 @@ function onDisconnect(io2, socket) {
       room = onlineWebClientsSession[j].companyid;
       req_id = onlineWebClientsSession[j].request_id;
       console.log(req_id);
-
+      onlineWebClientsSession.splice(j,1);
+      
        // update abandoned sessions list if the session status is new
      
       if(onlineWebClientsSession[j].status == 'new'){
@@ -152,8 +153,7 @@ function onDisconnect(io2, socket) {
       }
       console.log('length of userchats after: '+ userchats.length)
       console.log(userchats);
-      onlineWebClientsSession.splice(j,1);
-      console.log(onlineWebClientsSession);
+      console.log(onlineWebClientsSession.length);
       session_remove = true
       break;
     }
@@ -623,7 +623,7 @@ socket.on('getOnlineAgentList',function() {
       }
 
       console.log('Customer joined room');
-      socket.broadcast.to(room.room).emit('customer_joined',customer_in_company_room);
+      socket.broadcast.to(room.room).emit('customer_joined',customer_in_company_room,room);
 
 
     }

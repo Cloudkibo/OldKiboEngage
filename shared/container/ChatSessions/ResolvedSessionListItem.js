@@ -37,7 +37,7 @@ var ch=[]
 
 }*/
   return (
-
+    props.session.customerid &&
       <tr className = "odd">
 
       <td>{props.session.customerid.name?props.session.customerid.name : props.session.customerid.customerID} </td>

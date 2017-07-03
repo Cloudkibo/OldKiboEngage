@@ -155,7 +155,9 @@ return res;
             
                     <div className="uk-animation-fast uk-animation-shake">
                         <span className="uk-badge uk-animation-shake" style={{fontSize: 10, margin:5}}>{props.customer.status}</span>
-                        
+                       <br/>
+                        <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
+                     
                     </div>
             
 
@@ -192,6 +194,9 @@ return res;
             </div>
                     <div className="uk-animation-fast uk-animation-shake">
                         <span className="uk-badge uk-animation-shake" style={{fontSize: 10, margin:5}}>{props.customer.status}</span>
+                         <br/>
+                         <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
+                        
                     </div>
             
              {(unreadCount == 0?

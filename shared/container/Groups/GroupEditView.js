@@ -51,17 +51,17 @@ class GroupEditView extends Component {
     if (nameRef.value && descRef.value && this.props.customers ) {
       //alert(nameRef.value);
       var mobilecustomers = this.props.customers.filter((c) => c.isMobileClient == "true")
-      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:this.props.group._id,token:usertoken,deptagents: this.props.newagents},mobilecustomers);
+      this.props.editGroup({name :nameRef.value,desc:descRef.value,id:this.props.group._id,token:usertoken,teamagents: this.props.newteams},mobilecustomers);
 
     }
   }
 
-  appendAgent(id,e){
+  appendTeam(id,e){
    // alert(id);
     var flag = 0;
-    for(var j = 0;j<this.props.newagents.length;j++)
+    for(var j = 0;j<this.props.newteams.length;j++)
     {
-      if(this.props.newagents[j]._id == id)
+      if(this.props.newteams[j]._id == id)
       {
           flag = 1;
           break;
@@ -69,23 +69,23 @@ class GroupEditView extends Component {
     }
     if(flag == 0)
     {
-        this.props.newagents.push({"_id" :id});
+        this.props.newteams.push({"_id" :id});
     }
     else{
-      alert('Agent Already added in the group');
+      alert('Team Already added in the group');
     }
      e.preventDefault();
      this.forceUpdate();
   }
 
-   removeAgent(id,e){
+   removeTeam(id,e){
     //alert(id);
 
-    for(var j = 0;j<this.props.newagents.length;j++)
+    for(var j = 0;j<this.props.newteams.length;j++)
     {
-      if(this.props.newagents[j]._id == id)
+      if(this.props.newteams[j]._id == id)
       {
-          this.props.newagents.splice(j,1);
+          this.props.newteams.splice(j,1);
           break;
       }
     }
@@ -145,45 +145,48 @@ class GroupEditView extends Component {
                 </div>
 
                  <div className="form-group">
-                  <label className="control-label col-md-3"> Fellow Agents </label>
+                  <label className="control-label col-md-3"> Fellow Teams </label>
                    <div className="col-md-9">
                    <div className="select2-container select2-container-multi">
-
-                   {
-                    this.props.newagents &&
-                          this.props.newagents.map((agent, i)=> (
-                          this.props.agents.filter((ag) => ag._id == agent._id).map((ag,j) =>
-                          (
-                          <p key ={i}  >{ag.firstname + ' ' + ag.lastname} <i style={{ cursor: 'pointer'}} onClick = {this.removeAgent.bind(this,ag._id)} className="fa fa-times-circle" /></p>
-                          ))
-
-
-                   ))
+   
+                    {
+                     this.props.newteams &&
+                           this.props.newteams.map((team, i)=> (
+                           this.props.teamdetails.filter((ag) => ag._id == team._id).map((ag,j) =>
+                           (
+                           <li key ={i}>{ag.groupname}<i style={{ cursor: 'pointer'}} onClick = {this.removeTeam.bind(this,ag._id)} className="fa fa-times-circle" /></li>
+                           ))
 
 
-                   }
+                    ))
+
+                    }
 
                    </div>
                    </div>
                 </div>
 
 
-                <div className="form-group">
-                  <label className="control-label col-md-3"> All Agents </label>
-                   <div className="col-md-9">
-                   <div className="select2-container select2-container-multi">
-                   {
-                    this.props.agents &&
-                         this.props.agents.map((agent, i) =>
-                        (
-                          <p  key ={i} className="select2-search-choice">
-                            <div ><i style={{ cursor: 'pointer'}} onClick = {this.appendAgent.bind(this,agent._id)} className="fa fa-plus-circle" /> {agent.firstname + ' ' + agent.lastname} </div></p>
-                        ))
-                  }
+               <div className="form-group">
+               <label className="control-label col-md-3"> All Teams </label>
+                <div className="col-md-9">
+                <div className="select2-container select2-container-multi">
+                <ul className="select2-choices">
+                {
+                 this.props.teamdetails &&
+                      this.props.teamdetails.map((team, i) =>
+                     (
+                       <li  key ={i} className="select2-search-choice">
+                         <div><i style={{ cursor: 'pointer'}} onClick = {this.appendTeam.bind(this,team._id)} className="fa fa-plus-circle" />{team.groupname} </div></li>
+                     ))
+               }
 
-                   </div>
-                   </div>
+
+                </ul>
                 </div>
+                </div>
+             </div>
+             <br/>
 
               <div className="form-actions fluid" style={{background: 'white'}}>
               <div className="row">
@@ -243,6 +246,8 @@ function mapStateToProps(state) {
     channels :(state.dashboard.channels),
     customers : (state.dashboard.customers),
     userdetails:(state.dashboard.userdetails),
+    teamdetails:(state.dashboard.teamdetails),
+    newteams:(state.dashboard.newteams),
   };
 }
 

@@ -23,7 +23,8 @@ import {
   setsocketid,
   filterChat,
   selectCustomerChat,
-  updatechatsessionstatus
+  updatechatsessionstatus,
+  getDeptTeams
 }  from '../../redux/actions/actions';
 
 import {initiateChatComponent} from '../../socket';
@@ -74,7 +75,9 @@ class Chat extends Component {
       // get groups list and agents
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
+      props.getDeptTeams(usertoken);
 
+      
 
     }
 
@@ -82,8 +85,68 @@ class Chat extends Component {
     this.state = {
       subgroup: 'all'
     };
+    this.showSession = this.showSession.bind(this);
+    this.get_list_of_agents_in_team=this.get_list_of_agents_in_team.bind(this);
+    this.getchannelname = this.getchannelname.bind(this);
 
+  }
 
+  getchannelname(subgroup){
+    var deptname = 'deleted'
+    if(this.props.groupdetails.filter((d) => d._id == subgroup.groupid).length > 0){
+      deptname = this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname; 
+    }
+    return deptname+ ' : ' + subgroup.msg_channel_name;
+  }
+   showSession(customer){
+    var get_teams_assigned_to_group = this.props.deptteams.filter((c) => c.deptid._id == customer.departmentid);
+    var is_agent_in_team = false;
+    for(var i=0;i<get_teams_assigned_to_group.length;i++){
+      for(var j=0;j<this.props.teamagents.length;j++){
+        if(get_teams_assigned_to_group[i].teamid._id == this.props.teamagents[j].groupid._id && this.props.teamagents[j].agentid._id == this.props.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+   return is_agent_in_team;
+  }
+
+  get_list_of_agents_in_team(customer){
+   /* var get_teams_assigned_to_page = this.props.fbteams.filter((c) => c.pageid._id == customer.pageid._id);
+    var agents_in_teams = [];
+    console.log('length of teams');
+    console.log(get_teams_assigned_to_page.length);
+
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<this.props.teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == this.props.teamagents[j].groupid._id){
+          console.log('agent matched');
+
+          agents_in_teams.push(this.props.teamagents[j].agentid);
+        
+        }
+      }
+     
+    }
+
+   // removing duplicates
+  var newArray = [];
+  var lookupObject = {};
+
+  for (var i in agents_in_teams) {
+    lookupObject[agents_in_teams[i]['_id']] = agents_in_teams[i];
+  }
+
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  } 
+   return newArray;*/
   }
 
 
@@ -242,7 +305,7 @@ class Chat extends Component {
                                         this.state.subgroup == 'all' ?
                                           this.props.subgroups && this.props.subgroups.map((subgroup, i) =>
                                             <option
-                                              value={subgroup._id}>{this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname + ' : ' + subgroup.msg_channel_name}</option>
+                                              value={subgroup._id}>{this.getchannelname(subgroup)}</option>
                                           ) :
                                           this.props.filterlist && this.props.filterlist.map((subgroup, i) =>
                                             <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
@@ -266,7 +329,7 @@ class Chat extends Component {
                           }
                           {this.props.userchats && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 &&
                           this.props.customerchatfiltered.map((customer, i) => (
-
+                            this.showSession(customer) == true &&
                             (this.props.new_message_arrived_rid && this.props.userchats?
 
                                 <ChatListItem
@@ -362,6 +425,7 @@ function mapStateToProps(state) {
     teamagents: (state.dashboard.teamagents),
     groupdetails: (state.dashboard.groupdetails),
     filterlist: (state.widget.filterlist),
+    deptteams:(state.dashboard.deptteams),
   };
 }
 
@@ -372,6 +436,7 @@ export default connect(mapStateToProps, {
   removeDuplicatesWebChat,
   updatechatstatus,
   getmobilesessions,
+  getDeptTeams,
   getteams,
   getTeamAgents,
   previousChat,

@@ -519,7 +519,7 @@ export function editGroup(group, customers) {
           deptname: group.name,
           deptdescription: group.desc,
         },
-        deptagents: group.deptagents,
+        teamagents: group.teamagents,
         customers: customers
 
       })
@@ -661,6 +661,14 @@ export function showDeptTeams(teams) {
   };
 }
 
+export function showfbTeams(teams) {
+  printlogs('log', teams);
+  return {
+    type: ActionTypes.ADD_FBTEAMS,
+    teams,
+
+  };
+}
 
 export function showTeamAgents(agents) {
   printlogs('log', agents);
@@ -730,6 +738,19 @@ export function getDeptTeams(token) {
   };
 }
 
+/****** get user details ***/
+export function getfbTeams(token) {
+  printlogs('log', token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/fbteams`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': token,
+        'Pragma': 'no-cache'
+      }),
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(showfbTeams(res)));
+  };
+}
 
 /****** get user details ***/
 
@@ -952,7 +973,7 @@ export function jointeam(team, userid, usertoken) {
       return fetch(`${baseURL}/api/joinTeam`, {
         method: 'post',
         body: JSON.stringify({
-          groupid: team.get('_id'),
+          groupid: team._id,
           agentid: userid,
 
         }),
@@ -969,7 +990,7 @@ export function jointeam(team, userid, usertoken) {
             alert("Failed to join the team");
           }
           printlogs('log', "Team Joining", res.message);
-          browserHistory.push('/dashboard');
+          browserHistory.push('/teams');
 
         }
       );
@@ -1680,7 +1701,9 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   var newArrayC = []
   for (var i = 0; i < fbsessions.length; i++) {
     var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
+    
     var lastmessage = selectedchat[selectedchat.length - 1];
+
     printlogs('log', 'lastmessage');
     printlogs('log', lastmessage);
     var newfbsession = fbsessions[i];
@@ -2241,11 +2264,11 @@ export function emailCustomer(customer) {
       printlogs('log', res.statusCode);
       if (res.statusCode == 200) {
         alert('Email sent successfully.');
-        browserHistory.push('/customers');
+        browserHistory.push('/summarychatsessions');
       }
       else {
         alert('Email not sent to customer.There might be some errors.');
-        browserHistory.push('/customers');
+        browserHistory.push('/summarychatsessions');
       }
     });
   };
@@ -2791,13 +2814,14 @@ export function changepassword(user, token) {
 
 }
 
-export function createPage(fbpage, token) {
+export function createPage(fbpage, token,teamagents) {
   printlogs('log', fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/createfbPage`, {
       method: 'post',
       body: JSON.stringify({
         fbpage: fbpage,
+        teamagents:teamagents,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -3560,7 +3584,7 @@ export function getfbpages(token) {
 
 
 export function addSelectedPage(fbpage) {
-  alert(fbpage.pageid);
+ // alert(fbpage.pageid);
   return {
     type: ActionTypes.ADD_SELECTED_PAGE,
     fbpage,
@@ -3579,13 +3603,14 @@ export function getfbpage(usertoken, pageid) {
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(addSelectedPage(res)));
   };
 }
-export function editPage(fbpage, token) {
+export function editPage(fbpage, teamagents,token) {
   printlogs('log', fbpage);
   return (dispatch) => {
     fetch(`${baseURL}/api/editfbPage`, {
       method: 'post',
       body: JSON.stringify({
         fbpage: fbpage,
+        teamagents:teamagents,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -3681,7 +3706,7 @@ function orderByDate(arr, dateProp, order = 0) {
     }
   });
 }
-export function appendlastmessage(fbsessions, fbchats) {
+export function appendlastmessage(fbsessions, fbchats,fbteams,teamagents,userdetails) {
 
   var newArray = []
   var newfbChat = []
@@ -3694,7 +3719,39 @@ export function appendlastmessage(fbsessions, fbchats) {
   }
 
   var sorted = orderByDate(newArray, 'timestamp');
-  var choosen_session = sorted.filter((c) => c.status != "resolved")[0];
+ 
+  var session_not_resolved = sorted.filter((c) => c.status != "resolved");
+ // we will chose the session to be selected by default in which agent is a member of team to which chat session is assigned
+  var choosen_session;
+  var choosen_session_found = false;
+  for(var z=0; z<session_not_resolved.length;z++)
+  {
+          var get_teams_assigned_to_page = fbteams.filter((c) => c.pageid._id == session_not_resolved[z].pageid._id);
+          var is_agent_in_team = false;
+          for(var i=0;i<get_teams_assigned_to_page.length;i++){
+            for(var j=0;j<teamagents.length;j++){
+              if(get_teams_assigned_to_page[i].teamid._id == teamagents[j].groupid._id && teamagents[j].agentid._id == userdetails._id ){
+                is_agent_in_team = true;
+                choosen_session = session_not_resolved[z];
+                choosen_session_found = true;
+                break;
+
+              }
+            }
+            if(is_agent_in_team == true){
+              break;
+            }
+
+          }
+          if(choosen_session_found == true){
+              break;
+            }
+  }
+  if(choosen_session_found == false){
+    choosen_session = session_not_resolved[0];
+  }
+
+
   var newfbChat = []
   var temp = fbchats.filter((c) => c.senderid == choosen_session.user_id.user_id || c.recipientid == choosen_session.user_id.user_id);
   for (var i = 0; i < temp.length; i++) {

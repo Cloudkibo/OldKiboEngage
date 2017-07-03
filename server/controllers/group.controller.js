@@ -242,7 +242,7 @@ export function editgroup(req, res) {
                  },
       json: {
            'dept' : req.body.dept,
-           'deptagents': req.body.deptagents,
+           'teamagents': req.body.teamagents,
           }
       
      
