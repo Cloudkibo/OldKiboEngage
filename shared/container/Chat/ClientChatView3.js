@@ -104,7 +104,7 @@ class ClientChatView3 extends Component {
 
       this.refs.msg.value = '';
       this.props.chatbotChatAdd(saveChat);
-      this.props.sendchatToBot2(saveChat);
+      this.props.sendchatToBot2(saveChat, this.refs.username.value, this.props.chatbotsessionid);
       this.forceUpdate();
     }
 
@@ -130,7 +130,7 @@ class ClientChatView3 extends Component {
 
     this.refs.msg.value = '';
     this.props.chatbotChatAdd(saveChat);
-    this.props.sendchatToBot2(saveChat);
+    this.props.sendchatToBot2(saveChat, this.refs.username.value, this.props.chatbotsessionid);
     this.forceUpdate();
 
   }

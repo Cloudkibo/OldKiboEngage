@@ -9,6 +9,7 @@ class Intro extends Component {
     super(props, context);
     this.handleClick = this.handleClick.bind(this);
     this.handleBotClick = this.handleBotClick.bind(this);
+    this.handleBotClick2 = this.handleBotClick2.bind(this);
 
   }
 
@@ -22,6 +23,12 @@ class Intro extends Component {
     //alert('i am clicked');
     e.preventDefault();
     loadKiboEngageBotWidget('cd89f71715f2014725163952')
+  }
+
+  handleBotClick2(e) {
+    //alert('i am clicked');
+    e.preventDefault();
+    loadKiboEngageBotWidget2('cd89f71715f2014725163952')
   }
 
   render() {
@@ -39,6 +46,9 @@ class Intro extends Component {
                   </li>
                   <li>
                     <button onClick={this.handleBotClick}> Chat Bot Help</button>
+                  </li>
+                  <li>
+                    <button onClick={this.handleBotClick2}> Chat Bot Help 2</button>
                   </li>
                 </ul>
               </div>

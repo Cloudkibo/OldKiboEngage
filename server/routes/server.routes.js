@@ -13,6 +13,8 @@ var multiparty = require('connect-multiparty');
 var multipartyMiddleware = multiparty();
 var auth = require('../auth.service');
 
+import request from 'request';
+
 const router = new Router();
 
 /** chat group routes **/
@@ -138,6 +140,43 @@ router.post('/uploadchatfileAgent', multipartyMiddleware, ChatController.uploadc
 router.post('/uploadchatfilefb',multipartyMiddleware, FbChatController.uploadchatfilefb);
 router.post('/updatesettings',multipartyMiddleware, UserController.updatesettings);
 router.route('/fetchurlmeta').post(FbChatController.fetchurlmeta);
+
+router.post('/mixbotquery', function createNews(req, res) {
+  console.log('mix bot query');
+  var token = req.headers.authorization;
+  console.log(req.body);
+  //console.log(req.body.news);
+  var options = {
+    url: 'http://104.236.118.212:3000/query',
+    rejectUnauthorized : false,
+    headers :  {
+      'Authorization': `Bearer ${token}`,
+    },
+    json: req.body,
+  };
+
+  function callback(error, response, body) {
+    console.log(error);
+    console.log(response.statusCode);
+    console.log(body);
+
+    var info = body;
+    if(!error && response.statusCode == 200)
+    {
+      return res.status(response.statusCode).json({statusCode : response.statusCode, message: info.body});
+    }
+    else
+    {
+
+      return res.status(response.statusCode).json({statusCode : response.statusCode, message: info.body});
+
+    }
+
+
+  }
+  request.post(options, callback);
+
+});
 
 router.post('/chatfromCloudkibo', auth.isAuthorizedWebHookTrigger(), ChatController.createforCloudkibo);
 
