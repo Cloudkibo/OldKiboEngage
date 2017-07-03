@@ -1,6 +1,10 @@
+/**
+ * Created by sojharo on 28/06/2017.
+ */
+
 import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
-import {chatbotsession, sendchatToBot, chatbotChatAdd}  from '../../redux/actions/actions'
+import {chatbotsession, sendchatToBot2, chatbotChatAdd}  from '../../redux/actions/actions'
 import * as ReactDOM from 'react-dom';
 import {printlogs} from '../../services/clientlogging';
 //import {ApiAiClient, ApiAiStreamClient} from "api-ai-javascript";
@@ -9,7 +13,7 @@ var handleDate = function (d) {
   var c = new Date(d);
   return c.getHours() + ':' + c.getMinutes() + ' ' + c.toDateString();
 };
-class ClientChatView2 extends Component {
+class ClientChatView3 extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -59,7 +63,7 @@ class ClientChatView2 extends Component {
       };
 
       this.refs.msg.value = '';
-      this.props.sendchatToBot(saveChat, this.refs.username.value);
+      this.props.sendchatToBot2(saveChat, this.refs.username.value, props.chatbotsessionid);
     }
   }
 
@@ -100,7 +104,7 @@ class ClientChatView2 extends Component {
 
       this.refs.msg.value = '';
       this.props.chatbotChatAdd(saveChat);
-      this.props.sendchatToBot(saveChat);
+      this.props.sendchatToBot2(saveChat, this.refs.username.value, this.props.chatbotsessionid);
       this.forceUpdate();
     }
 
@@ -126,7 +130,7 @@ class ClientChatView2 extends Component {
 
     this.refs.msg.value = '';
     this.props.chatbotChatAdd(saveChat);
-    this.props.sendchatToBot(saveChat);
+    this.props.sendchatToBot2(saveChat, this.refs.username.value, this.props.chatbotsessionid);
     this.forceUpdate();
 
   }
@@ -234,4 +238,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {chatbotsession, sendchatToBot, chatbotChatAdd})(ClientChatView2);
+export default connect(mapStateToProps, {chatbotsession, sendchatToBot2, chatbotChatAdd})(ClientChatView3);

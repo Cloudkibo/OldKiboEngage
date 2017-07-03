@@ -1701,7 +1701,7 @@ export function add_socket_fb_message(data, fbchats, id, fbsessions, order) {
   var newArrayC = []
   for (var i = 0; i < fbsessions.length; i++) {
     var selectedchat = fbchats.filter((c) => c.senderid == fbsessions[i].user_id.user_id || c.recipientid == fbsessions[i].user_id.user_id);
-    
+
     var lastmessage = selectedchat[selectedchat.length - 1];
 
     printlogs('log', 'lastmessage');
@@ -3719,7 +3719,7 @@ export function appendlastmessage(fbsessions, fbchats,fbteams,teamagents,userdet
   }
 
   var sorted = orderByDate(newArray, 'timestamp');
- 
+
   var session_not_resolved = sorted.filter((c) => c.status != "resolved");
  // we will chose the session to be selected by default in which agent is a member of team to which chat session is assigned
   var choosen_session;
@@ -4118,6 +4118,23 @@ export function chatbotResponse(res, username) {
   }
 }
 
+export function chatbotResponse2(res, username, session) {
+  console.log('mixed bot response '+ JSON.stringify(res));
+  printlogs('log', res);
+  var message = {
+    lang: 'en',
+    sessionId: session,
+    from: 'Kitt',
+    msg: res.message,
+    timestamp: Date.now(),
+
+
+  }
+  return {
+    message: message,
+    type: ActionTypes.BOT_RESPONSE,
+  }
+}
 
 export function testingPractice(data) {
   return data;
@@ -4142,6 +4159,30 @@ export function sendchatToBot(message, username = '') {
 
 
     }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse(res, username)));
+  };
+
+
+}
+
+export function sendchatToBot2(message, username = '', sessionid = '') {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/mixbotquery`, {
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify({
+        query: message.query[0],
+        lang: message.lang,
+        sessionId: message.sessionId,
+        from: message.from,
+        msg: message.msg,
+        timestamp: message.timestamp,
+
+      })
+
+
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(chatbotResponse2(res, username, sessionid)));
   };
 
 

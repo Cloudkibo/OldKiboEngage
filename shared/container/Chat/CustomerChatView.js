@@ -264,7 +264,7 @@ else{
   }
 
 
-  
+
   componentDidMount() {
     const { socket,dispatch } = this.props;
    // this.props.route.socket.on('send:message',this.getSocketmessage);
@@ -275,7 +275,7 @@ else{
 
 
     // call for first time when chat loaded from server
-    if(this.props.mobileuserchat && this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || this.props.userdetails._id in this.props.sessiondetails.agent_ids)){
+    if (this.props.mobileuserchat && this.props.mobileuserchat.length > 0 && this.props.sessiondetails.platform == "mobile" && (this.props.sessiondetails.agent_ids.length == 0 || this.props.userdetails._id in this.props.sessiondetails.agent_ids)){
      //  alert('update message status to seen' + this.props.mobileuserchat.length);
 
     var userassigned = false;
@@ -1206,7 +1206,7 @@ const { value, suggestions } = this.state;
                                       <div className="chat-body clearfix">
                                         <div>
                                             <p  className="pull-right text-muted">{chat.from}</p>
-                                       
+
                                         </div>
                                        {
                                         (chat.type == 'file')?
@@ -1227,7 +1227,7 @@ const { value, suggestions } = this.state;
 
                                    :
                                     <li className="left userChatBox" style={{border: 0}}>
-                                  
+
                                       <div>
                                       {
                                         /*
@@ -1236,10 +1236,10 @@ const { value, suggestions } = this.state;
                                       </span>
                                         */
                                       }
-                                      
+
                                         <div style={{marginBottom: -10}}>
                                             <p className="text-muted">{chat.customername?chat.customername:chat.from}</p>
-                                            
+
                                         </div>
                                         {
                                         (chat.type == 'file')?
@@ -1270,7 +1270,7 @@ const { value, suggestions } = this.state;
                                       <div className="chat-body clearfix">
                                         <div>
                                             <p className="pull-right text-muted">{chat.from}</p>
-                                            
+
                                         </div>
                                         {
                                         (chat.type == 'file')?
@@ -1295,13 +1295,13 @@ const { value, suggestions } = this.state;
                                         <span className="chat-img pull-left userChat">
                                       {chat.from.substr(0,1)}
                                       </span>
- 
-                                       */ 
+
+                                       */
                                      }
                                         <div>
                                         <div style={{marginBottom: -10}}>
                                             <p className="text-muted">{chat.from}</p>
-                                            
+
                                         </div>
                                         {
                                         (chat.type == 'file')?
@@ -1348,12 +1348,12 @@ const { value, suggestions } = this.state;
 
                   </div>
                 </div>
-                
+
 
                 </div>
                <br/>
 
-      
+
 
             <div className="table-responsive">
                <table className="table table-colored">

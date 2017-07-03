@@ -23,6 +23,7 @@ import InvitedAgents from './container/Agents/InvitedAgents';
 import Chat from './container/Chat/Chat';
 import ClientChat from './container/Chat/ClientChat';
 import ClientChat2 from './container/Chat/ClientChat2';
+import ClientChat3 from './container/Chat/ClientChat3';
 import CompanySettings from './container/CompanySettings/CompanySettings';
 import GroupDetailView from './container/Groups/GroupDetailView';
 import GroupEditView from './container/Groups/GroupEditView';
@@ -159,6 +160,7 @@ const routes = (
      <Route path="/FBcustomers" component={FacebookCustomers} onEnter={requireAuth} />
      <Route path="/livehelp/:id/:pathname(/:requestid)" component={AddCustomer} socket={socket}/>
      <Route path="/livehelp2/:id" component={ClientChat2} />
+     <Route path="/livehelp3/:id" component={ClientChat3} />
      <Route path="/sendemail/:id" component={EmailCustomer}  onEnter={requireAuth}/>
      <Route path="/mygroups" component={MyGroups}  onEnter={requireAuth}/>
      <Route path="/myprofile" component={MyProfile}  onEnter={requireAuth}/>
