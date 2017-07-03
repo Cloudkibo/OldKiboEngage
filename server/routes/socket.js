@@ -1040,7 +1040,6 @@ exports.getchatfromAgent = function(data){
     //this will send agents' message to customer
     if(data.socketid){
             console.log('sending point to point message');
-
             glob.to(data.socketid).emit('send:message',{
             to: data.to,
             socketid:data.socketid,
