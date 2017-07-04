@@ -21,6 +21,7 @@ import {
   setjoinedState,
   getcompanysettings,
   getfbTeams,
+  getDeptTeams
 } from '../redux/actions/actions'
 import {getresponses} from '../redux/actions/actions';
 import AuthorizedHeader from '../components/Header/AuthorizedHeader';
@@ -59,7 +60,7 @@ class Dashboard extends Component {
 
       this.props.getuser(usertoken);
       this.props.getAgents(usertoken);
-      this.props.getDeptAgents(usertoken);
+      this.props.getDeptTeams(usertoken);
       this.props.getusergroups(usertoken);
       this.props.getsubgroups(usertoken);
       this.props.getresponses(usertoken);
@@ -307,6 +308,8 @@ function mapStateToProps(state) {
     teamagents: (state.dashboard.teamagents),
     teamdetails: (state.dashboard.teamdetails),
     fbteams:(state.dashboard.fbteams),
+    deptteams:(state.dashboard.deptteams),
+    
   }
 }
 
@@ -336,4 +339,5 @@ export default connect(mapStateToProps, {
   getassignedsessionsfromsocket,
   getresolvedsessionsfromsocket,
   getfbTeams,
+  getDeptTeams,
 })(ReactTimeout(Dashboard));
