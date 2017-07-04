@@ -960,7 +960,7 @@ export function updatesettings (req,res) {
 
 
           function callback(error, response, body) {
-                            //console.log(body);
+                            console.log(body);
                             if (!error && response.statusCode == 200) {
 
                               console.log('api calling succeed')
