@@ -600,18 +600,6 @@ else{
        return;
      }
 
-     if(this.props.deptagents.filter((ag) => ag.agentid == this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib && ag.deptid == this.props.sessiondetails.departmentid).length !== 0){
-        var teammembers = []
-        //create array of teammembers
-        if(this.props.sessiondetails.agent_ids.length > 0 && this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].type == 'group')
-        {
-
-           for(var i=0;i<this.props.teamagents.length;i++){
-              if(this.props.teamagents[i].groupid._id == this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length-1].id){
-                teammembers.push(this.props.teamagents[i].agentid.email);
-              }
-           }
-        }
        // local changes
        this.props.sessiondetails.status = "assigned";
        this.props.sessiondetails.agent_ids.push({'id' : this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib,'type' : 'agent'});
@@ -646,8 +634,8 @@ else{
                            'assignedagentname': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.name],
                            'agentid' : [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.attrib],
                            'assignedagentemail': [this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email],
-                           'teammembers' : teammembers,
-         }
+                           'teammembers' : [],
+                        }
          //pushing agent email to array for sending push notifications
 
          agentemail.push(this.refs.agentList.options[this.refs.agentList.selectedIndex].dataset.email);
@@ -746,10 +734,7 @@ else{
     }
 
     this.forceUpdate();
-    }
-  }
-  else {
-    alert("Selected agent is not in the Group. You cannot assign session to this agent.")
+    
   }
 
 }
