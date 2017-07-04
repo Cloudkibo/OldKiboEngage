@@ -103,6 +103,13 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: '',
 
       };
+       case ActionTypes.UPDATE_MOBILEUSERCHATS_LIST:  
+       return {
+       ...state, errorMessageProfile: '',
+        mobileuserchat: action.mobileuserchat,
+        errorMessage: '',
+
+      };
     case ActionTypes.ADD_INVITED_AGENTS:
       return {
         ...state, errorMessageProfile: '',

@@ -4344,3 +4344,15 @@ export function update_userchats_list(message,oldchatlist){
     type: ActionTypes.UPDATE_USERCHATS_LIST,
   }
 }
+
+export function update_mobileuserchats_list(message,oldchatlist){
+  var new_array= [...oldchatlist,message];
+  console.log('update-userchats-list');
+  //console.log(oldchatlist);
+
+  return {
+
+    mobileuserchat: new_array ,
+    type: ActionTypes.UPDATE_MOBILEUSERCHATS_LIST,
+  }
+}

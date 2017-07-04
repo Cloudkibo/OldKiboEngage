@@ -20,6 +20,7 @@ import {
   updateChatList,
   removeDuplicates,
   removeDuplicatesWebChat,
+  update_mobileuserchats_list
 
 } from './redux/actions/actions';
 import {notify} from './services/notify';
@@ -166,6 +167,7 @@ socket.on('send:message', (message) => {
    console.log(message);
   if (store.getState().dashboard.customerchat_selected) {
     if ((store.getState().dashboard.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
+      printlogs('log','mobile userchat is not selected, message received');
       const usertoken = auth.getToken();
       /*** call api to update status field of chat message received from mobile to 'delivered'
        ***/
@@ -177,6 +179,27 @@ socket.on('send:message', (message) => {
 
         store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
         store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid)); //actions
+        message.status = 'delivered';
+
+      }
+    }
+
+
+    else if ((store.getState().dashboard.customerchat_selected.request_id == message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
+      printlogs('log','mobile userchat is  selected, message received');
+      const usertoken = auth.getToken();
+      /*** call api to update status field of chat message received from mobile to 'delivered'
+       ***/
+      var messages = [];
+      messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
+      if (messages.length > 0) {
+        //   alert('New message arrived chat!');
+        // highlight chat box
+
+        store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
+        store.dispatch(update_mobileuserchats_list(message,store.getState().dashboard.mobileuserchat));
+      
+     //   store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid)); //actions
         message.status = 'delivered';
 
       }
@@ -204,6 +227,8 @@ socket.on('send:message', (message) => {
       //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
       //this.forceUpdate();
     }
+
+
   }
   else if (!store.getState().dashboard.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent') {
     const usertoken = auth.getToken();
