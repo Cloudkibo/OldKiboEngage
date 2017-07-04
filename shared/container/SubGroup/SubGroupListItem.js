@@ -29,15 +29,15 @@ function SubgroupListItem(props) {
       <td>{handleDate(props.subgroup.creationdate)}</td>
 
 
-      { props.userdetails.isAgent == "Yes" ?
+      { props.userdetails.isAgent == "Yes" || props.subgroup.msg_channel_name == "General" ?
         <br/> :
         <td>
           <ReactTooltip />
           <Link to={`/editsubgroup/${props.subgroup._id}`}>
             <img data-tip="Edit" src="/img/edit.svg" style={{maxWidth: 25, maxHeight: 25}}/>
           </Link>
-          {props.subgroup.msg_channel_name !== "General" &&
-          <img data-tip="Delete" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={props.onDelete}/>}
+         
+          <img data-tip="Delete" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={props.onDelete}/>
         </td>
       }
 
