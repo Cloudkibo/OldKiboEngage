@@ -177,9 +177,9 @@ socket.on('send:message', (message) => {
         //   alert('New message arrived chat!');
         // highlight chat box
 
-        store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
+       // store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
         store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid)); //actions
-        message.status = 'delivered';
+       // message.status = 'delivered';
 
       }
     }
@@ -196,7 +196,7 @@ socket.on('send:message', (message) => {
         //   alert('New message arrived chat!');
         // highlight chat box
 
-        store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
+       // store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
         store.dispatch(update_mobileuserchats_list(message,store.getState().dashboard.mobileuserchat));
       
      //   store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid)); //actions
