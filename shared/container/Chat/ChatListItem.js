@@ -145,20 +145,15 @@ return res;
          <div className="list-group" onClick={props.onClickSession} style={changec}>
          {
           (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
-
-           <div className="list-group-item uk-card-hover uk-animation-toggle" style={{...changecc, border: 0, background: '#1CAF9A', color: 'white'}}>
-
-            <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15, color: 'white'}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</p>
+           <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0}}>
+            <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15, color: 'white'}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}
+              <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
+            </p>
              <div className="uk-align-right">
             <p className="uk-text-meta " style={{color: 'white'}} ><span className='badge' style={rightStyle}>{unreadCount}</span> {difference} </p>
+           <span style={{fontSize: 10, margin:5}}>{props.customer.status}</span>
             </div>
             
-                    <div className="uk-animation-fast uk-animation-shake">
-                        <span className="uk-badge uk-animation-shake" style={{fontSize: 10, margin:5}}>{props.customer.status}</span>
-                       <br/>
-                        <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
-                     
-                    </div>
             
 
            
@@ -172,62 +167,40 @@ return res;
             <br/>
             <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
          */}
-           <br/>
            {
             
             (agentname.length > 0?
-            <span  style={rightAgent}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
+            <span  style={{...rightAgent, marginTop: -25, marginBottom:0}}><i className="fa fa-user"/>{agentname[0]}</span>:<span/>
            )}
             </div>
-            <br/>
-
 
           </div> :
 
 
-           <div className="list-group-item uk-card-hover uk-animation-toggle" style={{...changecc, background: 'white', border: 0}}>
-            <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}</p>
+           <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0}}>
+            <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID} 
+            <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>{ag[0].deptname +'-' + ch[0].msg_channel_name}</p>
+            <span style={{fontSize: 10, margin:5}}>{props.customer.status} </span>
+            </p>
 
 
             <div className="uk-align-right">
             <p className="uk-text-meta " >{difference}</p>
+            
             </div>
-                    <div className="uk-animation-fast uk-animation-shake">
-                        <span className="uk-badge uk-animation-shake" style={{fontSize: 10, margin:5}}>{props.customer.status}</span>
-                         <br/>
-                         <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
-                        
-                    </div>
             
              {(unreadCount == 0?
              <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
              )}
             <div style={divMargin}>
-            {/*
-              ag.length > 0 ? <span style={leftStyle}>{ag[0].deptname}</span> : <span style={leftStyle}>Customer</span>
-            */
-            }
-           {/*<span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span><br/>*/} 
-            
-            {/*
-             ch.length > 0 ? <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span> : <span  style={rightAgent}><i className="fa fa-headphones"/>Message Channel</span>
-            */}
-            {/*
-            <br/>
-            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-             <br/>
-            */}
                {
             (agentname.length > 0?
             
-            <span  style={rightAgent}> <img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {agentname[0]}</span>:<span/>
+            <span  style={{...rightAgent, marginTop: -25, marginBottom:0}}> <img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {agentname[0]}</span>:<span/>
            )}
             
             </div>
-            <br/>
-
-
           </div>
           )
         }
