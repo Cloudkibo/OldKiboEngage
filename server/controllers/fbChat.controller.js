@@ -38,331 +38,417 @@ export function chatwebhook(req, res) {
  
     // call api to fetch page info from pageid
     let messaging_events = req.body.entry[0].messaging
+
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
         console.log(event);
-        if(event.message.attachments){
-          console.log(event.message.attachments);
-        }
-        let sender = event.sender.id;
-        let page = event.recipient.id;
-        console.log('page id is' + page);
-        var options = {
-				 	  url: `${baseURL}/api/fbpages/getpage`,
-				      headers : headers,
-				    
-				      form:{
-				        'pageid':page,
-				      }
+        if(event.message && !event.message.is_echo)
+        {  
+                  if(event.message.attachments){
+                    console.log(event.message.attachments);
+                  }
+                  let sender = event.sender.id;
+                  let page = event.recipient.id;
+                  console.log('page id is' + page);
+                  var options = {
+          				 	  url: `${baseURL}/api/fbpages/getpagewithTeams`,
+          				      headers : headers,
+          				    
+          				      form:{
+          				        'pageid':page,
+          				      }
 
-			    };
+          			    };
 
-	     function callback(error, response, body) {
-	     		  console.log(body);
-	     		  console.log(error);
-			      if(!error && body != 'Not Found') {
-            var fbpage = JSON.parse(body);
-            let token = fbpage.pageToken;
-            let companyid = fbpage.companyid;
+          	     function callback(error, response, data) {
+          	     		  //console.log(body);
+          	     		  console.log(error);
+          			      if(!error && body != 'Not Found') {
+                      var body = JSON.parse(data);
+                      var fbpage = body.page;
+                      console.log('fbpage is');
+                      console.log(fbpage);
+                      var teamagents = body.teamagents;
+                      var fbpageteams = body.fbpageteams;
+                      let token = fbpage.pageToken;
+                      let companyid = fbpage.companyid;
 
-			      		// fetch customer details
-			      		    var optionsG = {
-								        url: 'https://graph.facebook.com/v2.6/'+sender+'?access_token='+token,
-								        qs: {access_token:token},
-								        method: 'GET'
-								        
-								    };
+          			      		// fetch customer details
+          			      		    var optionsG = {
+          								        url: 'https://graph.facebook.com/v2.6/'+sender+'?access_token='+token,
+          								        qs: {access_token:token},
+          								        method: 'GET'
+          								        
+          								    };
 
-								function callbackG(error, response, body) {
-								        console.log(body);
-								        let customer = JSON.parse(body);
-                        logger.serverLog('info', 'This is customer '+ JSON.stringify(customer) );
-                                    
-								        if (!error) {
-								           // call kiboengage api to create session 
-								           var customerobj = {
-								           	  'first_name' : customer.first_name,
-      											  'last_name' : customer.last_name,
-      											  'user_id':sender, //this is the facebook id of a customer
-                              'pageid':fbpage._id,
-      											   'email' : '',
-      											  'timestamp' : customer.locale,
-      											  'timezone' : customer.timezone,
-      											  'companyid' : companyid,
-      											  'gender' : customer.gender, 
-                              'profile_pic': customer.profile_pic,
-                              'requesttime': Date.now(),
-								           }
+          								function callbackG(error, response, body) {
+          								        console.log(body);
+          								        let customer = JSON.parse(body);
+                                  logger.serverLog('info', 'This is customer '+ JSON.stringify(customer) );
+                                              
+          								        if (!error) {
+          								           // call kiboengage api to create session 
+          								           var customerobj = {
+          								           	  'first_name' : customer.first_name,
+                											  'last_name' : customer.last_name,
+                											  'user_id':sender, //this is the facebook id of a customer
+                                        'pageid':fbpage._id,
+                											   'email' : '',
+                											  'timestamp' : customer.locale,
+                											  'timezone' : customer.timezone,
+                											  'companyid' : companyid,
+                											  'gender' : customer.gender, 
+                                        'profile_pic': customer.profile_pic,
+                                        'requesttime': Date.now(),
+          								           }
 
-								           console.log('customerobj obj is ');
-								           console.log(customerobj);
-								           //call kiboengage API to save customer
-								            var optionsC = {
-												 	  url: `${baseURL}/api/fbsessions/`,
-												      headers : headers,
-												      json:customerobj,
+          								           console.log('customerobj obj is ');
+          								           console.log(customerobj);
+          								           //call kiboengage API to save customer
+          								            var optionsC = {
+          												 	  url: `${baseURL}/api/fbsessions/`,
+          												      headers : headers,
+          												      json:customerobj,
 
-											    };
+          											    };
 
-			   							 function callbackC(error, response, bodyC) {
-			   							 
-                        // if the attachment contains url then extract meta data of url first
-                        var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                        var onlyUrl =''
-                        if(event.message.text){
-                             var testUrl = event.message.text.match(urlRegex);
-                             onlyUrl = testUrl && testUrl[0];   
-                        }
-                       
-                         
-
-                        logger.serverLog('info', 'This is the result of linkify '+ onlyUrl );
-                        if(onlyUrl != null && onlyUrl != ''){
-                          console.log('url Found in text' + onlyUrl);
-                          logger.serverLog('info', 'url Found in text '+ onlyUrl );
-                          // now the url is found fetch the meta data of url
-                           og(onlyUrl, function(err, meta){
-                                    console.log(meta);
-                                    logger.serverLog('info', 'This is body in og '+ JSON.stringify(meta) );
-                                    if(!error){
-                                      console.log('saving chat message');
-                                      logger.serverLog('info', 'This is fbsession '+ JSON.stringify(bodyC.fbsession) );
-                                      console.log(bodyC.fbsession);
+          			   							 function callbackC(error, response, bodyC) {
+          			   							 
+                                  // if the attachment contains url then extract meta data of url first
+                                  var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                                  var onlyUrl =''
+                                  if(event.message.text){
+                                       var testUrl = event.message.text.match(urlRegex);
+                                       onlyUrl = testUrl && testUrl[0];   
+                                  }
+                                 
                                    
-                                      //call api to save chat message
-                                      var chatobj = {
-                                        senderid : sender, // this is the user_id or page_id
-                                        recipientid : page,
-                                        timestamp : event.timestamp,
-                                        message: event.message,
-                                        companyid : companyid,
-                                        urlmeta:meta,
-                                      }
-                                    //call kiboengage API to save chat message
-                                        var optionsChat = {
-                                        url: `${baseURL}/api/fbmessages/`,
-                                          rejectUnauthorized : false,
-                                          headers : headers,
-                                          json:chatobj,
 
-                                      };
+                                  logger.serverLog('info', 'This is the result of linkify '+ onlyUrl );
+                                  if(onlyUrl != null && onlyUrl != ''){
+                                    console.log('url Found in text' + onlyUrl);
+                                    logger.serverLog('info', 'url Found in text '+ onlyUrl );
+                                    // now the url is found fetch the meta data of url
+                                     og(onlyUrl, function(err, meta){
+                                              console.log(meta);
+                                              logger.serverLog('info', 'This is body in og '+ JSON.stringify(meta) );
+                                              if(!error){
+                                                console.log('saving chat message');
+                                                logger.serverLog('info', 'This is fbsession '+ JSON.stringify(bodyC.fbsession) );
+                                                console.log(bodyC.fbsession);
+                                             
+                                                //call api to save chat message
+                                                var chatobj = {
+                                                  senderid : sender, // this is the user_id or page_id
+                                                  recipientid : page,
+                                                  timestamp : event.timestamp,
+                                                  message: event.message,
+                                                  companyid : companyid,
+                                                  urlmeta:meta,
+                                                }
+                                              //call kiboengage API to save chat message
+                                                  var optionsChat = {
+                                                  url: `${baseURL}/api/fbmessages/`,
+                                                    rejectUnauthorized : false,
+                                                    headers : headers,
+                                                    json:chatobj,
 
-                                   function callbackChat(error, response, body) {
-                                    console.log('inside callbackchat');
-                                    console.log(body);
-                                    console.log(error);
+                                                };
 
-                                    if(!error){
+                                             function callbackChat(error, response, body) {
+                                              console.log('inside callbackchat');
+                                              console.log(body);
+                                              console.log(error);
 
-                                      // emit the chat message on socket
-                                      var socketsession = {
-                                          
-                                          'user_id': {
-                                            'first_name' : customer.first_name,
-                                            'last_name' : customer.last_name,
-                                            'email' : '',
-                                            'timestamp' : customer.locale,
-                                            'timezone' : customer.timezone,
-                                            'profile_pic': customer.profile_pic,
-                                            'gender' : customer.gender, 
-                                            'user_id':sender,
-                                            '_id':bodyC.fbsession.user_id, 
-                                         
-                                          }, //this is the facebook id of a customer
-                                          'pageid':fbpage,
-                                          'companyid' : customerobj.companyid,
-                                          'requesttime': customerobj.requesttime,
-                                          'status':bodyC.fbsession.status == 'resolved'?'assigned': bodyC.fbsession.status,
-                                          'agent_ids':bodyC.fbsession.agent_ids,
+                                              if(!error){
 
-
-                                       }
-                                       console.log('socketsession is');
-                                       console.log(socketsession);
-                                       socket.getfbchat({chatobj,socketsession});
-
-                                      sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
-
-                                       // update fbsession status if marked resolved
-
-                                       if(bodyC.fbsession && bodyC.fbsession.status == 'resolved'){
-                                        var customerobjS = {
-                                              companyid : bodyC.fbsession.companyid,
-                                              pageid:bodyC.fbsession.pageid,
-                                              user_id: bodyC.fbsession.user_id,
-                                              status:'assigned',
-                                            }
-                                           //call kiboengage API to save customer
-                                        var optionsS = {
-                                        url: `${baseURL}/api/fbsessions/fbupdatestatus`,
-                                          headers : headers,
-                                          json:customerobjS,
-
-                                      };
+                                                // emit the chat message on socket
+                                                var socketsession = {
+                                                    
+                                                    'user_id': {
+                                                      'first_name' : customer.first_name,
+                                                      'last_name' : customer.last_name,
+                                                      'email' : '',
+                                                      'timestamp' : customer.locale,
+                                                      'timezone' : customer.timezone,
+                                                      'profile_pic': customer.profile_pic,
+                                                      'gender' : customer.gender, 
+                                                      'user_id':sender,
+                                                      '_id':bodyC.fbsession.user_id, 
+                                                   
+                                                    }, //this is the facebook id of a customer
+                                                    'pageid':fbpage,
+                                                    'companyid' : customerobj.companyid,
+                                                    'requesttime': customerobj.requesttime,
+                                                    'status':bodyC.fbsession.status == 'resolved'?'assigned': bodyC.fbsession.status,
+                                                    'agent_ids':bodyC.fbsession.agent_ids,
 
 
-                                   function callbackS(error, response, bodyS) {
-                                          console.log(error);
-                                          console.log(bodyS);
-                                          if(!error){
-                                              //send push notification to all agents
-                                              console.log('sending push to all agents');
-                                            //  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
+                                                 }
+                                                 console.log('socketsession is');
+                                                 console.log(socketsession);
+                                                 socket.getfbchat({chatobj,socketsession});
+                                                 //we need to send push to only agents who are in teams assigned to fbpage 
+                                                sendpushToTeamAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer',fbpage._id,fbpageteams,teamagents);
 
-                                          }
-                                          else{
-                                            return res.status(422).json({statusCode : 422 ,data:error});
-                                          }
-                                       }
+                                                 // update fbsession status if marked resolved
 
-                                       request.post(optionsS,callbackS);
-                                    
-                                      //return res.status(201).json({status:"success"});
-                                    }
-                                   }
-                                    else{
-                                        return res.status(422).json({statusCode : 422 ,data:error});
-                                   
-                                    }
+                                                 if(bodyC.fbsession && bodyC.fbsession.status == 'resolved'){
+                                                  var customerobjS = {
+                                                        companyid : bodyC.fbsession.companyid,
+                                                        pageid:bodyC.fbsession.pageid,
+                                                        user_id: bodyC.fbsession.user_id,
+                                                        status:'assigned',
+                                                      }
+                                                     //call kiboengage API to save customer
+                                                  var optionsS = {
+                                                  url: `${baseURL}/api/fbsessions/fbupdatestatus`,
+                                                    headers : headers,
+                                                    json:customerobjS,
 
-                                    }
-                                    request.post(optionsChat,callbackChat);
-                                   }
-                                  });
-                        }
-                        //if no url
-                        else{
-            			   							 	console.log(bodyC);
-                                   	console.log(error);
-            			   							 	if(!error){
-            			   							 		console.log('saving chat message');
-                                      console.log(bodyC.fbsession);
-                                   
-            			   							 		//call api to save chat message
-            			   							 		var chatobj = {
-            			   							 			senderid : sender, // this is the user_id or page_id
-            													  recipientid : page,
-            													  timestamp : event.timestamp,
-            													  message: event.message,
-            													  companyid : companyid,
-            			   							 		}
-            												//call kiboengage API to save chat message
-            								            var optionsChat = {
-            												 	  url: `${baseURL}/api/fbmessages/`,
-            												      rejectUnauthorized : false,
-            												      headers : headers,
-            												      json:chatobj,
-
-            											    };
-
-            			   							 function callbackChat(error, response, body) {
-            			   							  console.log('inside callbackchat');
-                                   	console.log(body);
-            			   							 	console.log(error);
-
-            			   							 	if(!error){
-
-            			   							 		// emit the chat message on socket
-                                      var socketsession = {
-                                          
-                                          'user_id': {
-                                            'first_name' : customer.first_name,
-                                            'last_name' : customer.last_name,
-                                            'email' : '',
-                                            'timestamp' : customer.locale,
-                                            'timezone' : customer.timezone,
-                                            'profile_pic': customer.profile_pic,
-                                            'gender' : customer.gender, 
-                                            'user_id':sender,
-                                            '_id':bodyC.fbsession.user_id, 
-                                         
-                                          }, //this is the facebook id of a customer
-                                          'pageid':fbpage,
-                                          'companyid' : customerobj.companyid,
-                                          'requesttime': customerobj.requesttime,
-                                          'status':bodyC.fbsession.status == 'resolved'?'assigned': bodyC.fbsession.status,
-                                          'agent_ids':bodyC.fbsession.agent_ids,
+                                                };
 
 
-                                       }
-                                       console.log('socketsession is');
-                                       console.log(socketsession);
-            			   							 		 socket.getfbchat({chatobj,socketsession});
+                                             function callbackS(error, response, bodyS) {
+                                                    console.log(error);
+                                                    console.log(bodyS);
+                                                    if(!error){
+                                                        //send push notification to all agents
+                                                        console.log('sending push to all agents');
+                                                      //  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
 
-                                      sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
+                                                    }
+                                                    else{
+                                                      return res.status(422).json({statusCode : 422 ,data:error});
+                                                    }
+                                                 }
 
-                                       // update fbsession status if marked resolved
+                                                 request.post(optionsS,callbackS);
+                                              
+                                                //return res.status(201).json({status:"success"});
+                                              }
+                                             }
+                                              else{
+                                                  return res.status(422).json({statusCode : 422 ,data:error});
+                                             
+                                              }
 
-                                       if(bodyC.fbsession && bodyC.fbsession.status == 'resolved'){
-                                        var customerobjS = {
-                                              companyid : bodyC.fbsession.companyid,
-                                              pageid:bodyC.fbsession.pageid,
-                                              user_id: bodyC.fbsession.user_id,
-                                              status:'assigned',
-                                            }
-                                           //call kiboengage API to save customer
-                                        var optionsS = {
-                                        url: `${baseURL}/api/fbsessions/fbupdatestatus`,
-                                          headers : headers,
-                                          json:customerobjS,
+                                              }
+                                              request.post(optionsChat,callbackChat);
+                                             }
+                                            });
+                                  }
+                                  //if no url
+                                  else{
+                      			   							 	console.log(bodyC);
+                                             	console.log(error);
+                      			   							 	if(!error){
+                      			   							 		console.log('saving chat message');
+                                                console.log(bodyC.fbsession);
+                                             
+                      			   							 		//call api to save chat message
+                      			   							 		var chatobj = {
+                      			   							 			senderid : sender, // this is the user_id or page_id
+                      													  recipientid : page,
+                      													  timestamp : event.timestamp,
+                      													  message: event.message,
+                      													  companyid : companyid,
+                      			   							 		}
+                      												//call kiboengage API to save chat message
+                      								            var optionsChat = {
+                      												 	  url: `${baseURL}/api/fbmessages/`,
+                      												      rejectUnauthorized : false,
+                      												      headers : headers,
+                      												      json:chatobj,
 
-                                      };
+                      											    };
+
+                      			   							 function callbackChat(error, response, body) {
+                      			   							  console.log('inside callbackchat');
+                                             	console.log(body);
+                      			   							 	console.log(error);
+
+                      			   							 	if(!error){
+
+                      			   							 		// emit the chat message on socket
+                                                var socketsession = {
+                                                    
+                                                    'user_id': {
+                                                      'first_name' : customer.first_name,
+                                                      'last_name' : customer.last_name,
+                                                      'email' : '',
+                                                      'timestamp' : customer.locale,
+                                                      'timezone' : customer.timezone,
+                                                      'profile_pic': customer.profile_pic,
+                                                      'gender' : customer.gender, 
+                                                      'user_id':sender,
+                                                      '_id':bodyC.fbsession.user_id, 
+                                                   
+                                                    }, //this is the facebook id of a customer
+                                                    'pageid':fbpage,
+                                                    'companyid' : customerobj.companyid,
+                                                    'requesttime': customerobj.requesttime,
+                                                    'status':bodyC.fbsession.status == 'resolved'?'assigned': bodyC.fbsession.status,
+                                                    'agent_ids':bodyC.fbsession.agent_ids,
 
 
-                                   function callbackS(error, response, bodyS) {
-                                          console.log(error);
-                                          console.log(bodyS);
-                                          if(!error){
-                                              //send push notification to all agents
-                                              console.log('sending push to all agents');
-                                            //  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
+                                                 }
+                                                 console.log('socketsession is');
+                                                 console.log(socketsession);
+                      			   							 		 socket.getfbchat({chatobj,socketsession});
+                                                 sendpushToTeamAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer',fbpage._id,fbpageteams,teamagents);
 
-                                          }
-                                          else{
-                                            return res.status(422).json({statusCode : 422 ,data:error});
-                                          }
-                                       }
+                                               // sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
 
-                                       request.post(optionsS,callbackS);
-            			   							 	
-            			   							 		//return res.status(201).json({status:"success"});
-            			   							 	}
-                                   }
-            			   							 	else{
-            			   							 			return res.status(422).json({statusCode : 422 ,data:error});
-            								       
-            			   							 	}
+                                                 // update fbsession status if marked resolved
 
-            			   							 	}
-            			   							 	request.post(optionsChat,callbackChat);
-            			   							 }
-                      }
-			   							}
-			   							 request.post(optionsC,callbackC);
+                                                 if(bodyC.fbsession && bodyC.fbsession.status == 'resolved'){
+                                                  var customerobjS = {
+                                                        companyid : bodyC.fbsession.companyid,
+                                                        pageid:bodyC.fbsession.pageid,
+                                                        user_id: bodyC.fbsession.user_id,
+                                                        status:'assigned',
+                                                      }
+                                                     //call kiboengage API to save customer
+                                                  var optionsS = {
+                                                  url: `${baseURL}/api/fbsessions/fbupdatestatus`,
+                                                    headers : headers,
+                                                    json:customerobjS,
 
-								        
-								        }
-								         else{
-								           return res.status(422).json({statusCode : 422 ,data:error});
-								        }
+                                                };
 
-								    }
-								    request.get(optionsG,callbackG);
 
-			            //return res.status(201);//.json(JSON.parse(body));
-			      }
-			    else
-			    {
-			//      return res.status(422).json({statusCode : 422 ,data:error});
+                                             function callbackS(error, response, bodyS) {
+                                                    console.log(error);
+                                                    console.log(bodyS);
+                                                    if(!error){
+                                                        //send push notification to all agents
+                                                        console.log('sending push to all agents');
+                                                      //  sendpushToAllAgents({'customerid' : customerobj.user_id,'msgid':body._id,'type':'fbchat','status':'New message from Facebook Customer'},'New message from Facebook Customer');
 
-			    }
+                                                    }
+                                                    else{
+                                                      return res.status(422).json({statusCode : 422 ,data:error});
+                                                    }
+                                                 }
 
-   				}
-        request.post(options, callback);
-    }
+                                                 request.post(optionsS,callbackS);
+                      			   							 	
+                      			   							 		//return res.status(201).json({status:"success"});
+                      			   							 	}
+                                             }
+                      			   							 	else{
+                      			   							 			return res.status(422).json({statusCode : 422 ,data:error});
+                      								       
+                      			   							 	}
+
+                      			   							 	}
+                      			   							 	request.post(optionsChat,callbackChat);
+                      			   							 }
+                                }
+          			   							}
+          			   							 request.post(optionsC,callbackC);
+
+          								        
+          								        }
+          								         else{
+          								           return res.status(422).json({statusCode : 422 ,data:error});
+          								        }
+
+          								    }
+          								    request.get(optionsG,callbackG);
+
+          			            //return res.status(201);//.json(JSON.parse(body));
+          			      }
+          			    else
+          			    {
+          			//      return res.status(422).json({statusCode : 422 ,data:error});
+
+          			    }
+
+             				}
+                  request.post(options, callback);
+                }
+              }
     res.sendStatus(200)
 }
 
+
+
+function sendpushToAgent(pageid,fbteams,teamagents,agentid){
+  //fbteams
+  //team agents
+  //pageid is _id
+    console.log('showSession called');
+    var is_agent_in_team = false;
+   
+    if(fbteams.length > 0)
+    {
+    var get_teams_assigned_to_page = fbteams.filter((c) => c.pageid._id == pageid);
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == teamagents[j].groupid._id && teamagents[j].agentid._id == agentid){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+  }
+   return is_agent_in_team;
+  }
+
+function sendpushToTeamAgents(body,pushTitle,pageid,fbpageteams,teamagents){
+  console.log('send push to fbteamsAndteamagents agents');
+   if(fbpageteams && teamagents)
+ {
+        var fbteams = fbpageteams;
+        var teamagents = teamagents;
+        console.log(fbteams.length);
+        console.log(teamagents.length);
+        var payload = {
+                                    data: body,
+                                    badge: 0
+                      };
+       
+       var  headers =  {
+         'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+         'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+         'kibo-client-id': 'cd89f71715f2014725163952',
+         
+         }
+        var options = {
+                          url: `${baseURL}/api/users/allagents/`,
+                          rejectUnauthorized : false,
+                          headers,
+                          
+                  };
+                    function callback(error, response, body) {
+                      if(!error  && response.statusCode == 200) {
+                         var info = JSON.parse(body);
+                         var agentlist = info.agents;
+                         for(var i=0;i< agentlist.length;i++){
+                                  var obj = agentlist[i];
+                       //           console.log('----- obj is');
+                                //  console.log(obj);
+                         //         console.log(obj.email);
+                                  if(sendpushToAgent(pageid,fbteams,teamagents,obj._id)){
+                                    console.log('SENDING PUSH notification TO ' + obj.email);
+                                    sendPushNotification('Agent-'+obj.email,payload,pushTitle);  
+                                  }
+                                  
+                         }
+
+                    }
+
+           }
+             request.get(options, callback);
+           }
+}
 // send push to all agents
 
 function sendpushToAllAgents(body,pushTitle){
@@ -393,7 +479,7 @@ function sendpushToAllAgents(body,pushTitle){
                  //           console.log('----- obj is');
                           //  console.log(obj);
                    //         console.log(obj.email);
-                            sendPushNotification(obj.email,payload,pushTitle);
+                            sendPushNotification('Agent-'+obj.email,payload,pushTitle);
                    }
 
               }
@@ -862,7 +948,7 @@ export function assignToAgentFB(req, res) {
                     console.log('----- obj is');
                     console.log(agentlist[i]);
 
-                    sendPushNotification(agentlist[i],payload,'You are assigned a new session');
+                    sendPushNotification('Agent-'+agentlist[i],payload,'You are assigned a new session');
                    }
             return res.status(200).json({statusCode : 201,message:'success'});
        }

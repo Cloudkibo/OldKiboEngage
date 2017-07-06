@@ -118,7 +118,7 @@ function sendemail(body,token){
                             emailArray.push(customers[i].email);
 
                         else{
-                          pushNotificationArray.push(customers[i].customerID);//we are using _id as a tagname
+                          pushNotificationArray.push('Client-'+customers[i].customerID);//we are using _id as a tagname
                         }
 
                   }

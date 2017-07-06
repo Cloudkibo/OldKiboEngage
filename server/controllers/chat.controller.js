@@ -258,7 +258,7 @@ export function assignToAgent(req, res) {
                     console.log('----- obj is');
                     console.log(agentlist[i]);
 
-                    sendPushNotification(agentlist[i],payload,'You are assigned a new session');
+                    sendPushNotification('Agent-'+agentlist[i],payload,'You are assigned a new session');
                    }
             return res.status(200).json({statusCode : 201,message:'success'});
        }
@@ -636,7 +636,7 @@ function sendpushToAgents(chatmessage){
     console.log('send push on each agents email address');
      for(var i = 0;i < chatmessage.assignedagentemail.length;i++){
                     var agentemail = chatmessage.assignedagentemail[i];
-                   sendPushNotification(agentemail,payload,'Message received from customer');
+                   sendPushNotification('Agent-'+agentemail,payload,'Message received from customer');
 
   }
 
@@ -666,7 +666,7 @@ function sendpushToAgents(chatmessage){
                     console.log('----- obj is');
                    // console.log(obj);
                     console.log(obj.agentid.email);
-                    sendPushNotification(obj.agentid.email,payload,'Message received from customer');
+                    sendPushNotification('Agent-'+obj.agentid.email,payload,'Message received from customer');
                    }
 
               }
@@ -680,15 +680,96 @@ function sendpushToAgents(chatmessage){
 }
 }
 
+
+
+function sendpushToTeamAgents(chatmessage,teamagents,deptteams){
+  console.log('send push to teamagents');
+  console.log(chatmessage);
+  console.log(teamagents.length);
+  console.log(deptteams.length);
+  var payload = {
+                              data: {
+                                uniqueid:chatmessage.uniqueid,
+                                request_id : chatmessage.request_id,
+                                status : chatmessage.status,
+                              },
+                              badge: 0
+                            };
+
+    //if the session is not assigned to any agent then we will send notifications to all agents who are in the team on which user has sent a message
+      // fetch agents of particular department
+             var  headers =  {
+                     'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+                     'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+                     'kibo-client-id': 'cd89f71715f2014725163952',
+                     
+                     }
+              var options = {
+                                url: `${baseURL}/api/users/allagents/`,
+                                rejectUnauthorized : false,
+                                headers,
+                                
+                        };
+              function callback(error, response, body) {
+              console.log(body);
+                if(!error  && response.statusCode == 200) {
+                   console.log('allagents body');
+                   var info = JSON.parse(body);
+                   var agentlist = info.agents;
+
+                 //  console.log(agentlist);
+                   for(var i=0;i< agentlist.length;i++){
+                    var obj = agentlist[i];
+                    console.log('----- obj is');
+                   // console.log(obj);
+                    console.log(obj.email);
+                    if(showSession(chatmessage.departmentid,deptteams,teamagents,obj._id))
+                      {
+                      sendPushNotification('Agent-'+obj.email,payload,'Message received from customer');
+                      }
+                   }
+
+              }
+
+           
+     }
+       request.get(options, callback);
+
+}
 // endpoint called by customer (web or mobile)
 export function getChatMessage(req, res) {
     console.log('getChatMessage is called');
     var chat   = req.body;
     console.log(chat);
     ss.getchat(req.body);
-    sendpushToAgents(req.body); // this will send customer message to mobile agents through push notification
-    return res.json(200,{'status' : 'success'});
 
+    //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
+    var  headers =  {
+               'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+               'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+               'kibo-client-id': 'cd89f71715f2014725163952',
+
+               }
+              var options = {
+                            url: `${baseURL}/api/deptteams/deptteamAgents`,
+                            rejectUnauthorized : false,
+                            headers,
+
+                    };
+              function callback(error, response, body) {
+                if(!error  && response.statusCode == 200) {
+                   var teamagentsDept = JSON.parse(body);
+                   console.log('sending push notification to teamagents');
+                   sendpushToTeamAgents(req.body,teamagentsDept.teamagents,teamagentsDept.deptteams); // this will send customer message to mobile agents through push notification
+                    return res.json(200,{'status' : 'success'});
+
+                 }
+                 else{
+                  res.json(200,{'status' : 'failed'});
+                 }
+               }
+               request.get(options,callback);
+   
 };
 
 // endpoint called by agent (web or mobile)
@@ -781,7 +862,7 @@ export function updatechatstatus(req, res) {
                               badge: 0
                             };
 
-              sendPushNotification(req.body.customerid,payload,'status update');
+              sendPushNotification('Client-'+req.body.customerid,payload,'status update');
             }
             return res.status(200).json({statusCode : 201,message:'success'});
        }
@@ -921,7 +1002,7 @@ export function uploadchatfileAgent(req, res) {
                               badge: 0
                             };
                       var msg = 'You have received 1 new file from ' + req.body.from;
-                      sendPushNotification(req.body.to,payload,msg);
+                      sendPushNotification('Client-'+req.body.to,payload,msg);
                     //  body.chatmsg.msg = body.filedata.file_type + ';' + body.chatmsg.msg;
 
                       ss.getchat( body.chatmsg);
@@ -989,8 +1070,30 @@ export function downloadchatfile(req, res) {
 
 
 
-// send push to all agents
+// send push to only agents who are assigned to teams which are assigned to group
+function showSession(departmentid,deptteams,teamagents,agentid){
+    console.log('showSession called');
+    console.log(deptteams);
+    console.log(teamagents);
+    var get_teams_assigned_to_group = deptteams.filter((c) => c.deptid._id == departmentid);
+    console.log(get_teams_assigned_to_group.length);
+    var is_agent_in_team = false;
+    for(var i=0;i<get_teams_assigned_to_group.length;i++){
+      console.log(get_teams_assigned_to_group[i]);
+      for(var j=0;j<teamagents.length;j++){
+        if(get_teams_assigned_to_group[i].teamid && get_teams_assigned_to_group[i].teamid._id == teamagents[j].groupid._id && teamagents[j].agentid._id == agentid ){
+          is_agent_in_team = true;
+          break;
 
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+   return is_agent_in_team;
+  }
 function sendpushToAllAgents(sessionid,pushTitle){
   console.log('send push to all agents');
   var payload = {
@@ -1022,7 +1125,7 @@ function sendpushToAllAgents(sessionid,pushTitle){
                             console.log('----- obj is');
                             console.log(obj);
                             console.log(obj.email);
-                            sendPushNotification(obj.email,payload,pushTitle);
+                            sendPushNotification('Agent-'+obj.email,payload,pushTitle);
                    }
 
               }

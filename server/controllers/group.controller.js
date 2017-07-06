@@ -359,7 +359,7 @@ function sendPushNotification(data,tablename,operation,token){
                             //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
                             for(var i=0;i<customers.length;i++){
 
-                              var tagname = customers[i].customerID;
+                              var tagname = 'Client-'+customers[i].customerID;
                               var iOSMessage = {
                                 alert : operation,
                                 sound : 'UILocalNotificationDefaultSoundName',

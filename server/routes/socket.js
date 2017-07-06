@@ -204,7 +204,7 @@ function onConnect(io2, socket) {
         badge: 0
       };
 
-      sendPushNotification(data.customerid.customerID,payload)
+      sendPushNotification('Client-'+data.customerid.customerID,payload)
     }
 
     else     {
@@ -493,7 +493,7 @@ socket.on('getuserchats',function(room){
         badge: 0
       };
 
-      sendPushNotification(data.customerid.customerID,payload)
+      sendPushNotification('Client-'+data.customerid.customerID,payload)
     }
     else{
     io2.to(data.socketid).emit('send:getAgent',{
@@ -1025,7 +1025,7 @@ exports.getchatfromAgent = function(data){
         badge: 0
       };
 
-      sendPushNotification(data.customerid.customerID,payload)
+      sendPushNotification('Client-'+data.customerid.customerID,payload)
     }
 
     // for web customer
