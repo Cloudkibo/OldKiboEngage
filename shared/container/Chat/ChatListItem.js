@@ -142,10 +142,11 @@ return res;
    (ag.length > 0?
 
    (props.userchat.length > 0 || props.customer.platform == 'web' ?
-         <div className="list-group" onClick={props.onClickSession} style={changec}>
+         <div className="list-group" onClick={props.onClickSession} style={{...changec, marginBottom:0}}>
+         <hr style={{padding: 0, margin: 0}}/>
          {
           (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
-           <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0}}>
+           <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15, color: 'white'}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}
               <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
             </p>
@@ -177,7 +178,7 @@ return res;
           </div> :
 
 
-           <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0}}>
+           <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID} 
             <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>{ag[0].deptname +'-' + ch[0].msg_channel_name}</p>
             <span style={{fontSize: 10, margin:5}}>{props.customer.status} </span>
