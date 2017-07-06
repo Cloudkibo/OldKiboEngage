@@ -124,7 +124,7 @@ var hours = date.getHours();
   return (
 
     (selected ?
-     <div className="list-group-item uk-padding-small uk-border-rounded uk-padding-remove-bottom uk-card uk-card-body uk-card-default uk-card-hover" style={{'backgroundColor' : 'rgba(195, 188, 188, 0.4)'}} onClick={props.onClickSession}>
+     <div className="list-group-item uk-padding-small uk-padding-remove-bottom uk-card uk-card-body uk-card-default" style={{'backgroundColor' : 'rgba(195, 188, 188, 0.4)'}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} style={{maxWidth: 35, maxHeight: 35}} className="uk-border-circle"/>
     <span style={{margin: 15}}><b>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</b></span>
     <span  style={changefont}>{difference}</span>
@@ -136,7 +136,7 @@ var hours = date.getHours();
        <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
 
        )}
-    <br/>
+
        {
               agentname.length > 0?
               
@@ -150,7 +150,7 @@ var hours = date.getHours();
     </div>
     :
     unreadCount > 0 ?
-   ( <div className="list-group-item uk-padding-small uk-padding-remove-bottom uk-border-rounded uk-card uk-card-body uk-card-default uk-card-hover" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'auto'}} onClick={props.onClickSession}>
+   ( <div className="list-group-item uk-padding-small uk-padding-remove-bottom uk-card uk-card-body uk-card-default" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'auto'}} onClick={props.onClickSession}>
     <img src={props.customer.user_id.profile_pic} style={{maxWidth: 35, maxHeight: 35}} className="uk-border-circle"/>
     <span className='badge' style={rightStyle}>{unreadCount}</span>
     
@@ -174,7 +174,7 @@ var hours = date.getHours();
    </div>
    )
    :
-    (<div className="list-group-item uk-border-rounded uk-card-hover uk-card uk-card-body uk-card-default uk-padding-small uk-padding-remove-bottom uk-animation-toggle" style={{'cursor': 'pointer',  background: 'white', border: 0, margin:5}} onClick={props.onClickSession}>
+    (<div className="list-group-item uk-card uk-card-body uk-card-default uk-padding-small uk-padding-remove-bottom uk-animation-toggle" style={{'cursor': 'pointer',  background: 'white', border: 0, margin:5}} onClick={props.onClickSession}>
      <img src={props.customer.user_id.profile_pic} style={{maxWidth: 35, maxHeight: 35}} className="uk-border-circle"/>
      <span style={{margin: 15}}><b>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</b></span>
      <span  style={changefont}>{difference}</span>
