@@ -1184,7 +1184,7 @@ const { value, suggestions } = this.state;
 
                                (this.props.userdetails.firstname === chat.from?
                                     <li className="pull-right clearfix agentChatBox uk-border-rounded" style={{marginTop: -10, background: '#F5F5F5', border: 0}}>
-                                      <div className="chat-body clearfix">
+                                      <div className="chat-body clearfix" style={{hyphens: 'auto', wordBreak: 'break-all'}}>
                                         <div>
                                             <p  className="pull-right text-muted">{chat.from}</p>
 
@@ -1192,11 +1192,11 @@ const { value, suggestions } = this.state;
                                        {
                                         (chat.type == 'file')?
 
-                                       <p  className='pull-right chatmsg' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white'}}>
+                                       <p  className='pull-right chatmsg' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', borderRadius: 25}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
-                                       <p className="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white'}}>
+                                       <p className="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', wordBreak: 'break-all',  color: 'white', borderRadius: 25}}>
                                             {chat.msg}
                                        </p>
                                      }
@@ -1224,12 +1224,12 @@ const { value, suggestions } = this.state;
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg' style={{background: 'white',padding: 10, marginBottom: 0, marginTop: 0}}>
+                                         <p  className='pull-right chatmsg' style={{background: 'white',padding: 10, marginBottom: 0, marginTop: 0, borderRadius: 25}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0}}>
+                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0, borderRadius: 25}}>
                                             {chat.msg}
                                        </p>
                                      }
@@ -1255,12 +1255,12 @@ const { value, suggestions } = this.state;
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg uk-border-rounded' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5}}>
+                                         <p  className='pull-right chatmsg uk-border-rounded' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5, borderRadius: 25}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p  lassName="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5}}>
+                                       <p  lassName="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5, borderRadius: 25}}>
                                             {chat.msg}
                                        </p>
                                      }
@@ -1286,12 +1286,12 @@ const { value, suggestions } = this.state;
                                         </div>
                                         {
                                         (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg uk-border-rounded' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white'}}>
+                                         <p  className='pull-right chatmsg uk-border-rounded' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', borderRadius: 25}}>
                                              <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
                                           {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
                                        </p> :
 
-                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0}}>
+                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0, borderRadius: 25}}>
                                             {chat.msg}
                                        </p>
                                      }
@@ -1366,6 +1366,7 @@ const { value, suggestions } = this.state;
   )
   }
 }
+
 
 
 
