@@ -2073,7 +2073,7 @@ export class ChatArea extends Component {
             </div>
 
 
-            <ReactTooltip place="bottom" type="dark" effect="solid"/>
+
             <div style={styles.toolbox}>
               <div style={{display: 'inline-block'}} data-tip="attachments">
 
