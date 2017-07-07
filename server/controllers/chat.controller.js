@@ -682,7 +682,7 @@ function sendpushToAgents(chatmessage){
 
 
 
-function sendpushToTeamAgents(chatmessage,teamagents,deptteams){
+function sendpushToTeamAgents(chatmessage,teamagents,deptteams,type){
   console.log('send push to teamagents');
   console.log(chatmessage);
   console.log(teamagents.length);
@@ -692,6 +692,7 @@ function sendpushToTeamAgents(chatmessage,teamagents,deptteams){
                                 uniqueid:chatmessage.uniqueid,
                                 request_id : chatmessage.request_id,
                                 status : chatmessage.status,
+                                type:type,
                               },
                               badge: 0
                             };
@@ -760,7 +761,7 @@ export function getChatMessage(req, res) {
                 if(!error  && response.statusCode == 200) {
                    var teamagentsDept = JSON.parse(body);
                    console.log('sending push notification to teamagents');
-                   sendpushToTeamAgents(req.body,teamagentsDept.teamagents,teamagentsDept.deptteams); // this will send customer message to mobile agents through push notification
+                   sendpushToTeamAgents(req.body,teamagentsDept.teamagents,teamagentsDept.deptteams,'chatsession'); // this will send customer message to mobile agents through push notification
                     return res.json(200,{'status' : 'success'});
 
                  }
