@@ -640,7 +640,7 @@ export function getfbSessions(req, res) {
 export function sendTextMessage(req,res) {
     console.log('send text to customer is called');
     console.log(req.body);
-
+    logger.serverLog('info', 'Send text to Facebook customer '+ JSON.stringify(req.body) );
     /*
     senderid: this.props.userdetails._id,
               recipientid:this.props.senderid,
