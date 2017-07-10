@@ -250,7 +250,7 @@ export function assignToAgent(req, res) {
                               data: {
 
                                 request_id : req.body.sessionid,
-
+                                type: 'chatsession-assigned'
                               },
                               badge: 0
                             };
@@ -300,7 +300,7 @@ export function movedToMessageChannel(req, res) {
        if(!error && response.statusCode == 200)
        {
           // //console.log(body)
-             sendpushToAllAgents(req.body.request_id,'Chat Session Moved To Another Channel');
+             sendpushToAllAgents(req.body.request_id,'Chat Session Moved To Another Channel','chatsession-moved');
             return res.status(200).json({statusCode : 201,message:'success'});
              //send push notification to all agents
 
@@ -441,7 +441,7 @@ export function resolvechatsession(req, res) {
            //console.log(body)
            // inform mobile agents through push notification
            //send push notification to all agents
-            sendpushToAllAgents(req.body.request_id,'Resolve Chat Session');
+            sendpushToAllAgents(req.body.request_id,'Resolve Chat Session','chatsession-resolved');
 
             return res.status(200).json({statusCode : 201,message:'success'});
                    }
@@ -776,6 +776,8 @@ export function getChatMessage(req, res) {
 // endpoint called by agent (web or mobile)
 export function getchatfromagent(req, res) {
     console.log('getchatfromagent is called');
+    logger.serverLog('info', 'Inside getchatfromagent endpoint, req body = '+ JSON.stringify(req.body));
+  
     var chat   = req.body;
     console.log(chat);
     ss.getchatfromAgent(req.body);
@@ -1095,12 +1097,13 @@ function showSession(departmentid,deptteams,teamagents,agentid){
     }
    return is_agent_in_team;
   }
-function sendpushToAllAgents(sessionid,pushTitle){
+function sendpushToAllAgents(sessionid,pushTitle,type){
   console.log('send push to all agents');
   var payload = {
                               data: {
                                 request_id : sessionid,
                                 status : pushTitle,
+                                type:type,
                               },
                               badge: 0
                             };

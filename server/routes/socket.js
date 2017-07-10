@@ -1004,6 +1004,8 @@ exports.getchat = function(data){
 /******** not exporting in controller file **********/
 exports.getchatfromAgent = function(data){
   console.log('socket get chat from agent is called');
+  logger.serverLog('info', 'This is body in getchatfromAgent socket '+ JSON.stringify(data) );
+ 
   console.log(data);
   var onlineAgentsCompany = [];
   for(var i=0;i<onlineAgents.length;i++){
