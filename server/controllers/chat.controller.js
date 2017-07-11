@@ -1215,7 +1215,6 @@ export function createforCloudkibo(req, res) {
        }
        else
        {
-           res.sendStatus(422);
            return res.status(422).json({statusCode : 422 ,message:'failed'});
 
        }
@@ -1224,4 +1223,51 @@ export function createforCloudkibo(req, res) {
   
   }
 };
+
+export function getallsessions(req, res) {
+  //companyid will be required
+  console.log('getallsessions called');
+  logger.serverLog('info', 'Inside KiboEngage endpoint getallsessions'+JSON.stringify(req.body));
+  var token = req.headers.authorization;
+  console.log(token)
+  //fetch mobile chat sessions from kiboengage swagger
+  var options = {
+      url: `${baseURL}/api/visitorcalls/mobilesessions`,
+      rejectUnauthorized : false,
+      headers :  {
+                                 'Authorization': `Bearer ${token}`
+                                 },
+      
+    };
+
+    function callback(error, response, body) {
+        //console.log(response.statusCode);
+       if(!error && response.statusCode == 200)
+       {  
+            var totalsessions= JSON.parse(body);
+            //now fetch web chat sessions from socket
+            var webchatsessions = ss.getwebchatsessions(req.body.companyid);
+            logger.serverLog('info', 'There are webchatsessions' + JSON.stringify(webchatsessions));
+            console.log('There are webchatsessions');
+            console.log(webchatsessions.length);
+            for(var j=0;j<webchatsessions.length;j++)
+            {
+              totalsessions.push(webchatsessions[j]);
+            }
+          
+            console.log('totalsessions length' + totalsessions.length);
+            return res.status(201).json(totalsessions);
+       }
+       else
+       {
+          // res.sendStatus(422);
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+   }
+        request.get(options, callback);
+  
+  
+};
+
 

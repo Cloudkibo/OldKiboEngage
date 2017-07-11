@@ -48,6 +48,7 @@ router.route('/getfbpage').get(FbController.getfbpage);
 router.route('/getmyusergroups').get(GroupController.getmyusergroups);
 router.route('/getcustomergroups').post(GroupController.getcustomergroups);
 router.route('/getcustomersession').post(ChatController.getcustomersession);
+router.route('/getallsessions').post(ChatController.getallsessions);
 router.route('/updatechatstatus').post(ChatController.updatechatstatus);
 router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
 router.route('/updatereschedule').post(ChatController.updatereschedule);

@@ -1895,6 +1895,25 @@ export function getmobilesessions(token) {
 
 }
 
+/*export function getmobilesessions(token,companyid) {
+  printlogs('log', token);
+  return (dispatch) => {
+    fetch(`${baseURL}/api/getallsessions`, {
+      method: 'post',
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type':'application/json'
+
+      }),
+      body:JSON.stringify({
+        companyid:companyid
+      })
+    }).then((res) => res.json()).then((res) => res).then(res => dispatch(getsessionsfromserver(res)));
+  };
+  //  dispatch(getsessionsfromserver())
+
+
+}*/
 export function previousChat(previouschat, chatlist) {
   var newchatlist = [...previouschat, ...chatlist];
 

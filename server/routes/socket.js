@@ -1260,6 +1260,20 @@ exports.getfileChatfromAgent = function(data){
 
 }
 
+//endpoint to get websessions
+exports.getwebchatsessions = function(companyid){
+    logger.serverLog('info', 'This is body in getwebchatsessions '+ companyid );
+    var customer_in_company_room =[]; //only online customers who are in your room
+
+    for(var j = 0;j<onlineWebClientsSession.length;j++){
+            if(onlineWebClientsSession[j].companyid == companyid && onlineWebClientsSession[j].platform == 'web'){
+              customer_in_company_room.push(onlineWebClientsSession[j]);
+            }
+          }
+    return customer_in_company_room;
+    
+
+}
 exports.broadcastfbchat = function(fbchat){
    //broadcast facebook messages send by agent to other agents 
         logger.serverLog('info','broadcast fb message is called ' + JSON.stringify(fbchat) );
