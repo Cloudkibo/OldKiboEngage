@@ -3703,7 +3703,11 @@ text-align: left;
 
 
 }
-
+.webfooterchatarea{
+    position: fixed;
+    bottom: 0;
+    z-index:99999999;
+}
 
 @media (max-width: 990px) {
     div.smallFix {

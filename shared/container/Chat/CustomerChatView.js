@@ -330,6 +330,7 @@ else{
   componentDidUpdate() {
     /*const messageList = this.refs.messageList;
     messageList.scrollTop = messageList.scrollHeight;*/
+    this.scrollToBottom();
     var userassigned = false;
     if(this.props.sessiondetails.agent_ids.length > 0){
         var obj = this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length - 1];
@@ -872,6 +873,11 @@ else{
 
 }
 
+scrollToBottom() {
+  const {thing} = this.refs;
+  thing.scrollTop = thing.scrollHeight - thing.clientHeight;
+}
+
 // Assign chat to Team - Not needed any more - Zarmeen
 
  //move message to another message channel
@@ -1160,7 +1166,7 @@ const { value, suggestions } = this.state;
 
           </div>
 
-          <div className="panel-body" style={{background: '#F5F5F5'}}>
+          <div className="panel-body" ref={`thing`} style={{background: '#F5F5F5'}}>
           {
             this.props.sessiondetails &&
           <div>
@@ -1183,7 +1189,7 @@ const { value, suggestions } = this.state;
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
 
                                (this.props.userdetails.firstname === chat.from?
-                                    <li className="pull-right clearfix agentChatBox uk-border-rounded" style={{marginTop: -10, background: '#F5F5F5', border: 0}}>
+                                    <li className="pull-right clearfix agentChatBox uk-border-rounded" style={{marginTop: -10, background: '#F5F5F5', width: 100 + '%', border: 0}}>
                                       <div className="chat-body clearfix" style={{hyphens: 'auto', wordBreak: 'break-all'}}>
                                         <div>
                                             <p  className="pull-right text-muted">{chat.from}</p>
@@ -1200,10 +1206,10 @@ const { value, suggestions } = this.state;
                                             {chat.msg}
                                        </p>
                                      }
-                                          <small className="pull-right text-muted">
+                                     </div>
+                                          <small className="pull-right text-muted" style={{marginRight: 15}}>
                                               {handleDate(chat.datetime)}
                                             </small>
-                                     </div>
                                    </li>
 
                                    :
@@ -1313,30 +1319,21 @@ const { value, suggestions } = this.state;
 
 
 
-             <div cclassName="footerchatarea" style={{ background: '#F5F5F5', overflow: false, overflowX: 'hidden'}}> 
+             <div className="webfooterchatarea" style={{ background: '#F5F5F5', overflow: false, overflowX: 'hidden', width: 100+"%"}}> 
 
 
               <div className="row">
-              <div className="col-md-10">
+              <div className="col-md-12 col-sm-12 col-lg-12">
                   <Autosuggest  ref = "msg" suggestions={suggestions}
                         onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
                         getSuggestionValue={getSuggestionValue}
                         renderSuggestion={renderSuggestion}
                         inputProps={inputProps} />
                     </div>
-                    <div>
-                      <button className="btn green" onClick ={this.connectToCall}> Start Call </button>
-
-                  </div>
                 </div>
 
 
-                </div>
-               <br/>
-
-
-
-            <div className="table-responsive">
+                <div className="table-responsive">
                <table className="table table-colored">
                  <tbody>
                     <tr>
@@ -1360,6 +1357,7 @@ const { value, suggestions } = this.state;
                   </tbody>
                   </table>
                   </div>
+                </div>
 
 
       </div>
