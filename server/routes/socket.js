@@ -6,8 +6,15 @@
 var glob;
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('kiboengagetesthub','Endpoint=sb://kiboengagetesthub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=TDM/hTOZxsgXq7hFcvO3/cJ3PeoQCRD82COpO7hwWbM=');
-
+import request from 'request';
+var baseURL = `https://api.kibosupport.com`
 var logger = require('../logger/logger');
+var  headers =  {
+ 'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+ 'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+ 'kibo-client-id': 'cd89f71715f2014725163952',
+
+ }
 function sendPushNotification(tagname, payload){
   //tagname = tagname.substring(1);   //in kiboengage we will use customerid as a tagname
   var iOSMessage = {
@@ -41,6 +48,47 @@ function sendPushNotification(tagname, payload){
 
 
  
+}
+
+function sendPushNotificationToTeamAgents(data){
+  console.log('sendPushNotificationToTeamAgents is called');
+  var options = {
+      url: `${baseURL}/api/deptteams/allagents/${data.departmentid}`,
+      rejectUnauthorized : false,
+      headers
+
+    };
+
+    function callback(error, response, body) {
+        //console.log(error);
+        console.log(response.statusCode);
+
+    //   console.log(body);
+
+       if(!error && response.statusCode == 200)
+       {
+            var agents_array = JSON.parse(body);
+            for(var j=0;j<agents_array.length;j++){
+              console.log('sending push notification to '+agents_array[j].email);
+              var payload = {
+                data: {
+                  request_id : data.request_id, //this is request id of session
+                  type:data.type,
+                },
+                badge: 0
+              };
+              console.log(payload.data);
+              sendPushNotification('Agent-'+agents_array[j].email,payload)
+                    
+                  }
+            return 'success';
+       }
+       else{
+        return 'error';
+       }
+      
+   }
+        request.get(options, callback);
 }
 
 
@@ -116,7 +164,10 @@ function onDisconnect(io2, socket) {
   for(var j = 0;j< onlineWebClientsSession.length;j++){
 
     if(onlineWebClientsSession[j].socketid == socket.id){
-      console.log('Remove session,customer went offline');
+      console.log('Remove session,customer went offline'); 
+      // here we need to send push notification to mobile agents so that they can update list of chat sessions on APP
+       sendPushNotificationToTeamAgents({type:'customer-left','request_id':onlineWebClientsSession[j].request_id,'departmentid':onlineWebClientsSession[j].departmentid});
+
       room = onlineWebClientsSession[j].companyid;
       req_id = onlineWebClientsSession[j].request_id;
       console.log(req_id);
@@ -609,6 +660,10 @@ socket.on('getOnlineAgentList',function() {
       //push customer session in the array of onlineWebClientsSession
 
       onlineWebClientsSession.push(room);
+
+      //inform mobile agents that customer has arrived on widget
+      sendPushNotificationToTeamAgents({type:'customer-joined','request_id':room.request_id,'departmentid':room.departmentid});
+
       onlineWebClientsSession = onlineWebClientsSession.reverse();
       var customer_in_company_room =[]; //only online customers who are in your room
       for(var j = 0;j<onlineWebClientsSession.length;j++){
