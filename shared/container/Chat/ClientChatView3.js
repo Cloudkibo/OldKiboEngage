@@ -6,7 +6,7 @@ import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
 import {chatbotsession, sendchatToBot2, chatbotChatAdd}  from '../../redux/actions/actions'
 import * as ReactDOM from 'react-dom';
-import {ApiAiClient, ApiAiStreamClient} from 'api-ai-javascript';
+//import {ApiAiClient, ApiAiStreamClient} from 'api-ai-javascript';
 
 var handleDate = function (d) {
   var c = new Date(d);
@@ -72,17 +72,17 @@ class ClientChatView3 extends Component {
 
   handleMessageSubmit(e) {
 
-    alert('going to call API.AI client SDK');
-    const client = new ApiAiClient({accessToken: 'da0a2772468e4af2a677d5da5f6d2618', streamClientClass: ApiAiStreamClient});
-    client
-
-      .textRequest('Hello!')
-      .then((response) => {
-        alert('Response to SDk'+ JSON.stringify(response));
-      })
-      .catch((error) => {
-        alert('Error Response to SDk'+ JSON.stringify(error));
-      })
+    // alert('going to call API.AI client SDK');
+    // const client = new ApiAiClient({accessToken: 'da0a2772468e4af2a677d5da5f6d2618', streamClientClass: ApiAiStreamClient});
+    // client
+    //
+    //   .textRequest('Hello!')
+    //   .then((response) => {
+    //     alert('Response to SDk'+ JSON.stringify(response));
+    //   })
+    //   .catch((error) => {
+    //     alert('Error Response to SDk'+ JSON.stringify(error));
+    //   })
 
     if (e.which === 13 && this.refs.msg.value != '') {
 
