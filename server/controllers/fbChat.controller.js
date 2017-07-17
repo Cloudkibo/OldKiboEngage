@@ -199,8 +199,11 @@ export function chatwebhook(req, res) {
 
                           };
 
+                          console.log('request to read status payload: ', JSON.stringify(readstatusRequestPayload));
+
                           request.post(optionsReadStatusRequest,
                             function(errorReadStatus, responseReadStatus, bodyReadStatus){
+                              console.log('response from read status');
                               console.log(responseReadStatus);
                               console.log(bodyReadStatus);
 
