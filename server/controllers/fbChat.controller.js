@@ -185,7 +185,7 @@ export function chatwebhook(req, res) {
                           }
 
                           var readstatusRequestPayload = {
-                            group_id: fbpage.pageid,
+                            group_id: fbpage._id,
                             company_id: customerobj.companyid,
                             message_id: body._id,
                             request_id: fbpage.pageid +'$'+ customerobj.user_id,
@@ -204,8 +204,8 @@ export function chatwebhook(req, res) {
                           request.post(optionsReadStatusRequest,
                             function(errorReadStatus, responseReadStatus, bodyReadStatus){
                               console.log('response from read status');
-                              console.log(responseReadStatus);
-                              console.log(bodyReadStatus);
+                              //console.log(responseReadStatus);
+                              //console.log(bodyReadStatus);
 
                           });
 
@@ -326,7 +326,7 @@ export function chatwebhook(req, res) {
                         }
 
                         var readstatusRequestPayload = {
-                          group_id: fbpage.pageid,
+                          group_id: fbpage._id,
                           company_id: customerobj.companyid,
                           message_id: body._id,
                           request_id: fbpage.pageid +'$'+ customerobj.user_id,
@@ -345,8 +345,8 @@ export function chatwebhook(req, res) {
                         request.post(optionsReadStatusRequest,
                           function(errorReadStatus, responseReadStatus, bodyReadStatus){
                             console.log('response from read status');
-                            console.log(responseReadStatus);
-                            console.log(bodyReadStatus);
+                            //console.log(responseReadStatus);
+                            //console.log(bodyReadStatus);
 
                           });
 
