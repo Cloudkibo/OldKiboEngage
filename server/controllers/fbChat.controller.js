@@ -185,10 +185,10 @@ export function chatwebhook(req, res) {
                           }
 
                           var readstatusRequestPayload = {
-                            group_id: fbpage,
+                            group_id: fbpage.pageid,
                             company_id: customerobj.companyid,
                             message_id: body._id,
-                            request_id: fbpage +'$'+ customerobj.user_id,
+                            request_id: fbpage.pageid +'$'+ customerobj.user_id,
                           };
 
                           var optionsReadStatusRequest = {
@@ -324,6 +324,32 @@ export function chatwebhook(req, res) {
 
 
                         }
+
+                        var readstatusRequestPayload = {
+                          group_id: fbpage.pageid,
+                          company_id: customerobj.companyid,
+                          message_id: body._id,
+                          request_id: fbpage.pageid +'$'+ customerobj.user_id,
+                        };
+
+                        var optionsReadStatusRequest = {
+                          url: `${baseURL}/api/readstatus/`,
+                          rejectUnauthorized: false,
+                          headers: headers,
+                          json: readstatusRequestPayload,
+
+                        };
+
+                        console.log('request to read status payload: ', JSON.stringify(readstatusRequestPayload));
+
+                        request.post(optionsReadStatusRequest,
+                          function(errorReadStatus, responseReadStatus, bodyReadStatus){
+                            console.log('response from read status');
+                            console.log(responseReadStatus);
+                            console.log(bodyReadStatus);
+
+                          });
+
                         console.log('socketsession is');
                         console.log(socketsession);
                         socket.getfbchat({chatobj, socketsession});
