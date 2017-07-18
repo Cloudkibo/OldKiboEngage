@@ -1039,6 +1039,28 @@ export function resolvechatsessionfb(req, res) {
     console.log(body);
 
     if (!error && response.statusCode == 200) {
+
+      var readstatusRequestPayload = {
+        request_id: req.body.pageid +'$'+ req.body.user_id,
+      };
+
+      var optionsReadStatusRequest = {
+        url: `${baseURL}/api/readstatus/deleteforsession`,
+        rejectUnauthorized: false,
+        headers: headers,
+        json: readstatusRequestPayload,
+
+      };
+
+      console.log('request to read status payload: ', JSON.stringify(readstatusRequestPayload));
+
+      request.post(optionsReadStatusRequest,
+        function(errorReadStatus, responseReadStatus, bodyReadStatus){
+          console.log('response from read status');
+          //console.log(responseReadStatus);
+          //console.log(bodyReadStatus);
+
+        });
       //console.log(body)
       // inform mobile agents through push notification
       //send push notification to all agents
