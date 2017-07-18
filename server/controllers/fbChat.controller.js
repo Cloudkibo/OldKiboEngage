@@ -1057,8 +1057,8 @@ export function resolvechatsessionfb(req, res) {
       request.post(optionsReadStatusRequest,
         function(errorReadStatus, responseReadStatus, bodyReadStatus){
           console.log('response from read status');
-          //console.log(responseReadStatus);
-          //console.log(bodyReadStatus);
+          console.log(errorReadStatus);
+          console.log(bodyReadStatus);
 
         });
       //console.log(body)
