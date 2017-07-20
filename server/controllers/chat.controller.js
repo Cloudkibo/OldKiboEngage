@@ -745,6 +745,33 @@ export function getChatMessage(req, res) {
     console.log('getChatMessage is called');
     var chat   = req.body;
     console.log(chat);
+
+    //create tuple for unseen messages on swagger
+    var readstatusRequestPayload = {
+                            group_id: req.body.departmentid,
+                            company_id: req.body.companyid,
+                            message_id: req.body.uniqueid,
+                            request_id: req.body.request_id,
+                          };
+
+                          var optionsReadStatusRequest = {
+                            url: `${baseURL}/api/readstatus/`,
+                            rejectUnauthorized: false,
+                            headers: headers,
+                            json: readstatusRequestPayload,
+
+                          };
+
+                          console.log('request to read status payload: ', JSON.stringify(readstatusRequestPayload));
+
+                          request.post(optionsReadStatusRequest,
+                            function(errorReadStatus, responseReadStatus, bodyReadStatus){
+                              console.log('response from read status');
+                              //console.log(responseReadStatus);
+                              //console.log(bodyReadStatus);
+
+                          });
+
     ss.getchat(req.body);
 
     //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
