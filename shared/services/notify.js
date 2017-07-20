@@ -1,5 +1,7 @@
 export function notify(message) {
   // Let's check if the browser supports notifications
+  console.log('notify called');
+  //console.log(window.location.host);
   if (!('Notification' in window)) {
     // alert("This browser does not support desktop notification");
   } else if (Notification.permission === 'granted') {

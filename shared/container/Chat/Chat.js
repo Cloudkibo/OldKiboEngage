@@ -100,12 +100,12 @@ class Chat extends Component {
   }
    showSession(customer){
     console.log('showSession called');
-    console.log(customer);
+   // console.log(customer);
     var get_teams_assigned_to_group = this.props.deptteams.filter((c) => c.deptid._id == customer.departmentid);
-    console.log(get_teams_assigned_to_group.length);
+   // console.log(get_teams_assigned_to_group.length);
     var is_agent_in_team = false;
     for(var i=0;i<get_teams_assigned_to_group.length;i++){
-      console.log(get_teams_assigned_to_group[i]);
+   //   console.log(get_teams_assigned_to_group[i]);
       for(var j=0;j<this.props.teamagents.length;j++){
         if(get_teams_assigned_to_group[i].teamid && get_teams_assigned_to_group[i].teamid._id == this.props.teamagents[j].groupid._id && this.props.teamagents[j].agentid._id == this.props.userdetails._id ){
           is_agent_in_team = true;

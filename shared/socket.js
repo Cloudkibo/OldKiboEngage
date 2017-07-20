@@ -55,12 +55,37 @@ function showSession(customer){
    return is_agent_in_team;
   }
 
-   function showSession_for_web(customer){
+
+  function showSessionforMessage(senderid,recipientid){
+    console.log('showSessionforMessage called');
+    var is_agent_in_team = false;
+   
+    if(store.getState().dashboard.fbteams)
+    {
+    var get_teams_assigned_to_page = store.getState().dashboard.fbteams.filter((c) => c.pageid._id == senderid || c.pageid._id == recipientid);
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+  }
+   return is_agent_in_team;
+  }
+
+   function showSession_for_web(departmentid){
      var is_agent_in_team = false;
    
     if(store.getState().dashboard.deptteams)
     {
-    var get_teams_assigned_to_group = store.getState().dashboard.deptteams.filter((c) => c.deptid._id == customer.departmentid);
+    var get_teams_assigned_to_group = store.getState().dashboard.deptteams.filter((c) => c.deptid._id == departmentid);
     for(var i=0;i<get_teams_assigned_to_group.length;i++){
       for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
         if(get_teams_assigned_to_group[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
@@ -85,9 +110,9 @@ export function initiateSocket(storeObj) {
 
 socket.on('customer_joined', (data,currentsession) => {
   console.log('customer_joined');
-  console.log(showSession_for_web(currentsession));
+  console.log(showSession_for_web(currentsession.departmentid));
   console.log(currentsession);
-  if(showSession_for_web(currentsession) == true){
+  if(showSession_for_web(currentsession.departmentid) == true){
   notify('A customer has joined.');
 }
   console.log(data.length);
@@ -114,6 +139,11 @@ socket.on('send:fbmessage', (data) => {
   // printlogs('log','new fb message is received');
   // printlogs('log',data)
   // printlogs('log',this.props.fbsessionSelected);
+   console.log(window.location.host);
+   if(showSessionforMessage(data.senderid,data.recipientid) == true && window.location.origin != "https://kiboengage.kibosupport.com"){
+     notify('facebook customer sends a message');
+ 
+  }
   if (store.getState().dashboard.fbsessionSelected && store.getState().dashboard.fbchats) {
     if (!store.getState().dashboard.fbsessionSelected.user_id) {
       data.seen = false;
@@ -165,6 +195,11 @@ socket.on('informAgent', (message) => {
 socket.on('send:message', (message) => {
    console.log('send:message called');
    console.log(message);
+   console.log(window.location);
+    if(showSession_for_web(message.departmentid) == true && window.location.origin != "https://kiboengage.kibosupport.com"){
+     notify('customer sends a message');
+ 
+  }
   if (store.getState().dashboard.customerchat_selected) {
     if ((store.getState().dashboard.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
       printlogs('log','mobile userchat is not selected, message received');

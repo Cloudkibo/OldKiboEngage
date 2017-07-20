@@ -84,7 +84,7 @@ import { returnSocket } from './socket';
 
 let socket = returnSocket();
 
-console.log('entered into routes');
+//console.log('entered into routes');
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
     console.log('you are not logged in.');
