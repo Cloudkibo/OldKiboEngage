@@ -4275,9 +4275,13 @@ export function resolvesessionfb(data, usertoken, fbsessionSelected, fbsession, 
     fetch(`${baseURL}/api/resolvechatsessionfb`, {
       method: 'post',
       body: JSON.stringify({
-        companyid: data.companyid,
-        pageid: data.pageid,
-        user_id: data.userid,
+        resolvesessiondetails: {
+          companyid: data.companyid,
+          pageid: data.pageid,
+          user_id: data.userid,
+        },
+        pageid: fbsessionSelected.pageid.pageid,
+        user_id: fbsessionSelected.user_id.user_id,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',

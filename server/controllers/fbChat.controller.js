@@ -1028,7 +1028,7 @@ export function resolvechatsessionfb(req, res) {
       'Authorization': `Bearer ${token}`
     },
     rejectUnauthorized: false,
-    json: req.body
+    json: req.body.resolvesessiondetails
 
 
   };
