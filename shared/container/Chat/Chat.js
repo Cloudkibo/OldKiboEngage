@@ -328,9 +328,9 @@ class Chat extends Component {
                             <input type="hidden" ref="agentsocketfield" name="agentsocketfield"
                                    value={this.props.yoursocketid}/>
                           }
-                          {this.props.userchats && this.props.deptteams && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 &&
+                          {this.props.userchats && this.props.deptteams && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 && this.props.subgroups &&
                           this.props.customerchatfiltered.map((customer, i) => (
-                            this.showSession(customer) == true &&
+                            this.showSession(customer) == true && this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length - 1]).length>0 &&
                             (this.props.new_message_arrived_rid && this.props.userchats?
 
                                 <ChatListItem

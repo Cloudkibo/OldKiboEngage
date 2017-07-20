@@ -84,11 +84,16 @@ var ch=[]
 
   {
          props.subgroup &&
-                        props.subgroup.map((cha, i) => (
+                        props.subgroup.map((cha, i) => {
+                          // console.log('this is channel')
+                          // console.log(cha)
                            ch.push(cha)
-                        ))
+                         
+                        })
 
       }
+//console.log('ch length');
+//console.log(ch.length);
 var unread = []
 {
   props.new_message_arrived_rid &&  props.new_message_arrived_rid.map((unre, i) => (
@@ -148,7 +153,7 @@ return res;
           (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
            <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15, color: 'black'}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}
-              <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
+              <span>{ag[0].deptname +'-' + (ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</span>
             </p>
              <div className="uk-align-right">
             <p className="uk-text-meta " style={{color: 'white'}} ><span className='badge' style={rightStyle}>{unreadCount}</span> {difference} </p>
@@ -180,7 +185,7 @@ return res;
 
            <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID} 
-            <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>{ag[0].deptname +'-' + ch[0].msg_channel_name}</p>
+            <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>{ag[0].deptname +'-' + (ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</p>
             <span style={{fontSize: 10, margin:5}}>{props.customer.status} </span>
             </p>
 
