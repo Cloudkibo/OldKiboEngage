@@ -139,8 +139,9 @@ socket.on('send:fbmessage', (data) => {
   // printlogs('log','new fb message is received');
   // printlogs('log',data)
   // printlogs('log',this.props.fbsessionSelected);
-   console.log(window.location.host);
-   if(showSessionforMessage(data.senderid,data.recipientid) == true && window.location.origin != "https://kiboengage.kibosupport.com"){
+  
+   if(showSessionforMessage(data.senderid,data.recipientid) == true){
+     console.log("show notification");
      notify('facebook customer sends a message');
  
   }
@@ -195,8 +196,9 @@ socket.on('informAgent', (message) => {
 socket.on('send:message', (message) => {
    console.log('send:message called');
    console.log(message);
-   console.log(window.location);
-    if(showSession_for_web(message.departmentid) == true && window.location.origin != "https://kiboengage.kibosupport.com"){
+  
+    if(showSession_for_web(message.departmentid) == true){
+     console.log('show notification');
      notify('customer sends a message');
  
   }
