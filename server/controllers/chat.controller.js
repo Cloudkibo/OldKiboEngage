@@ -1307,4 +1307,35 @@ export function getallsessions(req, res) {
   
 };
 
+export function getunreadsessionscount(req, res) {
+  console.log('getunreadsessionscount');
+  var token = req.headers.authorization;
+  var options = {
+      url: `${baseURL}/api/readstatus/getunreadsessionscount`,
+      rejectUnauthorized : false,
+      json: req.body,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+
+    };
+
+    function callback(error, response, body) {
+       if(!error && response.statusCode == 200)
+       {
+          // //console.log(body)
+            return res.status(200).json(body);
+       }
+       else
+       {
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+   }
+        request.post(options, callback);
+      
+
+     
+
+  }
 

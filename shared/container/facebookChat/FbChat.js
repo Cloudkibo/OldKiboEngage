@@ -17,7 +17,8 @@ import {
   getfbChats,
   getresponses,
   getfbTeams,
-  selectFbCustomerChat
+  selectFbCustomerChat,
+  getunreadsessionscount,
 }  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -50,6 +51,7 @@ class FbChat extends Component {
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
       props.getfbTeams(usertoken);
+      props.getunreadsessionscount(usertoken,props.userdetails._id);
 
       //props.getmetaurl(url, usertoken);
       callonce = true;
@@ -198,12 +200,13 @@ class FbChat extends Component {
                       </div>
                       <article>
                         <div>
-                          {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id &&
+                          {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id && this.props.unreadcount &&
                           this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
                               this.showSession(customer) == true &&
                               <FbCustomerListItem onClickSession={this.handleSession.bind(this, customer)}
                                                   userchat={this.props.fbchats.filter((ch) => ch.senderid == customer.user_id.user_id)}
                                                   customer={customer} selectedCustomer={this.props.fbsessionSelected}
+                                                  unreadcount={this.props.unreadcount.filter((c) => c._id.request_id == customer.pageid.pageid + '$' + customer.user_id.user_id)}
                                                   key={i} agents={this.props.agents} team={this.props.teamdetails}/>
 
                             )
@@ -290,6 +293,7 @@ function mapStateToProps(state) {
     componentVisible: state.dashboard.componentVisible,
     sessionsortorder: state.dashboard.sessionsortorder,
     fbteams:(state.dashboard.fbteams),
+    unreadcount:(state.dashboard.unreadcount),
 
   };
 }
@@ -310,6 +314,7 @@ export default connect(mapStateToProps, {
   selectFbCustomerChat,
   getmetaurl,
   getfbTeams,
+  getunreadsessionscount,
 },null,{
   pure: false
 })(FbChat);

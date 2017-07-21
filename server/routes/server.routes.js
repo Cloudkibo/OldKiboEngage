@@ -118,6 +118,7 @@ router.route('/emailCustomer').post(CustomerController.emailCustomer);
 router.route('/rescheduleEmail').post(CustomerController.rescheduleEmail);
 
 router.route('/createsession').post(ChatController.createsession);
+router.route('/userchats/getunreadsessionscount').post(ChatController.getunreadsessionscount);
 router.route('/savechat').post(ChatController.savechat);
 router.route('/getsessions').get(ChatController.getsessions);
 router.route('/getcompanyprofile').get(UserController.getcompanyprofile);

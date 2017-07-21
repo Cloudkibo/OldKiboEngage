@@ -76,13 +76,13 @@ if(props.customer.user_id.user_id === props.selectedCustomer.user_id.user_id && 
   selected = true;
 }
 
-var unreadCount = 0;
+/*var unreadCount = 0;
 for(var i = 0;i< props.userchat.length;i++){
   if(props.userchat[i].seen == false)
   {
       unreadCount = unreadCount+1;
   }
-}
+}*/
 
 
 var handleDate = function(d){
@@ -132,8 +132,8 @@ var hours = date.getHours();
       <br/>
      { /*<span  style={changefont}><i className="glyphicon glyphicon-time" style={{fontSize:10}}/>{handleTime(props.customer.lastmessage.timestamp)}</span> */}
 
-      {(unreadCount == 0?
-       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
+      {(props.unreadcount.length == 0?
+       <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{props.unreadcount[0].count}</span>
 
        )}
 
@@ -149,10 +149,10 @@ var hours = date.getHours();
             <span style={{marginLeft: 0}}><img src="https://2.bp.blogspot.com/-C2LnFyB5k8Y/WIXjq5JOcSI/AAAAAAAABaI/mpVFjigXXm08iewoD0-k8mnIMvQm31I1wCPcB/s1600/facebook-logn-shadow.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {props.customer.pageid.pageTitle}</span>
     </div>
     :
-    unreadCount > 0 ?
+    props.unreadcount.length > 0 ?
    ( <div className="list-group-item uk-padding-small uk-padding-remove-bottom uk-card uk-card-body uk-card-default" style={{'width':'100%', 'cursor': 'pointer', 'backgroundColor' : 'rgba(255, 0, 0, 0.3)','height':'auto', border: 0, marginBottom:0, marginTop:0}} onClick={props.onClickSession}>
     <img src={props.customer.user_id.profile_pic} style={{maxWidth: 35, maxHeight: 35}} className="uk-border-circle"/>
-    <span className='badge' style={rightStyle}>{unreadCount}</span>
+    <span className='badge' style={rightStyle}>{props.unreadcount[0].count}</span>
     
     <span style={{margin: 15}}> <b>{props.customer.user_id.first_name + ' '+props.customer.user_id.last_name}</b></span>
     <span  style={changefont}>{difference}</span>
@@ -166,7 +166,7 @@ var hours = date.getHours();
           
           <span style={{...statusstyle, marginBottom: 10}} className="uk-align-right"><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 20, maxHeight:20}}/> {agentname[agentname.length-1]}</span>
               :
-                 <span style={{...statusstyle, marginBottom: 10}} className="uk-align-right">{props.customer.status}</span>
+          <span style={{...statusstyle, marginBottom: 10}} className="uk-align-right">{props.customer.status}</span>
           
         }
 

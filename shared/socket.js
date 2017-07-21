@@ -20,7 +20,8 @@ import {
   updateChatList,
   removeDuplicates,
   removeDuplicatesWebChat,
-  update_mobileuserchats_list
+  update_mobileuserchats_list,
+  getunreadsessionscount,
 
 } from './redux/actions/actions';
 import {notify} from './services/notify';
@@ -139,7 +140,7 @@ socket.on('send:fbmessage', (data) => {
   // printlogs('log','new fb message is received');
   // printlogs('log',data)
   // printlogs('log',this.props.fbsessionSelected);
-  
+  const usertoken = auth.getToken();
    if(showSessionforMessage(data.senderid,data.recipientid) == true){
      console.log("show notification");
      notify('facebook customer sends a message');
@@ -162,6 +163,7 @@ socket.on('send:fbmessage', (data) => {
     }
 
     store.dispatch(add_socket_fb_message(data, store.getState().dashboard.fbchats, store.getState().dashboard.fbsessionSelected.user_id.user_id, store.getState().dashboard.fbsessions, store.getState().dashboard.sessionsortorder));
+    store.dispatch(getunreadsessionscount(usertoken, store.getState().dashboard.userdetails._id));
   }
   //  this.forceUpdate();
 });

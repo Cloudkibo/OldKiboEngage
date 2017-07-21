@@ -175,6 +175,12 @@ const dashboard = (state = dashboardState, action) => {
 
 
       };
+      case ActionTypes.SHOW_UNREAD_COUNT:
+         return {
+        ...state, errorMessageProfile: '',
+        unreadcount:action.payload,
+        }
+
 
       case ActionTypes.ADD_FBTEAMS:
       //console.log(action.agents)

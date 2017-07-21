@@ -262,6 +262,33 @@ export function fetchSpecificChat(data) {
   };
 }
 
+const showUnreadCount = (res) => {
+ // console.log(res);
+  return {
+    type: ActionTypes.SHOW_UNREAD_COUNT,
+    payload: res,
+  };
+};
+
+
+export const getunreadsessionscount = (token, agentid) => {
+ return (dispatch) => {
+    fetch(`${baseURL}/api/userchats/getunreadsessionscount`, {
+      method: 'post',
+      body: JSON.stringify({
+        agent_id: agentid,
+
+      }),
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+          dispatch(showUnreadCount(res));
+             });
+  };
+}
+
 export function showSpecificChat_Error(chat_error) {
   printlogs('log', chat_error);
   return {
