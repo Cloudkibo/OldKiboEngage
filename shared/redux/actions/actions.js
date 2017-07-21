@@ -304,7 +304,7 @@ export const deleteUnreadCountStatusWhenAgentReadForFb = (token, agentid, reques
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
     //  dispatch(showUnreadCount(res));
-    getunreadsessionscount(token,agentid);
+     dispatch(getunreadsessionscount(token,agentid));
     });
   };
 }
