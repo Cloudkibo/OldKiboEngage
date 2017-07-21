@@ -24,7 +24,7 @@ import {
   filterChat,
   selectCustomerChat,
   updatechatsessionstatus,
-  getDeptTeams
+  getDeptTeams,getunreadsessionscount
 }  from '../../redux/actions/actions';
 
 import {initiateChatComponent} from '../../socket';
@@ -76,6 +76,7 @@ class Chat extends Component {
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
       props.getDeptTeams(usertoken);
+      props.getunreadsessionscount(usertoken,props.userdetails._id);
 
       
 
@@ -328,7 +329,7 @@ class Chat extends Component {
                             <input type="hidden" ref="agentsocketfield" name="agentsocketfield"
                                    value={this.props.yoursocketid}/>
                           }
-                          {this.props.userchats && this.props.deptteams && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 && this.props.subgroups &&
+                          {this.props.userchats && this.props.deptteams && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 && this.props.subgroups && this.props.unreadcount&&
                           this.props.customerchatfiltered.map((customer, i) => (
                             this.showSession(customer) == true && this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length - 1]).length>0 &&
                             (this.props.new_message_arrived_rid && this.props.userchats?
@@ -337,6 +338,7 @@ class Chat extends Component {
                                   userchat={this.props.userchats.filter((ch) => ch.request_id == customer.request_id)}
                                   selectedsession={this.props.customerchat_selected}
                                   new_message_arrived_rid={this.props.new_message_arrived_rid} customer={customer}
+                                  unreadcount={this.props.unreadcount.filter((c) => c._id.request_id == customer.request_id)}
                                   key={i}
                                   onClickSession={this.handleSession.bind(this, customer.request_id, customer.platform)}
                                   group={this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}
@@ -349,7 +351,9 @@ class Chat extends Component {
                                   onClickSession={this.handleSession.bind(this, customer.request_id, customer.platform)}
                                   group={this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}
                                   subgroup={this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length - 1])}
-                                  agents={this.props.agents} team={this.props.teamdetails}/>
+                                  agents={this.props.agents} team={this.props.teamdetails}
+                                  unreadcount={this.props.unreadcount.filter((c) => c._id.request_id == customer.request_id)}
+                                  />
                             )
 
 
@@ -429,6 +433,7 @@ function mapStateToProps(state) {
     groupdetails: (state.dashboard.groupdetails),
     filterlist: (state.widget.filterlist),
     deptteams:(state.dashboard.deptteams),
+    unreadcount:(state.dashboard.unreadcount),
   };
 }
 
@@ -454,5 +459,6 @@ export default connect(mapStateToProps, {
   getcustomers,
   selectCustomerChat,
   filterChat,
+  getunreadsessionscount,
   updatechatsessionstatus
 })(Chat);

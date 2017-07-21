@@ -745,7 +745,12 @@ export function getChatMessage(req, res) {
     console.log('getChatMessage is called');
     var chat   = req.body;
     console.log(chat);
+    var  headers =  {
+               'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
+               'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
+               'kibo-client-id': 'cd89f71715f2014725163952',
 
+               }
     //create tuple for unseen messages on swagger
     var readstatusRequestPayload = {
                             group_id: req.body.departmentid,
@@ -767,20 +772,16 @@ export function getChatMessage(req, res) {
                           request.post(optionsReadStatusRequest,
                             function(errorReadStatus, responseReadStatus, bodyReadStatus){
                               console.log('response from read status');
-                              //console.log(responseReadStatus);
-                              //console.log(bodyReadStatus);
+                              ss.getchat(req.body);
+                              console.log(responseReadStatus.status);
+                              console.log(bodyReadStatus);
 
                           });
 
-    ss.getchat(req.body);
+   
 
     //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
-    var  headers =  {
-               'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
-               'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
-               'kibo-client-id': 'cd89f71715f2014725163952',
-
-               }
+   
               var options = {
                             url: `${baseURL}/api/deptteams/deptteamAgents`,
                             rejectUnauthorized : false,
