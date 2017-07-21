@@ -303,7 +303,8 @@ export const deleteUnreadCountStatusWhenAgentReadForFb = (token, agentid, reques
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-      dispatch(showUnreadCount(res));
+    //  dispatch(showUnreadCount(res));
+    getunreadsessionscount(token,agentid);
     });
   };
 }
@@ -322,7 +323,8 @@ export const deleteUnreadCountStatusWhenAgentReadForSimple = (token, agentid, re
         'Content-Type': 'application/json',
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
-      dispatch(showUnreadCount(res));
+     // dispatch(showUnreadCount(res));
+     dispatch(getunreadsessionscount(token,agentid));
     });
   };
 }

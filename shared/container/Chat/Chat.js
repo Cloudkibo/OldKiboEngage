@@ -243,7 +243,7 @@ class Chat extends Component {
     // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
 
     this.props.selectCustomerChat(id, this.props.customerchat, this.props.new_message_arrived_rid);
-    this.props.deleteUnreadCountStatusWhenAgentReadForSimple(token, this.props.userdetails._id, id);
+    this.props.deleteUnreadCountStatusWhenAgentReadForSimple(usertoken, this.props.userdetails._id, id);
     //  this.forceUpdate();
 
   }

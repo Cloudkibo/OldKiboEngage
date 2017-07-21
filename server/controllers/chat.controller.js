@@ -1341,6 +1341,7 @@ export function getunreadsessionscount(req, res) {
   }
 
 export function markSimpleChatAsRead(req, res) {
+  var token = req.headers.authorization;
   var readstatusRequestPayload = {
     agent_id: req.body.agent_id,
     request_id: req.body.request_id,
