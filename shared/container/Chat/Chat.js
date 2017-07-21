@@ -24,7 +24,7 @@ import {
   filterChat,
   selectCustomerChat,
   updatechatsessionstatus,
-  getDeptTeams,getunreadsessionscount
+  getDeptTeams,getunreadsessionscount, deleteUnreadCountStatusWhenAgentReadForSimple,
 }  from '../../redux/actions/actions';
 
 import {initiateChatComponent} from '../../socket';
@@ -78,7 +78,7 @@ class Chat extends Component {
       props.getDeptTeams(usertoken);
       props.getunreadsessionscount(usertoken,props.userdetails._id);
 
-      
+
 
     }
 
@@ -95,7 +95,7 @@ class Chat extends Component {
   getchannelname(subgroup){
     var deptname = 'deleted'
     if(this.props.groupdetails.filter((d) => d._id == subgroup.groupid).length > 0){
-      deptname = this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname; 
+      deptname = this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname;
     }
     return deptname+ ' : ' + subgroup.msg_channel_name;
   }
@@ -135,10 +135,10 @@ class Chat extends Component {
                   console.log('agent matched');
 
                   agents_in_teams.push(this.props.teamagents[j].agentid);
-                
+
                 }
               }
-             
+
             }
     }
 
@@ -155,11 +155,11 @@ class Chat extends Component {
                       break;
                     }
                   }
-                  
-                
+
+
                 }
               }
-             
+
             }
     }
    // removing duplicates
@@ -172,7 +172,7 @@ class Chat extends Component {
 
   for (i in lookupObject) {
     newArray.push(lookupObject[i]);
-  } 
+  }
    return newArray;
   }
 
@@ -216,6 +216,7 @@ class Chat extends Component {
       this.props.updatesubgrouplist(this.refs.grouplist.value);
     }
     this.forceUpdate();
+
     //this.props.filterbystatus(e.target.value,this.props.customerchatold);
     //this.forceUpdate();
 
@@ -242,6 +243,7 @@ class Chat extends Component {
     // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
 
     this.props.selectCustomerChat(id, this.props.customerchat, this.props.new_message_arrived_rid);
+    this.props.deleteUnreadCountStatusWhenAgentReadForSimple(token, this.props.userdetails._id, id);
     //  this.forceUpdate();
 
   }
@@ -460,5 +462,6 @@ export default connect(mapStateToProps, {
   selectCustomerChat,
   filterChat,
   getunreadsessionscount,
-  updatechatsessionstatus
+  updatechatsessionstatus,
+  deleteUnreadCountStatusWhenAgentReadForSimple,
 })(Chat);

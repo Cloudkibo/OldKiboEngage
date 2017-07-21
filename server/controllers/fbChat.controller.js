@@ -1103,6 +1103,37 @@ export function fetchurlmeta(req, res) {
 
 }
 
+export function markFbChatAsRead(req, res) {
+  var readstatusRequestPayload = {
+    agent_id: req.body.agent_id,
+    request_id: req.body.request_id,
+  };
+
+  var optionsReadStatusRequest = {
+    url: `${baseURL}/api/readstatus/deleteforagent`,
+    rejectUnauthorized: false,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    json: readstatusRequestPayload,
+
+  };
+
+  console.log('request to delete status payload: ', JSON.stringify(readstatusRequestPayload));
+
+  request.post(optionsReadStatusRequest,
+    function(errorReadStatus, responseReadStatus, bodyReadStatus){
+      console.log('response from read status');
+      if (!errorReadStatus) {
+        return res.status(201).json({ status: 'success' });
+      }
+      else {
+        return res.status(422).json({statusCode: 422, data: errorReadStatus});
+
+      }
+
+    });
+}
 
 function linkify(text) {
   var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;

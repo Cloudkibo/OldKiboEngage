@@ -706,13 +706,13 @@ function sendpushToTeamAgents(chatmessage,teamagents,deptteams,type){
                      'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
                      'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
                      'kibo-client-id': 'cd89f71715f2014725163952',
-                     
+
                      }
               var options = {
                                 url: `${baseURL}/api/users/allagents/`,
                                 rejectUnauthorized : false,
                                 headers,
-                                
+
                         };
               function callback(error, response, body) {
               console.log(body);
@@ -735,7 +735,7 @@ function sendpushToTeamAgents(chatmessage,teamagents,deptteams,type){
 
               }
 
-           
+
      }
        request.get(options, callback);
 
@@ -778,10 +778,10 @@ export function getChatMessage(req, res) {
 
                           });
 
-   
+
 
     //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
-   
+
               var options = {
                             url: `${baseURL}/api/deptteams/deptteamAgents`,
                             rejectUnauthorized : false,
@@ -801,14 +801,14 @@ export function getChatMessage(req, res) {
                  }
                }
                request.get(options,callback);
-   
+
 };
 
 // endpoint called by agent (web or mobile)
 export function getchatfromagent(req, res) {
     console.log('getchatfromagent is called');
     logger.serverLog('info', 'Inside getchatfromagent endpoint, req body = '+ JSON.stringify(req.body));
-  
+
     var chat   = req.body;
     console.log(chat);
     ss.getchatfromAgent(req.body);
@@ -859,7 +859,7 @@ function sendPushNotification(tagname,payload,alertmessage){
     }
   });
 
-  
+
 
 }
 
@@ -922,7 +922,7 @@ export function updatechatstatus(req, res) {
 export function uploadchatfile(req, res) {
   console.log('uploadchatfile called');
   console.log('req body');
-  
+
   console.log(req.body.chatmsg);
   console.log(req.files);
 
@@ -1205,7 +1205,7 @@ export function createforCloudkibo(req, res) {
                         message: messagebody,
 
                         pageid: pageid,
-                  
+
                       }
 
 
@@ -1226,14 +1226,14 @@ export function createforCloudkibo(req, res) {
               if(!error){
 
                   ss.broadcastfbchat(saveMsg);
-                  return res.json(201,{status:'success'});           
+                  return res.json(201,{status:'success'});
                 }
               }
-             request.post(optionsChat,callbackChat);  
+             request.post(optionsChat,callbackChat);
 
   }
   else{
-    
+
 
     var options = {
       url: `${baseURL}/api/userchats/create`,
@@ -1245,7 +1245,7 @@ export function createforCloudkibo(req, res) {
     };
 
     function callback(error, response, body) {
-    
+
        if(!error && response.statusCode == 201)
        {
             console.log(body)
@@ -1258,7 +1258,7 @@ export function createforCloudkibo(req, res) {
        }
    }
         request.post(options, callback);
-  
+
   }
 };
 
@@ -1275,13 +1275,13 @@ export function getallsessions(req, res) {
       headers :  {
                                  'Authorization': `Bearer ${token}`
                                  },
-      
+
     };
 
     function callback(error, response, body) {
         //console.log(response.statusCode);
        if(!error && response.statusCode == 200)
-       {  
+       {
             var totalsessions= JSON.parse(body);
             //now fetch web chat sessions from socket
             var webchatsessions = ss.getwebchatsessions(req.body.companyid);
@@ -1292,7 +1292,7 @@ export function getallsessions(req, res) {
             {
               totalsessions.push(webchatsessions[j]);
             }
-          
+
             console.log('totalsessions length' + totalsessions.length);
             return res.status(201).json(totalsessions);
        }
@@ -1304,8 +1304,8 @@ export function getallsessions(req, res) {
        }
    }
         request.get(options, callback);
-  
-  
+
+
 };
 
 export function getunreadsessionscount(req, res) {
@@ -1334,9 +1334,40 @@ export function getunreadsessionscount(req, res) {
        }
    }
         request.post(options, callback);
-      
 
-     
+
+
 
   }
 
+export function markSimpleChatAsRead(req, res) {
+  var readstatusRequestPayload = {
+    agent_id: req.body.agent_id,
+    request_id: req.body.request_id,
+  };
+
+  var optionsReadStatusRequest = {
+    url: `${baseURL}/api/readstatus/deleteforagent`,
+    rejectUnauthorized: false,
+    headers :  {
+      'Authorization': `Bearer ${token}`
+    },
+    json: readstatusRequestPayload,
+
+  };
+
+  console.log('request to delete status payload: ', JSON.stringify(readstatusRequestPayload));
+
+  request.post(optionsReadStatusRequest,
+    function(errorReadStatus, responseReadStatus, bodyReadStatus){
+      console.log('response from read status');
+      if (!errorReadStatus) {
+        return res.status(201).json({ status: 'success' });
+      }
+      else {
+        return res.status(422).json({statusCode: 422, data: errorReadStatus});
+
+      }
+
+    });
+}

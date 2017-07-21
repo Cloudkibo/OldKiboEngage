@@ -289,6 +289,44 @@ export const getunreadsessionscount = (token, agentid) => {
   };
 }
 
+export const deleteUnreadCountStatusWhenAgentReadForFb = (token, agentid, request_id) => {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/markFbChatAsRead`, {
+      method: 'post',
+      body: JSON.stringify({
+        agent_id: agentid,
+        request_id: request_id,
+
+      }),
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+      dispatch(showUnreadCount(res));
+    });
+  };
+}
+
+export const deleteUnreadCountStatusWhenAgentReadForSimple = (token, agentid, request_id) => {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/markSimpleChatAsRead`, {
+      method: 'post',
+      body: JSON.stringify({
+        agent_id: agentid,
+        request_id: request_id,
+
+      }),
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+      dispatch(showUnreadCount(res));
+    });
+  };
+}
+
 export function showSpecificChat_Error(chat_error) {
   printlogs('log', chat_error);
   return {
