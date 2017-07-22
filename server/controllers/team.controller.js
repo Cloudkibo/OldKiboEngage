@@ -127,7 +127,9 @@ export function teamagents(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-       // //console.log(info)
+        console.log("These are team agents");
+       // console.log(info);
+        console.log(info.length)
        
         ////console.log(info);
       return res.status(200).json(info);
