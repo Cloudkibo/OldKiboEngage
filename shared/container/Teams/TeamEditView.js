@@ -57,9 +57,11 @@ class TeamEditView extends Component {
           ag.push(this.props.newagents[i].agentid);
         }
       }
-      //console.log(ag);
+      console.log('edit team agents');
+      console.log(ag);
       this.props.editTeam({name :nameRef.value,desc:descRef.value, status: status.value,id:idRef.value,token:usertoken,teamagents: ag});
-     this.forceUpdate();
+     //this.forceUpdate();
+
     }
   }
 

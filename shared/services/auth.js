@@ -14,6 +14,7 @@ logout(cb) {
 loggedIn() {
   var token = cookie.load('token')
   //first check from server if this token is expired or is still valid
+  
   if(typeof token === 'undefined' || token === '') {
   //  console.log('token' + token);
     return false
