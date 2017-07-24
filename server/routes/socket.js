@@ -171,6 +171,7 @@ function onDisconnect(io2, socket) {
   var room
   var req_id;
   var customer_in_company_room =[]; 
+  var departmentid;
   for(var j = 0;j< onlineWebClientsSession.length;j++){
 
     if(onlineWebClientsSession[j].socketid == socket.id){
@@ -194,6 +195,7 @@ function onDisconnect(io2, socket) {
 
           socket.broadcast.to(room).emit('customer_left',customer_in_company_room);
         }
+    departmentid = onlineWebClientsSession[j].departmentid;      
     onlineWebClientsSession.splice(j,1);
       
   console.log('customers online : ' + customer_in_company_room.length);
@@ -224,7 +226,7 @@ function onDisconnect(io2, socket) {
     }
 
   console.log('customers online : ' + customer_in_company_room.length);
-  sendPushNotificationToTeamAgents({type:'customer-left','departmentid':onlineWebClientsSession[j].departmentid});
+  sendPushNotificationToTeamAgents({type:'customer-left','departmentid':departmentid});
 
   //ask clients to update their session list
    socket.broadcast.to(room).emit('returnCustomerSessionsList',customer_in_company_room);
