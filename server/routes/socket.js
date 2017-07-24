@@ -180,6 +180,7 @@ function onDisconnect(io2, socket) {
       
       room = onlineWebClientsSession[j].companyid;
       req_id = onlineWebClientsSession[j].request_id;
+      departmentid = onlineWebClientsSession[j].departmentid; 
       console.log(req_id);
       
        // update abandoned sessions list if the session status is new
@@ -195,7 +196,7 @@ function onDisconnect(io2, socket) {
 
           socket.broadcast.to(room).emit('customer_left',customer_in_company_room);
         }
-    departmentid = onlineWebClientsSession[j].departmentid;      
+         
     onlineWebClientsSession.splice(j,1);
       
   console.log('customers online : ' + customer_in_company_room.length);
