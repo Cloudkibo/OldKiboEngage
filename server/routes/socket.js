@@ -82,7 +82,7 @@ function sendPushNotificationToTeamAgents(data){
               console.log('sending push notification to '+agents_array[j].email);
               var payload = {
                 data: {
-                  request_id : data.request_id, //this is request id of session
+                 // request_id : data.request_id, //this is request id of session
                   type:data.type,
                 },
                 badge: 0
@@ -176,8 +176,7 @@ function onDisconnect(io2, socket) {
     if(onlineWebClientsSession[j].socketid == socket.id){
       console.log('Remove session,customer went offline'); 
       // here we need to send push notification to mobile agents so that they can update list of chat sessions on APP
-       sendPushNotificationToTeamAgents({type:'customer-left','request_id':onlineWebClientsSession[j].request_id,'departmentid':onlineWebClientsSession[j].departmentid});
-
+      
       room = onlineWebClientsSession[j].companyid;
       req_id = onlineWebClientsSession[j].request_id;
       console.log(req_id);
@@ -225,6 +224,8 @@ function onDisconnect(io2, socket) {
     }
 
   console.log('customers online : ' + customer_in_company_room.length);
+  sendPushNotificationToTeamAgents({type:'customer-left','departmentid':onlineWebClientsSession[j].departmentid});
+
   //ask clients to update their session list
    socket.broadcast.to(room).emit('returnCustomerSessionsList',customer_in_company_room);
    session_remove = false;

@@ -1282,14 +1282,14 @@ export function getallsessions(req, res) {
             var totalsessions= JSON.parse(body);
             //now fetch web chat sessions from socket
             var webchatsessions = ss.getwebchatsessions(req.body.companyid);
-            logger.serverLog('info', 'There are webchatsessions' + JSON.stringify(webchatsessions));
+            logger.serverLog('info', 'There are webchatsessions' + webchatsessions.length);
             console.log('There are webchatsessions');
             console.log(webchatsessions.length);
             for(var j=0;j<webchatsessions.length;j++)
             {
               totalsessions.push(webchatsessions[j]);
             }
-
+            logger.serverLog('info', 'There are totalsessions' + totalsessions.length);
             console.log('totalsessions length' + totalsessions.length);
             return res.status(201).json(totalsessions);
        }
