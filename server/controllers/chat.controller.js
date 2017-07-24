@@ -776,31 +776,28 @@ export function getChatMessage(req, res) {
                               console.log(responseReadStatus.status);
                               console.log(bodyReadStatus);
 
-                          });
+                    //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
 
+                              var options = {
+                                            url: `${baseURL}/api/deptteams/deptteamAgents`,
+                                            rejectUnauthorized : false,
+                                            headers,
 
+                                    };
+                              function callback(error, response, body) {
+                                if(!error  && response.statusCode == 200) {
+                                   var teamagentsDept = JSON.parse(body);
+                                   console.log('sending push notification to teamagents');
+                                   sendpushToTeamAgents(req.body,teamagentsDept.teamagents,teamagentsDept.deptteams,'chatsession'); // this will send customer message to mobile agents through push notification
+                                    return res.json(200,{'status' : 'success'});
 
-    //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
-
-              var options = {
-                            url: `${baseURL}/api/deptteams/deptteamAgents`,
-                            rejectUnauthorized : false,
-                            headers,
-
-                    };
-              function callback(error, response, body) {
-                if(!error  && response.statusCode == 200) {
-                   var teamagentsDept = JSON.parse(body);
-                   console.log('sending push notification to teamagents');
-                   sendpushToTeamAgents(req.body,teamagentsDept.teamagents,teamagentsDept.deptteams,'chatsession'); // this will send customer message to mobile agents through push notification
-                    return res.json(200,{'status' : 'success'});
-
-                 }
-                 else{
-                  res.json(200,{'status' : 'failed'});
-                 }
-               }
-               request.get(options,callback);
+                                 }
+                                 else{
+                                  res.json(200,{'status' : 'failed'});
+                                 }
+                               }
+                           request.get(options,callback);
+               });
 
 };
 
