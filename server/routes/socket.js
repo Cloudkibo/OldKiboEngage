@@ -172,6 +172,8 @@ function onDisconnect(io2, socket) {
   var req_id;
   var customer_in_company_room =[]; 
   var departmentid;
+  var customer_left = false;
+  var index_removed = -1;
   for(var j = 0;j< onlineWebClientsSession.length;j++){
 
     if(onlineWebClientsSession[j].socketid == socket.id){
@@ -182,10 +184,14 @@ function onDisconnect(io2, socket) {
       req_id = onlineWebClientsSession[j].request_id;
       departmentid = onlineWebClientsSession[j].departmentid; 
       console.log(req_id);
-      
+      customer_left = true;
+      index_removed = j;
+      break;
+    }
+  }
        // update abandoned sessions list if the session status is new
      
-      if(onlineWebClientsSession[j].status == 'new'){
+  if(index_removed != -1 && onlineWebClientsSession[index_removed].status == 'new' && customer_left == true){
          customer_in_company_room =[]; //only online customers who are in your room
 
           for(var j = 0;j<onlineWebClientsSession.length;j++){
@@ -196,28 +202,27 @@ function onDisconnect(io2, socket) {
 
           socket.broadcast.to(room).emit('customer_left',customer_in_company_room);
         }
-         
-    onlineWebClientsSession.splice(j,1);
-      
-  console.log('customers online : ' + customer_in_company_room.length);
+          
+    console.log('customers online : ' + customer_in_company_room.length);
       //we will remove all the user chat from socket.io with this request id
       console.log('length of userchats before: '+ userchats.length)
       for(var k=0;k<userchats.length;k++){
         if(userchats[k].request_id == req_id){
            console.log('Remove chat message,customer went offline');
 
-          userchats.splice(k,1);
+           userchats.splice(k,1);
         }
       }
       console.log('length of userchats after: '+ userchats.length)
       console.log(userchats);
       console.log(onlineWebClientsSession.length);
-      session_remove = true
-      break;
-    }
-  }
+      
+   
+  if(customer_left == true){
+    console.log('onlineWebClientsSession before splice ' + onlineWebClientsSession.length);     
+    onlineWebClientsSession.splice(index_removed,1);
+    console.log('onlineWebClientsSession after splice ' + onlineWebClientsSession.length);     
 
-  if(session_remove == true){
     customer_in_company_room =[]; //only online customers who are in your room
 
     for(var j = 0;j<onlineWebClientsSession.length;j++){
@@ -231,7 +236,6 @@ function onDisconnect(io2, socket) {
 
   //ask clients to update their session list
    socket.broadcast.to(room).emit('returnCustomerSessionsList',customer_in_company_room);
-   session_remove = false;
   }
   socket.leave(room);
 
