@@ -164,143 +164,6 @@ export class ChatArea extends Component {
 
   }
 
- // No more in use -- Zarmeen
- /* assignSessionToTeam(e) {
-
-
-/*    const { dispatch } = this.props;
-
-    // local changes
-    this.props.fbsessionSelected.status = "assigned";
-    this.props.fbsessionSelected.agent_ids.push({
-      'id': this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,
-      'type': 'group',
-    });
-
-
-    // find the agent ids of the members with in a selected group
-
-    var agentnames = [];
-    var agentemail = [];
-    var agentids = [];
-
-    if (this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib == -1) {
-      alert("Please select a team from a dropdown menu");
-      return;
-    }
-
-    for (var i = 0; i < this.props.teamagents.length; i++) {
-      if (this.props.teamagents[i].groupid._id == this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib) {
-        agentnames.push(this.props.teamagents[i].agentid.firstname);
-        agentemail.push(this.props.teamagents[i].agentid.email);
-        agentids.push(this.props.teamagents[i].agentid._id);
-      }
-    }
-
-    const usertoken = auth.getToken();
-
-    if (confirm("Are you sure you want to assign this session to " + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text)) {
-      // 1. Broadcast a log message to all agents and customer that session is assigned to agent
-
-      //generate unique id of message - this change is for mobile clients
-      var today = new Date();
-      var uid = Math.random().toString(36).substring(7);
-      var unique_id = 'h' + uid + '' + today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
-
-
-      var saveMsg = {
-        senderid: this.props.userdetails._id,
-        recipientid: this.props.fbsessionSelected.user_id.user_id,
-        companyid: this.props.userdetails.uniqueid,
-        timestamp: Date.now(),
-        message: {
-          mid: unique_id,
-          seq: 1,
-          text: 'Session is assigned to ' + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text,
-        },
-
-        pageid: this.props.fbsessionSelected.pageid.pageid,
-
-      }
-
-      this.props.getfbchatfromAgent(saveMsg);
-
-      var data = {
-        senderid: this.props.userdetails._id,
-        recipientid: this.props.fbsessionSelected.user_id.user_id,
-        companyid: this.props.userdetails.uniqueid,
-        seen: false,
-        message: {
-          text: 'Session is assigned to ' + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text,
-          mid: unique_id,
-        },
-        inbound: true,
-        backColor: '#3d83fa',
-        textColor: "white",
-        avatar: 'https://ca.slack-edge.com/T039DMJ6N-U0446T0T5-g0e0ac15859d-48',
-        duration: 0,
-        timestamp: Date.now(),
-        assignedagentname: agentnames,
-        agentid: agentids,
-        assignedagentemail: agentemail,
-
-      }
-      this.props.add_socket_fb_message(data, this.props.fbchats, this.props.senderid, this.props.fbsessions, this.props.sessionsortorder);
-
-      //3. update agent assignment table on server
-
-      var assignment = {
-        assignedto: this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib,
-        assignedby: this.props.userdetails._id,
-        pageid: this.props.fbsessionSelected.pageid._id,
-        userid: this.props.fbsessionSelected.user_id._id,
-        companyid: this.props.userdetails.uniqueid,
-        datetime: Date.now(),
-        type: 'group',
-      }
-
-      this.props.assignToAgentFB(assignment, usertoken, agentemail, 'group');
-
-      //update session status on socket
-      updateSessionStatusFb({
-        'pageid': this.props.fbsessionSelected.pageid.pageid,
-        'user_id': this.props.fbsessionSelected.user_id.user_id,
-        'status': 'assigned',
-        'room': this.props.userdetails.uniqueid,
-        'agentid': {'id': this.refs.teamlist.options[this.refs.teamlist.selectedIndex].dataset.attrib, 'type': 'group'},
-        'pageTitle': this.props.fbsessionSelected.pageid.pageTitle,
-        'username': this.props.fbsessionSelected.user_id.first_name + ' ' + this.props.fbsessionSelected.user_id.last_name,
-        'agentname': this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text,
-      });
-
-
-      // create a news to inform all agents in the group that this session is assigned to him/her,if the assigned agent is not the user himself
-      var news_array = []
-      for (var i = 0; i < agentids.length; i++) {
-        if (agentids[i] != this.props.userdetails._id) {
-
-          var news = {
-            'dateCreated': Date.now(),
-            'message': this.props.userdetails.firstname + ' has assigned a new Facebook chat session to ' + this.refs.teamlist.options[this.refs.teamlist.selectedIndex].text + ' group',
-            'createdBy': this.props.userdetails._id,
-            'unread': 'true',
-            'companyid': this.props.userdetails.uniqueid,
-            'target': agentids[i],//agent id for whom the news is intended
-            'url': '/fbchat',
-          }
-
-          news_array.push(news);
-        }
-      }
-      // alert('Creating news ' + news_array.length);
-      if (news_array.length > 0) {
-        this.props.createnews(news_array, usertoken);
-      }
-      this.forceUpdate();
-    }
-    */
-
-  //}
 
 
   autoassignChat() {
@@ -2052,9 +1915,10 @@ export class ChatArea extends Component {
         </div>
         <article ref="messagelist">
           <div>
-            {list}
-          </div>
-
+                  {list}
+             </div>
+        
+     
 
         </article>
 
@@ -2297,6 +2161,8 @@ export class ChatArea extends Component {
 
 
         </div>
+      
+
 
       </div>
 

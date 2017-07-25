@@ -127,7 +127,9 @@ export function teamagents(req, res) {
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
         var info = JSON.parse(body);
-       // //console.log(info)
+        console.log("These are team agents");
+       // console.log(info);
+        console.log(info.length)
        
         ////console.log(info);
       return res.status(200).json(info);
@@ -179,7 +181,8 @@ export function destroyTeam(req, res) {
 }
 
 export function editteam(req, res) {
-  //console.log('edit team is called');
+  console.log('edit team is called');
+  console.log(req.body);
   var token = req.headers.authorization;
    var options = {
       url: `${baseURL}/api/groups/update/`,
@@ -196,7 +199,7 @@ export function editteam(req, res) {
     };
     //console.log(options.json.dept);
     function callback(error, response, body) {
-        //console.log(body);
+        console.log(body);
     
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')

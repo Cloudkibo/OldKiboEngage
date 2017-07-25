@@ -59,6 +59,29 @@ class Dashboard extends Component {
     if (usertoken != null) {
 
       this.props.getuser(usertoken);
+    
+
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.userdetails && props.userdetails.accountVerified == "No" && is_routed == false) {
+      is_routed = true;
+      browserHistory.push('/notverified');
+    }
+
+    if (props.userdetails.uniqueid && props.userjoinedroom == 'notjoined') {
+      this.props.setjoinedState('joining');
+
+      //  alert('calling room join')
+      joinMeetingForAgent();
+      //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
+      // this.forceUpdate();
+    }
+
+    if(props.userdetails && !this.props.userdetails.email){
+      const usertoken = auth.getToken();
+  
       this.props.getAgents(usertoken);
       this.props.getDeptTeams(usertoken);
       this.props.getusergroups(usertoken);
@@ -77,23 +100,6 @@ class Dashboard extends Component {
       this.props.getteams(usertoken);
       this.props.getTeamAgents(usertoken);
       this.props.getfbTeams(usertoken);
-
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.userdetails && props.userdetails.accountVerified == "No" && is_routed == false) {
-      is_routed = true;
-      browserHistory.push('/notverified');
-    }
-
-    if (props.userdetails.uniqueid && props.userjoinedroom == 'notjoined') {
-      this.props.setjoinedState('joining');
-
-      //  alert('calling room join')
-      joinMeetingForAgent();
-      //  socket.on('join',room => this.props.show_notifications(room)); // use this function to show notifications
-      // this.forceUpdate();
     }
   }
 

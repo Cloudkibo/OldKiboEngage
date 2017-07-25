@@ -20,7 +20,8 @@ import {
   updateChatList,
   removeDuplicates,
   removeDuplicatesWebChat,
-  update_mobileuserchats_list
+  update_mobileuserchats_list,
+  getunreadsessionscount,
 
 } from './redux/actions/actions';
 import {notify} from './services/notify';
@@ -55,12 +56,37 @@ function showSession(customer){
    return is_agent_in_team;
   }
 
-   function showSession_for_web(customer){
+
+  function showSessionforMessage(senderid,recipientid){
+    console.log('showSessionforMessage called');
+    var is_agent_in_team = false;
+   
+    if(store.getState().dashboard.fbteams)
+    {
+    var get_teams_assigned_to_page = store.getState().dashboard.fbteams.filter((c) => c.pageid._id == senderid || c.pageid._id == recipientid);
+    for(var i=0;i<get_teams_assigned_to_page.length;i++){
+      for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
+        if(get_teams_assigned_to_page[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
+          is_agent_in_team = true;
+          break;
+
+        }
+      }
+      if(is_agent_in_team == true){
+        break;
+      }
+
+    }
+  }
+   return is_agent_in_team;
+  }
+
+   function showSession_for_web(departmentid){
      var is_agent_in_team = false;
    
     if(store.getState().dashboard.deptteams)
     {
-    var get_teams_assigned_to_group = store.getState().dashboard.deptteams.filter((c) => c.deptid._id == customer.departmentid);
+    var get_teams_assigned_to_group = store.getState().dashboard.deptteams.filter((c) => c.deptid._id == departmentid);
     for(var i=0;i<get_teams_assigned_to_group.length;i++){
       for(var j=0;j<store.getState().dashboard.teamagents.length;j++){
         if(get_teams_assigned_to_group[i].teamid._id == store.getState().dashboard.teamagents[j].groupid._id && store.getState().dashboard.teamagents[j].agentid._id == store.getState().dashboard.userdetails._id ){
@@ -85,9 +111,9 @@ export function initiateSocket(storeObj) {
 
 socket.on('customer_joined', (data,currentsession) => {
   console.log('customer_joined');
-  console.log(showSession_for_web(currentsession));
+  console.log(showSession_for_web(currentsession.departmentid));
   console.log(currentsession);
-  if(showSession_for_web(currentsession) == true){
+  if(showSession_for_web(currentsession.departmentid) == true){
   notify('A customer has joined.');
 }
   console.log(data.length);
@@ -114,6 +140,12 @@ socket.on('send:fbmessage', (data) => {
   // printlogs('log','new fb message is received');
   // printlogs('log',data)
   // printlogs('log',this.props.fbsessionSelected);
+  const usertoken = auth.getToken();
+   if(showSessionforMessage(data.senderid,data.recipientid) == true){
+     console.log("show notification");
+     notify('facebook customer sends a message');
+ 
+  }
   if (store.getState().dashboard.fbsessionSelected && store.getState().dashboard.fbchats) {
     if (!store.getState().dashboard.fbsessionSelected.user_id) {
       data.seen = false;
@@ -131,6 +163,7 @@ socket.on('send:fbmessage', (data) => {
     }
 
     store.dispatch(add_socket_fb_message(data, store.getState().dashboard.fbchats, store.getState().dashboard.fbsessionSelected.user_id.user_id, store.getState().dashboard.fbsessions, store.getState().dashboard.sessionsortorder));
+    store.dispatch(getunreadsessionscount(usertoken, store.getState().dashboard.userdetails._id));
   }
   //  this.forceUpdate();
 });
@@ -165,6 +198,13 @@ socket.on('informAgent', (message) => {
 socket.on('send:message', (message) => {
    console.log('send:message called');
    console.log(message);
+   const usertoken = auth.getToken();
+  
+    if(showSession_for_web(message.departmentid) == true){
+     console.log('show notification');
+     notify('customer sends a message');
+ 
+  }
   if (store.getState().dashboard.customerchat_selected) {
     if ((store.getState().dashboard.customerchat_selected.request_id != message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
       printlogs('log','mobile userchat is not selected, message received');
@@ -174,13 +214,7 @@ socket.on('send:message', (message) => {
       var messages = [];
       messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
       if (messages.length > 0) {
-        //   alert('New message arrived chat!');
-        // highlight chat box
-
-       // store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
         store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid)); //actions
-       // message.status = 'delivered';
-
       }
     }
 
@@ -188,51 +222,33 @@ socket.on('send:message', (message) => {
     else if ((store.getState().dashboard.customerchat_selected.request_id == message.request_id) && message.status && message.status == 'sent' && message.fromMobile && message.fromMobile == 'yes') {
       printlogs('log','mobile userchat is  selected, message received');
       const usertoken = auth.getToken();
-      /*** call api to update status field of chat message received from mobile to 'delivered'
-       ***/
       var messages = [];
       messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
       if (messages.length > 0) {
-        //   alert('New message arrived chat!');
-        // highlight chat box
-
-       // store.dispatch(updatechatstatus(messages, message.from, usertoken, store.getState().dashboard.mobileuserchat)); //actions
         store.dispatch(update_mobileuserchats_list(message,store.getState().dashboard.mobileuserchat));
-      
-     //   store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid)); //actions
         message.status = 'delivered';
 
       }
     }
 
     else if ((store.getState().dashboard.customerchat_selected.request_id != message.request_id) && message.fromMobile == 'no') {
-      // alert(' i m called2')
       printlogs('log', "Chat Not Selected");
-      //this.props.userchats.push(message);
       store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
       store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid));
-      //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-     // this.forceUpdate();
     }
     else if ((store.getState().dashboard.customerchat_selected.request_id == message.request_id) && message.fromMobile == 'no') {
-      // alert(' i m called2')
       printlogs('log', "Chat Selected");
-      //this.props.userchats.push(message);
+    
        store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
        store.dispatch(updateChatList(message,store.getState().dashboard.new_message_arrived_rid,store.getState().dashboard.customerchat_selected.request_id));
        store.dispatch(removeDuplicatesWebChat(store.getState().userchats,'uniqueid'));
 
-
-      //this.props.updateChatList(message,this.props.new_message_arrived_rid,this.props.customerchat_selected.request_id);
-      //this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-      //this.forceUpdate();
     }
 
 
   }
   else if (!store.getState().dashboard.customerchat_selected && message.fromMobile == 'yes' && message.status && message.status == 'sent') {
-    const usertoken = auth.getToken();
-    /*** call api to update status field of chat message received from mobile to 'delivered'
+     /*** call api to update status field of chat message received from mobile to 'delivered'
      ***/
     var messages = [];
     messages.push({'uniqueid': message.uniqueid, 'request_id': message.request_id, 'status': 'delivered'});
@@ -242,25 +258,17 @@ socket.on('send:message', (message) => {
       store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid));
       message.status = 'delivered';
     }
-
-    //this.props.mobileuserchat.push(message);
     store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
     store.dispatch(removeDuplicates(store.getState().dashboard.mobileuserchat,'uniqueid'));
-
- //   this.props.userchats.push(message);
- //   this.props.removeDuplicates(this.props.mobileuserchat, 'uniqueid');
-  }
+ }
 
   else if (!store.getState().dashboard.customerchat_selected && message.fromMobile == 'no') {
     store.dispatch(update_userchats_list(message,store.getState().dashboard.userchats));
     store.dispatch(updateChatList(message, store.getState().dashboard.new_message_arrived_rid));
 
-   // this.props.userchats.push(message);
-   // this.props.updateChatList(message, this.props.new_message_arrived_rid);
-    // this.props.removeDuplicatesWebChat(this.props.userchats,'uniqueid');
-
   }
- // this.forceUpdate();
+  store.dispatch(getunreadsessionscount(usertoken, store.getState().dashboard.userdetails._id));
+ 
 });
 
 socket.on('agentjoined', () => {

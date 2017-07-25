@@ -17,6 +17,8 @@ var headers = {
 var azure = require('azure-sb');
 // notification hub for Agents
 var notificationHubService = azure.createNotificationHubService('kiboengagetesthub', 'Endpoint=sb://kiboengagetesthub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=TDM/hTOZxsgXq7hFcvO3/cJ3PeoQCRD82COpO7hwWbM=');
+//for ios production
+var notificationHubService1 = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagens.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=B2do9BVVK6ca1OQsJWQIE+6WlFfcGuWjr+280C+tIVY=');
 
 var baseURL = `https://api.kibosupport.com`
 // facebook webhook
@@ -592,7 +594,13 @@ function sendPushNotification(tagname, payload, alertmessage) {
       console.log('Azure push notification error : ' + JSON.stringify(error));
     }
   });
-
+    notificationHubService1.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+  //    console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+    } else {
+   //   console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
 
 }
 
@@ -1095,6 +1103,39 @@ export function fetchurlmeta(req, res) {
 
 }
 
+export function markFbChatAsRead(req, res) {
+  var token = req.headers.authorization;
+
+  var readstatusRequestPayload = {
+    agent_id: req.body.agent_id,
+    request_id: req.body.request_id,
+  };
+
+  var optionsReadStatusRequest = {
+    url: `${baseURL}/api/readstatus/deleteforagent`,
+    rejectUnauthorized: false,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    json: readstatusRequestPayload,
+
+  };
+
+  console.log('request to delete status payload: ', JSON.stringify(readstatusRequestPayload));
+
+  request.post(optionsReadStatusRequest,
+    function(errorReadStatus, responseReadStatus, bodyReadStatus){
+      console.log('response from read status');
+      if (!errorReadStatus) {
+        return res.status(201).json({ status: 'success' });
+      }
+      else {
+        return res.status(422).json({statusCode: 422, data: errorReadStatus});
+
+      }
+
+    });
+}
 
 function linkify(text) {
   var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;

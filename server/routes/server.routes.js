@@ -62,6 +62,9 @@ router.route('/webhook').get(FbChatController.verifyhook);
 
 router.route('/sendfbchat').post(FbChatController.sendTextMessage);
 
+router.route('/markFbChatAsRead').post(FbChatController.markFbChatAsRead);
+router.route('/markSimpleChatAsRead').post(ChatController.markSimpleChatAsRead);
+
 router.route('/getfbCustomers').get(FbChatController.getfbCustomers);
 router.route('/getfbSessions').get(FbChatController.getfbSessions);
 router.route('/getfbChats').get(FbChatController.getfbChats);
@@ -118,6 +121,7 @@ router.route('/emailCustomer').post(CustomerController.emailCustomer);
 router.route('/rescheduleEmail').post(CustomerController.rescheduleEmail);
 
 router.route('/createsession').post(ChatController.createsession);
+router.route('/userchats/getunreadsessionscount').post(ChatController.getunreadsessionscount);
 router.route('/savechat').post(ChatController.savechat);
 router.route('/getsessions').get(ChatController.getsessions);
 router.route('/getcompanyprofile').get(UserController.getcompanyprofile);

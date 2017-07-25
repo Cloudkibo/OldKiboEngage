@@ -11,6 +11,9 @@ var azure = require('azure-sb');
 
 // notification hub for Agents
 var notificationHubService = azure.createNotificationHubService('kiboengagetesthub','Endpoint=sb://kiboengagetesthub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=TDM/hTOZxsgXq7hFcvO3/cJ3PeoQCRD82COpO7hwWbM=');
+//for ios production
+var notificationHubService1 = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagens.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=B2do9BVVK6ca1OQsJWQIE+6WlFfcGuWjr+280C+tIVY=');
+
 var logger = require('../logger/logger');
 
 var fs = require('fs');
@@ -763,35 +766,59 @@ export function getChatMessage(req, res) {
     console.log('getChatMessage is called');
     var chat   = req.body;
     console.log(chat);
-    ss.getchat(req.body);
-
-    //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
     var  headers =  {
                'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
                'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
                'kibo-client-id': 'cd89f71715f2014725163952',
 
                }
-              var options = {
-                            url: `${baseURL}/api/deptteams/deptteamAgents`,
-                            rejectUnauthorized : false,
-                            headers,
+    //create tuple for unseen messages on swagger
+    var readstatusRequestPayload = {
+                            group_id: req.body.departmentid,
+                            company_id: req.body.companyid,
+                            message_id: req.body.uniqueid,
+                            request_id: req.body.request_id,
+                          };
 
-                    };
-              function callback(error, response, body) {
-                if(!error  && response.statusCode == 200) {
-                   var teamagentsDept = JSON.parse(body);
-                   console.log('sending push notification to teamagents');
-                   sendpushToTeamAgents(req.body,teamagentsDept.teamagents,teamagentsDept.deptteams,'chatsession'); // this will send customer message to mobile agents through push notification
-                    return res.json(200,{'status' : 'success'});
+                          var optionsReadStatusRequest = {
+                            url: `${baseURL}/api/readstatus/`,
+                            rejectUnauthorized: false,
+                            headers: headers,
+                            json: readstatusRequestPayload,
 
-                 }
-                 else{
-                  res.json(200,{'status' : 'failed'});
-                 }
-               }
-               request.get(options,callback);
+                          };
 
+                          console.log('request to read status payload: ', JSON.stringify(readstatusRequestPayload));
+
+                          request.post(optionsReadStatusRequest,
+                            function(errorReadStatus, responseReadStatus, bodyReadStatus){
+                              console.log('response from read status');
+                              ss.getchat(req.body);
+                              console.log(responseReadStatus.status);
+                              console.log(bodyReadStatus);
+
+                    //we need to send push to agents only who are assigned in teams which are assigned to groups in which chatsession arrives
+
+                              var options = {
+                                            url: `${baseURL}/api/deptteams/deptteamAgents`,
+                                            rejectUnauthorized : false,
+                                            headers,
+
+                                    };
+                              function callback(error, response, body) {
+                                if(!error  && response.statusCode == 200) {
+                                   var teamagentsDept = JSON.parse(body);
+                                   console.log('sending push notification to teamagents');
+                                   sendpushToTeamAgents(req.body,teamagentsDept.teamagents,teamagentsDept.deptteams,'chatsession'); // this will send customer message to mobile agents through push notification
+                                    return res.json(200,{'status' : 'success'});
+
+                                 }
+                                 else{
+                                  res.json(200,{'status' : 'failed'});
+                                 }
+                               }
+                           request.get(options,callback);
+               });
 };
 
 // endpoint called by agent (web or mobile)
@@ -841,8 +868,13 @@ function sendPushNotification(tagname,payload,alertmessage){
       console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
-
-
+    notificationHubService1.apns.send(tagname, iOSMessage, function(error){
+    if(!error){
+  //    console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
+    } else {
+   //   console.log('Azure push notification error : '+ JSON.stringify(error));
+    }
+  });
 
 }
 
@@ -1268,14 +1300,14 @@ export function getallsessions(req, res) {
             var totalsessions= JSON.parse(body);
             //now fetch web chat sessions from socket
             var webchatsessions = ss.getwebchatsessions(req.body.companyid);
-            logger.serverLog('info', 'There are webchatsessions' + JSON.stringify(webchatsessions));
+            logger.serverLog('info', 'There are webchatsessions' + webchatsessions.length);
             console.log('There are webchatsessions');
             console.log(webchatsessions.length);
             for(var j=0;j<webchatsessions.length;j++)
             {
               totalsessions.push(webchatsessions[j]);
             }
-
+            logger.serverLog('info', 'There are totalsessions' + totalsessions.length);
             console.log('totalsessions length' + totalsessions.length);
             return res.status(201).json(totalsessions);
        }
@@ -1288,5 +1320,67 @@ export function getallsessions(req, res) {
    }
         request.get(options, callback);
 
-
 };
+
+
+export function getunreadsessionscount(req, res) {
+  console.log('getunreadsessionscount');
+  var token = req.headers.authorization;
+  var options = {
+      url: `${baseURL}/api/readstatus/getunreadsessionscount`,
+      rejectUnauthorized : false,
+      json: req.body,
+      headers :  {
+                 'Authorization': `Bearer ${token}`
+                 },
+
+    };
+
+    function callback(error, response, body) {
+       if(!error && response.statusCode == 200)
+       {
+          // //console.log(body)
+            return res.status(200).json(body);
+       }
+       else
+       {
+           return res.status(422).json({statusCode : 422 ,message:'failed'});
+
+       }
+   }
+        request.post(options, callback);
+
+  }
+
+export function markSimpleChatAsRead(req, res) {
+  var token = req.headers.authorization;
+  var readstatusRequestPayload = {
+    agent_id: req.body.agent_id,
+    request_id: req.body.request_id,
+  };
+
+  var optionsReadStatusRequest = {
+    url: `${baseURL}/api/readstatus/deleteforagent`,
+    rejectUnauthorized: false,
+    headers :  {
+      'Authorization': `Bearer ${token}`
+    },
+    json: readstatusRequestPayload,
+
+  };
+
+  console.log('request to delete status payload: ', JSON.stringify(readstatusRequestPayload));
+
+  request.post(optionsReadStatusRequest,
+    function(errorReadStatus, responseReadStatus, bodyReadStatus){
+      console.log('response from read status');
+      if (!errorReadStatus) {
+        return res.status(201).json({ status: 'success' });
+      }
+      else {
+        return res.status(422).json({statusCode: 422, data: errorReadStatus});
+
+      }
+
+    });
+}

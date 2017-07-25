@@ -17,7 +17,9 @@ import {
   getfbChats,
   getresponses,
   getfbTeams,
-  selectFbCustomerChat
+  selectFbCustomerChat,
+  getunreadsessionscount,
+  deleteUnreadCountStatusWhenAgentReadForFb
 }  from '../../redux/actions/actions'
 
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
@@ -50,6 +52,7 @@ class FbChat extends Component {
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
       props.getfbTeams(usertoken);
+      props.getunreadsessionscount(usertoken,props.userdetails._id);
 
       //props.getmetaurl(url, usertoken);
       callonce = true;
@@ -96,10 +99,10 @@ class FbChat extends Component {
           console.log('agent matched');
 
           agents_in_teams.push(this.props.teamagents[j].agentid);
-        
+
         }
       }
-     
+
     }
 
    // removing duplicates
@@ -112,7 +115,7 @@ class FbChat extends Component {
 
   for (i in lookupObject) {
     newArray.push(lookupObject[i]);
-  } 
+  }
    return newArray;
   }
 
@@ -139,7 +142,7 @@ class FbChat extends Component {
       if (!props.fbsessions[0].lastmessage) {
         this.props.appendlastmessage(props.fbsessions, props.fbchats,props.fbteams,props.teamagents,props.userdetails);
       }
-    
+
 
     }
 
@@ -154,6 +157,7 @@ class FbChat extends Component {
     // this.refs.customername.value = customer.user_id.first_name+' '+customer.user_id.last_name;
     this.props.updatefbstatus(customer.user_id.user_id, this.props.fbchats);
     this.props.selectFbCustomerChat(customer.user_id.user_id, this.props.fbchats, customer.user_id.profile_pic, customer);
+    this.props.deleteUnreadCountStatusWhenAgentReadForFb(usertoken, this.props.userdetails._id, customer.pageid.pageid+'$'+customer.user_id.user_id)
     //const node = ReactDOM.findDOMNode(this.refs.customername);
     //node.scrollIntoView({behavior: "smooth"});
     this.forceUpdate();
@@ -198,12 +202,13 @@ class FbChat extends Component {
                       </div>
                       <article>
                         <div>
-                          {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id &&
+                          {this.props.fbsessions && this.props.fbchats && this.props.agents && this.props.teamdetails && this.props.fbsessionSelected.user_id && this.props.unreadcount &&
                           this.props.fbsessions.filter((c) => c.status != "resolved").map((customer, i) => (
                               this.showSession(customer) == true &&
                               <FbCustomerListItem onClickSession={this.handleSession.bind(this, customer)}
                                                   userchat={this.props.fbchats.filter((ch) => ch.senderid == customer.user_id.user_id)}
                                                   customer={customer} selectedCustomer={this.props.fbsessionSelected}
+                                                  unreadcount={this.props.unreadcount.filter((c) => c._id.request_id == customer.pageid.pageid + '$' + customer.user_id.user_id)}
                                                   key={i} agents={this.props.agents} team={this.props.teamdetails}/>
 
                             )
@@ -290,6 +295,7 @@ function mapStateToProps(state) {
     componentVisible: state.dashboard.componentVisible,
     sessionsortorder: state.dashboard.sessionsortorder,
     fbteams:(state.dashboard.fbteams),
+    unreadcount:(state.dashboard.unreadcount),
 
   };
 }
@@ -310,6 +316,8 @@ export default connect(mapStateToProps, {
   selectFbCustomerChat,
   getmetaurl,
   getfbTeams,
+  getunreadsessionscount,
+  deleteUnreadCountStatusWhenAgentReadForFb,
 },null,{
   pure: false
 })(FbChat);

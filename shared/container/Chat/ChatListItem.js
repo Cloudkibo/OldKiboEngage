@@ -84,18 +84,23 @@ var ch=[]
 
   {
          props.subgroup &&
-                        props.subgroup.map((cha, i) => (
+                        props.subgroup.map((cha, i) => {
+                          // console.log('this is channel')
+                          // console.log(cha)
                            ch.push(cha)
-                        ))
+                         
+                        })
 
       }
-var unread = []
+//console.log('ch length');
+//console.log(ch.length);
+/*var unread = []
 {
   props.new_message_arrived_rid &&  props.new_message_arrived_rid.map((unre, i) => (
                            unread.push(unre)
                         ))
 
-}
+}*/
 
 var userchatMsg = [];
 {
@@ -106,14 +111,14 @@ var userchatMsg = [];
 
 }
 var thisChat ='';
-var unreadCount = 0;
+/*var unreadCount = 0;
 for(var i = 0;i< unread.length;i++){
   if(unread[i] == props.customer.request_id)
   {
     thisChat = props.customer.request_id
     unreadCount = unreadCount+1;
   }
-}
+}*/
 
 
 //printlogs('log',unread);
@@ -145,13 +150,15 @@ return res;
          <div className="list-group" onClick={props.onClickSession} style={{...changec, marginBottom:0}}>
          <hr style={{padding: 0, margin: 0}}/>
          {
-          (props.new_message_arrived_rid && thisChat == props.customer.request_id  ?
+          (props.unreadcount.length >0 && thisChat == props.customer.request_id  ?
            <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15, color: 'black'}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}
-              <span>{ag[0].deptname +'-' + ch[0].msg_channel_name}</span>
+              {ag[0].deptname}
+              <br/>
+              <i>{(ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</i>
             </p>
              <div className="uk-align-right">
-            <p className="uk-text-meta " style={{color: 'white'}} ><span className='badge' style={rightStyle}>{unreadCount}</span> {difference} </p>
+            <p className="uk-text-meta " style={{color: 'white'}} ><span className='badge' style={rightStyle}>{props.unreadcount[0].count}</span> {difference} </p>
            <span style={{fontSize: 10, margin:5}}>{props.customer.status}</span>
             </div>
             
@@ -160,14 +167,6 @@ return res;
            
             <div style={divMargin}>
             
-              {/*
-            <span style={leftStyle}>{ag[0].deptname}</span>
-            <span  style={rightAgent}><i className="glyphicon glyphicon-time"/>{handleDate(props.customer.requesttime)}</span>
-            <br/>
-            <span  style={rightAgent}><i className="fa fa-headphones"/>{ch[0].msg_channel_name}</span>
-            <br/>
-            <span  style={rightAgent}><i className="fa fa-headphones"/>{props.customer.status}</span>
-         */}
            {
             
             (agentname.length > 0?
@@ -180,18 +179,22 @@ return res;
 
            <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID} 
-            <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>{ag[0].deptname +'-' + ch[0].msg_channel_name}</p>
+            <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>
+            {ag[0].deptname}
+            <br/>
+            <i>{(ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</i>
+            </p>
             <span style={{fontSize: 10, margin:5}}>{props.customer.status} </span>
             </p>
 
 
             <div className="uk-align-right">
-            <p className="uk-text-meta " >{difference}</p>
+            <p className="uk-text-meta" style={{'fontSize':'1em'}}>{difference}</p>
             
             </div>
             
-             {(unreadCount == 0?
-             <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{unreadCount}</span>
+             {(props.unreadcount.length == 0?
+             <span className='badge' style={rightStyle}></span>:<span className='badge' style={rightStyle}>{props.unreadcount[0].count}</span>
 
              )}
             <div style={divMargin}>

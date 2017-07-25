@@ -33,10 +33,17 @@ class TeamDetailView extends Component {
 
   }
 
-  
+  componentWillReceiveProps(props){
+    if(props.teamagents && props.team)
+    {
+            var teamsagents = props.teamagents.filter((agent) => agent.groupid._id == props.team._id)
+            console.log('teamagents');
+            console.log(teamsagents);
+     }
+  }
   render() {
     //alert(this.props.team)
-   
+
      return (
       <div>
          <NotificationSystem ref="notificationSystem" />
@@ -99,13 +106,10 @@ class TeamDetailView extends Component {
                    {
                     this.props.teamagents && this.props.agents && this.props.team &&
                          this.props.teamagents.filter((agent) => agent.groupid._id == this.props.team._id).map((agent, i)=> (
-                          this.props.agents.filter((ag) => ag._id == agent.agentid._id).map((ag,j) =>
-                          (
-                          <li>{ag.firstname + ' ' + ag.lastname}</li>
-                          ))
-
                           
-                   ))                                                    
+                            <li>{agent.agentid.firstname + ' ' + agent.agentid.lastname}</li>
+                          
+                          ))                                                    
                         
 
                     

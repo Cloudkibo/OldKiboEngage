@@ -24,7 +24,7 @@ import {
   filterChat,
   selectCustomerChat,
   updatechatsessionstatus,
-  getDeptTeams
+  getDeptTeams,getunreadsessionscount, deleteUnreadCountStatusWhenAgentReadForSimple,
 }  from '../../redux/actions/actions';
 
 import {initiateChatComponent} from '../../socket';
@@ -76,8 +76,9 @@ class Chat extends Component {
       props.getteams(usertoken);
       props.getTeamAgents(usertoken);
       props.getDeptTeams(usertoken);
+      props.getunreadsessionscount(usertoken,props.userdetails._id);
 
-      
+
 
     }
 
@@ -94,18 +95,18 @@ class Chat extends Component {
   getchannelname(subgroup){
     var deptname = 'deleted'
     if(this.props.groupdetails.filter((d) => d._id == subgroup.groupid).length > 0){
-      deptname = this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname; 
+      deptname = this.props.groupdetails.filter((d) => d._id == subgroup.groupid)[0].deptname;
     }
     return deptname+ ' : ' + subgroup.msg_channel_name;
   }
    showSession(customer){
     console.log('showSession called');
-    console.log(customer);
+   // console.log(customer);
     var get_teams_assigned_to_group = this.props.deptteams.filter((c) => c.deptid._id == customer.departmentid);
-    console.log(get_teams_assigned_to_group.length);
+   // console.log(get_teams_assigned_to_group.length);
     var is_agent_in_team = false;
     for(var i=0;i<get_teams_assigned_to_group.length;i++){
-      console.log(get_teams_assigned_to_group[i]);
+   //   console.log(get_teams_assigned_to_group[i]);
       for(var j=0;j<this.props.teamagents.length;j++){
         if(get_teams_assigned_to_group[i].teamid && get_teams_assigned_to_group[i].teamid._id == this.props.teamagents[j].groupid._id && this.props.teamagents[j].agentid._id == this.props.userdetails._id ){
           is_agent_in_team = true;
@@ -134,10 +135,10 @@ class Chat extends Component {
                   console.log('agent matched');
 
                   agents_in_teams.push(this.props.teamagents[j].agentid);
-                
+
                 }
               }
-             
+
             }
     }
 
@@ -154,11 +155,11 @@ class Chat extends Component {
                       break;
                     }
                   }
-                  
-                
+
+
                 }
               }
-             
+
             }
     }
    // removing duplicates
@@ -171,7 +172,7 @@ class Chat extends Component {
 
   for (i in lookupObject) {
     newArray.push(lookupObject[i]);
-  } 
+  }
    return newArray;
   }
 
@@ -215,6 +216,7 @@ class Chat extends Component {
       this.props.updatesubgrouplist(this.refs.grouplist.value);
     }
     this.forceUpdate();
+
     //this.props.filterbystatus(e.target.value,this.props.customerchatold);
     //this.forceUpdate();
 
@@ -241,6 +243,7 @@ class Chat extends Component {
     // this.props.updateUnreadCount(id,this.props.new_message_arrived_rid)
 
     this.props.selectCustomerChat(id, this.props.customerchat, this.props.new_message_arrived_rid);
+    this.props.deleteUnreadCountStatusWhenAgentReadForSimple(usertoken, this.props.userdetails._id, id);
     //  this.forceUpdate();
 
   }
@@ -328,15 +331,16 @@ class Chat extends Component {
                             <input type="hidden" ref="agentsocketfield" name="agentsocketfield"
                                    value={this.props.yoursocketid}/>
                           }
-                          {this.props.userchats && this.props.deptteams && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 &&
+                          {this.props.userchats && this.props.deptteams && this.props.agents && this.props.groupdetails && this.props.teamdetails && this.props.customerchatfiltered && this.props.customerchatfiltered.length > 0 && this.props.subgroups && this.props.unreadcount&&
                           this.props.customerchatfiltered.map((customer, i) => (
-                            this.showSession(customer) == true &&
+                            this.showSession(customer) == true && this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length - 1]).length>0 &&
                             (this.props.new_message_arrived_rid && this.props.userchats?
 
                                 <ChatListItem
                                   userchat={this.props.userchats.filter((ch) => ch.request_id == customer.request_id)}
                                   selectedsession={this.props.customerchat_selected}
                                   new_message_arrived_rid={this.props.new_message_arrived_rid} customer={customer}
+                                  unreadcount={this.props.unreadcount.filter((c) => c._id.request_id == customer.request_id)}
                                   key={i}
                                   onClickSession={this.handleSession.bind(this, customer.request_id, customer.platform)}
                                   group={this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}
@@ -349,7 +353,9 @@ class Chat extends Component {
                                   onClickSession={this.handleSession.bind(this, customer.request_id, customer.platform)}
                                   group={this.props.groupdetails.filter((grp) => grp._id == customer.departmentid)}
                                   subgroup={this.props.subgroups.filter((c) => c._id == customer.messagechannel[customer.messagechannel.length - 1])}
-                                  agents={this.props.agents} team={this.props.teamdetails}/>
+                                  agents={this.props.agents} team={this.props.teamdetails}
+                                  unreadcount={this.props.unreadcount.filter((c) => c._id.request_id == customer.request_id)}
+                                  />
                             )
 
 
@@ -359,10 +365,9 @@ class Chat extends Component {
                       </article>
                     </div>
                   </nav>
-                  <article className="articleclassChat" style={{overflowY: 'hidden'}}>
+                  <article className="articleclass">
                     {this.refs.sessionid ?
-                      <div>
-                        {
+                        
                           this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
                             (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected  && this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
                               <CustomerChatView newChatClicked="true" socket={ this.props.route.socket} {...this.props}
@@ -382,9 +387,9 @@ class Chat extends Component {
                                                 list_of_agents_in_teams = {this.get_list_of_agents_in_team(this.props.customerchat_selected)}/>
                             )
 
-                        }
+                        
 
-                      </div> :
+                       :
                       <p>Click on session to view Chat messages</p>
                     }
 
@@ -429,6 +434,7 @@ function mapStateToProps(state) {
     groupdetails: (state.dashboard.groupdetails),
     filterlist: (state.widget.filterlist),
     deptteams:(state.dashboard.deptteams),
+    unreadcount:(state.dashboard.unreadcount),
   };
 }
 
@@ -454,5 +460,7 @@ export default connect(mapStateToProps, {
   getcustomers,
   selectCustomerChat,
   filterChat,
-  updatechatsessionstatus
+  getunreadsessionscount,
+  updatechatsessionstatus,
+  deleteUnreadCountStatusWhenAgentReadForSimple,
 })(Chat);

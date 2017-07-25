@@ -7,8 +7,8 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
 import InviteAgent from './InviteAgent';
-import {inviteagent,getAgents} from '../../redux/actions/actions'
-import {deleteagent} from '../../redux/actions/actions'
+import {inviteagent,getAgents} from '../../redux/actions/actions';
+import {deleteagent} from '../../redux/actions/actions';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import ReactPaginate from 'react-paginate';

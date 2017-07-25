@@ -13,6 +13,8 @@ var  headers =  {
 var baseURL = `https://api.kibosupport.com`
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('kiboengagetesthub','Endpoint=sb://kiboengagetesthub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=TDM/hTOZxsgXq7hFcvO3/cJ3PeoQCRD82COpO7hwWbM=');
+//for ios production
+var notificationHubService1 = azure.createNotificationHubService('KiboEngagePush','Endpoint=sb://kiboengagens.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=B2do9BVVK6ca1OQsJWQIE+6WlFfcGuWjr+280C+tIVY=');
 
 /************************* Subgroup APIS ************************************/
 export function createSubgroup(req, res) {
@@ -573,16 +575,13 @@ function sendPushNotification(data,tablename,operation,token){
                                   //console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
                               });
-
-
-                             /*  notificationHubService2.apns.send(tagname, iOSMessage, function(error){
+                              notificationHubService1.apns.send(tagname, iOSMessage, function(error){
                                 if(!error){
-                                  //console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
-                                  //console.log(iOSMessage);
+                              //    console.log('Azure push notification sent to iOS using GCM Module, client number : '+ tagname);
                                 } else {
-                                  //console.log('Azure push notification error : '+ JSON.stringify(error));
+                               //   console.log('Azure push notification error : '+ JSON.stringify(error));
                                 }
-                              });*/
+                              });
                             }
 
                           }

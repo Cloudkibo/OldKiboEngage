@@ -262,6 +262,73 @@ export function fetchSpecificChat(data) {
   };
 }
 
+const showUnreadCount = (res) => {
+ // console.log(res);
+  return {
+    type: ActionTypes.SHOW_UNREAD_COUNT,
+    payload: res,
+  };
+};
+
+
+export const getunreadsessionscount = (token, agentid) => {
+ return (dispatch) => {
+    fetch(`${baseURL}/api/userchats/getunreadsessionscount`, {
+      method: 'post',
+      body: JSON.stringify({
+        agent_id: agentid,
+
+      }),
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+          dispatch(showUnreadCount(res));
+             });
+  };
+}
+
+export const deleteUnreadCountStatusWhenAgentReadForFb = (token, agentid, request_id) => {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/markFbChatAsRead`, {
+      method: 'post',
+      body: JSON.stringify({
+        agent_id: agentid,
+        request_id: request_id,
+
+      }),
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+    //  dispatch(showUnreadCount(res));
+     dispatch(getunreadsessionscount(token,agentid));
+    });
+  };
+}
+
+export const deleteUnreadCountStatusWhenAgentReadForSimple = (token, agentid, request_id) => {
+  return (dispatch) => {
+    fetch(`${baseURL}/api/markSimpleChatAsRead`, {
+      method: 'post',
+      body: JSON.stringify({
+        agent_id: agentid,
+        request_id: request_id,
+
+      }),
+      headers: new Headers({
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+     // dispatch(showUnreadCount(res));
+     dispatch(getunreadsessionscount(token,agentid));
+    });
+  };
+}
+
 export function showSpecificChat_Error(chat_error) {
   printlogs('log', chat_error);
   return {
@@ -2037,6 +2104,10 @@ export function uploadpicture(data, fname, token, picture) {
 
 export function showfilesuccess(res) {
   alert('file shared successfully');
+ return {
+  showFileUploadingChatsession: false,
+  type: ActionTypes.SHOW_FILE_UPLOAD_INDICATOR_CHAT_SESSION,
+}
 }
 
 export function uploadChatfile(fileData, usertoken) {
@@ -4052,6 +4123,12 @@ export function uploadFbChatfile(fileData, usertoken, fbchats, id) {
 };
 
 
+export function updatefileuploadStatusChatSession(status) {
+  return {
+    showFileUploadingChatsession: status,
+    type: ActionTypes.SHOW_FILE_UPLOAD_INDICATOR_CHAT_SESSION,
+  }
+}
 export function updatefileuploadStatus(status) {
   return {
     showFileUploading: status,
