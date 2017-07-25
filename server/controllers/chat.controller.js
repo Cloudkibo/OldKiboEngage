@@ -418,10 +418,7 @@ export function getspecificuserchats(req, res) {
 // resolve session
 
 export function resolvechatsession(req, res) {
-  //console.log('resolvesession is called');
-  //console.log(req.body);
   var token = req.headers.authorization;
-
 
   var options = {
       url: `${baseURL}/api/visitorcalls/resolveSession`,
@@ -430,14 +427,9 @@ export function resolvechatsession(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-
-
     };
 
     function callback(error, response, body) {
-        //console.log(error);
-        //console.log(response.statusCode);
-        //console.log(body);
 
        if(!error && response.statusCode == 200)
        {
