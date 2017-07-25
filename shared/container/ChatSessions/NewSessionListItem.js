@@ -16,16 +16,16 @@ var rescheduled_by_name = []
   props.session.rescheduled_by &&
   props.agents.filter((c) => c._id == props.session.rescheduled_by).map((c, i) => (
                            rescheduled_by_name.push(c.firstname+' '+c.lastname)
-                                                   
+
                         ))
 }
 
-  
-  
+
+
   {
          props.subgroups &&
                         props.subgroups.map((cha, i) => (
-                           ch.push(cha)                            
+                           ch.push(cha)
                         ))
 
       }
@@ -33,7 +33,7 @@ var rescheduled_by_name = []
      {
          props.groups &&
                         props.groups.map((cha, i) => (
-                           gname.push(cha)                            
+                           gname.push(cha)
                         ))
 
       }
@@ -41,30 +41,42 @@ var agentname = []
 {
    props.agent &&
                         props.agent.map((cha, i) => (
-                           agentname.push(cha)                            
+                           agentname.push(cha)
                         ))
 
 }
+
+var isChecked = props.isChecked;
+
   return (
-   
+
     props.session.customerid &&
 
       <tr className = "odd">
-    
-      
+      <td>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => {
+            isChecked = !isChecked;
+            props.selectCheckedItem(props.session.customerid);
+            NewSessionListItem.forceUpdate();
+          }}
+        />
+      </td>
       <td>{props.session.customerid.name?props.session.customerid.name : props.session.customerid.customerID} </td>
       <td>{props.session.customerid.email?props.session.customerid.email : "N/A"}</td>
-      
+
 
       <td>{gname.length>0? gname[0].deptname:'-' }</td>
-      
-        
+
+
       <td>{ch[0]?ch[0].msg_channel_name:'-'}</td>
-      
+
       <td> {props.session.is_rescheduled ? props.session.is_rescheduled : "false" } </td>
       <td>{props.session.rescheduled_by?rescheduled_by_name[0] : "-"}</td>
       <td>{handleDate(props.session.requesttime)}</td>
-     
+
       {
         props.viewoption &&
         <td>
@@ -82,13 +94,13 @@ var agentname = []
       </Link>
       }
       </td>
-    
+
     </tr>
 
-    
 
-     
-    
+
+
+
   );
 }
 

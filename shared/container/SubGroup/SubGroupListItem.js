@@ -18,10 +18,22 @@ var getDeptName = function (group) {
 }
 function SubgroupListItem(props) {
 
+  var isChecked = props.isChecked;
 
   return (
 
     <tr className="odd">
+      <td>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => {
+            isChecked = !isChecked;
+            props.selectCheckedItem(props.subgroup);
+            SubgroupListItem.forceUpdate();
+          }}
+        />
+      </td>
       <td>{props.subgroup.msg_channel_name} </td>
       <td>{props.subgroup.msg_channel_description}</td>
       <td>{getDeptName(props.group)}</td>
@@ -36,7 +48,7 @@ function SubgroupListItem(props) {
           <Link to={`/editsubgroup/${props.subgroup._id}`}>
             <img data-tip="Edit" src="/img/edit.svg" style={{maxWidth: 25, maxHeight: 25}}/>
           </Link>
-         
+
           <img data-tip="Delete" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={props.onDelete}/>
         </td>
       }

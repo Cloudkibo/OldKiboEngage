@@ -34,15 +34,30 @@ class FbPages extends Component {
       pagesData: [],
       totalLength: 0,
       selectedPage: 0,
+      isChecked: false,
+      isCheckedAll: false,
     };
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.deleteFBPage = this.deleteFBPage.bind(this);
+    this.selectCheckedItem = this.selectCheckedItem.bind(this);
+    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
   componentDidMount(){
     this.displayData(0);
     this.setState({totalLength: this.props.fbpages.length});
+  }
+
+  selectCheckedItem(data) {
+    console.log(data);
+  }
+
+  toggleCheckAll() {
+    this.setState({
+      isCheckedAll: !this.state.isCheckedAll,
+      isChecked: !this.state.isChecked,
+    });
   }
 
   displayData(n){
@@ -136,6 +151,15 @@ class FbPages extends Component {
                    <table id ="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                      <center>
+                      <input
+                        type="checkbox"
+                        checked={this.state.isCheckedAll}
+                        onChange={this.toggleCheckAll}
+                      />
+                      </center>
+                    </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Page Title </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Page Description</th>
                       { this.props.userdetails.isAgent == "Yes"?<br/> :
@@ -151,12 +175,15 @@ class FbPages extends Component {
                       {
                         this.state.pagesData.map((fbpage, i) => (
 
-                          <FbPageItem page={fbpage} key={fbpage._id}  onDelete={() => this.deleteFBPage(fbpage,token)} userdetails={this.props.userdetails}/>
+                          <FbPageItem selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} page={fbpage} key={fbpage._id}  onDelete={() => this.deleteFBPage(fbpage,token)} userdetails={this.props.userdetails}/>
 
                         ))
                       }
                      </tbody>
                     </table>
+                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                      {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
+                    </button>
                     <ReactPaginate previousLabel={"previous"}
                                    nextLabel={"next"}
                                    breakLabel={<a href="">...</a>}

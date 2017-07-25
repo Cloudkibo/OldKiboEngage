@@ -41,6 +41,8 @@ class Groups extends Component {
       groupsData: [],
       totalLength: 0,
       selectedPage: 0,
+      isChecked: false,
+      isCheckedAll: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -48,6 +50,8 @@ class Groups extends Component {
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.deleteGroup = this.deleteGroup.bind(this);
+    this.selectCheckedItem = this.selectCheckedItem.bind(this);
+    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
 componentDidMount(){
@@ -73,6 +77,17 @@ componentDidMount(){
       showAddGroup: !this.state.showAddGroup,
       });
       e.preventDefault();
+  }
+
+  selectCheckedItem(data) {
+    console.log(data);
+  }
+
+  toggleCheckAll() {
+    this.setState({
+      isCheckedAll: !this.state.isCheckedAll,
+      isChecked: !this.state.isChecked,
+    });
   }
 
   displayData(n){
@@ -188,6 +203,13 @@ componentDidMount(){
                    <table id ="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                      <input
+                        type="checkbox"
+                        checked={this.state.isCheckedAll}
+                        onChange={this.toggleCheckAll}
+                      />
+                    </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created By</th>
@@ -200,12 +222,15 @@ componentDidMount(){
 
                         this.state.groupsData.map((group, i) => (
 
-                          <GroupListItem group={group} key={group._id}   onDelete={() => this.deleteGroup(group,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails ={this.props.userdetails}/>
+                          <GroupListItem selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} group={group} key={group._id}   onDelete={() => this.deleteGroup(group,token,this.props.customers.filter((c) => c.isMobileClient == "true"))} userdetails ={this.props.userdetails}/>
 
                         ))
                       }
                      </tbody>
                     </table>
+                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                      {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
+                    </button>
                     <ReactPaginate previousLabel={"previous"}
                                    nextLabel={"next"}
                                    breakLabel={<a href="">...</a>}

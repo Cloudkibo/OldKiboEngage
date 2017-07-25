@@ -40,11 +40,15 @@ class Teams extends Component {
       teamsData: [],
       totalLength: 0,
       selectedPage: 0,
+      isChecked: false,
+      isCheckedAll: false,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
+    this.selectCheckedItem = this.selectCheckedItem.bind(this);
+    this.toggleCheckAll = this.toggleCheckAll.bind(this);
 
   }
 
@@ -85,6 +89,17 @@ class Teams extends Component {
     }
 
     );
+  }
+
+  selectCheckedItem(data) {
+    console.log(data);
+  }
+
+  toggleCheckAll() {
+    this.setState({
+      isCheckedAll: !this.state.isCheckedAll,
+      isChecked: !this.state.isChecked,
+    });
   }
 
   displayData(n){
@@ -201,6 +216,13 @@ class Teams extends Component {
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                      <input
+                        type="checkbox"
+                        checked={this.state.isCheckedAll}
+                        onChange={this.toggleCheckAll}
+                      />
+                    </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description</th>
                      <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Created By</th>
@@ -217,13 +239,16 @@ class Teams extends Component {
                        {
                         this.props.teamagents && filteredData && this.state.teamsData.map((team, i) => (
 
-                          <TeamListItem team={team} key={team._id}  teamagents = {this.props.teamagents} onDelete={() => this.deleteTeam(team,team._id,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
+                          <TeamListItem selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} team={team} key={team._id}  teamagents = {this.props.teamagents} onDelete={() => this.deleteTeam(team,team._id,token)} userdetails ={this.props.userdetails} onJoin={() => this.props.jointeam(team,this.props.userdetails._id,token)} />
 
                         ))
                       }
                      </tbody>
                     </table>
                     </div>
+                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                      {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
+                    </button>
                     <ReactPaginate previousLabel={"previous"}
                                    nextLabel={"next"}
                                    breakLabel={<a href="">...</a>}
