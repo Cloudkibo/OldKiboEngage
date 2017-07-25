@@ -1016,87 +1016,174 @@ const { value, suggestions } = this.state;
 
      return (
 
-      <div className="anotherflx">
-        <div className="headerchatarea" style={{'flexBasis': 100}}>
-             <div className="uk-card uk-padding-remove uk-card-body uk-card-hover uk-card-default" style={{background: '#03363D'}}>
-                  <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick = {this.resolveSession}> Resolve </button>
-                  {
-                    this.props.userdetails.isAgent === "No" &&
-                    <div>
-                        {
-                          this.props.customerchat_selected.agent_ids.length == 0 ?
-                         <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Assign To Agent</button>:
-                         <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Re-assign To Agent</button>
+      <div style={{flex: 1}}>
+      <div className="uk-card uk-padding-remove uk-card-body uk-card-hover uk-card-default" style={{background: '#03363D'}}>
+          <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10, marginLeft: 5}} onClick = {this.resolveSession}> Resolve </button>
+          {
+            this.props.userdetails.isAgent === "No" &&
+            <div>
+                {
+                  this.props.customerchat_selected.agent_ids.length == 0 ?
+                 <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Assign To Agent</button>:
+                 <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 150, fontSize: 10}} onClick = {this.assignSessionToAgent}> Re-assign To Agent</button>
+                 }
+           
+            <div className="uk-align-right" style={{margin: 15}}>
+                  <select className="mySelect" style={{background: '#03363D', height:30, border: 0}}  ref = "agentList" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3" >
+
+                        <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
+
+                          {
+                            this.props.list_of_agents_in_teams && this.props.list_of_agents_in_teams.map((agent,i) =>
+                            agent._id == this.props.userdetails._id?
+                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
+                            <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
+                           ) 
+                          }
+                          
+                      </select>
+
+
+                 </div>
+          </div>
+          }
+                 <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10}} onClick = {this.moveToSubgroup}> Move </button>
+
+                  <div className="uk-align-right" style={{margin: 15}}>
+                  <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
+                  <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
+                   <select className="mySelect" style={{background: '#03363D', height:30, border: 0}}  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
+                          {
+                          this.props.subgroups && this.props.subgroups.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((subgroup,i) =>
+                            <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
+
+                            )
                          }
-                   
-                        <div className="uk-align-right" style={{margin: 15}}>
-                          <select className="mySelect" style={{background: '#03363D', height:30, border: 0}}  ref = "agentList" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon3" >
 
-                                <option value={-1} data-attrib = {-1} data-type = "agent" data-name={-1} data-email={-1}>Select An Agent</option>
+                      </select>
+                   </div>
 
-                                  {
-                                    this.props.list_of_agents_in_teams && this.props.list_of_agents_in_teams.map((agent,i) =>
-                                    agent._id == this.props.userdetails._id?
-                                    <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={this.props.userdetails.firstname} data-email={this.props.userdetails.email}>Myself</option>:
-                                    <option value={agent.email} data-attrib = {agent._id} data-type = "agent" data-name={agent.firstname} data-email={agent.email}>{agent.firstname +' '+ agent.lastname}</option>
-                                   ) 
-                                  }
-                                  
-                              </select>
-                         </div>
-                    </div>
-                    }
-                         <button className="uk-button uk-button-small uk-button-default uk-align-right"  style={{color: 'white', margin: 15,  background: '#1abc9c', border: 0, maxWidth: 75, fontSize: 10}} onClick = {this.moveToSubgroup}> Move </button>
-
-                          <div className="uk-align-right" style={{margin: 15}}>
-                          <input value={this.props.sessiondetails.request_id} ref="reqid" type="hidden"/>
-                          <input value={this.props.sessiondetails.platform} ref="pltid" type="hidden"/>
-                           <select className="mySelect" style={{background: '#03363D', height:30, border: 0}}  ref = "subgrouplist" onChange={this.handleChange.bind(this)}   >
-                                  {
-                                  this.props.subgroups && this.props.subgroups.filter((c) => c.groupid == this.props.sessiondetails.departmentid).map((subgroup,i) =>
-                                    <option value={subgroup._id}>{subgroup.msg_channel_name}</option>
-
-                                    )
-                                 }
-
-                              </select>
-                           </div>
-
-                         
+                 
 
 
-              </div>
-             
+      </div>
            <div className="table-responsive" style={{background: '#F5F5F5'}}>
-              <SweetAlert
-                show={this.state.show}
-                title="Alert"
-                text="Please select a team from the dropdown menu"
-                onConfirm={() => this.setState({ show: false })}
-              />
+      <SweetAlert
+        show={this.state.show}
+        title="Alert"
+        text="Please select a team from the dropdown menu"
+        onConfirm={() => this.setState({ show: false })}
+      />
+             <table className="table table-colored">
+             <tbody>
+
+
+             {/*
+                 <tr>
+             <td className="col-md-4">
+
+
+                              </td>
+
+              <td className="col-md-4">
+
+              </td>
+
+
+
+              <td className="col-md-4">
+
+                </td>
+              <td className="col-md-1">
+                <button className="btn btn-primary" onClick = {this.picksession}> Pick Session </button>
+              </td>
+
+                 <td className="col-md-4">
+
+              </td>
+
+              <td className="col-md-1">
+
+              </td>
+
+              </tr>
+
+        */}
+
+
+
+              {/*
+                this.props.teamdetails && this.props.teamdetails.length >0?
+                     <tr>
+
+                         <td className="col-md-4">
+
+                         </td>
+
+                          <td className="col-md-4">
+
+                          </td>
+
+
+                          <td className="col-md-6">
+                          <label>Current Status - {this.props.sessiondetails.status}</label>
+
+
+                          <br/>
+                          <label>{
+                            (this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid).length > 0) ? this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname : ''}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+
+                          </td>
+
+                     </tr>:
+
+                     <tr>
+                      <td className="col-md-4">
+                        <label>Chat Team List is empty</label>
+
+                      </td>
+                      <td className="col-md-6">
+                        <label>Current Status - {this.props.sessiondetails.status}</label>
+                        <br/>
+                        <label>{ (this.props.groupdetails.filter((g) => g._id == this.props.groupdetails.departmentid).length > 0) ? this.props.groupdetails.filter((g) => g._id == this.props.groupdetails.departmentid)[0].deptname : ''}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+
+                      </td>
+                     </tr>
+
+             */}
+                {/*}
+                    <tr>
+
+                      <td className="col-md-6">
+                        <label>Current Status - {this.props.sessiondetails.status}</label>
+                        <br/>
+                        <label>{this.props.groupdetails.filter((g) => g._id == this.props.sessiondetails.departmentid)[0].deptname}  - {this.props.subgroups.filter((g) => g._id == this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1])[0].msg_channel_name}</label>
+
+                      </td>
+                     </tr>*/}
+              </tbody>
+            </table>
+
           </div>
+
+          <div className="panel-body" ref={`thing`} style={{background: '#F5F5F5'}}>
+          {
+            this.props.sessiondetails &&
+          <div>
+          <label>Customer Name :</label>
+          <input value = {this.props.sessiondetails.customerid.customerID} ref="customername"/>
+
+           <label>Email :</label>
+           <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
           <br/>
-          <div ref={`thing`}>
-                      {
-                        this.props.sessiondetails &&
-                      <div>
-                      <label>Customer Name :</label>
-                      <input value = {this.props.sessiondetails.customerid.customerID} ref="customername"/>
+          <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
+          <input type="hidden" defaultValue = {'soket of agent'} ref = "agentsocket"/>
 
-                       <label>Email :</label>
-                       <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
-                      <br/>
-                      <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
-                      <input type="hidden" defaultValue = {'soket of agent'} ref = "agentsocket"/>
-
-                      <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
-                      <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
-                      </div>
-                      }
+          <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
+          <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
           </div>
-          </div>
-          <article style={{'backgroundColor' :'rgb(245, 245, 245)'}}>
-                     <ul className="chat" style={{ margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1', background: '#F5F5F5'}}  ref="messageList">
+          }
+            <ul className="chat" style={{ margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1', background: '#F5F5F5'}}  ref="messageList">
 
                           {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
                             this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
@@ -1228,23 +1315,25 @@ const { value, suggestions } = this.state;
 
 
             </ul>
-          </article>
+            </div>
 
-           <div className="footerchatarea">
-             
-           {/*
+
+
+             <div className="webfooterchatarea" style={{ background: '#F5F5F5', overflow: false, overflowX: 'hidden', width: 100+"%"}}> 
+
+
               <div className="row">
-                    <div className="col-md-12 col-sm-12 col-lg-12">
-                        <Autosuggest  ref = "msg" suggestions={suggestions}
-                              onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
-                              getSuggestionValue={getSuggestionValue}
-                              renderSuggestion={renderSuggestion}
-                              inputProps={inputProps} />
+              <div className="col-md-12 col-sm-12 col-lg-12">
+                  <Autosuggest  ref = "msg" suggestions={suggestions}
+                        onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
+                        getSuggestionValue={getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps} />
                     </div>
                 </div>
 
 
-              <div className="table-responsive">
+                <div className="table-responsive">
                <table className="table table-colored">
                  <tbody>
                     <tr>
@@ -1268,66 +1357,7 @@ const { value, suggestions } = this.state;
                   </tbody>
                   </table>
                   </div>
-                */}
-          <div style={styles.inputContainer}>
-            <div style={styles.inputField}>
-              <Autosuggest ref="msg" suggestions={suggestions}
-
-                           onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
-                           getSuggestionValue={getSuggestionValue}
-                           renderSuggestion={renderSuggestion}
-
-
-                           inputProps={inputProps}/>
-            </div>
-
-
-
-            <div style={styles.toolbox}>
-            {this.props.sessiondetails.platform != "web" &&
-              <div style={{display: 'inline-block'}} data-tip="attachments">
-        
-                <i style={styles.iconclass} onClick={() => {
-                  this.refs.selectFile.click()
-                }}>
-                  <i style={{
-                    fontSize: '25px',
-                    position: 'absolute',
-                    left: '0',
-                    width: '100%',
-                    height: '2.5em',
-                    textAlign: 'center'
-                  }} className="fa fa-paperclip"></i>
-                </i>
-                <input ref="selectFile" type="file" onChange={this._onChange} style={styles.inputf}/>
-
-              </div>
-            }
-
-              {this.props.sessiondetails.platform == "web" &&
-               <div style={{display: 'inline-block'}} data-tip="Start Call" onClick={this.connectToCall}>
-                <i style={styles.iconclass}>
-                  <i style={{
-                    fontSize: '25px',
-                    color: 'red',
-                    position: 'absolute',
-                    right: '0',
-                    width: '100%',
-                    height: '2.5em',
-                    textAlign: 'center'
-                  }} className="fa fa-phone"></i>
-
-                </i>
-              </div>
-            }
-
-
-            </div>
-          </div>
-
                 </div>
-                
-      
 
 
       </div>
@@ -1337,259 +1367,6 @@ const { value, suggestions } = this.state;
 
 
 
-const textStyle = {
-  fontSize: 12,
-
-  marginTop: 5,
-  marginBottom: 5,
-  marginLeft: 10,
-  marginRight: 10,
-  wordWrap: 'break-word',
-};
-
-
-const styles = {
-
-  left: {
-    container: {
-      flex: 1,
-      alignItems: 'flex-start',
-      flexDirection: 'row',
-      marginLeft: 8,
-      marginRight: 0,
-      flexDirection: 'row',
-    },
-    wrapper: {
-      borderRadius: 15,
-      backgroundColor: '#f0f0f0',
-      minHeight: 20,
-      justifyContent: 'flex-end',
-      marginBottom: 15,
-      boxSizing: 'border-box',
-      maxWidth: '80%',
-      clear: 'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-      marginLeft: '1em',
-      position: 'relative',
-      display: 'inline-block',
-    },
-      wrapperforURL: {
-      borderRadius: 15,
-      backgroundColor: '#f0f0f0',
-      minHeight: 20,
-      justifyContent: 'flex-end',
-      marginBottom: 15,
-      boxSizing: 'border-box',
-      clear: 'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-      marginLeft: '3em',
-      position: 'relative',
-      display: 'inline-block',
-    },
-    emojionly: {
-      borderRadius: 15,
-      minHeight: 20,
-      justifyContent: 'flex-end',
-      boxSizing: 'border-box',
-      maxWidth: '80%',
-      clear: 'both',
-      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-       marginBottom: 15,*/
-      marginLeft: '1em',
-      position: 'relative',
-      display: 'inline-block',
-    },
-
-    wrapperNoColor: {
-      borderRadius: 15,
-      minHeight: 20,
-      justifyContent: 'flex-end',
-
-      boxSizing: 'border-box',
-      maxWidth: '80%',
-      clear: 'both',
-      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-       marginBottom: 15,*/
-      marginLeft: '1em',
-      position: 'relative',
-      display: 'inline-block',
-    },
-    containerToNext: {
-      borderBottomLeftRadius: 3,
-    },
-    containerToPrevious: {
-      borderTopLeftRadius: 3,
-    },
-    text: {
-      color: 'black',
-      ...textStyle,
-    },
-    textEmoji: {
-      color: 'black',
-      fontSize: 40,
-    }
-  },
-  right: {
-    container: {
-      flex: 1,
-      alignItems: 'flex-end',
-      marginLeft: 0,
-      marginRight: 8,
-      flexDirection: 'row',
-    },
-    wrapper: {
-      borderRadius: 15,
-      backgroundColor: '#0084ff',
-      minHeight: 20,
-      justifyContent: 'flex-end',
-      marginBottom: 15,
-      boxSizing: 'border-box',
-      maxWidth: '55%',
-      clear: 'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-      marginLeft: '1em',
-      position: 'relative',
-      display: 'inline-block',
-    },
-
-     wrapperforURL: {
-      borderRadius: 15,
-       minHeight: 20,
-      justifyContent: 'flex-end',
-      marginBottom: 15,
-      boxSizing: 'border-box',
-      maxWidth: '55%',
-      clear: 'both',
-      boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-      marginLeft: '1em',
-      position: 'relative',
-      display: 'inline-block',
-      textAlign:'left',
-    },
-
-    wrapperNoColor: {
-      borderRadius: 15,
-      minHeight: 20,
-      justifyContent: 'flex-end',
-
-      boxSizing: 'border-box',
-      maxWidth: '80%',
-      clear: 'both',
-      /*boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, .1)',
-       marginBottom: 15,*/
-      marginLeft: '1em',
-      position: 'relative',
-      display: 'inline-block',
-    },
-    containerToNext: {
-      borderBottomRightRadius: 3,
-    },
-    containerToPrevious: {
-      borderTopRightRadius: 3,
-    },
-    text: {
-      color: 'white',
-      ...textStyle,
-    },
-    textEmoji: {
-      color: 'black',
-      ...textStyle,
-      fontSize: 40,
-    }
-  },
-  bottom: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-
-  timestyle: {
-    clear: 'both',
-    display: 'block',
-    fontWeight: 500,
-    marginTop: 12,
-    marginRight: 0,
-    marginBottom: 12,
-    marginLeft: 20,
-    textTransform: 'uppercase',
-    color: 'rgba(0, 0, 0, .40)',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  imagestyle: {
-    textAlign: 'center',
-    padding: 10,
-    width: 'inherit',
-  },
-  sendername: {
-
-    position: 'relative',
-    float: 'right',
-    width: '100%',
-    marginTop: '-10px',
-    fontSize: 10,
-    color: '#676161',
-    marginBottom: 10,
-  },
-  avatarstyle: {
-    borderRadius: '5px',
-    /* float: left; */
-    display: 'inline-block',
-  },
-
-  inputContainer: {
-    display: 'table',
-    margin: '0px 0px',
-    width: '100%',
-    borderBottom: '1px solid #dddfe2',
-    borderTop: '1px solid #dddfe2',
-    minHeight: 50,
-    position: 'relative',
-
-  },
-  inputField: {
-    minHeight: 30,
-    verticalAlign: 'middle',
-    width: '100%',
-    padding: '15px 10px',
-    height: 24,
-  },
-  toolbox: {
-    display: 'table-cell',
-    width: 100,
-    padding: '0px 0',
-    verticalAlign: 'bottom',
-    whiteSpace: 'nowrap',
-  },
-
-  element: {
-    display: 'inline-block',
-    alignItems: 'center',
-  },
-
-  faicon: {
-    margin: 10,
-    cursor: 'pointer',
-    fontSize: 30,
-  },
-  inputf: {
-    display: 'none',
-  },
-
-  iconclass: {
-    height: 24,
-    padding: '0 15px',
-    width: 24,
-    position: 'relative',
-    display: 'inline-block',
-    cursor: 'pointer',
-  },
-  urltitle:{
-    color: 'rgba(0, 0, 0, 1)',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    marginTop: '6px',
-  }
-};
 
 
 

@@ -365,10 +365,9 @@ class Chat extends Component {
                       </article>
                     </div>
                   </nav>
-                  <article className="articleclassChat" style={{overflowY: 'hidden'}}>
+                  <article className="articleclass">
                     {this.refs.sessionid ?
-                      <div>
-                        {
+                        
                           this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
                             (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected  && this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
                               <CustomerChatView newChatClicked="true" socket={ this.props.route.socket} {...this.props}
@@ -388,9 +387,9 @@ class Chat extends Component {
                                                 list_of_agents_in_teams = {this.get_list_of_agents_in_team(this.props.customerchat_selected)}/>
                             )
 
-                        }
+                        
 
-                      </div> :
+                       :
                       <p>Click on session to view Chat messages</p>
                     }
 
