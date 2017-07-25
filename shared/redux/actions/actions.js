@@ -2104,6 +2104,10 @@ export function uploadpicture(data, fname, token, picture) {
 
 export function showfilesuccess(res) {
   alert('file shared successfully');
+ return {
+  showFileUploadingChatsession: false,
+  type: ActionTypes.SHOW_FILE_UPLOAD_INDICATOR_CHAT_SESSION,
+}
 }
 
 export function uploadChatfile(fileData, usertoken) {
@@ -4119,6 +4123,12 @@ export function uploadFbChatfile(fileData, usertoken, fbchats, id) {
 };
 
 
+export function updatefileuploadStatusChatSession(status) {
+  return {
+    showFileUploadingChatsession: status,
+    type: ActionTypes.SHOW_FILE_UPLOAD_INDICATOR_CHAT_SESSION,
+  }
+}
 export function updatefileuploadStatus(status) {
   return {
     showFileUploading: status,

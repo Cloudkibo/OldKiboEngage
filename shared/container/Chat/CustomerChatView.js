@@ -5,7 +5,7 @@ import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
-import { getChatRequest,uploadChatfile,removeDuplicates,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
+import {updatefileuploadStatusChatSession, getChatRequest,uploadChatfile,removeDuplicates,createnews,resolvesession,getuserchats,getcustomers,updatestatus,assignToAgent,movedToMessageChannel,getsessions}  from '../../redux/actions/actions'
 import { updateChatList,removeDuplicatesWebChat}  from '../../redux/actions/actions'
 import {updateSessionList} from '../../redux/actions/actions'
 import moment from 'moment';
@@ -108,6 +108,7 @@ _onChange(e) {
     reader.onload = () => {
       this.setState({ src: reader.result,
                        });
+      this.onFileSubmit();
     };
     reader.readAsDataURL(files[0]);
   }
@@ -121,7 +122,7 @@ onFileDownload(event)
     window.open('./userfiles/'+fname);
 
     }
-onFileSubmit(event)
+onFileSubmit()
     {
         const usertoken = auth.getToken();
         var fileData = new FormData();
@@ -129,7 +130,7 @@ onFileSubmit(event)
         if ( this.state.userfile ) {
               printlogs('log',this.state.userfile)
 
-
+              this.props.updatefileuploadStatusChatSession(true);
               var today = new Date();
               var uid = Math.random().toString(36).substring(7);
               var unique_id = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth()+1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
@@ -180,7 +181,7 @@ onFileSubmit(event)
 
         this.props.uploadChatfile(fileData,usertoken);
         }
-        event.preventDefault();
+       // event.preventDefault();
 
     }
 
@@ -1320,10 +1321,15 @@ const { value, suggestions } = this.state;
                 </i>
               </div>
             }
-
+            
 
             </div>
           </div>
+           {
+            this.props.showFileUploadingChatsession && this.props.showFileUploadingChatsession == true &&
+            <p style={{color: 'red'}}>Uploading file...Please wait</p>
+
+          }
 
                 </div>
                 
@@ -1620,9 +1626,10 @@ function mapStateToProps(state) {
           customers:(state.dashboard.customers),
           customerchat_selected :(state.dashboard.customerchat_selected),
           new_message_arrived_rid :(state.dashboard.new_message_arrived_rid),
+          showFileUploadingChatsession:(state.dashboard.showFileUploadingChatsession),
 
 
   };
 }
 
-export default connect(mapStateToProps,{updatechatstatus,removeDuplicatesWebChat,downloadfile,uploadChatfile,removeDuplicates,getchatfromAgent,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);
+export default connect(mapStateToProps,{updatefileuploadStatusChatSession, updatechatstatus,removeDuplicatesWebChat,downloadfile,uploadChatfile,removeDuplicates,getchatfromAgent,resolvesession,getChatRequest,getuserchats,createnews,updateChatList,movedToMessageChannel,getsessions,getcustomers,updateSessionList,savechat,assignToAgent,updatestatus})(CustomerChatView);

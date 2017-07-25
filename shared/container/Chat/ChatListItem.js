@@ -153,7 +153,9 @@ return res;
           (props.unreadcount.length >0 && thisChat == props.customer.request_id  ?
            <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15, color: 'black'}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID}
-              <span>{ag[0].deptname +'-' + (ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</span>
+              {ag[0].deptname}
+              <br/>
+              <i>{(ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</i>
             </p>
              <div className="uk-align-right">
             <p className="uk-text-meta " style={{color: 'white'}} ><span className='badge' style={rightStyle}>{props.unreadcount[0].count}</span> {difference} </p>
@@ -177,13 +179,17 @@ return res;
 
            <div className="list-group-item" style={{...changecc, background: 'white', border: 0, marginTop:0, marginBottom:0}}>
             <p className = 'list-group-item-heading' style={{...hleft, fontSize: 15}}><img src="img/user.png" className="uk-border-rounded" style={{maxWidth: 35, maxHeight:35}}/> {props.customer.customerid.name?props.customer.customerid.name : props.customer.customerid.customerID} 
-            <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>{ag[0].deptname +'-' + (ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</p>
+            <p style={{fontSize: 10, marginLeft:40, marginTop: -10}}>
+            {ag[0].deptname}
+            <br/>
+            <i>{(ch.length>0?ch[0].msg_channel_name:'Channel - deleted')}</i>
+            </p>
             <span style={{fontSize: 10, margin:5}}>{props.customer.status} </span>
             </p>
 
 
             <div className="uk-align-right">
-            <p className="uk-text-meta " >{difference}</p>
+            <p className="uk-text-meta" style={{'fontSize':'1em'}}>{difference}</p>
             
             </div>
             

@@ -553,6 +553,7 @@ const dashboard = (state = dashboardState, action) => {
         customerchat_selected: action.customerchat_selected[0],
         new_message_arrived_rid: action.new_message_arrived_rid,
         errorMessage: '',
+        showFileUploadingChatsession:false,
 
       };
 
@@ -967,6 +968,12 @@ const dashboard = (state = dashboardState, action) => {
       return {
         ...state,
         showFileUploading: action.showFileUploading,
+
+      };
+      case ActionTypes.SHOW_FILE_UPLOAD_INDICATOR_CHAT_SESSION:
+      return {
+        ...state,
+        showFileUploadingChatsession: action.showFileUploadingChatsession,
 
       };
     case ActionTypes.ADD_LASTMESSAGE_FB_SESSION:
