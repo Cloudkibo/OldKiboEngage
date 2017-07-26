@@ -418,10 +418,7 @@ export function getspecificuserchats(req, res) {
 // resolve session
 
 export function resolvechatsession(req, res) {
-  //console.log('resolvesession is called');
-  //console.log(req.body);
   var token = req.headers.authorization;
-
 
   var options = {
       url: `${baseURL}/api/visitorcalls/resolveSession`,
@@ -430,18 +427,34 @@ export function resolvechatsession(req, res) {
                  },
       rejectUnauthorized : false,
       json: req.body
-
-
     };
 
     function callback(error, response, body) {
-        //console.log(error);
-        //console.log(response.statusCode);
-        //console.log(body);
 
        if(!error && response.statusCode == 200)
        {
-           //console.log(body)
+
+         var readstatusRequestPayload = {
+           request_id: req.body.request_id,
+         };
+
+         var optionsReadStatusRequest = {
+           url: `${baseURL}/api/readstatus/deleteforsession`,
+           rejectUnauthorized: false,
+           headers: headers,
+           json: readstatusRequestPayload,
+
+         };
+
+         console.log('request to read status payload: ', JSON.stringify(readstatusRequestPayload));
+
+         request.post(optionsReadStatusRequest,
+           function(errorReadStatus, responseReadStatus, bodyReadStatus){
+             console.log('response from read status');
+             console.log(errorReadStatus);
+             console.log(bodyReadStatus);
+
+           });
            // inform mobile agents through push notification
            //send push notification to all agents
             sendpushToAllAgents(req.body.request_id,'Resolve Chat Session','chatsession-resolved');
@@ -798,7 +811,6 @@ export function getChatMessage(req, res) {
                                }
                            request.get(options,callback);
                });
-
 };
 
 // endpoint called by agent (web or mobile)
@@ -855,8 +867,6 @@ function sendPushNotification(tagname,payload,alertmessage){
    //   console.log('Azure push notification error : '+ JSON.stringify(error));
     }
   });
-
-
 
 }
 
@@ -1302,8 +1312,8 @@ export function getallsessions(req, res) {
    }
         request.get(options, callback);
 
-
 };
+
 
 export function getunreadsessionscount(req, res) {
   console.log('getunreadsessionscount');
@@ -1331,9 +1341,6 @@ export function getunreadsessionscount(req, res) {
        }
    }
         request.post(options, callback);
-
-
-
 
   }
 
