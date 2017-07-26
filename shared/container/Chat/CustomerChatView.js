@@ -14,7 +14,9 @@ import { FileUpload } from 'redux-file-upload';
 import SweetAlert from 'sweetalert-react';
 import {printlogs} from '../../services/clientlogging';
 
-
+import {
+  
+  formatAMPM,handleAgentName,displayDateForChat,showDateForChat} from '../facebookChat/utility';
 //var DownloadButton = require('downloadbutton')
 
 
@@ -331,7 +333,7 @@ else{
   componentDidUpdate() {
     /*const messageList = this.refs.messageList;
     messageList.scrollTop = messageList.scrollHeight;*/
-    this.scrollToBottom();
+   // this.scrollToBottom();
     var userassigned = false;
     if(this.props.sessiondetails.agent_ids.length > 0){
         var obj = this.props.sessiondetails.agent_ids[this.props.sessiondetails.agent_ids.length - 1];
@@ -1015,6 +1017,166 @@ const { value, suggestions } = this.state;
                   };
 
 
+    let list = this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((data, index) => {
+      return (
+        this.props.userdetails.firstname != data.from?
+          <div key={index} ref={index} id={'chatmsg' + index} style={{'textAlign': 'left', 'clear': 'both'}}>
+
+
+            { index == 0 ?
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4> :
+
+              index > 0 && showDateForChat(this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id)[index-1].datetime, data.datetime) == "true" &&
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4>
+
+            }
+
+            <div style={{'float': 'left'}}>
+               <div style={styles.left.wrapper}>
+                
+                  <p style={styles.left.text}>
+                          {data.type == 'file'?
+
+                                      <button className="btn" onClick = {this.onFileDownload} data-attrib = {data.uniqueid+'.'+data.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {data.msg.split(';')[1]? data.msg.split(';')[1].substr(0,25) : 'file not available'}
+                                      </button>
+                                      :
+                                       <span>
+                                            {data.msg}
+                                       </span>
+                          }
+                  </p>
+                
+
+             </div>
+
+
+
+            </div>
+          </div> :
+          <div key={index} ref={index} id={'chatmsg' + index} style={{'textAlign': 'right', 'clear': 'both'}}>
+            { index == 0 ?
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4> :
+
+              index > 0 && showDateForChat(this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id)[index-1].datetime, data.datetime) == "true" &&
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4>
+            }
+
+            {
+              index == 0 ?
+                <div style={styles.sendername}>{data.from }</div>
+                :
+
+                this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id)[index-1].from != data.from &&
+
+
+                <div style={styles.sendername}>{data.from}</div>
+
+
+
+            }
+            
+            <div style={styles.right.wrapper}>
+
+                 <p style={styles.left.text}>
+                          {data.type == 'file'?
+
+                                      <button className="btn" onClick = {this.onFileDownload} data-attrib = {data.uniqueid+'.'+data.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {data.msg.split(';')[1]? data.msg.split(';')[1].substr(0,25) : 'file not available'}
+                                      </button>
+                                      :
+                                       <span>
+                                            {data.msg}
+                                       </span>
+                          }
+                  </p>
+
+            </div>
+            </div>
+          )
+    })
+
+
+
+    let webchatlist = this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((data, index) => {
+      return (
+        this.props.userdetails.firstname != data.from?
+          <div key={index} ref={index} id={'chatmsg' + index} style={{'textAlign': 'left', 'clear': 'both'}}>
+
+
+            { index == 0 ?
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4> :
+
+              index > 0 && showDateForChat(this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id)[index-1].datetime, data.datetime) == "true" &&
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4>
+
+            }
+
+            <div style={{'float': 'left'}}>
+               <div style={styles.left.wrapper}>
+                
+                  <p style={styles.left.text}>
+                          {data.type == 'file'?
+
+                                      <button className="btn" onClick = {this.onFileDownload} data-attrib = {data.uniqueid+'.'+data.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {data.msg.split(';')[1]? data.msg.split(';')[1].substr(0,25) : 'file not available'}
+                                      </button>
+                                      :
+                                       <span>
+                                            {data.msg}
+                                       </span>
+                          }
+                  </p>
+                
+
+             </div>
+
+
+
+            </div>
+          </div> :
+          <div key={index} ref={index} id={'chatmsg' + index} style={{'textAlign': 'right', 'clear': 'both'}}>
+            { index == 0 ?
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4> :
+
+              index > 0 && showDateForChat(this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id)[index-1].datetime, data.datetime) == "true" &&
+              <h4 style={styles.timestyle}>{displayDateForChat(data.datetime)}</h4>
+            }
+
+            {
+              index == 0 ?
+                <div style={styles.sendername}>{data.from }</div>
+                :
+
+                this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id)[index-1].from != data.from &&
+
+
+                <div style={styles.sendername}>{data.from}</div>
+
+
+
+            }
+            
+            <div style={styles.right.wrapper}>
+
+                 <p style={styles.left.text}>
+                          {data.type == 'file'?
+
+                                      <button className="btn" onClick = {this.onFileDownload} data-attrib = {data.uniqueid+'.'+data.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
+                                          {data.msg.split(';')[1]? data.msg.split(';')[1].substr(0,25) : 'file not available'}
+                                      </button>
+                                      :
+                                       <span>
+                                            {data.msg}
+                                       </span>
+                          }
+                  </p>
+
+            </div>
+            </div>
+          )
+    })
+
      return (
 
       <div className="anotherflx">
@@ -1080,156 +1242,35 @@ const { value, suggestions } = this.state;
           <div ref={`thing`}>
                       {
                         this.props.sessiondetails &&
-                      <div>
-                      <label>Customer Name :</label>
-                      <input value = {this.props.sessiondetails.customerid.customerID} ref="customername"/>
+                          <div>
+                          <label>Customer Name :</label>
+                          <input value = {this.props.sessiondetails.customerid.customerID} ref="customername"/>
 
-                       <label>Email :</label>
-                       <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
-                      <br/>
-                      <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
-                      <input type="hidden" defaultValue = {'soket of agent'} ref = "agentsocket"/>
+                           <label>Email :</label>
+                           <input value = {this.props.sessiondetails.customerid.email?this.props.sessiondetails.customerid.email:"N/A"} ref="customeremail"/>
+                          <br/>
+                          <input type ="hidden" value = {this.props.sessiondetails.request_id} ref = "requestid"/>
+                          <input type="hidden" defaultValue = {'soket of agent'} ref = "agentsocket"/>
 
-                      <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
-                      <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
-                      </div>
+                          <input type="hidden" value = {this.props.sessiondetails.messagechannel[this.props.sessiondetails.messagechannel.length-1]} ref="subgroupid"/>
+                          <input type="hidden" value = {this.props.sessiondetails.socketid} ref = "socketid_customer"/>
+                          </div>
                       }
           </div>
           </div>
+          {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
           <article style={{'backgroundColor' :'rgb(245, 245, 245)'}}>
-                     <ul className="chat" style={{ margin: '0', overflowY: 'auto', overflowX:'hidden', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1', background: '#F5F5F5'}}  ref="messageList">
-
-                          {this.props.sessiondetails.platform == "mobile" && this.props.mobileuserchat &&
-                            this.props.mobileuserchat.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
-
-                               (this.props.userdetails.firstname === chat.from?
-                                    <li className="pull-right clearfix agentChatBox uk-border-rounded" style={{marginTop: -10, background: '#F5F5F5', width: 100 + '%', border: 0}}>
-                                      <div className="chat-body clearfix" style={{hyphens: 'auto', wordBreak: 'break-all'}}>
-                                        <div>
-                                            <p  className="pull-right text-muted">{chat.from}</p>
-
-                                        </div>
-                                       {
-                                        (chat.type == 'file')?
-
-                                       <p  className='pull-right chatmsg' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', borderRadius: 25}}>
-                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
-                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
-                                       </p> :
-                                       <p className="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', wordBreak: 'break-all',  color: 'white', borderRadius: 25}}>
-                                            {chat.msg}
-                                       </p>
-                                     }
-                                     </div>
-                                          <small className="pull-right text-muted" style={{marginRight: 15}}>
-                                              {handleDate(chat.datetime)}
-                                            </small>
-                                   </li>
-
-                                   :
-                                    <li className="left userChatBox uk-border-rounded" style={{border: 0}}>
-
-                                      <div>
-                                      {
-                                        /*
-                                          <span className="chat-img pull-left userChat">
-                                      {chat.from.substr(0,1)}
-                                      </span>
-                                        */
-                                      }
-
-                                        <div style={{marginBottom: -10}}>
-                                            <p className="text-muted">{chat.customername?chat.customername:chat.from}</p>
-
-                                        </div>
-                                        {
-                                        (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg' style={{background: 'white',padding: 10, marginBottom: 0, marginTop: 0, borderRadius: 25}}>
-                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
-                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
-                                       </p> :
-
-                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0, borderRadius: 25}}>
-                                            {chat.msg}
-                                       </p>
-                                     }
-                                     <small className="text-muted" style={{marginLeft: 5, marginTop: -250}}>{handleDate(chat.datetime)}</small>
-                                     </div>
-                                   </li>
-
-                               )
-
-
-                            ))
-                          }
-                           {this.props.sessiondetails.platform == "web" && this.props.chatlist &&
-                            this.props.chatlist.filter((chat) => chat.request_id == this.props.sessiondetails.request_id).map((chat, i) => (
-
-                               (this.props.userdetails.firstname === chat.from?
-
-                                   <li className="pull-right clearfix agentChatBox uk-border-rounded" style={{marginTop: -10, background: '#F5F5F5', border: 0}}>
-                                      <div className="chat-body clearfix">
-                                        <div>
-                                            <p className="pull-right text-muted">{chat.from}</p>
-
-                                        </div>
-                                        {
-                                        (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg uk-border-rounded' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5, borderRadius: 25}}>
-                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
-                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
-                                       </p> :
-
-                                       <p  lassName="pull-right chatmsg" style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', padding: 5, borderRadius: 25}}>
-                                            {chat.msg}
-                                       </p>
-                                     }
-                                     <small className="pull-right text-muted">
-                                               {handleDate(chat.datetime)}
-                                            </small>
-                                     </div>
-                                   </li> :
-
-                                    <li className="left userChatBox uk-border-rounded" style={{border: 0}}>
-                                     {
-                                       /*
-                                        <span className="chat-img pull-left userChat">
-                                      {chat.from.substr(0,1)}
-                                      </span>
-
-                                       */
-                                     }
-                                        <div>
-                                        <div style={{marginBottom: -10}}>
-                                            <p className="text-muted">{chat.from}</p>
-
-                                        </div>
-                                        {
-                                        (chat.type == 'file')?
-                                         <p  className='pull-right chatmsg uk-border-rounded' style={{'marginLeft':'0px', marginBottom: 0, background: '#0F7AE5', color: 'white', borderRadius: 25}}>
-                                             <button className="btn" onClick = {this.onFileDownload} data-attrib = {chat.uniqueid+'.'+chat.msg.split(';')[0].split('/')[1]}><i className="fa fa-download" aria-hidden="true"></i>
-                                          {chat.msg.split(';')[1]? chat.msg.split(';')[1].substr(0,25) : 'file not available'}</button>
-                                       </p> :
-
-                                       <p className="chatmsg" style={{background: 'white', padding: 10, marginBottom: 0, borderRadius: 25}}>
-                                            {chat.msg}
-                                       </p>
-                                     }
-                                     <small className="text-muted"  style={{marginLeft: 5, marginTop: -250}}>
-                                                {handleDate(chat.datetime)}
-                                            </small>
-                                     </div>
-                                   </li>
-
-                               )
-
-
-                            ))
-                          }
-
-
-            </ul>
+                    
+          {list}
           </article>
+            }
+
+           {this.props.sessiondetails.platform == "web" && this.props.chatlist &&  
+            <article style={{'backgroundColor' :'rgb(245, 245, 245)'}}>
+              {webchatlist}
+             </article>   
+            }
+         
 
            <div className="footerchatarea">
              

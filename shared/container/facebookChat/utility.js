@@ -84,6 +84,18 @@ export function handleAgentName(agents, senderid) {
   }
 }
 
+
+export function showDateForChat(prev, next) {
+  var p = new Date(prev);
+  var n = new Date(next);
+
+  if (n.getMinutes() - p.getMinutes() > 10 || n.getDay() != p.getDay() || n.getMonth() != p.getMonth() || n.getFullYear() != p.getFullYear()) {
+    return "true";
+  }
+  return "false";
+}
+
+
 export function formatAMPM(date) {
   var hours = date.getHours();
   var minutes = date.getMinutes();
@@ -121,3 +133,29 @@ export function displayDate(x) {
   return s;
 }
 
+
+export function displayDateForChat(x) {
+  var today = new Date();
+  var n = new Date(x)
+  var days = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
+  var month = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+  var s = '';
+  if (today.getFullYear() == n.getFullYear()) {
+    if (today.getMonth() == n.getMonth()) {
+      if (today.getDay() == n.getDay()) {
+        s = formatAMPM(n);
+      }
+      else {
+        s = days[n.getDay()] + "," + formatAMPM(n);
+      }
+    }
+    else {
+      s = days[n.getDay()] + ' ' + month[n.getMonth()] + "," + formatAMPM(n)
+    }
+  }
+  else {
+    s = days[n.getDay()] + ' ' + month[n.getMonth()] + n.getDay() + n.getFullYear() + "," + formatAMPM(n);
+  }
+  // alert(s);
+  return s;
+}
