@@ -11,7 +11,6 @@ var handleDate = function (d) {
 function SessionListItem(props) {
   var ch = []
 
-
   {
     props.subgroups &&
     props.subgroups.map((cha, i) => (
@@ -27,21 +26,23 @@ function SessionListItem(props) {
     ))
 
   }
-  /*var agentname = []
-   {
-   if(props.agent.agent_ids && props.agent.agent_ids.length > 0){
-   var agents = props.agent.filter((c) => c._id == props.session.agent_ids[props.session.agent_ids.length-1].id);
-   agents &&
-   agents.map((cha, i) => (
-   agentname.push(cha)
-   ))
-   }
 
-   }*/
+  var isChecked = props.isChecked;
+
   return (
     props.session.customerid &&
     <tr className="odd">
-
+      <td>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => {
+            isChecked = !isChecked;
+            props.selectCheckedItem(props.session.customerid);
+            SessionListItem.forceUpdate();
+          }}
+        />
+      </td>
       <td>{props.session.customerid && props.session.customerid.name ? props.session.customerid.name : props.session.customerid.customerID} </td>
       <td>{props.session.customerid && props.session.customerid.email ? props.session.customerid.email : "N/A"}</td>
       <td>{gname.length > 0 ? gname[0].deptname : '-'}</td>

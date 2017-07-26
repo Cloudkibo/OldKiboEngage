@@ -9,7 +9,7 @@ return c.toDateString();
 
 var getAgentName = function(agent){
     var agentt = [];
-   
+
      agent.map((ag,i) =>(
       agentt.push(ag.firstname)
       ));
@@ -17,10 +17,24 @@ var getAgentName = function(agent){
 }
 function NotificationListItem(props) {
 
-     
+  var isChecked = props.isChecked;
+
   return (
-   
+
     <tr className = "odd">
+      <td>
+        <center>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => {
+            isChecked = !isChecked;
+            props.selectCheckedItem(props.notification);
+            NotificationListItem.forceUpdate();
+          }}
+        />
+        </center>
+      </td>
       <td>{props.notification.title} </td>
       <td>{props.notification.description}</td>
       <td>{handleDate(props.notification.datetime)}</td>
@@ -32,19 +46,19 @@ function NotificationListItem(props) {
         {/*<Link to={`/editnotification/${props.notification._id}`} className="btn blue-madison" >
         Edit
         </Link>*/}
-       
-       
+
+
 
       </td>
-    
+
     </tr>
-    
+
   );
 }
 
 NotificationListItem.propTypes = {
   onDelete: PropTypes.func.isRequired,
- 
+
 };
 
 export default NotificationListItem;

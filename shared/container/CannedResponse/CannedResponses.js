@@ -34,12 +34,16 @@ class CannedResponses extends Component {
       responsesData: [],
       totalLength: 0,
       selectedPage: 0,
+      isChecked: false,
+      isCheckedAll: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.add = this.add.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.deleteResponse = this.deleteResponse.bind(this);
+    this.selectCheckedItem = this.selectCheckedItem.bind(this);
+    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
   handleClick(e) {
@@ -48,6 +52,17 @@ class CannedResponses extends Component {
       showCR: !this.state.showCR,
     });
     e.preventDefault();
+  }
+
+  selectCheckedItem(data) {
+    console.log(data);
+  }
+
+  toggleCheckAll() {
+    this.setState({
+      isCheckedAll: !this.state.isCheckedAll,
+      isChecked: !this.state.isChecked,
+    });
   }
 
   add(shortcode, message) {
@@ -156,6 +171,15 @@ class CannedResponses extends Component {
                       <table id="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                         <thead>
                         <tr>
+                          <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                            <center>
+                            <input
+                              type="checkbox"
+                              checked={this.state.isCheckedAll}
+                              onChange={this.toggleCheckAll}
+                            />
+                            </center>
+                          </th>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Short Code</th>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Response</th>
                           { this.props.userdetails.isAgent == "Yes" ? <br/> :
@@ -173,6 +197,8 @@ class CannedResponses extends Component {
                           this.state.responsesData.map((response, i) => (
 
                             <ResponseListItem response={response} key={response._id}
+                                              selectCheckedItem={this.selectCheckedItem}
+                                              isChecked={this.state.isChecked}
                                               onDelete={() => this.deleteResponse(response, token)}
                                               userdetails={this.props.userdetails}/>
 
@@ -180,6 +206,9 @@ class CannedResponses extends Component {
                         }
                         </tbody>
                       </table>
+                      <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                        {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
+                      </button>
                       <ReactPaginate previousLabel={"previous"}
                                      nextLabel={"next"}
                                      breakLabel={<a href="">...</a>}

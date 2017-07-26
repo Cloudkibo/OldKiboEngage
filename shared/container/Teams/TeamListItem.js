@@ -20,9 +20,22 @@ for(var i=0;i<props.teamagents.length;i++){
   }
 }
 
+  var isChecked = props.isChecked;
+
   return (
 
     <tr className = "odd">
+      <td>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => {
+            isChecked = !isChecked;
+            props.selectCheckedItem(props.team);
+            TeamListItem.forceUpdate();
+          }}
+        />
+      </td>
       <td>{props.team.groupname}</td>
       <td>{props.team.groupdescription}</td>
       <td>{props.team.createdby.firstname}</td>
@@ -37,12 +50,12 @@ for(var i=0;i<props.teamagents.length;i++){
         <Link data-tip="View Team"  to={`/team/${props.team._id}`} style={{padding: 5}}>
          <img src="/img/view.svg" style={{maxWidth: 25, maxHeight: 25}} />
         </Link>
-       
+
         <Link data-tip="Edit Team" to={`/editteam/${props.team._id}`} style={{padding: 5}} >
         <img src="/img/edit.svg" style={{maxWidth: 25, maxHeight: 25}} />
 
         </Link>
-        
+
         <img data-tip="Delete Team" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={props.onDelete} />
         </span> :
          <span>

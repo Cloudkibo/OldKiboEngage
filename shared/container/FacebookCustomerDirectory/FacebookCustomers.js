@@ -27,11 +27,15 @@ class FacebookCustomers extends Component {
     data: props.fbcustomers,
     filteredData: props.fbcustomers,
     totalLength: 0,
+    isChecked: false,
+    isCheckedAll: false,
   };
   this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   this.filterData = this.filterData.bind(this);
   this.handlePageClick = this.handlePageClick.bind(this);
   this.displayData = this.displayData.bind(this);
+  this.selectCheckedItem = this.selectCheckedItem.bind(this);
+  this.toggleCheckAll = this.toggleCheckAll.bind(this);
 }
 
 filterData(event) {
@@ -46,6 +50,17 @@ filterData(event) {
 
   this.setState({
     filteredData: filtered,
+  });
+}
+
+selectCheckedItem(data) {
+  console.log(data);
+}
+
+toggleCheckAll() {
+  this.setState({
+    isCheckedAll: !this.state.isCheckedAll,
+    isChecked: !this.state.isChecked,
   });
 }
 
@@ -91,7 +106,7 @@ render() {
             <div className="uk-card uk-card-body uk-card-default">
               <div className="uk-card-title">
                   Facebook Customers
-                
+
               </div>
               <div className="portlet-body">
 
@@ -110,6 +125,15 @@ render() {
                  <table id ="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                  <thead>
                   <tr>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                      <center>
+                      <input
+                        type="checkbox"
+                        checked={this.state.isCheckedAll}
+                        onChange={this.toggleCheckAll}
+                      />
+                      </center>
+                    </th>
                     <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Email Address</th>
                   </tr>
@@ -117,11 +141,14 @@ render() {
                 <tbody>
                   {
                     this.props.fbcustomers && filteredData && filteredData.map((customer, i) => (
-                      <FBCustomerListItem customer={customer} />
+                      <FBCustomerListItem customer={customer} selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} />
                     ))
                   }
                 </tbody>
               </table>
+              <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
+              </button>
               <ReactPaginate previousLabel={"previous"}
                              nextLabel={"next"}
                              breakLabel={<a href="">...</a>}

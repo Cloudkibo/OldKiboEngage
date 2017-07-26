@@ -27,6 +27,8 @@ class Agents extends Component {
       showInviteAgent :  false,
       agentsData: [],
       totalLength: 0,
+      isChecked: false,
+      isCheckedAll: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -36,7 +38,8 @@ class Agents extends Component {
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.deleteAgent = this.deleteAgent.bind(this);
-
+    this.selectCheckedItem = this.selectCheckedItem.bind(this);
+    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
   add(email) {
@@ -52,6 +55,17 @@ class Agents extends Component {
       showInviteAgent: !this.state.showInviteAgent,
       });
       e.preventDefault();
+  }
+
+  selectCheckedItem(data) {
+    console.log(data);
+  }
+
+  toggleCheckAll() {
+    this.setState({
+      isCheckedAll: !this.state.isCheckedAll,
+      isChecked: !this.state.isChecked,
+    });
   }
 
   displayData(n){
@@ -149,6 +163,15 @@ class Agents extends Component {
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
+                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                      <center>
+                      <input
+                        type="checkbox"
+                        checked={this.state.isCheckedAll}
+                        onChange={this.toggleCheckAll}
+                      />
+                      </center>
+                    </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Email </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Joined</th>
@@ -161,12 +184,15 @@ class Agents extends Component {
                       {
                         this.state.agentsData.map((agent, i) => (
 
-                          <AgentListItem agent={agent} key={agent._id}  onDelete={() => this.deleteAgent(agent,token)}/>
+                          <AgentListItem selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} agent={agent} key={agent._id}  onDelete={() => this.deleteAgent(agent,token)}/>
 
                         ))
                       }
                      </tbody>
                     </table>
+                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                      {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
+                    </button>
                     <ReactPaginate previousLabel={"previous"}
                                    nextLabel={"next"}
                                    breakLabel={<a href="">...</a>}

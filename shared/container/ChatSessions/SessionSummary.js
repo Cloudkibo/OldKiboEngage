@@ -43,6 +43,8 @@ class SessionSummary extends Component {
     super(props, context);
     this.state = {
       loading: true,
+      isChecked: false,
+      isCheckedAll: false,
       subgroup: 'all',
       summarySessionsData: [],
       totalLength: 0,
@@ -53,6 +55,8 @@ class SessionSummary extends Component {
     this.displayData = this.displayData.bind(this);
     this.filterSessionSummary = this.filterSessionSummary.bind(this);
     this.getagentname = this.getagentname.bind(this);
+    this.selectCheckedItem = this.selectCheckedItem.bind(this);
+    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
   getagentname(session){
@@ -70,7 +74,7 @@ class SessionSummary extends Component {
             agentname = agent.firstname + ' ' + agent.lastname;
           }
         }
-      
+
     }
     else if(session.status == "new"){
       agentname = 'Not assigned'
@@ -94,12 +98,23 @@ class SessionSummary extends Component {
       sessionData[i] = this.state.sessionsummaryfiltered[i];
     }
     this.setState({summarySessionsData: sessionData});
-  
+
   }
 
   handlePageClick(data) {
     //console.log(data.selected);
     this.displayData(data.selected);
+  }
+
+  selectCheckedItem(data) {
+    console.log(data);
+  }
+
+  toggleCheckAll() {
+    this.setState({
+      isCheckedAll: !this.state.isCheckedAll,
+      isChecked: !this.state.isChecked,
+    });
   }
 
   componentDidMount() {
@@ -110,12 +125,12 @@ class SessionSummary extends Component {
        this.displayData(0);
        console.log('displayData');
        console.log(this.state.sessionsummaryfiltered)
-    
+
      // this.setState({sessionsummaryfiltered: this.props.sessionsummary,loading: false,totalLength: this.props.sessionsummary.length});
      // this.displayData(0);
-     // console.log('updating props') 
+     // console.log('updating props')
        }
-   
+
   }
    componentWillReceiveProps(props) {
     //const usertoken = auth.getToken();
@@ -126,9 +141,9 @@ class SessionSummary extends Component {
        console.log(this.state.sessionsummaryfiltered)
      // this.setState({sessionsummaryfiltered: this.props.sessionsummary,loading: false,totalLength: this.props.sessionsummary.length});
      // this.displayData(0);
-     // console.log('updating props') 
+     // console.log('updating props')
        }
-   
+
   }
 
   handleChange() {
@@ -470,10 +485,10 @@ class SessionSummary extends Component {
     if(props.sessionsummary){
       this.setState({sessionsummaryfiltered: props.sessionsummary,loading: false,totalLength: props.sessionsummary.length});
       this.displayData(0);
-      console.log('updating props') 
+      console.log('updating props')
        }
 
-   
+
   }
 */
   render() {
@@ -489,9 +504,9 @@ class SessionSummary extends Component {
 
               <div className="uk-card uk-card-body uk-card-default">
                 <div className="uk-card-title">
-                  
+
                     Summary of Chat Sessions
-              
+
                 </div>
 
                 <div className="portlet-body">
@@ -586,6 +601,13 @@ class SessionSummary extends Component {
                       <table id="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                         <thead>
                         <tr>
+                        <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                          <input
+                            type="checkbox"
+                            checked={this.state.isCheckedAll}
+                            onChange={this.toggleCheckAll}
+                          />
+                        </th>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Visitor Name</th>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Visitor Email</th>
                           <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending'>Group</th>
@@ -607,13 +629,17 @@ class SessionSummary extends Component {
                           this.state.summarySessionsData.map((session, i) => (
                             session.agent_ids.length > 0 ?
                               <SessionListItem session={session} key={session.request_id}
-                                               agent={this.getagentname(session)} 
+                                               selectCheckedItem={this.selectCheckedItem}
+                                               isChecked={this.state.isChecked}
+                                               agent={this.getagentname(session)}
                                                customers={this.props.customers.filter((c) => c._id == session.customerid)}
                                                subgroups={this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length - 1])}
                                                groups={this.props.groupdetails.filter((c) => c._id == session.departmentid)}
                                                viewoption="true"/>
                               :
                               <SessionListItem session={session} key={session.request_id} agent={[]}
+                                               selectCheckedItem={this.selectCheckedItem}
+                                               isChecked={this.state.isChecked}
                                                customers={this.props.customers.filter((c) => c._id == session.customerid)}
                                                subgroups={this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length - 1])}
                                                groups={this.props.groupdetails.filter((c) => c._id == session.departmentid)}
@@ -626,6 +652,9 @@ class SessionSummary extends Component {
 
                         </tbody>
                       </table>
+                      <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                        {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
+                      </button>
                       <ReactPaginate previousLabel={"previous"}
                                      nextLabel={"next"}
                                      breakLabel={<a href="">...</a>}

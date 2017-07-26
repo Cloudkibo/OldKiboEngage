@@ -8,15 +8,27 @@ return c.toDateString();
 }
 function GroupListItem(props) {
 
-  
+  var isChecked = props.isChecked;
+
   return (
-  
+
     <tr className = "odd">
+      <td>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => {
+            isChecked = !isChecked;
+            props.selectCheckedItem(props.group);
+            GroupListItem.forceUpdate();
+          }}
+        />
+      </td>
       <td>{props.group.deptname}</td>
       <td>{props.group.deptdescription}</td>
       <td>{props.group.createdby.firstname}</td>
       <td>{handleDate(props.group.creationdate)}</td>
-     
+
       <td>
         <Link to={`/group/${props.group._id}`} style={{margin: 2}} className="uk-button uk-button-primary uk-button-small" >
          View
@@ -33,15 +45,15 @@ function GroupListItem(props) {
         }
       </td>
 
-    
+
     </tr>
-    
+
   );
 }
 
 GroupListItem.propTypes = {
   onDelete: PropTypes.func.isRequired,
- 
+
 };
 
 
