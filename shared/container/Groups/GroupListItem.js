@@ -14,6 +14,7 @@ function GroupListItem(props) {
 
     <tr className = "odd">
       <td>
+        <center>
         <input
           type="checkbox"
           checked={isChecked}
@@ -23,6 +24,7 @@ function GroupListItem(props) {
             GroupListItem.forceUpdate();
           }}
         />
+        </center>
       </td>
       <td>{props.group.deptname}</td>
       <td>{props.group.deptdescription}</td>

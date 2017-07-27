@@ -26,6 +26,7 @@ for(var i=0;i<props.teamagents.length;i++){
 
     <tr className = "odd">
       <td>
+        <center>
         <input
           type="checkbox"
           checked={isChecked}
@@ -35,6 +36,7 @@ for(var i=0;i<props.teamagents.length;i++){
             TeamListItem.forceUpdate();
           }}
         />
+        </center>
       </td>
       <td>{props.team.groupname}</td>
       <td>{props.team.groupdescription}</td>

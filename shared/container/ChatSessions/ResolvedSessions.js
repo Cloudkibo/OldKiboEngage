@@ -40,8 +40,6 @@ class ResolvedSessions extends Component {
     super(props, context);
     this.state = {
       subgroup: 'all',
-      isChecked: false,
-      isCheckedAll: false,
       resolvedSessionsData: [],
       totalLength: 0,
       resolvedsessionsfiltered: props.resolvedsessions,
@@ -51,8 +49,6 @@ class ResolvedSessions extends Component {
     this.displayData = this.displayData.bind(this);
     this.filterResolvedSession = this.filterResolvedSession.bind(this);
     this.getagentname = this.getagentname.bind(this);
-    this.selectCheckedItem = this.selectCheckedItem.bind(this);
-    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
   getagentname(session){
@@ -82,17 +78,6 @@ class ResolvedSessions extends Component {
        this.props.updatesubgrouplist(this.refs.teamlist.value);
      }
      this.forceUpdate();
-  }
-
-  selectCheckedItem(data) {
-    console.log(data);
-  }
-
-  toggleCheckAll() {
-    this.setState({
-      isCheckedAll: !this.state.isCheckedAll,
-      isChecked: !this.state.isChecked,
-    });
   }
 
   filterResolvedSession(groupID, subgroupID, agentID, resolvedsessions) {
@@ -288,13 +273,6 @@ class ResolvedSessions extends Component {
                    <table id ="sample_3" className="uk-table uk-table-striped table-bordered uk-table-hover dataTable">
                    <thead>
                     <tr>
-                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
-                      <input
-                        type="checkbox"
-                        checked={this.state.isCheckedAll}
-                        onChange={this.toggleCheckAll}
-                      />
-                    </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Visitor Email</th>
                      <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Group</th>
@@ -324,15 +302,12 @@ class ResolvedSessions extends Component {
                         this.state.resolvedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.state.resolvedSessionsData.map((session, i) => (
 
-                          <ResolvedSessionListItem selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} session={session} key={session.request_id} agent={this.getagentname(session)}   subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <ResolvedSessionListItem session={session} key={session.request_id} agent={this.getagentname(session)}   subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
                         ))
                       }
                      </tbody>
                     </table>
-                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
-                      {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
-                    </button>
                     <ReactPaginate previousLabel={"previous"}
                                    nextLabel={"next"}
                                    breakLabel={<a href="">...</a>}

@@ -46,24 +46,11 @@ var agentname = []
 
 }
 
-var isChecked = props.isChecked;
-
   return (
 
     props.session.customerid &&
 
       <tr className = "odd">
-      <td>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.session.customerid);
-            NewSessionListItem.forceUpdate();
-          }}
-        />
-      </td>
       <td>{props.session.customerid.name?props.session.customerid.name : props.session.customerid.customerID} </td>
       <td>{props.session.customerid.email?props.session.customerid.email : "N/A"}</td>
 

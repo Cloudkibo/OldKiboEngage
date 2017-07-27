@@ -204,11 +204,13 @@ componentDidMount(){
                    <thead>
                     <tr>
                     <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
+                      <center>
                       <input
                         type="checkbox"
                         checked={this.state.isCheckedAll}
                         onChange={this.toggleCheckAll}
                       />
+                      </center>
                     </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Description </th>

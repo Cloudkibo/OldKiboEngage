@@ -17,24 +17,9 @@ var getAgentName = function(agent){
 }
 function NotificationListItem(props) {
 
-  var isChecked = props.isChecked;
-
   return (
 
     <tr className = "odd">
-      <td>
-        <center>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.notification);
-            NotificationListItem.forceUpdate();
-          }}
-        />
-        </center>
-      </td>
       <td>{props.notification.title} </td>
       <td>{props.notification.description}</td>
       <td>{handleDate(props.notification.datetime)}</td>

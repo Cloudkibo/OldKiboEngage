@@ -27,22 +27,9 @@ function SessionListItem(props) {
 
   }
 
-  var isChecked = props.isChecked;
-
   return (
     props.session.customerid &&
     <tr className="odd">
-      <td>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.session.customerid);
-            SessionListItem.forceUpdate();
-          }}
-        />
-      </td>
       <td>{props.session.customerid && props.session.customerid.name ? props.session.customerid.name : props.session.customerid.customerID} </td>
       <td>{props.session.customerid && props.session.customerid.email ? props.session.customerid.email : "N/A"}</td>
       <td>{gname.length > 0 ? gname[0].deptname : '-'}</td>

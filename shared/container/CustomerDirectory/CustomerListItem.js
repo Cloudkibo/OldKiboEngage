@@ -6,22 +6,9 @@ import ReactTooltip from 'react-tooltip';
 
 function CustomerListItem(props) {
 
-  var isChecked = props.isChecked;
-
   return (
 
     <tr className = "odd">
-      <td>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.customer);
-            CustomerListItem.forceUpdate();
-          }}
-        />
-      </td>
       <td>{props.customer.name && props.customer.name != ""?props.customer.name:props.customer.customerID} </td>
       <td>{props.customer.email ? props.customer.email :"N/A" }</td>
       <td>{props.customer.country?props.customer.country : "N/A"}</td>
