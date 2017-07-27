@@ -24,6 +24,7 @@ function SubgroupListItem(props) {
 
     <tr className="odd">
       <td>
+        <center>
         <input
           type="checkbox"
           checked={isChecked}
@@ -33,6 +34,7 @@ function SubgroupListItem(props) {
             SubgroupListItem.forceUpdate();
           }}
         />
+        </center>
       </td>
       <td>{props.subgroup.msg_channel_name} </td>
       <td>{props.subgroup.msg_channel_description}</td>

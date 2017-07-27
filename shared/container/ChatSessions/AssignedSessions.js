@@ -39,8 +39,6 @@ class AssignedSessions extends Component {
       subgroup: 'all',
       assignedSessionsData: [],
       totalLength: 0,
-      isChecked: false,
-      isCheckedAll: false,
       assignedsessionsfiltered: props.assignedsessions,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -48,8 +46,6 @@ class AssignedSessions extends Component {
     this.displayData = this.displayData.bind(this);
     this.getagentname = this.getagentname.bind(this);
     this.filterAssignedSession = this.filterAssignedSession.bind(this);
-    this.selectCheckedItem = this.selectCheckedItem.bind(this);
-    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
   getagentname(session){
@@ -79,17 +75,6 @@ class AssignedSessions extends Component {
        this.props.updatesubgrouplist(this.refs.teamlist.value);
      }
   }
-
-selectCheckedItem(data) {
-  console.log(data);
-}
-
-toggleCheckAll() {
-  this.setState({
-    isCheckedAll: !this.state.isCheckedAll,
-    isChecked: !this.state.isChecked,
-  });
-}
 
   filterAssignedSession(medium, groupID, subgroupID, agentID, assignedsessions) {
     if (medium !== 'all' && groupID !== 'all' && subgroupID !== 'all' && agentID !== 'all') {
@@ -374,13 +359,6 @@ toggleCheckAll() {
                    <table id ="sample_3" className="uk-table uk-table-divider uk-table-striped uk-table-hover dataTable">
                    <thead>
                     <tr>
-                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
-                      <input
-                        type="checkbox"
-                        checked={this.state.isCheckedAll}
-                        onChange={this.toggleCheckAll}
-                      />
-                    </th>
                     <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Visitor Name </th>
                     <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Visitor Email</th>
                      <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >Group</th>
@@ -410,15 +388,12 @@ toggleCheckAll() {
                         this.state.assignedsessionsfiltered && this.props.customers && this.props.subgroups && this.props.groupdetails && this.props.agents &&
                         this.state.assignedSessionsData.map((session, i) => (
 
-                          <SessionListItem selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} session={session} key={session.request_id} agent={this.getagentname(session)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
+                          <SessionListItem session={session} key={session.request_id} agent={this.getagentname(session)}  subgroups = {this.props.subgroups.filter((c) => c._id == session.messagechannel[session.messagechannel.length-1])} groups = {this.props.groupdetails.filter((c) => c._id == session.departmentid)}/>
 
                         ))
                       }
                      </tbody>
                     </table>
-                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
-                      {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
-                    </button>
                     <ReactPaginate previousLabel={"previous"}
                                    nextLabel={"next"}
                                    breakLabel={<a href="">...</a>}

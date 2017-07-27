@@ -33,14 +33,10 @@ class Customers extends Component {
       filteredData: props.customers,
       customersData: [],
       totalLength: 0,
-      isChecked: false,
-      isCheckedAll: false,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
-    this.selectCheckedItem = this.selectCheckedItem.bind(this);
-    this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
 
 
@@ -88,17 +84,6 @@ filterData(event) {
   handlePageClick(data){
     console.log(data.selected);
     this.displayData(data.selected);
-  }
-
-  selectCheckedItem(data) {
-    console.log(data);
-  }
-
-  toggleCheckAll() {
-    this.setState({
-      isCheckedAll: !this.state.isCheckedAll,
-      isChecked: !this.state.isChecked,
-    });
   }
 
   componentDidMount(){
@@ -155,13 +140,6 @@ filterData(event) {
                    <table id ="sample_3" className="table table-striped table-bordered table-hover dataTable">
                    <thead>
                     <tr>
-                    <th role="columnheader" rowSpan='1' colSpan='1' aria-sort='ascending' >
-                      <input
-                        type="checkbox"
-                        checked={this.state.isCheckedAll}
-                        onChange={this.toggleCheckAll}
-                      />
-                    </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Name </th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Email Address</th>
                     <th role="columnheader" rowspan='1' colspan='1' aria-sort='ascending' >Country</th>
@@ -176,16 +154,13 @@ filterData(event) {
                       {
                         this.props.customers && filteredData && this.state.customersData.map((customer, i) => (
 
-                          <CustomerListItem selectCheckedItem={this.selectCheckedItem} isChecked={this.state.isChecked} customer={customer} />
+                          <CustomerListItem customer={customer} />
 
                         ))
                       }
                      </tbody>
                     </table>
                     </div>
-                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
-                      {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
-                    </button>
                     <ReactPaginate previousLabel={"previous"}
                                    nextLabel={"next"}
                                    breakLabel={<a href="">...</a>}
