@@ -79,6 +79,46 @@ import Widget from './container/Widget/widget'
 import FacebookIntegrationInstructions from './container/FacebookIntegrationInstructions/FacebookIntegrationInstructions';
 import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
+import Help from './container/userDocumentation/MainPage';
+import helpPopup from './container/userDocumentation/MainPagePopup';
+
+import createGroup from './container/userDocumentation/Group/createGroup';
+import deleteGroup from './container/userDocumentation/Group/deleteGroup';
+import EditGroup from './container/userDocumentation/Group/EditGroup';
+
+import DeleteAgent from './container/userDocumentation/Agent/DeleteAgent';
+import inviteAgent from './container/userDocumentation/Agent/inviteAgent';
+
+
+import AddCannedResp from './container/userDocumentation/CannedResponses/AddCannedResp';
+import DeleteCannedResp from './container/userDocumentation/CannedResponses/DeleteCannedResp';
+import EditCannedResponse from './container/userDocumentation/CannedResponses/EditCannedResponse';
+
+
+import assignChat from './container/userDocumentation/Chat/assignChat';
+import attach from './container/userDocumentation/Chat/attach';
+import resolveMove from './container/userDocumentation/Chat/resolveMove';
+
+import ViewCustDir from './container/userDocumentation/CustomerDirectory/ViewCustDir';
+
+import assignFbChat from './container/userDocumentation/FBchat/assignFbChat';
+import FBchatAttach from './container/userDocumentation/FBchat/FBchatAttach';
+
+import facebookIntegration from './container/userDocumentation/FBchat/facebookIntegration';
+import ViewReports from './container/userDocumentation/HighCharts/ViewReports';
+
+import AddNotifications from './container/userDocumentation/Notifications/AddNotifications';
+import ResendNotifications from './container/userDocumentation/Notifications/ResendNotifications';
+
+import AddSubGroup from './container/userDocumentation/SubGroups/AddSubGroup';
+import DeleteSubGroup from './container/userDocumentation/SubGroups/DeleteSubGroup';
+import EditSubGroup from './container/userDocumentation/SubGroups/EditSubGroup';
+
+
+import AddTeam from './container/userDocumentation/Teams/AddTeam';
+import DeleteTeam from './container/userDocumentation/Teams/DeleteTeam';
+
+import EditTeam from './container/userDocumentation/Teams/EditTeam';
 
 import { returnSocket } from './socket';
 
@@ -183,7 +223,47 @@ const routes = (
      <Route path="/rescheduleabandonedsession/:id/:name/:email"  component={RescheduleAbandonedSessions} onEnter={requireAuth}/>
      <Route path="/privacypolicy" component={PrivacyPolicy} />
      <Route path="/features" component={Features} />
-     <Route path="*" component={NotFound} />
+      <Route path="/userDocumentation/MainPage" component={Help} />
+      <Route path="/userDocumentation/Group/createGroup" component={createGroup} />
+        <Route path="/userDocumentation/MainPagePopup" component={helpPopup} />
+         <Route path="/userDocumentation/Group/deleteGroup" component={deleteGroup} />
+         <Route path="/userDocumentation/Group/EditGroup" component={EditGroup} />
+          <Route path="/userDocumentation/Agent/inviteAgent" component={inviteAgent} />
+
+<Route path="/userDocumentation/CannedResponses/AddCannedResp" component={AddCannedResp} />
+<Route path="/userDocumentation/CannedResponses/DeleteCannedResp" component={DeleteCannedResp} />
+<Route path="/userDocumentation/CannedResponses/EditCannedResponse" component={EditCannedResponse} />
+<Route path="/userDocumentation/Chat/assignChat" component={assignChat} />
+
+
+<Route path="/userDocumentation/Chat/attach" component={attach} />
+<Route path="/userDocumentation/Chat/resolveMove" component={resolveMove} />
+//resolveMove
+<Route path="/userDocumentation/CustomerDirectory/ViewCustDir" component={ViewCustDir} />
+<Route path="/userDocumentation/FBchat/assignFbChat" component={assignFbChat} />
+<Route path="/userDocumentation/FBchat/facebookIntegration" component={facebookIntegration} />
+//facebookIntegration
+
+<Route path="/userDocumentation/FBchat/FBchatAttach" component={FBchatAttach} />
+
+<Route path="/userDocumentation/HighCharts/ViewReports" component={ViewReports} />
+<Route path="/userDocumentation/Notifications/AddNotifications" component={AddNotifications} />
+
+
+<Route path="/userDocumentation/Notifications/ResendNotifications" component={ResendNotifications} />
+<Route path="/userDocumentation/SubGroups/AddSubGroup" component={AddSubGroup} />
+<Route path="/userDocumentation/SubGroups/DeleteSubGroup" component={DeleteSubGroup} />
+
+<Route path="/userDocumentation/SubGroups/EditSubGroup" component={EditSubGroup} />
+<Route path="/userDocumentation/Teams/AddTeam" component={AddTeam} />
+<Route path="/userDocumentation/Teams/EditTeam" component={EditTeam} />
+<Route path="/userDocumentation/Teams/DeleteTeam" component={DeleteTeam} />
+
+
+ //inviteAgent
+ //deleteGroup
+//helpPopup
+   <Route path="*" component={NotFound} />
   </Route>
 
 );

@@ -36,6 +36,9 @@ class SideBar extends Component
       fbpages: '',
       fbchat: '',
       companysettings: '',
+      help: '',
+      helpPopup: '',
+      createGroup: '',
     };
 
   }
@@ -65,6 +68,9 @@ class SideBar extends Component
       fbpages: '',
       fbchat: '',
       companysettings: '',
+      help: '',
+      createGroup: '',
+      helpPopup: '',
     });
    switch (this.props.active) {
      case 'chat':
@@ -127,6 +133,15 @@ class SideBar extends Component
        break;
        case 'companyprofile':
       this.setState({companyprofile: ' active open '});  
+       break;
+        case 'help':
+      this.setState({help: ' active open '});  
+       break;
+        case 'createGroup':
+      this.setState({createGroup: ' active open '});  
+       break;
+        case 'helpPopup':
+      this.setState({helpPopup: ' active open '});  
        break;
    
      default:
@@ -357,6 +372,18 @@ class SideBar extends Component
                   </span>
                 </Link>
               </li>
+
+
+   
+
+               <li data-tip="helpPopup" className={this.state.helpPopup} onClick={() => this.props.updateActive("helpPopup")
+               }>
+            
+               <button className="helpButton" onClick={window.open('http://localhost:8000/userDocumentation/MainPage','Client Widget','width=700,height=600,resizable=yes')} > <i className="icon-question"></i> Help Guide</button>
+             </li>
+
+
+
 
             {(this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes')?
               <li data-tip="Facebook Integration" className={this.state.instructionsforintegratingfacebook} onClick={() => this.props.updateActive("instructionsforintegratingfacebook")}>
