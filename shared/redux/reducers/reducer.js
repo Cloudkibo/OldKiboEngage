@@ -58,7 +58,7 @@ const dashboard = (state = dashboardState, action) => {
       if (state.deptteams) {
         state.deptteams.filter((agent) => agent.deptid._id == action.group._id).map((agent, i) => (
               agentid.push({"_id": agent.teamid._id})
-            
+
         ));
       }
       ;
@@ -78,12 +78,12 @@ const dashboard = (state = dashboardState, action) => {
       var agentid = [];
       if (state.fbteams) {
         state.fbteams.filter((agent) => agent.pageid._id == action.fbpage._id).map((agent, i) => (
-            
+
               agentid.push({"_id": agent.teamid._id})
-            
+
         ));
       };
-      
+
       return {
 
 
@@ -94,7 +94,7 @@ const dashboard = (state = dashboardState, action) => {
 
       };
 
-    case ActionTypes.UPDATE_USERCHATS_LIST:  
+    case ActionTypes.UPDATE_USERCHATS_LIST:
        return {
 
 
@@ -103,7 +103,7 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: '',
 
       };
-       case ActionTypes.UPDATE_MOBILEUSERCHATS_LIST:  
+       case ActionTypes.UPDATE_MOBILEUSERCHATS_LIST:
        return {
        ...state, errorMessageProfile: '',
         mobileuserchat: action.mobileuserchat,
@@ -121,6 +121,12 @@ const dashboard = (state = dashboardState, action) => {
       return {
         ...state,
         active: action.payload,
+      }
+
+    case ActionTypes.ADD_LASTMESSAGE_CHAT_SESSION:
+      return {
+        ...state,
+        customerchatfiltered: action.payload,
       }
 
     case ActionTypes.ADD_SELECTED_AGENT :
@@ -224,7 +230,7 @@ const dashboard = (state = dashboardState, action) => {
         ...state, errorMessageProfile: '',
         errorMessage: '',
         groupdetails: action.groups,
-        
+
 
       };
 

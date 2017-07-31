@@ -953,6 +953,22 @@ export function deleteagent(agent, usertoken) {
 
 }
 
+export function deleteagents(ids, usertoken) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteagents`, {
+      method: 'post',
+      body: JSON.stringify({
+        ids: ids,
+      }),
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+      console.log(res);
+    });
+  };
+}
 
 /************************* Team Related Actions (old groups) ************/
 export function addSelectedTeam(team) {
@@ -3899,6 +3915,48 @@ export function updatelastmessage(fbsessions, fbchats) {
   };
 
 }
+
+function orderSessionsByDate(arr, dateProp, order = 0) {
+  return arr.slice().sort(function (a, b) {
+    if (order == 0) {
+      return new Date(b['lastmessage'][dateProp]) - new Date(a['lastmessage'][dateProp]);
+    } else {
+      return new Date(a['lastmessage'][dateProp]) - new Date(b['lastmessage'][dateProp]);
+    }
+  });
+}
+
+function orderByDateChats(arr, dateProp) {
+  return arr.slice().sort(function (a, b) {
+    return new Date(a[dateProp]) - new Date(b[dateProp]);
+  });
+}
+
+export const appendLastChatMessage = (sessions, chats) => {
+  console.log(sessions);
+  const newchats = orderByDateChats(chats, 'datetime');
+  console.log(newchats);
+  let newSessions = [];
+  for (let i = 0; i < sessions.length; i++) {
+    if (sessions[i].customerid) {
+      const selectedchat = newchats.filter((c) => c.from == sessions[i].customerID || c.to == sessions[i].customerID || c.from == sessions[i].customerid.name || c.to == sessions[i].customerid.name);
+      const lastmessage = selectedchat[selectedchat.length - 1];
+      const newsession = sessions[i];
+      if (lastmessage && newsession) {
+        newsession.lastmessage = lastmessage;
+        newSessions.push(newsession);
+      }
+    }
+  }
+  const chatSessions = newSessions.filter((c) => c.status !== 'resolved');
+  const sorted = orderSessionsByDate(chatSessions, 'datetime');
+  console.log(sorted);
+  return {
+    type: ActionTypes.ADD_LASTMESSAGE_CHAT_SESSION,
+    payload: sorted,
+  };
+}
+
 export function getfbSessions(usertoken) {
   return (dispatch) => {
     fetch(`${baseURL}/api/getfbSessions`, {

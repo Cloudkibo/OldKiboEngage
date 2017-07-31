@@ -8,7 +8,7 @@ import auth from '../../services/auth';
 import AgentListItem from './AgentListItem';
 import InviteAgent from './InviteAgent';
 import {inviteagent,getAgents} from '../../redux/actions/actions';
-import {deleteagent} from '../../redux/actions/actions';
+import { deleteagent, deleteagents } from '../../redux/actions/actions';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import ReactPaginate from 'react-paginate';
@@ -29,6 +29,7 @@ class Agents extends Component {
       totalLength: 0,
       isChecked: false,
       isCheckedAll: false,
+      deleteAgentsData: [],
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -38,6 +39,8 @@ class Agents extends Component {
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.deleteAgent = this.deleteAgent.bind(this);
+    this.deleteAgents = this.deleteAgents.bind(this);
+    this.deleteAgentAlert = this.deleteAgentAlert.bind(this);
     this.selectCheckedItem = this.selectCheckedItem.bind(this);
     this.toggleCheckAll = this.toggleCheckAll.bind(this);
   }
@@ -57,8 +60,16 @@ class Agents extends Component {
       e.preventDefault();
   }
 
-  selectCheckedItem(data) {
-    console.log(data);
+  selectCheckedItem(agentid) {
+    console.log('select checked item is called');
+    if (this.state.deleteAgentsData.indexOf(agentid) == -1) {
+      this.state.deleteAgentsData.push(agentid);
+    } else {
+      const index = this.state.deleteAgentsData.indexOf(agentid);
+      this.state.deleteAgentsData.splice(index, 1);
+    }
+    console.log(this.state.deleteAgentsData);
+    this.forceUpdate();
   }
 
   toggleCheckAll() {
@@ -102,6 +113,15 @@ class Agents extends Component {
     }
     this.state.agentsData.splice(index,1);
     this.forceUpdate();
+  }
+
+  deleteAgents() {
+    const token = auth.getToken();
+    this.props.deleteagents(this.state.deleteAgentsData, token);
+  }
+
+  deleteAgentAlert() {
+    alert('Please select any item to delete.');
   }
 
   componentDidMount(){
@@ -190,7 +210,11 @@ class Agents extends Component {
                       }
                      </tbody>
                     </table>
-                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                    <button
+                      className="uk-button uk-button-primary uk-button-small"
+                      style={{ marginTop: -25 }}
+                      onClick={this.state.deleteAgentsData.length > 0 ? this.deleteAgents : this.deleteAgentAlert}
+                    >
                       {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
                     </button>
                     <ReactPaginate previousLabel={"previous"}
@@ -255,6 +279,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   // Whenever selectBook is called, the result shoudl be passed
   // to all of our reducers
-  return bindActionCreators({ deleteagent:deleteagent,inviteagent:inviteagent,getAgents:getAgents}, dispatch);
+  return bindActionCreators({ deleteagent: deleteagent, deleteagents: deleteagents, inviteagent:inviteagent,getAgents:getAgents}, dispatch);
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Agents);
+export default connect(mapStateToProps, mapDispatchToProps)(Agents);

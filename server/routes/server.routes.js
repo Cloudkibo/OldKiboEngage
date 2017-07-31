@@ -57,6 +57,7 @@ router.route('/deletefbpage').delete(FbController.deletefbpage);
 router.route('/getGroup').get(GroupController.getGroup);
 router.route('/deleteGroup').delete(GroupController.destroyGroup);
 router.route('/deleteAgent').delete(UserController.deleteAgent);
+router.route('/deleteagents').post(UserController.deleteAgents);
 router.route('/webhook').post(FbChatController.chatwebhook);
 router.route('/webhook').get(FbChatController.verifyhook);
 

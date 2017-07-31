@@ -292,8 +292,34 @@ export function deptteams(req, res) {
     request.get(options, callback);
   }
 
+export function deleteAgents(req, res) {
+  console.log('deleteAgents is called');
+  const token = req.headers.authorization;
+  const options = {
+    url: `${baseURL}/api/deleteagents/`,
+    rejectUnauthorized: false,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    json: {
+      "ids": req.body.ids,
+    },
+  };
 
-
+  function callback(error, response, body) {
+    console.log(body);
+    if (!error && response.statusCode == 200) {
+      if (body.status == 'success') {
+        return res.status(200).json({ statusCode: 200, message: body.msg });
+      } else {
+        return res.status(422).json({ statusCode: 422, message: body.msg });
+      }
+    } else {
+      return res.status(422).json({ statusCode: 422, message: error });
+    }
+  }
+  request.post(options, callback);
+}
 
 export function deleteAgent(req, res) {
   ////console.log('deleteAgent is called.');
@@ -1140,7 +1166,7 @@ export function getcompanylogo(req, res) {
                  'Authorization': `Bearer ${token}`
                  }
     };
-    
+
     function callback(error, response, body) {
       if(response.statusCode == 200) {
         var info = JSON.parse(body);
