@@ -374,34 +374,15 @@ class SideBar extends Component
               </li>
 
 
-   <li data-tip="Help" className={this.state.cannedresponses} onClick={() => this.props.updateActive("help")}>
-                <Link to="/userDocumentation/MainPage">
-                  <i className="icon-envelope">
-                  </i>
-                  <span className="title">
-                      User Guide
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
+   
 
                <li data-tip="helpPopup" className={this.state.helpPopup} onClick={() => this.props.updateActive("helpPopup")
                }>
-               <button className="helpButton" onClick={window.open('http://localhost:8000/userDocumentation/MainPage','Client Widget','width=475,height=750,resizable=yes')}> Help Guide </button>
-              </li>
+            
+               <button className="helpButton" onClick={window.open('http://localhost:8000/userDocumentation/MainPage','Client Widget','width=700,height=600,resizable=yes')} > <i className="icon-question"></i> Help Guide</button>
+             </li>
 
-  <li data-tip="createGroup" className={this.state.createGroup} onClick={() => this.props.updateActive("createGroup")}>
-                <Link to="/userDocumentation/Group/createGroup">
-                  <i className="icon-envelope">
-                  </i>
-                  <span className="title">
-                      Create Group
-                  </span>
-                  <span className="selected">
-                  </span>
-                </Link>
-              </li>
+
 
 
             {(this.props.isAdmin == "Yes" && this.props.companysettings && this.props.companysettings.enableFacebook == 'Yes')?
