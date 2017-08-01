@@ -80,7 +80,7 @@ import FacebookIntegrationInstructions from './container/FacebookIntegrationInst
 import PrivacyPolicy from './container/PrivacyPolicy'
 import Features from './container/Features';
 import Help from './container/userDocumentation/MainPage';
-import helpPopup from './container/userDocumentation/MainPagePopup';
+
 
 import createGroup from './container/userDocumentation/Group/createGroup';
 import deleteGroup from './container/userDocumentation/Group/deleteGroup';
@@ -225,8 +225,7 @@ const routes = (
      <Route path="/features" component={Features} />
       <Route path="/userDocumentation/MainPage" component={Help} />
       <Route path="/userDocumentation/Group/createGroup" component={createGroup} />
-        <Route path="/userDocumentation/MainPagePopup" component={helpPopup} />
-         <Route path="/userDocumentation/Group/deleteGroup" component={deleteGroup} />
+        <Route path="/userDocumentation/Group/deleteGroup" component={deleteGroup} />
          <Route path="/userDocumentation/Group/EditGroup" component={EditGroup} />
           <Route path="/userDocumentation/Agent/inviteAgent" component={inviteAgent} />
 
