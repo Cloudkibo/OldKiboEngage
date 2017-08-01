@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import ReactTooltip from 'react-tooltip';
@@ -7,57 +7,63 @@ var handleDate = function(d){
 var c = new Date(d);
 return c.toDateString();
 }
-function AgentListItem(props) {
 
-  var role;
-  if(props.agent.isAgent == "Yes"){
-    role = "agent";
-  }
-  else if(props.agent.isAdmin == "Yes"){
-      role = "admin"
-  }
-  else
-  {
-    role = "supervisor"
+class AgentListItem extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      role: '',
+      isChecked: this.props.isChecked,
+    }
   }
 
-  var isChecked = props.isChecked;
+  componentDidMount() {
+    if (this.props.agent.isAgent == 'Yes'){
+      this.setState({
+        role: 'agent',
+      });
+    } else if(this.props.agent.isAdmin == 'Yes'){
+      this.setState({
+        role: 'admin',
+      });
+    } else {
+      this.setState({
+        role: 'supervisor',
+      });
+    }
+  }
 
-  return (
+  render() {
 
-    <tr className = "odd">
-      <td>
-      <center>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.agent);
-            AgentListItem.forceUpdate();
-          }}
-        />
-        </center>
-      </td>
-      <td>{props.agent.firstname +' '+ props.agent.lastname} </td>
-      <td>{props.agent.email}</td>
-      <td>{handleDate(props.agent.date)}</td>
-      <td>{role}</td>
+    return (
 
-      <td>
-      <ReactTooltip />
-      <Link data-tip="Edit Role" to={`/editagent/${props.agent._id}`} style={{padding:25}}>
-        <img src="/img/edit.svg" style={{maxWidth:25, maxHeight:25}} />
-      </Link>
-
-      <img onClick={props.onDelete}  data-tip="Delete Agent" src="/img/trash.png" style={{maxWidth:25, maxHeight:25}} />
-
-      </td>
-
-
-    </tr>
-
-  );
+      <tr className = "odd">
+        <td>
+          <center>
+            <input
+              type="checkbox"
+              checked={this.state.isChecked}
+              onChange={() => {
+                this.setState({ isChecked: !this.state.isChecked });
+                this.props.selectCheckedItem(this.props.agent._id);
+              }}
+            />
+          </center>
+        </td>
+        <td>{this.props.agent.firstname +' '+ this.props.agent.lastname} </td>
+        <td>{this.props.agent.email}</td>
+        <td>{handleDate(this.props.agent.date)}</td>
+        <td>{this.state.role}</td>
+        <td>
+          <ReactTooltip />
+          <Link data-tip="Edit Role" to={`/editagent/${this.props.agent._id}`} style={{padding:25}}>
+            <img src="/img/edit.svg" style={{maxWidth:25, maxHeight:25}} />
+          </Link>
+          <img onClick={this.props.onDelete} data-tip="Delete Agent" src="/img/trash.png" style={{maxWidth:25, maxHeight:25}} />
+        </td>
+      </tr>
+    );
+  }
 }
 
 AgentListItem.propTypes = {

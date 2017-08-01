@@ -24,7 +24,10 @@ import {
   filterChat,
   selectCustomerChat,
   updatechatsessionstatus,
-  getDeptTeams,getunreadsessionscount, deleteUnreadCountStatusWhenAgentReadForSimple,
+  getDeptTeams,
+  getunreadsessionscount,
+  deleteUnreadCountStatusWhenAgentReadForSimple,
+  appendLastChatMessage,
 }  from '../../redux/actions/actions';
 
 import {initiateChatComponent} from '../../socket';
@@ -190,6 +193,10 @@ class Chat extends Component {
     if (props.userchats && callSocketChat == false) {
       this.props.route.socket.emit('getuserchats', this.props.userdetails.uniqueid);
       callSocketChat = true
+    }
+    if (props.customerchatfiltered && props.userchats && !props.customerchatfiltered[0].lastmessage) {
+      console.log('appendLastChatMessage called');
+      this.props.appendLastChatMessage(props.customerchatfiltered, props.userchats);
     }
 
   }
@@ -367,7 +374,7 @@ class Chat extends Component {
                   </nav>
                   <article className="articleclass">
                     {this.refs.sessionid ?
-                        
+
                           this.props.customerchat_selected && this.props.customerchat_selected.platform == 'mobile' ?
                             (this.refs.sessionid && this.refs.sessionid.value && this.props.customerchat && this.props.customerchat.length > 0 && this.props.customerchat_selected  && this.props.onlineAgents && this.props.responses && this.props.mobileuserchat &&
                               <CustomerChatView newChatClicked="true" socket={ this.props.route.socket} {...this.props}
@@ -387,7 +394,7 @@ class Chat extends Component {
                                                 list_of_agents_in_teams = {this.get_list_of_agents_in_team(this.props.customerchat_selected)}/>
                             )
 
-                        
+
 
                        :
                       <p>Click on session to view Chat messages</p>
@@ -463,4 +470,5 @@ export default connect(mapStateToProps, {
   getunreadsessionscount,
   updatechatsessionstatus,
   deleteUnreadCountStatusWhenAgentReadForSimple,
+  appendLastChatMessage,
 })(Chat);
