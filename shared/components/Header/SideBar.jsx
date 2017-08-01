@@ -154,7 +154,7 @@ class SideBar extends Component
 popupGuide()
 {
 
-  window.open('http://localhost:8000/userDocumentation/MainPage','Client Widget','width=700,height=600,resizable=yes')
+  window.open('https://kiboengage.kibosupport.com/userDocumentation/MainPage','Client Widget','width=700,height=600,resizable=yes')
 }
 
 
