@@ -83,11 +83,11 @@ import Help from './container/userDocumentation/MainPage';
 
 
 import createGroup from './container/userDocumentation/Group/createGroup';
-import deleteGroup from './container/userDocumentation/Group/deleteGroup';
+import deleteGroup from './container/userDocumentation/Group/DeleteGroup';
 import EditGroup from './container/userDocumentation/Group/EditGroup';
 
 import DeleteAgent from './container/userDocumentation/Agent/DeleteAgent';
-import inviteAgent from './container/userDocumentation/Agent/inviteAgent';
+import inviteAgent from './container/userDocumentation/Agent/InviteAgent';
 
 
 import AddCannedResp from './container/userDocumentation/CannedResponses/AddCannedResp';
