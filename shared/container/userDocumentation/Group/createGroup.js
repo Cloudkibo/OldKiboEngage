@@ -32,68 +32,6 @@ class createGroup extends Component {
     super(props, context);
   }
 
-   openPopupbox() {
-                    const content = (
-                     <div className="page-content-wrapper">
-            <div className="page-content">
-              <h3 className ="page-title">User Guide </h3>
-              <ul className="uk-breadcrumb">
-                <li>
-                  <i className="fa fa-home"/>
-                  <Link to="/dashboard"> Dashboard </Link>
-                </li>
-                <li>
-                  <Link to="/userDocumentation" target="_blank">User Guide</Link>
-                </li>
-                <li>
-                  <Link to="/userDocumentation/createGroup" >createGroup</Link>
-                </li>
-              </ul>
-              <div className="uk-card uk-card-body uk-card-default">
-               <h1>Add new Group</h1>
-<p>Groups are the organizational units like IT,Customer Support ,Sales e.t.c within a Company.<br />Your chats will&nbsp;be organised w.r.t groups so it be easier to organise and manage.<br />Customer will initiate chat in one or more groups and assigned agents can respond to them.</p>
-<p>To add a new group, click on the "Groups" tab on the left hand side.<br />This will show the list of groups you have created.<br />To create a new group, click on&nbsp;"Create Group" button at top.</p>
-<p><img src="../../documentationPics/createGroups.png" alt="" /> <br /><br /></p>
-<p>You will be shown a form to fill in details like group name, description etc.<br />Note: Please, add at least one team to the group to make it operational. <br />Click on the name in the list to add teams.</p>
-<p><img src="../../documentationPics/createGroup.png" alt="" />&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-                    
-                 
-             
-            </div>
-
-          </div>
-           <div class="col-md-3">
-
-             <div class="sidebar-nav-fixed pull-right affix">
-               
-                <br/>
-                <h3><b>&nbsp; More Related Articles &nbsp;</b></h3>
-                    <ul class="nav ">
-                        
-                       
-                        <li><h5><a href="#">Assign Agents</a></h5>
-                        </li>
-                        <li><h5><a href="#">Create Groups</a></h5>
-                        </li>
-                        <li><h5><a href="#">Create Sub Groups</a></h5>
-                        </li>
-                    </ul>
-                </div>
-                 
-            </div>
-
-        </div>
-             
-                    )
-                    PopupboxManager.open({ content })
-                  }
-
-loadUserDocFunc(e){
-	e.preventDefault();
-	 loadUserDoc()
-}
 
   render() {
 
