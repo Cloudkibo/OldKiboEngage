@@ -34,16 +34,19 @@ class MainPagePopup extends Component {
 
 componentWillMount()
 {
-	//return this.loadUserDocFunc
+	return this.loadUserDocFunc
 }
   componentDidMount()
   {
   	
-		//return this.loadUserDocFunc
+		return this.loadUserDocFunc
   }
 
   
-
+loadUserDocFunc(e){
+	e.preventDefault();
+	 loadUserDoc()
+}
 
   render() {
 
@@ -52,7 +55,7 @@ componentWillMount()
 
     return (
     		<div>
-		//{this.loadUserDocFunc}
+		{this.loadUserDocFunc}
     	</div>
   
   

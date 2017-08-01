@@ -149,15 +149,6 @@ class SideBar extends Component
    }
   }
 
-
-
-popupGuide()
-{
-
-  window.open('http://localhost:8000/userDocumentation/MainPage','Client Widget','width=700,height=600,resizable=yes')
-}
-
-
   render()
   {
   return (
@@ -388,7 +379,7 @@ popupGuide()
                <li data-tip="helpPopup" className={this.state.helpPopup} onClick={() => this.props.updateActive("helpPopup")
                }>
             
-               <button className="helpButton" onClick={this.popupGuide.bind(this)} > <i className="icon-question"></i> Help Guide</button>
+               <button className="helpButton" onClick={window.open('http://localhost:8000/userDocumentation/MainPage','Client Widget','width=700,height=600,resizable=yes')} > <i className="icon-question"></i> Help Guide</button>
              </li>
 
 

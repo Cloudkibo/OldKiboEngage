@@ -37,7 +37,16 @@ class MainPage extends Component {
           <div className="page-content-wrapper">
             <div className="page-content">
               <h3 className ="page-title">User Guide </h3>
-              
+              <ul className="uk-breadcrumb">
+                <li>
+                  <i className="fa fa-home"/>
+                  <Link to="/dashboard"> Dashboard </Link>
+                </li>
+                <li>
+                  <Link to="/userDocumentation/MainPage" target="_blank">User Guide</Link>
+                </li>
+               
+              </ul>
               <div className="uk-card uk-card-body uk-card-default">
 <p><strong>Getting Started</strong></p>
 <ul>
