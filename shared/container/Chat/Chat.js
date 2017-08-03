@@ -194,9 +194,11 @@ class Chat extends Component {
       this.props.route.socket.emit('getuserchats', this.props.userdetails.uniqueid);
       callSocketChat = true
     }
-    if (props.customerchatfiltered && props.userchats && !props.customerchatfiltered[0].lastmessage) {
-      console.log('appendLastChatMessage called');
-      this.props.appendLastChatMessage(props.customerchatfiltered, props.userchats);
+    if (props.customerchatfiltered && props.userchats) {
+      if (!props.customerchatfiltered[0].lastmessage) {
+        console.log('appendLastChatMessage called');
+        this.props.appendLastChatMessage(props.customerchatfiltered, props.userchats);
+      }
     }
 
   }
