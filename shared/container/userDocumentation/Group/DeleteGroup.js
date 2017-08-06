@@ -39,11 +39,11 @@ class deleteGroup extends Component {
               <ul className="uk-breadcrumb">
                 <li>
                   <i className="fa fa-home"/>
-                  <Link to="/dashboard"> User Guide </Link>
+                  <Link to="/userDocumentation/MainPage"> User Guide </Link>
                 </li>
               
                 <li>
-                  <Link to="/userDocumentation/createGroup" >createGroup</Link>
+                  <Link to="/userDocumentation/Group/deleteGroup">DeleteGroup</Link>
                 </li>
               </ul>
               <div className="uk-card uk-card-body uk-card-default">
