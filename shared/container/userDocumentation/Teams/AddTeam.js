@@ -40,7 +40,7 @@ class AddTeam extends Component {
               <ul className="uk-breadcrumb">
                 <li>
                   <i className="fa fa-home"/>
-                  <Link to="/dashboard"> Dashboard </Link>
+                  <Link to="/userDocumentation/MainPage"> UserGuide </Link>
                 </li>
               
                 <li>

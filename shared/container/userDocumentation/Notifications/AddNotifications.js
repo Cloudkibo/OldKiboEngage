@@ -45,7 +45,7 @@ class AddNotifications extends Component {
               <ul className="uk-breadcrumb">
                 <li>
                   <i className="fa fa-home"/>
-                  <Link to="/dashboard"> User Guide </Link>
+                  <Link to="/userDocumentation/MainPage"> User Guide </Link>
                 </li>
               
                 <li>
@@ -68,25 +68,7 @@ class AddNotifications extends Component {
             </div>
 
           </div>
-           <div class="col-md-3">
-
-             <div class="sidebar-nav-fixed pull-right affix">
-               
-                <br/>
-                <h3><b>&nbsp; More Related Articles &nbsp;</b></h3>
-                    <ul class="nav ">
-                        
-                       
-                        <li><h5><a href="#">Assign Agents</a></h5>
-                        </li>
-                        <li><h5><a href="#">Create Groups</a></h5>
-                        </li>
-                        <li><h5><a href="#">Create Sub Groups</a></h5>
-                        </li>
-                    </ul>
-                </div>
-                 
-            </div>
+   
 
         </div>
   

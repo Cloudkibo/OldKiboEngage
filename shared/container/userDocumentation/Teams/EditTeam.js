@@ -40,7 +40,7 @@ class EditTeam extends Component {
               <ul className="uk-breadcrumb">
                 <li>
                   <i className="fa fa-home"/>
-                  <Link to="/dashboard"> Dashboard </Link>
+                  <Link to="/userDocumentation/MainPage"> User Guide </Link>
                 </li>
               
                 <li>

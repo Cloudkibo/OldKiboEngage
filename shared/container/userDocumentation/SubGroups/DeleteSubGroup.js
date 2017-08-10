@@ -41,7 +41,7 @@ class DeleteSubGroup extends Component {
               <ul className="uk-breadcrumb">
                 <li>
                   <i className="fa fa-home"/>
-                  <Link to="/dashboard"> User Guide </Link>
+                  <Link to="/userDocumentation/MainPage"> User Guide </Link>
                 </li>
               
                 <li>
