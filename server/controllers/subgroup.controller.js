@@ -29,33 +29,33 @@ export function createSubgroup(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       json: req.body.subgroup
-      
-     
+
+
     };
-    
+
     function callback(error, response, body) {
         ////console.log(body);
         //////console.log(error);
       if(!error  && response.statusCode == 201) {
-      
+
             //send push notification to mobile clients
             sendPushNotification(body,"Subgroups","CreateSubgroup",token);
-           
+
             return res.status(200).json({statusCode : 200,body});
-      
+
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
 
 
@@ -69,8 +69,8 @@ export function getsubgroups(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       ////console.log(body);
@@ -83,7 +83,7 @@ export function getsubgroups(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -97,16 +97,16 @@ export function getcustomersubgroups(req, res) {
              'kibo-app-id' : req.body.appid,
              'kibo-app-secret': req.body.appsecret,
              'kibo-client-id': req.body.clientid,
-             
+
       }
 
-  
+
    var options = {
       url: `${baseURL}/api/messagechannels/`,
       rejectUnauthorized : false,
       headers
-      
-     
+
+
     };
     function callback(error, response, body) {
        //////console.log(error);
@@ -118,7 +118,7 @@ export function getcustomersubgroups(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -137,27 +137,56 @@ export function destroySubgroup(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
     //console.log(response.statusCode);
     //console.log(error);
     ////console.log(body);
       if(!error  && response.statusCode == 204) {
           //send push notification to mobile clients
         sendPushNotification(req.body.channel,"Subgroups","DeleteSubgroup",token);
-          
-        res.sendStatus(200); 
-    
+
+        res.sendStatus(200);
+
    }
    else{
     //////console.log(error);
-     res.sendStatus(422);  
+     res.sendStatus(422);
    }
  }
     request.delete(options, callback);
-    
+
+}
+
+export function destroySubgroups(req, res) {
+  console.log('destroySubGroups is called');
+  const token = req.headers.authorization;
+  const options = {
+    url: `${baseURL}/api/messagechannels/deletesubgroups/`,
+    rejectUnauthorized: false,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    json: {
+      "ids": req.body.ids,
+    },
+  };
+
+  function callback(error, response, body) {
+    console.log(body);
+    if (!error && response.statusCode == 200) {
+      if (body.status == 'success') {
+        return res.status(200).json({ statusCode: 200, message: body.msg });
+      } else {
+        return res.status(422).json({ statusCode: 422, message: body.msg });
+      }
+    } else {
+      return res.status(422).json({ statusCode: 422, message: error });
+    }
+  }
+  request.post(options, callback);
 }
 
 export function editSubgroup(req, res) {
@@ -172,28 +201,28 @@ export function editSubgroup(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       json: req.body.subgroup
     };
-    
+
     function callback(error, response, body) {
         ////console.log(body);
         //////console.log(error)
       if(!error  && response.statusCode == 200) {
-      
+
             sendPushNotification(req.body.subgroup,"Subgroups","EditSubgroup",token);
             return res.status(200).json({statusCode : 200,body});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.put(options, callback);
-   
+
   }
 
 
@@ -212,26 +241,26 @@ export function getsubgroupwisecalls(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       json: req.body
     };
-    
+
     function callback(error, response, body) {
         ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             return res.status(200).json({statusCode : 200,body});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
 
 
@@ -244,28 +273,28 @@ export function getsubgroupwisecalls(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
         ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 
@@ -282,28 +311,28 @@ export function getsubgroupwisecalls(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
       ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 
@@ -316,28 +345,28 @@ export function getsubgroupwisecalls(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
       ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 
@@ -351,28 +380,28 @@ export function getsubgroupwisecalls(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
       ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 
@@ -386,28 +415,28 @@ export function getmobilecalls(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
       ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 
@@ -421,28 +450,28 @@ export function gettopcustomers(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
       ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 
@@ -456,28 +485,28 @@ export function getagentwisecalls(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
       ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 
@@ -492,28 +521,28 @@ export function getagentnotifications(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
-     
+
     };
-    
+
     function callback(error, response, body) {
       ////console.log(body);
       if(!error  && response.statusCode == 200) {
-      
+
             var info = JSON.parse(body)
             ////console.log(info)
             return res.status(200).json({statusCode : 200,info});
       }
     else
     {
-      return res.status(422).json({statusCode : 422 ,body}); 
+      return res.status(422).json({statusCode : 422 ,body});
 
     }
 
    }
         request.get(options, callback);
-   
+
   }
 
 //for mobile customers

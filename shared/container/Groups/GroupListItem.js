@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -6,42 +6,46 @@ var handleDate = function(d){
 var c = new Date(d);
 return c.toDateString();
 }
-function GroupListItem(props) {
+class GroupListItem extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      role: '',
+      isChecked: this.props.isChecked,
+    }
+  }
 
-  var isChecked = props.isChecked;
-
-  return (
-
+  render() {
+    return (
     <tr className = "odd">
       <td>
         <center>
         <input
           type="checkbox"
-          checked={isChecked}
+          checked={this.state.isChecked}
           onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.group);
-            GroupListItem.forceUpdate();
+            this.setState({ isChecked: !this.state.isChecked });
+            this.props.selectCheckedItem(this.props.group._id);
           }}
         />
         </center>
       </td>
-      <td>{props.group.deptname}</td>
-      <td>{props.group.deptdescription}</td>
-      <td>{props.group.createdby.firstname}</td>
-      <td>{handleDate(props.group.creationdate)}</td>
+      <td>{this.props.group.deptname}</td>
+      <td>{this.props.group.deptdescription}</td>
+      <td>{this.props.group.createdby.firstname}</td>
+      <td>{handleDate(this.props.group.creationdate)}</td>
 
       <td>
-        <Link to={`/group/${props.group._id}`} style={{margin: 2}} className="uk-button uk-button-primary uk-button-small" >
+        <Link to={`/group/${this.props.group._id}`} style={{margin: 2}} className="uk-button uk-button-primary uk-button-small" >
          View
         </Link>
          {
-        (props.userdetails.isAdmin == "Yes" || props.userdetails.isSupervisor == "Yes") ?
+        (this.props.userdetails.isAdmin == "Yes" || this.props.userdetails.isSupervisor == "Yes") ?
         <span>
-        <Link to={`/editgroup/${props.group._id}`} style={{margin: 2}} className="uk-button uk-button-primary uk-button-small" >
+        <Link to={`/editgroup/${this.props.group._id}`} style={{margin: 2}} className="uk-button uk-button-primary uk-button-small" >
          Edit
         </Link>
-        <button className="uk-button uk-button-primary uk-button-small" style={{margin: 2}} onClick={props.onDelete}> Delete </button>
+        <button className="uk-button uk-button-primary uk-button-small" style={{margin: 2}} onClick={this.props.onDelete}> Delete </button>
         </span> : <span></span>
 
         }
@@ -51,6 +55,7 @@ function GroupListItem(props) {
     </tr>
 
   );
+  }
 }
 
 GroupListItem.propTypes = {

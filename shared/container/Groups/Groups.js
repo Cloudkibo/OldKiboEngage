@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {getusergroups} from '../../redux/actions/actions'
 import {creategroup} from '../../redux/actions/actions'
-import {deletegroup,getcustomers,getDeptAgents,getDeptTeams} from '../../redux/actions/actions';
+import {deletegroup, deletegroups, getcustomers,getDeptAgents,getDeptTeams} from '../../redux/actions/actions';
 import AuthorizedHeader from '../../components/Header/AuthorizedHeader.jsx';
 import GroupCreateView from './GroupCreateView';
 import Footer from '../../components/Footer/Footer.jsx';
@@ -43,6 +43,7 @@ class Groups extends Component {
       selectedPage: 0,
       isChecked: false,
       isCheckedAll: false,
+      deleteGroupsData: [],
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -52,6 +53,7 @@ class Groups extends Component {
     this.deleteGroup = this.deleteGroup.bind(this);
     this.selectCheckedItem = this.selectCheckedItem.bind(this);
     this.toggleCheckAll = this.toggleCheckAll.bind(this);
+    this.deleteGroups = this.deleteGroups.bind(this);
   }
 
 componentDidMount(){
@@ -79,8 +81,25 @@ componentDidMount(){
       e.preventDefault();
   }
 
-  selectCheckedItem(data) {
-    console.log(data);
+  selectCheckedItem(groupid) {
+    console.log('select checked item is called');
+    if (this.state.deleteGroupsData.indexOf(groupid) == -1) {
+      this.state.deleteGroupsData.push(groupid);
+    } else {
+      const index = this.state.deleteGroupsData.indexOf(groupid);
+      this.state.deleteGroupsData.splice(index, 1);
+    }
+    console.log(this.state.deleteGroupsData);
+    this.forceUpdate();
+  }
+
+  deleteGroups() {
+    const token = auth.getToken();
+    for(var i=0; i<this.state.deleteGroupsData.length; i++){
+      let index = this.state.groupsData.indexOf(this.state.deleteGroupsData[i]);
+      this.state.groupsData.splice(index, 1);
+    }
+    this.props.deletegroups(this.state.deleteGroupsData, token);
   }
 
   toggleCheckAll() {
@@ -230,7 +249,7 @@ componentDidMount(){
                       }
                      </tbody>
                     </table>
-                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                    <button onClick={this.deleteGroups} className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
                       {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
                     </button>
                     <ReactPaginate previousLabel={"previous"}
@@ -286,6 +305,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 
-  return bindActionCreators({ deletegroup:deletegroup,getDeptTeams:getDeptTeams,getcustomers:getcustomers,getDeptAgents:getDeptAgents,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
+  return bindActionCreators({ deletegroup:deletegroup, deletegroups: deletegroups, getDeptTeams:getDeptTeams,getcustomers:getcustomers,getDeptAgents:getDeptAgents,getusergroups:getusergroups,creategroup:creategroup }, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Groups);

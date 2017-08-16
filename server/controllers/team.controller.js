@@ -16,8 +16,8 @@ export function getteams(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
@@ -28,7 +28,7 @@ export function getteams(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -50,8 +50,8 @@ export function getteams(req, res) {
            'groupdescription': req.body.groupdescription,
            'status' : req.body.status,
           }
-      
-     
+
+
     };
     function callback(error, response, body) {
       console.log(body);
@@ -66,19 +66,19 @@ export function getteams(req, res) {
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,status : info.status,message:info.msg}); 
-   
+            return res.status(422).json({statusCode : 422 ,status : info.status,message:info.msg});
+
        }
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,status : 'danger',message:error}); 
+      return res.status(422).json({statusCode : 422 ,status : 'danger',message:error});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
 
 export function getTeam(req, res) {
@@ -92,24 +92,24 @@ export function getTeam(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`,
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
       var info = JSON.parse(body);
       console.log(info);
-      console.log(error);  
+      console.log(error);
       if(!error  && response.statusCode == 200) {
-        res.status(200).json({team:info}); 
-    
+        res.status(200).json({team:info});
+
    }
    else{
     //console.log(error);
-    res.status(422).json(info); 
+    res.status(422).json(info);
    }
  }
         request.get(options, callback);
-    
+
 }
 
 export function teamagents(req, res) {
@@ -121,8 +121,8 @@ export function teamagents(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
@@ -130,14 +130,14 @@ export function teamagents(req, res) {
         console.log("These are team agents");
        // console.log(info);
         console.log(info.length)
-       
+
         ////console.log(info);
       return res.status(200).json(info);
     }
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -157,27 +157,56 @@ export function destroyTeam(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
     console.log(response.statusCode);
     console.log(error);
       var info = JSON.parse(body);
 
       // console.log(info.status);
-        
+
       if(!error  && response.statusCode == 200) {
-        res.status(200).json({info}); 
-    
+        res.status(200).json({info});
+
    }
    else{
    // //console.log(error);
-    res.status(422).json(info); 
+    res.status(422).json(info);
    }
  }
     request.delete(options, callback);
-    
+
+}
+
+export function destroyTeams(req, res) {
+  console.log('destroyTeams is called');
+  const token = req.headers.authorization;
+  const options = {
+    url: `${baseURL}/api/groups/deleteteams/`,
+    rejectUnauthorized: false,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    json: {
+      "ids": req.body.ids,
+    },
+  };
+
+  function callback(error, response, body) {
+    console.log(body);
+    if (!error && response.statusCode == 200) {
+      if (body.status == 'success') {
+        return res.status(200).json({ statusCode: 200, message: body.msg });
+      } else {
+        return res.status(422).json({ statusCode: 422, message: body.msg });
+      }
+    } else {
+      return res.status(422).json({ statusCode: 422, message: error });
+    }
+  }
+  request.post(options, callback);
 }
 
 export function editteam(req, res) {
@@ -194,13 +223,13 @@ export function editteam(req, res) {
            'group' : req.body.team,
            'groupagents': req.body.teamagents,
           }
-      
-     
+
+
     };
     //console.log(options.json.dept);
     function callback(error, response, body) {
         console.log(body);
-    
+
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')
        {
@@ -208,21 +237,21 @@ export function editteam(req, res) {
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,message:body.msg}); 
-   
+            return res.status(422).json({statusCode : 422 ,message:body.msg});
+
        }
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,message:error}); 
+      return res.status(422).json({statusCode : 422 ,message:error});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
- 
+
  //get my teams
  export function getmyuserteams(req, res) {
   var token = req.headers.authorization;
@@ -232,8 +261,8 @@ export function editteam(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       console.log(error);
@@ -256,17 +285,17 @@ export function editteam(req, res) {
         }
        }
 
-      if(isAgent == false){ 
+      if(isAgent == false){
       return res.status(200).json({depts:totalDept});
     }
     else{
-     return res.status(200).json({depts:info}); 
+     return res.status(200).json({depts:info});
     }
     }
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -285,13 +314,13 @@ export function joinTeam(req, res) {
                  'Authorization': `Bearer ${token}`,
                  },
       json: req.body,
-      
-     
+
+
     };
     //console.log(options.json.dept);
     function callback(error, response, body) {
         console.log(body);
-    
+
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')
        {
@@ -299,18 +328,17 @@ export function joinTeam(req, res) {
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,message:body.msg}); 
-   
+            return res.status(422).json({statusCode : 422 ,message:body.msg});
+
        }
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,message:error}); 
+      return res.status(422).json({statusCode : 422 ,message:error});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
- 

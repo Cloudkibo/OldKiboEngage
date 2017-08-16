@@ -289,6 +289,15 @@ const dashboard = (state = dashboardState, action) => {
 
       };
 
+      case ActionTypes.DELETE_GROUPS :
+        return {
+          ...state, errorMessageProfile: '',
+          groupdetails: state.groupdetails.filter((group) => action.ids.indexOf(group._id) === -1),
+
+          errorMessage: 'Groups deleted successfully',
+
+        };
+
 
     case ActionTypes.DELETE_SUBGROUP :
       return {
@@ -297,6 +306,14 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: 'Subgroup deleted successfully',
 
       };
+
+      case ActionTypes.DELETE_SUBGROUPS :
+        return {
+          ...state, errorMessageProfile: '',
+          subgroups: state.subgroups.filter((subgroup) => action.ids.indexOf(subgroup._id) === -1),
+          errorMessage: 'Subgroups deleted successfully',
+
+        };
 
     case ActionTypes.DELETE_RESPONSE :
       return {
@@ -316,6 +333,16 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: 'Facebook Page Info deleted successfully',
 
       };
+
+      case ActionTypes.DELETE_FBPAGES :
+        return {
+          ...state, errorMessageProfile: '',
+
+          fbpages: state.fbpages.filter((fbpage) => action.ids.indexOf(fbpage.pageid) === -1),
+          errorMessage: 'Facebook Pages deleted successfully',
+
+        };
+
     case ActionTypes.DELETE_AGENT :
       return {
         ...state, errorMessageProfile: '',
@@ -324,6 +351,13 @@ const dashboard = (state = dashboardState, action) => {
 
       };
 
+      case ActionTypes.DELETE_AGENTS:
+        return {
+          ...state, errorMessageProfile: '',
+          errorMessage: 'Agents deleted successfully',
+          agents: state.agents.filter((agent) => action.ids.indexOf(agent._id) === -1),
+
+        };
 
     case ActionTypes.EDITAGENT_RESPONSE:
       return {
@@ -955,6 +989,14 @@ const dashboard = (state = dashboardState, action) => {
         errorMessage: 'Team deleted successfully',
 
       };
+
+      case ActionTypes.DELETE_TEAMS :
+        return {
+          ...state, errorMessageProfile: '',
+          teamdetails: state.teamdetails.filter((team) => action.ids.indexOf(team._id) === -1),
+          errorMessage: 'Teams deleted successfully',
+
+        };
 
     case ActionTypes.EDITTEAM_RESPONSE:
       return {

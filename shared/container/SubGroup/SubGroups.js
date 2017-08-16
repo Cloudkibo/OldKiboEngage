@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import SubgroupListItem from './SubGroupListItem';
-import {getsubgroups} from '../../redux/actions/actions'
+import {getsubgroups, deletesubgroups} from '../../redux/actions/actions'
 import {deletesubgroup, getcustomers} from '../../redux/actions/actions'
 import ReactPaginate from 'react-paginate';
 import {bindActionCreators} from 'redux';
@@ -35,6 +35,7 @@ class SubGroups extends Component {
       selectedPage: 0,
       isChecked: false,
       isCheckedAll: false,
+      deleteSubgroupsData: [],
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -42,6 +43,7 @@ class SubGroups extends Component {
     this.deleteSubGroup = this.deleteSubGroup.bind(this);
     this.selectCheckedItem = this.selectCheckedItem.bind(this);
     this.toggleCheckAll = this.toggleCheckAll.bind(this);
+    this.deleteSubgroups = this.deleteSubgroups.bind(this);
   }
 
   displayData(n) {
@@ -68,8 +70,16 @@ class SubGroups extends Component {
     this.displayData(data.selected);
   }
 
-  selectCheckedItem(data) {
-    console.log(data);
+  selectCheckedItem(subgroupid) {
+    console.log('select checked item is called');
+    if (this.state.deleteSubgroupsData.indexOf(subgroupid) == -1) {
+      this.state.deleteSubgroupsData.push(subgroupid);
+    } else {
+      const index = this.state.deleteSubgroupsData.indexOf(subgroupid);
+      this.state.deleteSubgroupsData.splice(index, 1);
+    }
+    console.log(this.state.deleteSubgroupsData);
+    this.forceUpdate();
   }
 
   toggleCheckAll() {
@@ -90,6 +100,15 @@ class SubGroups extends Component {
     }
     this.state.subgroupsData.splice(index, 1);
     this.forceUpdate();
+  }
+
+  deleteSubgroups() {
+    const token = auth.getToken();
+    for(var i=0; i<this.state.deleteSubgroupsData.length; i++){
+      let index = this.state.subgroupsData.indexOf(this.state.deleteSubgroupsData[i]);
+      this.state.subgroupsData.splice(index, 1);
+    }
+    this.props.deletesubgroups(this.state.deleteSubgroupsData, token);
   }
 
   componentDidMount() {
@@ -178,7 +197,7 @@ class SubGroups extends Component {
                         }
                         </tbody>
                       </table>
-                      <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                      <button onClick={this.deleteSubgroups} className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
                         {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
                       </button>
                       <ReactPaginate previousLabel={"previous"}
@@ -228,7 +247,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getsubgroups: getsubgroups,
     getcustomers: getcustomers,
-    deletesubgroup: deletesubgroup
+    deletesubgroup: deletesubgroup,
+    deletesubgroups: deletesubgroups,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SubGroups);

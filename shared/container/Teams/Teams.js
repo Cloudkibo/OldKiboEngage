@@ -7,8 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import TeamListItem from './TeamListItem';
 import {getteams} from '../../redux/actions/actions'
-import {deleteteam,jointeam,getTeamAgents} from '../../redux/actions/actions'
-
+import {deleteteam, deleteteams, jointeam,getTeamAgents} from '../../redux/actions/actions'
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 const PureRenderMixin = require('react-addons-pure-render-mixin');
@@ -42,6 +41,7 @@ class Teams extends Component {
       selectedPage: 0,
       isChecked: false,
       isCheckedAll: false,
+      deleteTeamsData: [],
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -49,25 +49,8 @@ class Teams extends Component {
     this.deleteTeam = this.deleteTeam.bind(this);
     this.selectCheckedItem = this.selectCheckedItem.bind(this);
     this.toggleCheckAll = this.toggleCheckAll.bind(this);
-
+    this.deleteTeams = this.deleteTeams.bind(this);
   }
-
-  /*componentWillReceiveProps(props){
-    if(props.teamdetails){
-       this.setState({
-      data: Immutable.fromJS(props.teamdetails).toList(),
-      filteredData: Immutable.fromJS(props.teamdetails).toList()
-    });
-    }
-
-  if(props.errorMessage && props.errorMessage != ''){
-     this.refs.notificationSystem.addNotification({
-      message: props.errorMessage,
-      level: 'success'
-    });
-
-   }
- }*/
 
   filterData(event) {
     event.preventDefault();
@@ -91,8 +74,16 @@ class Teams extends Component {
     );
   }
 
-  selectCheckedItem(data) {
-    console.log(data);
+  selectCheckedItem(teamid) {
+    console.log('select checked item is called');
+    if (this.state.deleteTeamsData.indexOf(teamid) == -1) {
+      this.state.deleteTeamsData.push(teamid);
+    } else {
+      const index = this.state.deleteTeamsData.indexOf(teamid);
+      this.state.deleteTeamsData.splice(index, 1);
+    }
+    console.log(this.state.deleteTeamsData);
+    this.forceUpdate();
   }
 
   toggleCheckAll() {
@@ -138,6 +129,15 @@ class Teams extends Component {
     }
     this.state.teamsData.splice(index,1);
     this.forceUpdate();
+  }
+
+  deleteTeams() {
+    const token = auth.getToken();
+    for(var i=0; i<this.state.deleteTeamsData.length; i++){
+      let index = this.state.teamsData.indexOf(this.state.deleteTeamsData[i]);
+      this.state.teamsData.splice(index, 1);
+    }
+    this.props.deleteteams(this.state.deleteTeamsData, token);
   }
 
   componentDidMount(){
@@ -248,7 +248,7 @@ class Teams extends Component {
                      </tbody>
                     </table>
                     </div>
-                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                    <button onClick={this.deleteTeams} className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
                       {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
                     </button>
                     <ReactPaginate previousLabel={"previous"}
@@ -298,6 +298,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getteams:getteams,deleteteam:deleteteam,getTeamAgents:getTeamAgents,jointeam:jointeam}, dispatch);
+  return bindActionCreators({getteams:getteams, deleteteams: deleteteams, deleteteam:deleteteam,getTeamAgents:getTeamAgents,jointeam:jointeam}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Teams);

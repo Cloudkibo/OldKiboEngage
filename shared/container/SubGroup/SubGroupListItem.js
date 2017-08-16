@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes, Component } from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import ReactTooltip from 'react-tooltip';
@@ -16,10 +16,16 @@ var getDeptName = function (group) {
   ));
   return grp[0];
 }
-function SubgroupListItem(props) {
+class SubgroupListItem extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      role: '',
+      isChecked: this.props.isChecked,
+    }
+  }
 
-  var isChecked = props.isChecked;
-
+  render() {
   return (
 
     <tr className="odd">
@@ -27,31 +33,30 @@ function SubgroupListItem(props) {
         <center>
         <input
           type="checkbox"
-          checked={isChecked}
+          checked={this.state.isChecked}
           onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.subgroup);
-            SubgroupListItem.forceUpdate();
+            this.setState({ isChecked: !this.state.isChecked });
+            this.props.selectCheckedItem(this.props.subgroup._id);
           }}
         />
         </center>
       </td>
-      <td>{props.subgroup.msg_channel_name} </td>
-      <td>{props.subgroup.msg_channel_description}</td>
-      <td>{getDeptName(props.group)}</td>
-      <td>{props.subgroup.activeStatus}</td>
-      <td>{handleDate(props.subgroup.creationdate)}</td>
+      <td>{this.props.subgroup.msg_channel_name} </td>
+      <td>{this.props.subgroup.msg_channel_description}</td>
+      <td>{getDeptName(this.props.group)}</td>
+      <td>{this.props.subgroup.activeStatus}</td>
+      <td>{handleDate(this.props.subgroup.creationdate)}</td>
 
 
-      { props.userdetails.isAgent == "Yes" || props.subgroup.msg_channel_name == "General" ?
+      { this.props.userdetails.isAgent == "Yes" || this.props.subgroup.msg_channel_name == "General" ?
         <br/> :
         <td>
           <ReactTooltip />
-          <Link to={`/editsubgroup/${props.subgroup._id}`}>
+          <Link to={`/editsubgroup/${this.props.subgroup._id}`}>
             <img data-tip="Edit" src="/img/edit.svg" style={{maxWidth: 25, maxHeight: 25}}/>
           </Link>
 
-          <img data-tip="Delete" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={props.onDelete}/>
+          <img data-tip="Delete" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={this.props.onDelete}/>
         </td>
       }
 
@@ -59,6 +64,7 @@ function SubgroupListItem(props) {
     </tr>
 
   );
+}
 }
 
 /*SubgroupListItem.propTypes = {

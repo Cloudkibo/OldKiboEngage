@@ -953,6 +953,13 @@ export function deleteagent(agent, usertoken) {
 
 }
 
+export function deleteAGENTS(ids) {
+  return {
+    type: ActionTypes.DELETE_AGENTS,
+    ids,
+  };
+}
+
 export function deleteagents(ids, usertoken) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/deleteagents`, {
@@ -966,6 +973,107 @@ export function deleteagents(ids, usertoken) {
       }),
     }).then((res) => res.json()).then((res) => res).then((res) => {
       console.log(res);
+      dispatch(deleteAGENTS(ids));
+    });
+  };
+}
+
+export function deleteGROUPS(ids) {
+  return {
+    type: ActionTypes.DELETE_GROUPS,
+    ids,
+  };
+}
+
+export function deletegroups(ids, usertoken) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deletegroups`, {
+      method: 'post',
+      body: JSON.stringify({
+        ids: ids,
+      }),
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+      console.log(res);
+      dispatch(deleteGROUPS(ids));
+    });
+  };
+}
+
+export function deleteSUBGROUPS(ids) {
+  return {
+    type: ActionTypes.DELETE_SUBGROUPS,
+    ids,
+  };
+}
+
+export function deletesubgroups(ids, usertoken) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deletesubgroups`, {
+      method: 'post',
+      body: JSON.stringify({
+        ids: ids,
+      }),
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+      console.log(res);
+      dispatch(deleteSUBGROUPS(ids));
+    });
+  };
+}
+
+export function deleteTEAMS(ids) {
+  return {
+    type: ActionTypes.DELETE_TEAMS,
+    ids,
+  };
+}
+
+export function deleteteams(ids, usertoken) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deleteteams`, {
+      method: 'post',
+      body: JSON.stringify({
+        ids: ids,
+      }),
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+      console.log(res);
+      dispatch(deleteTEAMS(ids));
+    });
+  };
+}
+
+export function deleteFBPAGES(ids) {
+  return {
+    type: ActionTypes.DELETE_FBPAGES,
+    ids,
+  };
+}
+
+export function deletefbpages(ids, usertoken) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/deletefbpages`, {
+      method: 'post',
+      body: JSON.stringify({
+        ids: ids,
+      }),
+      headers: new Headers({
+        'Authorization': usertoken,
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then((res) => res).then((res) => {
+      console.log(res);
+      dispatch(deleteFBPAGES(ids));
     });
   };
 }
