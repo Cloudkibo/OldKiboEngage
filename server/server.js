@@ -72,7 +72,7 @@ if(process.env.NODE_ENV === 'production'){
 var options = {
   ca: fs.readFileSync('server/security/gd_bundle-g2-g1.crt'),
   key: fs.readFileSync('server/security/server.key'),
-  cert: fs.readFileSync('server/security/56d01c37201707d0.crt')
+  cert: fs.readFileSync('server/security/3b414648bf907e49.crt')
 };
 
 
@@ -93,7 +93,7 @@ const renderFullPage = (html, initialState) => {
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
         <!--<link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>-->
-         
+
          <link rel="stylesheet" href='/css/bootstrap/css/bootstrap.min.css' />
          <link rel="stylesheet" href='/css/style.css' />
          <link rel="stylesheet" href='/css/css/components.css' />
@@ -125,8 +125,8 @@ const renderFullPage = (html, initialState) => {
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
          <link rel="stylesheet" href="/css/rrui.css"/>
         <link rel="stylesheet" href="/css/styleuu.css"/>
-        
-        
+
+
   </head>
       <body class="page-header-fixed-mobile page-quick-sidebar-over-content page-sidebar-closed ">
         <div id="root">${html}</div>
@@ -188,11 +188,11 @@ const renderFullPage = (html, initialState) => {
               Metronic.init(); // Run metronic theme
               Metronic.setAssetsPath('/assets/'); // Set the assets folder path
               RevosliderInit.initRevoSlider();
-                        
+
             });
           </script>
           <script>
-jQuery(document).ready(function() {       
+jQuery(document).ready(function() {
    // initiate layout and plugins
    Metronic.init(); // init metronic core components
 Layout.init(); // init current layout
@@ -205,7 +205,7 @@ Demo.init(); // init demo features
 </script>
              <script src="/dist/bundle.js"></script>
                      <!-- jQuery is required -->
-        
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.24/js/uikit-icons.min.js"></script>
          </body>
     </html>
@@ -231,7 +231,7 @@ app.use((req, res, next) => {
     if (redirectLocation) {
       return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     }
-    
+
     if (!renderProps) {
       return next();
     }
