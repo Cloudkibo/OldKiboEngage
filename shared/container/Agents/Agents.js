@@ -117,6 +117,10 @@ class Agents extends Component {
 
   deleteAgents() {
     const token = auth.getToken();
+    for(var i=0; i<this.state.deleteAgentsData.length; i++){
+      let index = this.state.agentsData.indexOf(this.state.deleteAgentsData[i]);
+      this.state.agentsData.splice(index, 1);
+    }
     this.props.deleteagents(this.state.deleteAgentsData, token);
   }
 

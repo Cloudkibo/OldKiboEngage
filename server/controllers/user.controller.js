@@ -296,7 +296,7 @@ export function deleteAgents(req, res) {
   console.log('deleteAgents is called');
   const token = req.headers.authorization;
   const options = {
-    url: `${baseURL}/api/deleteagents/`,
+    url: `${baseURL}/api/users/deleteagents/`,
     rejectUnauthorized: false,
     headers: {
       'Authorization': `Bearer ${token}`,

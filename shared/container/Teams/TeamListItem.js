@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import ReactTooltip from 'react-tooltip';
@@ -7,63 +7,67 @@ var handleDate = function(d){
 var c = new Date(d);
 return c.toDateString();
 }
-function TeamListItem(props) {
-var useringroup = false
-for(var i=0;i<props.teamagents.length;i++){
-  if(!props.teamagents[i].agentid){
-    alert(i);
+
+class TeamListItem extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      role: '',
+      isChecked: this.props.isChecked,
+      useringroup: false,
+    }
   }
-  if(props.teamagents[i].agentid._id == props.userdetails._id && props.teamagents[i].groupid._id == props.team._id){
-    useringroup = true
 
-    break
+  componentDidMount() {
+    for(var i=0;i<this.props.teamagents.length;i++){
+      if(this.props.teamagents[i].agentid._id == props.userdetails._id && props.teamagents[i].groupid._id == props.team._id){
+        this.state.useringroup = true
+        break
+      }
+    }
   }
-}
 
-  var isChecked = props.isChecked;
-
+  render() {
   return (
-
     <tr className = "odd">
       <td>
         <center>
         <input
           type="checkbox"
-          checked={isChecked}
+          checked={this.state.isChecked}
           onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.team);
-            TeamListItem.forceUpdate();
+            this.setState({ isChecked: !this.state.isChecked });
+            this.props.selectCheckedItem(this.props.team._id);
           }}
         />
         </center>
       </td>
-      <td>{props.team.groupname}</td>
-      <td>{props.team.groupdescription}</td>
-      <td>{props.team.createdby.firstname}</td>
-      <td>{handleDate(props.team.creationdate)}</td>
-       <td>{props.team.status}</td>
+      <td>{this.props.team.groupname}</td>
+      <td>{this.props.team.groupdescription}</td>
+      <td>{this.props.team.createdby.firstname}</td>
+      <td>{handleDate(this.props.team.creationdate)}</td>
+       <td>{this.props.team.status}</td>
 
       <td>
       <ReactTooltip />
       {
-        props.userdetails._id == props.team.createdby._id?
+        this.props.userdetails._id == this.props.team.createdby._id?
         <span>
-        <Link data-tip="View Team"  to={`/team/${props.team._id}`} style={{padding: 5}}>
+        <Link data-tip="View Team"  to={`/team/${this.props.team._id}`} style={{padding: 5}}>
          <img src="/img/view.svg" style={{maxWidth: 25, maxHeight: 25}} />
         </Link>
 
-        <Link data-tip="Edit Team" to={`/editteam/${props.team._id}`} style={{padding: 5}} >
+        <Link data-tip="Edit Team" to={`/editteam/${this.props.team._id}`} style={{padding: 5}} >
         <img src="/img/edit.svg" style={{maxWidth: 25, maxHeight: 25}} />
 
         </Link>
 
-        <img data-tip="Delete Team" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={props.onDelete} />
+        <img data-tip="Delete Team" src="/img/trash.png" style={{maxWidth: 25, maxHeight: 25}} onClick={this.props.onDelete} />
         </span> :
          <span>
          {
-          props.team.status == "public" && useringroup == false?
-          <button className="btn blue-madison" onClick={props.onJoin}> Join Team </button>
+          this.props.team.status == "public" && this.state.useringroup == false?
+          <button className="btn blue-madison" onClick={this.props.onJoin}> Join Team </button>
 
         :
         <span></span>
@@ -72,8 +76,8 @@ for(var i=0;i<props.teamagents.length;i++){
          }
 
           {
-          props.userdetails._id != props.team.createdby._id && useringroup == true?
-          <Link to={`/team/${props.team._id}`} className="btn blue-madison" >
+          this.props.userdetails._id != this.props.team.createdby._id && this.state.useringroup == true?
+          <Link to={`/team/${this.props.team._id}`} className="btn blue-madison" >
          View
         </Link>
         :
@@ -90,6 +94,7 @@ for(var i=0;i<props.teamagents.length;i++){
     </tr>
 
   );
+}
 }
 
 TeamListItem.propTypes = {

@@ -23,6 +23,7 @@ router.route('/createteam').post(TeamController.createteam);
 router.route('/getTeam').get(TeamController.getTeam);
 router.route('/joinTeam').post(TeamController.joinTeam);
 router.route('/deleteTeam').delete(TeamController.destroyTeam);
+router.route('/deleteteams').post(TeamController.destroyTeams);
 router.route('/editteam').post(TeamController.editteam);
 router.route('/teamagents').get(TeamController.teamagents);
 router.route('/getinvitedagents').get(UserController.getinvitedagents);
@@ -54,8 +55,10 @@ router.route('/getcustomerdetails').post(ChatController.getcustomerdetails);
 router.route('/updatereschedule').post(ChatController.updatereschedule);
 router.route('/creategroup').post(GroupController.creategroup);
 router.route('/deletefbpage').delete(FbController.deletefbpage);
+router.route('/deletefbpages').post(FbController.deletefbpages);
 router.route('/getGroup').get(GroupController.getGroup);
 router.route('/deleteGroup').delete(GroupController.destroyGroup);
+router.route('/deletegroups').post(GroupController.destroyGroups);
 router.route('/deleteAgent').delete(UserController.deleteAgent);
 router.route('/deleteagents').post(UserController.deleteAgents);
 router.route('/webhook').post(FbChatController.chatwebhook);
@@ -99,7 +102,7 @@ router.route('/getagentwisecalls').get(Subgroupcontroller.getagentwisecalls);
 router.route('/getagentnotifications').get(Subgroupcontroller.getagentnotifications);
 
 router.route('/deleteSubgroup').delete(Subgroupcontroller.destroySubgroup);
-
+router.route('/deletesubgroups').post(Subgroupcontroller.destroySubgroups);
 router.route('/createResponse').post(UserController.createResponse);
 router.route('/uploadpicture').post(UserController.uploadpicture);
 

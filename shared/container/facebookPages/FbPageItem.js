@@ -1,36 +1,41 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-function FbPageItem(props) {
+class FbPageItem extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      role: '',
+      isChecked: this.props.isChecked,
+      useringroup: false,
+    }
+  }
 
-  var isChecked = props.isChecked;
-
+  render() {
   return (
-
     <tr className = "odd">
       <td>
       <center>
         <input
           type="checkbox"
-          checked={isChecked}
+          checked={this.state.isChecked}
           onChange={() => {
-            isChecked = !isChecked;
-            props.selectCheckedItem(props.agent);
-            AgentListItem.forceUpdate();
+            this.setState({ isChecked: !this.state.isChecked });
+            this.props.selectCheckedItem(this.props.page.pageid);
           }}
         />
       </center>
       </td>
-      <td>{props.page.pageTitle} </td>
-      <td>{props.page.pageDescription}</td>
-      { props.userdetails.isAgent == "Yes"?
+      <td>{this.props.page.pageTitle} </td>
+      <td>{this.props.page.pageDescription}</td>
+      { this.props.userdetails.isAgent == "Yes"?
                     <br/> :
                     <td>
-                      <Link to={`/editfbpage/${props.page.pageid}`} className="btn blue-madison" >
+                      <Link to={`/editfbpage/${this.props.page.pageid}`} className="btn blue-madison" >
                       Edit
                       </Link>
-                      <button className="btn blue-madison" onClick={props.onDelete}> Delete </button>
+                      <button className="btn blue-madison" onClick={this.props.onDelete}> Delete </button>
 
                     </td>
 
@@ -42,6 +47,7 @@ function FbPageItem(props) {
     </tr>
 
   );
+}
 }
 
 FbPageItem.propTypes = {

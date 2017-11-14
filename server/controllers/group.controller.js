@@ -8,7 +8,7 @@ var  headers =  {
  'kibo-app-id' : '5wdqvvi8jyvfhxrxmu73dxun9za8x5u6n59',
  'kibo-app-secret': 'jcmhec567tllydwhhy2z692l79j8bkxmaa98do1bjer16cdu5h79xvx',
  'kibo-client-id': 'cd89f71715f2014725163952',
- 
+
  }
 var azure = require('azure-sb');
 var notificationHubService = azure.createNotificationHubService('kiboengagetesthub','Endpoint=sb://kiboengagetesthub.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=TDM/hTOZxsgXq7hFcvO3/cJ3PeoQCRD82COpO7hwWbM=');
@@ -20,12 +20,12 @@ var baseURL = `https://api.kibosupport.com`
 export function getcustomergroups(req,res){
   //console.log('get  customer group is called');
   ////console.log(req.body);
-  
+
   var  headers =  {
              'kibo-app-id' : req.body.appid,
              'kibo-app-secret': req.body.appsecret,
              'kibo-client-id': req.body.clientid,
-             
+
       }
 
   ////console.log('get customer group');
@@ -43,11 +43,11 @@ export function getcustomergroups(req,res){
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
-    
+
 }
 export function getgroups(req, res) {
   ////console.log('get getgroups is called');
@@ -59,8 +59,8 @@ export function getgroups(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       if(!error  && response.statusCode == 200) {
@@ -71,7 +71,7 @@ export function getgroups(req, res) {
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -85,7 +85,7 @@ export function getgroups(req, res) {
   //console.log(req.body);
   logger.serverLog('info', 'This is body in creategroup '+ JSON.stringify(req.body) );
   var options;
-  if(req.body.teamagents){  
+  if(req.body.teamagents){
    options = {
       url: `${baseURL}/api/departments/kiboengage`,
       rejectUnauthorized : false,
@@ -98,8 +98,8 @@ export function getgroups(req, res) {
            'teamagents' : req.body.teamagents,
 
           }
-      
-     
+
+
     };
   }
   else{
@@ -112,13 +112,13 @@ export function getgroups(req, res) {
       json: {
            'deptname' : req.body.deptname,
            'deptdescription': req.body.deptdescription,
-          
+
 
           }
-      
-     
+
+
     };
- 
+
   }
     function callback(error, response, body) {
       //console.log(error);
@@ -137,24 +137,24 @@ export function getgroups(req, res) {
             var ch = info.channel;
             sendPushNotification(group,"Groups","CreateGroup",token);
             sendPushNotification(ch,"Channels","CreateChannel",token);
-           
+
             return res.status(200).json({statusCode : 200,message:info.msg});
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,message:info.msg}); 
-   
+            return res.status(422).json({statusCode : 422 ,message:info.msg});
+
        }
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,message:'Failed'}); 
+      return res.status(422).json({statusCode : 422 ,message:'Failed'});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
 
 export function getGroup(req, res) {
@@ -169,24 +169,24 @@ export function getGroup(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`,
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
       var info = JSON.parse(body);
       //  ////console.log(info);
-        
+
       if(!error  && response.statusCode == 200) {
-        res.status(200).json({group:info}); 
-    
+        res.status(200).json({group:info});
+
    }
    else{
     ////console.log(error);
-    res.status(422).json(info); 
+    res.status(422).json(info);
    }
  }
         request.get(options, callback);
-    
+
 }
 
 
@@ -201,32 +201,61 @@ export function destroyGroup(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
     ////console.log(response.statusCode);
     ////console.log(error);
       var info = JSON.parse(body);
 
       //  ////console.log(info.status);
-        
+
       if(!error  && response.statusCode == 200) {
-        var obj = {  
+        var obj = {
           _id:req.body.group._id,
           deptname: req.body.group.deptname,
           deptdescription: req.body.group.deptdescription}
         sendPushNotification(obj,"Groups","DeleteGroup",token);
-        res.status(200).json({info}); 
-    
+        res.status(200).json({info});
+
    }
    else{
    // ////console.log(error);
-    res.status(422).json(info); 
+    res.status(422).json(info);
    }
  }
     request.delete(options, callback);
-    
+
+}
+
+export function destroyGroups(req, res) {
+  console.log('destroyGroups is called');
+  const token = req.headers.authorization;
+  const options = {
+    url: `${baseURL}/api/departments/deletedepts/`,
+    rejectUnauthorized: false,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    json: {
+      "ids": req.body.ids,
+    },
+  };
+
+  function callback(error, response, body) {
+    console.log(body);
+    if (!error && response.statusCode == 200) {
+      if (body.status == 'success') {
+        return res.status(200).json({ statusCode: 200, message: body.msg });
+      } else {
+        return res.status(422).json({ statusCode: 422, message: body.msg });
+      }
+    } else {
+      return res.status(422).json({ statusCode: 422, message: error });
+    }
+  }
+  request.post(options, callback);
 }
 
 export function editgroup(req, res) {
@@ -239,14 +268,14 @@ export function editgroup(req, res) {
       rejectUnauthorized : false,
       headers :  {
                  'Authorization': `Bearer ${token}`,
-                
+
                  },
       json: {
            'dept' : req.body.dept,
            'teamagents': req.body.teamagents,
           }
-      
-     
+
+
     };
 
     //console.log('json body of edit group');
@@ -256,7 +285,7 @@ export function editgroup(req, res) {
     ////console.log(options.json.dept);
     function callback(error, response, body) {
         //////console.log(body);
-    
+
       if(!error  && response.statusCode == 200) {
        if(body.status == 'success')
        {
@@ -266,21 +295,21 @@ export function editgroup(req, res) {
        }
        else
        {
-            return res.status(422).json({statusCode : 422 ,message:body.msg}); 
-   
+            return res.status(422).json({statusCode : 422 ,message:body.msg});
+
        }
     }
     else
     {
-      return res.status(422).json({statusCode : 422 ,message:error}); 
+      return res.status(422).json({statusCode : 422 ,message:error});
 
     }
 
    }
         request.post(options, callback);
-   
+
   }
- 
+
  //get my groups
  export function getmyusergroups(req, res) {
   var token = req.headers.authorization;
@@ -290,8 +319,8 @@ export function editgroup(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-      
-     
+
+
     };
     function callback(error, response, body) {
       //console.log(error);
@@ -314,17 +343,17 @@ export function editgroup(req, res) {
         }
        }
 
-      if(isAgent == false){ 
+      if(isAgent == false){
       return res.status(200).json({depts:totalDept});
     }
     else{
-     return res.status(200).json({depts:info}); 
+     return res.status(200).json({depts:info});
     }
     }
 
     else
     {
-     return res.status(422).json({message:error}); 
+     return res.status(422).json({message:error});
     }
     }
     request.get(options, callback);
@@ -400,7 +429,7 @@ function sendPushNotification(data,tablename,operation,token){
                                 });
 
                             }
-                            
+
 
                           }
                         }
@@ -409,6 +438,3 @@ function sendPushNotification(data,tablename,operation,token){
 
 
 }
-
-
-

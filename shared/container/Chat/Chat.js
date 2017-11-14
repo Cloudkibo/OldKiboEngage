@@ -195,7 +195,7 @@ class Chat extends Component {
       callSocketChat = true
     }
     if (props.customerchatfiltered && props.userchats) {
-      if (!props.customerchatfiltered[0].lastmessage) {
+      if (props.customerchatfiltered.length > 0 && !props.customerchatfiltered[0].lastmessage) {
         console.log('appendLastChatMessage called');
         this.props.appendLastChatMessage(props.customerchatfiltered, props.userchats);
       }

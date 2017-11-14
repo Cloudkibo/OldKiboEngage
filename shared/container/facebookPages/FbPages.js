@@ -7,7 +7,7 @@ import SideBar from '../../components/Header/SideBar';
 import auth from '../../services/auth';
 import FbPageItem from './FbPageItem';
 import {getfbpages,getfbTeams} from '../../redux/actions/actions';
-import {deletefbpage} from '../../redux/actions/actions';
+import {deletefbpage, deletefbpages} from '../../redux/actions/actions';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import ReactPaginate from 'react-paginate';
@@ -36,12 +36,14 @@ class FbPages extends Component {
       selectedPage: 0,
       isChecked: false,
       isCheckedAll: false,
+      deleteFbpagesData: [],
     };
     this.handlePageClick = this.handlePageClick.bind(this);
     this.displayData = this.displayData.bind(this);
     this.deleteFBPage = this.deleteFBPage.bind(this);
     this.selectCheckedItem = this.selectCheckedItem.bind(this);
     this.toggleCheckAll = this.toggleCheckAll.bind(this);
+    this.deleteFbpages = this.deleteFbpages.bind(this);
   }
 
   componentDidMount(){
@@ -49,8 +51,16 @@ class FbPages extends Component {
     this.setState({totalLength: this.props.fbpages.length});
   }
 
-  selectCheckedItem(data) {
-    console.log(data);
+  selectCheckedItem(pageid) {
+    console.log('select checked item is called');
+    if (this.state.deleteFbpagesData.indexOf(pageid) == -1) {
+      this.state.deleteFbpagesData.push(pageid);
+    } else {
+      const index = this.state.deleteFbpagesData.indexOf(pageid);
+      this.state.deleteFbpagesData.splice(index, 1);
+    }
+    console.log(this.state.deleteFbpagesData);
+    this.forceUpdate();
   }
 
   toggleCheckAll() {
@@ -89,6 +99,15 @@ class FbPages extends Component {
     }
     this.state.pagesData.splice(index,1);
     this.forceUpdate();
+  }
+
+  deleteFbpages() {
+    const token = auth.getToken();
+    for(var i=0; i<this.state.deleteFbpagesData.length; i++){
+      let index = this.state.pagesData.indexOf(this.state.deleteFbpagesData[i]);
+      this.state.pagesData.splice(index, 1);
+    }
+    this.props.deletefbpages(this.state.deleteFbpagesData, token);
   }
 
   handlePageClick(data){
@@ -181,7 +200,7 @@ class FbPages extends Component {
                       }
                      </tbody>
                     </table>
-                    <button className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
+                    <button onClick={this.deleteFbpages} className="uk-button uk-button-primary uk-button-small" style={{ marginTop: -25 }}>
                       {this.state.isCheckedAll ? 'Delete All' : 'Delete'}
                     </button>
                     <ReactPaginate previousLabel={"previous"}
@@ -232,6 +251,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({getfbpages:getfbpages,deletefbpage:deletefbpage,getfbTeams:getfbTeams}, dispatch);
+  return bindActionCreators({getfbpages:getfbpages,deletefbpage:deletefbpage, deletefbpages: deletefbpages, getfbTeams:getfbTeams}, dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps)(FbPages);

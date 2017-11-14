@@ -89,7 +89,7 @@ export function fbteams(req, res) {
 export function getfbpages(req, res) {
   var token = req.headers.authorization;
    console.log(token);
- 
+
      var options = {
       url: `${baseURL}/api/fbpages/`,
       rejectUnauthorized : false,
@@ -97,7 +97,7 @@ export function getfbpages(req, res) {
                  'Authorization': `Bearer ${token}`,
 
                  },
-    
+
 
 
     };
@@ -132,7 +132,7 @@ export function getfbpage(req, res) {
                  'Authorization': `Bearer ${token}`,
 
                  },
-    
+
       form:{
         'pageid':id,
       }
@@ -209,22 +209,51 @@ export function deletefbpage(req, res) {
       headers :  {
                  'Authorization': `Bearer ${token}`
                  }
-     
+
     };
     function callback(error, response, body) {
-    
+
     console.log(response.statusCode);
     console.log(error);
-      
+
       if(!error) {
-        res.status(200).json({status:'success'}); 
-    
+        res.status(200).json({status:'success'});
+
    }
    else{
    // //console.log(error);
-    res.status(422).json({status:'fail'}); 
+    res.status(422).json({status:'fail'});
    }
  }
     request.delete(options, callback);
-    
+
+}
+
+export function deletefbpages(req, res) {
+  console.log('deletefbpages is called');
+  const token = req.headers.authorization;
+  const options = {
+    url: `${baseURL}/api/fbpages/deletefbpages/`,
+    rejectUnauthorized: false,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    json: {
+      "ids": req.body.ids,
+    },
+  };
+
+  function callback(error, response, body) {
+    console.log(body);
+    if (!error && response.statusCode == 200) {
+      if (body.status == 'success') {
+        return res.status(200).json({ statusCode: 200, message: body.msg });
+      } else {
+        return res.status(422).json({ statusCode: 422, message: body.msg });
+      }
+    } else {
+      return res.status(422).json({ statusCode: 422, message: error });
+    }
+  }
+  request.post(options, callback);
 }
